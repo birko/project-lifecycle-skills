@@ -19,6 +19,12 @@ Interactive scaffold of a new task tree node.
    - `story` — user behaviour under an epic
    - `task` — single implementable unit
 
+   **Decision test** — when the user is unsure (or their ask doesn't match the level they picked), walk down:
+   - Is it a **lasting area** that will keep accumulating behaviours over time (auth, imports, performance, a migration programme)? → `epic`. Epics are rarely "finished" — only one-shot epics (e.g. a migration) have a concrete done-when.
+   - Is it **one observable user behaviour** — can you phrase it as "As a [persona], I want [capability] so that [value]"? → `story`. If you can't fill that sentence, it isn't a story.
+   - Is it a **single implementable unit** — completable in one sitting/PR, with acceptance criteria you could check off? → `task`. Tasks are the only level that gets *done*; epics and stories mostly stay open.
+   - Rules of thumb: too big for one PR but still one behaviour → keep it a `story` and split into tasks; several distinct behaviours → `epic` with stories under it (mirrors [[feature]] decompose: "a feature usually maps to one STORY or a small EPIC"). When genuinely torn between story and task, pick `task` — promoting a task to a story later is cheap; a hollow story is noise.
+
 3. **Ask the title** — short noun phrase. Generate slug: lowercase, hyphens, ASCII only, max 50 chars. Strip stop words only if title would exceed length.
 
 4. **Ask for parent** (story/task only):

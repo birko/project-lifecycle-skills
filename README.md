@@ -21,7 +21,7 @@ without losing its paper trail** — and that trail serves two audiences at once
 
 | Skill | Scope | Entry command | Produces |
 |---|---|---|---|
-| **new-project** | Once, at repo birth | `/new-project` ("new project", "novy projekt") | The universal layer: `README`, `CLAUDE.md`, `.gitignore`, `docs/features/`, `tasks/` — a repo *pre-wired* for the rest of the lifecycle |
+| **new-project** | Once, at repo birth | `/new-project` ("new project", "novy projekt") | The universal layer: `README`, `CLAUDE.md`, `.gitignore`, `docs/features/`, `docs/specs/`, `tasks/` — a repo *pre-wired* for the rest of the lifecycle |
 | **tasks** | The backbone, forever | `/tasks new\|pick\|close\|triage…` | `tasks/` tree of EPIC → STORY → TASK markdown files + auto dashboard |
 | **feature** | Per idea/initiative | `/feature new\|prototype\|decide\|decompose\|status\|review` | `docs/features/FEATURE-NNN/` — idea, decision ledger, prototype, stakeholder status |
 | **roadmap** | On demand, read-only | `/roadmap` (`--check`, `--fix`, `EPIC-NNN`) | Nothing — a stdout-only unified view of **both** trees joined by epic, plus a divergence audit. The cross-tree engine the other two delegate to |
@@ -150,8 +150,10 @@ my-app/
   CHANGELOG.md           ← Keep-a-Changelog stub (code changes)
   .gitignore .gitattributes .editorconfig
   docs/
+    BRIEF.md             ← the user's ask, verbatim (append-only ground truth)
     features/            ← empty; the feature skill writes here
-    architecture.md      ← optional stub
+    specs/               ← .map.yml seed; the specs skill harvests here later
+    architecture.md      ← short but real overview; a living doc, not a stub
   tasks/                 ← initialized by chaining the tasks skill
     .config.yml
     README.md
@@ -255,8 +257,8 @@ Divergences (1):
 ```
 
 It is the **single source of truth for the cross-tree pass** — the join + divergence rules
-(DV1–DV6: "feature frozen while work moved on", "shipped work never closed out", "broken
-back-link", …). It doesn't re-implement `tasks` or `feature`; instead those two **delegate
+(DV1–DV8: "feature frozen while work moved on", "shipped work never closed out", "broken
+back-link", … up to the spec-drift checks DV7/DV8). It doesn't re-implement `tasks` or `feature`; instead those two **delegate
 into it**: the bare `/tasks` snapshot renders a compact slice of this engine, and `/feature
 status` reuses its divergence rules. *One engine, many renderers.* Verbs: `/roadmap` (full
 render), `--check` (audit only — fastest "are we in sync?"), `EPIC-NNN` (scope to one epic),
@@ -354,7 +356,9 @@ Building a stocktake mobile feature. The repo at each step:
 ```
 stock-app/
   README.md  CLAUDE.md  CHANGELOG.md  .gitignore
+  docs/BRIEF.md           ← the ask, verbatim
   docs/features/          ← empty, waiting
+  docs/specs/.map.yml     ← empty area map, waiting
   tasks/.config.yml  tasks/README.md
   src/index.ts  tests/
 ```

@@ -51,7 +51,7 @@ deletion. The file stays for the audit trail.
 
 ## Edge cases
 
-- **Cancelling a task other tasks `depend-on`** — warn: list the dependents; their `depends-on`
+- **Cancelling a task that other tasks list in `depends-on`** — warn: list the dependents; their `depends-on`
   now points at a cancelled task (a satisfied-by-cancellation, not by-completion). Suggest
   `/tasks audit` (broken-links/unblock check) to reconcile, or unblock them via `/tasks unblock`.
 - **Reviving a cancelled task** — there's no "uncancel"; create afresh with `/tasks new` (and

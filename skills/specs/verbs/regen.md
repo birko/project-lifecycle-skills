@@ -6,7 +6,7 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 
 - `<area> [<area> ...]` — regen the named area(s) from `.map.yml`.
 - `--all` — every area in the map (fan out; see step 3).
-- `--story STORY-NNN` — resolve areas from the story's merged work (the [[tasks]] `close` hook passes this): read the story's tasks, resolve their `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`), match against `.map.yml` globs. Missing references → fall back to asking which areas. Also resolves the story's tasks' `feature:` links for step 6's stamp.
+- `--story STORY-NNN` — resolve areas from the story's merged work (the [[tasks]] `close` hook passes this): read the story's tasks, resolve their `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`), match against `.map.yml` globs. Missing references → fall back to asking which areas. Also resolves the story's tasks' `feature:` links for step 5's stamp.
 - `--feature FEATURE-NNN` — resolve areas from all of the feature's tasks (same mechanics); used by [[feature]] `review` Gate A.
 
 ## Steps

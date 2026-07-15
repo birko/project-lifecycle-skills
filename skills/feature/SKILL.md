@@ -161,7 +161,7 @@ happened carries **`status: review`** — *not* `idea` (it's built, not unstarte
 *not* `done` (it's not signed off). This is the first-class coarse marker behind the
 no-"done-pending" rule below, and it mirrors the [[tasks]] skill's `review` task status.
 
-`status.md` shows a richer **phase** (`idea · prototyping · deciding · building · review · done`) that `status` does **not** duplicate — phase is *derived* by the `status` verb from the data (decisions + task progress) and the coarse marker. Stored marker = `status`; computed display = phase. Don't hand-maintain phase.
+`status.md` shows a richer **phase** (`idea · prototyping · deciding · building · review · done`) that `status` does **not** duplicate — phase is *derived* by the `status` verb from the data (decisions + task progress) and the coarse marker. For a killed or re-homed feature the phase simply **mirrors the coarse marker** (`dropped` / `superseded`) — those two are terminal mirrors, not derivable phases, so the full rendered set is the six derived values plus the two mirrors. Stored marker = `status`; computed display = phase. Don't hand-maintain phase.
 
 ### `done` means signed off — there is no "done, pending"
 
@@ -274,7 +274,7 @@ Shared by the bare-`/feature` listing and `status`.
 1. Find `docs/features/` (resolution above).
 2. Glob `docs/features/FEATURE-*/decisions.md`.
 3. For each: parse the decision table → count by state; read `id`, title, `created`, `owner`.
-4. Cross-reference `tasks/` — Grep tasks for `feature: FEATURE-NNN` to get task counts by status (todo/in-progress/done). This is the bridge between the two trees.
+4. Cross-reference `tasks/` — Grep tasks for `feature: FEATURE-NNN` to get task counts by status (todo/in-progress/review/blocked/done/cancelled — `review` matters: phase derivation and verification-debt ordering both need it). This is the bridge between the two trees.
 5. Note which prototype artifact exists (`prototype.html` / `.md` / spike link).
 
 ## Conventions

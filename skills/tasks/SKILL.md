@@ -19,7 +19,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `show` | Read-only view of an EPIC/STORY/TASK by ID | [verbs/show.md](verbs/show.md) |
 | `plan` | Draft `## Implementation plan` for a TASK (optional grill) | [verbs/plan.md](verbs/plan.md) |
 | `pick` | Pick task, mark in-progress, start work | [verbs/pick.md](verbs/pick.md) |
-| `close` | Mark task done (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
+| `close` | Merge gate — task → `done`, or `review` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
 | `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
 | `import` | Import from file / GH issue / Jira ticket | [verbs/import.md](verbs/import.md) |
@@ -53,7 +53,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
      TASK-NNN  <title>  <priority>  <assignee>
      ...
 
-   features/  <F> features · idea <i> · building <b> · review <r> · done <d>
+   features/  <F> features · idea <i> · prototyping <p> · deciding <de> · building <b> · review <r> · done <d>
      ⚠ divergence (<n>): <FEATURE-NNN DV<x>>, …      [or: ✓ in sync]
      specs: <n> stale                                 [omit when docs/specs/ absent or all fresh]
      (run /roadmap for the full epic→feature→task view)

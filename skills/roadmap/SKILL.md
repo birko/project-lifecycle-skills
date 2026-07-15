@@ -44,7 +44,7 @@ counts/buckets, `byParent`, and each task's `parent`, `status`, and `feature:` l
 Glob `docs/features/FEATURE-*/`. For each folder read:
 - `idea.md` frontmatter `status:` (**coarse marker** — exactly one of `idea | review | done | dropped | superseded`) and the `# Heading` title.
 - `decisions.md` table → count rows by `State` (`proposed | approved | changed | deferred | removed`).
-- `status.md` `**Phase:**` line (**derived display** — one of `idea | prototyping | deciding | building | review | done`).
+- `status.md` `**Phase:**` line (**derived display** — one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded` copied from the coarse marker for killed/re-homed features).
 - The `## Prototype` line in `idea.md` (recorded decision: Built / Skipped / N/A / Pending).
 
 Also read `docs/features/README.md` if present — its table maps each feature to a `Source`
@@ -75,7 +75,7 @@ Flag a feature (or task) when:
 | **DV5** | Feature with no matching epic/story/tasks (and not a shipped `done` backfill), **or** a story/epic with tasks but no feature folder | A requirement tracked in only one tree |
 | **DV6** | `idea.md status` ∉ the coarse set, or `status.md` phase ∉ the derived set | Invalid/stale marker (the `in-progress` phase we hit on FEATURE-016) |
 | **DV7** | A spec's `sources` changed since its `generated-at` commit, or a mapped area was never generated (from step 2b) | Stale behavioral map — code moved on, the spec is lying |
-| **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) | A shipped feature whose behavioral change never landed in the specs — **advisory**: a genuinely docs-only/internal feature legitimately lands nowhere; the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
+| **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
 
 ### 5. Output model
 Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase,
@@ -112,12 +112,12 @@ From the output model:
 
 When [[tasks]] calls this engine for its bare-`/tasks` snapshot, it renders only:
 ```
-features/  <F> features · idea <i> · building <b> · review <r> · done <d>
+features/  <F> features · idea <i> · prototyping <p> · deciding <de> · building <b> · review <r> · done <d>
   ⚠ divergence (<n>): <FEATURE-NNN DV<x>>, …      [or:  ✓ in sync]
   specs: <n> stale                                [omit when docs/specs/ absent or all fresh]
 Run /roadmap for the full epic→feature→task view.
 ```
-Lead the line with any `review`-phase feature count (verification debt).
+Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros rule as the tasks snapshot), appending `dropped <x>` / `superseded <x>` when non-zero, so every feature lands in exactly one bucket and the counts sum to `<F>`. Lead the line with any `review`-phase feature count (verification debt).
 
 ## Conventions
 

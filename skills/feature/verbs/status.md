@@ -14,10 +14,16 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
    - `review` — `idea.md` status `review`, OR all feature tasks `done`/`review` but not yet signed off. (Client tasks awaiting sign-off carry `status: review` too.)
    - `done` — reviewed + signed off (`idea.md` status `done`).
    - `dropped` — `idea.md` status `dropped` (every decision was `removed`); show the rollup but mark it killed.
+   - `superseded` — `idea.md` status `superseded` (scope re-homed into another feature); show the rollup with the `superseded-by:` pointer.
+   - (`dropped`/`superseded` are terminal **mirrors of the coarse marker**, not derived phases — see [SKILL.md](../SKILL.md#feature-status-coarse-vs-phase-derived).)
 
 3. **Cross-reference tasks** — Grep `tasks/` for `feature: FEATURE-NNN`; bucket by status; compute `done/total`. List them with their IDs and titles. Mark which have a ready (filled, non-`N/A`) `## Human test plan` for the "what can be tested now" section.
 
-4. **Render** [templates/status.md](../templates/status.md) — fill decision counts by state, build progress, testable summary, prototype link, and a concrete next step.
+4. **Render** [templates/status.md](../templates/status.md) — fill decision counts by state, build progress, and:
+   - `{{TESTABLE_SUMMARY}}` — the tasks whose Human test plan is filled and ready to run.
+   - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / the spike branch, or "none yet".
+   - `{{NEXT_STEP}}` — one concrete action, e.g. "PM to review 2 proposed decisions", "3 tasks in progress", "ready for /feature review".
+   (The template is stakeholder-facing and carries no author comments — these hints live here.)
 
 5. **Write** `docs/features/FEATURE-NNN-slug/status.md` (overwrite).
 

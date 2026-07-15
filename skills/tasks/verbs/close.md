@@ -1,6 +1,6 @@
-# /tasks close — mark a task done
+# /tasks close — the merge gate (→ `done`, or `review`)
 
-Flip a TASK to `done`. In hybrid mode, also close the linked remote issue.
+Flip a TASK to `done` — or to `review` when its Human test plan hasn't been run yet (step 5). In hybrid mode, also close the linked remote issue.
 
 ## Steps
 
@@ -11,6 +11,7 @@ Flip a TASK to `done`. In hybrid mode, also close the linked remote issue.
    - `--no-pr` — skip the PR/commit prompt.
    - `--story <STORY-NNN>` — close a STORY instead.
    - `--epic <EPIC-NNN>` — close an EPIC instead.
+   - `--force` — with `--story`/`--epic`, close even when open children remain (see Edge cases).
 
 3. **Locate the file** — Grep `^id: TASK-NNN$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
 

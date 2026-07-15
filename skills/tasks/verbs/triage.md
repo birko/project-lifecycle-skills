@@ -15,6 +15,8 @@ This verb is also chained automatically by `new`, `pick`, `close`, `import`, `ex
    - [TASK-014](EPIC-001-auth/STORY-001-login/TASK-014-jwt.md) — JWT issuance on login (P1, ai)
    ```
 
+3b. **Build "In review (awaiting sign-off)"** from `inReviewTasks[]`, same bullet shape. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task is in `review`.
+
 4. **Build the tree view** — group tasks under their parent story under their parent epic (use the `byParent` map from the collection pass). Skip epics that are `done` or `cancelled` (those go in the Completed section). For each story, show `done/total` task counts.
 
    Example shape:
@@ -47,8 +49,9 @@ This verb is also chained automatically by `new`, `pick`, `close`, `import`, `ex
 7. **Render** [templates/README.md.tmpl](../templates/README.md.tmpl):
    - `{{PROJECT_NAME}}` — name of the directory containing `tasks/` (Birko.AI, Symbio, etc.)
    - `{{TIMESTAMP}}` — current date/time, e.g. `2026-05-28 14:32`
-   - counts placeholders
+   - counts placeholders — including `{{TK_REVIEW}}` (the `review` row is verification debt; never drop it from the table)
    - `{{INPROGRESS_LIST}}` (or "_None_" if empty)
+   - `{{INREVIEW_SECTION}}` (entire section omitted if no `review` tasks)
    - `{{TREE_VIEW}}`
    - `{{LOOSE_SECTION}}` (entire section omitted if no loose tasks)
    - `{{COMPLETED_SECTION}}` (omitted if no completed epics)
