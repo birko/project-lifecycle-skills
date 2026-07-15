@@ -155,14 +155,14 @@ my-app/
   tasks/                 ← initialized by chaining the tasks skill
     .config.yml
     README.md
-  src/ tests/            ← stack-idiomatic (skipped for .NET → uses birko-new-project)
+  src/ tests/            ← stack-idiomatic source root + tests
   .github/workflows/ci.yml  ← install→build→test gate
 ```
 
 Crucially it **doesn't reimplement** the other skills — it *chains* `tasks` to make `tasks/`,
 creates `docs/features/` for `feature`, and seeds `CLAUDE.md` so any future agent knows the
-convention. For .NET/Birko it further chains `birko-new-project` for the `.slnx`/aggregator
-wiring.
+convention. When the chosen stack has its own scaffolder skill, it further chains that skill
+for the platform-specific code wiring rather than reimplementing it.
 
 It also seeds the **`## Conventions` rulebook** inside that `CLAUDE.md` — see §6. Because
 `CLAUDE.md` is auto-loaded into every task's context, the project's framework/UI/structure
@@ -493,7 +493,7 @@ of satellite skills. Each slots into a named stage.
 
 ```
 /new-project ──┬─ grill-me ............ optional scope interrogation at intake
-               └─ birko-new-project ... .NET/.slnx code-wiring (chained for Birko repos)
+               └─ <stack scaffolder> .. platform-specific code-wiring (chained when the stack has one)
 
 /feature new ──── grill-me ............ THE engine — the interview output IS the decision tree
 
@@ -607,20 +607,19 @@ stack/toolkit, the done-gate. `populate-tests` is to § Testing what `verify-con
 § Conventions: the skill that reads *this project's own* convention and acts on it, rather than
 inventing one. Seed-once, act-many — one for *how we build*, one for *how we verify*.
 
-### Skill layering — global vs. the Birko.Framework repo
+### Skill layering — global vs. project-local
 
 These skills live at two scopes, and a skill **lives where it's invoked from**:
 
 | Scope | Holds | Examples |
 |---|---|---|
-| **Global** (`~/.claude/skills/`) | the generic, cross-project lifecycle (incl. the stack-agnostic `populate-tests` + `specs`) + the two generic "keep-honest" maintainers + **consumer-facing** Birko scaffolders (they run in arbitrary repos) | `new-project`, `tasks`, `feature`, `roadmap`, `populate-tests`, `specs`, `roll-changelog`, `verify-conventions`, `birko-new-project`, `new-birko-web-page` |
-| **Birko.Framework repo** (`.../Birko.Framework/.claude/skills/`) | **framework-internal** skills — only ever run *inside* that repo — and Birko-specific variants | `new-birko-subproject`, `new-birko-web-component`, `new-store-backend`, `verify-birko-conventions`, Birko `roll-changelog` |
+| **Global** (`~/.claude/skills/`) | the generic, cross-project lifecycle (incl. the stack-agnostic `populate-tests` + `specs`) + the generic "keep-honest" maintainers + any stack scaffolders that run in arbitrary repos | `new-project`, `tasks`, `feature`, `roadmap`, `populate-tests`, `specs`, `roll-changelog`, `verify-conventions`, `grill-me`, `tdd`, `handoff` |
+| **Project-local** (`<repo>/.claude/skills/`) | skills that only make sense *inside* one repo — internal scaffolders and project-specific **variants** of global skills | a framework repo's own subproject scaffolder, a project-tuned `verify-conventions` or `roll-changelog` |
 
-Project-local skills **shadow** same-named global ones inside that repo, so the Birko-specific
-`verify-birko-conventions` / `roll-changelog` win when you're working in Birko.Framework, while
-the generic versions run everywhere else. A `[[link]]` to a Birko skill that doesn't resolve
-from the global set is *correct*, not broken — it resolves inside the Birko repo, which is its
-source of truth.
+Project-local skills **shadow** same-named global ones inside their repo, so a project-specific
+variant wins when you're working there, while the generic version runs everywhere else. A
+`[[link]]` to a project-local skill that doesn't resolve from the global set is *correct*, not
+broken — it resolves inside its home repo, which is its source of truth.
 
 ---
 
