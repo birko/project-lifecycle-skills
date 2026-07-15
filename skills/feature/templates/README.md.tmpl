@@ -1,0 +1,24 @@
+# Features — {{PROJECT_NAME}}
+
+_Generated {{TIMESTAMP}} by `/feature status` (all-features mode). **Do not hand-edit** — re-run the verb. The human entry point to the stakeholder-facing feature tree; each row links to a feature folder._
+
+## Features
+
+| Feature | Title | Phase | Decisions (a/c/d/r/p) | Tasks | Prototype |
+|---------|-------|-------|-----------------------|-------|-----------|
+{{FEATURE_ROWS}}
+<!-- one row per docs/features/FEATURE-*/, e.g.:
+| [FEATURE-012](FEATURE-012-stocktake-redesign/) | Stocktake redesign | building | 3/1/1/2/0 | 4/7 | [html](FEATURE-012-stocktake-redesign/prototype.html) |
+Phase ∈ idea · prototyping · deciding · building · review · done · dropped · superseded.
+Decisions column = approved/changed/deferred/removed/proposed counts.
+Tasks = done/total of tasks carrying `feature: FEATURE-NNN`. -->
+
+{{VERIFICATION_DEBT_NOTE}}
+<!-- If any feature is phase `review` (built, sign-off pending), lead with:
+> ⚠ **Awaiting sign-off (<n>):** FEATURE-NNN … — these are verification debt; finish them before new scope.
+Omit the whole block when none are in `review`. -->
+
+{{DIVERGENCE_NOTE}}
+<!-- If `/roadmap --check` would flag feature↔task drift, add:
+> ⚠ **Drift (<n>):** FEATURE-NNN DV<x> … — run `/roadmap --check`.
+Omit when the trees agree. -->

@@ -1,0 +1,91 @@
+# /tasks new — create EPIC / STORY / TASK
+
+Interactive scaffold of a new task tree node.
+
+## Steps
+
+0. **Parse flags** the caller may have passed:
+   - `--no-plan` — skip the auto-plan step (see step 12).
+   - `--from-feature FEATURE-NNN` — this task is being decomposed from a feature (the [[feature]] skill passes this). When present:
+     - Set `{{FEATURE}}` frontmatter to `FEATURE-NNN` (otherwise `{{FEATURE}}` is `null`).
+     - Skip re-asking for Context — pull it from the feature's `docs/features/FEATURE-NNN/decisions.md` row(s) and `idea.md` that triggered this task.
+     - The caller usually also passes `--no-plan` for batch decomposition; respect it.
+
+1. **Find task root** using shape detection (see [SKILL.md](../SKILL.md#shape-detection--where-tasks-lives)).
+   - If `tasks/.config.yml` is **missing** → run the [mode detection flow](#mode-detection-flow) first. Write `.config.yml` before creating any task files.
+
+2. **Determine level** (skip prompt if user passed it as arg: `/tasks new epic|story|task`):
+   - `epic` — area of concern
+   - `story` — user behaviour under an epic
+   - `task` — single implementable unit
+
+3. **Ask the title** — short noun phrase. Generate slug: lowercase, hyphens, ASCII only, max 50 chars. Strip stop words only if title would exceed length.
+
+4. **Ask for parent** (story/task only):
+   - **story** → list existing epics with their IDs + titles, user picks one (epic must exist; if none, propose `/tasks new epic` first).
+   - **task** → list epics and stories under each. User picks story ID, **or** epic ID for a direct-child task, **or** "none" to place in `_loose/`.
+
+5. **Ask priority and assignee** (task only):
+   - Priority: P0 / **P1** (default) / P2
+   - Assignee: human / **ai** (default) / `<specific-agent-name>`
+
+6. **Generate ID**:
+   - Grep `^id: (EPIC|STORY|TASK)-(\d+)$` recursively in `tasks/`.
+   - For the requested type, take max, increment, zero-pad to 3 digits.
+   - First of a type: `EPIC-001` / `STORY-001` / `TASK-001`.
+
+7. **Compute file path**:
+   - epic: `tasks/EPIC-NNN-slug/EPIC.md`
+   - story: `tasks/EPIC-PPP-pslug/STORY-NNN-slug/STORY.md`
+   - task with parent story: `tasks/EPIC-PPP-pslug/STORY-PPP-pslug/TASK-NNN-slug.md`
+   - task with parent epic (direct child): `tasks/EPIC-PPP-pslug/TASK-NNN-slug.md`
+   - task without parent: `tasks/_loose/TASK-NNN-slug.md`
+
+8. **Render the template** from `templates/{EPIC|STORY|TASK}.md`, substituting placeholders:
+   - `{{ID}}` — generated ID
+   - `{{PARENT}}` — parent ID (or `null` for orphan task / epic)
+   - `{{CREATED}}` — today (`YYYY-MM-DD`)
+   - `{{STATUS}}` — `planned` for epic/story, `todo` for task
+   - `{{PRIORITY}}` — P0/P1/P2 (task only)
+   - `{{ASSIGNEE}}` — human/ai/agent-name (task only)
+   - `{{FEATURE}}` — `FEATURE-NNN` from `--from-feature`, else `null` (task only)
+   - `{{OWNER}}` — human/ai/both (epic only; default `human`)
+   - `{{AFFECTS}}` — `[]` unless cross-cutting at Birko.Framework root; then ask user which sub-projects and write `[Birko.AI, Birko.Data, ...]`
+   - `{{TITLE}}` — the title from step 3
+
+9. **For task: offer to draft body sections** (Context / Acceptance / Out-of-scope / **Human test plan**) using any context already in the conversation. User reviews/edits before writing. If you can't draft confidently, leave the templates' placeholder copy and tell the user to fill it in.
+   - **Human test plan** — draft concrete manual steps only for behaviour automated tests can't cover (UI/UX, edge cases, external integrations). If the task is plainly unit-testable, write `N/A — fully covered by automated tests` rather than inventing filler steps. When `--from-feature` is set, mine the feature's prototype + decisions for the UI/UX flows worth manual-testing.
+
+10. **Write the file** with the Write tool.
+
+11. **Regenerate dashboard** — chain to [verbs/triage.md](triage.md) logic. Update `tasks/README.md`.
+
+12. **Auto-plan (task only)** — if level is `task` AND user did **not** pass `--no-plan`, chain into [verbs/plan.md](plan.md) for the freshly-created TASK ID. Skip for epic/story (they don't get plans). Skip silently if `--no-plan` was passed (use case: batch-creating tasks without grilling on each one).
+
+13. **Confirm** — print:
+    - File path created
+    - Next-step hint depending on level:
+      - epic → "Add stories with `/tasks new story`"
+      - story → "Add tasks with `/tasks new task`"
+      - task → "Start work with `/tasks pick`" (or "Plan was skipped — run `/tasks plan {{ID}}` later" if `--no-plan`)
+
+## Mode detection flow
+
+Runs once per project, when `.config.yml` is missing.
+
+1. **Scan signals**:
+   - `Test-Path .github/ISSUE_TEMPLATE` → suggest `hybrid (github)`
+   - Grep CLAUDE.md + README for `*.atlassian.net/browse/` or `finstat.atlassian.net` → suggest `hybrid (jira)`
+   - Neither → suggest `local`
+2. **Ask user** via AskUserQuestion with three options: local / hybrid (github) / hybrid (jira). Pre-select the suggested one.
+3. **For hybrid (github)**: ask for the repo. Default = `git remote get-url origin` parsed to `owner/name`. Optionally ask for `default-labels`.
+4. **For hybrid (jira)**: ask for the project key (e.g. `SUP`).
+5. **Write `tasks/.config.yml`** from [templates/config.yml](../templates/config.yml).
+
+## Edge cases
+
+- **Slug collision** — if the slugged folder/file already exists, append `-2`, `-3`, etc. (not `-002` — keep it short).
+- **No epics yet, user wants story/task** — prompt "no epics — create one first?" and chain into `/tasks new epic` if confirmed.
+- **Birko.Framework cross-cutting** — when cwd is at the meta-root (not inside a `Birko.X/`), the new EPIC will be cross-cutting. Ask which sub-projects it affects; write the list to `affects:`.
+- **Existing `tasks/` but no `.config.yml`** — skill was previously used in a different version. Run mode detection to backfill.
+- **`_loose/` doesn't exist yet** — create it when first loose task is added; never create it eagerly.
