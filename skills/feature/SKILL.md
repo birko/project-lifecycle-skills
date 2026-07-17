@@ -269,13 +269,20 @@ skipping for headless logic and for small increments you can validate by running
 
 ## Collection pass
 
-Shared by the bare-`/feature` listing and `status`.
+Shared by the bare-`/feature` listing and `status` — and **owned by [[roadmap]]**, not here.
+Run the [[roadmap]] skill's [Cross-tree pass](../roadmap/SKILL.md#cross-tree-pass-shared-engine)
+and consume its output model; don't re-implement the enumeration or the join. Its step 2 already
+reads each feature's decision counts by state, coarse `status`, phase, title, and `## Prototype`
+line; step 3 joins tasks via `feature: FEATURE-NNN` back-links. Two feature-side notes:
 
-1. Find `docs/features/` (resolution above).
-2. Glob `docs/features/FEATURE-*/decisions.md`.
-3. For each: parse the decision table → count by state; read `id`, title, `created`, `owner`.
-4. Cross-reference `tasks/` — Grep tasks for `feature: FEATURE-NNN` to get task counts by status (todo/in-progress/review/blocked/done/cancelled — `review` matters: phase derivation and verification-debt ordering both need it). This is the bridge between the two trees.
-5. Note which prototype artifact exists (`prototype.html` / `.md` / spike link).
+- Bucket each feature's tasks by status (todo/in-progress/review/blocked/done/cancelled) from the
+  model's task collection — `review` matters: phase derivation and verification-debt ordering both
+  need it.
+- The model's `divergences` come along for free — the bare-`/feature` listing may surface them
+  (one `⚠ DV<n>` mark per affected feature), same rules as `/roadmap --check`.
+
+One engine, many renderers: [[roadmap]] owns the join + divergence rules; this skill only renders
+feature-centric slices of the model.
 
 ## Conventions
 
@@ -295,6 +302,6 @@ Shared by the bare-`/feature` listing and `status`.
 - [[review]] — reviews the **PR diff** on GitHub at `/tasks close` (the per-task merge gate), complementing the working-tree `code-review`.
 - [[populate-tests]] — turns each task/surface into standing coverage and keeps the `[auto]`/`[manual]` ledger; a field-found bug routes back here for a regression spec.
 - [[specs]] — the record of *actuality* to this skill's record of *intent*. `/feature review` Gate A checks each approved decision landed in a harvested spec (`shaped-by: FEATURE-NNN` provenance, machine-written at regen time — never a hand-maintained link); a decision with no spec landing = incomplete feature. The regen diff review is where "intended change" (decisions) meets "actual change" (spec diff).
-- [[roadmap]] — Unified cross-tree view of `docs/features/` + `tasks/` with a drift audit. It **owns the canonical divergence rules** (a feature whose phase contradicts its linked tasks, a broken `feature:` back-link, etc.); this skill's Collection-pass task cross-reference shares them rather than redefining them. Run `/roadmap --check` to catch feature↔task drift before it compounds.
+- [[roadmap]] — Unified cross-tree view of `docs/features/` + `tasks/` with a drift audit. It **owns the canonical collection + divergence engine** (a feature whose phase contradicts its linked tasks, a broken `feature:` back-link, etc.); this skill's [Collection pass](#collection-pass) delegates to it rather than re-implementing it. Run `/roadmap --check` to catch feature↔task drift before it compounds.
 - [[new-project]] — creates `docs/features/` at project birth and seeds CLAUDE.md with this lifecycle so future agents follow it.
 - [[handoff]] — same agent-pickable-context principle; an `idea.md` + `decisions.md` pair is effectively a feature-scoped handoff.

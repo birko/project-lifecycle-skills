@@ -129,6 +129,6 @@ Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros ru
 ## Related skills
 
 - [[tasks]] — the dev-facing tree; its bare-`/tasks` snapshot renders the compact slice of this engine.
-- [[feature]] — the stakeholder-facing tree; its Collection pass shares these divergence rules, and `decide`/`status` are where divergences get reconciled.
+- [[feature]] — the stakeholder-facing tree; its bare listing and `status` verb delegate their collection to this engine, and `decide`/`status` are where divergences get reconciled.
 - [[specs]] — the harvested behavioral map (`docs/specs/`). It owns generation and the staleness definition (`verify`); this engine consumes that for DV7/DV8. Reconciliation path for spec drift is `/specs regen`, never an edit here.
 - [[handoff]] — same "make state legible without re-discovery" principle, at conversation scope.
