@@ -1,6 +1,6 @@
 # /feature prototype — build an interactive prototype for stakeholders
 
-Produce something a stocktaker or project manager can look at and react to, so decisions get made against a concrete artifact instead of a description.
+Produce something a project manager or end user can look at and react to, so decisions get made against a concrete artifact instead of a description.
 
 ## Steps
 
@@ -28,6 +28,11 @@ Produce something a stocktaker or project manager can look at and react to, so d
    template placeholder after building one makes an absent line read as an omission, not a
    decision. If you (or the user) deliberately *skip* prototyping instead of running this verb,
    that line is set to `Skipped — <reason>` at `/feature new`/`decide` time, not here.
+
+4c. **Update this feature's row in the index** — `docs/features/README.md`: fill the Prototype
+   column with the artifact link and let the Phase column read `prototyping`. Same single-row
+   pattern as new.md's 6b — full regeneration stays `/feature status`'s job, but the index must
+   never show `Prototype: —` for a feature whose prototype exists.
 
 5. **Confirm + next step:**
    - HTML: "Open `docs/features/FEATURE-NNN-slug/prototype.html` in a browser and demo it."

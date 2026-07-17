@@ -61,7 +61,7 @@ DV10 instead of staying silent: the spec layer is missing, not merely unconfigur
 
 ### 3. Join feature ↔ tasks ↔ epic
 - **Primary join:** tasks carrying `feature: FEATURE-NNN` → that feature. Compute `tasksDone / tasksTotal`.
-- **Slug fallback:** if a feature has no back-linked tasks, match its slug against STORY/EPIC slugs (e.g. `FEATURE-017-kobold-endpoint` ↔ `STORY-015-kobold-endpoint`). A join that *only* works via the fallback is itself a divergence (DV3).
+- **Slug fallback:** if a feature has no back-linked tasks, match its slug against STORY/EPIC slugs (e.g. `FEATURE-017-kobold-endpoint` ↔ `STORY-015-kobold-endpoint`). A fallback-only join is a divergence (DV3) **only when the slug-matched story/epic has tasks** — those tasks should carry the `feature:` back-link and don't. A zero-task pairing (scaffold-seeded `idea` stub ↔ `planned` story stub, awaiting decompose) is the healthy pre-decompose state, not drift.
 - **Epic mapping:** feature → owning EPIC via its tasks' `parent` chain, else the README `Source` column.
 
 ### 4. Divergence rules (the canonical set)

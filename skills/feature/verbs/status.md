@@ -1,6 +1,6 @@
 # /feature status — regenerate the stakeholder rollup
 
-Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see where it stands without reading code or task files.
+Rebuild `status.md` for a feature (or all features) so a PM or other non-technical stakeholder can see where it stands without reading code or task files.
 
 ## Steps
 
@@ -10,8 +10,8 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
    - `idea` — only `idea.md` exists, no decisions stamped, no prototype.
    - `prototyping` — a prototype artifact exists, decisions still mostly `proposed`.
    - `deciding` — prototype done, `proposed` rows still outnumber decided ones.
-   - `building` — has `approved`/`changed` decisions with tasks, not all done.
-   - `review` — `idea.md` status `review`, OR all feature tasks `done`/`review` but not yet signed off. (Client tasks awaiting sign-off carry `status: review` too.)
+   - `building` — has `approved`/`changed` decisions and work still ahead: **tasks may not exist yet** (freshly decided, decompose is the next step — render `0/0 tasks` and point the next-step line at `/feature decompose`) or exist but aren't all done. (`decide` chains this verb immediately after stamping, so the decided-but-not-yet-decomposed state is the *normal* case, not a corner.)
+   - `review` — `idea.md` status `review`, OR all feature tasks `done`/`review` **with ≥1 task existing** but not yet signed off. (Client tasks awaiting sign-off carry `status: review` too.)
    - `done` — reviewed + signed off (`idea.md` status `done`).
    - `dropped` — `idea.md` status `dropped` (every decision was `removed`); show the rollup but mark it killed.
    - `superseded` — `idea.md` status `superseded` (scope re-homed into another feature); show the rollup with the `superseded-by:` pointer.
@@ -28,7 +28,7 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
 5. **Write** `docs/features/FEATURE-NNN-slug/status.md` (overwrite).
 
 6. **If invoked for all features** — also print a one-line-per-feature digest to stdout:
-   `FEATURE-012 Stocktake redesign — building (4/7 tasks, 3 approved / 1 deferred)`.
+   `FEATURE-012 Checkout redesign — building (4/7 tasks, 3 approved / 1 deferred)`.
    **Order the digest with phase-`review` (awaiting sign-off) features first** — they
    are outstanding verification debt and are the next action, ahead of `idea`/planned
    ones. Never headline "all shipped" while a `review`-phase feature exists — that buries

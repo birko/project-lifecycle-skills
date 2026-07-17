@@ -41,6 +41,10 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      a git repo on its default branch, offer to cut `task/TASK-NNN` so the work is isolated and
      `/tasks close` can open one PR for it. Skip silently for non-git/local-only projects, or if
      the user is already on a suitable branch.
+   - **Unborn HEAD** (freshly-initialized repo, no commits — `git rev-parse HEAD` fails): there is
+     no base to branch from or diff against. Offer to make the initial commit first
+     (`chore: initial scaffold`, staging the current tree), then cut the task branch. Don't start
+     work on an unborn branch — `close`'s diff/merge gate would have nothing to compare.
    - If user knows the branch/PR, ask whether to fill `pr:` now. Otherwise leave null — `/tasks close` will prompt for it later.
 
 8. **Regenerate dashboard** — chain to triage logic.

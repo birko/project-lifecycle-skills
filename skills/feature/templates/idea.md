@@ -7,11 +7,11 @@ status: {{STATUS}}  # idea | review (built, sign-off pending) | done | dropped |
 
 # {{TITLE}}
 
-> Stakeholder-readable. A stocktaker or project manager should understand the problem and the proposed shape without reading any code.
+> Stakeholder-readable. A project manager or end user should understand the problem and the proposed shape without reading any code.
 
 ## Problem
 
-What hurts today? Who feels it (stocktaker, PM, end user)? What's the cost of doing nothing?
+What hurts today? Who feels it (PM, end user, support)? What's the cost of doing nothing?
 
 ## Proposed shape
 

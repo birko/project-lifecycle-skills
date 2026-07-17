@@ -1,11 +1,11 @@
 ---
 name: feature
-description: Per-feature/idea lifecycle for stakeholder-facing work — capture an idea, grill it into a decision tree, build an interactive prototype for stakeholders (stocktakers / PMs), record which decisions are approved / deferred / changed / removed, decompose approved decisions into tracked tasks, publish a stakeholder status rollup, and run a review gate. Use when the user says "/feature new", "/feature prototype", "/feature decide", "/feature decompose", "/feature status", "/feature review", "novy feature", "new feature", "prototype for stakeholders", "feature decisions", "approve/defer/drop a feature decision", "stakeholder status", or wants to take a raw idea through to tracked, testable, reviewed work. Sits on top of the [[tasks]] skill (decomposition + tracking) and reuses [[grill-me]] (idea interrogation) and [[code-review]] (review gate).
+description: Per-feature/idea lifecycle for stakeholder-facing work — capture an idea, grill it into a decision tree, build an interactive prototype for stakeholders (PMs / end users), record which decisions are approved / deferred / changed / removed, decompose approved decisions into tracked tasks, publish a stakeholder status rollup, and run a review gate. Use when the user says "/feature new", "/feature prototype", "/feature decide", "/feature decompose", "/feature status", "/feature review", "novy feature", "new feature", "prototype for stakeholders", "feature decisions", "approve/defer/drop a feature decision", "stakeholder status", or wants to take a raw idea through to tracked, testable, reviewed work. Sits on top of the [[tasks]] skill (decomposition + tracking) and reuses [[grill-me]] (idea interrogation) and [[code-review]] (review gate).
 ---
 
 # feature
 
-Takes a raw idea through a repeatable lifecycle and leaves a paper trail that serves **two audiences at once**: developers (what to build, how to test it) and stakeholders — stocktakers, project managers (what was decided, why, and where the work stands).
+Takes a raw idea through a repeatable lifecycle and leaves a paper trail that serves **two audiences at once**: developers (what to build, how to test it) and stakeholders — project managers, end users (what was decided, why, and where the work stands).
 
 ```
 new ─▶ prototype ─▶ decide ─▶ decompose ─▶ (work happens in /tasks) ─▶ status ─▶ review
@@ -80,7 +80,7 @@ docs/features/
     idea.md            ← the problem statement + grill-me transcript distilled (stakeholder readable)
     decisions.md       ← the decision tree with states: approved/deferred/changed/removed (+ history log)
     prototype.html     ← OR prototype.md OR a link to a code-spike branch (form decided per-feature)
-    status.md          ← auto-generated rollup for PMs/stocktakers (owned by /feature status — never hand-edit; re-run the verb)
+    status.md          ← auto-generated rollup for PMs / non-technical stakeholders (owned by /feature status — never hand-edit; re-run the verb)
 ```
 
 The **human-test plan does NOT live here** — it lives inside each TASK file (`## Human test plan`), because a test plan must travel with the unit of work and be checkable at `/tasks close`. The feature folder links to tasks; tasks link back via `feature: FEATURE-NNN` frontmatter.
@@ -175,7 +175,7 @@ feature-centric slices of the model.
 - PowerShell-compatible (no `2>/dev/null`, no inline `VAR=x cmd`).
 - A decision row is never deleted — `removed` is a state, not a deletion. The ledger must stay auditable for stakeholders.
 - Don't invent decisions the user/stakeholder never made. `proposed` rows come only from the grill or explicit user input.
-- Stakeholder-facing files (`idea.md`, `status.md`, `decisions.md`) avoid code jargon — a PM/stocktaker reads them.
+- Stakeholder-facing files (`idea.md`, `status.md`, `decisions.md`) avoid code jargon — a PM or other non-technical stakeholder reads them.
 - **Never silently displace planned scope.** When a new feature reuses a planned slot (an epic's story line, a roadmap entry, an ID) or a feature is renamed/re-scoped, the *original* scope must be **re-homed into its own tracked feature/story**, not overwritten. A requirement that was once on the roadmap and is no longer tracked anywhere is a regression in the plan. (Failure mode this guards against: a planned story's slot is renamed or reused for new scope, and the original requirement silently disappears until someone notices it's gone.) When in doubt, keep a requirement→feature traceability table in the owning EPIC and reconcile it whenever the roadmap shifts.
 
 ## Related skills

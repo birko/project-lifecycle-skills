@@ -1,7 +1,7 @@
 ---
 id: {{ID}}
 parent: {{PARENT}}
-status: {{STATUS}}
+status: {{STATUS}}  # planned | in-progress | done | cancelled
 created: {{CREATED}}
 ---
 

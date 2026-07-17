@@ -8,3 +8,15 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 Ask the questions one at a time.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
+
+## When the grill is done — emit the resolved decisions
+
+The grill ends when no unresolved branch remains (every open question has an answer or an explicit "defer") or the user calls it off. Either way, close with a **`## Resolved decisions`** block — one line per decision:
+
+```
+## Resolved decisions
+- <topic> → <choice> (<one-line rationale>)
+- <topic> → deferred: <unblock condition>
+```
+
+This is the artifact callers consume — [[new-project]]'s scope grill folds these lines into README/CLAUDE.md, and [[feature]] `new` turns each into a `proposed` row in `decisions.md`. Without this block the interview evaporates into chat history; with it, any caller gets a stable shape.

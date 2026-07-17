@@ -27,7 +27,7 @@ User invokes as `/specs <verb> [args]`. Read **only** the verb file matching the
 | `help` | Print the verb table | [verbs/help.md](verbs/help.md) |
 
 Bare `/specs` → run [verify](verbs/verify.md) in summary mode (the fastest "where do specs stand" answer).
-No `docs/specs/.map.yml` in the project → print `No docs/specs/.map.yml — run /specs init to bootstrap.` and exit (except for `init` itself).
+No `docs/specs/.map.yml` in the project, **or one whose `areas:` list is empty** (the [[new-project]] scaffold seeds exactly such an anchor at birth) → print `No usable spec map — run /specs init to bootstrap.` and exit (except for `init` itself, which treats an empty-areas map as a fresh discovery, not a re-discovery).
 
 ## File layout (per project)
 

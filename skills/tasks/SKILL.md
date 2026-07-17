@@ -13,6 +13,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 
 | Verb | What it does | File |
 |---|---|---|
+| `init` | Bootstrap `tasks/` — write `.config.yml` (mode passable as arg) + initial dashboard; chained by [[new-project]] | [verbs/init.md](verbs/init.md) |
 | `new` | Create EPIC, STORY, or TASK (auto-runs `plan` for TASK) | [verbs/new.md](verbs/new.md) |
 | `triage` | Regenerate `tasks/README.md` dashboard | [verbs/triage.md](verbs/triage.md) |
 | `audit` | Scan the backlog for duplicates, mergeable/splittable, stale, broken-link, and incomplete tasks (suggest-only; `--fix` to apply safe ones) | [verbs/audit.md](verbs/audit.md) |
@@ -114,7 +115,7 @@ affected sub-projects in `affects:` frontmatter); each sub-repo's own work stays
 
 Configured in `tasks/.config.yml` (see [templates/config.yml](templates/config.yml)).
 
-If `.config.yml` is missing on first verb run, ask the user. Suggest based on signals:
+`/tasks init` creates it explicitly (a caller like [[new-project]] passes the mode as an arg so nothing is re-asked). If `.config.yml` is missing when any other verb runs first, fall back to the same flow: ask the user, suggesting based on signals:
 - `.github/ISSUE_TEMPLATE/` present → `hybrid` (github)
 - CLAUDE.md / README mentions a `*.atlassian.net` or other Jira-shaped URL → `hybrid` (jira)
 - Neither → `local`
@@ -129,7 +130,7 @@ To find next ID, Grep across `tasks/` with pattern `^id: (EPIC|STORY|TASK)-(\d+)
 
 ## Lifecycle
 
-**Task status vocabulary:** `todo` · `in-progress` · `review` · `blocked` · `done` · `cancelled`.
+**Status vocabularies (normative):** TASKs use `todo` · `in-progress` · `review` · `blocked` · `done` · `cancelled`; STORYs and EPICs use `planned` · `in-progress` · `done` · `cancelled` (containers have no `todo`/`review`/`blocked` — those are leaf-task states).
 Every status has a verb that sets it — none requires hand-editing frontmatter: `new`→`todo`,
 `pick`→`in-progress`, `close`→`review`/`done`, `block`/`unblock`→`blocked`↔`todo`,
 `cancel`→`cancelled`. (`cancel` and `block` mirror the [[feature]] ledger's `removed`/`deferred`

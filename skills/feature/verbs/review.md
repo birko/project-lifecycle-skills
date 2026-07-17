@@ -19,7 +19,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
    - Capture the result (who tested, when) — note it in the feature's `decisions.md` History log.
 
 4. **Gate C — Stakeholder sign-off:**
-   - Summarize for the stakeholder (PM/stocktaker): what was approved, what shipped, what was deferred/removed and why (straight from `decisions.md`).
+   - Summarize for the stakeholder (PM / product owner): what was approved, what shipped, what was deferred/removed and why (straight from `decisions.md`).
    - Ask for explicit sign-off. Record it as a History line: `{{DATE}} — FEATURE-012 signed off by <PM> after review`.
    - If the stakeholder rejects or requests changes → add/flip decisions (`/feature decide`), which feeds back into `decompose`. The loop reopens; the feature is not done.
 

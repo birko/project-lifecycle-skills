@@ -15,7 +15,7 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    | `deferred` | good, not now | the **unblock condition** (what must be true to revisit) |
    | `removed` | rejected / out of scope / out of budget | rationale |
 
-3. **Record who decided** — `By` column: the stakeholder/role (PM, stocktaker, user). If the user is relaying a stakeholder's call, capture the stakeholder, not "ai".
+3. **Record who decided** — `By` column: the stakeholder/role (PM, product owner, end user). If the user is relaying a stakeholder's call, capture the stakeholder, not "ai".
 
 4. **Update `decisions.md`:**
    - Set each row's `State`, `Rationale`, `Date`, `By`.

@@ -13,7 +13,7 @@ code itself, their regen diff reviewed at story close as an intended-change chec
 without losing its paper trail** — and that trail serves two audiences at once:
 
 - **Developers** — what to build, how to test it.
-- **Stakeholders / PMs / stocktakers** — what was decided, why, and where it stands.
+- **Stakeholders / PMs / non-technical users** — what was decided, why, and where it stands.
 
 ---
 
@@ -75,7 +75,7 @@ without losing its paper trail** — and that trail serves two audiences at once
 ### The two-tree split (the central idea)
 
 - `docs/features/` = **stakeholder tree** — plain language, decisions, "why", prototypes.
-  A PM/stocktaker reads this.
+  A PM or other non-technical stakeholder reads this.
 - `tasks/` = **developer tree** — atomic, self-contained units of work with acceptance
   criteria and test plans. An AI agent or dev picks these up.
 
@@ -151,17 +151,17 @@ my-app/
   .gitignore .gitattributes .editorconfig
   docs/
     BRIEF.md             ← the user's ask, verbatim (append-only ground truth)
-    features/            ← empty; the feature skill writes here
+    features/            ← index (+ seeded idea stubs for a multi-feature brief)
     specs/               ← .map.yml seed; the specs skill harvests here later
     architecture.md      ← short but real overview; a living doc, not a stub
-  tasks/                 ← initialized by chaining the tasks skill
+  tasks/                 ← initialized by chaining /tasks init
     .config.yml
     README.md
   src/ tests/            ← stack-idiomatic source root + tests
   .github/workflows/ci.yml  ← install→build→test gate
 ```
 
-Crucially it **doesn't reimplement** the other skills — it *chains* `tasks` to make `tasks/`,
+Crucially it **doesn't reimplement** the other skills — it *chains* `/tasks init` to make `tasks/`,
 creates `docs/features/` for `feature`, and seeds `CLAUDE.md` so any future agent knows the
 convention. When the chosen stack has its own scaffolder skill, it further chains that skill
 for the platform-specific code wiring rather than reimplementing it.
@@ -192,7 +192,7 @@ tasks/
 Every TASK file is **self-contained** — `## Context`, `## Acceptance criteria`,
 `## Out of scope`, `## Human test plan`, `## Implementation plan` — so it can be picked
 without re-discovery. Supports **local** (files only) or **hybrid** (synced to GitHub Issues
-/ Jira). Verbs: `new`, `pick`, `close`, `cancel`, `block`/`unblock`, `triage`, `audit`,
+/ Jira). Verbs: `init`, `new`, `pick`, `close`, `cancel`, `block`/`unblock`, `triage`, `audit`,
 `plan`, `import`, `export`, `migrate`. **Every status in the vocabulary has a verb that sets
 it** — `cancel` (won't-do, never deletes — mirrors a `removed` decision) and `block`/`unblock`
 (hold out of / return to the ready pool) close the loop so no transition needs hand-editing.
@@ -359,10 +359,11 @@ Building a stocktake mobile feature. The repo at each step:
 stock-app/
   README.md  CLAUDE.md  CHANGELOG.md  .gitignore
   docs/BRIEF.md           ← the ask, verbatim
-  docs/features/          ← empty, waiting
+  docs/features/          ← index seeded, waiting
   docs/specs/.map.yml     ← empty area map, waiting
   tasks/.config.yml  tasks/README.md
   src/index.ts  tests/
+  (+ offered initial scaffold commit — /tasks pick cuts task branches from it)
 ```
 
 **Step 2 — `/feature new "offline stock count on mobile"`** (grill-me interviews you):
