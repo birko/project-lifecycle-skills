@@ -34,9 +34,10 @@ in real source.
   stack, then scaffold what `populate` needs: the test dir, the runner config, and a pinned dev-dep on
   the runner. If the project's `CLAUDE.md` § Testing names a **shared/in-house test toolkit**, follow
   that toolkit's own adoption doc to wire it (the project layer owns those specifics — keep this skill
-  stack-agnostic). Re-running is a no-op when the harness already exists. See [REFERENCE.md](REFERENCE.md)
-  § Adopt. `survey`/`populate` call `adopt` first when no harness is found; a project's scaffolder can
-  invoke it too.
+  stack-agnostic). Re-running is a no-op when the harness already exists. **Read [REFERENCE.md](REFERENCE.md)
+  § Adopt before wiring** — it carries the harness invariants (single runner instance, supported runtime,
+  module mode, ignores). `survey`/`populate` call `adopt` first when no harness is found; a project's
+  scaffolder can invoke it too.
 - **survey** — list surfaces (from the manifest/router/endpoint map) vs what's tested; report gaps as a
   table: surface → tested? → layer. No edits.
 - **populate** — per untested surface: ground in real source (page model, required filters, schema,
@@ -90,4 +91,7 @@ N parallel test runs) to avoid thrashing a dev server / racing shared auth state
 
 ## More
 
-- Per-stack toolkits, the adopt template, surface-discovery + fan-out shapes → [REFERENCE.md](REFERENCE.md)
+**Read [REFERENCE.md](REFERENCE.md) before `adopt` or `populate` work** — it holds the operational detail
+this file only summarizes: per-stack toolkit table, adopt invariants, generated-smoke derivation per app
+kind, the grounding checklist for authored flows, self-seeding prerequisites (idempotent API seeding,
+scoping headers), verify/triage buckets, the fan-out workflow shape, and the manual-ledger format.
