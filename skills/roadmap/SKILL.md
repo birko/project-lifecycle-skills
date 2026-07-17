@@ -75,6 +75,7 @@ Flag a feature (or task) when:
 | **DV6** | `idea.md status` ∉ the coarse set, or `status.md` phase ∉ the derived set | Invalid/stale marker (the `in-progress` phase we hit on FEATURE-016) |
 | **DV7** | A spec's `sources` changed since its `generated-at` commit, or a mapped area was never generated (from step 2b) | Stale behavioral map — code moved on, the spec is lying |
 | **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
+| **DV9** | A task carries `feature: FEATURE-NNN` but no decision row in that feature's `decisions.md` lists it in the `→ Tasks` column | The ledger doesn't know about its own work — the backfill (`/tasks new --from-feature` step 10b / decompose step 4) was missed; fix by writing the ID into the owning decision's row |
 
 ### 5. Output model
 Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase,

@@ -18,7 +18,7 @@ grill-me  pick form  stamp      /tasks new                            rollup    
                       removed
 ```
 
-The lifecycle is **not strictly linear** — you loop back to `decide` after a prototype demo, re-`prototype` a changed decision, or `decompose` incrementally as decisions get approved.
+The lifecycle is **not strictly linear** — you loop back to `decide` after a prototype demo, re-`prototype` a changed decision, or `decompose` incrementally as decisions get approved. One ordering **is** hard: implementation code never precedes `decompose` — code without a task is a lifecycle violation; stop and backfill (see [verbs/decompose.md](verbs/decompose.md)).
 
 ## The feature list is a living artifact — keep it complete and current
 

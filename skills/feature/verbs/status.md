@@ -48,7 +48,7 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
 
 - `status.md` is **stakeholder-facing**: plain language, no code identifiers in prose. The task list may cite `TASK-NNN` but describe each in human terms.
 - This verb never changes decisions or tasks — read-only aggregation + write of the rollup file.
-- Chain this automatically after `decide` and `decompose` so the rollup never goes stale.
+- Chain this automatically after `decide` and `decompose`, and after a `/tasks close` that changes a feature-linked task's status — those verbs each carry the chain instruction on their side, so the rollup never goes stale.
 - **Also chain it after a surface-dependent revert** (a `changed` decision that reverts a
   `done` feature to `review` — see [decide.md § Changing a closed feature](decide.md)).
   Flipping `idea.md`/tasks without re-running `status` leaves `status.md` reading `done`

@@ -64,6 +64,8 @@ Interactive scaffold of a new task tree node.
 
 10. **Write the file** with the Write tool.
 
+10b. **Backfill the feature ledger** (`--from-feature` only) — write this `TASK-NNN` into the `→ Tasks` column of the originating decision row(s) in `docs/features/FEATURE-NNN/decisions.md` (idempotent — skip IDs already listed). This runs whether the caller is `/feature decompose` or a direct invocation, so the ledger can never miss a task. When invoked directly (not via decompose), also append the History line yourself: `{{DATE}} — D<n> decomposed → TASK-NNN`; via decompose, leave the batch History line to its step 4.
+
 11. **Regenerate dashboard** — chain to [verbs/triage.md](triage.md) logic. Update `tasks/README.md`.
 
 12. **Auto-plan (task only)** — if level is `task` AND user did **not** pass `--no-plan`, chain into [verbs/plan.md](plan.md) for the freshly-created TASK ID. Skip for epic/story (they don't get plans). Skip silently if `--no-plan` was passed (use case: batch-creating tasks without grilling on each one).

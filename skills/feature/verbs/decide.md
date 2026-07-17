@@ -26,7 +26,7 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    - Summarize counts (`3 approved, 1 changed, 1 deferred, 2 removed`).
    - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`".
    - If `proposed` remain → note how many still need a verdict.
-   - Suggest `/feature status FEATURE-NNN` to refresh the stakeholder rollup.
+   - Chain `/feature status FEATURE-NNN` (single-feature mode) automatically to refresh the rollup + index row — a suggestion the user can skip leaves the stakeholder view stale.
 
 ## Deciding rules
 
