@@ -47,7 +47,7 @@ Append to `BRIEF.md` **only** for the top row — a refinement of already-reques
 
 ## Conventions
 
-This section is the project's **canonical, living rulebook** — the rules every change must follow so the codebase stays consistent. It lives here in `CLAUDE.md` (not a side doc) **because this file is auto-loaded into every task's context** — that's what makes "the next task follows the same pattern" actually true. Keep it current (see *Keeping conventions current* below); `/verify-conventions` lints diffs against exactly these rules.
+This section is the project's **canonical, living rulebook** — the rules every change must follow so the codebase stays consistent. It lives here in the agent guide (not a side doc) **because this file is auto-loaded into every task's context** (as `CLAUDE.md`, or `AGENTS.md` behind a one-line `CLAUDE.md` import bridge) — that's what makes "the next task follows the same pattern" actually true. Keep it current (see *Keeping conventions current* below); `/verify-conventions` lints diffs against exactly these rules.
 
 ### Framework / stack
 - {{STACK}} — the approved foundation. Don't introduce a new framework or major dependency without recording it here first (a new dependency is a tracked decision, not a silent import).
