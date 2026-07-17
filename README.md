@@ -257,9 +257,10 @@ Divergences (1):
 ```
 
 It is the **single source of truth for the cross-tree pass** — the join + divergence rules
-(DV1–DV9: "feature frozen while work moved on", "shipped work never closed out", "broken
-back-link", … the spec-drift checks DV7/DV8, and the ledger-backfill check DV9 — a task
-back-linking a feature whose `→ Tasks` column doesn't list it). It doesn't re-implement `tasks` or `feature`; instead those two **delegate
+(DV1–DV10: "feature frozen while work moved on", "shipped work never closed out", "broken
+back-link", … the spec-drift checks DV7/DV8, the ledger-backfill check DV9 — a task
+back-linking a feature whose `→ Tasks` column doesn't list it — and DV10, real code with no
+spec map at all: run `/specs init`). It doesn't re-implement `tasks` or `feature`; instead those two **delegate
 into it**: the bare `/tasks` snapshot renders a compact slice of this engine, and `/feature
 status` reuses its divergence rules. *One engine, many renderers.* Verbs: `/roadmap` (full
 render), `--check` (audit only — fastest "are we in sync?"), `EPIC-NNN` (scope to one epic),

@@ -55,7 +55,9 @@ Read `.map.yml` (area list) and each `docs/specs/<area>.md` frontmatter: `area`,
 `verify` verb defines it (`git diff --name-only <generated-at>..HEAD -- <sources>`;
 unknown sha or missing spec file = stale/never-generated). Don't re-derive spec semantics
 beyond that — generation and the staleness definition live in [[specs]]; this engine only
-consumes them for the drift audit. Skip this step silently when the map is absent.
+consumes them for the drift audit. When the map is absent, skip the collection — but if the
+project has real code (a `src/` tree or a build manifest with tracked source files), flag
+DV10 instead of staying silent: the spec layer is missing, not merely unconfigured.
 
 ### 3. Join feature ↔ tasks ↔ epic
 - **Primary join:** tasks carrying `feature: FEATURE-NNN` → that feature. Compute `tasksDone / tasksTotal`.
@@ -76,6 +78,7 @@ Flag a feature (or task) when:
 | **DV7** | A spec's `sources` changed since its `generated-at` commit, or a mapped area was never generated (from step 2b) | Stale behavioral map — code moved on, the spec is lying |
 | **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
 | **DV9** | A task carries `feature: FEATURE-NNN` but no decision row in that feature's `decisions.md` lists it in the `→ Tasks` column | The ledger doesn't know about its own work — the backfill (`/tasks new --from-feature` step 10b / decompose step 4) was missed; fix by writing the ID into the owning decision's row |
+| **DV10** | The project has real code (a `src/` tree or build manifest with tracked sources) but no `docs/specs/.map.yml` | The whole spec layer is silently absent — every spec check (story-close regen offer, DV7/DV8, `/feature review`'s spec-landing gate) skips when the map is missing, so nothing else will ever surface this — **advisory**: run `/specs init` to bootstrap |
 
 ### 5. Output model
 Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase,
