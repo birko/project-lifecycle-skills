@@ -24,9 +24,9 @@ Produce something a stocktaker or project manager can look at and react to, so d
 4b. **Update the `## Prototype` line in `idea.md`** — this verb *is* the prototype decision, so
    record it: rewrite the line to `**Built** — <relative link to prototype.html / prototype.md / the
    spike branch name>`. (For a regenerated v2, point at the latest and keep the prior per step's
-   edge case.) Leaving it at the template placeholder after building one is the exact "absent
-   prototype line reads as an omission" failure the [SKILL.md](../SKILL.md#the-prototype-step-is-a-recorded-decision-not-a-silent-skip)
-   warns about. If you (or the user) deliberately *skip* prototyping instead of running this verb,
+   edge case.) Whether you prototype is an explicit, recorded choice — leaving the line at its
+   template placeholder after building one makes an absent line read as an omission, not a
+   decision. If you (or the user) deliberately *skip* prototyping instead of running this verb,
    that line is set to `Skipped — <reason>` at `/feature new`/`decide` time, not here.
 
 5. **Confirm + next step:**

@@ -13,8 +13,8 @@ Print a feature's current state without modifying anything.
    - Task progress (`done/total`) with per-task status.
    - Prototype: which form + path/branch, or "none".
    - **Phase honestly** — if all tasks are `done` but the human sign-off hasn't been
-     recorded, the phase is `review` / "awaiting sign-off", **never "done"** (see
-     [SKILL.md](../SKILL.md#done-means-signed-off--there-is-no-done-pending)).
+     recorded, the phase is `review` / "awaiting sign-off", **never "done"** and never a
+     hybrid like "done (sign-off pending)". Code + tests green ≠ done.
    - Suggested next verb based on phase (e.g. proposed rows remain → `/feature decide`;
      phase `review` → run `/feature review` to close the sign-off — that's the next action).
 5. **Never write** — this is read-only. For the saved stakeholder rollup, point at `/feature status`.

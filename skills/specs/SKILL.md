@@ -11,10 +11,9 @@ Regeneration is never a silent overwrite — the spec diff is presented and judg
 *was this behavioral change intended?* An unexpected diff is a **finding**
 (unintended behavior change), not documentation churn.
 
-What this deliberately is **not**: spec-first development. Intent lives in
-`docs/features/` decisions and task acceptance criteria (the [[feature]]/[[tasks]]
-skills); this skill records *actuality* and cross-checks the two at regen time.
-There is no `changes/` proposal directory — that would be a third drift pair.
+Not spec-first development: intent lives in [[feature]] decisions / task acceptance criteria;
+this skill records *actuality* and cross-checks the two at regen time (no `changes/` proposal
+directory — that would be a third drift pair).
 
 ## Verbs (router)
 

@@ -111,38 +111,12 @@ State changes are **append-logged** in `decisions.md` (a history block under the
 
 ### Tracking decisions as they evolve (any stage, any trigger)
 
-Decisions get refined and replaced throughout a feature's life — not just at a
-stakeholder demo. A coding agent hits a constraint and abandons the approved
-approach; a benchmark forces a tradeoff; a review surfaces an edge case; a visual
-sign-off rejects the look. **What decides whether something is tracked is the
-*nature* of the change, not how or by whom it was triggered.**
-
-- **Track by impact, not by source.** A choice belongs in `decisions.md` if it
-  changes the feature's *observable behavior, scope, contract, or an
-  already-recorded decision* — whether it came from a grill, a stakeholder demo, a
-  code review, or **the agent discovering mid-implementation that the approved plan
-  won't work**. "We approved X but built Y because Z" is a decision change and gets
-  logged *even if no human was in the loop when it happened* — the agent is
-  responsible for surfacing it, not waiting to be asked.
-- **Pure implementation detail stays out of the ledger.** Internal naming, a data
-  structure, an algorithm with no observable or contract effect → that lives in the
-  code, commit messages, and `docs/architecture.md`, not the stakeholder ledger. The
-  moment a detail starts affecting behavior / scope / a public contract, it
-  graduates into a tracked decision.
-- **The decision row always describes the *current* form.** History is append-only
-  (the trail of *why* and *when*); the table cell is a *live* value — rewrite it
-  whenever the shape changes, including any helper names / files / artifacts it
-  cites. The classic failure is appending a history line while leaving the row text
-  describing a form you already replaced, so the row lies about what exists.
-- **Separate a *decision change* from *parameter tuning*.** A change in
-  behavior / shape / approach earns a History line **and** a row update. Nudging a
-  tunable (a threshold, timeout, retry count, opacity, a rename) is polish — record
-  the **final settled value** once, not every nudge. When unsure, treat it as a
-  decision.
-- **Reconcile at checkpoints, not mid-tweak.** Within a rapid loop you needn't
-  rewrite the ledger after every micro-change — but you MUST reconcile (row text +
-  one summarizing History line) **before committing and before `/feature review`**,
-  so stored state never lags the working tree at a durable boundary.
+**Track by impact, not by source** — a choice is ledger-worthy if it changes observable
+behavior, scope, contract, or a recorded decision, *even when the agent (not a human) made the
+call mid-implementation*. Rows stay live (rewritten to the current form); History is append-only;
+parameter tuning records only the settled value; reconcile before committing and before
+`/feature review`. The full rules live in [decide.md § Deciding rules](verbs/decide.md) — the
+verb that owns stamping.
 
 ## Feature status (coarse) vs. phase (derived)
 
@@ -165,107 +139,46 @@ no-"done-pending" rule below, and it mirrors the [[tasks]] skill's `review` task
 
 ### `done` means signed off — there is no "done, pending"
 
-A feature is **`done` only after the `review` gate passes, including the human
-visual/manual sign-off** (Gate B/C). Code merged + tests green is **not** done — it
-is phase `review` (awaiting sign-off). This is a hard rule with two corollaries:
-
-- **Never write a hybrid like "✅ done (sign-off pending)"** in any artifact —
-  `idea.md`, `status.md`, `docs/features/README.md`, the EPIC table, a task
-  dashboard, or a chat reply. "done" with a qualifier is the exact failure that
-  lets unverified work read as finished. If sign-off hasn't happened, the word is
-  **`review` / "awaiting sign-off"**, never "done".
-- Automated tests / a CI pass are not enough on their own. A change with any visual,
-  UX, or multiplayer surface needs Gate B (a human ran the test plan) before `done`.
+A feature is **`done` only after the `review` gate passes, including the human visual/manual
+sign-off** (Gate B/C — enforced in [review.md](verbs/review.md)). Code merged + tests green is
+phase `review`, never `done`, and never a hybrid like "✅ done (sign-off pending)" — in *any*
+artifact or chat reply. If sign-off hasn't happened, the word is **`review` / "awaiting
+sign-off"**.
 
 ### Verification debt surfaces first — before any new scope
 
-When you render the feature list (bare `/feature`, `show`, the `status` digest) or
-**answer any "what's next?" question**, features in phase `review` (shipped,
-awaiting sign-off) are **outstanding work** and lead the output — listed *above*
-`idea`/`planned` features. Finishing what's in flight (closing the sign-off on the
-last thing built) takes priority over starting new scope. Never headline "all
-shipped / N/N tasks done" while a `review`-phase feature exists — that buries the
-debt. State the pending sign-off as the next action, then mention new features.
+In every rendering (bare `/feature`, `show`, the `status` digest) and **any "what's next?"
+answer**, phase-`review` features lead the output, above `idea`/planned ones — they're
+outstanding work. Never headline "all shipped" while one exists; state the pending sign-off as
+the next action first.
 
 ### Changing a closed (`done`) feature — surface-dependent revert
 
-A change can land on a feature that is **already signed off** (a later tweak, a
-follow-up request, an agent revisiting shipped code). It is *not* a silent edit — it
-is a tracked decision change plus a status question.
-
-**First, if the change has a human-verifiable surface (visual / UX / feel),
-preview before you edit.** Show a mockup or 2–3 concrete options and get the user's
-pick *before* touching the live files — the same "lean toward a prototype for
-look/UX work" rule below applies to *changing* a shipped surface, not just to new
-features. Editing a signed-off visual surface straight off skips the stakeholder's
-choice and pre-commits them to whatever you picked; a request that reads like "a
-small CSS fix" is still a change to a stakeholder-facing surface. Then handle both
-halves:
-
-1. **Re-home to the owner.** Record the change in the feature that *owns* the
-   affected behavior, not the one you happened to be working in when you hit it. (A
-   tick-rate tweak noticed while theming the planet belongs to the cadence/rendering
-   decision; the theming feature stays untouched.) Rewrite the decision row to its
-   current form + append a History line — same as *Tracking decisions as they
-   evolve* above.
-2. **Trace the ripple.** A changed decision routinely touches more than its own
-   feature — downstream constants, code comments, *another feature's* decision text.
-   Fix every stale reference so no artifact lies about the new value.
-3. **Surface-dependent revert (the status rule).** If the change has a
-   **human-verifiable surface** (visual / UX / multiplayer / feel), the owning
-   feature reverts **`done → review`** and the task(s) implementing the changed
-   surface reopen **`done → review`** (re-run their `## Human test plan` before
-   re-closing) — it now carries fresh verification debt and surfaces first, like any
-   `review`-phase work. If the change is **fully covered by automated tests** (Gate
-   A, nothing for a human to check), the feature and its tasks stay `done`. Never
-   leave an unverified visual/behavioral change reading as `done`.
-4. **Regenerate the rollups — the revert isn't done until the derived views agree.**
-   After flipping `idea.md` `status` and the task statuses, **re-run `/feature status`
-   for the feature** so `status.md`'s phase recomputes to `review`, and update the
-   `docs/features/README.md` index row. `status.md` is *derived*, not hand-edited:
-   skipping this is the classic failure where `idea.md`/tasks/index all say `review`
-   but the stale `status.md` still reads `done` — the rollup the stakeholder actually
-   opens ends up lying. The revert touches **four** surfaces — `idea.md`, the task
-   file(s), `status.md`, and the index — reconcile all four in the same pass.
-
-This is the *down-the-tree* counterpart to the [[tasks]] skill's roll-up rule:
-reopening a feature reopens its implementing tasks; closing the last reopened task
-re-closes the feature at the next `/feature review`.
+A change landing on a signed-off feature is a tracked decision change plus a status question,
+never a silent edit: preview human-verifiable surfaces before touching them, re-home the change
+to the owning feature, trace the ripple, and — if the change has a human-verifiable surface —
+revert feature *and* implementing task(s) `done → review`, then re-run `/feature status` so all
+four surfaces (`idea.md`, tasks, `status.md`, index) agree. Full procedure in
+[decide.md § Changing a closed feature](verbs/decide.md). This is the down-the-tree counterpart
+to the [[tasks]] roll-up rule: reopening a feature reopens its tasks; closing the last reopened
+task re-closes the feature at the next `/feature review`.
 
 ### Field feedback re-enters the lifecycle — it's a loop, not a line
 
-Work doesn't only flow idea → done; signal flows back. A production signal — a user
-report, an incident, a monitoring alert — gets the same right to re-enter as a
-test-found bug does (the [[tasks]] / [[populate-tests]] feedback loop). Route it by
-*nature*, the same router as `new`:
-
-- **Missing capability** the field exposed (it has open questions again) → a new
-  `/feature new`, or a new `proposed` decision on the owning feature.
-- **A `removed`/`deferred` decision overturned by evidence** → **reopen it** via
-  `/feature decide` — a new `proposed` row linking the superseded one (see decide.md's
-  reopen edge case). The original "why" and the reversal both stay auditable.
-- **A regression in shipped behavior** → a [[tasks]] bug, which under the
-  surface-dependent-revert rule above may also flip the owning feature `done → review`.
-
-Nothing in the ledger is terminal; `removed` is a state, not a tombstone.
+A production signal (user report, incident, monitoring alert) has the same right to re-enter as
+a test-found bug: missing capability → `/feature new` or a new `proposed` decision; an
+overturned `removed`/`deferred` decision → reopen via `/feature decide`; a regression →
+a [[tasks]] bug (possibly triggering the revert above). Routing details live in
+[new.md](verbs/new.md) + [decide.md](verbs/decide.md)'s edge cases. Nothing in the ledger is
+terminal; `removed` is a state, not a tombstone.
 
 ## The prototype step is a recorded decision, not a silent skip
 
-`prototype` is opt-in (a separate verb), but **whether you prototype must be an
-explicit, recorded choice** — never just absent. Every feature's `idea.md` carries
-a `## Prototype` line, exactly like the per-task `## Human test plan` carries an
-explicit "N/A — covered by tests":
-
-- **Built** → `Built — <prototype.html | .md | spike link>`.
-- **Skipped** → `Skipped — <reason>` (e.g. "headless engine; the test suite is the
-  proof", or "built as a runnable increment; the live app was the prototype,
-  validated at sign-off").
-- **N/A / Pending** → for superseded features, or stubs not yet reached.
-
-If the line is missing, that's the bug — an absent prototype reads as an omission,
-not a decision. **Lean toward actually building one for pure look/UX features**
-(a static style mockup is cheap and prevents building the wrong feel); lean toward
-skipping for headless logic and for small increments you can validate by running.
+Whether you prototype is an **explicit, recorded choice** — every `idea.md` carries a
+`## Prototype` line (`Built — <link>` / `Skipped — <reason>` / `N/A / Pending`); a missing line
+is the bug. Lean toward building one for pure look/UX features, toward skipping for headless
+logic. The line's states and seeding live in [new.md](verbs/new.md); `prototype` records the
+`Built` value.
 
 ## Collection pass
 

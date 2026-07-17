@@ -36,8 +36,8 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 7. **Flip status to in-progress**:
    - Use Edit to change `status: todo` (or whatever current) → `status: in-progress`.
-   - **Cut the task branch (git/PR projects).** The default integration model is PR-per-task
-     (see [SKILL.md → Lifecycle → Integration model](../SKILL.md#lifecycle)). If the project is
+   - **Cut the task branch (git/PR projects).** The default integration model is PR-per-task —
+     `pick` cuts the branch, `close` is the merge gate. If the project is
      a git repo on its default branch, offer to cut `task/TASK-NNN` so the work is isolated and
      `/tasks close` can open one PR for it. Skip silently for non-git/local-only projects, or if
      the user is already on a suitable branch.

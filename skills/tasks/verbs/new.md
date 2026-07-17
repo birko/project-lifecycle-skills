@@ -11,7 +11,7 @@ Interactive scaffold of a new task tree node.
      - Skip re-asking for Context — pull it from the feature's `docs/features/FEATURE-NNN/decisions.md` row(s) and `idea.md` that triggered this task.
      - The caller usually also passes `--no-plan` for batch decomposition; respect it.
 
-1. **Find task root** using shape detection (see [SKILL.md](../SKILL.md#shape-detection--where-tasks-lives)).
+1. **Find task root** — walk up from cwd: a directory containing `tasks/.config.yml` wins; else the project root (`*.slnx`/`*.sln`, then `.git`) → `<root>/tasks/`. A project's CLAUDE.md may override placement (aggregator repos hosting cross-cutting epics for a polyrepo family).
    - If `tasks/.config.yml` is **missing** → run the [mode detection flow](#mode-detection-flow) first. Write `.config.yml` before creating any task files.
 
 2. **Determine level** (skip prompt if user passed it as arg: `/tasks new epic|story|task`):

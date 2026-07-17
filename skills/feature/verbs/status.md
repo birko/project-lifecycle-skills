@@ -4,7 +4,7 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
 
 ## Steps
 
-1. **Run the [Collection pass](../SKILL.md#collection-pass)** for the target feature (or all features if no ID given).
+1. **Collect** — run the [[roadmap]] skill's Cross-tree pass for the target feature (or all features if no ID given) and consume its output model; don't re-enumerate. Bucket each feature's tasks by status (todo/in-progress/review/blocked/done/cancelled) from the model — `review` matters for the phase derivation and debt ordering below.
 
 2. **Compute the phase** — derive from the data:
    - `idea` — only `idea.md` exists, no decisions stamped, no prototype.
@@ -15,7 +15,7 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
    - `done` — reviewed + signed off (`idea.md` status `done`).
    - `dropped` — `idea.md` status `dropped` (every decision was `removed`); show the rollup but mark it killed.
    - `superseded` — `idea.md` status `superseded` (scope re-homed into another feature); show the rollup with the `superseded-by:` pointer.
-   - (`dropped`/`superseded` are terminal **mirrors of the coarse marker**, not derived phases — see [SKILL.md](../SKILL.md#feature-status-coarse-vs-phase-derived).)
+   - (`dropped`/`superseded` are terminal **mirrors of the coarse marker**, not derived phases — the full rendered set is the six derived values plus these two mirrors. Stored marker = `status` in `idea.md`; computed display = phase. Never hand-maintain phase.)
 
 3. **Cross-reference tasks** — Grep `tasks/` for `feature: FEATURE-NNN`; bucket by status; compute `done/total`. List them with their IDs and titles. Mark which have a ready (filled, non-`N/A`) `## Human test plan` for the "what can be tested now" section.
 
@@ -31,8 +31,8 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
    `FEATURE-012 Stocktake redesign — building (4/7 tasks, 3 approved / 1 deferred)`.
    **Order the digest with phase-`review` (awaiting sign-off) features first** — they
    are outstanding verification debt and are the next action, ahead of `idea`/planned
-   ones (see [SKILL.md](../SKILL.md#verification-debt-surfaces-first--before-any-new-scope)).
-   A feature whose tasks are all `done` but unsigned prints as `review (awaiting
+   ones. Never headline "all shipped" while a `review`-phase feature exists — that buries
+   the debt. A feature whose tasks are all `done` but unsigned prints as `review (awaiting
    sign-off)`, never `done`.
 
 7. **Regenerate the features index** (all-features mode only) — this verb **owns**
@@ -50,6 +50,6 @@ Rebuild `status.md` for a feature (or all features) so a PM/stocktaker can see w
 - This verb never changes decisions or tasks — read-only aggregation + write of the rollup file.
 - Chain this automatically after `decide` and `decompose` so the rollup never goes stale.
 - **Also chain it after a surface-dependent revert** (a `changed` decision that reverts a
-  `done` feature to `review` — see [SKILL.md](../SKILL.md#changing-a-closed-done-feature--surface-dependent-revert)).
+  `done` feature to `review` — see [decide.md § Changing a closed feature](decide.md)).
   Flipping `idea.md`/tasks without re-running `status` leaves `status.md` reading `done`
   while everything else says `review` — the stakeholder's rollup then lies.
