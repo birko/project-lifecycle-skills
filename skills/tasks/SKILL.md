@@ -83,7 +83,7 @@ Performance: at hundreds of files, batch the Reads. Don't grep frontmatter line-
 
 ```
 tasks/
-  README.md                              ← auto-generated dashboard
+  README.md                              ← auto-generated dashboard (owned by triage — never hand-edit; re-run it)
   .config.yml                            ← mode + provider settings
   EPIC-NNN-slug/
     EPIC.md

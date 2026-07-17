@@ -80,7 +80,7 @@ docs/features/
     idea.md            ← the problem statement + grill-me transcript distilled (stakeholder readable)
     decisions.md       ← the decision tree with states: approved/deferred/changed/removed (+ history log)
     prototype.html     ← OR prototype.md OR a link to a code-spike branch (form decided per-feature)
-    status.md          ← auto-generated rollup for PMs/stocktakers: where this feature stands
+    status.md          ← auto-generated rollup for PMs/stocktakers (owned by /feature status — never hand-edit; re-run the verb)
 ```
 
 The **human-test plan does NOT live here** — it lives inside each TASK file (`## Human test plan`), because a test plan must travel with the unit of work and be checkable at `/tasks close`. The feature folder links to tasks; tasks link back via `feature: FEATURE-NNN` frontmatter.
