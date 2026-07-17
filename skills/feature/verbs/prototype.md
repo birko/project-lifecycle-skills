@@ -15,7 +15,7 @@ Produce something a stocktaker or project manager can look at and react to, so d
    | **Code spike** | a throwaway/feature-flagged branch in the real app | the risk is technical feasibility, not look-and-feel; stakeholder runs the real app |
 
 3. **Build it:**
-   - **HTML mockup** — write `prototype.html` in the feature folder. Self-contained (inline CSS/JS, no build step). If the project is a Birko/Web app, use `b-*` web components (see [[new-birko-web-component]] catalogue) so the mockup matches the real design language; otherwise plain semantic HTML. Make the key interactions clickable; stub data is fine. Add a banner noting "PROTOTYPE — not wired to real data."
+   - **HTML mockup** — write `prototype.html` in the feature folder. Self-contained (inline CSS/JS, no build step). If the project ships a component library / design system (check `CLAUDE.md § Conventions → UI/UX`; a team may also install a component-catalogue skill), use its components so the mockup matches the real design language; otherwise plain semantic HTML. Make the key interactions clickable; stub data is fine. Add a banner noting "PROTOTYPE — not wired to real data."
    - **Markdown wireframe** — write `prototype.md`: one wireframe block per screen/state, plus a numbered user-flow walkthrough and the edge cases the stakeholder should weigh in on.
    - **Code spike** — create a branch (`spike/feature-NNN-slug`), keep it behind a flag, do the minimum to demonstrate. Record the branch name in the feature folder (a short `prototype.md` pointing at it) — don't merge it.
 

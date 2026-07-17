@@ -1,13 +1,13 @@
 ---
 name: new-project
-description: Scaffold a brand-new project of ANY tech stack with a consistent universal layer — README.md, CLAUDE.md (seeded with the team's feature lifecycle convention), .gitignore, docs/ (incl. docs/features/), and a tracked tasks/ folder. Use when the user says "new project", "novy projekt", "novy projekt s birko", "start a project", "scaffold a project", "scaffold birko app", "bootstrap a repo", "create a new app/library/service", or wants a fresh repo set up with docs + task tracking. Tech-agnostic by default (Python, TS, Go, .NET, anything); when the project is .NET/Birko it auto-chains the [[birko-new-project]] skill for the code wiring. **This is the front door even for Birko/.NET projects** — it builds the universal layer (README, CLAUDE.md, docs/, tasks/) and then chains [[birko-new-project]]; don't invoke birko-new-project directly for a brand-new project (that skips the universal layer). Sets up the [[tasks]] folder and the [[feature]] skill's docs/features/ so the project is ready for the prototype→decide→decompose→test→review lifecycle from day one.
+description: Scaffold a brand-new project of ANY tech stack with a consistent universal layer — README.md, CLAUDE.md (seeded with the team's feature lifecycle convention), .gitignore, docs/ (incl. docs/features/), and a tracked tasks/ folder. Use when the user says "new project", "novy projekt", "start a project", "scaffold a project", "bootstrap a repo", "create a new app/library/service", or wants a fresh repo set up with docs + task tracking. Tech-agnostic (Python, TS, Go, .NET, anything). **This is the universal front door for new projects** — it builds the universal layer and then, when a stack-specific scaffolding skill is installed for the chosen stack (a team framework's wiring skill), chains it for the code wiring; such stack skills may equally invoke this one as their universal front half. Sets up the [[tasks]] folder and the [[feature]] skill's docs/features/ so the project is ready for the prototype→decide→decompose→test→review lifecycle from day one.
 ---
 
 # new-project
 
 The front door for a new project. Produces a **consistent universal layer** regardless of language, then optionally chains language-specific wiring. The goal: every new repo starts already wired for tracked, testable, reviewable, stakeholder-visible work.
 
-This is a **superset** of [[birko-new-project]]: for a .NET/Birko project it gathers the basics, scaffolds the universal layer, and then *calls* `birko-new-project` to do the aggregator/`.slnx`/projitems wiring. For non-.NET projects it skips that step. One command either way.
+**Extension hook:** a team may install a **stack-specific scaffolding skill** (a framework's wiring skill — build props, solution/workspace registration, source layout). When one is installed that matches the chosen stack, this skill gathers the basics, scaffolds the universal layer, and then *calls* the stack skill for the code wiring (step 5). The relationship also works inverted: a stack scaffolding skill can be the user's entry point and invoke this one first for its universal layer. Either way the layering holds — the stack skill knows this one; this one only knows the *hook*, never a specific framework.
 
 ## What it creates
 
@@ -33,7 +33,7 @@ This is a **superset** of [[birko-new-project]]: for a .NET/Birko project it gat
   .git/ (+ origin remote)   ← git init; remote offered for hybrid task mode
   src/ (+ tests/)           ← stack-idiomatic source root + tests, if a stack was chosen
   <manifest + skeleton>     ← package.json / pyproject.toml / go.mod / Cargo.toml …
-  <.NET project folders>    ← instead of src/, via birko-new-project (named projects, not src/)
+  <named project folders>   ← instead of src/, when a stack scaffolder owns the layout (e.g. .NET named projects)
 ```
 
 ## Flow
@@ -44,11 +44,11 @@ Gather in one or two question batches:
 
 1. **Project name** + **location** (absolute path). If the dir exists and is non-empty, confirm before writing; merge, don't clobber.
 2. **Kind** — library / service-or-API / web app / CLI / worker / other.
-3. **Tech stack** — .NET, TypeScript/Node, Python, Go, Rust, other, or "none yet / docs-only". This drives `.gitignore` and whether to chain `birko-new-project`.
-4. **Is this a Birko/.NET consumer?** — only ask if stack is .NET. If yes → `birko-new-project` runs in step 5.
+3. **Tech stack** — .NET, TypeScript/Node, Python, Go, Rust, other, or "none yet / docs-only". This drives `.gitignore` and which skeleton step 5 creates.
+4. **Stack scaffolder check** — if a stack-specific scaffolding skill is installed that matches the chosen stack (check the available-skills list for a framework wiring skill), ask whether to chain it. If yes → it runs in step 5.
 5. **Task tracking mode** — local (files only) / hybrid (GitHub) / hybrid (Jira). Passed to the [[tasks]] init.
 6. **License** — MIT / Apache-2.0 / proprietary / none.
-7. **Agent config file** — **CLAUDE.md only** (default; Claude Code's native auto-loaded file — right for Claude-Code-only repos like the Birko ecosystem) / **AGENTS.md canonical + CLAUDE.md bridge** (when other agent tools — Codex, Cursor, etc. — also touch the repo; one source of truth, both tools satisfied). Only surface this if it's plausibly multi-tool; otherwise default silently to CLAUDE.md.
+7. **Agent config file** — **CLAUDE.md only** (default; Claude Code's native auto-loaded file — right for Claude-Code-only repos) / **AGENTS.md canonical + CLAUDE.md bridge** (when other agent tools — Codex, Cursor, etc. — also touch the repo; one source of truth, both tools satisfied). Only surface this if it's plausibly multi-tool; otherwise default silently to CLAUDE.md.
 
 ### 2. Offer a scope grill (optional — only for substantial projects)
 
@@ -67,7 +67,7 @@ Gather in one or two question batches:
   - The seed template is filename-agnostic — same content renders to whichever file is canonical.
   - **Seed the `## Conventions` rulebook with real content — not bare placeholders.** The seed's `## Conventions` block is the project's canonical, living rulebook (it lives in the auto-loaded agent guide so every future task sees it). A rulebook that ships as empty `{{…}}` tokens teaches the next task nothing, so actively fill each subsection:
     - **Framework/stack** — from the chosen stack: name the foundation + the approved libraries, and note "no new framework/major dep without a recorded decision."
-    - **Code structure & patterns** and **Naming** — **seed the stack's idiomatic defaults** rather than leaving them blank (e.g. TS: feature-folder or layered `src/`, named exports, `camelCase`/`PascalCase`; Python: src-layout, `snake_case`, type hints; .NET: the Birko conventions; Go: package layout, `MixedCaps`). These are safe starting rules the team edits later — a sensible default beats an empty heading.
+    - **Code structure & patterns** and **Naming** — **seed the stack's idiomatic defaults** rather than leaving them blank (e.g. TS: feature-folder or layered `src/`, named exports, `camelCase`/`PascalCase`; Python: src-layout, `snake_case`, type hints; .NET: idiomatic conventions, or the ones a chained stack scaffolder documents; Go: package layout, `MixedCaps`). These are safe starting rules the team edits later — a sensible default beats an empty heading.
     - **UI/UX** — for a UI kind, this is the subsection most worth getting right, so **ask one targeted question** (alongside intake, not a full grill): the component library / design system, the token source (color/spacing/type scale), and the accessibility bar. Record the answers. **Delete the whole subsection for headless / library / CLI / worker kinds** (no UI surface to govern).
     - **Testing** — `{{TEST_CONVENTION}}` from the stack.
     - Fold in any scope-grill output. Leave the register-on-introduce + working-rules sub-blocks as-is.
@@ -77,7 +77,7 @@ Gather in one or two question batches:
 - **`.editorconfig`** — basic shared style (UTF-8, final newline, stack-idiomatic indent) so editors agree regardless of contributor.
 - **`.env.example`** — for service / API / web kinds, a documented (valueless) template of required env vars; the real `.env` stays gitignored. Skip for pure libraries.
 - **`LICENSE`** — if chosen, write the **full license text** (MIT/Apache-2.0) with the current year and the **copyright holder** filled in — not just a name reference. Intake doesn't ask for the holder; derive it from `git config user.name` (and an org if the remote/owner is known), and only ask if that's empty. Skip for proprietary/none (note it in README instead).
-- **`CHANGELOG.md`** — a [Keep a Changelog](https://keepachangelog.com) stub with an `## [Unreleased]` section. This is the *code* changelog (mirrors the Birko repo + the [[roll-changelog]] skill); it's distinct from the *decision* ledger in `docs/features/` — the lifecycle tracks both.
+- **`CHANGELOG.md`** — a [Keep a Changelog](https://keepachangelog.com) stub with an `## [Unreleased]` section. This is the *code* changelog (maintained by the [[roll-changelog]] skill); it's distinct from the *decision* ledger in `docs/features/` — the lifecycle tracks both.
 - **`docs/features/`** — create the directory and a **`docs/features/README.md` features index** (the human entry point: a table of every feature with status, linking each folder), rendered from the [[feature]] skill's `templates/README.md.tmpl` (empty table at birth). Don't rely on a `.gitkeep` alone — the index doubles as the tracked-dir anchor and the at-a-glance list. From then on `/feature status` (all-features mode) owns regenerating it; don't hand-roll its shape here — use the feature skill's template so the two stay in sync.
 - **`docs/specs/`** — create the directory + a starter `.map.yml` from the [[specs]] skill's `templates/map.yml` (empty `areas:` list, stack-appropriate `ignore:` globs). Specs are *harvested from code*, so at birth this is just the anchor — once real code exists, `/specs init` proposes the area map and `/specs regen` generates the capability specs. The seed agent-guide template already carries this leg (header bullet + lifecycle step "Spec check at story close") — don't add a duplicate line.
 - **`docs/architecture.md`** — write a real (if short) architecture overview, not just a stub, and mark it a **living document**: it must be updated whenever a feature changes the structure, not left at its scaffold state. (A stale `architecture.md` that still describes day-1 assumptions is a common, silent rot — the [[feature]] skill is responsible for refreshing it as features land.)
@@ -94,9 +94,9 @@ Gather in one or two question batches:
 
 ### 5. Language-specific wiring + source root (conditional)
 
-Create a **source root** so there's an obvious place for code — but make it **stack-idiomatic**, not a blanket `src/`. Skip it for docs-only and for .NET (where project folders are the convention and `birko-new-project`/`dotnet new` own them).
+Create a **source root** so there's an obvious place for code — but make it **stack-idiomatic**, not a blanket `src/`. Skip it for docs-only and for .NET (where named project folders are the convention and `dotnet new` / a stack scaffolder owns them).
 
-- **If .NET/Birko consumer** → invoke [[birko-new-project]] now, passing the same name + location + chosen Birko components. It owns `Directory.Build.props`, the aggregator csproj(s), the `.slnx`, projitems imports, **and the project/source folders**. Do **not** create a generic `src/` here — .NET code lives in named project directories.
+- **If a stack scaffolding skill was confirmed at intake** → invoke it now, passing the same name + location + its stack-specific choices. The scaffolder owns its build wiring (props/solution/workspace registration) **and the project/source folders**. Do **not** also create a generic `src/` — the scaffolder's layout wins.
 - **Other stacks** → create the minimal idiomatic skeleton AND its source/tests roots:
   | Stack | Source root | Tests | Manifest |
   |---|---|---|---|
@@ -104,7 +104,6 @@ Create a **source root** so there's an obvious place for code — but make it **
   | Python | `src/<package>/__init__.py` (src-layout) | `tests/` | `pyproject.toml` |
   | Rust | `src/` (`src/main.rs` or `lib.rs`) | `tests/` | `Cargo.toml` |
   | Go | flat, or `cmd/<app>/main.go` + `internal/` | `*_test.go` beside source | `go.mod` |
-  | Web UI (Birko.Web) | `src/` (TS, esbuild) | — | `package.json`, `build.js` (see [[birko-new-project]]) |
   | other | ask the user for the conventional layout; default `src/` + `tests/` | | |
   - Keep skeleton files minimal (an entry point + empty test) — enough to establish the layout, not a full app.
   - Confirm the layout with the user if the stack's convention is ambiguous (e.g. Python src-layout vs flat).
@@ -114,13 +113,13 @@ Create a **source root** so there's an obvious place for code — but make it **
 mode so the project has a real runner from day one — not just the `{{TEST_CONVENTION}}` line in
 CLAUDE.md and an empty test file. `adopt` is stack-agnostic (it sets up the runner config + a pinned
 dev-dep) and, when `CLAUDE.md` § Testing names a shared/in-house toolkit, follows that toolkit's own
-adoption doc. (For a .NET/Birko **Web UI** consumer, `birko-new-project` in step 5 already scaffolds the
-E2E harness; `adopt` is a no-op there.) This makes the CI gate and the lifecycle's **PROVE** leg
+adoption doc. (When a chained stack scaffolder already wired a test harness in step 5, `adopt` is a
+no-op.) This makes the CI gate and the lifecycle's **PROVE** leg
 (`/populate-tests populate`) have something to run. Skip for docs-only.
 
 **CI stub** (when a stack with a known CI shape is chosen): write a minimal `.github/workflows/ci.yml` (or the host's CI equivalent) that runs **install → build → test** on push/PR — the lifecycle is test-centric and review-gated, so a green-build gate is the natural enforcement point. Match the stack: `dotnet restore/build/test`, `npm ci && npm run build && npm test`, `uv sync && pytest`, `cargo build && cargo test`, `go build ./... && go test ./...`. Keep it to one job; the user expands it later. Skip for docs-only, and ask before assuming a non-GitHub CI host.
 
-**Dockerfile** (service / API / web-UI kinds only — skip libraries/CLIs): a minimal multi-stage `Dockerfile` + `.dockerignore` for the chosen stack. For Birko/.NET web hosts, follow the `BIRKO_SRC` / `ENV` pattern documented in the Birko `README.md` Docker section (so backend MSBuild and frontend esbuild share one override). Offer it; don't force it.
+**Dockerfile** (service / API / web-UI kinds only — skip libraries/CLIs): a minimal multi-stage `Dockerfile` + `.dockerignore` for the chosen stack. When a chained stack scaffolder documents its own Docker pattern, follow that instead of the generic template. Offer it; don't force it.
 
 ### 6. Git + remote + finish
 
@@ -139,7 +138,7 @@ E2E harness; `adopt` is a no-op there.) This makes the CI gate and the lifecycle
 
 ## What it deliberately does NOT do
 
-- It does **not** reimplement .NET wiring — that's [[birko-new-project]]'s job; this skill calls it.
+- It does **not** reimplement stack/framework wiring — an installed stack scaffolding skill owns that; this skill only chains it via the extension hook.
 - It does **not** reimplement task file shapes — that's [[tasks]]'s job.
 - It does **not** start building features — it leaves the repo *ready* for [[feature]] `new`.
 - It does **not** force a grill for trivial repos.
@@ -153,13 +152,13 @@ E2E harness; `adopt` is a no-op there.) This makes the CI gate and the lifecycle
 
 ## Related skills
 
-- [[birko-new-project]] — the .NET/Birko code-wiring step this skill chains. Can still be run standalone for an existing repo that only needs Birko wiring added.
+- Stack-specific scaffolding skills (installed per team — a framework's wiring skill) — chained in step 5 for the code wiring; they may equally invoke this skill as their universal front half. Not part of this generic set.
 - [[tasks]] — initializes `tasks/`; the project's tracking backbone.
 - [[feature]] — the per-feature lifecycle this scaffold prepares the repo for (`docs/features/` + CLAUDE.md convention).
 - [[populate-tests]] — chained in `adopt` mode to wire a runnable test harness for the stack (the lifecycle's PROVE leg); later authors/maintains the tests + the `[auto]/[manual]` ledger.
 - [[roadmap]] — the live cross-tree view of `tasks/` + `docs/features/` with a drift audit. **Distinct from any static `docs/ROADMAP.md` requirement matrix you seed here:** that matrix is a one-time written table; `/roadmap` is the computed, always-current view that flags when the two trees diverge. A scaffolded project gets that drift-checking for free the moment both trees exist.
 - [[specs]] — the harvested-spec skill whose `docs/specs/.map.yml` anchor this scaffold seeds; `/specs init` fills the map once the project has real code.
 - [[grill-me]] — optional project-scope interrogation in step 2.
-- [[roll-changelog]] — the generic skill that maintains the `CHANGELOG.md` this skill seeds (a Birko.Framework-local variant shadows it inside that repo).
+- [[roll-changelog]] — the generic skill that maintains the `CHANGELOG.md` this skill seeds (a project-local variant may shadow it).
 - [[verify-conventions]] — the generic adherence lint that reads the `## Conventions` rulebook seeded here and checks diffs against it; wired into `/tasks close` and `/feature review`.
 - [[init]] — Claude Code's built-in CLAUDE.md generator for an *existing* codebase; this skill is for *new* projects and seeds a lifecycle-aware CLAUDE.md instead.

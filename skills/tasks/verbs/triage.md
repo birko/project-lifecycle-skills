@@ -47,7 +47,7 @@ This verb is also chained automatically by `new`, `pick`, `close`, `import`, `ex
 6. **Build the Completed section** (collapsed via `<details><summary>...</summary>...</details>`). Include done/cancelled epics with their frozen task list. Stories that are done within an active epic stay in the tree but with `(done)` suffix.
 
 7. **Render** [templates/README.md.tmpl](../templates/README.md.tmpl):
-   - `{{PROJECT_NAME}}` — name of the directory containing `tasks/` (Birko.AI, Symbio, etc.)
+   - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`
    - `{{TIMESTAMP}}` — current date/time, e.g. `2026-05-28 14:32`
    - counts placeholders — including `{{TK_REVIEW}}` (the `review` row is verification debt; never drop it from the table)
    - `{{INPROGRESS_LIST}}` (or "_None_" if empty)

@@ -91,10 +91,11 @@ only what the code contradicts. The diff must mean "behavior changed", not
 ## Shape detection — where `docs/specs/` lives
 
 Identical to the [[tasks]] skill's project-root walk (`.config.yml` marker → solution
-file → `.git`). Polyrepo note (Shape A, e.g. Birko.Framework): each subproject carries
-its **own** `docs/specs/` next to its CLAUDE.md; cross-cutting specs (contracts spanning
-projects) live at the meta-root. A cross-cutting story regens per affected project
-(driven by its epic's `affects:` list), never one merged tree.
+file → `.git`). Polyrepo note: when a repo family has an aggregator (see the [[tasks]]
+skill's shape-detection override), each sub-repo carries its **own** `docs/specs/` next
+to its CLAUDE.md; cross-cutting specs (contracts spanning projects) live at the
+aggregator. A cross-cutting story regens per affected project (driven by its epic's
+`affects:` list), never one merged tree.
 
 ## Provenance & cross-links
 
@@ -124,6 +125,6 @@ staleness primitive it calls.
 - [[tasks]] — `close` on a STORY offers a scoped `/specs regen <areas> --story STORY-NNN`; the bare-`/tasks` snapshot shows the `specs: N stale` slice via [[roadmap]].
 - [[feature]] — record of intent; `review` Gate A checks each approved decision landed in a spec (`shaped-by:`). A decision with no spec landing = incomplete feature.
 - [[roadmap]] — owns spec-drift divergence rules (DV7/DV8) in its Cross-tree pass; calls this skill's `verify` staleness logic. One engine, many renderers.
-- [[new-project]] / [[new-birko-subproject]] — seed `docs/specs/.map.yml` at project birth.
+- [[new-project]] — seeds `docs/specs/.map.yml` at project birth (stack scaffolding skills that chain through it inherit the seed).
 - [[grill-me]] — optional interrogation of the proposed area map during `init`.
 - [[populate-tests]] — future consumer: spec scenarios as the coverage ledger's source ("scenario with no covering test" as a mechanical gap). Not wired yet — don't couple.

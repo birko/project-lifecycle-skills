@@ -62,5 +62,5 @@ If migration fails partway, frontmatter already holds the remote IDs that succee
 
 - **Repo/project doesn't exist** — abort with hint to create it first or use `--repo`/`--project` override.
 - **Mixed providers desired** (some tasks to GH, some to Jira) — not supported. Run two passes: migrate to one provider, then `/tasks export <ID> --to <other>` individually.
-- **Migration of a Birko.Framework sub-project** — only migrates that sub-project's `tasks/`, not the meta-root. Run separately at meta-root for cross-cutting epics if needed.
+- **Migration of one repo in a polyrepo family** — only migrates that repo's `tasks/`, not the aggregator's. Run separately at the aggregator for cross-cutting epics if needed.
 - **Cancel mid-flight** — interrupting after partial push is safe; the next run resumes from where it stopped.

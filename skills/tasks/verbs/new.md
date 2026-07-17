@@ -56,7 +56,7 @@ Interactive scaffold of a new task tree node.
    - `{{ASSIGNEE}}` — human/ai/agent-name (task only)
    - `{{FEATURE}}` — `FEATURE-NNN` from `--from-feature`, else `null` (task only)
    - `{{OWNER}}` — human/ai/both (epic only; default `human`)
-   - `{{AFFECTS}}` — `[]` unless cross-cutting at Birko.Framework root; then ask user which sub-projects and write `[Birko.AI, Birko.Data, ...]`
+   - `{{AFFECTS}}` — `[]` unless the EPIC is cross-cutting in an aggregator repo of a polyrepo family (see SKILL.md § Shape detection); then ask the user which sub-projects it affects and write the list
    - `{{TITLE}}` — the title from step 3
 
 9. **For task: offer to draft body sections** (Context / Acceptance / Out-of-scope / **Human test plan**) using any context already in the conversation. User reviews/edits before writing. If you can't draft confidently, leave the templates' placeholder copy and tell the user to fill it in.
@@ -92,6 +92,6 @@ Runs once per project, when `.config.yml` is missing.
 
 - **Slug collision** — if the slugged folder/file already exists, append `-2`, `-3`, etc. (not `-002` — keep it short).
 - **No epics yet, user wants story/task** — prompt "no epics — create one first?" and chain into `/tasks new epic` if confirmed.
-- **Birko.Framework cross-cutting** — when cwd is at the meta-root (not inside a `Birko.X/`), the new EPIC will be cross-cutting. Ask which sub-projects it affects; write the list to `affects:`.
+- **Cross-cutting EPIC in an aggregator repo** — when the project's CLAUDE.md designates this repo as the polyrepo family's aggregator (see SKILL.md § Shape detection), a new EPIC here is cross-cutting. Ask which sub-projects it affects; write the list to `affects:`.
 - **Existing `tasks/` but no `.config.yml`** — skill was previously used in a different version. Run mode detection to backfill.
 - **`_loose/` doesn't exist yet** — create it when first loose task is added; never create it eagerly.

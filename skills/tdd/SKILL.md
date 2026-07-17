@@ -5,7 +5,7 @@ description: Test-driven development with red-green-refactor loop. Use when user
 
 # Test-Driven Development
 
-> **Birko note** — when running TDD inside the Birko.Framework or any consumer using Birko: the project's test convention is **xUnit + FluentAssertions** (see `CLAUDE-maintenance.md` § "Test Requirements"). Substitute that stack for the TypeScript examples below. The red-green-refactor loop and the good-vs-bad-test heuristics are identical regardless of language.
+> **Stack note** — the examples below are TypeScript. Substitute the project's own test convention from its `CLAUDE.md` § Testing (e.g. xUnit + FluentAssertions on .NET, pytest on Python). The red-green-refactor loop and the good-vs-bad-test heuristics are identical regardless of language.
 
 ## Philosophy
 

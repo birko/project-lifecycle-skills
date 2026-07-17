@@ -93,7 +93,7 @@ See [templates/](templates/) for exact file shapes.
 
 ## Where `docs/features/` lives
 
-Same project-root resolution as the [[tasks]] skill's shape detection: walk up to the project root (`*.slnx`/`*.sln`, then `.git`). Place `docs/features/` under the project root. On a Birko.Framework-style meta-repo, a cross-cutting feature lives at the meta-root `docs/features/`; a sub-project feature lives in `Birko.X/docs/features/`. If `docs/` doesn't exist, create `docs/features/` (don't disturb existing docs).
+Same project-root resolution as the [[tasks]] skill's shape detection: walk up to the project root (`*.slnx`/`*.sln`, then `.git`). Place `docs/features/` under the project root. In a polyrepo family with an aggregator repo (see the tasks skill's shape-detection override), a cross-cutting feature lives in the aggregator's `docs/features/`; a sub-project feature lives in that sub-repo's own `docs/features/`. If `docs/` doesn't exist, create `docs/features/` (don't disturb existing docs).
 
 ## Decision states (the core model)
 

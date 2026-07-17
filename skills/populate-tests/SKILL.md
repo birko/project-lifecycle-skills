@@ -46,7 +46,7 @@ in real source.
 - **verify** — run the suite (serially or low parallelism to spare dev servers) and triage each result:
   **pass** / graceful **skip** (missing seed data — never hang or red) / **quarantine + file a bug task**
   (real app bug). Never loosen an assertion to hide a failure. **Run it against a disposable/seeded test
-  environment, never dev or production data** — live-API/DB suites (e.g. Birko's `birko-web-testing`
+  environment, never dev or production data** — live-API/DB suites (an in-house E2E toolkit's
   CRUD flows) really create/update/delete. If only a shared/prod-ish stack is reachable, run the
   read-only smoke and say so rather than mutating real data.
 - **ledger** — fill/refresh each surface's manual checklist: collapse generic "renders / CRUD / no

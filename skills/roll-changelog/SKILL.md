@@ -7,7 +7,7 @@ description: Maintain a project's CHANGELOG.md (Keep a Changelog format) — rol
 
 Keeps `CHANGELOG.md` honest and current in the [Keep a Changelog](https://keepachangelog.com) format. It rolls finished work into the `## [Unreleased]` section and, on request, cuts that section into a dated, versioned release.
 
-> **Generic, cross-project skill.** This is the *general* changelog maintainer for any stack. The **Birko.Framework repo ships its own project-local `roll-changelog`** that does something more specific (prunes the `## Recent Updates` block in `Birko.Framework/CLAUDE.md` into that repo's CHANGELOG with an em-dash format). Inside that repo the project-local skill **shadows this one** — correct, and the same scope-layering as generic `verify-conventions` vs. Birko's `verify-birko-conventions`. This generic skill is what runs everywhere else.
+> **Generic, cross-project skill.** This is the *general* changelog maintainer for any stack. A repo may ship its own project-local `roll-changelog` variant that does something repo-specific (a different source block, a house format); inside that repo the project-local skill **shadows this one** — correct, and the same scope-layering as project-local variants of [[verify-conventions]]. This generic skill is what runs everywhere else.
 
 > **This is the code changelog — not the decision ledger.** It answers *"what changed in the software"* for users and maintainers. *Why* a choice was made lives in the per-feature `decisions.md` ([[feature]] skill). A single piece of work often touches both: the decision is logged in `decisions.md`, the user-visible result is logged here. Don't duplicate rationale into the changelog, and don't bury shipped changes only in a decision ledger no user reads.
 

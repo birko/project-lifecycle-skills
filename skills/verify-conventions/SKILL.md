@@ -1,6 +1,6 @@
 ---
 name: verify-conventions
-description: Lint the current/staged diff against THIS project's own conventions as recorded in its `CLAUDE.md` § Conventions (framework/stack, UI/UX, code structure & patterns, naming, testing) and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. The Birko.Framework repo ships a project-local [[verify-birko-conventions]] that shadows this one inside that repo with Birko-specific checks.
+description: Lint the current/staged diff against THIS project's own conventions as recorded in its `CLAUDE.md` § Conventions (framework/stack, UI/UX, code structure & patterns, naming, testing) and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local variant that shadows this one inside that repo with concrete, stack-specific checks.
 ---
 
 # verify-conventions
@@ -9,7 +9,7 @@ A tech-agnostic adherence lint: does the current diff follow the conventions **t
 
 > **Adherence, not correctness.** [[code-review]] finds bugs and reasons about whether the code is *right*. This skill only asks *"does it match our documented conventions?"* — framework choices, UI/UX rules, structure, naming, testing. Run both at a review gate; they answer different questions.
 
-> **Scope layering.** Inside the Birko.Framework repo, the project-local [[verify-birko-conventions]] shadows this skill with concrete Birko checks (nullable warnings, `*Core` overrides, `$(BirkoSrc)` paths, `.slnx` registration…). This generic skill is what runs in every other project, driven by whatever that project recorded in its own `CLAUDE.md`.
+> **Scope layering.** A repo may ship a project-local `verify-<project>-conventions` skill that shadows this one inside that repo with concrete checks (compiler-warning policy, path conventions, solution/workspace registration…). This generic skill is what runs in every other project, driven by whatever that project recorded in its own `CLAUDE.md`.
 
 ## Authoritative reference — READ THIS FIRST when invoked
 
@@ -34,7 +34,7 @@ If the guide has **no `## Conventions` section**, say so and stop with a pointer
    - **File + line** (clickable `path:line`)
    - **The rule** (quote the CLAUDE.md line it comes from — so the finding is traceable, not made up)
    - **Suggested fix** (one line)
-4. **Register-on-introduce check (the currency rule).** A diff that establishes a *new* cross-cutting pattern — pulls in a new framework/major dependency, introduces a UI pattern not in the rules, adds a new architectural layer/module shape, sets a new naming or testing convention — must also **update `CLAUDE.md` § Conventions** (and `## Architecture` if structure changed) in the same change. If it doesn't, flag it: *"New pattern introduced (`<what>`) but not recorded in CLAUDE.md § Conventions — add it so the next task follows it."* This is the mechanism that keeps the rule list complete as the project grows; it mirrors the Birko verifier's "significant change with no Recent Updates entry" check and the [[feature]] decision-ledger discipline.
+4. **Register-on-introduce check (the currency rule).** A diff that establishes a *new* cross-cutting pattern — pulls in a new framework/major dependency, introduces a UI pattern not in the rules, adds a new architectural layer/module shape, sets a new naming or testing convention — must also **update `CLAUDE.md` § Conventions** (and `## Architecture` if structure changed) in the same change. If it doesn't, flag it: *"New pattern introduced (`<what>`) but not recorded in CLAUDE.md § Conventions — add it so the next task follows it."* This is the mechanism that keeps the rule list complete as the project grows; it mirrors the [[feature]] decision-ledger discipline.
 5. **Architecture-drift check.** If a change alters structure (new module/engine/protocol/dependency direction) and `## Architecture` still describes the old shape, flag it — a stale architecture doc is a real defect, not stale-but-harmless.
 
 ## Output format
@@ -75,7 +75,7 @@ If clean: `✅ Change follows the project's documented conventions.`
 ## Related skills
 
 - [[code-review]] — the correctness half of a review gate; run both together. (Runtime-provided, e.g. a Claude Code built-in; the [[tasks]]/[[feature]] gate verbs carry inline fallbacks for runtimes without it.)
-- [[verify-birko-conventions]] — the Birko.Framework-specific sibling that shadows this skill inside that repo.
+- Project-local `verify-<project>-conventions` variants — shadow this skill inside their own repo with concrete checks (same scope layering as above).
 - [[new-project]] — seeds the structured `CLAUDE.md § Conventions` block this skill reads.
 - [[tasks]] / [[feature]] — invoke this at `close` / `review`; they also carry the "register a new pattern in CLAUDE.md as part of done" rule this skill enforces.
 - [[roll-changelog]] — the other generic "keep the project honest" maintainer (changelog currency); this one keeps convention currency.

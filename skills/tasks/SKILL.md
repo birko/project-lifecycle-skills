@@ -115,12 +115,13 @@ Walk up from cwd in this order:
 
 1. Directory containing `tasks/.config.yml` → use as task root. **Done.**
 2. Otherwise find project root: `*.slnx`/`*.sln` first, then `.git`.
-3. Determine shape from project root:
-   - **Shape A** (Birko.Framework meta-repo) — project root has ≥2 sibling subfolders matching `Birko.*` containing `.shproj` or `.csproj`.
-     - cwd inside a `Birko.X/` → task root is `Birko.X/tasks/` (project-local)
-     - cwd at meta-root → task root is `<meta-root>/tasks/` (cross-cutting; EPIC frontmatter must list `affects: [Birko.AI, Birko.Data, ...]`)
-   - **Shape B/C** (consumer solution or standalone) → task root is `<project-root>/tasks/`.
+3. Task root is `<project-root>/tasks/`.
 4. Ambiguous → ask the user once and write `.config.yml` so the choice sticks.
+
+A project's own `CLAUDE.md` may override placement — e.g. an aggregator repo that hosts
+**cross-cutting epics for a polyrepo family** documents that rule locally (its epics list the
+affected sub-projects in `affects:` frontmatter); each sub-repo's own work stays in its own
+`tasks/` via the default walk-up. The auto-loaded project guide wins over this default.
 
 ## Mode (local | hybrid)
 
@@ -222,6 +223,4 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 - [[review]] — reviews the **PR diff** at the `/tasks close` merge gate (the PR-per-task default). Runtime-provided, same fallback rule.
 - [[populate-tests]] — turns each task/surface into standing coverage; a field-found bug routes back as a task that ships with a regression spec (the loop).
 - [[specs]] — harvested capability specs (`docs/specs/`). `close` on a STORY offers a scoped `/specs regen --story` so the spec diff confirms the story's behavioral change was intended; the snapshot's `specs: N stale` line comes from [[roadmap]]'s slice of its `verify`.
-- [[birko-new-project]] — Scaffolds Birko consumer projects (where `tasks/` will eventually live).
-- [[new-birko-subproject]] — Adds a new `Birko.X` shared project to Birko.Framework; after scaffolding, `/tasks new` will detect Shape A and place the new sub-project's `tasks/` correctly.
 - [[handoff]] — Same agent-pickable-context principle applied at a different scope.
