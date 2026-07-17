@@ -81,7 +81,7 @@ Runs once per project, when `.config.yml` is missing.
 
 1. **Scan signals**:
    - `Test-Path .github/ISSUE_TEMPLATE` → suggest `hybrid (github)`
-   - Grep CLAUDE.md + README for `*.atlassian.net/browse/` or `finstat.atlassian.net` → suggest `hybrid (jira)`
+   - Grep CLAUDE.md + README for `*.atlassian.net/browse/` or another Jira-shaped URL → suggest `hybrid (jira)`
    - Neither → suggest `local`
 2. **Ask user** via AskUserQuestion with three options: local / hybrid (github) / hybrid (jira). Pre-select the suggested one.
 3. **For hybrid (github)**: ask for the repo. Default = `git remote get-url origin` parsed to `owner/name`. Optionally ask for `default-labels`.

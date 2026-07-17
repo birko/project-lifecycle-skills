@@ -72,7 +72,7 @@ Three modes:
 
 4. **Create the local file**.
 
-5. **Consider chaining** to the [[jira-task]] skill if the user wants the full ticket workflow (intake → triage → fix → Slovak PM comment → disaster log).
+5. **Consider chaining** to a `jira-task` skill, if one is installed, when the user wants the full ticket workflow (intake → triage → fix → close-out).
 
 6. **Regenerate dashboard**.
 

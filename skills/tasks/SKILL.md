@@ -128,7 +128,7 @@ Configured in `tasks/.config.yml` (see [templates/config.yml](templates/config.y
 
 If `.config.yml` is missing on first verb run, ask the user. Suggest based on signals:
 - `.github/ISSUE_TEMPLATE/` present → `hybrid` (github)
-- CLAUDE.md / README mentions `finstat.atlassian.net` or other Jira-shaped URLs → `hybrid` (jira)
+- CLAUDE.md / README mentions a `*.atlassian.net` or other Jira-shaped URL → `hybrid` (jira)
 - Neither → `local`
 
 External mode (API-only, no local files) is **deferred to v2** — don't offer it.
@@ -207,7 +207,7 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 
 - **No `Co-Authored-By:` trailers** in any commit messages this skill produces — including the optional progress commit offered by `/tasks close` step 6.
 - Use `gh` CLI for GitHub (cross-platform, already authenticated on user's machine).
-- For Jira, use the Atlassian MCP (`mcp__claude_ai_Atlassian__*` — search via ToolSearch before calling), or hand off to the [[jira-task]] skill for full ticket workflow.
+- For Jira, use the Atlassian MCP (`mcp__claude_ai_Atlassian__*` — search via ToolSearch before calling), or hand off to a `jira-task` skill, if one is installed, for the full ticket workflow.
 - PowerShell-compatible (no `2>/dev/null`, no inline `VAR=x cmd`).
 - **Parent files are part of "done".** Closing a task without rolling its STORY/EPIC status forward leaves the tree lying about itself — treat the parent rollup as a required step, not optional cleanup.
 
@@ -216,10 +216,10 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 - [[feature]] — Per-feature lifecycle (prototype → decisions → decompose → stakeholder docs → review). It calls `/tasks new --from-feature FEATURE-NNN` to decompose approved decisions into tasks, and `/tasks close` / `/feature review` enforce the per-task `## Human test plan`. Tasks born from a feature carry `feature: FEATURE-NNN` frontmatter.
 - [[roadmap]] — Unified cross-tree view + drift audit. The bare-`/tasks` snapshot delegates to its Cross-tree pass for the compact `features/ …` slice; `/roadmap` renders the full epic→feature→task tree. The divergence rules live there, not duplicated here.
 - [[new-project]] — Generic project scaffolder; creates the `tasks/` folder (this skill) and `docs/features/` (the [[feature]] skill) at project birth, and seeds CLAUDE.md with the lifecycle convention.
-- [[jira-task]] — Jira ticket end-to-end workflow. `/tasks pick` on a task with `jira-key:` set should hand off here.
+- `jira-task` — Jira ticket end-to-end workflow (optional, environment-specific — not part of this skill set). `/tasks pick` on a task with `jira-key:` set hands off here when installed.
 - [[verify-conventions]] — adherence lint against `CLAUDE.md § Conventions`; `/tasks close` runs it (with [[code-review]]) before flipping a non-trivial task to `done`.
-- [[code-review]] — correctness review; the complement to `verify-conventions` at the close gate.
-- [[review]] — reviews the **PR diff** at the `/tasks close` merge gate (the PR-per-task default).
+- [[code-review]] — correctness review; the complement to `verify-conventions` at the close gate. Runtime-provided (a Claude Code built-in); `close` carries an inline fallback for runtimes without it.
+- [[review]] — reviews the **PR diff** at the `/tasks close` merge gate (the PR-per-task default). Runtime-provided, same fallback rule.
 - [[populate-tests]] — turns each task/surface into standing coverage; a field-found bug routes back as a task that ships with a regression spec (the loop).
 - [[specs]] — harvested capability specs (`docs/specs/`). `close` on a STORY offers a scoped `/specs regen --story` so the spec diff confirms the story's behavioral change was intended; the snapshot's `specs: N stale` line comes from [[roadmap]]'s slice of its `verify`.
 - [[birko-new-project]] — Scaffolds Birko consumer projects (where `tasks/` will eventually live).

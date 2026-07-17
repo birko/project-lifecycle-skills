@@ -74,7 +74,7 @@ If clean: `✅ Change follows the project's documented conventions.`
 
 ## Related skills
 
-- [[code-review]] — the correctness half of a review gate; run both together.
+- [[code-review]] — the correctness half of a review gate; run both together. (Runtime-provided, e.g. a Claude Code built-in; the [[tasks]]/[[feature]] gate verbs carry inline fallbacks for runtimes without it.)
 - [[verify-birko-conventions]] — the Birko.Framework-specific sibling that shadows this skill inside that repo.
 - [[new-project]] — seeds the structured `CLAUDE.md § Conventions` block this skill reads.
 - [[tasks]] / [[feature]] — invoke this at `close` / `review`; they also carry the "register a new pattern in CLAUDE.md as part of done" rule this skill enforces.

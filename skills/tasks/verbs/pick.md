@@ -49,7 +49,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - If `assignee:` is a specific agent name (e.g. `CSharpCodingAgent`) → suggest spawning that agent via the Agent tool with the task body as the brief.
    - If `assignee: ai` (generic) → present the task body as the work brief; this conversation can begin work directly.
    - If `assignee: human` → print the task body and wait.
-   - **If `jira-key:` is set in frontmatter** → suggest invoking the [[jira-task]] skill so the user gets the full ticket workflow (intake → triage → fix → comment → log).
+   - **If `jira-key:` is set in frontmatter** → suggest invoking the `jira-task` skill, if one is installed, so the user gets the full ticket workflow (intake → triage → fix → close-out).
    - **If `github-issue:` is set** → fetch comments via `gh issue view <num> --comments` so the AI agent picks up any clarifications added in GH.
 
 ## Edge cases

@@ -27,8 +27,8 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 5b. **Convention + correctness check — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
    - Run [[verify-conventions]] on the task's diff — does it follow the project's documented rules in `CLAUDE.md § Conventions` (framework/stack, UI/UX, structure, naming, testing)? Address 🛑 blockers before `done`, or note in the task why any are deferred.
    - If the work **introduced a new cross-cutting pattern** (new framework/dependency, UI pattern, layer, naming/testing convention), the register-on-introduce rule applies: confirm `CLAUDE.md § Conventions` (and `## Architecture` if structure changed) was updated in the same change — closing without recording it leaves the rulebook lying. `verify-conventions` flags this.
-   - Run [[code-review]] on the working diff for correctness (the existing CLAUDE.md rule). The two are complementary: adherence vs. bugs.
-   - **If a PR exists** (the PR-per-task default — see [SKILL.md → Lifecycle → Integration model](../SKILL.md#lifecycle)), run [[review]] on the PR diff before merging. **This per-task pass is where code correctness is reviewed, once, at the right altitude** — `/feature review` then only *confirms completeness*, it does **not** re-review the code wholesale.
+   - Run [[code-review]] on the working diff for correctness (the existing CLAUDE.md rule). The two are complementary: adherence vs. bugs. `code-review` is runtime-provided (a Claude Code built-in); **if this runtime has no such skill, do the pass inline** — read the diff and check for logic errors, unhandled edge cases, regressions, and security-sensitive changes; address blockers before `done`. Never skip the gate because the skill name didn't resolve.
+   - **If a PR exists** (the PR-per-task default — see [SKILL.md → Lifecycle → Integration model](../SKILL.md#lifecycle)), run [[review]] on the PR diff before merging (runtime-provided; no such skill → read `gh pr diff <n>` and run the same correctness pass at PR altitude). **This per-task pass is where code correctness is reviewed, once, at the right altitude** — `/feature review` then only *confirms completeness*, it does **not** re-review the code wholesale.
 
 6. **Commit progress / record reference** (tasks only, skip if `--no-pr`):
    - **Is it git-tracked?** Run `git rev-parse --is-inside-work-tree` from the task root. If it's not a git repo (or the command errors), skip this whole step and leave `pr:` as-is.
@@ -48,7 +48,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
 8. **Hybrid mode remote close** (check `mode: hybrid` in `.config.yml`):
    - `github-issue: <N>` set → run `gh issue close <N> --comment "Closed by {{ID}}"`.
-   - `jira-key: <KEY>` set → use the Atlassian MCP to transition the issue to Done (search for the transition tool via ToolSearch first; if MCP isn't authenticated, prompt user). Alternatively hand off to the [[jira-task]] skill for the proper closure workflow (Slovak PM comment, disaster log entry).
+   - `jira-key: <KEY>` set → use the Atlassian MCP to transition the issue to Done (search for the transition tool via ToolSearch first; if MCP isn't authenticated, prompt user). Alternatively, if a `jira-task` skill is installed (an optional, environment-specific skill), hand off to it for that environment's full closure workflow.
 
 9. **Regenerate dashboard**.
 
