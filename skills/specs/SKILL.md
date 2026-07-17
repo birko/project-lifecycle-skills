@@ -11,9 +11,8 @@ Regeneration is never a silent overwrite — the spec diff is presented and judg
 *was this behavioral change intended?* An unexpected diff is a **finding**
 (unintended behavior change), not documentation churn.
 
-Not spec-first development: intent lives in [[feature]] decisions / task acceptance criteria;
-this skill records *actuality* and cross-checks the two at regen time (no `changes/` proposal
-directory — that would be a third drift pair).
+Not spec-first: intent lives in [[feature]] decisions / task acceptance criteria;
+this skill records *actuality*.
 
 ## Verbs (router)
 
@@ -98,13 +97,10 @@ aggregator. A cross-cutting story regens per affected project (driven by its epi
 
 ## Provenance & cross-links
 
-Features are the *why*; the link to specs is **computed at regen time**, never
-hand-maintained: story/feature context → tasks' `feature:` frontmatter → appended to the
-spec's `shaped-by`. Backward question ("why does this behave so?") → open the listed
-features' `decisions.md`. Forward check ("did the decision land?") → [[feature]]
-`review` Gate A greps `shaped-by:`. Drift audit (stale specs, done feature with no spec
-landing) → [[roadmap]]'s Cross-tree pass owns the rules; `verify` here provides the
-staleness primitive it calls.
+Features are the *why*. The `shaped-by:` link is computed at regen time from tasks'
+`feature:` frontmatter. Backward: open the feature's `decisions.md`. Forward: [[feature]]
+`review` Gate A greps `shaped-by:`. Drift audit rules live in [[roadmap]]; `verify`
+provides the staleness primitive.
 
 ## Conventions
 

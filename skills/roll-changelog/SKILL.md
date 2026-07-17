@@ -7,9 +7,7 @@ description: Maintain a project's CHANGELOG.md (Keep a Changelog format) — rol
 
 Keeps `CHANGELOG.md` honest and current in the [Keep a Changelog](https://keepachangelog.com) format. It rolls finished work into the `## [Unreleased]` section and, on request, cuts that section into a dated, versioned release.
 
-> **Generic, cross-project skill.** This is the *general* changelog maintainer for any stack. A repo may ship its own project-local `roll-changelog` variant that does something repo-specific (a different source block, a house format); inside that repo the project-local skill **shadows this one** — correct, and the same scope-layering as project-local variants of [[verify-conventions]]. This generic skill is what runs everywhere else.
-
-> **This is the code changelog — not the decision ledger.** It answers *"what changed in the software"* for users and maintainers. *Why* a choice was made lives in the per-feature `decisions.md` ([[feature]] skill). A single piece of work often touches both: the decision is logged in `decisions.md`, the user-visible result is logged here. Don't duplicate rationale into the changelog, and don't bury shipped changes only in a decision ledger no user reads.
+This is the *code* changelog (what shipped). *Why* a choice was made lives in the per-feature `decisions.md` ([[feature]] skill). A repo may ship its own project-local `roll-changelog` that shadows this one — same scope-layering as project-local `verify-conventions` variants.
 
 ## Verbs / args
 
@@ -66,32 +64,6 @@ Respect a project that pins its own scheme (CalVer, 0.x where minor = breaking) 
 4. Update the reference links at the bottom (`[Unreleased]: …/compare/v<version>...HEAD` and add `[<version>]: …/compare/v<prev>...v<version>`) — only if the project uses git-host compare links.
 5. **Offer** (don't auto-run — these are outward-facing): a git tag `v<version>` and, in hybrid task mode, closing the milestone. Don't tag or push unless the user asks.
 
-## File shape
-
-```markdown
-# Changelog
-
-All notable changes to this project are documented here.
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Added
-- …
-
-### Fixed
-- …
-
-## [0.1.0] - 2026-06-22
-
-### Added
-- Initial release.
-
-[Unreleased]: https://github.com/<owner>/<repo>/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/<owner>/<repo>/releases/tag/v0.1.0
-```
-
 ## Conventions
 
 - **No `Co-Authored-By:` trailers** in any commit this skill might create (user preference).
@@ -102,8 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Related skills
 
-- [[new-project]] — seeds the initial `CHANGELOG.md` skeleton this skill maintains.
-- [[feature]] — owns the *decision* ledger (`decisions.md`); the *why*. This skill owns the *what-shipped*. A change is often recorded in both at different altitudes.
-- [[tasks]] — `done` TASKs and `/tasks close` are a source for the roll; cite ticket/issue keys where the project links them.
-- [[verify-conventions]] — the other generic "keep the project honest" skill; lints code against `CLAUDE.md` rules the way this one keeps the changelog current.
-- [[roadmap]] — read-only cross-tree view; a release cut is a good moment to confirm the two trees agree before recording what shipped.
+- [[new-project]] — seeds the initial `CHANGELOG.md` skeleton.
+- [[feature]] — decision ledger (`decisions.md`); this skill records the shipped result.
+- [[tasks]] — `done` TASKs are a source for the roll.
+- [[verify-conventions]] — lints code; this skill keeps the changelog current.
+- [[roadmap]] — confirm trees agree before recording what shipped.

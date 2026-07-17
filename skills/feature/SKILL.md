@@ -152,34 +152,6 @@ answer**, phase-`review` features lead the output, above `idea`/planned ones —
 outstanding work. Never headline "all shipped" while one exists; state the pending sign-off as
 the next action first.
 
-### Changing a closed (`done`) feature — surface-dependent revert
-
-A change landing on a signed-off feature is a tracked decision change plus a status question,
-never a silent edit: preview human-verifiable surfaces before touching them, re-home the change
-to the owning feature, trace the ripple, and — if the change has a human-verifiable surface —
-revert feature *and* implementing task(s) `done → review`, then re-run `/feature status` so all
-four surfaces (`idea.md`, tasks, `status.md`, index) agree. Full procedure in
-[decide.md § Changing a closed feature](verbs/decide.md). This is the down-the-tree counterpart
-to the [[tasks]] roll-up rule: reopening a feature reopens its tasks; closing the last reopened
-task re-closes the feature at the next `/feature review`.
-
-### Field feedback re-enters the lifecycle — it's a loop, not a line
-
-A production signal (user report, incident, monitoring alert) has the same right to re-enter as
-a test-found bug: missing capability → `/feature new` or a new `proposed` decision; an
-overturned `removed`/`deferred` decision → reopen via `/feature decide`; a regression →
-a [[tasks]] bug (possibly triggering the revert above). Routing details live in
-[new.md](verbs/new.md) + [decide.md](verbs/decide.md)'s edge cases. Nothing in the ledger is
-terminal; `removed` is a state, not a tombstone.
-
-## The prototype step is a recorded decision, not a silent skip
-
-Whether you prototype is an **explicit, recorded choice** — every `idea.md` carries a
-`## Prototype` line (`Built — <link>` / `Skipped — <reason>` / `N/A / Pending`); a missing line
-is the bug. Lean toward building one for pure look/UX features, toward skipping for headless
-logic. The line's states and seeding live in [new.md](verbs/new.md); `prototype` records the
-`Built` value.
-
 ## Collection pass
 
 Shared by the bare-`/feature` listing and `status` — and **owned by [[roadmap]]**, not here.
@@ -208,13 +180,13 @@ feature-centric slices of the model.
 
 ## Related skills
 
-- [[grill-me]] — the engine of `feature new`. Its interview output *is* the proposed decision tree. Default-on at `new`, skippable for tiny features.
-- [[tasks]] — decomposition + tracking target. `decompose` calls `/tasks new --from-feature`; tasks carry `feature:` frontmatter; the `## Human test plan` lives in the TASK file.
-- [[code-review]] — correctness review (runtime-provided, e.g. a Claude Code built-in; the verbs carry inline fallbacks for runtimes without it). Runs **per task** at each `/tasks close` (the merge gate, where code is reviewed once); `/feature review` may run it once more on the *cumulative* diff only to catch cross-task integration issues — the gate is per-task, not feature-wide.
-- [[verify-conventions]] — adherence lint against `CLAUDE.md § Conventions`; flags a new cross-cutting pattern that wasn't recorded (register-on-introduce). Runs per task at `/tasks close` alongside `code-review`; `/feature review` only *confirms* a new pattern got recorded.
-- [[review]] — reviews the **PR diff** on GitHub at `/tasks close` (the per-task merge gate), complementing the working-tree `code-review`. Runtime-provided, same fallback rule.
-- [[populate-tests]] — turns each task/surface into standing coverage and keeps the `[auto]`/`[manual]` ledger; a field-found bug routes back here for a regression spec.
-- [[specs]] — the record of *actuality* to this skill's record of *intent*. `/feature review` Gate A checks each approved decision landed in a harvested spec (`shaped-by: FEATURE-NNN` provenance, machine-written at regen time — never a hand-maintained link); a decision with no spec landing = incomplete feature. The regen diff review is where "intended change" (decisions) meets "actual change" (spec diff).
-- [[roadmap]] — Unified cross-tree view of `docs/features/` + `tasks/` with a drift audit. It **owns the canonical collection + divergence engine** (a feature whose phase contradicts its linked tasks, a broken `feature:` back-link, etc.); this skill's [Collection pass](#collection-pass) delegates to it rather than re-implementing it. Run `/roadmap --check` to catch feature↔task drift before it compounds.
-- [[new-project]] — creates `docs/features/` at project birth and seeds CLAUDE.md with this lifecycle so future agents follow it.
-- [[handoff]] — same agent-pickable-context principle; an `idea.md` + `decisions.md` pair is effectively a feature-scoped handoff.
+- [[grill-me]] — idea interrogation; its output is the proposed decision tree at `new`.
+- [[tasks]] — decomposes approved decisions into tracked tasks via `/tasks new --from-feature`.
+- [[code-review]] — correctness review at `/tasks close` (per-task merge gate); `feature review` may run cumulative diff for cross-task seams.
+- [[verify-conventions]] — adherence lint; runs alongside `code-review` at close and review gates.
+- [[review]] — PR diff review at `/tasks close` merge gate.
+- [[populate-tests]] — test coverage; field-found bugs route back here as regression specs.
+- [[specs]] — harvested capability specs; `/feature review` Gate A checks each decision landed in a spec (`shaped-by:`).
+- [[roadmap]] — owns the canonical Cross-tree pass (collection + divergence rules); this skill's listing delegates to it.
+- [[new-project]] — scaffolds `docs/features/` and seeds the lifecycle at project birth.
+- [[handoff]] — `idea.md` + `decisions.md` is a feature-scoped handoff.

@@ -52,21 +52,8 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
    Next up (top 3 by priority, blocked excluded):
      TASK-NNN  <title>  <priority>  <assignee>
      ...
-
-   features/  <F> features · idea <i> · prototyping <p> · deciding <de> · building <b> · review <r> · done <d>
-     ⚠ divergence (<n>): <FEATURE-NNN DV<x>>, …      [or: ✓ in sync]
-     specs: <n> stale                                 [omit when docs/specs/ absent or all fresh]
-     (run /roadmap for the full epic→feature→task view)
-
-   Run `/tasks <verb>` or `/tasks help` for the verb table.
    ```
-   Omit the `review:` count line and the "In review" section when no task is in review (keep the snapshot lean for projects that don't use it). Omit the whole `features/` block when `docs/features/` doesn't exist.
-3. "In progress" — every TASK with `status: in-progress`, one per line: `TASK-NNN  <title>  <priority>  <assignee>`. Print `(none)` if empty.
-3b. "In review" — every TASK with `status: review` (code complete, awaiting human/visual sign-off), same one-line format. These are **verification debt** — surface them, don't bury them.
-4. "Next up" — TASKs with `status: todo` (exclude `blocked`/`in-progress`/`done`/`cancelled`), sorted by `priority` (P0 → P1 → P2), then by `created` (oldest first as a stable tiebreaker). Take top 3. If fewer than 3 todo tasks exist, show what's available.
-5. **Suppress trailing zeros** in the priority breakdown — if all todos are P1, render `(<n>× P1)` not `(0× P0, <n>× P1, 0× P2)`.
-6. **Feature cross-check** — if `docs/features/` exists, run the Cross-tree pass from [[roadmap]] (its *Cross-tree pass (shared engine)* section) and render its **compact slice** — the `features/ …` line + divergence summary + (when `docs/specs/.map.yml` exists) the `specs: N stale` line. Do **not** re-derive the join, divergence, or spec-staleness rules here; [[roadmap]] owns them (staleness itself is defined in [[specs]] `verify`) and this snapshot only displays the slice. Lead the divergence line with any `review`-phase feature (verification debt). Point the user to `/roadmap` for the full epic→feature→task tree.
-7. **If neither `tasks/` nor `docs/features/` exists** — print one line: `No tasks/ folder in this project. Start with /tasks new epic.` and skip the rest. If `tasks/` is absent but `docs/features/` exists, skip the task blocks and render just the feature slice (a features-only project still deserves an answer).
+3. Append the `features/` slice — its shape and divergence rules are owned by [[roadmap]] (§ *Render — compact slice*); render that slice, don't re-derive the join here. In-review tasks are verification debt — surface them, don't bury them. Omit the `review:` line and "In review" section when no task is in review; omit the whole `features/` block when `docs/features/` doesn't exist. Suppress trailing zeros in the priority breakdown.
 
 ## Collection pass
 

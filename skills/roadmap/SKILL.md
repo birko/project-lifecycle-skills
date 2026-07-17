@@ -15,10 +15,9 @@ different audiences, and they **drift** if nobody cross-checks them (a feature r
 `idea` while its tasks shipped; a task carries `feature: null` though its feature is
 decided). This skill joins them by epic and **audits the drift**.
 
-> **This skill is the single source of truth for the Cross-tree pass below.** The
-> [[tasks]] status snapshot renders a compact slice of it; the [[feature]] listing reuses
-> its divergence rules. Never re-implement the join/divergence logic in those skills —
-> call this one. One engine, many renderers.
+> **This skill owns the Cross-tree pass.** The [[tasks]] status snapshot renders a
+> compact slice of it; bare `/feature` delegates to it too. Never re-implement the
+> join/divergence logic elsewhere. One engine, many renderers.
 
 ## Verbs / args
 
@@ -121,14 +120,13 @@ Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros ru
 
 ## Conventions
 
-- **Read-only.** This skill never edits tasks or features — it reports. Reconciliation is a deliberate act via [[tasks]] (status/back-links) and [[feature]] `decide`/`status` (decision states, phase), because most fixes are judgment calls.
-- **Stdout-only — never writes `docs/ROADMAP.md` or any persisted status mirror.** `/roadmap` is on-demand, so any file it committed would silently lag the source trees. The persisted drift signal already exists: [[tasks]] `triage` writes a `⚠ Feature drift` callout into `tasks/README.md` — don't add a second generated mirror. If the project keeps a static `docs/ROADMAP.md` (seeded by [[new-project]]), treat it as a hand-maintained, **status-free** brief→feature coverage map — `/roadmap` is the live computed view, never that file's writer.
-- Project-root / shape detection is identical to the [[tasks]] skill — `docs/features/` and `tasks/` both sit under the same root.
-- Stakeholder-facing language in the feature columns; `TASK-NNN`/`EPIC-NNN` ids are fine (this view is for whoever asks "where do we stand", dev or PM).
+- **Read-only, stdout-only.** Never writes `docs/ROADMAP.md` — `/roadmap` is on-demand. Static `docs/ROADMAP.md` (seeded by `new-project`) is a hand-maintained coverage map, not this skill's output. Persistent drift signal lives in `tasks/README.md` via `tasks triage`.
+- Project-root/shape detection matches the [[tasks]] skill.
+- Stakeholder-facing language in feature columns; `TASK-NNN`/`EPIC-NNN` ids are fine.
 
 ## Related skills
 
-- [[tasks]] — the dev-facing tree; its bare-`/tasks` snapshot renders the compact slice of this engine.
-- [[feature]] — the stakeholder-facing tree; its bare listing and `status` verb delegate their collection to this engine, and `decide`/`status` are where divergences get reconciled.
-- [[specs]] — the harvested behavioral map (`docs/specs/`). It owns generation and the staleness definition (`verify`); this engine consumes that for DV7/DV8. Reconciliation path for spec drift is `/specs regen`, never an edit here.
-- [[handoff]] — same "make state legible without re-discovery" principle, at conversation scope.
+- [[tasks]] — dev-facing tree; its snapshot renders the compact slice of this engine.
+- [[feature]] — stakeholder-facing tree; bare `/feature` and `status` verb delegate collection here.
+- [[specs]] — harvested behavioral map; owns generation + staleness. Spec drift → `/specs regen`.
+- [[handoff]] — same legibility principle at conversation scope.
