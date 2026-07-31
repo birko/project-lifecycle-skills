@@ -6,9 +6,15 @@ Bridge from the stakeholder ledger to the dev tracker. Only `approved` and `chan
 
 **Implementation code must never precede task creation.** Decompose runs — and the tasks exist (`status: todo`, with acceptance criteria) — before any code is written for a feature. If code was already written before decomposing: **stop implementing**, backfill the task(s) via step 3 with honest status (`in-progress`, never straight into `review`/`done`), note the backfill in the decision's History line, then continue. Backfilling is the recovery path, not an alternative to the gate.
 
+Usually entered from [pick.md](pick.md)'s gate D ("N approved decisions have no tasks — decompose
+now?"), which passes the specific uncovered rows; running it directly decomposes everything still
+uncovered.
+
 ## Steps
 
 1. **Locate the feature** and read `decisions.md`. Collect the rows in state `approved` or `changed`. Ignore `proposed` (not decided yet — tell the user to `/feature decide` first), `deferred`, and `removed`.
+   - If the caller (`pick`) named a subset of rows, decompose only those; step 3's reconciliation
+     against the `→ Tasks` column makes partial passes safe either way.
 
 2. **Check for an owning EPIC/STORY** (optional but recommended):
    - A feature usually maps to one STORY (a user behaviour) or a small EPIC. Ask the user whether to attach the tasks under an existing epic/story, create one, or leave them loose.

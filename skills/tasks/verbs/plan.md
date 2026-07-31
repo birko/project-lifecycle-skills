@@ -29,6 +29,13 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
    - Explicit scope: "Produce an implementation plan against the **existing** acceptance criteria. Do not propose changes to the criteria themselves. If you believe a criterion is wrong, missing, or ambiguous, surface it as a single note prefixed with `⚠ Acceptance criteria question:` at the top of your output — the human decides whether to edit the TASK."
    - Output shape: step-by-step plan, critical files to touch, architectural tradeoffs, anything risky. Markdown, no preamble.
 
+5b. **Split check — did planning reveal a second task?** If the returned plan contains steps that
+   are independently completable, separately reviewable, or outside the task's stated acceptance
+   criteria, that's a **split signal**. Offer [`/tasks spawn`](spawn.md) for each such step rather
+   than letting the plan quietly grow the task past its criteria. Spawned steps stay in the plan as
+   `→ deferred to TASK-NNN` lines. If the plan's *core* is bigger than one task, say so plainly —
+   the right fix may be promoting this task to a STORY with tasks under it.
+
 6. **Write the draft** into the TASK file:
    - Replace the `## Implementation plan` section body with the agent's output. If the section doesn't exist (older TASK file pre-dating the template change), append it after `## Out of scope`.
    - Preserve any `⚠ Acceptance criteria question:` notes the agent emitted — keep them at the top of the section so the human sees them on next read.

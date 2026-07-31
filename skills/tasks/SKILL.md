@@ -1,6 +1,6 @@
 ---
 name: tasks
-description: Hierarchical task tracking with Epics → Stories → Tasks as markdown files in a project-local `tasks/` folder. Use when user says "/tasks new", "/tasks triage", "/tasks pick", "/tasks close", "/tasks import", "/tasks export", "/tasks migrate", "new task", "new epic", "new story", "novy task", "novy epic", "novy story", "task dashboard", "pick a task", "what's next", "what's in todo", "what's planned", "import todo", "import roadmap", "export to github", "migrate tasks to github", "migrate to jira", or any task-management slash command. The bare-`/tasks` status snapshot is feature-aware — it cross-checks `docs/features/` and flags drift via the [[roadmap]] engine, so "what's next/planned" answers span both trees (use [[roadmap]] for the full hierarchical view). Supports local mode (files only) and hybrid mode (files + GitHub Issues / Jira sync via gh CLI / Atlassian MCP).
+description: Hierarchical task tracking with Epics → Stories → Tasks as markdown files in a project-local `tasks/` folder. Use when user says "/tasks new", "/tasks pick", "/tasks plan", "/tasks spawn", "/tasks close", "new task / epic / story", "novy task / epic / story", "task dashboard", "pick a task", "what's next", "what's planned", "that should be its own task", "import todo", "export to github", "migrate to jira", or any task-management slash command. `/tasks pick` offers to draft the implementation plan before work starts; `/tasks spawn` turns work discovered mid-flight into its own correctly-placed task instead of widening the one in hand. The bare-`/tasks` snapshot is feature-aware — it cross-checks `docs/features/` and flags drift via the [[roadmap]] engine, so "what's next/planned" spans both trees. Supports local mode (files only) and hybrid mode (files + GitHub Issues / Jira sync via gh CLI / Atlassian MCP).
 ---
 
 # tasks
@@ -19,7 +19,8 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `audit` | Scan the backlog for duplicates, mergeable/splittable, stale, broken-link, and incomplete tasks (suggest-only; `--fix` to apply safe ones) | [verbs/audit.md](verbs/audit.md) |
 | `show` | Read-only view of an EPIC/STORY/TASK by ID | [verbs/show.md](verbs/show.md) |
 | `plan` | Draft `## Implementation plan` for a TASK (optional grill) | [verbs/plan.md](verbs/plan.md) |
-| `pick` | Pick task, mark in-progress, start work | [verbs/pick.md](verbs/pick.md) |
+| `pick` | Pick task, offer to plan it first, mark in-progress, start work | [verbs/pick.md](verbs/pick.md) |
+| `spawn` | Work discovered mid-flight → its own task, placed under the right parent, wired into the origin's plan, reconciled with the feature ledger | [verbs/spawn.md](verbs/spawn.md) |
 | `close` | Merge gate — task → `done`, or `review` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
 | `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
@@ -132,16 +133,28 @@ To find next ID, Grep across `tasks/` with pattern `^id: (EPIC|STORY|TASK)-(\d+)
 
 **Status vocabularies (normative):** TASKs use `todo` · `in-progress` · `review` · `blocked` · `done` · `cancelled`; STORYs and EPICs use `planned` · `in-progress` · `done` · `cancelled` (containers have no `todo`/`review`/`blocked` — those are leaf-task states).
 Every status has a verb that sets it — none requires hand-editing frontmatter: `new`→`todo`,
-`pick`→`in-progress`, `close`→`review`/`done`, `block`/`unblock`→`blocked`↔`todo`,
+`pick`→`in-progress`, `close`→`review`/`done`/`blocked` (the last when its merge is deferred),
+`block`/`unblock`→`blocked`↔`todo`,
 `cancel`→`cancelled`. (`cancel` and `block` mirror the [[feature]] ledger's `removed`/`deferred`
 states — a deliberate, recorded non-completion, never a deletion.)
 
 **Integration model — the task is the unit of work, the PR, *and* the merge gate.** For
 git/PR projects the default is **PR-per-task**: `pick` cuts `task/TASK-NNN` from the default
 branch, and `close` is the **merge gate** — it runs the convention + correctness checks
-([[verify-conventions]] + [[code-review]] on the working tree, [[review]] on the PR diff),
-merges, and only then flips to `done`. So **`done` means *merged*** — a single precise state,
-not "reviewed somewhere." Code is reviewed **once per task, here, at the right altitude**;
+([[verify-conventions]] + [[code-review]] on the working tree, [[security-review]] when the diff
+touches a security surface, [[review]] on the PR diff), settles the merge decision, writes the
+status that decision makes true, and merges. So **`done` means *merged*** — a single precise
+state, not "reviewed somewhere."
+- The status is written *before* the commit, not after: the tracking file has to ride in the
+  same commit as the work, or merged history says `in-progress` forever. That's only sound
+  because the merge is decided first — `close` asks "merge now?" ahead of the frontmatter write
+  (its step 5c), so the committed status is already true.
+- **Declining the merge means the task isn't `done`** — it ends at `blocked`, with the reason and
+  any `depends-on` recorded, and re-closes after `/tasks unblock` once the blocker clears. A
+  finished-but-unmerged task is real work in a real holding state, not a `done` with an asterisk;
+  keeping it out of `done` is what stops the invariant above from decaying into a slogan.
+
+Code is reviewed **once per task, here, at the right altitude**;
 [[feature]]'s `review` gate is then a *completeness* check, not a wholesale code re-review.
 (Non-git or local-only projects keep `close`'s flexible commit/reference step — see
 [verbs/close.md](verbs/close.md); a tightly-coupled cluster *may* share a feature branch and
@@ -174,6 +187,22 @@ it under "In review" and it should be closed (run the test → `done`) before ne
   without also recording the matching `changed` decision in its feature's ledger —
   the two move together.
 
+**Plan before you implement.** A TASK's `## Implementation plan` is drafted before work starts —
+`new` auto-runs [plan](verbs/plan.md) for tasks, and `pick` offers it for any task that reached
+work without one (default **yes**; decline only for genuine one-liners). Picking an unplanned
+non-trivial task and improvising is how scope quietly grows past the acceptance criteria.
+
+**Scope discovered mid-work gets its own task — never an extra criterion on the one in hand.**
+When something surfaces that isn't covered by the current task's acceptance criteria (a refactor
+the change exposed, a bug found in passing, a follow-up the plan deferred), **offer
+[`/tasks spawn`](verbs/spawn.md) unprompted** rather than widening the task, silently doing the
+work, or dropping it. Spawn places the new task under the origin's parent, inherits its
+`feature:`, rewrites the displaced plan step to point at the new ID, and reconciles the feature's
+decision ledger (a new `proposed` row when no decision covers the discovery, so it returns through
+`/feature decide`). Widening an in-flight task destroys its acceptance list as an independent
+target — the same failure the "create the task before implementing" rule guards against, arriving
+from the other direction.
+
 **Field feedback re-enters as tracked work — the pipeline is a loop, not a line.** A signal
 from the field (a user report, an incident, a monitoring alert) gets the same right to
 re-enter as a test-found bug does. Triage it into the right lane: a **regression** in shipped
@@ -199,15 +228,17 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 - For Jira, use the Atlassian MCP (`mcp__claude_ai_Atlassian__*` — search via ToolSearch before calling), or hand off to a `jira-task` skill, if one is installed, for the full ticket workflow.
 - PowerShell-compatible (no `2>/dev/null`, no inline `VAR=x cmd`).
 - **Parent files are part of "done".** Closing a task without rolling its STORY/EPIC status forward leaves the tree lying about itself — treat the parent rollup as a required step, not optional cleanup.
+- **The merge is part of "done".** Closing a task without merging `task/TASK-NNN` into the default branch leaves `done` meaning "committed somewhere, not integrated" — `tasks/README.md` and `docs/features/*/status.md` will reflect `done` while `main` doesn't carry the work. The close verb's step 8 enforces this as a hard stop; do not advance past it without the user's explicit go-ahead (or a captured deferral reason in `## Out of scope`).
 
 ## Related skills
 
-- [[feature]] — Per-feature lifecycle (prototype → decisions → decompose → stakeholder docs → review). It calls `/tasks new --from-feature FEATURE-NNN` to decompose approved decisions into tasks, and `/tasks close` / `/feature review` enforce the per-task `## Human test plan`. Tasks born from a feature carry `feature: FEATURE-NNN` frontmatter.
+- [[feature]] — Per-feature lifecycle (prototype → decisions → decompose → stakeholder docs → review). It calls `/tasks new --from-feature FEATURE-NNN` to decompose approved decisions into tasks, and `/tasks close` / `/feature review` enforce the per-task `## Human test plan`. Tasks born from a feature carry `feature: FEATURE-NNN` frontmatter. `/feature pick` is the feature-side front door — it offers `decompose` when approved decisions have no tasks, then hands off to `/tasks pick --feature FEATURE-NNN`; `/tasks spawn` pushes back the other way, reconciling mid-work discoveries into that feature's decision ledger.
 - [[roadmap]] — Unified cross-tree view + drift audit. The bare-`/tasks` snapshot delegates to its Cross-tree pass for the compact `features/ …` slice; `/roadmap` renders the full epic→feature→task tree. The divergence rules live there, not duplicated here.
 - [[new-project]] — Generic project scaffolder; creates the `tasks/` folder (this skill) and `docs/features/` (the [[feature]] skill) at project birth, and seeds CLAUDE.md with the lifecycle convention.
 - `jira-task` — Jira ticket end-to-end workflow (optional, environment-specific — not part of this skill set). `/tasks pick` on a task with `jira-key:` set hands off here when installed.
 - [[verify-conventions]] — adherence lint against `CLAUDE.md § Conventions`; `/tasks close` runs it (with [[code-review]]) before flipping a non-trivial task to `done`.
 - [[code-review]] — correctness review; the complement to `verify-conventions` at the close gate. Runtime-provided (a Claude Code built-in); `close` carries an inline fallback for runtimes without it.
+- [[security-review]] — the security third of the close gate, run **conditionally**: `close` step 5b invokes it when the task's diff touches auth, data access, user input, crypto, secrets, a new dependency, or an exposed endpoint. Same runtime-provided + inline-fallback rule. `/feature review`'s security pass is optional and feature-wide — it does not backstop this one.
 - [[review]] — reviews the **PR diff** at the `/tasks close` merge gate (the PR-per-task default). Runtime-provided, same fallback rule.
 - [[populate-tests]] — turns each task/surface into standing coverage; a field-found bug routes back as a task that ships with a regression spec (the loop).
 - [[specs]] — harvested capability specs (`docs/specs/`). `close` on a STORY offers a scoped `/specs regen --story` so the spec diff confirms the story's behavioral change was intended; the snapshot's `specs: N stale` line comes from [[roadmap]]'s slice of its `verify`.

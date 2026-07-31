@@ -23,7 +23,7 @@ without losing its paper trail** — and that trail serves two audiences at once
 |---|---|---|---|
 | **new-project** | Once, at repo birth | `/new-project` ("new project", "novy projekt") | The universal layer: `README`, `CLAUDE.md`, `.gitignore`, `docs/features/`, `docs/specs/`, `tasks/` — a repo *pre-wired* for the rest of the lifecycle |
 | **tasks** | The backbone, forever | `/tasks new\|pick\|close\|triage…` | `tasks/` tree of EPIC → STORY → TASK markdown files + auto dashboard |
-| **feature** | Per idea/initiative | `/feature new\|prototype\|decide\|decompose\|status\|review` | `docs/features/FEATURE-NNN/` — idea, decision ledger, prototype, stakeholder status |
+| **feature** | Per idea/initiative | `/feature new\|prototype\|decide\|decompose\|pick\|status\|review` | `docs/features/FEATURE-NNN/` — idea, decision ledger, prototype, stakeholder status |
 | **roadmap** | On demand, read-only | `/roadmap` (`--check`, `--fix`, `EPIC-NNN`) | Nothing — a stdout-only unified view of **both** trees joined by epic, plus a divergence audit. The cross-tree engine the other two delegate to |
 | **populate-tests** | The test backbone, alongside the work | `/populate-tests adopt\|survey\|populate\|verify\|ledger` | Automated tests (generated smoke → authored flows) under `tests/` + a per-surface `[auto]`/`[manual]` **coverage ledger**; bugs found filed back as tasks |
 | **specs** | Per capability, regenerated from code | `/specs init\|regen\|verify\|show` | `docs/specs/` — a hand-editable **area map** (`.map.yml`) + one generated spec per capability (SHALL requirements + Given/When/Then scenarios), stamped with commit + feature provenance; the regen **diff review** doubles as an unintended-behavior-change detector |
@@ -192,17 +192,28 @@ tasks/
 Every TASK file is **self-contained** — `## Context`, `## Acceptance criteria`,
 `## Out of scope`, `## Human test plan`, `## Implementation plan` — so it can be picked
 without re-discovery. Supports **local** (files only) or **hybrid** (synced to GitHub Issues
-/ Jira). Verbs: `init`, `new`, `pick`, `close`, `cancel`, `block`/`unblock`, `triage`, `audit`,
-`plan`, `import`, `export`, `migrate`. **Every status in the vocabulary has a verb that sets
-it** — `cancel` (won't-do, never deletes — mirrors a `removed` decision) and `block`/`unblock`
+/ Jira). Verbs: `init`, `new`, `pick`, `spawn`, `close`, `cancel`, `block`/`unblock`, `triage`,
+`audit`, `plan`, `import`, `export`, `migrate`. **Every status in the vocabulary has a verb that
+sets it** — `cancel` (won't-do, never deletes — mirrors a `removed` decision) and `block`/`unblock`
 (hold out of / return to the ready pool) close the loop so no transition needs hand-editing.
+
+Two verbs guard the task's edges. `/tasks plan` drafts the `## Implementation plan` **before**
+work starts (`/tasks pick` offers it, default yes), and `/tasks spawn` catches scope discovered
+**during** work — a refactor the change exposed, a bug found in passing — filing it as its own
+task under the same parent instead of appending a criterion to the task in hand. Together they
+keep the acceptance list an *independent target* rather than a transcript of what happened:
+planning stops the task drifting outward, spawning stops it swallowing what it drifts into.
 
 **Integration model — PR-per-task, `/tasks close` is the merge gate.** The atomic unit is the
 task, so the **branch and PR are too**: `/tasks pick` cuts `task/TASK-NNN` from main, and
-`/tasks close` is where code actually integrates — `/code-review` on the working tree, `/review`
-on the PR diff, then **merge**, close the linked issue, flip to `done`. This gives `done` a
-single precise meaning: **merged to main**, not "reviewed somewhere." Small diffs, fast review,
-one review per task at the right altitude. (A tightly-coupled cluster *may* share a feature
+`/tasks close` is where code actually integrates — `/code-review` on the working tree,
+`/security-review` if the diff touches a security surface, `/review` on the PR diff, then settle
+the merge decision, write the status it makes true, commit, and **merge**; the linked issue closes
+only once the task genuinely reached `done`. This gives `done` a single precise meaning: **merged
+to main**, not "reviewed somewhere." Deferring the merge (stacked PR, external reviewer, batch
+policy) therefore ends the close at **`blocked`** with the reason recorded — never a `done` with an
+asterisk — and re-closes after `/tasks unblock`. Small diffs, fast review, one review per task at
+the right altitude. (A tightly-coupled cluster *may* share a feature
 branch and defer the single merge to `/feature review` — but PR-per-task is the default, and
 the rest of this doc assumes it.)
 
@@ -217,6 +228,12 @@ docs/features/
     prototype.html   ← interactive prototype for stakeholders (or .md / spike link)
     status.md        ← auto-generated rollup for PMs (phase + progress)
 ```
+
+`/feature pick` is the front door to an *existing* feature: it works out which stage the feature is
+really at and offers the verb that unblocks it — undecided rows → `decide`, **approved rows with no
+tasks → `decompose`** (the most common stall), all tasks done → `review` — and hands off to
+`/tasks pick --feature FEATURE-NNN` only once real tasks exist. You never start implementing
+straight out of a feature folder; that's the task-first gate.
 
 The heart of it is the **decision ledger** — every idea-branch is a row with exactly one
 state, and **rows are never deleted** (`removed` is a state, so it stays auditable):
@@ -513,11 +530,14 @@ of satellite skills. Each slots into a named stage.
 
 /tasks close ────┬─ code-review ........ correctness on the working tree (pre-PR)
    (the MERGE     ├─ verify-conventions . adherence to CLAUDE.md § Conventions
-    gate)         ├─ review ............. the PR diff on GitHub
+    gate)         ├─ security-review .... CONDITIONAL — only if the diff touches auth / data
+                  │                       access / input / crypto / secrets / deps / endpoints
+                  ├─ review ............. the PR diff on GitHub
                   └─ (merge → status done)   ← code is reviewed ONCE, here, per task
 
 /feature review ─┬─ (completeness) ..... all decisions decomposed + every task merged
-                 ├─ security-review .... OPTIONAL cumulative-diff security pass
+                 ├─ security-review .... OPTIONAL cumulative-diff pass (cross-task seams only —
+                 │                       NOT a backstop for the per-task pass above)
                  └─ (stakeholder sign-off → idea.md done)   ← no code re-review
 
 cross-cutting:
@@ -538,8 +558,11 @@ cross-cutting:
 
 2. **`code-review` + `review` + `security-review` — the teeth of the gates.** Code correctness
    is reviewed **once per task**, at `/tasks close` (the merge gate): `/code-review` on the
-   working tree, `/review` on the PR diff. `/feature review` then adds an optional
-   `security-review` on the cumulative diff and leans on each task's `## Human test plan` — so a
+   working tree, `/review` on the PR diff, plus `/security-review` **whenever that task's diff
+   touches a security surface** (auth, data access, input handling, crypto, secrets, new deps,
+   exposed endpoints) — conditional, but at the task altitude where the change is still small
+   enough to judge. `/feature review` then adds an *optional* cumulative-diff
+   `security-review` for cross-task seams and leans on each task's `## Human test plan` — so a
    feature clears several independent checks, with code review at the right altitude (the task)
    rather than re-run wholesale at the end.
 

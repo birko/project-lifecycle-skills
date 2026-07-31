@@ -15,6 +15,9 @@ Print a feature's current state without modifying anything.
    - **Phase honestly** — if all tasks are `done` but the human sign-off hasn't been
      recorded, the phase is `review` / "awaiting sign-off", **never "done"** and never a
      hybrid like "done (sign-off pending)". Code + tests green ≠ done.
-   - Suggested next verb based on phase (e.g. proposed rows remain → `/feature decide`;
-     phase `review` → run `/feature review` to close the sign-off — that's the next action).
+   - Suggested next verb based on phase — the same gate order [pick](pick.md) uses (proposed rows
+     remain → `/feature decide`; **approved/changed rows with an empty `→ Tasks` cell →
+     `/feature decompose`**; phase `review` → `/feature review` to close the sign-off). Name the
+     uncovered decision IDs when the gap is decomposition, and point at `/feature pick FEATURE-NNN`
+     to act on it — `show` only reports.
 5. **Never write** — this is read-only. For the saved stakeholder rollup, point at `/feature status`.

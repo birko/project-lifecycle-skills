@@ -28,7 +28,8 @@ What this task does and why it exists. Include enough background that an AI agen
 ## Out of scope
 
 - Explicit non-goals
-- Reference future TASK-NNN if scope was deferred
+- Reference future TASK-NNN if scope was deferred (`/tasks spawn` writes these lines when work
+  discovered mid-flight becomes its own task)
 
 ## Human test plan
 

@@ -1,6 +1,6 @@
 ---
 name: feature
-description: Per-feature/idea lifecycle for stakeholder-facing work — capture an idea, grill it into a decision tree, build an interactive prototype for stakeholders (PMs / end users), record which decisions are approved / deferred / changed / removed, decompose approved decisions into tracked tasks, publish a stakeholder status rollup, and run a review gate. Use when the user says "/feature new", "/feature prototype", "/feature decide", "/feature decompose", "/feature status", "/feature review", "novy feature", "new feature", "prototype for stakeholders", "feature decisions", "approve/defer/drop a feature decision", "stakeholder status", or wants to take a raw idea through to tracked, testable, reviewed work. Sits on top of the [[tasks]] skill (decomposition + tracking) and reuses [[grill-me]] (idea interrogation) and [[code-review]] (review gate).
+description: Per-feature/idea lifecycle for stakeholder-facing work — capture an idea, grill it into a decision tree, prototype it for stakeholders (PMs / end users), record each decision as approved / deferred / changed / removed, decompose approved ones into tracked tasks, publish a status rollup, and run a review gate. Use when the user says "/feature new", "/feature prototype", "/feature decide", "/feature decompose", "/feature pick", "/feature status", "/feature review", "novy feature", "new feature", "work on a feature", "prototype for stakeholders", "feature decisions", "stakeholder status", or wants to take a raw idea through to tracked, testable, reviewed work. `/feature pick` is the front door for an existing feature — it offers `decompose` when approved decisions have no tasks yet, and won't hand off to implementation until they do. Sits on top of [[tasks]] (decomposition + tracking) and reuses [[grill-me]] (idea interrogation) and [[code-review]] (review gate).
 ---
 
 # feature
@@ -19,6 +19,12 @@ grill-me  pick form  stamp      /tasks new                            rollup    
 ```
 
 The lifecycle is **not strictly linear** — you loop back to `decide` after a prototype demo, re-`prototype` a changed decision, or `decompose` incrementally as decisions get approved. One ordering **is** hard: implementation code never precedes `decompose` — code without a task is a lifecycle violation; stop and backfill (see [verbs/decompose.md](verbs/decompose.md)).
+
+**Entering an existing feature: `/feature pick`.** It resolves which stage the feature is actually
+at and offers the verb that unblocks it — undecided rows → `decide`, **approved rows with no tasks
+→ `decompose`** (the most common stall), all-tasks-done → `review` — and only hands off to
+`/tasks pick` once real tasks exist. Never begin implementation straight from a feature folder;
+that's the task-first gate. See [verbs/pick.md](verbs/pick.md).
 
 ## The feature list is a living artifact — keep it complete and current
 
@@ -64,6 +70,7 @@ User invokes as `/feature <verb> [args]`. Read **only** the verb file matching t
 | `decompose` | Turn approved decisions into tracked tasks via `/tasks new --from-feature` | [verbs/decompose.md](verbs/decompose.md) |
 | `status` | Regenerate the stakeholder-facing status rollup | [verbs/status.md](verbs/status.md) |
 | `review` | Completeness gate: all decisions built + tasks merged + human-test verification + stakeholder sign-off (code already reviewed per-task at `/tasks close`) | [verbs/review.md](verbs/review.md) |
+| `pick` | Choose a feature and enter it at the right stage — routes to the verb that unblocks it (most often `decompose`), then hands off to `/tasks pick` | [verbs/pick.md](verbs/pick.md) |
 | `show` | Read-only view of a feature by ID | [verbs/show.md](verbs/show.md) |
 | `help` | Print this verb table | [verbs/help.md](verbs/help.md) |
 
@@ -181,8 +188,9 @@ feature-centric slices of the model.
 ## Related skills
 
 - [[grill-me]] — idea interrogation; its output is the proposed decision tree at `new`.
-- [[tasks]] — decomposes approved decisions into tracked tasks via `/tasks new --from-feature`.
+- [[tasks]] — decomposes approved decisions into tracked tasks via `/tasks new --from-feature`; `/feature pick` hands work off to `/tasks pick --feature FEATURE-NNN`, and `/tasks spawn` sends mid-work discoveries back into this ledger (new `proposed` row → `/feature decide`).
 - [[code-review]] — correctness review at `/tasks close` (per-task merge gate); `feature review` may run cumulative diff for cross-task seams.
+- [[security-review]] — security pass. Runs **conditionally per task** at `/tasks close` when that diff touches a security surface; Gate A's cumulative pass here is *optional* and catches cross-task seams only — it never backstops the per-task pass.
 - [[verify-conventions]] — adherence lint; runs alongside `code-review` at close and review gates.
 - [[review]] — PR diff review at `/tasks close` merge gate.
 - [[populate-tests]] — test coverage; field-found bugs route back here as regression specs.

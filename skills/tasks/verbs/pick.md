@@ -12,6 +12,8 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - `--assignee` — filter (default: all)
    - `--epic <ID>` — limit to tasks under one epic
    - `--story <ID>` — limit to tasks under one story
+   - `--feature <FEATURE-NNN>` — limit to tasks carrying that `feature:` frontmatter (how
+     [[feature]]'s `/feature pick` hands off once a feature is decomposed)
    - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5
 
 3. **Collect candidates** — every TASK file whose frontmatter matches the filters. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
@@ -29,10 +31,21 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 5. **Read the chosen TASK file** in full.
 
-6. **Soft plan check** — if the file has no `## Implementation plan` section, OR the section exists but its body is empty/placeholder-only, prompt:
-   > "This task has no implementation plan. Run `/tasks plan {{ID}}` first? [y/N]"
-   - `y` → hand off to [verbs/plan.md](plan.md) for this TASK ID, then resume `pick` from step 7 once it's done.
-   - `N` → proceed without a plan (some tasks are genuinely one-liners; don't block).
+6. **Plan-first check — offer the plan before any work begins.** If the file has no
+   `## Implementation plan` section, OR the section exists but its body is empty/placeholder-only,
+   prompt with the **default set to yes**:
+   > "TASK-NNN has no implementation plan. Draft one with `/tasks plan {{ID}}` first? [Y/n]"
+   - `Y` → hand off to [verbs/plan.md](plan.md) for this TASK ID (which itself offers the
+     `grill-me` pass), then resume `pick` from step 7 once it's done.
+   - `n` → proceed unplanned. Legitimate for genuine one-liners; don't block, and don't nag twice.
+   - **Recommend planning** whenever the task touches more than one file, has ≥3 acceptance
+     criteria, carries a `feature:` link, or its Context names unknowns. Say which of those
+     triggered the recommendation — a concrete reason beats a generic prompt.
+   - If a plan already exists, **read it as the work brief** and note its age: when the plan
+     predates changes to the code it references, flag it and offer `/tasks plan {{ID}} --replan`
+     rather than silently working from a stale plan.
+   - A plan whose steps turn out to be separately-completable units of work is a **split signal**,
+     not a bigger task — see step 9's spawn rule.
 
 7. **Flip status to in-progress**:
    - Use Edit to change `status: todo` (or whatever current) → `status: in-progress`.
@@ -55,6 +68,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - If `assignee: human` → print the task body and wait.
    - **If `jira-key:` is set in frontmatter** → suggest invoking the `jira-task` skill, if one is installed, so the user gets the full ticket workflow (intake → triage → fix → close-out).
    - **If `github-issue:` is set** → fetch comments via `gh issue view <num> --comments` so the AI agent picks up any clarifications added in GH.
+   - **State the boundary before starting.** The task's `## Acceptance criteria` are the target and
+     its `## Out of scope` is the fence. Anything surfacing outside them during the work — a
+     refactor the change exposes, a bug found in passing, a plan step that's really its own unit —
+     goes to [`/tasks spawn`](spawn.md): **offer it unprompted**, don't append a criterion to this
+     task, don't silently do the extra work, don't drop it. Spawn inherits this task's parent and
+     `feature:`, rewrites the displaced plan step to `→ deferred to TASK-NNN`, reconciles the
+     feature ledger, and returns here so the thread isn't lost.
 
 ## Edge cases
 

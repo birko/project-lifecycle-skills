@@ -17,6 +17,11 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 3. **Read current status**:
    - `done`/`cancelled` → refuse ("can't block finished work").
    - `in-progress` → confirm ("work is in progress — park it as blocked?").
+     - **Exception: invoked by [`close`](close.md) step 6 for a deferred merge.** The user already
+       chose to defer at 5c, so don't re-ask — apply the block with the reason
+       (`merge deferred: <reason>; code complete on task/TASK-NNN`) and any `--on` dependency. This
+       is the one path where `blocked` means *finished but not integrated* rather than *not
+       proceeding*; the reason note is what tells a reader which it is, so never write it bare.
 4. **Edit frontmatter**:
    - `status: … → status: blocked`.
    - If `--on` given, merge the IDs into `depends-on: [...]` (validate each exists; warn on a missing/cancelled target).
