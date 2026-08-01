@@ -2,7 +2,8 @@
 id: {{ID}}
 parent: {{PARENT}}
 feature: {{FEATURE}}
-status: {{STATUS}}  # todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
+# status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
+status: {{STATUS}}
 priority: {{PRIORITY}}
 assignee: {{ASSIGNEE}}
 created: {{CREATED}}

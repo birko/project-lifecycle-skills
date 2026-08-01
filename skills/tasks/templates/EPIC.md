@@ -1,6 +1,7 @@
 ---
 id: {{ID}}
-status: {{STATUS}}  # planned | in-progress | done | cancelled
+# status: planned | in-progress | done | cancelled
+status: {{STATUS}}
 created: {{CREATED}}
 owner: {{OWNER}}
 affects: {{AFFECTS}}
