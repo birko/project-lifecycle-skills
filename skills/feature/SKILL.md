@@ -194,7 +194,7 @@ feature-centric slices of the model.
 - [[verify-conventions]] — adherence lint; runs alongside `code-review` at close and review gates.
 - [[review]] — PR diff review at `/tasks close` merge gate.
 - [[populate-tests]] — test coverage; field-found bugs route back here as regression specs.
-- [[specs]] — harvested capability specs; `/feature review` Gate A checks each decision landed in a spec (`shaped-by:`).
+- [[specs]] — harvested capability specs; `/feature review` Gate A checks each decision landed in a spec (`shaped-by:`), treating a spec whose `shaped-by-derived:` is false/absent as *unknown* rather than as a miss.
 - [[roadmap]] — owns the canonical Cross-tree pass (collection + divergence rules); this skill's listing delegates to it.
 - [[new-project]] — scaffolds `docs/features/` and seeds the lifecycle at project birth.
 - [[handoff]] — `idea.md` + `decisions.md` is a feature-scoped handoff.

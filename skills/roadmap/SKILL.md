@@ -54,7 +54,7 @@ epic (a back-up for the join when task back-links are missing).
 
 ### 2b. Collect specs (only if `docs/specs/.map.yml` exists with a non-empty `areas:` list)
 Read `.map.yml` (area list) and each `docs/specs/<area>.md` frontmatter: `area`,
-`generated-at`, `sources`, `shaped-by`. Compute staleness exactly as the [[specs]] skill's
+`generated-at`, `sources`, `shaped-by`, `shaped-by-derived` (absent ⇒ `false`). Compute staleness exactly as the [[specs]] skill's
 `verify` verb defines it (`git diff --name-only <generated-at>..HEAD -- <sources>`;
 unknown sha or missing spec file = stale/never-generated). Don't re-derive spec semantics
 beyond that — generation and the staleness definition live in [[specs]]; this engine only
@@ -81,7 +81,8 @@ Flag a feature (or task) when:
 | **DV5** | Feature with no matching epic/story/tasks (and not a shipped `done` backfill), **or** a story/epic with tasks but no feature folder | A requirement tracked in only one tree |
 | **DV6** | `idea.md status` ∉ the coarse set, or `status.md` phase ∉ the derived set | Invalid/stale marker (the `in-progress` phase we hit on FEATURE-016) |
 | **DV7** | A spec's `sources` changed since its `generated-at` commit, or a mapped area was never generated (from step 2b) | Stale behavioral map — code moved on, the spec is lying |
-| **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
+| **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features), and **not raised at all against specs whose provenance was never derived** (see DV11) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
+| **DV11** | A spec's `shaped-by-derived:` is `false` or absent (only when `docs/specs/.map.yml` exists) | Provenance was **never computed** for that area, so its `shaped-by: []` is unknown, not empty. Report it as its own finding and **suppress DV8 against those areas** — otherwise an unfilled field is indistinguishable from a genuine landing miss, and the audit reports a feature gap that is really a generator gap. Measured on Symbio 2026-08-01: all 31 areas carried `shaped-by: []` because `regen --all` resolved no `--feature` flag and, before that release, only flagged runs wrote the field at all. Fix: re-run `/specs regen <area>`, which now derives it |
 | **DV9** | A task carries `feature: FEATURE-NNN` but no decision row in that feature's `decisions.md` lists it in the `→ Tasks` column | The ledger doesn't know about its own work — the backfill (`/tasks new --from-feature` step 10b / decompose step 4) was missed; fix by writing the ID into the owning decision's row |
 | **DV10** | The project has real code (a `src/` tree or build manifest with tracked sources) but no `docs/specs/.map.yml` — **or the map's `areas:` list is empty** (the [[new-project]] scaffold seed that was never filled) | The whole spec layer is silently absent — every spec check (story-close regen offer, DV7/DV8, `/feature review`'s spec-landing gate) skips when the map is missing/empty, so nothing else will ever surface this — **advisory**: run `/specs init` to bootstrap |
 | **DV12** | Under an EPIC stamped `kind: review-intake`, a STORY carries unticked checklist lines in its body but has **no open TASK** (all children `done`/`cancelled`, or none exist) | Findings filed but never scheduled. Only `status: todo` tasks are ranked by `pick`, the `Next up` snapshot, or [[fix-next]] — a finding left as a checklist bullet is invisible to all three, so the review reads as drained while part of it was never worked. Fix by decomposing the remaining lines with [`/tasks intake --epic`](../tasks/verbs/intake.md) or `/tasks new` |
@@ -89,7 +90,7 @@ Flag a feature (or task) when:
 ### 5. Output model
 Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase,
 decisions:{proposed,approved,changed,deferred,removed}, tasksDone, tasksTotal, backlinkOk,
-divergences:[DVx…] }], specs: [{ area, generatedAt, stale, shapedBy }] | null,
+divergences:[DVx…] }], specs: [{ area, generatedAt, stale, shapedBy, shapedByDerived }] | null,
 divergences:[{id, target, rule, detail}] }`. Renderers consume this;
 they do not re-derive it.
 

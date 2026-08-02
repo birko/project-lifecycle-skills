@@ -74,6 +74,7 @@ generated-at: <commit sha of HEAD at harvest time>
 generated-on: YYYY-MM-DD
 sources: [<resolved file list>]
 shaped-by: [FEATURE-012]    # append-only feature provenance, machine-written
+shaped-by-derived: true     # was the above computed, or never filled? (absent = never)
 ---
 ```
 
@@ -97,10 +98,18 @@ aggregator. A cross-cutting story regens per affected project (driven by its epi
 
 ## Provenance & cross-links
 
-Features are the *why*. The `shaped-by:` link is computed at regen time from tasks'
-`feature:` frontmatter. Backward: open the feature's `decisions.md`. Forward: [[feature]]
-`review` Gate A greps `shaped-by:`. Drift audit rules live in [[roadmap]]; `verify`
-provides the staleness primitive.
+Features are the *why*. The `shaped-by:` link is computed at regen time (regen step 5a)
+from tasks' `feature:` frontmatter, joined to the area through **evidence** — the files
+each task's commits/PR actually touched, intersected with the area's `sources`. Never
+inferred from names or dates: an unresolvable task contributes nothing.
+
+`shaped-by-derived:` records whether that computation ran at all, because `shaped-by: []`
+otherwise conflates "no feature shaped this area" with "nobody ever computed it". Absent
+key = never derived; consumers must treat it as unknown, not as an empty answer.
+
+Backward: open the feature's `decisions.md`. Forward: [[feature]] `review` Gate A greps
+`shaped-by:`. Drift audit rules live in [[roadmap]]; `verify` provides the staleness
+primitive.
 
 ## Conventions
 
@@ -118,7 +127,7 @@ provides the staleness primitive.
 ## Related skills
 
 - [[tasks]] — `close` on a STORY offers a scoped `/specs regen <areas> --story STORY-NNN`; the bare-`/tasks` snapshot shows the `specs: N stale` slice via [[roadmap]].
-- [[feature]] — record of intent; `review` Gate A checks each approved decision landed in a spec (`shaped-by:`). A decision with no spec landing = incomplete feature.
+- [[feature]] — record of intent; `review` Gate A checks each approved decision landed in a spec (`shaped-by:`). A decision with no spec landing = incomplete feature — **but only once `shaped-by-derived:` is true**; against a never-derived spec the gate has no answer, not a negative one.
 - [[roadmap]] — owns spec-drift divergence rules (DV7/DV8) in its Cross-tree pass; calls this skill's `verify` staleness logic. One engine, many renderers.
 - [[new-project]] — seeds `docs/specs/.map.yml` at project birth (stack scaffolding skills that chain through it inherit the seed).
 - [[grill-me]] — optional interrogation of the proposed area map during `init`.

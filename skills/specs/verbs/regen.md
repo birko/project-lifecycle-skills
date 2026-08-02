@@ -31,7 +31,18 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    - Suspected bugs found while harvesting: raise them here (offer `/tasks new`), spec the behavior as-is.
    - User rejects the regen → discard the new body, write nothing.
 
-5. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today, `sources:` the resolved file list, `shaped-by:` existing list plus any `--story`/`--feature`-resolved FEATURE-NNN not already present (append-only, machine-written).
+5. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today, `sources:` the resolved file list, `shaped-by:` per step 5a, `shaped-by-derived:` per step 5b.
+
+5a. **Derive `shaped-by` — every regen, not only the flagged ones.** Union of three inputs, append-only:
+   - the existing list (never drop a recorded feature — the spec body may still carry its behavior);
+   - any `--story`/`--feature`-resolved FEATURE-NNN;
+   - **features whose tasks touched this area's `sources`**, resolved from evidence: for each task with a non-null `feature:`, take its `pr:` reference if present, else the commits whose message names its id (`git log --format=%H --grep '\bTASK-NNN\b'`), then `git show --name-only` those commits and intersect with the area's resolved file list. Any overlap → add that task's feature.
+
+   This third input is the one the [[roadmap]] DV8 rule reads, and its absence was a real defect: a `--all` regen resolves no flags, so `shaped-by` stayed `[]` on every area of a project and DV8 could only ever report a miss.
+
+   **Attribute only on evidence.** A task with no `pr:` and no commit naming it contributes nothing — that is a gap in the trail, not proof that no feature shaped the area. Never infer provenance from an epic/story name, a folder, or a date range.
+
+5b. **Stamp whether derivation ran** — `shaped-by-derived: true` when step 5a's third input was computed, `false` when it could not be (no task tree, no git history). **An empty `shaped-by` means two very different things** — "derivation ran and found no feature" versus "nobody ever computed this" — and a consumer cannot tell them apart from the list alone. A spec written before this stamp existed has neither key; treat a missing `shaped-by-derived` as `false`. When derivation ran but some tasks were unresolvable, say so in step 7's confirmation with the count, so a thin result is not read as an empty one.
 
 6. **Unmapped check:** glob project sources not matched by any area or `ignore` entry; if any, list them and suggest `.map.yml` additions (don't auto-edit the map — it's the human-owned file).
 
