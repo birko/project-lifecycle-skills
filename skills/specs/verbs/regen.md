@@ -31,18 +31,31 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    - Suspected bugs found while harvesting: raise them here (offer `/tasks new`), spec the behavior as-is.
    - User rejects the regen → discard the new body, write nothing.
 
-5. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today, `sources:` the resolved file list, `shaped-by:` per step 5a, `shaped-by-derived:` per step 5b.
+5. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today, `sources:` the resolved file list, `shaped-by:` per step 5a, `shaped-by-derived:` and `shaped-by-unresolved:` per step 5b.
 
 5a. **Derive `shaped-by` — every regen, not only the flagged ones.** Union of three inputs, append-only:
    - the existing list (never drop a recorded feature — the spec body may still carry its behavior);
    - any `--story`/`--feature`-resolved FEATURE-NNN;
-   - **features whose tasks touched this area's `sources`**, resolved from evidence: for each task with a non-null `feature:`, take its `pr:` reference if present, else the commits whose message names its id (`git log --format=%H --grep '\bTASK-NNN\b'`), then `git show --name-only` those commits and intersect with the area's resolved file list. Any overlap → add that task's feature.
+   - **features whose tasks touched this area's `sources`** — the evidence pass below.
 
    This third input is the one the [[roadmap]] DV8 rule reads, and its absence was a real defect: a `--all` regen resolves no flags, so `shaped-by` stayed `[]` on every area of a project and DV8 could only ever report a miss.
 
-   **Attribute only on evidence.** A task with no `pr:` and no commit naming it contributes nothing — that is a gap in the trail, not proof that no feature shaped the area. Never infer provenance from an epic/story name, a folder, or a date range.
+   **Build the task → files map ONCE per invocation, before the per-area loop** — it doesn't depend on the area, and `regen --all` would otherwise re-resolve every task once per area (measured shape: 31 areas × ~160 tasks). Then each area is a set intersection against its resolved file list; any overlap → add that task's feature.
 
-5b. **Stamp whether derivation ran** — `shaped-by-derived: true` when step 5a's third input was computed, `false` when it could not be (no task tree, no git history). **An empty `shaped-by` means two very different things** — "derivation ran and found no feature" versus "nobody ever computed this" — and a consumer cannot tell them apart from the list alone. A spec written before this stamp existed has neither key; treat a missing `shaped-by-derived` as `false`. When derivation ran but some tasks were unresolvable, say so in step 7's confirmation with the count, so a thin result is not read as an empty one.
+   For each task with a non-null `feature:`, resolve its changed files in this order:
+   - **`pr:` holds a PR number** (hybrid GitHub projects — `close` writes either form) → `gh pr diff <n> --name-only`. Never hand a PR number to `git show`: it resolves to nothing and the task silently contributes no evidence. Same dual resolution `--story` already uses at the top of this file.
+   - **`pr:` holds a commit SHA** → `git show -m --first-parent --name-only --format= <sha>`. **The `-m --first-parent` is required, not cosmetic:** under the PR-per-task default a task lands as a `--no-ff` merge, and plain `git show --name-only` on a merge commit prints **zero** files (verified on a real merge: `0` vs `7` files). Without it, exactly the tasks that followed the documented merge flow contribute nothing.
+   - **`pr:` is null** → the commits whose message names the task id: `git log --format=%H --grep '\bTASK-NNN\b'`, then the same `git show` form on each. Keep the `\b` boundaries — without them `TASK-11` also matches `TASK-110`…`TASK-119` (measured: 22 false-positive commits vs 0 bounded).
+
+   **Attribute only on evidence.** A task with no `pr:` and no commit naming it contributes nothing — that is a gap in the trail, not proof that no feature shaped the area. Never infer provenance from an epic/story name, a folder, or a date range. Count these; step 5b persists the number.
+
+5b. **Stamp whether derivation ran, and how completely.** Two keys, because "did it run" and "how much did it see" are different questions and a consumer needs both:
+   - `shaped-by-derived: true` when step 5a's evidence pass was computed, `false` when it could not be (no task tree, no git history). **An empty `shaped-by` means two very different things** — "derivation ran and found no feature" versus "nobody ever computed this" — and a consumer cannot tell them apart from the list alone. A spec written before this stamp existed has neither key; treat a missing `shaped-by-derived` as `false`.
+   - `shaped-by-unresolved: <N>` — how many feature-linked tasks contributed **no** evidence (no `pr:`, no commit naming them). **`derived: true` on its own is not a claim of completeness**, and without this number a thin answer is indistinguishable from a thorough one — which is the same conflation `shaped-by-derived` exists to remove, one level down. Reporting it only in step 7's confirmation is not enough: that output is transient, while [[roadmap]] DV8 and [[feature]] `review` Gate A read the *file*, later, and would otherwise treat a 16%-evidence answer as authoritative. Measured shape on a real project: 133 of 159 feature-linked tasks unresolvable — a `shaped-by` derived from 16% of the trail, stamped `true`.
+     - `0` means genuinely complete. Omit the key only when `shaped-by-derived` is `false` (nothing ran, so there is nothing to count).
+     - A high count is **not** a reason to withhold the derived list — it's a reason to say how thin it is. Consumers weigh it; they don't get to be surprised by it.
+
+   Also surface both in step 7's confirmation, so the person running the regen sees the shortfall immediately rather than only on the next audit.
 
 6. **Unmapped check:** glob project sources not matched by any area or `ignore` entry; if any, list them and suggest `.map.yml` additions (don't auto-edit the map — it's the human-owned file).
 

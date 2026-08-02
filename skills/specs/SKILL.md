@@ -75,6 +75,7 @@ generated-on: YYYY-MM-DD
 sources: [<resolved file list>]
 shaped-by: [FEATURE-012]    # append-only feature provenance, machine-written
 shaped-by-derived: true     # was the above computed, or never filled? (absent = never)
+shaped-by-unresolved: 0     # feature-linked tasks that left no evidence; derived≠complete
 ---
 ```
 
@@ -106,6 +107,13 @@ inferred from names or dates: an unresolvable task contributes nothing.
 `shaped-by-derived:` records whether that computation ran at all, because `shaped-by: []`
 otherwise conflates "no feature shaped this area" with "nobody ever computed it". Absent
 key = never derived; consumers must treat it as unknown, not as an empty answer.
+
+`shaped-by-unresolved:` then says **how completely** it ran — the number of feature-linked
+tasks that left no evidence at all. `derived: true` is not a completeness claim, and
+without the count a list built from a fraction of the trail is indistinguishable from a
+thorough one (the same conflation, one level down). Read the two keys together: `true` + `0`
+is a real answer; `true` + a large count is a partial one, and DV8 says so rather than
+reporting the gap as a feature that never shipped its spec.
 
 Backward: open the feature's `decisions.md`. Forward: [[feature]] `review` Gate A greps
 `shaped-by:`. Drift audit rules live in [[roadmap]]; `verify` provides the staleness

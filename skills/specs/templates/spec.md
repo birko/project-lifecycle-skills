@@ -6,6 +6,7 @@ sources:
   - {{RESOLVED_FILE_1}}
 shaped-by: []
 shaped-by-derived: {{true|false}}
+shaped-by-unresolved: {{N}}
 ---
 
 # {{Area Title}}
@@ -41,4 +42,7 @@ Authoring rules (for the harvester, not the reader):
   EVERY regen from tasks' commits ∩ this area's sources — not only on --story/--feature
   runs. shaped-by-derived records whether that ran, so an empty list is not mistaken
   for "computed, found nothing". Absent key = never derived.
+- shaped-by-unresolved counts feature-linked tasks that left no evidence (no pr:, no
+  commit naming them). derived: true is not a completeness claim — read the two together
+  or a 16%-evidence answer reads as a thorough one. 0 = complete.
 -->
