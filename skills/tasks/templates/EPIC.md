@@ -5,6 +5,10 @@ status: {{STATUS}}
 created: {{CREATED}}
 owner: {{OWNER}}
 affects: {{AFFECTS}}
+# kind: omit for a normal epic; `review-intake` marks the epic a review pass was filed into
+kind: {{KIND}}
+# source: review-intake epics only — where the findings came from (report path, PR, or "security-review <date>")
+source: {{SOURCE}}
 ---
 
 # {{TITLE}}

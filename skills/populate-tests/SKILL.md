@@ -45,7 +45,13 @@ in real source.
   **generated route-smoke** from the app's manifest.
 - **verify** — run the suite (serially or low parallelism to spare dev servers) and triage each result:
   **pass** / graceful **skip** (missing seed data — never hang or red) / **quarantine + file a bug task**
-  (real app bug). Never loosen an assertion to hide a failure. **Run it against a disposable/seeded test
+  (real app bug). Never loosen an assertion to hide a failure. **A guard that cannot reach its subject
+  is worse than a missing guard** — it reads as covered. When a test fails *upstream* of what it
+  asserts (a feature toggle off, a missing fixture, a 404 before the interesting call), fixing the
+  precondition is only half the job: prove the assertion can still fail (below), then check whether
+  sibling tests share that precondition. (Real failure this guards: ~22 authz tests whose
+  `expect([401, 403])` was being satisfied by a module-disabled 403, never once by the permission
+  check they claimed to cover.) **Run it against a disposable/seeded test
   environment, never dev or production data** — live-API/DB suites (an in-house E2E toolkit's
   CRUD flows) really create/update/delete. If only a shared/prod-ish stack is reachable, run the
   read-only smoke and say so rather than mutating real data.
@@ -59,6 +65,30 @@ For many surfaces, use the **Workflow** tool — one agent per surface (ground �
 surface-by-surface inline. **Pre-fix any shared toolkit/helper yourself** before fanning out, so parallel
 agents don't collide on the same file. Run authored tests in a **single serial verification pass** (not
 N parallel test runs) to avoid thrashing a dev server / racing shared auth state.
+
+## Prove the guard can fail
+
+**A passing test is not evidence — a passing test that cannot fail is decoration.** Every test written
+to pin a specific defect earns one of these before it counts, and it takes a minute:
+
+- **Revert-and-split** (unit / integration, where the fix is a small diff). Stash *only the production
+  change* and re-run. Then account for the result **exactly**:
+  - every test you believed was fix-dependent must be in the failure list;
+  - every test still passing is a **contract pin, not evidence** — say so, by name, wherever you're
+    recording the work. Don't let it read as proof;
+  - a test you expected to fail that passed is a finding about your **test**, not about the fix: it
+    isn't asserting what you thought. Fix the test before continuing.
+- **Reintroduce-and-confirm** (E2E / UI, where stashing means a rebuild anyway). Put the bug back on
+  one file, rebuild, confirm the spec goes **red**, then restore and rebuild. A spec whose trigger
+  doesn't actually reproduce the bug — a filter change that refreshes a table but never re-runs the
+  code path — is a **false guard**; find the trigger that does.
+- **Bidirectional assertion** — assert the correct value is present *and* the buggy value is absent.
+  Self-evidently a guard, no second run needed. Cheapest option when it fits.
+
+This is the same instinct as *don't fake green*, pointed at the other failure mode: not a real failure
+hidden by a loosened assertion, but a real fix unprotected by a test that was never able to catch it.
+[[fix-next]] runs this as a required step; [[tasks]] `close` requires it before an automated check can
+retire a `[manual]` ledger line.
 
 ## Transferable principles (learned the hard way)
 

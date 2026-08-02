@@ -1,4 +1,4 @@
-# The Project Lifecycle Skills — `new-project` · `tasks` · `feature` · `roadmap` · `populate-tests` · `specs`
+# The Project Lifecycle Skills — `new-project` · `tasks` · `feature` · `roadmap` · `populate-tests` · `specs` · `fix-next`
 
 > How a handful of Claude Code skills form a single pipeline that carries a raw idea all the
 > way to shipped, reviewed, **tested** code — without ever losing the paper trail.
@@ -8,8 +8,10 @@ honest. They are layered: `new-project` lays the ground, `tasks` is the tracking
 `feature` rides on top of `tasks`; `roadmap` is the read-only lens that reads *both* work
 trees at once and audits them for drift; `populate-tests` is the testing backbone that
 turns each tracked unit of work into verified coverage and keeps a per-surface coverage
-ledger; and `specs` keeps the behavioral map honest — capability specs harvested from the
-code itself, their regen diff reviewed at story close as an intended-change check. The whole point: **a raw idea can travel all the way to shipped, reviewed, tested code
+ledger; `specs` keeps the behavioral map honest — capability specs harvested from the
+code itself, their regen diff reviewed at story close as an intended-change check; and `fix-next`
+closes the last gap, draining the defect backlog a review pass files into `tasks/` so findings
+become fixed code instead of a report nobody actioned. The whole point: **a raw idea can travel all the way to shipped, reviewed, tested code
 without losing its paper trail** — and that trail serves two audiences at once:
 
 - **Developers** — what to build, how to test it.
@@ -27,6 +29,7 @@ without losing its paper trail** — and that trail serves two audiences at once
 | **roadmap** | On demand, read-only | `/roadmap` (`--check`, `--fix`, `EPIC-NNN`) | Nothing — a stdout-only unified view of **both** trees joined by epic, plus a divergence audit. The cross-tree engine the other two delegate to |
 | **populate-tests** | The test backbone, alongside the work | `/populate-tests adopt\|survey\|populate\|verify\|ledger` | Automated tests (generated smoke → authored flows) under `tests/` + a per-surface `[auto]`/`[manual]` **coverage ledger**; bugs found filed back as tasks |
 | **specs** | Per capability, regenerated from code | `/specs init\|regen\|verify\|show` | `docs/specs/` — a hand-editable **area map** (`.map.yml`) + one generated spec per capability (SHALL requirements + Given/When/Then scenarios), stamped with commit + feature provenance; the regen **diff review** doubles as an unintended-behavior-change detector |
+| **fix-next** | Per defect, unattended | `/fix-next` (`--loop`, `--epic`) | Nothing new — it *drains* the defect backlog `/tasks intake` files from a review pass: pick worst-first by blast radius → re-verify the finding → fix the root cause → prove the test can fail → respec → `/tasks close`. Stops where `/clear` loses nothing |
 
 ---
 
@@ -67,6 +70,17 @@ without losing its paper trail** — and that trail serves two audiences at once
              "was this behavioral change intended?" — unexplained diff = finding
              ──▶ /feature review checks each approved decision LANDED in a spec
                  (shaped-by provenance); /roadmap audits stale specs (DV7/DV8)
+
+   /code-review · /security-review · /specs regen   (a PASS over the project, not one diff)
+             │  findings are stdout-only — unfiled means lost
+             ▼
+   /tasks intake ──▶ EPIC (kind: review-intake) → STORY per severity theme → TASK per fix group
+             │        each TASK carries findings: [CR-7, SEC-2] and stands alone
+             ▼
+   /fix-next  ── drains it, worst-first by BLAST RADIUS (not the priority: field):
+             resume-from-disk → re-verify the finding → fix the root cause at the right layer
+             → prove the test can FAIL → /specs regen → /tasks close → stop clean
+             one defect per invocation; the conversation is never the state
 
    field signal (bug / incident / demand) ──▶ triage ──▶ {task | feature | reopened decision}
              the loop: "done" is not the end — production feeds back into the pipeline
@@ -192,7 +206,7 @@ tasks/
 Every TASK file is **self-contained** — `## Context`, `## Acceptance criteria`,
 `## Out of scope`, `## Human test plan`, `## Implementation plan` — so it can be picked
 without re-discovery. Supports **local** (files only) or **hybrid** (synced to GitHub Issues
-/ Jira). Verbs: `init`, `new`, `pick`, `spawn`, `close`, `cancel`, `block`/`unblock`, `triage`,
+/ Jira). Verbs: `init`, `new`, `pick`, `spawn`, `intake`, `close`, `cancel`, `block`/`unblock`, `triage`,
 `audit`, `plan`, `import`, `export`, `migrate`. **Every status in the vocabulary has a verb that
 sets it** — `cancel` (won't-do, never deletes — mirrors a `removed` decision) and `block`/`unblock`
 (hold out of / return to the ready pool) close the loop so no transition needs hand-editing.
@@ -203,6 +217,15 @@ work starts (`/tasks pick` offers it, default yes), and `/tasks spawn` catches s
 task under the same parent instead of appending a criterion to the task in hand. Together they
 keep the acceptance list an *independent target* rather than a transcript of what happened:
 planning stops the task drifting outward, spawning stops it swallowing what it drifts into.
+
+A third verb feeds the tree from outside. `/tasks intake` turns a **review pass** — `/code-review`
+or `/security-review` run over a module or the whole codebase, or a `/specs regen` diff review —
+into tracked work: one EPIC stamped `kind: review-intake`, STORYs by severity theme, one TASK per
+coherent fix group, each carrying the `findings:` ids it remediates. The review skills write no
+files, so without this step their output evaporates. Where `spawn` handles a single finding found
+mid-work, `intake` handles a pass; and the standing rule is that ***a checklist line is filed, not
+scheduled*** — only `todo` **tasks** are ever ranked, so a finding parked as a bullet is a finding
+nobody will work. §3.7's `fix-next` is what drains the result.
 
 **Integration model — PR-per-task, `/tasks close` is the merge gate.** The atomic unit is the
 task, so the **branch and PR are too**: `/tasks pick` cuts `task/TASK-NNN` from main, and
@@ -364,6 +387,50 @@ the feature isn't done. `roadmap` audits the drift (DV7 stale spec, DV8 shipped 
 no spec landing). Verbs: `init` (discovery pass — propose + bless the area map), `regen`
 (harvest → diff review → stamp), `verify` (read-only staleness), `show`. Scenarios are
 mandatory — they're the future join point for `populate-tests` (scenario ↔ covering test).
+
+### 3.7 `fix-next` — draining the defect backlog
+
+The six skills above are all about work you *chose*. `fix-next` is about work a review **found** —
+and it exists because that half of the loop had a hole at both ends.
+
+**The hole.** `/code-review`, `/security-review` and `/verify-conventions` write no files: they report
+to stdout or a PR comment, and `security-review` explicitly refuses to fix (*"a security fix is tracked
+work, not a side effect of the pass that found it"*). But nothing was creating that tracked work. Run a
+review over a codebase and the findings simply evaporate when the conversation ends. And even once
+filed, nothing drained them — `/tasks pick` is interactive and sorts by the `priority:` field, which
+settles nothing when one audit files seven tied P0s.
+
+So it's **two halves, one pipeline**: `/tasks intake` files a pass, `/fix-next` drains it.
+
+```
+EPIC-031 auth-module review 2026-08     ← kind: review-intake   (the stamp fix-next reads;
+  STORY-071 security & tenancy                                    no epic id is ever hard-coded)
+    TASK-204  findings: [CR-7, CR-9]
+    TASK-205  findings: [SEC-2]
+  STORY-072 correctness & invariants
+    TASK-206  findings: [CR-12, SH-4]
+```
+
+Four ideas do the real work:
+
+1. **The conversation is not the state.** Everything learned goes into the task file or a commit *as it
+   happens* — `picked-by: fix-next`, a `## Progress log` line per step, an `## Outcome` section that
+   replaces the transcript. So one invocation ends where `/clear` loses nothing, and a resumed session
+   reconciles the log against git (**git wins**) rather than trusting either blindly.
+2. **Rank by blast radius, not `priority:`.** Severity of failure mode → reachability from untrusted
+   input → **silence** (a plausible wrong answer outranks a throw; throwing is self-reporting) →
+   self-containment → confirmed-by-hand.
+3. **Don't trust the ticket.** Re-verify the finding against the code *before* fixing it. Real but
+   misscoped → correct the acceptance criteria first, because a wrong target silently redefines "done".
+   Not a defect → cancel it with the evidence: **a correct "no" is a deliverable.**
+4. **Prove the guard can fail.** A passing suite is not evidence. Revert the fix and confirm the tests
+   go red — naming every still-passing test as a *contract pin, not evidence* — or reintroduce the bug
+   and confirm the spec fails. (§3.5's `populate-tests` owns this rule; it's the step that most often
+   finds the real problem.)
+
+Everything else it **delegates**: the merge gate, the commit, the merge and the rollup are all
+`/tasks close`; the respec is `/specs regen`; the test authoring is `populate-tests`. It adds judgement,
+not mechanics.
 
 ---
 
@@ -539,6 +606,12 @@ of satellite skills. Each slots into a named stage.
                  ├─ security-review .... OPTIONAL cumulative-diff pass (cross-task seams only —
                  │                       NOT a backstop for the per-task pass above)
                  └─ (stakeholder sign-off → idea.md done)   ← no code re-review
+
+review at PROJECT scale (not one task's diff):
+   code-review / security-review / specs regen
+        └─▶ /tasks intake ..... the pass → EPIC(kind: review-intake) → STORY per theme → TASK per fix
+              └─▶ /fix-next ... drains it worst-first, one defect per invocation, and hands each
+                                task straight back to /tasks close for the merge gate above
 
 cross-cutting:
    handoff .......... compact context for another agent (same "pickable context" principle)

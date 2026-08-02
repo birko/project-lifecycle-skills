@@ -54,6 +54,10 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      a git repo on its default branch, offer to cut `task/TASK-NNN` so the work is isolated and
      `/tasks close` can open one PR for it. Skip silently for non-git/local-only projects, or if
      the user is already on a suitable branch.
+     - **`integration: single-branch` in `.config.yml` → don't offer a branch at all.** Some repos
+       commit straight to the default branch; asking every time is noise, and inferring the policy
+       from `git log` guesses wrong on a squash-merge history (which looks identical to
+       commit-to-main). The config field is the answer; read it rather than reading the log.
    - **Unborn HEAD** (freshly-initialized repo, no commits — `git rev-parse HEAD` fails): there is
      no base to branch from or diff against. Offer to make the initial commit first
      (`chore: initial scaffold`, staging the current tree), then cut the task branch. Don't start

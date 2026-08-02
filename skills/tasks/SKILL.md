@@ -21,6 +21,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `plan` | Draft `## Implementation plan` for a TASK (optional grill) | [verbs/plan.md](verbs/plan.md) |
 | `pick` | Pick task, offer to plan it first, mark in-progress, start work | [verbs/pick.md](verbs/pick.md) |
 | `spawn` | Work discovered mid-flight → its own task, placed under the right parent, wired into the origin's plan, reconciled with the feature ledger | [verbs/spawn.md](verbs/spawn.md) |
+| `intake` | A review/audit/spec-harvest **pass** → a drainable backlog: one EPIC (`kind: review-intake`), STORYs by severity theme, one TASK per fix group | [verbs/intake.md](verbs/intake.md) |
 | `close` | Merge gate — task → `done`, or `review` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
 | `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
@@ -68,7 +69,7 @@ Shared by `triage` and the bare-`/tasks` status snapshot. Single-pass enumerate 
    - `tasks/EPIC-*/STORY-*/TASK-*.md`
    - `tasks/EPIC-*/TASK-*.md`
    - `tasks/_loose/TASK-*.md`
-3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `affects` (epics, optional), `created`, `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
+3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `created`, `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
 4. **Bucket** by level + status:
    - Counts: `{epics: {planned, in-progress, done, cancelled}, stories: {...}, tasks: {todo, in-progress, review, blocked, done, cancelled}}`
    - Priority sub-breakdown for `tasks.todo`: `{P0, P1, P2}`
@@ -154,6 +155,11 @@ state, not "reviewed somewhere."
   finished-but-unmerged task is real work in a real holding state, not a `done` with an asterisk;
   keeping it out of `done` is what stops the invariant above from decaying into a slogan.
 
+**Declare the integration model, don't infer it.** `.config.yml`'s `integration:` field is
+`pr-per-task` (default) or `single-branch`. Reading it beats reading `git log`, which cannot tell a
+commit-to-main repo from a squash-merge one. On `single-branch`, `pick` offers no branch and `close`
+skips step 8 — `done` still means *on the default branch*, only the mechanism changes.
+
 Code is reviewed **once per task, here, at the right altitude**;
 [[feature]]'s `review` gate is then a *completeness* check, not a wholesale code re-review.
 (Non-git or local-only projects keep `close`'s flexible commit/reference step — see
@@ -215,6 +221,24 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 - Route a field-found bug through the normal `todo → in-progress → review/done` lifecycle; don't
   hot-patch and backfill the task — the acceptance list must stay an independent target.
 
+**Findings become tasks, or they evaporate.** [[code-review]], [[security-review]] and
+[[verify-conventions]] report to stdout or a PR comment and write no files — so a finding that isn't
+turned into tracked work is gone when the conversation ends. Two entry points, by size: a single
+adjacent finding surfaced while working → [`spawn`](verbs/spawn.md); a whole review **pass** →
+[`intake`](verbs/intake.md), which files it as EPIC → STORY → TASK for [[fix-next]] to drain. Two
+non-obvious rules travel with this:
+- ***A checklist line is filed, not scheduled.*** Only `status: todo` **tasks** are ranked by `pick`,
+  by the `Next up` snapshot, or by `fix-next`. A finding parked as a bullet under a STORY is invisible
+  to all three and will never be worked. If it's worth doing, it's a task.
+- **Four optional frontmatter fields are owned by this pair and are not stray keys** — `triage` and
+  `audit` must not flag them: `findings:` (task — the ids it remediates, `CR-*`/`SEC-*`/`SH-*`/`VC-*`),
+  `kind: review-intake` + `source:` (epic — the stamp `fix-next` reads to find the pool, so no epic
+  id is ever hard-coded, plus where the findings came from), `picked-by:` (task — which autonomous
+  skill owns an in-progress run), and a
+  `## Progress log` body section (task — one line per completed step, written *as it happens*, so an
+  interrupted run resumes from disk rather than from conversation memory; on a disagreement with git,
+  git wins).
+
 **No archiving.** Status-only. Epics and stories are often open-ended areas of concern that gain new work over time; only TASKs are atomic completable units. The dashboard hides done items by default and shows them in a collapsed "Completed" section.
 
 **Roll status up to parents — don't leave them stale.** A child changing status is not done until its parents reflect reality:
@@ -240,6 +264,7 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 - [[code-review]] — correctness review; the complement to `verify-conventions` at the close gate. Runtime-provided (a Claude Code built-in); `close` carries an inline fallback for runtimes without it.
 - [[security-review]] — the security third of the close gate, run **conditionally**: `close` step 5b invokes it when the task's diff touches auth, data access, user input, crypto, secrets, a new dependency, or an exposed endpoint. Same runtime-provided + inline-fallback rule. `/feature review`'s security pass is optional and feature-wide — it does not backstop this one.
 - [[review]] — reviews the **PR diff** at the `/tasks close` merge gate (the PR-per-task default). Runtime-provided, same fallback rule.
-- [[populate-tests]] — turns each task/surface into standing coverage; a field-found bug routes back as a task that ships with a regression spec (the loop).
+- [[fix-next]] — drains the defect backlog `intake` files. It reads the `kind: review-intake` stamp and `findings:` lists to build its pool, ranks by blast radius rather than `priority:`, and delegates the merge gate straight back to `close`. Where `pick` is interactive and picks *any* task, `fix-next` runs unattended and only ever picks defects.
+- [[populate-tests]] — turns each task/surface into standing coverage; a field-found bug routes back as a task that ships with a regression spec (the loop). Owns *Prove the guard can fail*, which `close` step 5 requires before an automated check can retire a `[manual]` step.
 - [[specs]] — harvested capability specs (`docs/specs/`). `close` on a STORY offers a scoped `/specs regen --story` so the spec diff confirms the story's behavioral change was intended; the snapshot's `specs: N stale` line comes from [[roadmap]]'s slice of its `verify`.
 - [[handoff]] — Same agent-pickable-context principle applied at a different scope.

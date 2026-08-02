@@ -37,7 +37,10 @@ enumerate-read-join-diff pass; batch the Reads.
 
 ### 1. Collect tasks
 Run the [[tasks]] skill's [Collection pass](../tasks/SKILL.md#collection-pass) — gives
-counts/buckets, `byParent`, and each task's `parent`, `status`, and `feature:` link.
+counts/buckets, `byParent`, and each task's `parent`, `status`, `findings:`, and `feature:` link,
+plus each epic's optional `kind:`.
+**Only for STORYs under an epic with `kind: review-intake`**, also count unticked `- [ ]` lines in
+the STORY body — DV12 needs them, and no other rule does, so don't scan bodies anywhere else.
 
 ### 2. Collect features
 Glob `docs/features/FEATURE-*/`. For each folder read:
@@ -81,6 +84,7 @@ Flag a feature (or task) when:
 | **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way |
 | **DV9** | A task carries `feature: FEATURE-NNN` but no decision row in that feature's `decisions.md` lists it in the `→ Tasks` column | The ledger doesn't know about its own work — the backfill (`/tasks new --from-feature` step 10b / decompose step 4) was missed; fix by writing the ID into the owning decision's row |
 | **DV10** | The project has real code (a `src/` tree or build manifest with tracked sources) but no `docs/specs/.map.yml` — **or the map's `areas:` list is empty** (the [[new-project]] scaffold seed that was never filled) | The whole spec layer is silently absent — every spec check (story-close regen offer, DV7/DV8, `/feature review`'s spec-landing gate) skips when the map is missing/empty, so nothing else will ever surface this — **advisory**: run `/specs init` to bootstrap |
+| **DV12** | Under an EPIC stamped `kind: review-intake`, a STORY carries unticked checklist lines in its body but has **no open TASK** (all children `done`/`cancelled`, or none exist) | Findings filed but never scheduled. Only `status: todo` tasks are ranked by `pick`, the `Next up` snapshot, or [[fix-next]] — a finding left as a checklist bullet is invisible to all three, so the review reads as drained while part of it was never worked. Fix by decomposing the remaining lines with [`/tasks intake --epic`](../tasks/verbs/intake.md) or `/tasks new` |
 
 ### 5. Output model
 Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase,

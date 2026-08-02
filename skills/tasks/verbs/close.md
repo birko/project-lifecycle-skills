@@ -21,6 +21,22 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
 5. **Verify the Human test plan** (tasks only):
    - Read the `## Human test plan` section. If it still holds the template placeholder text (un-filled), warn: "Human test plan was never filled — confirm it's genuinely `N/A` or fill it before closing." Let the user proceed or pause.
+   - **Automate before you accept a manual step.** Before *any* step is treated as human-only, prove a
+     tool can't assert it — ask of each remaining step: *"can a machine check this instead of a
+     person?"* Most can, and parking a mechanically-verifiable step as `[manual]` is how a task closes
+     to `review` and then sits there. Pick the right instrument:
+     - **Protocol / API / service-layer behaviour** (a handshake, request binding, a round-trip) → a
+       script or integration test against the project's test environment.
+     - **Anything that only manifests in a rendered UI** (a duplicated event handler firing N times, a
+       column bound to the wrong key, a display transform) → a **browser-level** test. A pure-HTTP
+       check *cannot* catch these; the defect lives in the rendered output, not the response.
+     - Authoring belongs to [[populate-tests]] — chain it. This step is the gate, not the how.
+     A step stays `[manual]` **only** when it needs genuine human judgement (visual layout and feel,
+     whether copy reads naturally, UX polish) or **physical hardware**. Both are legitimate; "I didn't
+     get round to automating it" is not.
+     - Wrote the check, ran it green, and **proved it can fail** ([[populate-tests]] § *Prove the guard
+       can fail*) → tick the box; it counts toward `done`.
+     - Genuine human-judgement / hardware step still unrun → the task closes to `review`, below.
    - If it has real steps with unchecked `[ ]` boxes, **don't close to `done`** — the manual/visual sign-off hasn't happened. Either (a) the user confirms they just ran it → check the boxes and proceed to `done`, or (b) it's not verified yet → set **`status: review`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
      - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (review — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `review` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
@@ -45,7 +61,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **If a PR exists** (the PR-per-task default — `pick` cuts a `task/TASK-NNN` branch, `close` is the merge gate), run [[review]] on the PR diff before merging (runtime-provided; no such skill → read `gh pr diff <n>` and run the same correctness pass at PR altitude). **This per-task pass is where code correctness is reviewed, once, at the right altitude** — `/feature review` then only *confirms completeness*, it does **not** re-review the code wholesale.
 
 5c. **Merge decision — settle it BEFORE writing frontmatter** (PR-per-task projects; skip entirely
-   when step 8's skip conditions apply — `--no-pr`, non-git, single-branch flow, or not on a
+   when step 8's skip conditions apply — `--no-pr`, non-git, `integration: single-branch`, or not on a
    `task/TASK-NNN` branch):
    - Ask (AskUserQuestion): *"Merge `task/TASK-NNN` into the default branch as part of this close?"*
      Default: **Yes, merge now.** Step 8 executes whichever answer you get; this step only decides,
@@ -69,6 +85,17 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      integration isn't. Blocking from `in-progress` is why 5c runs before this step: `block`
      refuses to act on a task already flipped to `done`.
      Then continue through steps 7 → 8 → 10 (step 9 is skipped — see its guard).
+   - **Never tick a criterion you didn't meet, soften its wording to fit what you did, or delete it.**
+     A criterion quietly rewritten to match the outcome is how a task "passes" without doing its job —
+     the acceptance list stops being an independent target and becomes a transcript, which is the exact
+     failure the "create the task before implementing" rule exists to prevent. An unmet criterion stays
+     **visibly unticked**, annotated in place:
+     `- [ ] <criterion> — ⚠ NOT MET — split to TASK-NNN`
+     Getting there is [spawn.md](spawn.md) § *Scope escalation*: measure it, record the numbers, file
+     the residue as its own task, then close on the scope this task genuinely delivered — or don't
+     close it. (Rescoping a criterion *before* the work, when the target itself was wrong, is a
+     different and legitimate act — correct it and say so; it's rewriting it *afterwards* to fit the
+     result that's forbidden.)
    - `pr:` — fill now when the reference already exists (a PR number, or the SHA of an earlier commit). When the reference will be the commit step 7 creates, leave it null here and backfill inside step 7 — never after the merge.
    - Ordering rationale: flipping status *after* the commit means the merged history says `in-progress` forever and the `done` flip floats uncommitted — the tracking files must ride in the same commit as the work. Writing the status *before* the merge is only honest because 5c already settled whether that merge happens; without 5c this step would be committing a guess.
 
@@ -90,7 +117,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **5c said merge now:** push if needed, open the PR if one doesn't exist, merge with the project's preferred strategy (default: `--no-ff` so the branch identity is preserved in history; check the project's commit log to confirm), and `git branch -d task/TASK-NNN`. Check out the default branch. Subsequent steps (hybrid remote close, dashboard regen, rollup hints) now run on the default branch — chore refreshes land on `main`, not on a task branch.
      - **The merge failing is a failed close**, not a footnote: on conflict or a rejected push, stop, report it, and leave the task at its pre-close status — don't leave a file reading `done` over a merge that never landed.
    - **5c said defer:** don't merge. The task is already `blocked` (step 6) with the reason recorded, so no state here claims otherwise. Push the branch and open/update the PR if the project uses one — parked work belongs on the remote, not only on a local branch. Then note the resume path: `/tasks unblock {{ID}}` + re-run `close` once the blocker clears; it re-enters here and merges.
-   - **Skip silently when:** `--no-pr` was passed, the repo isn't a git repo, the project uses a single-branch flow (no PR-per-task), or the current branch isn't `task/TASK-NNN`. In all these cases, "merge" has no meaningful action, 5c never ran, and step 8 is a no-op.
+   - **Skip silently when:** `--no-pr` was passed, the repo isn't a git repo, the project sets `integration: single-branch` in `.config.yml` (or otherwise has no PR-per-task flow), or the current branch isn't `task/TASK-NNN`. In all these cases, "merge" has no meaningful action, 5c never ran, and step 8 is a no-op. On a `single-branch` project `done` means **committed to the default branch** — the invariant is unchanged, only the mechanism is.
 
 9. **Hybrid mode remote close** — **only when the task actually reached `done`.** Skip for a task
    parked at `review` (step 5) or `blocked` (step 6, merge deferred): the remote tracker must not

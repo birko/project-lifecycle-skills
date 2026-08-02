@@ -105,6 +105,40 @@ happened. Spawn instead of widening.
    - then **"resuming TASK-origin"** and pick the thread back up. Spawning is an interruption, not
      a context switch — never leave the user mid-air on the task they were actually doing.
 
+## Scope escalation — when the task itself was mis-sized
+
+Everything above handles work that is *adjacent* to the task in hand. This section handles the other
+direction: the task's **own** subject turns out bigger than it was filed as. Here, spawning is
+sometimes exactly the wrong move — a task filed against a symptom shouldn't be closed on the symptom
+just because the honest fix is larger.
+
+**Measure it, then decide. Never resize a task silently — in either direction.** Three shapes, and
+they are *not* handled the same way:
+
+| Shape | Example | Handling |
+|---|---|---|
+| **Wider population, same fix** | filed as "2 endpoints return 500", measured as 115 of 170; one central change closes all of them | **No ask.** Sweeping *is* the task. Do it, and report the real number — the count was a sample, not the scope. |
+| **Higher altitude, same defect** | filed against one screen; the same defect is on every screen sharing that base class | **No ask** while it stays one coherent change. Fix it where it actually lives and say which other surfaces that covered. Ask only if going up a level drags in unrelated subsystems. |
+| **Different problem wearing the task's clothes** | "two consecutive runs produce identical counts" turns out to be test-fixture ownership across ~35 files, unrelated to the two collisions filed | **Stop and ask.** This is not the task growing; it's a different task discovered underneath it. |
+
+In the third case, before you ask:
+
+1. **Finish every part the task genuinely covers.** A pending question is not a reason to hand back
+   half-done work that was never in doubt.
+2. **Record the measurement in the task file — numbers, not adjectives.** "Much bigger than expected"
+   decides nothing; three runs reading `312/2/19 → 309/0/24 → 310/2/21` makes the split obviously
+   right. The numbers are what let the user answer in one line instead of re-investigating.
+3. **File the residue as its own task** (steps 4–6 above) so it can't evaporate while the question is
+   open.
+4. **Leave the unmet criterion visibly unticked** — `- [ ] <criterion> — ⚠ NOT MET — split to
+   TASK-NNN`. Never tick it, never soften its wording to fit what you did, never delete it
+   ([close.md](close.md) step 6).
+5. **Then ask**, offering three concrete options and recommending one: close on delivered scope · fold
+   the residue back in now · close and pick the residue next.
+
+While the ask is pending, don't start new scope — including, in a [[fix-next]] `--loop` run, the next
+defect.
+
 ## Edge cases
 
 - **No origin task** (spotted during a conversational fix or a review) — still create the task;

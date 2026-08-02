@@ -10,6 +10,19 @@ Interactive scaffold of a new task tree node.
      - Set `{{FEATURE}}` frontmatter to `FEATURE-NNN` (otherwise `{{FEATURE}}` is `null`).
      - Skip re-asking for Context — pull it from the feature's `docs/features/FEATURE-NNN/decisions.md` row(s) and `idea.md` that triggered this task.
      - The caller usually also passes `--no-plan` for batch decomposition; respect it.
+   - `--from-review <finding-ids> [--source <ref>]` — this task remediates findings from a review /
+     audit / spec-harvest pass ([verbs/intake.md](intake.md) passes this, once per task, exactly as
+     `/feature decompose` passes `--from-feature`). When present:
+     - Set `{{FINDINGS}}` frontmatter to the id list (`[CR-7, CR-9]`); otherwise `[]`.
+     - Skip re-asking for Context — write the findings' own evidence into `## Context`: the
+       `file:line` each was raised against, the mechanism, and `--source` if the pass left a
+       reference. **The task must stand alone** — a reader must not need the review output to work
+       it, because that output is transient (stdout / a PR comment) and will be gone.
+     - Draft `## Acceptance criteria` from *what must hold once fixed*, not from "apply the
+       suggestion" — the criteria are an independent target, and a review's proposed fix is a
+       hypothesis until step 3 of [[fix-next]] re-verifies it.
+     - The caller passes `--no-plan` for batch intake; respect it.
+     - `--from-feature` and `--from-review` compose: a finding inside a feature's surface carries both.
 
 1. **Find task root** — walk up from cwd: a directory containing `tasks/.config.yml` wins; else the project root (`*.slnx`/`*.sln`, then `.git`) → `<root>/tasks/`. A project's CLAUDE.md may override placement (aggregator repos hosting cross-cutting epics for a polyrepo family).
    - If `tasks/.config.yml` is **missing** → run the [mode detection flow](#mode-detection-flow) first. Write `.config.yml` before creating any task files.
@@ -55,6 +68,9 @@ Interactive scaffold of a new task tree node.
    - `{{PRIORITY}}` — P0/P1/P2 (task only)
    - `{{ASSIGNEE}}` — human/ai/agent-name (task only)
    - `{{FEATURE}}` — `FEATURE-NNN` from `--from-feature`, else `null` (task only)
+   - `{{FINDINGS}}` — the id list from `--from-review`, else `[]` (task only)
+   - `{{KIND}}` — `review-intake` when [intake](intake.md) is scaffolding a review pass's epic, else omit the line entirely (epic only)
+   - `{{SOURCE}}` — provenance for a `review-intake` epic: the report path(s), PR, or `<pass> <date>` when the findings arrived in-conversation. Omit the line for a normal epic (epic only)
    - `{{OWNER}}` — human/ai/both (epic only; default `human`)
    - `{{AFFECTS}}` — `[]` unless the EPIC is cross-cutting in an aggregator repo of a polyrepo family (see SKILL.md § Shape detection); then ask the user which sub-projects it affects and write the list
    - `{{TITLE}}` — the title from step 3

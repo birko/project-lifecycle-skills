@@ -56,5 +56,10 @@ description: Review the current diff or PR range for security concerns — auth 
     silently widening the one in hand or evaporating in chat.
   - Found at `/feature review` → a new or reopened task; the feature holds at `review` until it
     merges (never a fix inside the review step).
+  - **A whole pass at project/module scale** (an audit, not a task's diff) → `/tasks intake`
+    ([[tasks]]) — one EPIC (`kind: review-intake`), STORYs by severity theme, one TASK per fix
+    group, with `SEC-*` ids on each; [[fix-next]] drains it worst-first, and its ranking puts
+    authz bypass and cross-tenant leakage at the top. This is what "tracked work, not a side
+    effect" means concretely: without the intake step there is no tracked work, only a report.
 - **A shipped-behaviour security fix isn't `done` without a regression test** — same rule the
   [[tasks]] skill applies to field-found bugs. The exploit must not be able to recur silently.

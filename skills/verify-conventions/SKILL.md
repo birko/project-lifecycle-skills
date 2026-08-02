@@ -9,7 +9,11 @@ A tech-agnostic adherence lint: does the current diff follow the conventions **t
 
 > **Adherence, not correctness.** [[code-review]] finds bugs and reasons about whether the code is *right*. This skill only asks *"does it match our documented conventions?"* — framework choices, UI/UX rules, structure, naming, testing. Run both at a review gate; they answer different questions.
 
-> **Scope layering.** A repo may ship a project-local `verify-<project>-conventions` skill that shadows this one inside that repo with concrete checks (compiler-warning policy, path conventions, solution/workspace registration…). This generic skill is what runs in every other project, driven by whatever that project recorded in its own `CLAUDE.md`.
+> **Scope layering.** A repo may ship a project-local variant with concrete checks (compiler-warning policy, path conventions, solution/workspace registration…). Two rules make that safe, and both are easy to get wrong:
+> - **Name it `verify-conventions`, exactly.** Shadowing works by folder name. A skill called `verify-<project>-conventions` shadows *nothing* — every `[[verify-conventions]]` call site (`/tasks close` step 5b, [[fix-next]]) keeps resolving to this generic skill, and the project's own checks never run at the gate even though the repo believes they do.
+> - **It must EXTEND this skill, not replace it.** Once it shadows, this file no longer runs, so the local variant owns everything below — in particular the live § Conventions sweep (step 3), **register-on-introduce** (step 4) and the **architecture-drift check** (step 5). A local skill that is only a list of concrete greps silently drops the rulebook-currency loop, and the rule list stops growing with the project. Have it run this generic pass first, then add its own checks.
+>
+> This generic skill is what runs in every other project, driven by whatever that project recorded in its own `CLAUDE.md`.
 
 ## Authoritative reference — READ THIS FIRST when invoked
 

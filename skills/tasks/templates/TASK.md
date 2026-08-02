@@ -9,6 +9,8 @@ assignee: {{ASSIGNEE}}
 created: {{CREATED}}
 depends-on: []
 blocks: []
+# findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
+findings: []
 pr: null
 github-issue: null
 jira-key: null

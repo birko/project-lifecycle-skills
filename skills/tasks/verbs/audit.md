@@ -10,7 +10,7 @@ Analyze every task and report duplicates, mergeable/splittable items, stale work
 
 ## Steps
 
-1. **Run the [Collection pass](../SKILL.md#collection-pass)** — reuse it; don't re-enumerate. You get every task's frontmatter (`id`, `parent`, `feature`, `status`, `priority`, `depends-on`, `blocks`, `created`), title, and the `byParent` map. Also read each task's body (Context / Acceptance criteria / Human test plan) — needed for the content checks.
+1. **Run the [Collection pass](../SKILL.md#collection-pass)** — reuse it; don't re-enumerate. You get every task's frontmatter (`id`, `parent`, `feature`, `status`, `priority`, `findings`, `depends-on`, `blocks`, `created`), title, and the `byParent` map. Also read each task's body (Context / Acceptance criteria / Human test plan) — needed for the content checks.
 
 2. **Run the checks** and collect findings, each tagged with a severity (🔴 act now / 🟡 consider / ⚪ FYI):
 

@@ -51,3 +51,7 @@ description: Review the current diff (working tree, staged, or a PR range) for c
     in hand (that destroys its acceptance list as an independent target), don't fix it silently,
     don't drop it.
   - Found at `/feature review` → a new or reopened task; the feature holds at `review`.
+  - **A whole pass at project/module scale** (this skill run over a codebase rather than a task's
+    diff) → `/tasks intake` ([[tasks]]) — it files the pass as one EPIC (`kind: review-intake`),
+    STORYs by severity theme, and one TASK per fix group, which [[fix-next]] then drains. This
+    report is stdout; **an unfiled finding is a lost finding.**
