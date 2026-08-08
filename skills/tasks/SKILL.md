@@ -183,6 +183,10 @@ the hybrid "done (pending)".** A `review` task is *verification debt* — the sn
 it under "In review" and it should be closed (run the test → `done`) before new scope.
 - A task whose `## Human test plan` is genuinely `N/A — covered by automated tests` skips
   `review` and goes straight to `done` when the code + tests land (nothing for a human to verify).
+  **An absent section is not an `N/A` one** — resolve it (write the steps, or write `N/A` with the
+  reason a human adds nothing) *before* choosing the status. Defaulting a missing plan to `review`
+  parks the task on a step that may not exist, and it is indistinguishable from an unrun one
+  afterwards, so it becomes debt nobody can clear. `close` step 5 enforces this.
 - `review` → `done` only after the human step is checked off (the `close` verb enforces this).
 - **A change landing on a closed feature reopens the implementing task.** This is the
   *down-the-tree* counterpart to the roll-up rule below: when a post-sign-off change

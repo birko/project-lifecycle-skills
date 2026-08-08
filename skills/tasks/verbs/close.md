@@ -21,6 +21,18 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
 5. **Verify the Human test plan** (tasks only):
    - Read the `## Human test plan` section. If it still holds the template placeholder text (un-filled), warn: "Human test plan was never filled — confirm it's genuinely `N/A` or fill it before closing." Let the user proceed or pause.
+   - **A section that is ABSENT is not the same as one that says `N/A`, and must never default to
+     `review`.** When the task has no `## Human test plan` heading at all, stop and resolve it: either
+     write the manual steps, or write `N/A — fully covered by automated tests` **with the reason a human
+     adds nothing**. Only then decide `done` vs `review`.
+     - Rationale, from a real occurrence: three tasks with every acceptance criterion ticked and full
+       automated evidence were closed to `review` because the closer found no plan and treated the
+       absence as "sign-off pending". They sat for weeks on a step that did not exist. An explicit `N/A`
+       closes straight to `done`; a missing section is indistinguishable from an unrun one to the next
+       reader *and* to this gate, so it silently becomes debt.
+     - Write the reason, not just the verdict. "N/A" alone is re-litigated by the next person who reads
+       the task; "N/A — the tick maths is exported and asserted numerically, so eyeballing the chart adds
+       nothing" is not.
    - **Automate before you accept a manual step.** Before *any* step is treated as human-only, prove a
      tool can't assert it — ask of each remaining step: *"can a machine check this instead of a
      person?"* Most can, and parking a mechanically-verifiable step as `[manual]` is how a task closes
