@@ -74,6 +74,14 @@ the `Next up` snapshot. Report them in the closing report and offer
 [`/tasks intake --epic`](../tasks/intake) or `/tasks new`; **don't silently work them**, since an
 unscheduled bullet has not been through the filing discipline the pool depends on.
 
+**Respect a story that declares its findings are extracted on demand.** Some STORYs deliberately hold a
+findings list and are decomposed one task at a time as work is picked — they say so in the body ("Not
+pre-created. Extract on demand, one task per `SH-Mxxx`"). DV12 cannot distinguish that from a backlog
+nobody scheduled, so **check for the declaration before reporting**; a story that declares it is not a
+finding. Measured on a real tree: of DV12's 4 hits, **3 were deliberate** and only 1 was a genuine gap.
+A check that nags about a recorded decision gets muted, and a muted check is worth what an unrun one is.
+(A machine-readable marker would beat prose here — that is a live question for whoever owns the rule.)
+
 This costs one extra read per epic and closes a real hole: DV12 is correct and was *invoked by nothing*.
 A whole review-intake epic sat with three stories, one unticked line and zero tasks — so it contributed
 nothing to this pool and rendered as `0/0 tasks done`, indistinguishable from an epic nobody had started.
