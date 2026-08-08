@@ -59,6 +59,28 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 
 6. **Unmapped check:** glob project sources not matched by any area or `ignore` entry; if any, list them and suggest `.map.yml` additions (don't auto-edit the map — it's the human-owned file).
 
+   **Glob the trees the map's own globs reach — not just the project root.** Derive the search roots from
+   the `sources:` entries themselves (for `../Birko.Data.SQL/SQL/Connectors/X.cs`, the root is
+   `../Birko.Data.SQL`), then report files under those roots that no glob matches. Two failure modes this
+   closes, both measured on a real project:
+   - **A polyrepo aggregator has no sources of its own.** Globbing the project root there finds **zero**
+     files, so the check reports "nothing unmapped" on every run, forever — a silent pass that reads as
+     coverage. Measured: 0 own sources, while the map's globs reached 97 sibling projects.
+   - **A file inside an already-mapped project is the common gap, not an unmapped project.** Areas
+     typically list *specific files* (`Connectors/AbstractConnectorBase.cs`) rather than whole trees, so
+     a sibling file added later matches nothing. Measured on the same project: **148 unmapped `.cs` inside
+     already-mapped projects**, ~18%, concentrated (one project 27/30 unmapped, another 14/17) — and two
+     separate defect fixes had already landed in files no glob reached, each caught only because a human
+     noticed while reviewing the spec diff.
+
+   Why this matters more than a missing glob: a regen over an under-covered area produces a **clean diff**,
+   which reads as "nothing changed" when it means "nothing was looked at". The diff is supposed to be the
+   fix's evidence and the unintended-change detector; over an unmapped file it is neither, and it fails
+   without saying so.
+
+   Report the count in step 7 even when it is zero — a check whose output is invisible when it passes is
+   indistinguishable from one that never ran.
+
 7. **Confirm:** per area — regenerated / unchanged / rejected; findings raised; unmapped count. Suggest committing the spec changes with the related work (don't auto-commit).
 
 ## Edge cases

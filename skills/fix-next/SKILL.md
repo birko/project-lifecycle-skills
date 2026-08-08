@@ -66,6 +66,21 @@ onboarding cost.)
 Exclude: unmet `depends-on`, `status: blocked`, and anything whose acceptance is *"decide X"* — a
 decision task needs the user and can't run unattended. Surface those in the closing report instead.
 
+**Check the pool is complete before ranking it — findings can be filed and never scheduled.** You are
+already walking every `kind: review-intake` epic to build the pool, so evaluate [[roadmap]]'s **DV12** over
+the same epics while you are there: *a STORY with unticked checklist lines in its body but no open TASK*.
+Those lines are findings nobody can pick — only `status: todo` **tasks** are ranked here, by `pick`, or by
+the `Next up` snapshot. Report them in the closing report and offer
+[`/tasks intake --epic`](../tasks/intake) or `/tasks new`; **don't silently work them**, since an
+unscheduled bullet has not been through the filing discipline the pool depends on.
+
+This costs one extra read per epic and closes a real hole: DV12 is correct and was *invoked by nothing*.
+A whole review-intake epic sat with three stories, one unticked line and zero tasks — so it contributed
+nothing to this pool and rendered as `0/0 tasks done`, indistinguishable from an epic nobody had started.
+Every ranking drew from the other epics and never noticed. The check belongs here because this is the verb
+that runs most often **and** the one that would act on the answer; leaving it to a human remembering to
+run `/roadmap` is what let that epic sit for three weeks.
+
 **Verification debt comes first.** Tasks at `status: review` are not in the pool — they're not `todo` —
 but they are debt, and the house rule is that debt surfaces before new scope. Offer to clear them first
 by running their `## Human test plan` and closing `review → done`.
