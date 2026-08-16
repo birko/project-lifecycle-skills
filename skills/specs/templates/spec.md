@@ -4,6 +4,8 @@ generated-at: {{HEAD_SHA}}
 generated-on: {{YYYY-MM-DD}}
 sources:
   - {{RESOLVED_FILE_1}}
+source-commits:   # omit entirely when every source is in-repo
+  {{../SIBLING_REPO}}: {{SIBLING_HEAD_SHA}}
 shaped-by: []
 shaped-by-derived: {{true|false}}
 shaped-by-unresolved: {{N}}

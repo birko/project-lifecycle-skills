@@ -73,6 +73,8 @@ area: bulk-filter-updates
 generated-at: <commit sha of HEAD at harvest time>
 generated-on: YYYY-MM-DD
 sources: [<resolved file list>]
+source-commits:             # ONLY when sources glob outside this repo (polyrepo aggregator)
+  ../Sibling.Repo: <that repo's HEAD at harvest time>
 shaped-by: [FEATURE-012]    # append-only feature provenance, machine-written
 shaped-by-derived: true     # was the above computed, or never filled? (absent = never)
 shaped-by-unresolved: 0     # feature-linked tasks that left no evidence; derived≠complete
