@@ -80,7 +80,13 @@ Interactive scaffold of a new task tree node.
 
 10. **Write the file** with the Write tool.
 
-10b. **Backfill the feature ledger** (`--from-feature` only) — write this `TASK-NNN` into the `→ Tasks` column of the originating decision row(s) in `docs/features/FEATURE-NNN/decisions.md` (idempotent — skip IDs already listed). This runs whether the caller is `/feature decompose` or a direct invocation, so the ledger can never miss a task. When invoked directly (not via decompose), also append the History line yourself: `{{DATE}} — D<n> decomposed → TASK-NNN`; via decompose, leave the batch History line to its step 4.
+10b. **Backfill the feature ledger** — runs whenever the new task carries a non-null `feature: FEATURE-NNN`, **whatever set it**: the `--from-feature` flag, a value inherited from its parent, or one written by hand. Write this `TASK-NNN` into the `→ Tasks` column of the owning decision row(s) in `docs/features/FEATURE-NNN/decisions.md` (idempotent — skip IDs already listed), and append the History line `{{DATE}} — D<n> decomposed → TASK-NNN`. Via `/feature decompose`, leave the batch History line to its step 4 instead.
+
+     **Gate on the link, not on the flag.** That column means *"the tasks realizing this decision"*, so a task carrying a feature link belongs in it regardless of which path minted it. Gating on `--from-feature` left a hole exactly where tasks are filed fastest: work discovered mid-fix is created under an existing parent and **inherits** the feature, so no flag is passed — and it wasn't a `/tasks spawn` either, so [spawn.md](spawn.md) step 6 doesn't fire. Three writers of one column, all keyed on *how the task was created* rather than on *whether it has a feature*, and the busiest path matched none of them. Measured on a real tree: 15 tasks over 5 days, one per fix that uncovered its successor, none of them visible to the feature that owned them until [[roadmap]]'s DV9 caught the lot.
+
+     **Resolving the row when no decision originated the task** (the inherited case — there is no "originating" row to write to): match the task's parent STORY against the decision rows, which name their story (`Spec-harvest — high findings ([[STORY-051]])` → that row); an epic-direct task goes to the row covering work tracked outside any story. If no `approved`/`changed` row covers it, do **not** invent the link — this is new scope arriving through the back door, so follow [spawn.md](spawn.md) step 6's routing (append a new `proposed` row, tell the user it needs `/feature decide`).
+
+     This closes the **creation** path only. A task whose `feature:` is filled in later still slips past it, so DV9 remains the backstop — it is a periodic audit, not a redundant one.
 
 11. **Regenerate dashboard** — chain to [verbs/triage.md](triage.md) logic. Update `tasks/README.md`.
 
