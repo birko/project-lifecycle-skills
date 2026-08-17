@@ -31,7 +31,10 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    - Suspected bugs found while harvesting: raise them here (offer `/tasks new`), spec the behavior as-is.
    - User rejects the regen → discard the new body, write nothing.
 
-5. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today, `sources:` the resolved file list, `shaped-by:` per step 5a, `shaped-by-derived:` and `shaped-by-unresolved:` per step 5b, and **`source-commits:` per step 5c**.
+5. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today,
+
+   > `generated-at` is a **floor, not the staleness anchor.** It records what HEAD was when the harvest read the tree, and the spec is committed after that — usually alongside the very sources it was written from. [verify](verify.md) therefore anchors on the later of this stamp and the spec's own last commit. **Do not try to make the stamp exact by re-stamping after the commit**: it needs an amend or a second commit, neither of which works on a dirty tree or in a non-git project, and the stamp would still be wrong for anyone who commits differently. The stamp stays honest about what it knows; the reader resolves the rest.
+ `sources:` the resolved file list, `shaped-by:` per step 5a, `shaped-by-derived:` and `shaped-by-unresolved:` per step 5b, and **`source-commits:` per step 5c**.
 
 5c. **Stamp each external source repo** — for every source glob that resolves outside this repo, find its repo root (nearest ancestor with `.git`) and record `<prefix>: <that repo's rev-parse HEAD>` under `source-commits:`. Omit the key entirely when every source is in-repo. **This is not optional bookkeeping where it applies:** `generated-at` measures only this repo, so without it [verify](verify.md)'s staleness check cannot see a sibling repo change and the area reports fresh forever — a guard that is green by construction. If a sibling's HEAD cannot be read (repo absent, not a git checkout), write no entry for it rather than a guess, and say so in the confirmation — `verify` reports a missing entry as *unknown baseline*, which is honest, whereas a wrong sha reads as a measurement.
 
@@ -88,5 +91,5 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 ## Edge cases
 
 - **Area's sources resolve to zero files** — the map is stale (code moved/renamed); report it and suggest the map fix instead of writing an empty spec.
-- **Dirty working tree** — harvest reads the tree as it is; note in the confirmation that `generated-at` refers to HEAD while uncommitted changes were included (staleness math stays honest once the work is committed).
+- **Dirty working tree** — harvest reads the tree as it is, so `generated-at` names HEAD while the spec was written from content that HEAD does not contain. Note it in the confirmation. This is the normal case, not an unusual one: you regen after editing, and step 7 has you commit the spec with that work. **The staleness math does not fix itself once the work is committed** — [verify](verify.md) compensates by anchoring on the later of `generated-at` and the spec's own last commit. That is where the ordering hazard is handled; do not "fix" it by re-stamping here (see below).
 - **Huge area** (sources exceed what one read pass can hold) — that's a map-granularity smell; suggest splitting the area rather than spec-ing a summary of a summary.
