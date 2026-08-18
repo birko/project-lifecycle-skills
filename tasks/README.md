@@ -9,12 +9,12 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 12    |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 11    |
+| review       | —     | —       | 12    |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 3× P1 · 7× P2 · 2× P3.
+`todo` by priority: 2× P1 · 8× P2 · 2× P3.
 
 ## In progress now
 
@@ -26,7 +26,7 @@ _No task is currently in-progress — the whole epic is parked on verification d
 
 ## In review
 
-⚠ **Verification debt (11).** Every task below is code-complete with unrun checks. The repo's own
+⚠ **Verification debt (12).** Every task below is code-complete with unrun checks. The repo's own
 rule is to clear this before taking new scope.
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — only the `@AGENTS.md` bridge check remains; needs a fresh session
@@ -40,6 +40,7 @@ rule is to clear this before taking new scope.
 - **TASK-012** Router now teaches LAYER.md's four survey states (STORY-002) — all three drills need real repos: a .NET repo with sibling `*.Tests`, and one with a genuinely undeterminable row
 - **TASK-018** Survey states and report buckets miss a re-run's cases (STORY-002) — 2 of 4 drills run: the scratch-clone fixture proves both new states (and that the old probe would have lost `tasks/.config.yml`); the WorkoutTracker re-drill and flappy-dragon remain
 - **TASK-021** Survey infers what the layer records as a declaration (STORY-002) — rule written and gate-checked, but **ships ahead of TASK-023**: the Presenter re-drill cannot run until `/tasks init` can reconcile an old config
+- **TASK-023** `/tasks init` reconciles an older config (loose) — reconcile verified on a copy of Presenter's real pre-field config; only the end-to-end adoption re-drill remains
 
 > The STORY-002 drills above predate TASK-011's junction, so — with one exception — none of
 > them invoked the *installed* skill; the checked lines say so explicitly. They are evidence of
@@ -86,6 +87,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-013** verify-conventions must say which sections it read — `todo`, P2
 - **TASK-014** Architecture doc and changelog don't reflect the day's shipped skills — `todo`, P2
 - **TASK-015** `close` step 5d needs an unattended path for fix-next — `todo`, P3
-- **TASK-023** `/tasks init` cannot reconcile an older config shape — `todo`, P1 (blocks TASK-021)
+- **TASK-023** `/tasks init` reconciles an older config shape — `review`, P1 (blocks TASK-021)
+- **TASK-024** The other owner verbs can't say whether an artifact is current — `todo`, P2
 
 _No completed work yet. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._

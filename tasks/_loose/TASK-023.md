@@ -3,7 +3,7 @@ id: TASK-023
 parent: null
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: review
 priority: P1
 assignee: agent
 created: 2026-08-18
@@ -43,15 +43,23 @@ shape is the only thing that can know a shape is old.
 **Do not fix this by having `adopt-project` write the field.** That is the hand-rolling the layer's
 Owner column exists to prevent, and it would put the config's shape in two skills.
 
+**What the close gate caught here** (`/code-review`, same day): the new `integration=` arg documented
+a caller that did not exist — `adopt-project`'s frontier round asked only about *missing* artifacts,
+so nothing would ever pass it — and the **Absent** branch of step 3 listed only mode/repo/project, so
+a caller passing `integration=single-branch` into a fresh tree would have had the template's
+`pr-per-task` written over its answer. Both fixed. The round now asks about *a declaration a present
+artifact lacks*, which is the case that started this. Also spawned **TASK-024**: the convention this
+task registered applies to every owner verb, and only `/tasks init` has been taught it.
+
 ## Acceptance criteria
 
-- [ ] `/tasks init` on an existing `.config.yml` reconciles it against the current template: fields the template has and the file lacks are **added**, with their documented default and comment
-- [ ] Values already present are never changed — reconciliation adds, it does not re-decide. A field whose value is a real choice (`integration:`) is **asked** rather than defaulted silently when it is absent
-- [ ] The verb reports what it reconciled, so a caller (and `adopt-project`'s report) can distinguish "nothing to do" from "brought up to date"
-- [ ] "Both files exist → change nothing" is corrected: it is true only once the config matches the current shape. The idempotence promise stays intact — a second run on a reconciled config writes nothing
-- [ ] A comment-only or user-annotated config survives reconciliation with its comments intact; this is a file people hand-edit
-- [ ] `templates/config.yml` is the single source of the field list — the verb reads the template rather than carrying its own copy of what a config contains
-- [ ] `skills-lint` and `skills-lint-test` stay green
+- [x] Step 3 is now **write or reconcile**: a present config has every field the template declares and it lacks added, carrying the template's own comment, and placed where the template places it so two configs stay comparable by eye
+- [x] Values already there are never touched — reconciliation adds, it does not re-decide — and `integration:` is **asked**, never defaulted into an existing repo, because an old config's silence is not a decision. Unattended with no arg: leave it absent and report it unresolved, since a written value looks *decided*
+- [x] Step 5 reports one of three outcomes — **created** / **already current** / **brought up to date** (naming each field added). Stated with its reason: a caller cannot tell "your config is fine" from "I declined to look" when both print the same line, and `adopt-project` has to
+- [x] The head's idempotence claim is corrected to *a second run on an up-to-date tree writes nothing*, with **existing is not current** stated beside it. Verified by drill: after reconciliation, a re-run performed no write and the file was byte-identical (`1c55081c…`)
+- [x] Verified on the real Presenter config: its own three header comments survived, as did a hand-added team note and an unknown `local_owner:` key
+- [x] Step 3 names `templates/config.yml` as the **only** source of what a config contains, with an explicit instruction not to carry a second copy of the field list in the verb
+- [x] `skills-lint` OK (16 skills); `skills-lint-test` re-run green
 
 ## Out of scope
 
@@ -61,12 +69,34 @@ Owner column exists to prevent, and it would put the config's shape in two skill
 
 ## Human test plan
 
-- [ ] Run `/tasks init` against a copy of `Presenter/tasks/` and confirm `integration:` is asked for and added, with the epics, story, tasks and README untouched
-- [ ] Run it twice: the second run reports nothing to do and writes nothing
-- [ ] Hand-add a comment and a stray key to a config, reconcile, and confirm both survive
-- [ ] Confirm a config that already matches the template is reported as such rather than rewritten
+- [x] Ran against a copy of the real `Presenter/tasks/` (2026-08-18): `integration:` was the one missing field, added in template position with its three comment lines and the value taken from a **simulated answer**, not from the git log. Tree untouched — 19 files, `README.md` byte-identical
+- [x] Second run: no missing fields, outcome *already current*, no write, config byte-identical
+- [x] Hand-added comment and stray `local_owner:` key both survived reconciliation
+- [x] A config already matching the template reports *already current* rather than being rewritten
 - [ ] Re-drill `adopt-project` on Presenter afterwards and confirm the delegation now produces the backfill rather than a guess
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-023` — leave empty until then._
+_Drafted in-conversation; the harness rules out spawning a Plan agent unasked._
+
+1. **Restate the idempotence claim** at the top of `verbs/init.md`. Today it reads *"if both files
+   already exist, report that and change nothing"* — which is the bug in one sentence. The promise
+   worth keeping is *a second run on an up-to-date tree writes nothing*; **existing is not current**.
+2. **Add an `integration=` arg.** A caller that already asked — `adopt-project` asks in its one
+   frontier round — must not have the question repeated, which is the same rule `mode=` already
+   carries.
+3. **Step 3 becomes write-or-reconcile.** Absent → write from the template. Present → reconcile
+   against `templates/config.yml`: add fields the template declares and the file lacks, carrying the
+   template's own comment; never change a value already there; **ask** for a field whose value is a
+   real choice rather than defaulting it. Preserve comments and any keys the template does not know
+   about — people hand-edit this file — so it appends rather than rewrites.
+4. **Never write a guessed value.** Unattended, with no user to ask and no arg: leave the field
+   absent and *report* it unresolved. Consumers already have a documented default; a value written
+   into the file looks decided, and that is worse than an absent one.
+5. **Report the outcome as two distinct results** in step 5 — *already current* vs *brought up to
+   date* — because `adopt-project` now routes an init that says "nothing to do" to `unknown`, and it
+   can only stop doing that once this verb distinguishes the two.
+6. **Edge case** for a config from an older version, pointing at step 3 and naming adoption as the
+   caller that hits it.
+7. **Verify on a copy of `Presenter/tasks/`** — the real pre-field config — plus a run against an
+   already-current one, a second run for the no-op, and a hand-annotated config for comment survival.

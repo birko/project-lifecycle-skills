@@ -35,7 +35,7 @@ check per row. The states are deliberately **not** listed here: the list grows w
 turns up a condition it could not express (it has grown twice already), and a copy here goes wrong
 silently the next time, with nothing to signal it.
 
-Two consequences decide behaviour:
+These consequences decide behaviour:
 
 - **When in doubt, `unknown` — never `missing`.** A false "missing" invites a fill that writes over
   a working setup, which defeats the never-overwrite rule from underneath instead of breaking it.
@@ -54,7 +54,16 @@ ancestor git repo, and whether anything the layer owns is sitting on disk **untr
 signature of an earlier pass that wrote and never committed.
 
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
-written. For a repo that is already complete, this is the entire run — say so and finish.
+written.
+
+**A repo can only be called complete once the owners have spoken.** Finishing at the survey is right
+when nothing is left to ask — but *present* is not *current*, and for any row whose column names a
+verb to delegate to, the survey has not established completeness; only that verb can. So a
+"complete" table is the end of the run only when **no row names a verb to delegate to, or every such
+verb has already answered**. Otherwise continue: step 3's delegations are the rest of the survey, not
+extra work beyond it. (Skipping them on a repo whose artifacts are all present is how `Presenter`
+kept a `tasks/.config.yml` with no `integration:` field through a full pass that reported it
+complete.)
 
 ### 2. Infer the conventions, then confirm them
 
@@ -68,9 +77,14 @@ as a guess — and **show the evidence**, so the user can disagree specifically 
 rubber-stamp.
 
 Alongside the inferences, a few facts are choices rather than observations: task-tracking mode
-(local / hybrid), whether the canonical guide is `CLAUDE.md` or `AGENTS.md` + bridge, and the
-license posture. Ask **only** about artifacts the survey found missing — a repo that already has a
-guide is not asked which guide it wants.
+(local / hybrid), the integration model (`pr-per-task` / `single-branch`), whether the canonical
+guide is `CLAUDE.md` or `AGENTS.md` + bridge, and the license posture.
+
+Ask about an artifact the survey found **missing**, or about **a declaration a present artifact
+lacks** — a repo that already has a guide is not asked which guide it wants, but a repo whose
+`tasks/.config.yml` predates the `integration:` field *is* asked for it, because nothing in the repo
+answers and the alternative is guessing from `git log`. Pass the answers to the owning verb
+(`/tasks init` takes `mode=` and `integration=`) so nobody is asked twice.
 
 Put the inferences and the choices in **one frontier round** ([[grill-me]]'s shape), not a queue of
 single questions. A 15-rule proposal asked one at a time becomes an interrogation, and the answers
@@ -92,9 +106,17 @@ The rules that bind the whole step:
 - **Never skip a delegation because the artifact looks right.** Presence decides whether to
   *create*, never whether to *delegate*, and the owner is the only thing that knows its own current
   shape. Skipping one is how `Presenter` kept a `tasks/.config.yml` with no `integration:` field
-  through a full adoption pass. **And do not read "nothing to do" as "up to date"** — an init that
-  declines to touch an existing file has reported its own inaction, nothing more; that row is
-  `unknown`, and the report names the init that could not answer.
+  through a full adoption pass.
+- **Report the state the owner actually reported.** Take the verb's answer at face value and map it:
+  *already current* → `present`; *brought up to date* → `present, outdated`, naming what it
+  reconciled; *created* → created. Only a verb that **cannot answer** — it declined to look, or has
+  no way to tell an old shape from a current one — leaves the row `unknown`, with that verb named as
+  the reason. Never upgrade silence into a clean bill of health, and never downgrade a real
+  reconciliation into "I could not tell".
+  - **An `unknown` that came from a verb's silence is report-only** — it is *not* subject to the
+    ask-to-fill rule above. The artifact is sitting right there; asking whether to create it is
+    absurd, and the honest output is "present, and `<verb>` could not tell me whether it is
+    current".
 - **A `present, uncommitted` row is landed, not rewritten.** The file is already right; what is
   missing is the commit. Offer it in the adoption commit and report it. Rewriting it discards an
   earlier pass's work to produce, at best, the same bytes.

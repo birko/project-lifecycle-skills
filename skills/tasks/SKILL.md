@@ -13,7 +13,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 
 | Verb | What it does | File |
 |---|---|---|
-| `init` | Bootstrap `tasks/` — write `.config.yml` (mode passable as arg) + initial dashboard; chained by [[new-project]] | [verbs/init.md](verbs/init.md) |
+| `init` | Bootstrap **or reconcile** `tasks/` — write `.config.yml`, or add fields an older one predates (mode/integration passable as args) + initial dashboard; chained by [[new-project]] and delegated to by [[adopt-project]] | [verbs/init.md](verbs/init.md) |
 | `new` | Create EPIC, STORY, or TASK (auto-runs `plan` for TASK) | [verbs/new.md](verbs/new.md) |
 | `triage` | Regenerate `tasks/README.md` dashboard | [verbs/triage.md](verbs/triage.md) |
 | `audit` | Scan the backlog for duplicates, mergeable/splittable, stale, broken-link, and incomplete tasks (suggest-only; `--fix` to apply safe ones) | [verbs/audit.md](verbs/audit.md) |

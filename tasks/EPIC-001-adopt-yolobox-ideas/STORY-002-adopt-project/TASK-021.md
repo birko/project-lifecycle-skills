@@ -43,7 +43,18 @@ the same log, and the branch deletion was a second inference layered on the firs
 "merge it into main".
 
 Both failures are the same mistake at different altitudes: **derive from observation what the layer
-stores as a declaration.** The whole point of that field is that no agent has to guess, and the
+stores as a declaration.**
+
+**Post-review correction, same day.** A second `/code-review` pass — run while closing TASK-023 —
+found this task's rule shipped inert: step 1 still ended *"for a repo that is already complete, this
+is the entire run"*, and on a repo where every artifact is present (Presenter, exactly) the run would
+stop there and never reach the delegation the rule exists to force. Fixed: completeness is now only
+callable once every row naming a verb has had that verb answer. The same pass found the ripple in the
+other direction — with `/tasks init` now reporting three distinct outcomes, this skill's hardcoded
+*"nothing to do" → `unknown`* would have reported a genuine reconciliation as "I could not tell" —
+and that an `unknown` arising from a verb's silence was falling under the ask-to-fill rule, i.e.
+offering to create a `tasks/` tree sitting in plain sight. Both fixed here rather than deferred: a
+rule that cannot fire is worse than an unwritten one, because it reads as covered. The whole point of that field is that no agent has to guess, and the
 reason it was missing is that the survey never looked inside the artifact carrying it.
 
 ## Acceptance criteria

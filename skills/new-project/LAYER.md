@@ -23,7 +23,7 @@ for adoption — **what to do when the repo already has one**.
 | `docs/architecture.md` | — | Leave it; report if absent. |
 | `docs/features/` + `README.md` index | [[feature]] | Create the folder + index if absent. Never regenerate an existing index by hand — that is `/feature status`'s job. |
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
-| `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init`, which adopts a pre-skill tree without disturbing it. Never write these shapes by hand. |
+| `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
 | `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
@@ -32,13 +32,17 @@ for adoption — **what to do when the repo already has one**.
 
 ## Delegation follows the row, not the artifact's appearance
 
-**A present artifact still goes to its owner — where the row names something to go to.** Read the
-*already present?* column: where it names a verb, that delegation applies **whether or not the
-artifact is present**, because only the owner knows its own current shape. Where it names none —
-`docs/BRIEF.md` says *never reconstruct*, the README says *leave it* — there is no delegation to
-make, and adoption must not invent one. The distinction is per row, which is why the column is per
-row; there is no blanket "every owner has an init", and reading one into this rule would send a
-present brief to the greenfield scaffolder.
+**The *already present?* column is the authority; read it per row.** Where it names **a verb to
+delegate to** — *"delegate to `/tasks init`"*, *"delegate to `populate-tests` in `adopt` mode"* —
+that delegation applies **whether or not the artifact is present**, because only the owner knows its
+own current shape. Three kinds of row are *not* delegations and must not be turned into one:
+
+- a row that **answers for itself** — the test-harness row's *"a repo with a working runner is already adopted — say so and move on"* is the answer, not an invitation to run something;
+- a row that names a verb only inside a **prohibition** — *"never regenerate an existing index by hand, that is `/feature status`'s job"* forbids hand-editing; it does not ask adoption to run `/feature status` over someone's present index;
+- a row that names **no verb at all** — `docs/BRIEF.md` says *never reconstruct*, the README says *leave it*.
+
+There is no blanket "every owner has an init", and reading one into this rule would send a present
+brief to the greenfield scaffolder.
 
 Skipping a delegation because the artifact "looks right" substitutes a shape check for a version
 check, and the two differ exactly where it matters: a `tasks/` tree with epics, a README and a
