@@ -7,14 +7,14 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 7     |
+| todo         | —     | —       | 9     |
 | in-progress  | 1     | 2       | 0     |
 | review       | —     | —       | 9     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 5× P2 · 2× P3.
+`todo` by priority: 2× P1 · 5× P2 · 2× P3.
 
 ## In progress now
 
@@ -31,17 +31,19 @@ rule is to clear this before taking new scope.
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — only the `@AGENTS.md` bridge check remains; needs a fresh session
 - **TASK-003** adopt-project: survey and fill (STORY-002) — never run on a repo with code and **no** layer; fill exercised on one repo only
-- **TASK-004** adopt-project: infer conventions (STORY-002) — drilled on BardStudio; **not** on Symbio/WorkoutTracker, where the failure mode is plausible-but-wrong rules
+- **TASK-004** adopt-project: infer conventions (STORY-002) — drilled on BardStudio; the WorkoutTracker attempt (2026-08-18) produced **no evidence**, the run having skipped step 2 by its own judgement (see TASK-017). Symbio still owed
 - **TASK-005** Layer parity (STORY-002) — merge drill on a repo with an existing README unrun
 - **TASK-006** verify-conventions finds the rulebook (loose) — verified on Symbio; a findings pass on a hand-written diff there is still owed
-- **TASK-007** Never offer CI a repo cannot pass (STORY-002) — verified on Latent/Presenter/flappy-dragon
-- **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded
+- **TASK-007** Never offer CI a repo cannot pass (STORY-002) — verified on Latent/Presenter/flappy-dragon, and on WorkoutTracker 2026-08-18 via the installed skill
+- **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded. WorkoutTracker re-verified 2026-08-18 through the installed skill
 - **TASK-011** adopt-project installed in both runtimes (STORY-002) — junctions verified live; only the fresh-session description-match check remains
 - **TASK-012** Router now teaches LAYER.md's four survey states (STORY-002) — all three drills need real repos: a .NET repo with sibling `*.Tests`, and one with a genuinely undeterminable row
 
-> The STORY-002 drills above predate TASK-011's junction, so none of them invoked the *installed*
-> skill — the checked lines now say so explicitly. They are evidence of behaviour, not of discovery;
-> re-run each at its own close now that `adopt-project` resolves in both runtimes.
+> The STORY-002 drills above predate TASK-011's junction, so — with one exception — none of
+> them invoked the *installed* skill; the checked lines say so explicitly. They are evidence of
+> behaviour, not of discovery; re-run each at its own close now that `adopt-project` resolves in
+> both runtimes. The exception is the **WorkoutTracker drill of 2026-08-18**, the first run through
+> the junction: it corroborated TASK-007 and TASK-008 and filed TASK-017 / TASK-018.
 
 ## Tree
 
@@ -58,6 +60,8 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-011   adopt-project is not installed in either runtime         [review]
     TASK-012   Router teaches three survey states, LAYER.md four        [review]
     TASK-016   Installers only add — no missing/stale junction check    [todo] P2
+    TASK-017   Step 2's inference round has no skip condition           [todo] P1
+    TASK-018   Survey states and report buckets miss a re-run's cases   [todo] P1
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]

@@ -54,6 +54,7 @@ recognises only the canonical form and silently reports failure as absence.
 - [ ] Re-survey all seven drilled repos; every "missing" must be genuinely absent, checked by hand
 - [ ] Confirm a repo with tests in a non-standard location is never offered a new harness
 - [ ] Confirm the report distinguishes present / present-elsewhere / unknown / missing
+- [x] **WorkoutTracker re-surveyed 2026-08-18 through the installed skill** — the repo that motivated this task now reports correctly: test harness present (`Reps.Domain.Tests` + `Reps.Api.Tests` + the Playwright `ui-e2e` suite), rulebook present (~240-line `## Conventions`), architecture present. The other six repos remain owed, and the state list itself proved short by two → TASK-018
 
 ## Implementation plan
 
