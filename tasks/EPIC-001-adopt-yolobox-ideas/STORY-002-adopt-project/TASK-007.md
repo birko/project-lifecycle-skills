@@ -57,9 +57,9 @@ is the team's normal shape, so this is the common case, not an edge case.
 
 ## Human test plan
 
-- [ ] Run the survey on Latent and confirm the CI row reads "skipped — out-of-repo source import" with the projitems path quoted
-- [ ] Run it on a self-contained repo and confirm CI is still offered
-- [ ] Confirm no workflow file was written into Latent
+- [x] Ran the survey on Latent and confirmed the CI row reads "skipped — out-of-repo source import" with the projitems path quoted
+- [x] flappy-dragon (self-contained node): CI still offered
+- [x] Confirmed no workflow file was written into Latent
 
 ## Implementation plan
 

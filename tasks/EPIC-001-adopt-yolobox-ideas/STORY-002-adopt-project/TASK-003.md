@@ -52,8 +52,8 @@ them in dependency order and reports.
 
 - [x] Run it on **this** repo — must report zero gaps, since STORY-001 built the layer by hand. Anything it reports is either a real STORY-001 defect or a bug here; both are findings worth having.
 - [ ] Run it on a repo with code and no layer at all, and confirm the created files match what `new-project` would have produced for the same stack
-- [ ] Run it twice in a row on the same repo and confirm the second run writes nothing
-- [ ] Point it at a repo with a hand-written `README.md` and confirm the file survives untouched
+- [x] Run it twice in a row on Latent: identical output, second run wrote nothing
+- [x] Latent README untouched by the fill
 
 ## Implementation plan
 

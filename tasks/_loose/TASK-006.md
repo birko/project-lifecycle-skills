@@ -53,7 +53,7 @@ Four of the seven surveyed consumers are affected.
 - [x] It never reports "this project hasn't recorded conventions yet" for a guide that plainly carries rules; that message is reserved for a guide with **no rule content at all**
 - [x] When it cannot map a guide onto the seed's subsections, it degrades to linting against the whole rule text rather than stopping
 - [x] The distinction is stated in the skill: *absent rulebook* (a real finding, worth surfacing) versus *rulebook under a different shape* (adapt to it, do not lecture the user about their heading names)
-- [ ] Verified against Symbio specifically — **half done**: the ladder provably finds its rulebook (step 1 matches 0, step 2 matches 9 rule sections, 92 normative markers), and the old behaviour provably stopped. Producing *findings on a real diff* is still unrun, because Symbio.s only current diff is build output (see TASK-009) — needs a hand-written diff there
+- [x] Verified against Symbio end-to-end on commit `2a118fcc` (11 files, hand-written): ladder step 2 locates 10 rule-named sections where step 1 finds none; the applicable rules are `## Pravidla pre cislovanie dokumentov (KRITICKE — backend)` and `## Pravidla zavislosti (KRITICKE)`; verdict clean and traceable — the diff moves NumberSequence registration to the host under "Core" and drops seven per-module registrations, exactly as the rule requires. The register-on-introduce check also passes: the same commit added the rule line to CLAUDE.md
 - [x] Consider whether the seed should stop assuming English headings at all, and record the decision either way
 
 ## Out of scope
