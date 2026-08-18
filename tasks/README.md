@@ -38,7 +38,7 @@ rule is to clear this before taking new scope.
 - **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded. WorkoutTracker re-verified 2026-08-18 through the installed skill
 - **TASK-011** adopt-project installed in both runtimes (STORY-002) — junctions verified live; only the fresh-session description-match check remains
 - **TASK-012** Router now teaches LAYER.md's four survey states (STORY-002) — all three drills need real repos: a .NET repo with sibling `*.Tests`, and one with a genuinely undeterminable row
-- **TASK-018** Survey states and report buckets miss a re-run's cases (STORY-002) — states + buckets fixed and gate-checked; all four drills unrun, and the uncommitted state now needs a scratch clone since WorkoutTracker's brief was committed
+- **TASK-018** Survey states and report buckets miss a re-run's cases (STORY-002) — 2 of 4 drills run: the scratch-clone fixture proves both new states (and that the old probe would have lost `tasks/.config.yml`); the WorkoutTracker re-drill and flappy-dragon remain
 
 > The STORY-002 drills above predate TASK-011's junction, so — with one exception — none of
 > them invoked the *installed* skill; the checked lines say so explicitly. They are evidence of
