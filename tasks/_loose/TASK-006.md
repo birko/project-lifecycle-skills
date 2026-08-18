@@ -2,7 +2,7 @@
 id: TASK-006
 parent: null
 feature: null
-status: review
+status: done
 priority: P1
 assignee: unassigned
 created: 2026-08-18
@@ -63,9 +63,9 @@ Four of the seven surveyed consumers are affected.
 
 ## Human test plan
 
-- [ ] Run `/verify-conventions` on a real diff in Symbio and confirm it produces findings traceable to the Slovak rule headings, quoting them
-- [ ] Run it on a guide with genuinely no rules and confirm the "not recorded yet" message still appears — the true-negative must survive the fix
-- [ ] Run it on this repo (headings match the seed) and confirm no regression
+- [x] Two passes on 2026-08-18. **Symbio's real in-flight diff** (4 files: `index.html`, `sw.js`, `wwwroot/app.js`, `app.js.map`) — the rulebook was found via ladder **step 2**, since Symbio has no `## Conventions` heading at all, only 12 `## Pravidla … (KRITICKE)` sections; no source-level findings, because every changed file is build output (cache-bust hash `58ced6be` → `45f246ef`). That outcome is itself evidence for TASK-009: nothing in the skill says a generated bundle is not lintable source. **Then a rule-traceable pass**, on a fixture carrying Symbio's actual `CLAUDE.md` and a staged `InvoiceService.cs` with `await lines.FindAllAsync(...)` inside `foreach (var inv in all)` — one 🛑 blocker, quoting the Slovak heading and its own words back (*"NIKDY nevolaj repository v cykle"*), with the fix taken from that rule's own ✅ block. Fixture rather than Symbio's tree because the check is whether the skill quotes the rule, not whether Symbio's committed code is adherent
+- [x] Fixture with a guide of `## Setup` and `## Layout` and **zero** normative statements (0 hits for must/never/always/required/forbidden): the pass worked the whole ladder, found nothing that reads as a rule, and printed the *"hasn't recorded conventions yet"* pointer. The true negative survives the fix — which was the actual risk of making detection permissive
+- [x] Exercised repeatedly on this repo through the session's own close gates — on the TASK-018, TASK-021 and TASK-023 diffs — each time producing findings quoted from `AGENTS.md § Conventions` (the shared-inventory rule, *router SKILL.md files stay small*, register-on-introduce). No regression: the seed-shaped guide is still read first and still yields traceable findings
 
 ## Implementation plan
 

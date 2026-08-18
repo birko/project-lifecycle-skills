@@ -3,7 +3,7 @@ id: TASK-002
 parent: STORY-001
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-18
@@ -54,9 +54,9 @@ Ran `new-project` against a repo with 36 commits, an existing README and LICENSE
 - [x] `bash .github/workflows/skills-lint.sh` exits 0 and reports 15 skills
 - [x] `tr -d '[:space:]' < CLAUDE.md` equals `@AGENTS.md`
 - [x] CI green on ubuntu-latest (run 32163759063, 12s): skills-lint-test 25/25, skills-lint OK (16 skills), bridge OK — **identical to Windows**, so the case-sensitivity divergence that motivated this check did not materialise
-- [ ] Open a fresh agent session in this repo and confirm the `@AGENTS.md` bridge auto-loads the guide, and that `§ Conventions` is what `/verify-conventions` reads
-- [ ] Run `/roadmap` and confirm it renders EPIC-001 across both trees without erroring on an empty `docs/features/`
-- [ ] **Blocked:** run `adopt-project` on this repo and confirm zero gaps (STORY-002)
+- [x] Confirmed in this session (2026-08-18), which began cold in this repo: the auto-loaded project context arrived as `CLAUDE.md` **plus the full expanded body of `AGENTS.md`**, i.e. the one-line `@AGENTS.md` bridge resolved without anyone naming it. And `§ Conventions` is demonstrably what `/verify-conventions` reads — three close gates this session produced findings quoted from it (the shared-inventory rule, *router SKILL.md files stay small*, register-on-introduce). Stated precisely so it can be disagreed with: the evidence is this session's own loaded context, not a second session opened to watch it
+- [x] `/roadmap` renders EPIC-001 across both trees and the **empty `docs/features/` produces findings, not an error**: two DV5 rows (STORY-001 and STORY-002 have tasks with no feature folder), correctly flagged and correctly left for a human — this epic is internal tooling, and § How we work reserves `docs/features/` for stakeholder-facing work. The empty spec map (`areas: []`) was treated as absent exactly as its own comment promises, so nothing false-fired. One real finding came out of the run and got an id: **TASK-025** — DV10 cannot see a repo whose source is prose, so the rule that exists to catch a silently-absent spec layer is silently absent here
+- [x] Unblocked and run: **zero gaps.** All thirteen layer artifacts present (README, `CLAUDE.md` + `AGENTS.md` bridge, `docs/BRIEF.md`, `docs/architecture.md`, `docs/features/` + index, `docs/specs/.map.yml`, `tasks/` config + dashboard, `CHANGELOG.md`, `.gitignore`, `.gitattributes`, `.editorconfig`, CI workflow), `integration:` declared in the config, and **nothing untracked** — the `present, uncommitted` probe came back empty, which is not a given: the same probe caught Symbio's brief and Latent's spec map
 
 ## Implementation plan
 

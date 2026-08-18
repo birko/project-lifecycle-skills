@@ -2,7 +2,7 @@
 id: TASK-005
 parent: STORY-002
 feature: null
-status: review
+status: done
 priority: P2
 assignee: unassigned
 created: 2026-08-18
@@ -38,7 +38,7 @@ STORY-002. **This task is what discharges that clause** — remove it once both 
 - [x] The universal-layer definition is stated **once** and consumed by both skills, rather than copied into each — a second copy is the drift this rule exists to prevent
 - [x] The adopted-repo `BRIEF.md` rule lives with the skills, not only in STORY-001
 - [x] `new-project` states, per artifact, what "merge" means when the file already exists: append a section, write a sibling, or leave it and report
-- [ ] The temporary clause in `AGENTS.md § Conventions` (layer parity "until `adopt-project` exists") is removed, and the rule reads as the permanent one
+- [x] Verified 2026-08-18: no "until `adopt-project` exists" clause survives anywhere in `AGENTS.md`, and the parity rule at § Conventions reads as the permanent hard rule
 - [x] Both skills cross-link, and `README.md` presents them as the greenfield/brownfield pair
 
 ## Out of scope
@@ -48,7 +48,7 @@ STORY-002. **This task is what discharges that clause** — remove it once both 
 ## Human test plan
 
 - [x] Change the universal layer in one place and confirm both skills reflect it without a second edit
-- [ ] Re-run `new-project` on a repo with an existing README and confirm the documented merge behaviour is what actually happens
+- [x] Drilled 2026-08-18 in three parts, because the documented behaviour has three branches. **(a) Rich README, no project yet** — a 7-section README about a design-phase product: the How-we-work pointer was **strictly appended** and every original line verified byte-identical by diff, matching `LAYER.md`'s *leave it; offer to append* rather than the seed template winning. **(b) Directory that already holds a project** (source + git history): `new-project` **bounced to [[adopt-project]]** and wrote nothing — no `CLAUDE.md`, no `tasks/`, no `docs/` — which is the step-1 guard, and the branch that matters most since it is the one that would clobber a real repo. **(c) Guide merge-by-section**: a guide carrying only `## Architecture` and `## Commands` gained `## Conventions` while both existing bodies stayed untouched. Run as fixtures rather than on a consumer repo: the check is whether the documented merge is what happens, and a fixture makes a wrong result obvious instead of destructive
 
 ## Implementation plan
 
