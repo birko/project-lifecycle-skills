@@ -40,7 +40,7 @@ Ran `new-project` against a repo with 36 commits, an existing README and LICENSE
 - [x] `code-review` findings on `skills-lint.sh` resolved: frontmatter sliced between the `---` markers rather than a fixed line range; a vacuous pass (empty scan set) now fails; both checks share fence *and* code-span stripping with nested-fence tracking; link targets iterated line-by-line with titles stripped; check 3 widened to companion docs while excluding `templates/`; wikilinks resolved against an exact name list
 - [x] Second review pass resolved: failure sentinel moved to mktemp (a stale one no longer poisons later runs, and cannot be committed); wikilink resolution made literal (grep -qxF) so a dot-for-dash typo no longer matches a real skill; unbalanced fences now error instead of failing open; double-backtick spans, tilde fences and aliased links handled; root-relative targets resolved from the repo root; file links checked case-exactly
 - [x] Regression suite `.github/workflows/skills-lint-test.sh` — 16 cases, run by CI before the lint, proven to fail when a fix is reverted
-- [ ] `adopt-project` re-run on this repo reports zero gaps — **blocked on STORY-002**
+- [x] `adopt-project` survey run on this repo reports **zero gaps** — 15/15 artifacts present, agent guide carries § Conventions, bridge intact, .gitignore covers .env. The one incomplete probe (spec map `areas: []`) is STORY-008 deferred work, not a gap. Unblocked by TASK-003
 
 ## Out of scope
 

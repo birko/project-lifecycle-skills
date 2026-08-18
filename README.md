@@ -24,6 +24,7 @@ without losing its paper trail** — and that trail serves two audiences at once
 | Skill | Scope | Entry command | Produces |
 |---|---|---|---|
 | **new-project** | Once, at repo birth | `/new-project` ("new project", "novy projekt") | The universal layer: `README`, `CLAUDE.md`, `.gitignore`, `docs/features/`, `docs/specs/`, `tasks/` — a repo *pre-wired* for the rest of the lifecycle |
+| **adopt-project** | Once per existing repo, then on every layer change | `/adopt-project` ("adopt this repo", "adoptuj projekt") | The same universal layer, reconciled into a repo that **already has code** — surveys what exists, fills only the gaps, never overwrites. Idempotent, so it doubles as the upgrade path when the layer grows |
 | **tasks** | The backbone, forever | `/tasks new\|pick\|close\|triage…` | `tasks/` tree of EPIC → STORY → TASK markdown files + auto dashboard |
 | **feature** | Per idea/initiative | `/feature new\|prototype\|decide\|decompose\|pick\|status\|review` | `docs/features/FEATURE-NNN/` — idea, decision ledger, prototype, stakeholder status |
 | **roadmap** | On demand, read-only | `/roadmap` (`--check`, `--fix`, `EPIC-NNN`) | Nothing — a stdout-only unified view of **both** trees joined by epic, plus a divergence audit. The cross-tree engine the other two delegate to |

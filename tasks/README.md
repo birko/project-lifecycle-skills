@@ -6,10 +6,10 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 7       | —     |
-| todo         | —     | —       | 1     |
-| in-progress  | 1     | 1       | 0     |
-| review       | —     | —       | 1     |
+| planned      | 0     | 6       | —     |
+| todo         | —     | —       | 3     |
+| in-progress  | 1     | 2       | 0     |
+| review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
@@ -18,10 +18,12 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set
   - **STORY-001** Bootstrap the universal layer on this repo
+  - **STORY-002** adopt-project — the brownfield front door
 
 ## In review
 
-- **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — human test plan has unrun steps
+- **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — CI has not run on Linux
+- **TASK-003** adopt-project: survey and fill (STORY-002) — drill on other repos unrun
 
 ## Tree
 
@@ -29,7 +31,10 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-progress]
   STORY-001  Bootstrap the universal layer on this repo                 [in-progress]
     TASK-002   Scaffold the universal layer onto this repo              [review]
-  STORY-002  adopt-project — the brownfield front door                  [planned]
+  STORY-002  adopt-project — the brownfield front door                  [in-progress]
+    TASK-003   adopt-project: survey and fill                           [review]
+    TASK-004   adopt-project: infer conventions, then grill             [todo]
+    TASK-005   Layer parity: backport brownfield rules to new-project   [todo]
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]

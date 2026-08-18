@@ -155,6 +155,7 @@ no-op.) This makes the CI gate and the lifecycle's **PROVE** leg
 ## Related skills
 
 - Stack-specific scaffolding skills (installed per team — a framework's wiring skill) — chained in step 5 for the code wiring; they may equally invoke this skill as their universal front half. Not part of this generic set.
+- [[adopt-project]] — the brownfield counterpart: same universal layer, for a repo that already has code. Both work from its `LAYER.md`, and the layer-parity rule means **a change to the layer here is a change there in the same commit**. Reach for that skill, not this one, when the target directory already holds a project.
 - [[tasks]] — initializes `tasks/`; the project's tracking backbone.
 - [[feature]] — the per-feature lifecycle this scaffold prepares the repo for (`docs/features/` + CLAUDE.md convention).
 - [[populate-tests]] — chained in `adopt` mode to wire a runnable test harness for the stack (the lifecycle's PROVE leg); later authors/maintains the tests + the `[auto]/[manual]` ledger.
