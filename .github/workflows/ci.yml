@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  skills-lint:
+    name: skills-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # There is nothing to install or build — a skill is markdown an agent reads at
+      # invocation time. The gate is that its wiring resolves.
+      - name: Lint skill definitions
+        run: bash .github/workflows/skills-lint.sh
+
+      - name: Check the CLAUDE.md bridge has not diverged
+        run: |
+          expected='@AGENTS.md'
+          actual="$(tr -d '[:space:]' < CLAUDE.md)"
+          if [ "$actual" != "$expected" ]; then
+            echo "ERROR: CLAUDE.md must contain exactly the one-line import '$expected'."
+            echo "A CLAUDE.md that carries its own content diverges from AGENTS.md."
+            exit 1
+          fi
+          echo "CLAUDE.md bridge: OK"

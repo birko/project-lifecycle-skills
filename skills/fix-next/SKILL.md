@@ -71,7 +71,7 @@ already walking every `kind: review-intake` epic to build the pool, so evaluate 
 the same epics while you are there: *a STORY with unticked checklist lines in its body but no open TASK*.
 Those lines are findings nobody can pick — only `status: todo` **tasks** are ranked here, by `pick`, or by
 the `Next up` snapshot. Report them in the closing report and offer
-[`/tasks intake --epic`](../tasks/intake) or `/tasks new`; **don't silently work them**, since an
+[`/tasks intake --epic`](../tasks/verbs/intake.md) or `/tasks new`; **don't silently work them**, since an
 unscheduled bullet has not been through the filing discipline the pool depends on.
 
 **Respect a story that declares its findings are extracted on demand.** Some STORYs deliberately hold a

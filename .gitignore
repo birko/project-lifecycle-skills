@@ -1,0 +1,20 @@
+# --- Secrets (never commit) ---
+.env
+.env.*
+!.env.example
+
+# --- Agent / editor local state ---
+.claude/settings.local.json
+.pi/
+.vscode/
+.idea/
+*.swp
+
+# --- OS cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Scratch ---
+scratch/
+*.tmp

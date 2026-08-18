@@ -789,6 +789,25 @@ unreviewed merge. (Currently load-bearing: Claude Code does *not* surface a `cod
 as of CLI 2.1.220 — the binary carries one, but it isn't in the session skill list, so that
 reference doesn't resolve there and the fallback is what actually runs.)
 
+### This repo runs its own lifecycle
+
+A repo that ships a project scaffolder while having no scaffold of its own is the strongest smell
+it could carry — so since 2026-08-18 this one uses the layer it produces:
+
+| Artifact | What it holds |
+|---|---|
+| `AGENTS.md` (+ one-line `CLAUDE.md` bridge) | the agent guide and the **Conventions rulebook** `verify-conventions` lints against |
+| `docs/BRIEF.md` | verbatim ground truth, append-only |
+| `docs/architecture.md` | the three trees, skill anatomy, how the skills compose |
+| `docs/features/`, `docs/specs/` | seeded; features empty by design (current work has no stakeholder gate), specs filled by `/specs init` |
+| `tasks/` | `EPIC-001` and its stories — what is being built next |
+| `CHANGELOG.md` | what changed for people who install these skills |
+| `.github/workflows/skills-lint.sh` | the one automated gate: frontmatter, `[[link]]` resolution, file references |
+
+Two consequences worth knowing: the skills are **exercised on a real non-empty repo** before
+consumers hit those paths, and any rule that turns out to be impractical here is evidence the rule
+is wrong — the repo doesn't get an exemption, the skill gets fixed.
+
 ---
 
 ## 7. The ideas worth landing
@@ -837,3 +856,14 @@ reference doesn't resolve there and the fallback is what actually runs.)
    decision ledger — intent (`feature`) meets actuality (`specs`) at exactly the moment a
    mismatch is cheapest to catch. An unexpected spec change at story close is an unintended
    behavior change caught before anyone ships on top of it.
+
+---
+
+## Credits
+
+Several ideas on the current roadmap (`tasks/EPIC-001-adopt-yolobox-ideas/`) were adopted from the
+in-house **yolobox** agent-sandbox skill set — the domain glossary + decision-record discipline,
+the frontier-round grilling loop, the fidelity axis at the review gate, the expand–contract
+sequence for refactors too wide to slice, and the git-hot-spot scoping for architecture scans.
+They are **reimplemented against this repo's artifact model**, not ported: the originals are
+written for a tracker-pluggable, `CONTEXT.md`-based layout this project deliberately does not use.
