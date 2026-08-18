@@ -32,6 +32,8 @@ without losing its paper trail** — and that trail serves two audiences at once
 | **specs** | Per capability, regenerated from code | `/specs init\|regen\|verify\|show` | `docs/specs/` — a hand-editable **area map** (`.map.yml`) + one generated spec per capability (SHALL requirements + Given/When/Then scenarios), stamped with commit + feature provenance; the regen **diff review** doubles as an unintended-behavior-change detector |
 | **fix-next** | Per defect, unattended | `/fix-next` (`--loop`, `--epic`) | Nothing new — it *drains* the defect backlog `/tasks intake` files from a review pass: pick worst-first by blast radius → re-verify the finding → fix the root cause → prove the test can fail → respec → `/tasks close`. Stops where `/clear` loses nothing |
 
+**Two front doors, one layer.** `new-project` creates the universal layer for an empty directory; `adopt-project` reconciles an existing repo against that same layer. Both consume one inventory — `skills/new-project/LAYER.md` — so a change to what the layer contains reaches both skills, or it is not a layer change at all. Reach for the second whenever the target already holds source files or git history.
+
 ---
 
 ## 2. How they stack

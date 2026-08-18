@@ -1,8 +1,16 @@
-# The universal layer — the checklist both front doors work from
+# The universal layer — the inventory both front doors work from
 
 The single definition of what a lifecycle-ready repo contains. [[new-project]] **creates** this
 for a new repo; [[adopt-project]] **reconciles** an existing one against it. One list, two verbs —
 a second copy is exactly the drift the layer-parity rule exists to prevent.
+
+**What lives here vs. in SKILL.md.** This file is the *inventory*: which artifacts, who owns each
+shape, and what to do when one already exists. `SKILL.md` step 3 carries the *creation detail* —
+how to seed the Conventions rulebook, what to put in the architecture overview. Two axes, not two
+copies: add an artifact here, describe how to fill it there.
+
+**Changing this file changes both skills.** That is the layer-parity rule, and it is the whole
+point of the file existing.
 
 Each row states what the artifact is, which skill owns its shape, and — the part that only matters
 for adoption — **what to do when the repo already has one**.

@@ -7,7 +7,7 @@ description: Bring an EXISTING repo onto the project lifecycle layer — survey 
 
 The **brownfield front door**. [[new-project]] creates the universal layer for a repo that has
 nothing; this reconciles a repo that already has code, history, and opinions of its own against
-that same layer — see [LAYER.md](LAYER.md), the single definition both skills work from.
+that same layer — see [LAYER.md](../new-project/LAYER.md), the single definition both skills work from.
 
 **One skill covers both cases**, because they differ only in how much is missing:
 
@@ -28,7 +28,7 @@ then delegates. Hand-rolling those shapes here is how the two versions drift.
 
 ### 1. Survey — read before writing anything
 
-Walk [LAYER.md](LAYER.md) and classify every artifact as **present**, **missing**, or **present
+Walk [LAYER.md](../new-project/LAYER.md) and classify every artifact as **present**, **missing**, or **present
 but incomplete** (an agent guide with no `## Conventions` block; a `tasks/` tree with no
 `.config.yml`). Alongside it, detect the facts the fill will need: the stack (manifests, source
 layout), whether a test runner already works, whether a git remote exists, and whether the repo
@@ -61,12 +61,12 @@ stop being considered somewhere around round six.
 
 Ground truth and the agent guide first, then `/tasks init`, then `/specs init` — later steps read
 what earlier ones write. For each artifact follow its **"already present?"** column in
-[LAYER.md](LAYER.md).
+[LAYER.md](../new-project/LAYER.md).
 
 Two rules bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
-- **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](LAYER.md) § The adopted-repo brief).
+- **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](../new-project/LAYER.md) § The adopted-repo brief).
 
 ### 4. Report what changed
 
@@ -87,7 +87,7 @@ the user unable to tell what was touched in their own repo.
 
 ## Related skills
 
-- [[new-project]] — the greenfield front door. Same layer, opposite starting point; both work from [LAYER.md](LAYER.md), and **the layer-parity rule means a change to one is a change to both**.
+- [[new-project]] — the greenfield front door. Same layer, opposite starting point; both work from [LAYER.md](../new-project/LAYER.md), and **the layer-parity rule means a change to one is a change to both**.
 - [[tasks]] — `init` creates `tasks/`; adopts a pre-skill tree without disturbing it.
 - [[specs]] — `init` re-discovers the area map and proposes a delta.
 - [[populate-tests]] — `adopt` mode wires a runnable test harness.

@@ -107,7 +107,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **New skills go in `skills/`.** `skills-pi/` is frozen (see § Architecture).
 - **A verb owns its rules.** If a rule only matters to one verb, it lives in that verb's file, not the router.
 - **Generated files are owned by their verbs** — see Working rules.
-- **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. **Until `adopt-project` exists (STORY-002), a layer change satisfies this rule by recording itself as a behaviour bullet on STORY-002** — the debt is tracked rather than the rule quietly ignored.
+- **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming
 - Skill folders are **kebab-case** and match their frontmatter `name`.

@@ -2,7 +2,7 @@
 id: TASK-005
 parent: STORY-002
 feature: null
-status: todo
+status: review
 priority: P2
 assignee: unassigned
 created: 2026-08-18
@@ -35,11 +35,11 @@ STORY-002. **This task is what discharges that clause** — remove it once both 
 
 ## Acceptance criteria
 
-- [ ] The universal-layer definition is stated **once** and consumed by both skills, rather than copied into each — a second copy is the drift this rule exists to prevent
-- [ ] The adopted-repo `BRIEF.md` rule lives with the skills, not only in STORY-001
-- [ ] `new-project` states, per artifact, what "merge" means when the file already exists: append a section, write a sibling, or leave it and report
+- [x] The universal-layer definition is stated **once** and consumed by both skills, rather than copied into each — a second copy is the drift this rule exists to prevent
+- [x] The adopted-repo `BRIEF.md` rule lives with the skills, not only in STORY-001
+- [x] `new-project` states, per artifact, what "merge" means when the file already exists: append a section, write a sibling, or leave it and report
 - [ ] The temporary clause in `AGENTS.md § Conventions` (layer parity "until `adopt-project` exists") is removed, and the rule reads as the permanent one
-- [ ] Both skills cross-link, and `README.md` presents them as the greenfield/brownfield pair
+- [x] Both skills cross-link, and `README.md` presents them as the greenfield/brownfield pair
 
 ## Out of scope
 
@@ -47,10 +47,17 @@ STORY-002. **This task is what discharges that clause** — remove it once both 
 
 ## Human test plan
 
-- [ ] Change the universal layer in one place and confirm both skills reflect it without a second edit
+- [x] Change the universal layer in one place and confirm both skills reflect it without a second edit
 - [ ] Re-run `new-project` on a repo with an existing README and confirm the documented merge behaviour is what actually happens
 
 ## Implementation plan
 
-_Draft after TASK-003 — where the shared layer definition lives depends on the shape TASK-003
-gives the survey checklist._
+1. `LAYER.md` moved to `skills/new-project/` — the skill that *creates* the layer owns its
+   definition; `adopt-project` consumes it at `../new-project/LAYER.md`. The lint verifies that
+   cross-skill path resolves, so a move cannot silently break it.
+2. Split the two axes explicitly rather than merging them: `LAYER.md` is the **inventory** (which
+   artifacts, who owns each, what to do if present); `new-project` SKILL.md step 3 keeps the
+   **creation detail**. Add an artifact in the first, describe how to fill it in the second.
+3. Routing fixed at the description level too — `new-project` now says outright to use
+   `adopt-project` when the directory already holds code, so the wrong front door is less likely
+   to be invoked in the first place.

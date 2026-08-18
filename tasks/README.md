@@ -7,9 +7,9 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 3     |
+| todo         | —     | —       | 1     |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 2     |
+| review       | —     | —       | 4     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
@@ -24,6 +24,8 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — CI has not run on Linux
 - **TASK-003** adopt-project: survey and fill (STORY-002) — drill on other repos unrun
+- **TASK-004** adopt-project: infer conventions, then grill (STORY-002) — needs a real codebase
+- **TASK-005** Layer parity: LAYER.md shared by both front doors (STORY-002) — merge drill unrun
 
 ## Tree
 
@@ -33,8 +35,8 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-002   Scaffold the universal layer onto this repo              [review]
   STORY-002  adopt-project — the brownfield front door                  [in-progress]
     TASK-003   adopt-project: survey and fill                           [review]
-    TASK-004   adopt-project: infer conventions, then grill             [todo]
-    TASK-005   Layer parity: backport brownfield rules to new-project   [todo]
+    TASK-004   adopt-project: infer conventions, then grill             [review]
+    TASK-005   Layer parity: backport brownfield rules to new-project   [review]
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]
