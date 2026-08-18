@@ -1,6 +1,6 @@
 ---
 name: verify-conventions
-description: Lint the current/staged diff against THIS project's own conventions as recorded in its `CLAUDE.md` § Conventions (framework/stack, UI/UX, code structure & patterns, naming, testing) and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local variant that shadows this one inside that repo with concrete, stack-specific checks.
+description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions in a seeded project, but equally `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Never tells a project with a working rulebook that it has recorded nothing. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local variant that shadows this one inside that repo with concrete, stack-specific checks.
 ---
 
 # verify-conventions
@@ -19,7 +19,26 @@ A tech-agnostic adherence lint: does the current diff follow the conventions **t
 
 The project's own **`CLAUDE.md`** (or `AGENTS.md`, if that's the canonical guide — follow the `@import` bridge) is the source of truth. Re-read it on every invocation; the rules evolve.
 
-- **`## Conventions`** and its subsections — the rule list. The [[new-project]] seed structures these as:
+### Finding the rulebook — it is not always called `## Conventions`
+
+**Locate the rules by content, not by heading name.** The seed's `## Conventions` block is one
+shape a rulebook takes, not the definition of one. Work down this ladder and stop at the first hit:
+
+1. **`## Conventions`** — the seed shape. Use its subsections directly.
+2. **A heading that plainly names rules** — `## Key Conventions`, `## Coding Standards`, `## Rules`, `## Pravidlá`, `## Konvencie`. Match on meaning, in whatever language the guide is written in; a project does not owe you English headings.
+3. **Any section carrying normative content** — sustained *must / never / always / don't* (and their equivalents in the guide's language). A section titled `## Transakcna hranica` full of "KRITICKE" rules is a rulebook section whatever its name.
+4. **The whole guide** — if rules are woven throughout rather than sectioned, lint against all of its normative statements.
+
+**Say which sections you read** at the top of the report. The user needs to see what you treated as
+the rulebook, both to trust the findings and to catch you reading the wrong thing.
+
+**Only report "no conventions recorded" when the guide carries no normative content at all.** A
+guide full of rules under unfamiliar headings is a rulebook you failed to find, not an absent one —
+and reporting "nothing to check" there is a false negative at every gate that calls this skill.
+Observed in the field: a 1835-line guide with a dozen rule sections, and a guide whose heading said
+`## Key Conventions`. Both would have been told they had recorded nothing.
+
+- **`## Conventions`** and its subsections, when present — the seed structures these as:
   - **Framework / stack** — what we build on; approved libraries; what *not* to introduce without a decision.
   - **UI / UX rules** — design tokens, component library, spacing/typography rules, accessibility bar, interaction patterns.
   - **Code structure & patterns** — layering, folder layout, the patterns to follow (and anti-patterns to avoid), error handling, dependency direction.
@@ -28,12 +47,15 @@ The project's own **`CLAUDE.md`** (or `AGENTS.md`, if that's the canonical guide
 - **`## Architecture`** — the living structure description; a change that contradicts it is either a violation or an architecture update that wasn't made.
 - Any project-specific checklist the guide links to.
 
-If the guide has **no `## Conventions` section**, say so and stop with a pointer: *"This project hasn't recorded conventions yet — add a `## Conventions` block to CLAUDE.md (see the [[new-project]] seed) so there's something to verify against."* Don't invent rules the project never agreed to.
+If the guide carries **no normative content anywhere** — you worked the whole ladder and found nothing that reads as a rule — say so and stop with a pointer: *"This project hasn't recorded conventions yet — add a `## Conventions` block to CLAUDE.md (see the [[new-project]] seed) so there's something to verify against."* Don't invent rules the project never agreed to.
+
+**Never suggest restructuring a guide to match the seed.** A project with a working rulebook under
+its own headings has solved this; the skill adapts to the project, not the reverse.
 
 ## What to lint
 
 1. **Determine the diff.** Prefer staged (`git diff --cached`); fall back to the working tree (`git diff`) or, if asked, a branch range. If not git-tracked, ask the user which files to check.
-2. **Read the project's `CLAUDE.md`** and extract its conventions into a working checklist (per subsection above).
+2. **Read the project's `CLAUDE.md`**, locate the rulebook via the ladder above, and extract its rules into a working checklist. Where the guide uses the seed's subsections, follow them; where it does not, group the rules however that guide groups them — do not force a foreign structure onto it, and do not drop a rule because it fits no subsection.
 3. **Check each changed file against each applicable rule.** A rule applies to a file when the file's kind/path matches the rule's domain (a UI/UX rule applies to component/style files; a naming rule applies to new files/symbols; a testing rule applies to new public surface). For every violation, report:
    - **File + line** (clickable `path:line`)
    - **The rule** (quote the CLAUDE.md line it comes from — so the finding is traceable, not made up)
@@ -68,6 +90,14 @@ If clean: `✅ Change follows the project's documented conventions.`
 - **`/tasks close`** runs this on the diff before flipping a non-trivial task to `done` — the per-task adherence gate (mirrors the existing "run /code-review before done" step).
 - **`/feature review`** runs it alongside [[code-review]] in Gate A — correctness *and* convention adherence before sign-off.
 - Standalone, anytime, before a commit.
+
+### Should the seed stop assuming English headings?
+
+**No — and that is not a contradiction.** [[new-project]] keeps writing `## Conventions` with
+English subsections, because a fresh project benefits from one predictable shape and the seed is
+the only thing that can establish it. The asymmetry is deliberate: **the writer is opinionated, the
+reader is permissive.** A generator that emits one shape is useful; a linter that accepts only that
+shape is broken, because it meets repos it did not create.
 
 ## What this skill does NOT do
 

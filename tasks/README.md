@@ -9,7 +9,7 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 3     |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 5     |
+| review       | —     | —       | 6     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
@@ -51,6 +51,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 ## Loose tasks
 
 - **TASK-001** STORY.md cannot express dependency edges — `todo`, P2
-- **TASK-006** verify-conventions reports "no conventions" on repos full of conventions — `todo`, P1
+- **TASK-006** verify-conventions reports "no conventions" on repos full of conventions — `review`, P1
+- **TASK-009** verify-conventions has no rule about generated/vendored files — `todo`, P3
 
 _No completed work yet. Story ordering is recorded in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._

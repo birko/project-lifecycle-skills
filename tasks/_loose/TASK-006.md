@@ -2,7 +2,7 @@
 id: TASK-006
 parent: null
 feature: null
-status: todo
+status: review
 priority: P1
 assignee: unassigned
 created: 2026-08-18
@@ -49,12 +49,12 @@ Four of the seven surveyed consumers are affected.
 
 ## Acceptance criteria
 
-- [ ] `verify-conventions` finds a project's rules when they are **not** under a heading literally named `## Conventions` — including non-English headings
-- [ ] It never reports "this project hasn't recorded conventions yet" for a guide that plainly carries rules; that message is reserved for a guide with **no rule content at all**
-- [ ] When it cannot map a guide onto the seed's subsections, it degrades to linting against the whole rule text rather than stopping
-- [ ] The distinction is stated in the skill: *absent rulebook* (a real finding, worth surfacing) versus *rulebook under a different shape* (adapt to it, do not lecture the user about their heading names)
-- [ ] Verified against Symbio specifically — it must produce real findings on a real diff there
-- [ ] Consider whether the seed should stop assuming English headings at all, and record the decision either way
+- [x] `verify-conventions` finds a project's rules when they are **not** under a heading literally named `## Conventions` — including non-English headings
+- [x] It never reports "this project hasn't recorded conventions yet" for a guide that plainly carries rules; that message is reserved for a guide with **no rule content at all**
+- [x] When it cannot map a guide onto the seed's subsections, it degrades to linting against the whole rule text rather than stopping
+- [x] The distinction is stated in the skill: *absent rulebook* (a real finding, worth surfacing) versus *rulebook under a different shape* (adapt to it, do not lecture the user about their heading names)
+- [ ] Verified against Symbio specifically — **half done**: the ladder provably finds its rulebook (step 1 matches 0, step 2 matches 9 rule sections, 92 normative markers), and the old behaviour provably stopped. Producing *findings on a real diff* is still unrun, because Symbio.s only current diff is build output (see TASK-009) — needs a hand-written diff there
+- [x] Consider whether the seed should stop assuming English headings at all, and record the decision either way
 
 ## Out of scope
 
