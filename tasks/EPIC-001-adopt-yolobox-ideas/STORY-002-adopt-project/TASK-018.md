@@ -80,6 +80,27 @@ sixth state.
 - [x] flappy-dragon checked, and **the line's premise had moved**: it now *has* `.github/workflows/ci.yml`, so its CI row is `present`, not `missing` — which is itself the check passing, since `missing, not offered` did not swallow a row that should read present. The underlying question — would the ordinary case still get the offer? — is answered by its dependencies: `package.json` declares no `file:`/`link:` dependency that escapes the repo, so the isolation check passes and CI would be offered normally. Fixture C covered the same path on a repo with no CI at all
 - [x] Exercised on fixture A: the thin `.gitignore` (`bin/ obj/ secrets.local`) was **appended** with the agent-state and env sections and reported under **amended** naming what changed inside it, never under created. Caveat on the strength of this evidence — it is a fixture, so it proves the bucket mechanics but not the judgement call on a real repo's README pointer; the WorkoutTracker line below is the version of this check that carries that
 
+## Follow-up drill (2026-08-18, during TASK-017's gate)
+
+`/code-review` found the shipped probe blind to the **commonest** case on the upgrade path: an
+earlier pass that appended to an already-**tracked** file leaves nothing untracked, so
+`git ls-files --others` sees a clean repo and the work is lost just as quietly as an untracked file
+would be. The probe is now `git status --porcelain --untracked-files=all -- <path>`, and `-uall`
+carries its own weight: plain `--porcelain` collapses an untracked directory to `?? docs/specs/`
+without naming the member you have to offer to land.
+
+Drilled rather than reasoned about:
+
+- A tracked `CLAUDE.md` with `## Conventions` appended and uncommitted — old probe: `''` (invisible); new probe: `' M CLAUDE.md'`.
+- An untracked member inside a tracked directory — new probe: `'?? tasks/extra.yml'`, so the case the original drill covered still works.
+- After committing, both probes go quiet, so `present` still means present.
+
+Left at `done` rather than reopened: the deliverable changed and the new case is **verified**, not
+pending. Also corrected in this pass: the report mapping said a reconciled artifact should be
+labelled `present, outdated`, which states the opposite of the truth once the owner has brought it up
+to date — it is now reported under **amended**, naming what the owner added, with `present, outdated`
+reserved for a reconciliation declined or impossible.
+
 ## Implementation plan
 
 _Drafted in-conversation rather than by the `Plan` subagent — this session filed the task and holds

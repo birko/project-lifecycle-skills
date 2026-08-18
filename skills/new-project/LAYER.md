@@ -32,14 +32,21 @@ for adoption — **what to do when the repo already has one**.
 
 ## Delegation follows the row, not the artifact's appearance
 
-**The *already present?* column is the authority; read it per row.** Where it names **a verb to
-delegate to** — *"delegate to `/tasks init`"*, *"delegate to `populate-tests` in `adopt` mode"* —
-that delegation applies **whether or not the artifact is present**, because only the owner knows its
-own current shape. Three kinds of row are *not* delegations and must not be turned into one:
+**The *already present?* column is the authority; read the whole cell, per row.** Where it names **a
+verb to delegate to**, that delegation applies **whether or not the artifact is present**, because
+only the owner knows its own current shape — `/tasks init` and `/specs init` are the two rows that
+work this way today.
 
-- a row that **answers for itself** — the test-harness row's *"a repo with a working runner is already adopted — say so and move on"* is the answer, not an invitation to run something;
+Read the *whole* cell, though, because a cell can name a verb **and** state its own terminating
+condition, and then that condition wins. The test-harness row does exactly this: it delegates to
+`populate-tests` in `adopt` mode *and* says a repo with a working runner is already adopted. Both
+sentences are the row talking — the second tells you what the delegation would have reported, so
+honour it and move on rather than running the verb to be told the same thing.
+
+Two kinds of row are **not** delegations at all:
+
 - a row that names a verb only inside a **prohibition** — *"never regenerate an existing index by hand, that is `/feature status`'s job"* forbids hand-editing; it does not ask adoption to run `/feature status` over someone's present index;
-- a row that names **no verb at all** — `docs/BRIEF.md` says *never reconstruct*, the README says *leave it*.
+- a row that names **no verb** — `docs/BRIEF.md` says *never reconstruct*, the README says *leave it*.
 
 There is no blanket "every owner has an init", and reading one into this rule would send a present
 brief to the greenfield scaffolder.
@@ -94,7 +101,7 @@ So detect by **evidence**, not by path:
 grows as real repos turn up conditions it cannot yet express:
 
 - **present** — found where expected, and (in a git work tree) fully tracked.
-- **present, uncommitted** — found on disk, but git does not have all of it. **Only meaningful inside a git work tree**: in a directory with no repo yet every path is untracked, which is what the `git init` offer is for, not this state. Probe with `git ls-files --others --exclude-standard -- <path>` — anything it returns is an untracked member, which matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind; `git ls-files -- <path>` alone answers "is any of it tracked", a different and useless question here. (A path that is present but deliberately git-ignored is neither of these — report it `present` and leave it alone.) This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
+- **present, uncommitted** — found on disk, but git does not have all of it. **Only meaningful inside a git work tree**: in a directory with no repo yet every path is untracked, which is what the `git init` offer is for, not this state. Probe with `git status --porcelain --untracked-files=all -- <path>`, which answers both halves (the `-all` matters: plain `--porcelain` collapses an untracked directory to `?? docs/specs/` without naming the member, and the member is the thing you have to offer to land): `??` lines are untracked members — the case that matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind — and ` M` lines are the **tracked-but-uncommitted amendment**, which is the more common one on the upgrade path: an earlier pass that appended `## Conventions` to an already-tracked guide leaves nothing untracked at all, so `git ls-files --others` sees a clean repo and the work is lost just as quietly. (`git ls-files -- <path>` answers "is any of it tracked", a different and useless question here.) (A path that is present but deliberately git-ignored is neither of these — report it `present` and leave it alone.) This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
 - **present, outdated** — there, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
 - **present, elsewhere** — found in another location or form. **Say where.** Never silently relocate it, and never offer to create a second one.
 - **unknown** — you could not determine it. Honest, and it stops the fill.

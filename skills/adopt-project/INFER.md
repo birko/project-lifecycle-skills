@@ -4,8 +4,11 @@
 already answered most of those questions in its source — this is how to read the answers out,
 propose them, and let the user confirm or correct.
 
-This is the part of adoption worth the most. An adopted repo whose `## Conventions` block is empty
-gets nothing from [[verify-conventions]], which is the single biggest payoff of adopting at all.
+This is the part of adoption worth the most **on a repo whose rulebook is thin or absent** — an
+adopted repo whose `## Conventions` block is empty gets nothing from [[verify-conventions]], which is
+the single biggest payoff of adopting at all. On a repo whose rulebook already answers what the layer
+asks, the same step is worth the most by **declining**: see § *When the rulebook already answers it*.
+Both readings are the same rule — fill what is missing, touch nothing else.
 
 ## The two rules
 
@@ -71,6 +74,43 @@ One-at-a-time turns a 15-rule proposal into a 15-round interrogation, and the us
 honestly around round six.
 
 Facts are yours to find, decisions are the user's: never ask what reading the code would answer.
+
+## When the rulebook already answers it
+
+The opposite failure to the one below, and the more common one on a repo that has been running for a
+while: proposing rules to a guide that already has better ones. **The unit of this step is the
+subsection, not the round.**
+
+- **Judge coverage per subsection** from § *What to read, per subsection* above, and propose only for
+  the ones nothing answers.
+- **"Covered" means the guide carries normative content answering that subsection — wherever it
+  sits.** Use [[verify-conventions]]'s ladder rather than a heading match, so the two skills agree on
+  what a rulebook is. A flat list of rules under one `## Conventions` heading can answer all five
+  subsections; five tidy headings can answer none. (Measured: WorkoutTracker's rulebook is ~24 flat
+  bold rules with no subsections at all, covering testing, code structure, framework and UI.)
+- **All covered → skip the round.** Say so, name the subsections and the evidence that covered them,
+  and write nothing. A guide denser than the layer asks for is a *finished* guide.
+- **Some covered → run a round scoped to the rest.** Four of five covered is a one-subsection round —
+  and it is worth more than a five-subsection one, because the user actually reads it.
+- **Covered means *answered*, not exhausted — and a thinly answered subsection is offered, not run.**
+  Where one rule answers a subsection the code could say much more about, name the thinness and
+  **offer** that single-subsection round rather than launching it. (Measured on WorkoutTracker:
+  testing, structure, framework and UI are answered by a dozen rules each; naming is answered by one
+  file-naming rule, `one <Entity>Endpoints.cs per resource`. Skipping silently hides a real gap;
+  proposing unasked contradicts *propose, never assert*.)
+- **Never propose a rule beside an existing rule to strengthen it.** That is how a rulebook acquires
+  two answers to one question, and the next task gets to pick.
+
+**Two outputs still run even when every subsection is covered.** Recorded as a decision so it is not
+re-litigated: **glossary candidates** and the **20–80% split finding**. Neither is a rule proposal.
+Two names for one concept, and a migration caught in flight, are *findings about the code* — a
+complete rulebook does not answer them, and the densest guide in a fleet can carry both.
+
+On the skip path they are **reported, not asked.** § *Convention or accident?* turns a 20–80% split
+into a question because a round is running and the answer shapes a proposal; when the round is
+skipped there is no proposal to shape, so the split is stated as a finding and left with the user.
+Announcing "skipping — your rulebook answers all five" and then opening a question round anyway is
+the contradiction this paragraph exists to prevent.
 
 ## When nothing can be inferred
 

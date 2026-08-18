@@ -14,8 +14,10 @@ that same layer — see [LAYER.md](../new-project/LAYER.md), the single definiti
 - *"We have code and none of this."* — first adoption.
 - *"We adopted this months ago and the layer has grown since."* — the same run, fewer gaps.
 
-So it is **idempotent by design**: re-run it any time. A repo with nothing missing gets a report
-saying so and no writes at all.
+So it is **idempotent by design**: re-run it any time. Nothing is ever overwritten and nothing is
+written unasked — but *idempotent* is not *read-only*: a repo with nothing **missing** can still have
+an artifact landed (present on disk, never committed) or reconciled by its owner (present in an older
+shape). A re-run that finds neither writes nothing at all.
 
 ## What it does not do
 
@@ -72,6 +74,14 @@ questions in its own source — read the answers out and put them to the user **
 that suggested them**. See [INFER.md](INFER.md) for what to read per subsection, how to tell a
 convention from an accident, and how to collect glossary candidates.
 
+**The round is scoped to what the guide does not already answer, and may be skipped entirely** —
+`INFER.md` § *When the rulebook already answers it* owns the conditions. A repo whose rulebook
+already exceeds the layer gets no proposals, because proposals there dilute a finished guide rather
+than filling a gap. **Say when you skip, and name what covered it** — in this step's own output, and again in step 4's
+report, which is the part that outlives the conversation. Not in the survey table: coverage is judged
+here, after that table has printed. A silent skip is indistinguishable from a skill that forgot the
+step, and the user cannot ask for a round they never knew was declined.
+
 Two rules govern it: **propose, never assert** — an unconfirmed inference is dropped, not written
 as a guess — and **show the evidence**, so the user can disagree specifically rather than
 rubber-stamp.
@@ -107,12 +117,15 @@ The rules that bind the whole step:
   *create*, never whether to *delegate*, and the owner is the only thing that knows its own current
   shape. Skipping one is how `Presenter` kept a `tasks/.config.yml` with no `integration:` field
   through a full adoption pass.
-- **Report the state the owner actually reported.** Take the verb's answer at face value and map it:
-  *already current* → `present`; *brought up to date* → `present, outdated`, naming what it
-  reconciled; *created* → created. Only a verb that **cannot answer** — it declined to look, or has
-  no way to tell an old shape from a current one — leaves the row `unknown`, with that verb named as
-  the reason. Never upgrade silence into a clean bill of health, and never downgrade a real
-  reconciliation into "I could not tell".
+- **Report the outcome the owner reported, not the state you found.** The survey may have recorded
+  `present, outdated`; what the report says is what happened to it. Map the verb's answer: *already
+  current* → `present`; *brought up to date* → **`amended`**, naming what the owner added — the file
+  is current now, so calling it `outdated` states the opposite of the truth, and it is the repo's own
+  file that changed, which is precisely what `amended` exists to surface; *created* → created. A row
+  stays `present, outdated` only when the reconciliation was **declined or impossible**. Only a verb
+  that **cannot answer** — it declined to look, or cannot tell an old shape from a current one —
+  leaves the row `unknown`, with that verb named as the reason. Never upgrade silence into a clean
+  bill of health, and never downgrade a real reconciliation into "I could not tell".
   - **An `unknown` that came from a verb's silence is report-only** — it is *not* subject to the
     ask-to-fill rule above. The artifact is sitting right there; asking whether to create it is
     absurd, and the honest output is "present, and `<verb>` could not tell me whether it is
@@ -134,8 +147,9 @@ Report by outcome. Three buckets for what this run **did**:
 Then **one bucket per surveyed state the three above do not already absorb** — `present` is
 *left alone*, and a `missing` row you filled is *created*. [LAYER.md](../new-project/LAYER.md) owns
 the state list, so a state added there that no outcome bucket absorbs gets a bucket here named after
-it, whether or not this page mentions it. Each carries what the *report* owes beyond the state's
-name:
+it, whether or not this page mentions it. What follows is **what the report owes for the states that
+exist today**, not a copy of the list — when that file gains a row, the rule above covers it and this
+page does not need editing:
 
 - `present, elsewhere` — **where**: the paths or form actually found. Never offer to create a second one.
 - `present, outdated` — **what the owner's init reported as the delta, and whether it was reconciled.** "Brought up to date" and "nothing to do" are different outcomes; blurring them is how an old shape survives a pass that claims to reconcile it.
