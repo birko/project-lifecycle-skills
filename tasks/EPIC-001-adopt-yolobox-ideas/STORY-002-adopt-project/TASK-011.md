@@ -2,7 +2,7 @@
 id: TASK-011
 parent: STORY-002
 feature: null
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-18
@@ -53,7 +53,7 @@ The repo's own `## Commands` section documents `./install.sh` / `install.ps1` bu
 ## Human test plan
 
 - [x] Re-ran `./install.ps1` and `./pi-install.ps1` — exactly one `+ adopt-project` per root, every other skill `= already linked`, no warnings
-- [ ] In a fresh Claude Code session, type "adopt this repo" and confirm the skill is offered by description match — not by anyone naming the file path
+- [x] Confirmed 2026-08-18 in a fresh session: typing `adopt this repo` resolved to `Skill(adopt-project)` with **no path and no skill name given** — description match, which is the half the junction check could not prove from inside a primed session. Unasked-for bonus evidence in the same run: its first move was to read [[verify-conventions]]'s rulebook **ladder**, i.e. `LAYER.md`'s rulebook row delegating detection to the skill that owns it instead of guessing separately — TASK-008's delegation criterion behaving in the wild. Recorded honestly: only the invocation is evidence here; what the run then did to its target repo is a separate drill on its own task
 - [x] Appended a probe marker to `skills/adopt-project/SKILL.md`; it read back through **both** link paths with no re-install, then reverted clean (proves junction, not copy)
 
 ## Implementation plan

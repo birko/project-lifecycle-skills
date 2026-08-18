@@ -9,9 +9,9 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 13    |
 | in-progress  | 1     | 1       | 0     |
-| review       | —     | —       | 2     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 10    |
+| done         | 0     | 1       | 11    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 2× P1 · 9× P2 · 2× P3.
@@ -25,11 +25,11 @@ _No task is currently in-progress — the whole epic is parked on verification d
 
 ## In review
 
-⚠ **Verification debt (2)**, down from 10 at the start of the day. Both remaining items need
-something this session cannot supply — not a drill somebody owes.
+⚠ **Verification debt (1)**, down from 10 at the start of the day. The one remaining item is
+**blocked in substance, not scheduling** — see below.
 
-- **TASK-004** adopt-project: infer conventions (STORY-002) — needs **you**: the Symbio drill's whole value is the owner catching a plausible-but-wrong inferred rule, and the WorkoutTracker half is gated on TASK-017. Presenter already confirmed the evidence-shown and mixed-pattern lines; **declining** an inferred rule has still never been tested
-- **TASK-011** adopt-project installed in both runtimes (STORY-002) — junctions verified live; what remains is typing "adopt this repo" cold in a session that did not just spend the day working on it, to confirm description-match rather than name-match
+- **TASK-004** adopt-project: infer conventions (STORY-002) — **gated on TASK-017.** Its remaining line names Symbio, whose guide carries twelve `KRITICKE` rule sections in 1835 lines — the same condition that made the WorkoutTracker attempt produce nothing, since a well-behaved step 2 should skip or scope itself there. Forcing it now yields either redundant proposals or another improvised skip. Once TASK-017 lands, the valuable target is a **thin** rulebook (BardStudio: `## Key Conventions`, four rules) where a wrong proposal is both likely and catchable
+
 
 > **The pre-junction caveat is retired.** The drills that predated TASK-011's junction were
 > superseded, not re-run from memory: the 2026-08-18 six-repo sweep plus the fixture work closed
@@ -48,7 +48,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-005   Layer parity: LAYER.md shared by both front doors        [done]
     TASK-007   Do not offer CI a repo cannot pass                       [done]
     TASK-008   Survey must detect, not assume the seed layout           [done]
-    TASK-011   adopt-project is not installed in either runtime         [review]
+    TASK-011   adopt-project is not installed in either runtime         [done]
     TASK-012   Router teaches three survey states, LAYER.md four        [done]
     TASK-016   Installers only add — no missing/stale junction check    [todo] P2
     TASK-017   Step 2's inference round has no skip condition           [todo] P1
@@ -80,4 +80,4 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-024** The other owner verbs can't say whether an artifact is current — `todo`, P2
 - **TASK-025** DV10 cannot see a repo whose code is prose — `todo`, P2
 
-_Ten tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012, 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021 and TASK-023 on the Presenter drill. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._
+_Eleven tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012, 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021 and TASK-023 on the Presenter drill. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._
