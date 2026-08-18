@@ -8,7 +8,9 @@
 A **single source of truth for agent skills**. It ships no runtime and no build step: every skill
 is markdown that an agent reads at invocation time. The installers *link* rather than copy, so an
 edit here is live in every consuming project immediately — which is the reason correctness matters
-more than it would in a library you version and release.
+more than it would in a library you version and release. They link one junction *per folder*,
+though, so a **newly added skill** is live only after the installers are re-run; until then its
+folder exists in this repo and resolves nowhere.
 
 ## The three trees
 

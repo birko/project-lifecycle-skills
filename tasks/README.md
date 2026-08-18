@@ -9,12 +9,12 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 8     |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 7     |
+| review       | —     | —       | 8     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 4× P2 · 2× P3.
+`todo` by priority: 1× P1 · 5× P2 · 2× P3.
 
 ## In progress now
 
@@ -22,9 +22,11 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
   - **STORY-001** Bootstrap the universal layer on this repo
   - **STORY-002** adopt-project — the brownfield front door
 
+_No task is currently in-progress — the whole epic is parked on verification debt (below)._
+
 ## In review
 
-⚠ **Verification debt (7).** Every task below is code-complete with unrun checks. The repo's own
+⚠ **Verification debt (8).** Every task below is code-complete with unrun checks. The repo's own
 rule is to clear this before taking new scope.
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — only the `@AGENTS.md` bridge check remains; needs a fresh session
@@ -34,9 +36,11 @@ rule is to clear this before taking new scope.
 - **TASK-006** verify-conventions finds the rulebook (loose) — verified on Symbio; a findings pass on a hand-written diff there is still owed
 - **TASK-007** Never offer CI a repo cannot pass (STORY-002) — verified on Latent/Presenter/flappy-dragon
 - **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded
+- **TASK-011** adopt-project installed in both runtimes (STORY-002) — junctions verified live; only the fresh-session description-match check remains
 
-> Every STORY-002 drill above predates TASK-011: none of them could have invoked the installed
-> skill, because no junction for it exists yet. Read them as repo-copy drills until that is fixed.
+> The STORY-002 drills above predate TASK-011's junction, so none of them invoked the *installed*
+> skill — the checked lines now say so explicitly. They are evidence of behaviour, not of discovery;
+> re-run each at its own close now that `adopt-project` resolves in both runtimes.
 
 ## Tree
 
@@ -50,8 +54,9 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-005   Layer parity: LAYER.md shared by both front doors        [review]
     TASK-007   Do not offer CI a repo cannot pass                       [review]
     TASK-008   Survey must detect, not assume the seed layout           [review]
-    TASK-011   adopt-project is not installed in either runtime         [todo] P1
+    TASK-011   adopt-project is not installed in either runtime         [review]
     TASK-012   Router teaches three survey states, LAYER.md four        [todo] P1
+    TASK-016   Installers only add — no missing/stale junction check    [todo] P2
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]

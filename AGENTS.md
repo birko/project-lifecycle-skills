@@ -79,7 +79,11 @@ verb, standalone and directly readable) and `templates/*` (the file shapes the s
 Skills reference each other by `[[name]]`; those links are load-bearing and CI-checked.
 
 Both installers **link** rather than copy, so an edit here is live in every consuming project
-immediately. See `docs/architecture.md` for the fuller picture.
+immediately. The corollary bites: a link is created per *folder*, at install time, so **a new skill
+folder needs an installer re-run** before either runtime can resolve it — editing an existing one
+never does. The installers only ever *add*, so renaming or deleting a skill also needs a manual
+sweep of both roots; nothing prunes the old junction. See `docs/architecture.md` for the fuller
+picture.
 
 ## Conventions
 
@@ -141,5 +145,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 ```bash
 ./install.sh        # link skills/ into ~/.claude/skills            (install.ps1 on Windows)
 ./pi-install.sh     # link skills/ + skills-pi/ into ~/.pi/agent/skills   (pi-install.ps1)
+# Re-run BOTH after ADDING a skill folder — one junction is made per folder, so a new one
+# has none and the skill is invisible to both runtimes. Editing an existing skill needs no re-run.
 bash .github/workflows/skills-lint.sh    # run the CI lint locally
 ```

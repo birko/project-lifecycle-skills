@@ -44,7 +44,7 @@ from [[verify-conventions]], which is the single biggest payoff of adopting at a
 
 ## Human test plan
 
-- [x] Drilled on **BardStudio** (70 files): four rules proposed with evidence, all four judged and recorded
+- [x] Drilled on **BardStudio** (70 files): four rules proposed with evidence, all four judged and recorded — run from the repo copy, pre-junction
 - [ ] Drill on **Symbio** and **WorkoutTracker** — the two where the owner knows which patterns are legacy, so a wrong proposal is *catchable*. **This is the highest-value unrun check in the epic.** The failure mode is not a crash: it is a plausible-but-wrong rule that reads fine, gets confirmed, and is then enforced by `verify-conventions` against every future change. BardStudio could not test that — it had too few conventions to get wrong
 - [ ] Confirm every proposal shows its evidence and that declining one leaves it unwritten
 - [ ] Run against a repo with a deliberately mixed codebase and confirm weak patterns are offered as questions rather than asserted
