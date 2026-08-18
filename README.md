@@ -69,7 +69,9 @@ without losing its paper trail** — and that trail serves two audiences at once
              story close offers a scoped regen; the spec DIFF is the review:
              "was this behavioral change intended?" — unexplained diff = finding
              ──▶ /feature review checks each approved decision LANDED in a spec
-                 (shaped-by provenance); /roadmap audits stale specs (DV7/DV8)
+                 (shaped-by, DERIVED on every regen — un-derived means "unknown",
+                 not "missing"); /roadmap audits specs (DV7 stale / DV8 no landing
+                 / DV11 provenance never derived)
 
    /code-review · /security-review · /specs regen   (a PASS over the project, not one diff)
              │  findings are stdout-only — unfiled means lost
@@ -233,7 +235,11 @@ task, so the **branch and PR are too**: `/tasks pick` cuts `task/TASK-NNN` from 
 `/security-review` if the diff touches a security surface, `/review` on the PR diff, then settle
 the merge decision, write the status it makes true, commit, and **merge**; the linked issue closes
 only once the task genuinely reached `done`. This gives `done` a single precise meaning: **merged
-to main**, not "reviewed somewhere." Deferring the merge (stacked PR, external reviewer, batch
+to main**, not "reviewed somewhere." The gate also reads the task's `## Human test plan` before it
+settles the status — unchecked steps close to `review` — but an **absent** section is not an `N/A`
+one and must never default to `review`: it gets resolved first (write the steps, or write
+`N/A — …` *with the reason a human adds nothing*), or a task carrying full automated evidence sits
+for weeks on a sign-off step that never existed. Deferring the merge (stacked PR, external reviewer, batch
 policy) therefore ends the close at **`blocked`** with the reason recorded — never a `done` with an
 asterisk — and re-closes after `/tasks unblock`. Small diffs, fast review, one review per task at
 the right altitude. (A tightly-coupled cluster *may* share a feature
@@ -297,10 +303,15 @@ Divergences (1):
 ```
 
 It is the **single source of truth for the cross-tree pass** — the join + divergence rules
-(DV1–DV10: "feature frozen while work moved on", "shipped work never closed out", "broken
+(DV1–DV12: "feature frozen while work moved on", "shipped work never closed out", "broken
 back-link", … the spec-drift checks DV7/DV8, the ledger-backfill check DV9 — a task
-back-linking a feature whose `→ Tasks` column doesn't list it — and DV10, real code with no
-spec map at all: run `/specs init`). It doesn't re-implement `tasks` or `feature`; instead those two **delegate
+back-linking a feature whose `→ Tasks` column doesn't list it — DV10, real code with no
+spec map at all: run `/specs init` — **DV11**, a spec whose `shaped-by` provenance was never
+*derived*, so its emptiness is **unknown rather than a miss** (it suppresses DV8 over those
+areas, because otherwise an unfilled field reads as a feature gap when it's a generator gap)
+— and **DV12**, findings filed as unticked checklist lines under a `kind: review-intake` story
+with no open task: invisible to `pick`, to `Next up` and to `fix-next` alike, so the review
+reads as drained while part of it was never scheduled). It doesn't re-implement `tasks` or `feature`; instead those two **delegate
 into it**: the bare `/tasks` snapshot renders a compact slice of this engine, and `/feature
 status` reuses its divergence rules. *One engine, many renderers.* Verbs: `/roadmap` (full
 render), `--check` (audit only — fastest "are we in sync?"), `EPIC-NNN` (scope to one epic),
@@ -362,14 +373,24 @@ same pipeline as planned work.
 The lifecycle tracks *what to build*, *why*, and *what's verified*; `specs` tracks **what the
 system actually does now**. The direction is deliberately inverted from spec-first tooling:
 the **code is the source of truth** and specs are *harvested* from it, so a spec can never rot
-— it can only be stale, and staleness is machine-checkable.
+— it can only be stale, and staleness is machine-checkable: diff each area's `sources` since the
+`generated-at` commit it was harvested at.
 
 ```
 docs/specs/
   .map.yml        ← hand-editable AREA MAP: capability → source globs (the only human-owned file)
   <area>.md       ← generated per capability: Purpose → SHALL requirements → Given/When/Then scenarios
-                    frontmatter stamp: generated-at (commit) · sources · shaped-by (FEATURE-NNN)
+                    frontmatter stamp: generated-at (commit) · sources · source-commits (per-repo
+                    baselines for sources outside this repo) · shaped-by (FEATURE-NNN) with
+                    shaped-by-derived + shaped-by-unresolved (was provenance computed, and how
+                    much of the evidence trail did it fail to resolve)
 ```
+
+**Sources outside this repo are measured against their own repo**, via those `source-commits`
+baselines — `generated-at` only measures *this* one, so in a polyrepo aggregator every cross-repo
+area would otherwise report fresh forever and DV7 would be decorative. An external source with no
+baseline at all is reported as *unknown baseline*, i.e. stale, never as fresh: a check that cannot
+fire must not pass quietly.
 
 The trick that makes harvesting more than documentation: **regeneration is never a silent
 overwrite — the spec diff is the review.** Closing a story offers a scoped
@@ -379,12 +400,20 @@ classified: *matches an approved decision* / *intended anyway* / **unexplained �
 meaningful: untouched behavior keeps its exact wording, so a diff always means "behavior
 changed", never "the harvester rephrased".
 
-Cross-links are **computed, never hand-maintained**: a regen triggered by a story/feature
-appends `shaped-by: FEATURE-NNN` to the spec's frontmatter. Backward, that answers "why does
-this behave so?" (open the feature's `decisions.md`); forward, `/feature review` Gate A checks
-each approved decision actually **landed** in a spec — a decision with no spec landing means
-the feature isn't done. `roadmap` audits the drift (DV7 stale spec, DV8 shipped feature with
-no spec landing). Verbs: `init` (discovery pass — propose + bless the area map), `regen`
+Cross-links are **computed, never hand-maintained**: **every** regen derives
+`shaped-by: FEATURE-NNN` from the task-commit evidence — not just a `--story`/`--feature` run —
+and stamps `shaped-by-derived: true` alongside the count of tasks whose trail it *couldn't*
+resolve. Backward, that answers "why does this behave so?" (open the feature's `decisions.md`);
+forward, `/feature review` Gate A checks each approved decision actually **landed** in a spec.
+That check is deliberately three-way, because "not listed" means two opposite things:
+provenance was **never derived** → the answer is *unknown*, so regen first and don't route work
+back (failing the gate here reports a generator gap as a feature gap); provenance was derived
+and the feature still isn't listed → a real finding, weighted by `shaped-by-unresolved` since a
+partial trail is a weaker signal; or the feature genuinely has **no spec surface** (docs-only /
+internal) → a `decisions.md` History line carrying that literal phrase, which is the carve-out
+DV8 greps for. `roadmap` audits the drift (DV7 stale spec, DV8 shipped feature with
+no spec landing, DV11 provenance never derived — which suppresses DV8 over the same areas).
+Verbs: `init` (discovery pass — propose + bless the area map), `regen`
 (harvest → diff review → stamp), `verify` (read-only staleness), `show`. Scenarios are
 mandatory — they're the future join point for `populate-tests` (scenario ↔ covering test).
 
@@ -427,6 +456,13 @@ Four ideas do the real work:
    go red — naming every still-passing test as a *contract pin, not evidence* — or reintroduce the bug
    and confirm the spec fails. (§3.5's `populate-tests` owns this rule; it's the step that most often
    finds the real problem.)
+
+It also checks **the pool it drains is complete** before ranking it. Walking every
+`kind: review-intake` epic anyway, it evaluates `roadmap`'s DV12 over the same epics — a story
+with unticked checklist lines but no open task — and reports what was filed and never scheduled
+(offering `/tasks intake --epic`) instead of silently working a bullet that never went through
+the filing discipline. A story that *declares* its findings are extracted on demand, one task at
+a time, is not a finding.
 
 Everything else it **delegates**: the merge gate, the commit, the merge and the rollup are all
 `/tasks close`; the respec is `/specs regen`; the test authoring is `populate-tests`. It adds judgement,
@@ -718,11 +754,40 @@ These skills live at two scopes, and a skill **lives where it's invoked from**:
 |---|---|---|
 | **Global** (`~/.claude/skills/`) | the generic, cross-project lifecycle (incl. the stack-agnostic `populate-tests` + `specs`) + the generic "keep-honest" maintainers + any stack scaffolders that run in arbitrary repos | `new-project`, `tasks`, `feature`, `roadmap`, `populate-tests`, `specs`, `roll-changelog`, `verify-conventions`, `grill-me`, `tdd`, `handoff` |
 | **Project-local** (`<repo>/.claude/skills/`) | skills that only make sense *inside* one repo — internal scaffolders and project-specific **variants** of global skills | a framework repo's own subproject scaffolder, a project-tuned `verify-conventions` or `roll-changelog` |
+| **Runtime stubs** (`skills-pi/` → `~/.pi/agent/skills/`) | fallback definitions of the review skills a runtime doesn't ship itself — **never** installed into `~/.claude/skills`, where they would shadow the native passes | `code-review`, `review`, `security-review` |
 
 Project-local skills **shadow** same-named global ones inside their repo, so a project-specific
 variant wins when you're working there, while the generic version runs everywhere else. A
 `[[link]]` to a project-local skill that doesn't resolve from the global set is *correct*, not
 broken — it resolves inside its home repo, which is its source of truth.
+
+### Installing — and the runtimes this repo targets
+
+This repo is the single source of truth: both installers **link** the skill folders into the
+runtime's skills directory (symlinks from the `.sh` scripts, directory junctions from the `.ps1`
+ones), so `git pull` updates the live skills and editing here is live immediately. Nothing is
+copied, so there is no second version to drift. Both are idempotent — a re-run relinks nothing
+and warns if a name already points elsewhere.
+
+```
+./install.sh      ·  install.ps1       skills/                  →  ~/.claude/skills/
+./pi-install.sh   ·  pi-install.ps1    skills/ + skills-pi/     →  ~/.pi/agent/skills/
+```
+
+The lifecycle skills are runtime-agnostic, but the **review gates** they lean on are not: in
+Claude Code `review` and `security-review` arrive as built-ins, so `skills/` deliberately doesn't
+contain them. `skills-pi/` holds those definitions for a runtime that ships none of them — pi —
+so a `[[code-review]]` reference *resolves* instead of the gate quietly disappearing. It is
+linked only into `~/.pi/agent/skills`; installing it into `~/.claude/skills` would shadow the
+native passes with thinner ones, which is a downgrade for no gain.
+
+The rule that makes this safe either way: **a gate is never skipped because a skill name didn't
+resolve.** Every caller carries an inline fallback — `/tasks close` step 5b reads the diff for
+correctness itself when no `code-review` skill exists, `/feature review` does its cumulative
+pass inline — so the worst case of a missing skill is a less specialized review, never an
+unreviewed merge. (Currently load-bearing: Claude Code does *not* surface a `code-review` skill
+as of CLI 2.1.220 — the binary carries one, but it isn't in the session skill list, so that
+reference doesn't resolve there and the fallback is what actually runs.)
 
 ---
 
