@@ -30,6 +30,28 @@ for adoption — **what to do when the repo already has one**.
 | Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. |
 | CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack — **but only if the repo can build in isolation**; see *CI a repo cannot pass* below. |
 
+## Delegation follows the row, not the artifact's appearance
+
+**A present artifact still goes to its owner — where the row names something to go to.** Read the
+*already present?* column: where it names a verb, that delegation applies **whether or not the
+artifact is present**, because only the owner knows its own current shape. Where it names none —
+`docs/BRIEF.md` says *never reconstruct*, the README says *leave it* — there is no delegation to
+make, and adoption must not invent one. The distinction is per row, which is why the column is per
+row; there is no blanket "every owner has an init", and reading one into this rule would send a
+present brief to the greenfield scaffolder.
+
+Skipping a delegation because the artifact "looks right" substitutes a shape check for a version
+check, and the two differ exactly where it matters: a `tasks/` tree with epics, a README and a
+`.config.yml` looks complete from outside while missing a field added since it was written. Presence
+is not a version, and the survey cannot see inside someone else's shape.
+
+So **presence decides whether to *create*, never whether to *delegate*** — with one caveat that
+bites today: **"nothing to do" is not "up to date."** An init that declines to touch an existing file
+has told you it did not act, not that the file matches the current shape. Where that is the whole
+answer available, report the row **unknown** and name the init that could not answer; do not upgrade
+its silence into a clean bill of health. An init that cannot express a delta is a defect in **that**
+skill, and it gets its own task rather than a workaround here.
+
 ## The adopted-repo brief
 
 `docs/BRIEF.md` stores the user's requests **verbatim**, and an existing repo usually has no
@@ -69,6 +91,7 @@ grows as real repos turn up conditions it cannot yet express:
 
 - **present** — found where expected, and (in a git work tree) fully tracked.
 - **present, uncommitted** — found on disk, but git does not have all of it. **Only meaningful inside a git work tree**: in a directory with no repo yet every path is untracked, which is what the `git init` offer is for, not this state. Probe with `git ls-files --others --exclude-standard -- <path>` — anything it returns is an untracked member, which matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind; `git ls-files -- <path>` alone answers "is any of it tracked", a different and useless question here. (A path that is present but deliberately git-ignored is neither of these — report it `present` and leave it alone.) This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
+- **present, outdated** — there, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
 - **present, elsewhere** — found in another location or form. **Say where.** Never silently relocate it, and never offer to create a second one.
 - **unknown** — you could not determine it. Honest, and it stops the fill.
 - **missing** — you actively looked and it is genuinely absent.
@@ -84,11 +107,19 @@ artifact's **content** — leave it, merge into it, delegate to its owner — an
 overrides it. Without this line the two instructions read as a contradiction, and the row wins,
 which is how the artifact stays out of history.
 
-**Presence, not currency.** These states answer *does the artifact exist* — never *is its content
-still true*. A README whose status section describes the repo three releases ago is `present`:
-adoption does not fill it, does not rewrite it, and at most notes the staleness as an aside in the
-report. Judging whether a team's own prose is current is a content audit, a different job with a
-different appetite for editing files the repo owns.
+**Presence and shape, not content currency.** These states answer *does the artifact exist, and is
+it in the shape its owner currently writes* — never *is its prose still true*. A README whose status
+section describes the repo three releases ago is `present`: adoption does not fill it, does not
+rewrite it, and at most notes the staleness as an aside in the report. The line between the two is
+**who can settle it**: a schema delta is read back from the artifact's owner, which is what
+`present, outdated` reports, while whether a paragraph still describes reality is a judgement about
+content — a content audit, a different job with a different appetite for editing files the repo
+owns.
+
+**A count in evidence names where the count came from.** "148 test methods" read off a grep for
+`[Fact]`/`[Theory]` is a different claim from 143 tests a runner actually discovered — both were
+reported for the same repo, an hour apart. Either name the source ("148 `[Fact]`/`[Theory]`
+attributes") or give no number; a bare count reads as verified.
 
 **Never move a repo's files into the canonical layout.** The layer says what a project needs, not
 where it must live. A repo that solved it differently has *solved it*.

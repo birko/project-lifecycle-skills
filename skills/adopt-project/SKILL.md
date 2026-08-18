@@ -41,6 +41,12 @@ Two consequences decide behaviour:
   a working setup, which defeats the never-overwrite rule from underneath instead of breaking it.
 - **Present but thin is `present`, with the gap named** — an agent guide with no `## Conventions`
   block, a `tasks/` tree with no `.config.yml`. The artifact is there; report what it lacks.
+- **From outside you cannot see a version.** An artifact another skill owns may be present in an
+  older shape than the layer now expects — a config written before a field existed looks complete
+  from the outside. Where the artifact's row names a verb, step 3's delegation is what answers, so
+  leave the version question to it rather than guessing here; where no verb owns the shape, the
+  thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
+  § *Delegation follows the row, not the artifact's appearance*).
 
 Alongside it, detect the facts the fill will need: the stack (manifests, source layout), whether a
 test runner already works, whether a git remote exists, whether the repo is captured by an
@@ -83,6 +89,12 @@ The rules that bind the whole step:
 - **An `unknown` row is not filled — ask instead.** The survey never established that artifact was
   absent, so writing it is a guess aimed at the user's own files: the false-missing defect with one
   extra step.
+- **Never skip a delegation because the artifact looks right.** Presence decides whether to
+  *create*, never whether to *delegate*, and the owner is the only thing that knows its own current
+  shape. Skipping one is how `Presenter` kept a `tasks/.config.yml` with no `integration:` field
+  through a full adoption pass. **And do not read "nothing to do" as "up to date"** — an init that
+  declines to touch an existing file has reported its own inaction, nothing more; that row is
+  `unknown`, and the report names the init that could not answer.
 - **A `present, uncommitted` row is landed, not rewritten.** The file is already right; what is
   missing is the commit. Offer it in the adoption commit and report it. Rewriting it discards an
   earlier pass's work to produce, at best, the same bytes.
@@ -104,12 +116,15 @@ it, whether or not this page mentions it. Each carries what the *report* owes be
 name:
 
 - `present, elsewhere` — **where**: the paths or form actually found. Never offer to create a second one.
+- `present, outdated` — **what the owner's init reported as the delta, and whether it was reconciled.** "Brought up to date" and "nothing to do" are different outcomes; blurring them is how an old shape survives a pass that claims to reconcile it.
 - `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
 - `missing, not offered` — **the reason**, so a re-run reads the row as settled instead of asking again.
 
-Staleness inside a present artifact is an **aside**, never a bucket — see
-[LAYER.md](../new-project/LAYER.md) § *Presence, not currency*.
+**Content** staleness inside a present artifact — prose that no longer describes the repo — is an
+**aside**, never a bucket. A stale *shape* is the opposite: it gets its bucket, because an owner
+reported it. See [LAYER.md](../new-project/LAYER.md) § *Presence and shape, not content currency*
+for the line between them.
 
 Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit.
 
@@ -121,6 +136,13 @@ the user unable to tell what was touched in their own repo.
 - **No `Co-Authored-By:` trailers** in any commit it might create.
 - PowerShell-compatible commands.
 - Offer the adoption commit; never commit unasked.
+- **Git policy is read, not inferred.** Whether to cut a branch, and whether to merge, comes from
+  `tasks/.config.yml`'s `integration:` field. Absent → **ask, and backfill it** as part of the
+  adoption; an absent declaration is the thing this skill reconciles. Never infer the policy from
+  `git log` — a squash-merge repo and a commit-straight-to-main repo produce the same history, which
+  is why [[tasks]] forbids the inference outright. And **never delete a branch on inference**:
+  cleanup is its own ask, however tidy the log looks. (Adoption-side only — `new-project` has no
+  history to misread.)
 - Ask before `git init` on an untracked repo, and surface the resolved root when an **ancestor**
   repo already tracks the directory — only the user knows whether that ancestor is intended.
 

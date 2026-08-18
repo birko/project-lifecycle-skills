@@ -117,6 +117,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   to signal it. A single **invariant** restated where it is load-bearing is fine, since there is no
   list to fall out of sync. The test is one question — *would this sentence become wrong if the
   shared file gained a row tomorrow?*
+- **Read the declaration, never infer it.** Where one skill *records* a policy in a file (today `tasks/.config.yml`'s `integration:`), every other skill **reads that field** rather than deducing the policy from observable state — git history, folder shape, what the last commit happened to do. The failure is not that inference is usually wrong; it is that the two situations producing identical evidence are exactly where it breaks (a squash-merge history and a commit-to-main history are the same log), and an inference that happens to be right is still unreproducible. A field that is *absent* is a gap to ask about and backfill, never a licence to guess.
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming
