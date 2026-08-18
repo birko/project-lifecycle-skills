@@ -25,10 +25,10 @@ for adoption — **what to do when the repo already has one**.
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
 | `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init`, which adopts a pre-skill tree without disturbing it. Never write these shapes by hand. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
-| `.gitignore` | — | Present → check only that `.env` and `.env.*` are covered, and offer the lines if not. Absent → create for the detected stack. |
+| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
 | Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. |
-| CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack. |
+| CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack — **but only if the repo can build in isolation**; see *CI a repo cannot pass* below. |
 
 ## The adopted-repo brief
 
@@ -41,6 +41,34 @@ Instead, stamp the adoption:
 
 - An `## Origin` section recording the adoption date, that no original brief exists, and where the project's actual history lives (README, commit log).
 - An empty `## Amendments` section. The append-only log starts from the **first request made after adoption**.
+
+## CI a repo cannot pass
+
+**Never offer CI to a repo whose build depends on paths outside itself.** Check before offering:
+an MSBuild `Import` or `ProjectReference` that escapes the repo root, a `path =` dependency in
+`Cargo.toml`, a `file:` dependency in `package.json`, an editable local install in a Python project.
+
+**Resolve the path; do not count the dots.** A reference is only a problem if the resolved target
+lands outside the repo root. `..\..\src\Foo\Foo.csproj` from `tests/Foo.Tests/` goes up two
+levels and back down *inside* the repo — perfectly normal, and flagging it would skip CI on repos
+that could run it fine. Two things do count: a target that resolves outside the root, and a path
+rooted at a `$(Variable)` or environment variable, which cannot be resolved at all and therefore
+cannot be guaranteed present on a runner. (Written down because counting `..` is the obvious
+implementation and it is wrong — it over-reported on the first repo it met.)
+
+When you find one, **skip the offer and say why** — name the dependency and what would have to
+exist on a runner for the build to work. A workflow that is red on its first run and stays red is
+worse than no workflow: a permanently-failing gate teaches people to ignore CI, and that habit
+costs more than the missing gate.
+
+This is the common case, not an edge case, wherever a team shares framework source through an
+aggregator rather than a package feed. Observed in `Latent`, a clean .NET solution whose
+`Latent.Birko.csproj` imports `$(BirkoSrc)\Birko.Helpers\Birko.Helpers.projitems` — source from a
+sibling tree that a runner has no way to obtain.
+
+Making such a repo CI-able is a distribution decision (publish the framework as packages, vendor
+it, or check it out in the workflow), not something an adoption pass can settle. Report it and move
+on.
 
 ## Ordering
 

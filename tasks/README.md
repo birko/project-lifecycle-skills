@@ -6,10 +6,10 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 6       | —     |
-| todo         | —     | —       | 1     |
+| planned      | 0     | 7       | —     |
+| todo         | —     | —       | 2     |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 4     |
+| review       | —     | —       | 5     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
@@ -26,6 +26,7 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 - **TASK-003** adopt-project: survey and fill (STORY-002) — drill on other repos unrun
 - **TASK-004** adopt-project: infer conventions, then grill (STORY-002) — needs a real codebase
 - **TASK-005** Layer parity: LAYER.md shared by both front doors (STORY-002) — merge drill unrun
+- **TASK-007** Do not offer CI a repo cannot pass (STORY-002) — found by the Latent drill
 
 ## Tree
 
@@ -37,6 +38,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-003   adopt-project: survey and fill                           [review]
     TASK-004   adopt-project: infer conventions, then grill             [review]
     TASK-005   Layer parity: backport brownfield rules to new-project   [review]
+    TASK-007   Do not offer CI a repo cannot pass                       [review]
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]
@@ -48,5 +50,6 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 ## Loose tasks
 
 - **TASK-001** STORY.md cannot express dependency edges — `todo`, P2
+- **TASK-006** verify-conventions reports "no conventions" on repos full of conventions — `todo`, P1
 
 _No completed work yet. Story ordering is recorded in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._

@@ -24,6 +24,8 @@ adopting these skills does not mean hand-assembling a dozen files or clobbering 
 - **Merge guidance for files the repo already owns, not just "don't clobber".** `new-project` step 1 says "merge, don't clobber" and stops there. Found in STORY-001: this repo's `README.md` was far richer than the seed template, and the skill offered no rule for what to do — the sections were appended by hand. `adopt-project` must state, per artifact, whether it appends a section, writes a sibling file, or leaves the file alone and reports the gap. The same rule is then backported to `new-project` under layer parity.
 - **Acceptance test:** re-run it on this repository. If STORY-001 was complete, it reports zero gaps; anything it finds is a real STORY-001 defect and gets filed as such.
 
+**Explicitly out of scope: multi-repo trees.** Both front doors assume one repo, one layer. An aggregator tree (untracked root, many nested repos) needs a decision about where work is tracked before any code changes — tracked as STORY-009.
+
 **Why this is second, not last:** STORY-003 through STORY-007 each extend the universal layer, and
 every extension strands projects already using the skills. Build the upgrader before shipping
 upgrades. The layer-parity rule in `AGENTS.md § Conventions` is what keeps it from falling behind.
