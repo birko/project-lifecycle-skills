@@ -2,7 +2,7 @@
 id: TASK-008
 parent: STORY-002
 feature: null
-status: todo
+status: review
 priority: P1
 assignee: unassigned
 created: 2026-08-18
@@ -37,12 +37,12 @@ recognises only the canonical form and silently reports failure as absence.
 
 ## Acceptance criteria
 
-- [ ] **Test harness** is detected by evidence, not path: a test runner in the manifest (xunit, vitest, pytest, go test), `*.Tests`/`*_test.*`/`*.spec.*` files anywhere, or a configured runner — before concluding a repo has no tests
-- [ ] **Rulebook** detection is delegated to whatever TASK-006 settles for `verify-conventions`, so the two skills agree on what counts as a rulebook rather than each guessing
-- [ ] The same principle is applied to every row of `LAYER.md`: docs may live somewhere other than `docs/`, a changelog may be `HISTORY.md`
-- [ ] When something is found in a **non-standard location**, report it as *present, elsewhere* with the path — never as missing, and never silently relocate it
-- [ ] A row the survey cannot decide is reported as **unknown**, not as missing. "I could not tell" is honest; "you don't have it" is a lie that invites a destructive fill
-- [ ] Verified against all seven drilled repos: WorkoutTracker reports its tests, BardStudio its rulebook
+- [x] **Test harness** is detected by evidence, not path: a test runner in the manifest (xunit, vitest, pytest, go test), `*.Tests`/`*_test.*`/`*.spec.*` files anywhere, or a configured runner — before concluding a repo has no tests
+- [x] **Rulebook** detection is delegated to whatever TASK-006 settles for `verify-conventions`, so the two skills agree on what counts as a rulebook rather than each guessing
+- [x] The same principle is applied to every row of `LAYER.md`: docs may live somewhere other than `docs/`, a changelog may be `HISTORY.md`
+- [x] When something is found in a **non-standard location**, report it as *present, elsewhere* with the path — never as missing, and never silently relocate it
+- [x] A row the survey cannot decide is reported as **unknown**, not as missing. "I could not tell" is honest; "you don't have it" is a lie that invites a destructive fill
+- [x] Verified against **six** of the seven — Framework excluded, it is the multi-repo case (STORY-009). Five wrong answers became zero: Symbio rulebook (10 rule-named sections) and architecture (`docs/00-architecture.md`, part of a numbered doc set); BardStudio rulebook (`## Key Conventions`) and architecture (`CLAUDE.md` § Architecture); WorkoutTracker tests (102 files = 54 C# + 46 .spec + 2 test projects). Genuine gaps still report: Presenter has no agent guide at all, Symbio has no brief/changelog/editorconfig
 
 ## Out of scope
 
@@ -57,4 +57,9 @@ recognises only the canonical form and silently reports failure as absence.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-008`._
+1. Detection rules and the four reporting states written into `LAYER.md`, the shared inventory —
+   so `new-project` inherits them rather than needing a second copy.
+2. Rulebook detection delegated to [[verify-conventions]] rather than duplicated, so the two skills
+   cannot disagree about what a rulebook is.
+3. Re-surveyed six repos; every previously-wrong row now reports correctly, and every remaining
+   "missing" was confirmed genuinely absent by hand.

@@ -42,6 +42,41 @@ Instead, stamp the adoption:
 - An `## Origin` section recording the adoption date, that no original brief exists, and where the project's actual history lives (README, commit log).
 - An empty `## Amendments` section. The append-only log starts from the **first request made after adoption**.
 
+## Detect what the repo has — never check for the shape you would have made
+
+The survey's job is to find out what a repo already solved, **not** to check whether it looks like
+a repo `new-project` built. Those are different questions, and confusing them produces the one
+error adoption must never make: reporting something as missing when it is present in another form.
+
+**A false "missing" is the dangerous direction.** Fill acts on the survey, so "missing" invites
+writing — and writing over a working setup is the never-overwrite rule defeated from underneath
+rather than broken outright. Observed on real repos: a project with **54 test files** across
+sibling `*.Tests` projects reported as having no test harness, because the probe looked only for a
+top-level `tests/`; a guide with `## Key Conventions` reported as having no rulebook.
+
+So detect by **evidence**, not by path:
+
+| Row | Evidence, in order |
+|---|---|
+| Test harness | a test runner in the manifest (xunit, vitest, pytest, `go test`); then `*.Tests`/`*_test.*`/`*.spec.*`/`*Test*.cs` files **anywhere**; then a runner config. Sibling `X.Tests` projects are *the* .NET convention — a missing `tests/` folder means nothing on its own |
+| Rulebook | whatever [[verify-conventions]]'s ladder accepts. The two skills must agree on what a rulebook is, rather than each guessing separately |
+| Docs | `docs/` is a convention, not a requirement — architecture notes may live in the README, a `wiki/`, or `Documentation/` |
+| Changelog | `CHANGELOG.md`, but equally `HISTORY.md`, `NEWS.md`, or a releases section in the README |
+| Task tracking | `tasks/`, but a repo may track work in GitHub Issues or Jira alone — that is *tracking*, not an absence |
+
+**Report four states, not two:**
+
+- **present** — found where expected.
+- **present, elsewhere** — found in another location or form. **Say where.** Never silently relocate it, and never offer to create a second one.
+- **unknown** — you could not determine it. Honest, and it stops the fill.
+- **missing** — you actively looked and it is genuinely absent.
+
+*"I could not tell"* is a legitimate answer; *"you don't have it"* when you merely failed to look
+properly is a lie that invites a destructive fill. When in doubt, report **unknown** and ask.
+
+**Never move a repo's files into the canonical layout.** The layer says what a project needs, not
+where it must live. A repo that solved it differently has *solved it*.
+
 ## CI a repo cannot pass
 
 **Never offer CI to a repo whose build depends on paths outside itself.** Check before offering:
