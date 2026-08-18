@@ -117,6 +117,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 
 ### Testing
 - Tests: **`.github/workflows/skills-lint.sh`**, run by CI — validates frontmatter, resolves every `[[link]]`, and checks that files referenced by a `SKILL.md` exist. Run it locally with `bash .github/workflows/skills-lint.sh`.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 16 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 

@@ -14,6 +14,10 @@ jobs:
 
       # There is nothing to install or build — a skill is markdown an agent reads at
       # invocation time. The gate is that its wiring resolves.
+      # Test the gate before trusting it — a silent regression here disables the only check.
+      - name: Test the lint itself
+        run: bash .github/workflows/skills-lint-test.sh
+
       - name: Lint skill definitions
         run: bash .github/workflows/skills-lint.sh
 

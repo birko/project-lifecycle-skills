@@ -37,6 +37,8 @@ Ran `new-project` against a repo with 36 commits, an existing README and LICENSE
 - [x] `tasks/` initialized: `.config.yml`, dashboard, EPIC-001 and eight stories
 - [x] `skills-lint` written and passing; CI workflow runs it plus the CLAUDE.md bridge check
 - [x] Defects found by the scaffold run are fixed or filed, not swallowed
+- [x] `code-review` findings on `skills-lint.sh` resolved: frontmatter sliced between the `---` markers rather than a fixed line range; a vacuous pass (empty scan set) now fails; both checks share fence *and* code-span stripping with nested-fence tracking; link targets iterated line-by-line with titles stripped; check 3 widened to companion docs while excluding `templates/`; wikilinks resolved against an exact name list
+- [x] Regression suite `.github/workflows/skills-lint-test.sh` — 16 cases, run by CI before the lint, proven to fail when a fix is reverted
 - [ ] `adopt-project` re-run on this repo reports zero gaps — **blocked on STORY-002**
 
 ## Out of scope
@@ -50,7 +52,7 @@ Ran `new-project` against a repo with 36 commits, an existing README and LICENSE
 
 - [x] `bash .github/workflows/skills-lint.sh` exits 0 and reports 15 skills
 - [x] `tr -d '[:space:]' < CLAUDE.md` equals `@AGENTS.md`
-- [ ] Push and confirm the GitHub Actions `skills-lint` job goes green on the real runner (ubuntu-latest, not Git Bash on Windows — the script has not run there yet)
+- [ ] Push and confirm both CI jobs go green on the real runner (ubuntu-latest, not Git Bash on Windows). **This matters more than it looks:** the wikilink check was case-*insensitive* on Windows via `[ -d ]`, so it behaved differently on the two platforms — the resolution is now list-based, but check 3 still uses `[ -e ]` and retains that asymmetry for file paths
 - [ ] Open a fresh agent session in this repo and confirm the `@AGENTS.md` bridge auto-loads the guide, and that `§ Conventions` is what `/verify-conventions` reads
 - [ ] Run `/roadmap` and confirm it renders EPIC-001 across both trees without erroring on an empty `docs/features/`
 - [ ] **Blocked:** run `adopt-project` on this repo and confirm zero gaps (STORY-002)
