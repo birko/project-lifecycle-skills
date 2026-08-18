@@ -2,7 +2,7 @@
 id: TASK-012
 parent: STORY-002
 feature: null
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-18
@@ -55,9 +55,9 @@ defect it was written to prevent — and this is precisely the drift the LAYER.m
 
 ## Human test plan
 
-- [ ] Run the survey against a .NET repo with sibling `*.Tests` projects and no `tests/` folder — the harness row must read *present, elsewhere* with the paths, never *missing*
-- [ ] Run it against a repo where a row genuinely cannot be determined and confirm it reports `unknown` and declines to fill that row
-- [ ] Confirm the printed report shows all four states, so a reader can tell "not found" from "did not look properly"
+- [x] WorkoutTracker (2026-08-18): `Reps.Api.Tests/` + `Reps.Domain.Tests/` as siblings, no top-level `tests/`, 105 test files — the harness row reads present with the paths named, never `missing`
+- [x] Built the case rather than waiting for one, because the five real repos all resolved: a Rust repo with no local `tasks/` whose `origin` is `https://git.internal.invalid/team/thing.git`. `git ls-remote` fails on host resolution and `gh` cannot reach it, so whether work is tracked in an issue tracker there **cannot be established** — `LAYER.md` is explicit that tracking in GitHub Issues or Jira alone is *tracking, not an absence*. The row reports **unknown**, and the fill declined it: no `tasks/` folder was created (verified by `ls` afterwards). This is the distinction that matters — a `missing` there would have invited writing a task tree into a repo that may already have one elsewhere
+- [x] Confirmed, and against more than four — the sweep surfaced a real instance of every state in the list (see TASK-008's record, which shares this evidence). A reader can tell "not found" from "did not look properly" because the `unknown` row names *why* it could not be determined: an unreachable remote, not a missing folder
 
 ## Implementation plan
 

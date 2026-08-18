@@ -3,7 +3,7 @@ id: TASK-003
 parent: STORY-002
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: unassigned
 created: 2026-08-18

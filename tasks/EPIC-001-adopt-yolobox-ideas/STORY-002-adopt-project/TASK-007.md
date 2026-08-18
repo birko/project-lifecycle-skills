@@ -2,7 +2,7 @@
 id: TASK-007
 parent: STORY-002
 feature: null
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-18

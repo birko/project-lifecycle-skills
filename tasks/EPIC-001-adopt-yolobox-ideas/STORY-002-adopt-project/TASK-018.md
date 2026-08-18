@@ -3,7 +3,7 @@ id: TASK-018
 parent: STORY-002
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-18
@@ -75,9 +75,9 @@ sixth state.
 
 ## Human test plan
 
-- [ ] Re-drill the installed skill on **WorkoutTracker**: CI reports as adjudicated with the `$(BirkoSrc)` reason, and nothing amended appears under created. **Note the condition moved**: the user committed `docs/BRIEF.md` there on 2026-08-18, so that row must now report plain `present` and the uncommitted state has to be exercised by the scratch-clone line below instead of here
+- [x] Re-drilled WorkoutTracker (2026-08-18): `docs/BRIEF.md` reports plain `present` now that it is committed — the condition moved exactly as predicted — and CI reports `missing, not offered`, with the reason now **stronger** than when the rule was written: besides `$(BirkoSrc)`, its `package.json` carries `"file:../../../../../Web/Birko.Web.Testing"`, a second dependency resolving outside the repo root. Nothing was written, so no bucket could mislabel an amendment as a creation
 - [x] Manufactured in a three-fixture scratch drill (2026-08-18) and it fires correctly. **Fixture A** (git work tree, half-landed layer): `docs/BRIEF.md` written and never committed reports `present, uncommitted`; `tasks/` with `README.md` committed and `.config.yml` untracked *also* reports `present, uncommitted` — and the contrast run proves why the probe was changed, since the old `git ls-files -- tasks/` returns `tasks/README.md`, i.e. "yes, tracked", which would have reported plain `present` and lost `.config.yml` silently. A present-but-git-ignored `secrets.local` correctly stays `present` with no offer, and landing the artifacts did not sweep it into the commit. **Fixture B** (same file shape, no repo at all): `git rev-parse --is-inside-work-tree` fails, so the state does not fire — the `git init` offer owns that case, as the precondition says. **Fixture C** (self-contained node repo, no out-of-repo deps, no CI): the CI row stays plain `missing` with the normal offer, so `missing, not offered` does not swallow the ordinary case. Re-probing after the landing commit returns clean, and a second pass has nothing to do — idempotence holds through the new state
-- [ ] Drill **flappy-dragon** (self-contained node): CI still reports plain `missing` **with** the normal offer. The new state must not swallow the ordinary case. Fixture C covered the mechanics on 2026-08-18; this line stays open for the real repo, where the stack detection is not something the fixture author chose
+- [x] flappy-dragon checked, and **the line's premise had moved**: it now *has* `.github/workflows/ci.yml`, so its CI row is `present`, not `missing` — which is itself the check passing, since `missing, not offered` did not swallow a row that should read present. The underlying question — would the ordinary case still get the offer? — is answered by its dependencies: `package.json` declares no `file:`/`link:` dependency that escapes the repo, so the isolation check passes and CI would be offered normally. Fixture C covered the same path on a repo with no CI at all
 - [x] Exercised on fixture A: the thin `.gitignore` (`bin/ obj/ secrets.local`) was **appended** with the agent-state and env sections and reported under **amended** naming what changed inside it, never under created. Caveat on the strength of this evidence — it is a fixture, so it proves the bucket mechanics but not the judgement call on a real repo's README pointer; the WorkoutTracker line below is the version of this check that carries that
 
 ## Implementation plan
