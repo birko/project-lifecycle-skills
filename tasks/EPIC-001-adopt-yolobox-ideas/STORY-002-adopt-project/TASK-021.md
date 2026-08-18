@@ -75,10 +75,10 @@ reason it was missing is that the survey never looked inside the artifact carryi
 
 ## Human test plan
 
-- [ ] Re-drill **Presenter**: `tasks/` reports the missing `integration:` field, adoption asks for it and backfills, and no branch is cut before that answer exists. **Gated on TASK-023** — the backfill physically cannot happen until `/tasks init` can reconcile an old config, so this line is unrunnable until that lands, not merely unrun
-- [ ] Drill a repo whose `.config.yml` already declares `single-branch` and confirm no branch is cut and no merge offered, whatever its log shows
-- [ ] Manufacture the ambiguity the inference cannot survive — a fixture with a linear squash-merge-style history and `single-branch` declared — and confirm the declared value wins
-- [ ] Confirm no branch is deleted without an explicit ask
+- [x] Re-drilled **Presenter** (2026-08-18) and every part held: the survey **refused to call the repo complete** — `tasks/` names a verb to delegate to, so only `/tasks init` could say whether its config was current — the `integration:` question was **asked** (with Presenter's topic-branch history offered as context for the decision, not acted on), the answer `pr-per-task` was written by the delegated verb, and no branch was cut before that answer existed. `docs/BRIEF.md` now surveys as plain `present`, the earlier pass's untracked case having been committed
+- [x] Covered twice: this repo declares `single-branch` and no branch was cut for any task all session, and the fixture below declares it against a deliberately misleading log
+- [x] Fixture built: a linear history (**zero** merge commits) whose middle commit subject reads `Merge pull request #12 from feature/thing (squashed)`. The two available inferences contradict each other — subject says PR-merge workflow, shape says commit-to-main — and `integration: single-branch` settles it without the log being consulted. This is the case the old inference could not survive, made concrete
+- [ ] Confirm no branch is deleted without an explicit ask. Still open, and only a real merge exercises it — nothing in these drills created a branch to clean up. The next `pr-per-task` close is the natural place
 
 ## Implementation plan
 

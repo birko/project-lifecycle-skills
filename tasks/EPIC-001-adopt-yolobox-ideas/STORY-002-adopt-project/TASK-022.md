@@ -29,9 +29,18 @@ callout **when `docs/features/` exists**; before this run it did not exist, so t
 neither. Verified after the fact: `grep features Presenter/tasks/README.md` → 0 hits, with
 `docs/features/` sitting right beside it.
 
-So adoption left a generated file stale **by construction** — not through neglect, but because the
-run created the very input that invalidates it. The repo's rule is that generated files are owned by
-their verbs and "keep it current" means *run the owning verb*. Adoption is the one pass that
+**Premise corrected by the 2026-08-18 re-drill.** The claim above overstates one thing and
+understates another. `triage`'s step 8b only *prepends a drift callout*; the feature-aware **slice**
+belongs to the stdout snapshot, not the persisted dashboard — and with `docs/features/` holding no
+features yet there is no drift to report, so the missing "features" string was harmless. What the
+re-drill actually found is worse and more general: Presenter's dashboard was written by an **older
+template**, missing the `review` counts row that the current one calls mandatory ("never drop it from
+the table"). A generated file ages the same way a config does, and nothing detects it — which is the
+`present, outdated` problem one level along, for a file whose owner is a verb nobody re-ran.
+
+So adoption leaves generated files stale two ways: it creates inputs that invalidate them, and they
+fall behind their own templates while nobody looks. The repo's rule is that generated files are owned
+by their verbs and "keep it current" means *run the owning verb*. Adoption is the one pass that
 reshapes several trees at once, which makes it the likeliest thing in the set to leave a stale
 generated artifact behind it.
 
@@ -47,6 +56,8 @@ bodies once `.map.yml` lands, and each of those already has an owner to call.
 - [ ] The regenerated files ride in the **adoption commit**. A dashboard landing one commit later is a diff nobody reviews, and one the user did not ask for
 - [ ] The report names what was **regenerated**, distinctly from created or amended — the user did not write those files and should not have to work out why they moved
 - [ ] Nothing hand-writes a generated shape to satisfy this: it is a verb re-run or it does not happen
+- [ ] Covers the second case the re-drill found — a generated file written by an **older template** (Presenter's dashboard had no `review` counts row). Re-running the owning verb is the fix for both, so the rule is one rule; what it must not assume is that a *current-looking* generated file is current
+- [ ] A regeneration **preserves project-specific provenance** the verb cannot reproduce: Presenter's dashboard header records that it came from `/tasks import` off `SPEC.md` § v2, and a template-faithful rewrite would have destroyed that. Decide and record whether the verb keeps such a line or the template gains a slot for it
 - [ ] `skills-lint` and `skills-lint-test` stay green
 
 ## Out of scope

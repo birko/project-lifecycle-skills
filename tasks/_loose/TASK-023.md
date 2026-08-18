@@ -3,7 +3,7 @@ id: TASK-023
 parent: null
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-18
@@ -73,7 +73,7 @@ task registered applies to every owner verb, and only `/tasks init` has been tau
 - [x] Second run: no missing fields, outcome *already current*, no write, config byte-identical
 - [x] Hand-added comment and stray `local_owner:` key both survived reconciliation
 - [x] A config already matching the template reports *already current* rather than being rewritten
-- [ ] Re-drill `adopt-project` on Presenter afterwards and confirm the delegation now produces the backfill rather than a guess
+- [x] Re-drilled `adopt-project` on Presenter (2026-08-18): the delegation produced the **backfill from an answer**, not a guess. `/tasks init` reported *brought up to date — integration*, the field landed in template position with its comment block, Presenter's own header provenance comments survived, and the adoption report carried the row as `present, outdated → reconciled` rather than `unknown`
 
 ## Implementation plan
 
