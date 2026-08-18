@@ -7,14 +7,14 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 9     |
+| todo         | —     | —       | 12    |
 | in-progress  | 1     | 2       | 0     |
 | review       | —     | —       | 10    |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 6× P2 · 2× P3.
+`todo` by priority: 3× P1 · 7× P2 · 2× P3.
 
 ## In progress now
 
@@ -30,8 +30,8 @@ _No task is currently in-progress — the whole epic is parked on verification d
 rule is to clear this before taking new scope.
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — only the `@AGENTS.md` bridge check remains; needs a fresh session
-- **TASK-003** adopt-project: survey and fill (STORY-002) — never run on a repo with code and **no** layer; fill exercised on one repo only
-- **TASK-004** adopt-project: infer conventions (STORY-002) — drilled on BardStudio; the WorkoutTracker attempt (2026-08-18) produced **no evidence**, the run having skipped step 2 by its own judgement (see TASK-017). Symbio still owed
+- **TASK-003** adopt-project: survey and fill (STORY-002) — fill now exercised on Presenter (no agent guide at all), the target its plan named; the remaining lines are the pre-junction re-runs
+- **TASK-004** adopt-project: infer conventions (STORY-002) — Presenter confirmed the evidence-shown and mixed-pattern lines; the WorkoutTracker attempt produced nothing (step 2 skipped, see TASK-017), and **declining** an inferred rule has still never been tested
 - **TASK-005** Layer parity (STORY-002) — merge drill on a repo with an existing README unrun
 - **TASK-006** verify-conventions finds the rulebook (loose) — verified on Symbio; a findings pass on a hand-written diff there is still owed
 - **TASK-007** Never offer CI a repo cannot pass (STORY-002) — verified on Latent/Presenter/flappy-dragon, and on WorkoutTracker 2026-08-18 via the installed skill
@@ -64,6 +64,9 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-017   Step 2's inference round has no skip condition           [todo] P1
     TASK-018   Survey states and report buckets miss a re-run's cases   [review]
     TASK-019   new-project offers a CI stub a consumer cannot pass      [todo] P2
+    TASK-020   Found defects get fixed but never get an id              [todo] P1
+    TASK-021   Survey infers what the layer records as a declaration    [todo] P1
+    TASK-022   Adoption leaves generated files it invalidated           [todo] P2
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]
