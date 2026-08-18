@@ -44,7 +44,8 @@ from [[verify-conventions]], which is the single biggest payoff of adopting at a
 
 ## Human test plan
 
-- [ ] Run against a real codebase (a Birko or Symbio consumer) and judge whether the proposed conventions are ones a maintainer would actually endorse — the failure mode is plausible-but-wrong rules, which are worse than none
+- [x] Drilled on **BardStudio** (70 files): four rules proposed with evidence, all four judged and recorded
+- [ ] Drill on **Symbio** and **WorkoutTracker** — the two where the owner knows which patterns are legacy, so a wrong proposal is *catchable*. **This is the highest-value unrun check in the epic.** The failure mode is not a crash: it is a plausible-but-wrong rule that reads fine, gets confirmed, and is then enforced by `verify-conventions` against every future change. BardStudio could not test that — it had too few conventions to get wrong
 - [ ] Confirm every proposal shows its evidence and that declining one leaves it unwritten
 - [ ] Run against a repo with a deliberately mixed codebase and confirm weak patterns are offered as questions rather than asserted
 

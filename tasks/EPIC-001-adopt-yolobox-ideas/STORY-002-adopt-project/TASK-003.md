@@ -51,7 +51,7 @@ them in dependency order and reports.
 ## Human test plan
 
 - [x] Run it on **this** repo — must report zero gaps, since STORY-001 built the layer by hand. Anything it reports is either a real STORY-001 defect or a bug here; both are findings worth having.
-- [ ] Run it on a repo with code and no layer at all, and confirm the created files match what `new-project` would have produced for the same stack
+- [ ] Run it on a repo with code and no layer at all, and confirm the created files match what `new-project` would have produced for the same stack. **The fill is the untested half**: the survey has now run against seven repos, but fill has only ever created two small artifacts in one repo (Latent). Presenter is the best target — it has code, tasks and tests but no agent guide at all, so the fill has real work to do and a wrong result is obvious
 - [x] Run it twice in a row on Latent: identical output, second run wrote nothing
 - [x] Latent README untouched by the fill
 

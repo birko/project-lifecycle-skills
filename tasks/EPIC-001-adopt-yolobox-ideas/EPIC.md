@@ -71,6 +71,23 @@ The STORY template carries no `blocked-by` field, so the dependency edges live h
 | STORY-007 `improve-architecture` | 003 | names modules using glossary terms |
 | STORY-008 `specs` regen across the skill set | 002–007 | regenerating before the set stabilises means regenerating twice |
 
+## State as of 2026-08-18 — read before picking new work
+
+Seven tasks sit at `review`: code-complete, checks unrun. This repo's own rule is to clear
+verification debt before taking new scope, and `/tasks pick` will **not** mention it (TASK-010) —
+run bare `/tasks` first.
+
+Three judgements that the task files alone will not convey:
+
+1. **The drills found more than the building did.** Two review passes on `skills-lint.sh` produced
+   16 defects; drilling seven real repos found that `verify-conventions` had been silently doing
+   nothing on the two largest consumers. Prefer drilling what exists over starting STORY-003.
+2. **`adopt-project`'s survey is well tested; its fill is barely tested.** Seven repos surveyed,
+   two small artifacts written in one repo. Presenter is the honest next target.
+3. **The recurring defect class is "checking for the shape we would have made".** It produced the
+   literal `## Conventions` match, the `tests/`-only probe, and the CI offer to a repo that cannot
+   build in isolation. Expect it again wherever a skill inspects a repo it did not create.
+
 ## Notes
 
 **Bootstrap exemption, recorded honestly.** STORY-001 was executed *before* its task file existed
