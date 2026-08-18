@@ -19,20 +19,31 @@ saying so and no writes at all.
 
 ## What it does not do
 
-It does not reimplement file shapes. `tasks/`, `docs/specs/`, and the test harness are created by
-the skills that own them ([[tasks]] `init`, [[specs]] `init`, [[populate-tests]] `adopt`) — each
-already delta-based and safe to re-run. This skill decides *what is missing and in what order*,
-then delegates. Hand-rolling those shapes here is how the two versions drift.
+It does not reimplement file shapes. Each artifact is created by the skill that owns it —
+[LAYER.md](../new-project/LAYER.md)'s **Owner** column is the list ([[tasks]] `init`, [[specs]]
+`init`, [[populate-tests]] `adopt` among them), and those skills are already delta-based and safe
+to re-run. This skill decides *what is missing and in what order*, then delegates. Hand-rolling
+those shapes here is how the two versions drift.
 
 ## Process
 
 ### 1. Survey — read before writing anything
 
-Walk [LAYER.md](../new-project/LAYER.md) and classify every artifact as **present**, **missing**, or **present
-but incomplete** (an agent guide with no `## Conventions` block; a `tasks/` tree with no
-`.config.yml`). Alongside it, detect the facts the fill will need: the stack (manifests, source
-layout), whether a test runner already works, whether a git remote exists, and whether the repo
-is captured by an ancestor git repo.
+Walk [LAYER.md](../new-project/LAYER.md) and classify every artifact by its states — **present**,
+**present, elsewhere**, **unknown**, **missing**. LAYER.md § *Detect what the repo has* is the
+definition and carries the evidence to check per row; work from there rather than from these four
+words, and if it ever grows a fifth state this line is still a pointer, not a list to re-close.
+
+Two consequences decide behaviour:
+
+- **When in doubt, `unknown` — never `missing`.** A false "missing" invites a fill that writes over
+  a working setup, which defeats the never-overwrite rule from underneath instead of breaking it.
+- **Present but thin is `present`, with the gap named** — an agent guide with no `## Conventions`
+  block, a `tasks/` tree with no `.config.yml`. The artifact is there; report what it lacks.
+
+Alongside it, detect the facts the fill will need: the stack (manifests, source layout), whether a
+test runner already works, whether a git remote exists, and whether the repo is captured by an
+ancestor git repo.
 
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
 written. For a repo that is already complete, this is the entire run — say so and finish.
@@ -59,20 +70,34 @@ stop being considered somewhere around round six.
 
 ### 3. Fill the gaps, in dependency order
 
-Ground truth and the agent guide first, then `/tasks init`, then `/specs init` — later steps read
-what earlier ones write. For each artifact follow its **"already present?"** column in
-[LAYER.md](../new-project/LAYER.md).
+Follow [LAYER.md](../new-project/LAYER.md) § *Ordering* — later steps read what earlier ones write,
+so the sequence belongs to the inventory rather than being restated here. For each artifact follow
+its **"already present?"** column in the same file.
 
-Two rules bind the whole step:
+Three rules bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
 - **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](../new-project/LAYER.md) § The adopted-repo brief).
+- **An `unknown` row is not filled — ask instead.** The survey never established that artifact was
+  absent, so writing it is a guess aimed at the user's own files: the false-missing defect with one
+  extra step.
 
 ### 4. Report what changed
 
-Three lists: **created**, **left alone** (with why — "present already", "you declined"), and
-**still missing** (with why — "needs a decision", "blocked on a remote"). Then the next step:
-`/feature new` for stakeholder-facing work, `/tasks new` for a defined unit.
+Four lists, mirroring the survey's states so nothing is lost between classifying and reporting:
+
+| Bucket | Carries |
+|---|---|
+| **created** | what was written |
+| **left alone** | why — "present already", "you declined" |
+| **present, elsewhere** | **where** — the paths or form actually found. Never offer to create a second one |
+| **unknown / still missing** | which of the two, and why — "could not determine X", "needs a decision", "blocked on a remote" |
+
+Keep `unknown` and `missing` distinct inside that last bucket: *"I could not tell"* and *"you don't
+have it"* are different claims, and collapsing them here re-introduces one layer later the defect
+the survey just avoided.
+
+Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit.
 
 The report is the deliverable as much as the files are. An adoption whose output is "done!" leaves
 the user unable to tell what was touched in their own repo.

@@ -7,14 +7,14 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 8     |
+| todo         | —     | —       | 7     |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 8     |
+| review       | —     | —       | 9     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 5× P2 · 2× P3.
+`todo` by priority: 5× P2 · 2× P3.
 
 ## In progress now
 
@@ -26,7 +26,7 @@ _No task is currently in-progress — the whole epic is parked on verification d
 
 ## In review
 
-⚠ **Verification debt (8).** Every task below is code-complete with unrun checks. The repo's own
+⚠ **Verification debt (9).** Every task below is code-complete with unrun checks. The repo's own
 rule is to clear this before taking new scope.
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — only the `@AGENTS.md` bridge check remains; needs a fresh session
@@ -37,6 +37,7 @@ rule is to clear this before taking new scope.
 - **TASK-007** Never offer CI a repo cannot pass (STORY-002) — verified on Latent/Presenter/flappy-dragon
 - **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded
 - **TASK-011** adopt-project installed in both runtimes (STORY-002) — junctions verified live; only the fresh-session description-match check remains
+- **TASK-012** Router now teaches LAYER.md's four survey states (STORY-002) — all three drills need real repos: a .NET repo with sibling `*.Tests`, and one with a genuinely undeterminable row
 
 > The STORY-002 drills above predate TASK-011's junction, so none of them invoked the *installed*
 > skill — the checked lines now say so explicitly. They are evidence of behaviour, not of discovery;
@@ -55,7 +56,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-007   Do not offer CI a repo cannot pass                       [review]
     TASK-008   Survey must detect, not assume the seed layout           [review]
     TASK-011   adopt-project is not installed in either runtime         [review]
-    TASK-012   Router teaches three survey states, LAYER.md four        [todo] P1
+    TASK-012   Router teaches three survey states, LAYER.md four        [review]
     TASK-016   Installers only add — no missing/stale junction check    [todo] P2
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]

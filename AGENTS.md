@@ -111,6 +111,12 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **New skills go in `skills/`.** `skills-pi/` is frozen (see § Architecture).
 - **A verb owns its rules.** If a rule only matters to one verb, it lives in that verb's file, not the router.
 - **Generated files are owned by their verbs** — see Working rules.
+- **Defer to a shared inventory — never restate its lists.** Where a skill points at a shared file
+  (`LAYER.md` today), any list that can *grow* — states, artifacts, owners, an ordering — must be a
+  pointer, not a copy: when the inventory gains a row the copy becomes wrong silently, with nothing
+  to signal it. A single **invariant** restated where it is load-bearing is fine, since there is no
+  list to fall out of sync. The test is one question — *would this sentence become wrong if the
+  shared file gained a row tomorrow?*
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming
