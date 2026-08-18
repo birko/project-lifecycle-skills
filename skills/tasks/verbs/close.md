@@ -87,6 +87,27 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      of the ready pool until the merge can happen — exactly what `blocked` means. Capture the reason
      and, for a stacked PR, the task it waits on; step 6 writes `blocked` instead of `done`.
 
+5d. **Out-of-scope sweep — classify every bullet as a boundary or as work** (tasks only, before the
+   status flip). Read the closing task's `## Out of scope` (and any `## Notes`-style aside it grew during
+   the work). For each bullet, one of exactly three outcomes:
+   - **A boundary** — names another task/epic/feature that owns it, or states a deliberate limit of this
+     task. Leave as prose; it is doing its job.
+   - **Work** — describes something that should later be done and names no owner. It gets an id **now**:
+     offer [`spawn`](spawn.md) (or, for several in one family, one grouped task — see below). Do not close
+     with it unowned.
+   - **Decided not to do** — rewrite the bullet to say so *and why*, so the next reader finds a decision
+     instead of rediscovering the gap.
+
+   **Group rather than fragment.** Several bullets from the same thread that are individually small and
+   share a theme belong in **one** task, because splitting them buries the connection that makes them
+   cheap to do together; say in that task's body that it is a group and why.
+
+   Why this is a step and not a habit: `## Out of scope` looks like documentation, so an unowned "X is
+   also broken" reads as recorded when nothing ranks it — the same defect as a checklist bullet under a
+   STORY (SKILL.md § *Findings become tasks*). It surfaces at close because that is when the section is
+   complete and when the judgement is cheapest: the work is fresh, and one grouped task costs a minute.
+   **A close that adds an unowned work bullet is not done.**
+
 6. **Edit frontmatter FIRST — the state you commit must be the truth** (tasks only):
    - **Merging now (or no merge step applies)** → `status: ... → status: done` (and check any
      acceptance boxes the user just confirmed).
@@ -153,7 +174,9 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - **Spec regen offer** (STORY close only; when the project has real code but no `docs/specs/.map.yml` **or the map's `areas:` list is empty** — the [[new-project]] scaffold seeds exactly such an empty anchor — print one line — *"no usable spec map — run `/specs init` to bootstrap the spec layer"* — instead of skipping silently): map the story's merged work to spec areas — resolve its tasks' `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`) and match them against the `.map.yml` globs; if references are missing, ask which areas. Then **offer** — don't auto-run — `/specs regen <areas> --story STORY-NNN`. The regen's diff review is the "was this behavioral change intended?" check (the [[specs]] skill); an unexpected spec diff at story close is a finding, not churn.
     - **Changelog nudge** (don't auto-run; avoid double-nudging) — only for **task-only work that `/feature review` won't cover**: if the closed item has **no `feature:` link** (a `_loose` task or a feature-less EPIC/STORY) and represents a user-facing change, and the project has a `CHANGELOG.md`, print one line — *"consider `/roll-changelog` to record this for users."* Skip when the task has a `feature:` link (the feature's `/feature review` carries the nudge) or there's no `CHANGELOG.md`. The changelog is human-curated, so suggest, never auto-run.
 
-12. **Confirm** — print:
+12. **Confirm** — print (include the step 5d outcome: `out-of-scope: N boundary, M spawned, K declined`,
+   so the sweep is visibly accounted for rather than assumed — a gate whose output is invisible when it
+   passes is indistinguishable from one that never ran):
     - Which file was updated
     - What changed (`status: todo → done`, `pr: null → 123`)
     - Remote close result if hybrid

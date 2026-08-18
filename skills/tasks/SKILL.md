@@ -234,6 +234,19 @@ non-obvious rules travel with this:
 - ***A checklist line is filed, not scheduled.*** Only `status: todo` **tasks** are ranked by `pick`,
   by the `Next up` snapshot, or by `fix-next`. A finding parked as a bullet under a STORY is invisible
   to all three and will never be worked. If it's worth doing, it's a task.
+  - **This is about the CONTAINER, not the container's name — and `## Out of scope` is the one that
+    catches people.** That section has two legitimate jobs and only one of them is prose. Recording a
+    **boundary** ("this task does not cover X; Y owns it") is exactly what it is for. Recording **work**
+    ("Z is also broken, but not here") is the checklist-line failure wearing a different heading: the
+    sentence describes something someone should later do, nothing ranks it, and it is discoverable only
+    by whoever re-reads a closed task. Same for a `## Notes` aside, a `> ⚠` callout, and a code comment
+    that says "should be fixed properly one day".
+  - **The test is the sentence's kind, not its size.** "Small", "latent", "nobody hits this yet" and
+    "found in passing" are all reasons it feels unworthy of an id — and none of them is a reason it will
+    get picked up. Genuinely torn → spawn: a spare task is cheap noise you can `cancel`, an untracked
+    paragraph is work that silently disappears. `close` step 5d enforces this mechanically, because
+    intentions do not survive a long session — measured instance: one thread produced six such
+    paragraphs across five closed tasks while the same session was quoting this very rule.
 - **Four optional frontmatter fields are owned by this pair and are not stray keys** — `triage` and
   `audit` must not flag them: `findings:` (task — the ids it remediates, `CR-*`/`SEC-*`/`SH-*`/`VC-*`),
   `kind: review-intake` + `source:` (epic — the stamp `fix-next` reads to find the pool, so no epic

@@ -17,6 +17,14 @@ happened. Spawn instead of widening.
 - **The agent offers it, unprompted.** Don't wait to be asked. When you notice work outside the
   current task's acceptance criteria, say so and offer to spawn — silently doing it, or silently
   dropping it, are both lifecycle violations.
+- **There is a quiet third violation, and it is the most tempting one: writing the discovery into
+  `## Out of scope` without an id.** That *feels* like tracking — the sentence is durable, it sits in
+  the right section, a reader would find it. But nothing ranks it, so it is read only by whoever
+  re-opens a closed task. `## Out of scope` is for a **boundary** ("X is not covered; TASK-NNN owns
+  it"); a bullet that describes unowned **work** is a spawn that was skipped. Noting a spawned task
+  there is correct and expected — the id is what makes it a boundary rather than a wish.
+  Interrupting mid-fix is the usual excuse, and it is answered by step 8: spawn returns you here, so
+  the thread is not lost. [`close`](close.md) step 5d sweeps for the ones that slipped anyway.
 - The user can trigger it directly: `/tasks spawn "<what was discovered>"`, or plain "that should
   be its own task".
 
