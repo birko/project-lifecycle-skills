@@ -42,7 +42,10 @@ every `/tasks close`**, on the repo with the most rules to enforce. Same shape a
 wikilink defect: a gate that degrades to nothing while reporting success. Nobody would notice,
 because "no findings" and "no rules found" look identical in the output.
 
-Three of the five surveyed consumers are affected to some degree.
+`C:\Source\Birko\Consumers\BardStudio` shows the defect is not about language at all: its guide
+has `## Key Conventions`. One extra word, and the linter reports the project has no rules.
+
+Four of the seven surveyed consumers are affected.
 
 ## Acceptance criteria
 

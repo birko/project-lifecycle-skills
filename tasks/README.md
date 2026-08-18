@@ -7,7 +7,7 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 2     |
+| todo         | —     | —       | 3     |
 | in-progress  | 1     | 2       | 0     |
 | review       | —     | —       | 5     |
 | blocked      | —     | —       | 0     |
@@ -39,6 +39,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-004   adopt-project: infer conventions, then grill             [review]
     TASK-005   Layer parity: backport brownfield rules to new-project   [review]
     TASK-007   Do not offer CI a repo cannot pass                       [review]
+    TASK-008   Survey must detect, not assume the seed layout           [todo]
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]
