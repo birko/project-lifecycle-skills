@@ -9,12 +9,12 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 9     |
 | in-progress  | 1     | 2       | 0     |
-| review       | —     | —       | 9     |
+| review       | —     | —       | 10    |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 5× P2 · 2× P3.
+`todo` by priority: 1× P1 · 6× P2 · 2× P3.
 
 ## In progress now
 
@@ -26,7 +26,7 @@ _No task is currently in-progress — the whole epic is parked on verification d
 
 ## In review
 
-⚠ **Verification debt (9).** Every task below is code-complete with unrun checks. The repo's own
+⚠ **Verification debt (10).** Every task below is code-complete with unrun checks. The repo's own
 rule is to clear this before taking new scope.
 
 - **TASK-002** Scaffold the universal layer onto this repo (STORY-001) — only the `@AGENTS.md` bridge check remains; needs a fresh session
@@ -38,6 +38,7 @@ rule is to clear this before taking new scope.
 - **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded. WorkoutTracker re-verified 2026-08-18 through the installed skill
 - **TASK-011** adopt-project installed in both runtimes (STORY-002) — junctions verified live; only the fresh-session description-match check remains
 - **TASK-012** Router now teaches LAYER.md's four survey states (STORY-002) — all three drills need real repos: a .NET repo with sibling `*.Tests`, and one with a genuinely undeterminable row
+- **TASK-018** Survey states and report buckets miss a re-run's cases (STORY-002) — states + buckets fixed and gate-checked; all four drills unrun, and the uncommitted state now needs a scratch clone since WorkoutTracker's brief was committed
 
 > The STORY-002 drills above predate TASK-011's junction, so — with one exception — none of
 > them invoked the *installed* skill; the checked lines say so explicitly. They are evidence of
@@ -61,7 +62,8 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-012   Router teaches three survey states, LAYER.md four        [review]
     TASK-016   Installers only add — no missing/stale junction check    [todo] P2
     TASK-017   Step 2's inference round has no skip condition           [todo] P1
-    TASK-018   Survey states and report buckets miss a re-run's cases   [todo] P1
+    TASK-018   Survey states and report buckets miss a re-run's cases   [review]
+    TASK-019   new-project offers a CI stub a consumer cannot pass      [todo] P2
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]

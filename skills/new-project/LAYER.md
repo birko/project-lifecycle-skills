@@ -64,15 +64,31 @@ So detect by **evidence**, not by path:
 | Changelog | `CHANGELOG.md`, but equally `HISTORY.md`, `NEWS.md`, or a releases section in the README |
 | Task tracking | `tasks/`, but a repo may track work in GitHub Issues or Jira alone — that is *tracking*, not an absence |
 
-**Report four states, not two:**
+**Report the state precisely.** The distinctions matter, the number of them does not — this list
+grows as real repos turn up conditions it cannot yet express:
 
-- **present** — found where expected.
+- **present** — found where expected, and (in a git work tree) fully tracked.
+- **present, uncommitted** — found on disk, but git does not have all of it. **Only meaningful inside a git work tree**: in a directory with no repo yet every path is untracked, which is what the `git init` offer is for, not this state. Probe with `git ls-files --others --exclude-standard -- <path>` — anything it returns is an untracked member, which matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind; `git ls-files -- <path>` alone answers "is any of it tracked", a different and useless question here. (A path that is present but deliberately git-ignored is neither of these — report it `present` and leave it alone.) This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
 - **present, elsewhere** — found in another location or form. **Say where.** Never silently relocate it, and never offer to create a second one.
 - **unknown** — you could not determine it. Honest, and it stops the fill.
 - **missing** — you actively looked and it is genuinely absent.
+- **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because it records an adjudication: collapsed into `missing`, the question is re-opened on every re-run and the user re-reads the same explanation each time.
 
 *"I could not tell"* is a legitimate answer; *"you don't have it"* when you merely failed to look
 properly is a lie that invites a destructive fill. When in doubt, report **unknown** and ask.
+
+**Tracking is orthogonal to the *Already present?* column.** That column decides what to do with an
+artifact's **content** — leave it, merge into it, delegate to its owner — and a row reading
+*"Present → leave"* still leaves it: landing an untracked file changes nothing inside it. So
+`present, uncommitted` adds the offer to commit **on top of** whatever the row says, and never
+overrides it. Without this line the two instructions read as a contradiction, and the row wins,
+which is how the artifact stays out of history.
+
+**Presence, not currency.** These states answer *does the artifact exist* — never *is its content
+still true*. A README whose status section describes the repo three releases ago is `present`:
+adoption does not fill it, does not rewrite it, and at most notes the staleness as an aside in the
+report. Judging whether a team's own prose is current is a content audit, a different job with a
+different appetite for editing files the repo owns.
 
 **Never move a repo's files into the canonical layout.** The layer says what a project needs, not
 where it must live. A repo that solved it differently has *solved it*.
@@ -102,8 +118,9 @@ aggregator rather than a package feed. Observed in `Latent`, a clean .NET soluti
 sibling tree that a runner has no way to obtain.
 
 Making such a repo CI-able is a distribution decision (publish the framework as packages, vendor
-it, or check it out in the workflow), not something an adoption pass can settle. Report it and move
-on.
+it, or check it out in the workflow), not something an adoption pass can settle. Report it as
+**missing, not offered** with the offending dependency named, and move on — that state is what
+stops the next run from putting the same question again.
 
 ## Ordering
 

@@ -29,10 +29,11 @@ those shapes here is how the two versions drift.
 
 ### 1. Survey — read before writing anything
 
-Walk [LAYER.md](../new-project/LAYER.md) and classify every artifact by its states — **present**,
-**present, elsewhere**, **unknown**, **missing**. LAYER.md § *Detect what the repo has* is the
-definition and carries the evidence to check per row; work from there rather than from these four
-words, and if it ever grows a fifth state this line is still a pointer, not a list to re-close.
+Walk [LAYER.md](../new-project/LAYER.md) and classify every artifact by the states its
+§ *Detect what the repo has* defines — that section is the definition and carries the evidence to
+check per row. The states are deliberately **not** listed here: the list grows whenever a real repo
+turns up a condition it could not express (it has grown twice already), and a copy here goes wrong
+silently the next time, with nothing to signal it.
 
 Two consequences decide behaviour:
 
@@ -42,8 +43,9 @@ Two consequences decide behaviour:
   block, a `tasks/` tree with no `.config.yml`. The artifact is there; report what it lacks.
 
 Alongside it, detect the facts the fill will need: the stack (manifests, source layout), whether a
-test runner already works, whether a git remote exists, and whether the repo is captured by an
-ancestor git repo.
+test runner already works, whether a git remote exists, whether the repo is captured by an
+ancestor git repo, and whether anything the layer owns is sitting on disk **untracked** — the
+signature of an earlier pass that wrote and never committed.
 
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
 written. For a repo that is already complete, this is the entire run — say so and finish.
@@ -74,28 +76,40 @@ Follow [LAYER.md](../new-project/LAYER.md) § *Ordering* — later steps read wh
 so the sequence belongs to the inventory rather than being restated here. For each artifact follow
 its **"already present?"** column in the same file.
 
-Three rules bind the whole step:
+The rules that bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
 - **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](../new-project/LAYER.md) § The adopted-repo brief).
 - **An `unknown` row is not filled — ask instead.** The survey never established that artifact was
   absent, so writing it is a guess aimed at the user's own files: the false-missing defect with one
   extra step.
+- **A `present, uncommitted` row is landed, not rewritten.** The file is already right; what is
+  missing is the commit. Offer it in the adoption commit and report it. Rewriting it discards an
+  earlier pass's work to produce, at best, the same bytes.
 
 ### 4. Report what changed
 
-Four lists, mirroring the survey's states so nothing is lost between classifying and reporting:
+Report by outcome. Three buckets for what this run **did**:
 
 | Bucket | Carries |
 |---|---|
 | **created** | what was written |
+| **amended** | a file the repo already owned, changed with the user's consent — and *what* changed inside it: a section appended, a section replaced, lines added. **Never report an amendment as a creation**; on the upgrade path amendment is the normal outcome, so this is the busiest bucket, not an exotic one |
 | **left alone** | why — "present already", "you declined" |
-| **present, elsewhere** | **where** — the paths or form actually found. Never offer to create a second one |
-| **unknown / still missing** | which of the two, and why — "could not determine X", "needs a decision", "blocked on a remote" |
 
-Keep `unknown` and `missing` distinct inside that last bucket: *"I could not tell"* and *"you don't
-have it"* are different claims, and collapsing them here re-introduces one layer later the defect
-the survey just avoided.
+Then **one bucket per surveyed state the three above do not already absorb** — `present` is
+*left alone*, and a `missing` row you filled is *created*. [LAYER.md](../new-project/LAYER.md) owns
+the state list, so a state added there that no outcome bucket absorbs gets a bucket here named after
+it, whether or not this page mentions it. Each carries what the *report* owes beyond the state's
+name:
+
+- `present, elsewhere` — **where**: the paths or form actually found. Never offer to create a second one.
+- `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
+- `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
+- `missing, not offered` — **the reason**, so a re-run reads the row as settled instead of asking again.
+
+Staleness inside a present artifact is an **aside**, never a bucket — see
+[LAYER.md](../new-project/LAYER.md) § *Presence, not currency*.
 
 Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit.
 
