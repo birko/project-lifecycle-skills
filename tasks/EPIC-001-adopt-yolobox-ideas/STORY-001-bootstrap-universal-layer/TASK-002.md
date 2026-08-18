@@ -53,7 +53,7 @@ Ran `new-project` against a repo with 36 commits, an existing README and LICENSE
 
 - [x] `bash .github/workflows/skills-lint.sh` exits 0 and reports 15 skills
 - [x] `tr -d '[:space:]' < CLAUDE.md` equals `@AGENTS.md`
-- [ ] Push and confirm both CI jobs go green on the real runner (ubuntu-latest, not Git Bash on Windows). **This matters more than it looks:** the wikilink check was case-*insensitive* on Windows via `[ -d ]`, so it behaved differently on the two platforms — the resolution is now list-based, but check 3 still uses `[ -e ]` and retains that asymmetry for file paths
+- [x] CI green on ubuntu-latest (run 32163759063, 12s): skills-lint-test 25/25, skills-lint OK (16 skills), bridge OK — **identical to Windows**, so the case-sensitivity divergence that motivated this check did not materialise
 - [ ] Open a fresh agent session in this repo and confirm the `@AGENTS.md` bridge auto-loads the guide, and that `§ Conventions` is what `/verify-conventions` reads
 - [ ] Run `/roadmap` and confirm it renders EPIC-001 across both trees without erroring on an empty `docs/features/`
 - [ ] **Blocked:** run `adopt-project` on this repo and confirm zero gaps (STORY-002)
