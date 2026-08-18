@@ -18,3 +18,6 @@ desktop.ini
 # --- Scratch ---
 scratch/
 *.tmp
+
+# Belt-and-braces: older lint versions wrote this sentinel into the repo root.
+.lint-fail

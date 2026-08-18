@@ -68,5 +68,26 @@ case_is "link inside an inline code span"  0 m_codespan
 case_is "nested fences"                    0 m_nested
 case_is "link inside templates/"           0 m_template
 
+m_regexlink() { printf '\nSee [[al.ha]].\n' >> "$1/skills/alpha/SKILL.md"; }
+m_unbalanced(){ printf '\n%s%s%s\nSee [[definitely-not-a-skill]] and [x](nope.md).\n' "$bt" "$bt" "$bt" >> "$1/skills/alpha/companion.md"; }
+m_aliasbad()  { printf '\nSee [[no-such-skill|display text]].\n' >> "$1/skills/alpha/SKILL.md"; }
+m_aliasok()   { printf '\nSee [[beta|the beta skill]].\n' >> "$1/skills/alpha/SKILL.md"; }
+m_dblspan()   { printf '\nWrite %s%s[[no-such-skill]]%s%s to show a literal link.\n' "$bt" "$bt" "$bt" "$bt" >> "$1/skills/alpha/companion.md"; }
+m_tilde()     { printf '\n~~~markdown\nSee [[no-such-thing]].\n~~~\n' >> "$1/skills/alpha/companion.md"; }
+m_rootrel()   { printf '\nSee [x](/skills/beta/SKILL.md).\n' >> "$1/skills/alpha/companion.md"; }
+m_miscasefil(){ printf '\nSee [x](SKILL.MD).\n' >> "$1/skills/alpha/companion.md"; }
+m_sentinel()  { printf 'x' > "$1/.lint-fail"; }
+
+printf 'Regressions from the second review pass\n'
+case_is "wikilink with a regex metachar"   1 m_regexlink
+case_is "unbalanced code fence"            1 m_unbalanced
+case_is "aliased link to a missing skill"  1 m_aliasbad
+case_is "mis-cased file link"              1 m_miscasefil
+case_is "aliased link to a real skill"     0 m_aliasok
+case_is "double-backtick code span"        0 m_dblspan
+case_is "tilde fence"                      0 m_tilde
+case_is "root-relative link"               0 m_rootrel
+case_is "stale .lint-fail in the repo"     0 m_sentinel
+
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
