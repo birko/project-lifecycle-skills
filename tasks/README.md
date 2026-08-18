@@ -7,12 +7,14 @@ _Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 2     |
+| todo         | —     | —       | 8     |
 | in-progress  | 1     | 2       | 0     |
 | review       | —     | —       | 7     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 0       | 0     |
 | cancelled    | 0     | 0       | 0     |
+
+`todo` by priority: 2× P1 · 4× P2 · 2× P3.
 
 ## In progress now
 
@@ -33,6 +35,9 @@ rule is to clear this before taking new scope.
 - **TASK-007** Never offer CI a repo cannot pass (STORY-002) — verified on Latent/Presenter/flappy-dragon
 - **TASK-008** Survey must detect, not assume (STORY-002) — re-surveyed 6 repos; Framework (multi-repo) excluded
 
+> Every STORY-002 drill above predates TASK-011: none of them could have invoked the installed
+> skill, because no junction for it exists yet. Read them as repo-copy drills until that is fixed.
+
 ## Tree
 
 ```
@@ -45,6 +50,8 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-005   Layer parity: LAYER.md shared by both front doors        [review]
     TASK-007   Do not offer CI a repo cannot pass                       [review]
     TASK-008   Survey must detect, not assume the seed layout           [review]
+    TASK-011   adopt-project is not installed in either runtime         [todo] P1
+    TASK-012   Router teaches three survey states, LAYER.md four        [todo] P1
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]
@@ -59,5 +66,9 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-001** STORY.md cannot express dependency edges — `todo`, P2
 - **TASK-006** verify-conventions finds the rulebook — `review`, P1
 - **TASK-009** verify-conventions has no rule about generated/vendored files — `todo`, P3
+- **TASK-010** `/tasks pick` walks past verification debt without mentioning it — `todo`, P2
+- **TASK-013** verify-conventions must say which sections it read — `todo`, P2
+- **TASK-014** Architecture doc and changelog don't reflect the day's shipped skills — `todo`, P2
+- **TASK-015** `close` step 5d needs an unattended path for fix-next — `todo`, P3
 
 _No completed work yet. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._
