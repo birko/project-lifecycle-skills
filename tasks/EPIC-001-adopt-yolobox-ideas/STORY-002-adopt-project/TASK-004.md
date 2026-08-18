@@ -2,7 +2,7 @@
 id: TASK-004
 parent: STORY-002
 feature: null
-status: todo
+status: review
 priority: P1
 assignee: unassigned
 created: 2026-08-18
@@ -29,13 +29,13 @@ from [[verify-conventions]], which is the single biggest payoff of adopting at a
 
 ## Acceptance criteria
 
-- [ ] Surveys the codebase for recurring patterns and proposes them as `§ Conventions` entries, each shown **with the evidence that suggested it** (file count + representative paths) so the user can judge rather than rubber-stamp
-- [ ] Covers the seed's subsections: framework/stack (from manifests + imports), code structure & patterns, naming, testing (from the test runner actually present), and UI/UX only when a human-facing surface exists
-- [ ] **Proposes, never asserts.** Every inferred rule is confirmed by the user before it is written; an unconfirmed inference is dropped, not written as a guess
-- [ ] Distinguishes *convention* from *accident*: a pattern in 3 of 30 files is offered as a question, not a rule
-- [ ] Surfaces candidate glossary terms — recurring domain nouns, and pairs that look like synonyms for one concept — for [[domain]] once STORY-003 lands; until then it records them in the guide and says so
-- [ ] Uses the frontier-round grill shape from [[grill-me]], not one question at a time
-- [ ] A repo where nothing can be inferred degrades gracefully: say so and leave the subsections empty rather than inventing rules the project never agreed to
+- [x] Surveys the codebase for recurring patterns and proposes them as `§ Conventions` entries, each shown **with the evidence that suggested it** (file count + representative paths) so the user can judge rather than rubber-stamp
+- [x] Covers the seed's subsections: framework/stack (from manifests + imports), code structure & patterns, naming, testing (from the test runner actually present), and UI/UX only when a human-facing surface exists
+- [x] **Proposes, never asserts.** Every inferred rule is confirmed by the user before it is written; an unconfirmed inference is dropped, not written as a guess
+- [x] Distinguishes *convention* from *accident*: a pattern in 3 of 30 files is offered as a question, not a rule
+- [x] Surfaces candidate glossary terms — recurring domain nouns, and pairs that look like synonyms for one concept — for [[domain]] once STORY-003 lands; until then it records them in the guide and says so
+- [x] Uses the frontier-round grill shape from [[grill-me]], not one question at a time
+- [x] A repo where nothing can be inferred degrades gracefully: say so and leave the subsections empty rather than inventing rules the project never agreed to
 
 ## Out of scope
 
@@ -50,5 +50,11 @@ from [[verify-conventions]], which is the single biggest payoff of adopting at a
 
 ## Implementation plan
 
-_Draft after TASK-003 lands — the inference pass hangs off the survey's file inventory, so its
-shape depends on what the survey ends up collecting._
+1. Written as `INFER.md` rather than inline: the router stays small per the prose rules, and the
+   inference discipline is long enough to be its own reference.
+2. Prevalence thresholds chosen over raw counts — 80%+ of *applicable* files proposes a rule,
+   20-80% asks a question, below that stays silent. A split codebase is a finding worth surfacing,
+   not a failure to classify.
+3. Glossary candidates collected but not written: `domain` does not exist yet, and the reference
+   is deliberately plain text because a wikilink to an absent skill degrades silently at runtime.
+   STORY-003 promotes it.

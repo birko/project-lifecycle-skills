@@ -37,12 +37,25 @@ is captured by an ancestor git repo.
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
 written. For a repo that is already complete, this is the entire run — say so and finish.
 
-### 2. Ask what the code cannot tell you
+### 2. Infer the conventions, then confirm them
 
-A handful of facts are choices, not observations: task-tracking mode (local / hybrid), whether the
-canonical guide is `CLAUDE.md` or `AGENTS.md` + bridge, and the license posture. Ask these plainly
-with `AskUserQuestion` — one batch, recommendations first. Ask **only** about artifacts the survey
-found missing; a repo that already has a guide is not asked which guide it wants.
+This is the step that makes adoption worth doing. The repo has already answered most convention
+questions in its own source — read the answers out and put them to the user **with the evidence
+that suggested them**. See [INFER.md](INFER.md) for what to read per subsection, how to tell a
+convention from an accident, and how to collect glossary candidates.
+
+Two rules govern it: **propose, never assert** — an unconfirmed inference is dropped, not written
+as a guess — and **show the evidence**, so the user can disagree specifically rather than
+rubber-stamp.
+
+Alongside the inferences, a few facts are choices rather than observations: task-tracking mode
+(local / hybrid), whether the canonical guide is `CLAUDE.md` or `AGENTS.md` + bridge, and the
+license posture. Ask **only** about artifacts the survey found missing — a repo that already has a
+guide is not asked which guide it wants.
+
+Put the inferences and the choices in **one frontier round** ([[grill-me]]'s shape), not a queue of
+single questions. A 15-rule proposal asked one at a time becomes an interrogation, and the answers
+stop being considered somewhere around round six.
 
 ### 3. Fill the gaps, in dependency order
 
