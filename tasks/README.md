@@ -1,20 +1,20 @@
 # Tasks — The Project Lifecycle Skills
 
-_Generated 2026-08-18. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 12    |
+| todo         | —     | —       | 15    |
 | in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 13    |
+| done         | 0     | 1       | 14    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 9× P2 · 2× P3.
+`todo` by priority: 1× P1 · 11× P2 · 3× P3.
 
 ## In progress now
 
@@ -75,5 +75,14 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-021**'s Presenter drill also landed in that repo: `86f24bf` on `main`, branch deleted only after being asked about
 - **TASK-024** The other owner verbs can't say whether an artifact is current — `todo`, P2
 - **TASK-025** DV10 cannot see a repo whose code is prose — `todo`, P2
+- **TASK-026** `/specs regen` attributed provenance on a mention, not authorship — **`done`** (measured on Symbio: both known false positives gone, 96 of 246 attributions kept, `shaped-by-unresolved` 135 → 169)
+- **TASK-027** `present, uncommitted` is blind to staged-but-uncommitted work — `todo`, P2
+- **TASK-028** The inference skip rule counts an inapplicable subsection — `todo`, P2
+- **TASK-029** The lint's own 16 → 25 case growth is unrecorded — `todo`, P3
 
-_Thirteen tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012, 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021 and TASK-023 on the Presenter drill. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until TASK-001 gives stories real edge fields._
+_Fourteen tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012,
+018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021
+and TASK-023 on the Presenter drill; TASK-026 on a scripted re-derivation over Symbio's 213
+feature-linked tasks. TASK-027 to 029 are that task's `/code-review` findings from outside its own
+diff — filed rather than folded in. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until
+TASK-001 gives stories real edge fields._

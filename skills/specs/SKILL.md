@@ -106,6 +106,19 @@ from tasks' `feature:` frontmatter, joined to the area through **evidence** — 
 each task's commits/PR actually touched, intersected with the area's `sources`. Never
 inferred from names or dates: an unresolvable task contributes nothing.
 
+**Evidence means authorship, not mention.** Two independent rules carry that, both stated in
+regen step 5a. **Only landed work counts:** the commit must be reachable from the harvested
+history — checked, not assumed, since a `pr:` can point at an unmerged branch — and where the
+evidence is only *inferred* from a commit message, a task whose state says the work never landed
+is not evidence however many commits name it (step 5a resolves those states from [[tasks]]'
+vocabulary rather than listing them here). A declared `pr:` outranks the state field: a state that
+disagrees with a reference that landed is a contradiction to report, not grounds to discard it.
+**Only a subject attributes:** where the trail falls back to commit messages, the task id must
+lead the commit **subject** — a body that merely names a task is cross-referencing it,
+not implementing it. The strictness is deliberate: a false `shaped-by`
+entry makes [[feature]] `review` Gate A **pass** on a decision that never shipped, whereas a
+missing one stays visible as a gap and shows up in `shaped-by-unresolved`.
+
 `shaped-by-derived:` records whether that computation ran at all, because `shaped-by: []`
 otherwise conflates "no feature shaped this area" with "nobody ever computed it". Absent
 key = never derived; consumers must treat it as unknown, not as an empty answer.
