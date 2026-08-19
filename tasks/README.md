@@ -11,17 +11,17 @@ _Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 17    |
+| done         | 0     | 1       | 18    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 17× P2 · 3× P3.
+`todo` by priority: 1× P1 · 16× P2 · 3× P3.
 
 ## In progress now
 
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set
   - **STORY-002** adopt-project — the brownfield front door
 
-_No task is currently in-progress — TASK-031 closed 2026-08-19. STORY-002 has two left: TASK-019, TASK-022._
+_No task is currently in-progress — TASK-019 closed 2026-08-19. STORY-002 has one left: TASK-022._
 
 ## In review
 
@@ -49,7 +49,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-016   Installers only add — no missing/stale junction check    [todo] P2
     TASK-017   Step 2's inference round has no skip condition           [done]
     TASK-018   Survey states and report buckets miss a re-run's cases   [done]
-    TASK-019   new-project offers a CI stub a consumer cannot pass      [todo] P2
+    TASK-019   new-project offers a CI stub a consumer cannot pass      [done]
     TASK-020   Found defects get fixed but never get an id              [done]
     TASK-021   Survey infers what the layer records as a declaration    [done]
     TASK-022   Adoption leaves generated files it invalidated           [todo] P2
@@ -87,6 +87,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-035** Nothing owns the `integration:` question — three rules each hand it on — `todo`, P2
 - **TASK-036** `/specs regen`'s state gate can read the commented enum, not the status — `todo`, P2
 - **TASK-037** Nothing detects a `skills-pi/` stub shadowing a real built-in — `todo`, P2
+- **TASK-038** The CI isolation check over-reports on any real .NET repo — `todo`, **P1** (found on Symbio)
 
 _Fourteen tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012,
 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021
