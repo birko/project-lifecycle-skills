@@ -7,21 +7,21 @@ _Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 16    |
+| todo         | —     | —       | 21    |
 | in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 14    |
+| done         | 0     | 1       | 15    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 12× P2 · 3× P3.
+`todo` by priority: 1× P1 · 17× P2 · 3× P3.
 
 ## In progress now
 
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set
   - **STORY-002** adopt-project — the brownfield front door
 
-_No task is currently in-progress — the whole epic is parked on verification debt (below)._
+_No task is currently in-progress — TASK-020 closed 2026-08-19; the epic's open work is listed below._
 
 ## In review
 
@@ -50,9 +50,10 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-017   Step 2's inference round has no skip condition           [done]
     TASK-018   Survey states and report buckets miss a re-run's cases   [done]
     TASK-019   new-project offers a CI stub a consumer cannot pass      [todo] P2
-    TASK-020   Found defects get fixed but never get an id              [todo] P1
+    TASK-020   Found defects get fixed but never get an id              [done]
     TASK-021   Survey infers what the layer records as a declaration    [done]
     TASK-022   Adoption leaves generated files it invalidated           [todo] P2
+    TASK-031   `missing, not offered` never reopens on a re-run         [todo] P2
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]
@@ -80,10 +81,20 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-028** The inference skip rule counts an inapplicable subsection — `todo`, P2
 - **TASK-029** The lint's own 16 → 25 case growth is unrecorded — `todo`, P3
 - **TASK-030** `close`'s single-branch SHA backfill instructs an impossible amend — `todo`, P2
+- **TASK-032** A divergence cannot be recorded as accepted, so triage nags or skips silently — `todo`, P2
+- **TASK-033** `/specs init`'s coverage check can pass vacuously — `todo`, P2
+- **TASK-034** `tasks/README.md` holds narrative its own template cannot regenerate — `todo`, P2
+- **TASK-035** Nothing owns the `integration:` question — three rules each hand it on — `todo`, P2
+- **TASK-036** `/specs regen`'s state gate can read the commented enum, not the status — `todo`, **P1**
 
 _Fourteen tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012,
 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021
 and TASK-023 on the Presenter drill; TASK-026 on a scripted re-derivation over Symbio's 213
 feature-linked tasks. TASK-027 to 029 are that task's `/code-review` findings from outside its own
-diff, and TASK-030 is what its own close turned up — all four filed rather than folded in. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until
+diff, and TASK-030 is what its own close turned up — all four filed rather than folded in. TASK-031
+and TASK-032 came out of TASK-020 the same way: one from its `widget-store` drill, one from the
+`triage` its own pick chained. Its close then produced four more — TASK-033 from the 5d out-of-scope
+sweep (unowned since 2026-08-18), TASK-034 from `/verify-conventions` against the close's own diff, and
+TASK-035/036 from `/code-review`; two further findings were linked onto TASK-024 and TASK-027 rather
+than duplicated. TASK-036 is the only open P1. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until
 TASK-001 gives stories real edge fields._

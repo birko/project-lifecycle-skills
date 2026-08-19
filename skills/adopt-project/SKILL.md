@@ -58,6 +58,11 @@ signature of an earlier pass that wrote and never committed.
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
 written.
 
+**A defect the survey turns up does not belong in that table.** It is not a layer row, and the user
+needs to see it before deciding anything about the fill. List defects beneath the table and file them
+per step 3b — **including when the table comes back complete**, which does not end the run if a defect
+is outstanding.
+
 **A repo can only be called complete once the owners have spoken.** Finishing at the survey is right
 when nothing is left to ask — but *present* is not *current*, and for any row whose column names a
 verb to delegate to, the survey has not established completeness; only that verb can. So a
@@ -133,6 +138,66 @@ The rules that bind the whole step:
 - **A `present, uncommitted` row is landed, not rewritten.** The file is already right; what is
   missing is the commit. Offer it in the adoption commit and report it. Rewriting it discards an
   earlier pass's work to produce, at best, the same bytes.
+- **A defect that blocks a delegation is handled at that delegation**, not deferred to the end — a
+  broken build stops [[populate-tests]] `adopt` from wiring anything. Step 3b owns the rule and what
+  the report then owes.
+
+### 3b. Defects found along the way
+
+Adoption reads a whole unfamiliar codebase, which makes it the highest-yield finder of defects that
+have nothing to do with the layer: a path aimed at a directory that moved, a build broken by a
+reference nothing declares, a script that cannot have run in months. [[tasks]] § *Findings become
+tasks, or they evaporate* governs these, and it governs them **whatever the user decides about
+fixing**.
+
+**Filing is not the same decision as fixing.** Offer the fix; the user decides that. The task is not
+theirs to decline.
+
+| The user says | What the run produces |
+|---|---|
+| *fix it now* | the fix **and** the task — the task recording what was wrong, what changed, and how the fix was verified |
+| *not now* / *never* | the task, and that is the whole outcome; a defect nobody plans to fix still costs the next reader a rediscovery |
+
+There is no third outcome. **"Fixed, mentioned in the report, untracked" is the failure this section
+exists to stop** — measured: an adoption run found two real defects in a consumer repo, fixed both,
+verified them against a passing suite, said out loud that it would rather file them than fix them
+silently, and filed nothing. What it handed back was a repo that now had a rulebook and a lifecycle,
+so the next agent to read it will take anything untracked as something that was never wrong.
+
+**Two orderings apply, and they are not the same ordering.**
+
+1. **Fixing** — the layer fill is what adoption is *for*, so a found defect never displaces it:
+   finish step 3, then deal with defects. **Unless the defect blocks the fill** — a repo whose build
+   is broken cannot have [[populate-tests]] `adopt` wire a runner — in which case handle it at the
+   delegation it blocks, and say in the report why it jumped the queue.
+2. **Filing** — a task needs a `tasks/` tree to land in, and `/tasks init` runs *inside* step 3 (see
+   [LAYER.md](../new-project/LAYER.md) § *Ordering*). So filing always follows that delegation,
+   whatever the fixing order did. A defect found while surveying a repo with no `tasks/` yet is
+   **reported at step 1 and filed later in the same run** — never dropped for want of somewhere to
+   put it.
+   - **A found defect suspends step 1's complete-table exit.** That exit assumes the only thing left
+     undone was the fill; a defect is not layer work, so it outlives a complete layer. On an
+     already-adopted repo `tasks/` is already there, so the task is filed straight away — and the run
+     still owes step 4's *Defects found* section. Ending at the survey table with a defect listed
+     under it and no id is the untracked outcome arriving by a second route.
+
+**File through the owning verb, never by hand — and into the adopted repo's tracker.** The defect
+belongs to that repo, so the task lands in *its* `tasks/`, never the caller's: use `/tasks new` there.
+[[tasks]] `spawn` is right **only** when the origin task already lives in the repo being adopted —
+spawn resolves the origin from the in-flight task and inherits *its* parent and `feature:`, so run
+from a different repo it files the defect into the wrong tree entirely. Hand-writing the file skips
+the id allocation and the plan both.
+
+**A fix to shipped behaviour carries a regression check**, per [[tasks]]'s standing rule — or the task
+records why one is impossible, naming the reason. Expect the obvious check to be unavailable in
+exactly these repos: a consumer that cannot build in isolation gets no CI gate at all (see
+[LAYER.md](../new-project/LAYER.md) § *CI a repo cannot pass*), so *"cannot be verified apart from its
+framework tree"* is a legitimate recorded answer. Silence is not.
+
+**Repairing a file the repo owns does not breach step 3's never-overwrite rule.** That rule stops the
+layer's version of a file from displacing the repo's own; a defect fix brings no layer version
+with it. It still needs the user's go-ahead on the specific change, exactly like an amendment — show
+what is wrong, offer the repair, and never fix a file unasked.
 
 ### 4. Report what changed
 
@@ -156,6 +221,12 @@ page does not need editing:
 - `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
 - `missing, not offered` — **the reason**, so a re-run reads the row as settled instead of asking again.
+
+**Defects found** get their own section, never a bucket. The buckets describe what this run did to
+the **layer**; a defect is the repo's own code, so `created` and `amended` would each state something
+false about it. One line per defect: what was wrong, whether it was fixed and verified or left as
+found, its task id, and — if it jumped the fill queue — why. A defect listed here with no task id
+means step 3b was skipped.
 
 **Content** staleness inside a present artifact — prose that no longer describes the repo — is an
 **aside**, never a bucket. A stale *shape* is the opposite: it gets its bucket, because an owner

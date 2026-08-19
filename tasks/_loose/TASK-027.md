@@ -36,6 +36,15 @@ fixed the untracked case and the tracked-but-*unstaged* case, and stopped one co
 The row is consumed by [[new-project]] and [[adopt-project]] both, so a fix in `LAYER.md` satisfies
 the layer-parity rule by construction — but confirm neither skill restates the line shapes locally.
 
+**One such restatement is confirmed** (added by `/code-review` at TASK-020's close, 2026-08-19):
+`skills/adopt-project/SKILL.md:55` tells step 1 to detect anything the layer owns *"sitting on disk
+**untracked**"* — untracked only. `LAYER.md:104` defines the state as covering **both** halves and calls
+the tracked-but-uncommitted amendment *"the more common one on the upgrade path"* (an earlier pass
+appending `## Conventions` to an already-tracked guide leaves nothing untracked at all). So even once the
+`M `/`A ` columns are fixed in `LAYER.md`, adoption's own step 1 still cannot produce the state for that
+case and the offer to land it never fires. Fix both halves of the probe in this task, not just the
+porcelain columns.
+
 ## Acceptance criteria
 
 - [ ] The reading rule keys on **any non-empty porcelain output** for the path rather than on a list of line prefixes — a list of shapes is what went one column short twice

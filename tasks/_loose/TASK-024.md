@@ -34,6 +34,15 @@ present artifact with a single undifferentiated "nothing to do":
 - **`roll-changelog`** — the changelog row is present-or-absent only; a `CHANGELOG.md` that predates the Keep-a-Changelog shape reads as fine.
 - **`[[feature]]`'s index** — owned by `/feature status`, and its row is a prohibition rather than a delegation, so it may not belong in scope at all; decide that explicitly rather than by omission.
 
+**The convention's own wording is now known to overreach** (added by `/code-review` at TASK-020's close,
+2026-08-19). `AGENTS.md:120` ends the rule with *"Applies to every row of `LAYER.md` with an **Owner**,
+not just the one that exposed it"* — the blanket reading that `LAYER.md` § *Delegation follows the row*
+explicitly rejects: *"There is no blanket 'every owner has an init', and reading one into this rule would
+send a present brief to the greenfield scaffolder."* Rows owned by [[new-project]] (`docs/BRIEF.md` —
+never reconstruct) and [[feature]] (the index — a prohibition) have no reconcile-and-report obligation to
+give. So this task also owns **scoping that sentence** to rows whose *Already present?* cell names a verb;
+the bullet above stops being a judgement call once it does.
+
 The consequence is asymmetric and quiet: [[adopt-project]] now maps an owner's answer onto a survey
 state, and a verb that cannot distinguish those two cases leaves its row `unknown` — honest, but it
 means an adoption pass over a fully-adopted repo reports several rows as *"present, and `<verb>`
