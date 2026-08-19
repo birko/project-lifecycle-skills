@@ -3,7 +3,7 @@ id: TASK-031
 parent: STORY-002
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: in-progress
 priority: P2
 assignee: agent
 created: 2026-08-19
@@ -61,3 +61,61 @@ situations look identical in the survey table and differ only in whether a task 
 - [ ] Drill a repo whose CI row is `missing, not offered` **with** an owning task; close that task; re-run adoption and confirm CI is re-offered
 - [ ] Drill a repo whose external dependency is deliberate and has no task; re-run twice and confirm it is not re-asked either time
 - [ ] Confirm the report distinguishes the two, so a reader can tell "settled" from "waiting on TASK-NNN"
+
+## Implementation plan
+
+### Design question settled, 2026-08-19 — before planning
+
+The question was *where does a `missing, not offered` verdict persist, so a later run can tell that its
+premise expired?* Two shapes were on the table: the verdict carries the owning task id, or an adoption
+stamp holds the open adjudications. **Both are wrong, and the question dissolves.** Three facts:
+
+1. **There is nowhere to persist it.** `adopt-project`'s survey and report are **stdout only** — no verb
+   writes either to a file. A re-run therefore cannot read a previous run's verdict at all, so "the
+   verdict carries the id" has no medium. (The report's own line about "the part that outlives the
+   conversation" means it outlives the *step*, not the session.) The stamp shape would work but costs a
+   new persistent field, a `LAYER.md` row and a parity change — heavy, for the next point's reason.
+2. **The verdict is not a memory; it is a derivation.** `LAYER.md` § *CI a repo cannot pass* gates the
+   offer on a cheap, deterministic evidence check — an MSBuild `Import`/`ProjectReference`, a Cargo
+   `path =`, an npm `file:`, or an editable Python install whose **resolved** target lands outside the
+   repo root. Re-running that check answers the question directly and for free: fix the escaping
+   dependency and the check passes, so the offer returns **with no bookkeeping at all**.
+3. **CI is the only producer of this state, and the skill decides it, not the user.** `LAYER.md`:
+   *"the skill has decided **not** to offer it"*. A user who declines an offer lands in a different
+   bucket entirely (`left alone` — "you declined"). So every instance of this state is skill-derived
+   from evidence, and none of it is a user judgement that would need remembering.
+
+**So the real defect is the framing, not a missing mechanism.** `LAYER.md` describes the state as a
+remembered adjudication — *"that state is what stops the next run from putting the same question
+again"* — which invites an implementer to treat it as sticky when it is in fact re-derived every run
+from evidence that can change. A state that is *derived* must never be cached as a *decision*; that is
+the mirror image of the repo's existing "read the declaration, never infer it" rule, and it is the
+sentence to fix.
+
+**The tension that made this look hard, and its resolution.** `LAYER.md` wants to stop re-explaining
+the same thing every run, but recomputing means the run does mention it every time. These are different
+acts, and separating them is the whole fix:
+
+| Act | Every run? |
+|---|---|
+| Re-deriving the evidence check | **yes** — cheap, and the only thing that can notice the premise expired |
+| Re-opening the *offer* ("shall I add CI?") | **no** — suppressed while the evidence holds. This is the "question" the state exists to stop |
+| Printing a one-line status (`CI: not offered — <dep> escapes the root`) | **yes** — a status line is not a question, and silence here would hide a real gap |
+
+The owning task id, where one exists, appears in that status line as **information** (`… — TASK-003
+owns it`). It is a courtesy to the reader, never the mechanism — nothing reads it back.
+
+⚠ **Acceptance criteria question.** Criterion 2 says *"A re-run finding that task `done`/`cancelled`
+treats the verdict as expired and re-asks"* — that prescribes consulting the owning task, which this
+design rejects: the re-run consults **the evidence**, and the task's state is irrelevant to it (a task
+can be closed without the dependency actually being resolved, and the evidence would then correctly
+still suppress the offer — a strictly better answer than trusting the task). Criterion 1 survives
+unchanged. Flagging rather than editing; the intent — "the verdict expires when its premise does" — is
+met by the stronger route.
+
+### Steps
+
+_To be drafted once the criteria question above is answered. The shape is a `LAYER.md` § *CI a repo
+cannot pass* rewording plus the matching line in `adopt-project` step 4, both small; layer parity
+applies because `LAYER.md` changes, so `new-project` is checked in the same change even if it needs no
+edit._
