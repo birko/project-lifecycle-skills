@@ -11,7 +11,7 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: []
-pr: null
+pr: 8e8bf94
 github-issue: null
 jira-key: null
 ---
@@ -163,3 +163,7 @@ Also fixed here because the diff already touches the file: `AGENTS.md` § Testin
 - **TASK-027** — `skills/new-project/LAYER.md:104`, the `present, uncommitted` probe matches only `??` and ` M` porcelain lines, so a layer that was written **and staged** but never committed reports plain `present`. Same class as the blindness TASK-018 was reopened for
 - **TASK-028** — `skills/adopt-project/INFER.md:91`, the skip rule counts coverage over five subsections, but UI / UX is conditional; on a headless library the arithmetic either never reaches "all covered" or proposes UI rules to a repo with no UI. Needs *applicable* subsections
 - **TASK-029** — whether the lint's own coverage grew correctly from 16 to 25 cases (this task only corrected the stale number)
+
+**Backfill note.** `pr:` records `8e8bf94`, the work commit, written in the follow-up commit that also
+files TASK-030 — `close`'s single-branch backfill instruction ("fold it into the commit by amending") cannot
+be followed, because amending changes the very SHA being recorded. Found by trying to follow it.
