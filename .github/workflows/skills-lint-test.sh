@@ -10,6 +10,11 @@ LINT="$(pwd)/.github/workflows/skills-lint.sh"
 
 WORK=$(mktemp -d); trap 'rm -rf "$WORK"' EXIT
 pass=0; fail=0
+
+# Check 4 (install roots) reads $HOME by default. Point it at nothing so every case below is
+# hermetic: a suite whose result depends on which skills the developer happens to have installed
+# is not a test. The install-root cases override these per case.
+export CLAUDE_SKILLS_ROOT="$WORK/no-such-root" PI_SKILLS_ROOT="$WORK/no-such-root"
 bt='`'
 
 build() { # $1 = target dir — a minimal, valid two-tree repo
@@ -29,6 +34,47 @@ case_is() { # name, expected(0|1), mutation function name
   [ "$got" -ne 0 ] && got=1
   if [ "$got" = "$want" ]; then printf '  ok    %s\n' "$name"; pass=$((pass+1))
   else printf '  FAIL  %s (exit %s, wanted %s)\n' "$name" "$got" "$want"; fail=$((fail+1)); fi
+}
+
+mk_link() { # $1 = link, $2 = existing target dir. A symlink on POSIX; a junction on Windows.
+  ln -s "$2" "$1" 2>/dev/null
+  [ -L "$1" ] && return 0
+  # MSYS `ln -s` silently COPIES unless winsymlinks is set, and the repo's Windows installer creates
+  # junctions anyway — so fall back to exactly what install.ps1 makes.
+  rm -rf "$1"
+  command -v cygpath >/dev/null 2>&1 || return 1
+  powershell -NoProfile -Command "New-Item -ItemType Junction -Path '$(cygpath -w "$1")' -Target '$(cygpath -w "$2")' | Out-Null" >/dev/null 2>&1
+  [ -L "$1" ]
+}
+
+# Check 4 is advisory and never touches the exit code, so `case_is` cannot see it at all. These
+# assert on OUTPUT and still require exit 0 — an advisory that began failing the build would itself
+# be a regression.
+roots_run() { # $1 = fixture dir; echoes the lint's combined output
+  ( cd "$1" && CLAUDE_SKILLS_ROOT="$1/roots/claude" PI_SKILLS_ROOT="$1/roots/pi" bash .github/workflows/skills-lint.sh 2>&1 )
+}
+case_says() { # name, mutation, substring that MUST appear
+  local name="$1" mut="$2" pat="$3" d="$WORK/case" out rc
+  build "$d"; "$mut" "$d"
+  out=$(roots_run "$d"); rc=$?
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- "$pat"; then
+    printf '  ok    %s\n' "$name"; pass=$((pass+1))
+  else
+    printf '  FAIL  %s (exit %s; wanted output to contain: %s)\n' "$name" "$rc" "$pat"; fail=$((fail+1))
+  fi
+}
+case_silent() { # name, mutation, substring that must NOT appear
+  local name="$1" mut="$2" pat="$3" d="$WORK/case" out rc
+  build "$d"; "$mut" "$d"
+  out=$(roots_run "$d"); rc=$?
+  # Require the check to have RUN. A bare "must not contain" passes trivially when check 4 is absent
+  # altogether, which is the vacuous pass this repo has already been bitten by once — so these guards
+  # would have had power only against a buggy check, never against a deleted one.
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- '== 4. install roots' && ! printf '%s' "$out" | grep -qF -- "$pat"; then
+    printf '  ok    %s\n' "$name"; pass=$((pass+1))
+  else
+    printf '  FAIL  %s (exit %s; wanted check 4 to run and output NOT to contain: %s)\n' "$name" "$rc" "$pat"; fail=$((fail+1))
+  fi
 }
 
 m_noop()      { :; }
@@ -88,6 +134,38 @@ case_is "double-backtick code span"        0 m_dblspan
 case_is "tilde fence"                      0 m_tilde
 case_is "root-relative link"               0 m_rootrel
 case_is "stale .lint-fail in the repo"     0 m_sentinel
+
+# --- check 4: install roots (advisory) ---
+r_absent()  { :; }                                    # roots/ is never created
+r_empty()   { mkdir -p "$1/roots/claude" "$1/roots/pi"; }
+r_partial() { mkdir -p "$1/roots/claude" "$1/roots/pi"
+              # alpha linked, beta NOT — a partially-linked root is what exercises per-skill naming.
+              # A wholly empty root collapses to one summary line by design (see r_empty).
+              mk_link "$1/roots/claude/alpha" "$1/skills/alpha"; }
+r_linked()  { mkdir -p "$1/roots/claude" "$1/roots/pi"
+              # Claude root gets skills/* ONLY; the pi root gets skills/* AND skills-pi/*.
+              # Both roots end up genuinely in sync, so ANY complaint about gamma is the
+              # asymmetry bug rather than a true finding about the other root.
+              mk_link "$1/roots/claude/alpha" "$1/skills/alpha"
+              mk_link "$1/roots/claude/beta"  "$1/skills/beta"
+              mk_link "$1/roots/pi/alpha"     "$1/skills/alpha"
+              mk_link "$1/roots/pi/beta"      "$1/skills/beta"
+              mk_link "$1/roots/pi/gamma"     "$1/skills-pi/gamma"; }
+r_stale()   { mkdir -p "$1/roots/claude" "$1/roots/pi" "$1/skills/ghost"
+              printf -- '---\nname: ghost\ndescription: d\n---\n\nGhost.\n' > "$1/skills/ghost/SKILL.md"
+              mk_link "$1/roots/claude/ghost" "$1/skills/ghost"
+              rm -rf "$1/skills/ghost"; }              # link now dangles; source gone
+r_foreign() { mkdir -p "$1/roots/claude" "$1/roots/pi" "$WORK/other-repo/skills/foreign"
+              mk_link "$1/roots/claude/foreign" "$WORK/other-repo/skills/foreign"
+              rm -rf "$WORK/other-repo/skills/foreign"; }   # dangling, but not ours
+
+printf 'Install-root drift (advisory — asserted on output; exit must stay 0)\n'
+case_says   "absent root is stated, not silent"   r_absent  "skipped"
+case_says   "empty root collapses to one line"     r_empty   "exists but nothing is linked into it"
+case_says   "one drifted skill is named"          r_partial "beta is not linked into"
+case_says   "junction whose source is gone"       r_stale   "stale junction"
+case_silent "a link into another repo is ignored" r_foreign "stale junction"
+case_silent "skills-pi absent from claude root"   r_linked  "gamma is not linked into"
 
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

@@ -11,17 +11,17 @@ _Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 15    |
+| done         | 0     | 1       | 16    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 17× P2 · 3× P3.
+`todo` by priority: 18× P2 · 3× P3.
 
 ## In progress now
 
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set
   - **STORY-002** adopt-project — the brownfield front door
 
-_No task is currently in-progress — TASK-020 closed 2026-08-19; the epic's open work is listed below._
+_No task is currently in-progress — TASK-016 closed 2026-08-19._
 
 ## In review
 
@@ -85,7 +85,8 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-033** `/specs init`'s coverage check can pass vacuously — `todo`, P2
 - **TASK-034** `tasks/README.md` holds narrative its own template cannot regenerate — `todo`, P2
 - **TASK-035** Nothing owns the `integration:` question — three rules each hand it on — `todo`, P2
-- **TASK-036** `/specs regen`'s state gate can read the commented enum, not the status — `todo`, **P1**
+- **TASK-036** `/specs regen`'s state gate can read the commented enum, not the status — `todo`, P2
+- **TASK-037** Nothing detects a `skills-pi/` stub shadowing a real built-in — `todo`, P2
 
 _Fourteen tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012,
 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021
@@ -96,5 +97,5 @@ and TASK-032 came out of TASK-020 the same way: one from its `widget-store` dril
 `triage` its own pick chained. Its close then produced four more — TASK-033 from the 5d out-of-scope
 sweep (unowned since 2026-08-18), TASK-034 from `/verify-conventions` against the close's own diff, and
 TASK-035/036 from `/code-review`; two further findings were linked onto TASK-024 and TASK-027 rather
-than duplicated. TASK-036 is the only open P1. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until
+than duplicated. TASK-036 was filed P1 and corrected to P2 before work started — a first-hand read showed its "blast radius is total" rested on an implementation `regen.md` never prescribes. No open P1 remains. Story ordering lives in `EPIC-001/EPIC.md` § Sequence until
 TASK-001 gives stories real edge fields._

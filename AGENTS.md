@@ -130,7 +130,18 @@ The skills *are* the product, so their prose is the user interface. This subsect
 
 ### Testing
 - Tests: **`.github/workflows/skills-lint.sh`**, run by CI — validates frontmatter, resolves every `[[link]]`, and checks that files referenced by a `SKILL.md` exist. Run it locally with `bash .github/workflows/skills-lint.sh`.
-- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 25 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **The lint may carry *advisory* sections; they never change its exit code.** A check whose remedy
+  lives **outside the repo** — today check 4, install-root drift, fixed by re-running an installer —
+  cannot be a blocker: no diff can clear it, and the roots do not exist on the CI runner, so making it
+  fatal would leave the gate meaning different things on different machines. An advisory section still
+  has to be *tested*, on its output rather than the exit code, and its negative assertions must require
+  the section to have run — a "must not appear" check passes trivially when the section is deleted.
+- **The bash test suite may shell out to PowerShell for Windows-only setup.** `skills-lint-test.sh`
+  creates link fixtures with `ln -s`, then falls back to a PowerShell junction when that produced a
+  copy — MSYS `ln -s` copies unless `winsymlinks` is set, and the repo's Windows installer creates
+  junctions anyway, so the fallback tests the real artifact rather than a POSIX stand-in. Keep the
+  POSIX path first so CI exercises it, and keep the fallback guarded on `cygpath` being present.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 31 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 
@@ -157,4 +168,8 @@ The skills *are* the product, so their prose is the user interface. This subsect
 # Re-run BOTH after ADDING a skill folder — one junction is made per folder, so a new one
 # has none and the skill is invisible to both runtimes. Editing an existing skill needs no re-run.
 bash .github/workflows/skills-lint.sh    # run the CI lint locally
+# The lint's check 4 reports install-root drift — a skill folder with no junction, or a junction
+# whose source folder is gone. Advisory: it never fails the run, because the fix is an installer
+# re-run, not a code change. Absent root (no pi installed) => it says so and moves on.
+# Override the roots for testing:  CLAUDE_SKILLS_ROOT=... PI_SKILLS_ROOT=... bash .../skills-lint.sh
 ```

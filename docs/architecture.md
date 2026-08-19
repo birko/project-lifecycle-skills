@@ -12,6 +12,13 @@ more than it would in a library you version and release. They link one junction 
 though, so a **newly added skill** is live only after the installers are re-run; until then its
 folder exists in this repo and resolves nowhere.
 
+That drift is now **detected rather than merely documented**: `skills-lint.sh`'s check 4 compares both
+install roots back against the trees and reports a folder with no junction, or a junction whose source
+folder has gone (a rename or delete — the installers only ever add, so nothing prunes). It is
+deliberately **advisory** and never fails the run: the remedy is an installer re-run, which no diff can
+perform, and the roots are absent on the CI runner. It detects; it never repairs, and it ignores links
+pointing outside this repo, since those roots also hold the user's own skills.
+
 ## The three trees
 
 | Tree | Installed into | Contains |
