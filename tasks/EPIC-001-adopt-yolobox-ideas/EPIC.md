@@ -71,19 +71,28 @@ The STORY template carries no `blocked-by` field, so the dependency edges live h
 | STORY-007 `improve-architecture` | 003 | names modules using glossary terms |
 | STORY-008 `specs` regen across the skill set | 002–007 | regenerating before the set stabilises means regenerating twice |
 
-## State as of 2026-08-18 — read before picking new work
+## State as of 2026-08-19 — read before picking new work
 
-Seven tasks sit at `review`: code-complete, checks unrun. This repo's own rule is to clear
-verification debt before taking new scope, and `/tasks pick` will **not** mention it (TASK-010) —
-run bare `/tasks` first.
+**Verification debt is zero** — nothing at `review`, nothing in-progress. It stood at seven on
+2026-08-18 and cleared over that day and the next. `/tasks pick` still will not mention debt when it
+exists (TASK-010, open), so keep running bare `/tasks` first.
+
+**The backlog has inverted.** 18 of 21 open tasks are unparented defect debt and every one is P2/P3;
+only STORY-002 has open tasks (three). Seven of the loose tasks were filed on 2026-08-19 by two close
+gates — the 5d out-of-scope sweep, `/verify-conventions` and `/code-review` each produced work. Closing
+tasks currently *creates* more tracked work than it removes, which is the drills-find-more-than-building
+judgement below, still holding a day later.
 
 Three judgements that the task files alone will not convey:
 
 1. **The drills found more than the building did.** Two review passes on `skills-lint.sh` produced
    16 defects; drilling seven real repos found that `verify-conventions` had been silently doing
    nothing on the two largest consumers. Prefer drilling what exists over starting STORY-003.
-2. **`adopt-project`'s survey is well tested; its fill is barely tested.** Seven repos surveyed,
-   two small artifacts written in one repo. Presenter is the honest next target.
+2. **`adopt-project`'s fill is now drilled, twice.** Superseding the 2026-08-18 note: TASK-020 drilled
+   a throwaway `widget-store` fixture end to end — once unadopted (full fill, fix-now and declined
+   defect paths) and once over a complete layer (the re-run path, where the run's only output was a
+   filed task). What is still barely tested is the fill on a *large real* repo; Presenter remains the
+   honest next target for that.
 3. **The recurring defect class is "checking for the shape we would have made".** It produced the
    literal `## Conventions` match, the `tests/`-only probe, and the CI offer to a repo that cannot
    build in isolation. Expect it again wherever a skill inspects a repo it did not create.
