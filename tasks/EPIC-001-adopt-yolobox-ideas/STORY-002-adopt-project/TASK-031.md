@@ -3,7 +3,7 @@ id: TASK-031
 parent: STORY-002
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: in-progress
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-19
@@ -43,12 +43,12 @@ situations look identical in the survey table and differ only in whether a task 
 
 ## Acceptance criteria
 
-- [ ] A `missing, not offered` verdict records **whether its reason is owned by a task**, and the task id when it is — the survey and the report both carry it
-- [ ] A re-run finding that task `done`/`cancelled` treats the verdict as **expired** and re-asks, rather than reading it as settled
-- [ ] A verdict with **no** owning task (a deliberate external dependency) keeps today's behaviour exactly — it must not start re-asking every run, which is the defect the state was created to prevent
-- [ ] The distinction is stated where it is decided, not only in `LAYER.md` — a reader of § *CI a repo cannot pass* learns that a filed defect changes the verdict's lifetime
-- [ ] Layer parity honoured if `LAYER.md` changes: `new-project` and `adopt-project` both reconciled in the same change
-- [ ] `skills-lint` and `skills-lint-test` stay green
+- [x] A `missing, not offered` verdict records **whether its reason is owned by a task**, and the task id when it is — the survey and the report both carry it
+- [x] A re-run finding that task `done`/`cancelled` treats the verdict as **expired** and re-asks, rather than reading it as settled
+- [x] A verdict with **no** owning task (a deliberate external dependency) keeps today's behaviour exactly — it must not start re-asking every run, which is the defect the state was created to prevent
+- [x] The distinction is stated where it is decided, not only in `LAYER.md` — a reader of § *CI a repo cannot pass* learns that a filed defect changes the verdict's lifetime
+- [x] Layer parity honoured if `LAYER.md` changes: `new-project` and `adopt-project` both reconciled in the same change
+- [x] `skills-lint` and `skills-lint-test` stay green
 
 ## Out of scope
 
@@ -58,9 +58,14 @@ situations look identical in the survey table and differ only in whether a task 
 
 ## Human test plan
 
-- [ ] Drill a repo whose CI row is `missing, not offered` **with** an owning task; close that task; re-run adoption and confirm CI is re-offered
-- [ ] Drill a repo whose external dependency is deliberate and has no task; re-run twice and confirm it is not re-asked either time
-- [ ] Confirm the report distinguishes the two, so a reader can tell "settled" from "waiting on TASK-NNN"
+_Rewritten 2026-08-19, before the drill, to match the design settled above. The original item 1 said
+"close that task, confirm CI is re-offered" — that tests the mechanism we rejected. Its value survives
+inverted, as the fooled-by-a-closed-task guard, so it is kept as 1a rather than dropped._
+
+- [x] **1a (the guard):** close the owning task **without** fixing the dependency; re-run adoption and confirm CI is **still not offered** — a closed task must not be mistaken for a resolved blocker
+- [x] **1b (the expiry):** fix the dependency itself; re-run and confirm the CI offer **returns with no bookkeeping** and no reference to any task
+- [x] Drill a repo whose external dependency is deliberate and has no task; re-run twice and confirm the offer is not re-opened either time, while the status line still prints both times
+- [x] Confirm the report distinguishes the two, so a reader can tell "settled" from "waiting on TASK-NNN"
 
 ## Implementation plan
 
@@ -111,11 +116,71 @@ design rejects: the re-run consults **the evidence**, and the task's state is ir
 can be closed without the dependency actually being resolved, and the evidence would then correctly
 still suppress the offer — a strictly better answer than trusting the task). Criterion 1 survives
 unchanged. Flagging rather than editing; the intent — "the verdict expires when its premise does" — is
-met by the stronger route.
+met by the stronger route. **Resolved 2026-08-19: the user agreed — stop consulting the task, re-check
+the evidence.** Criterion 2 is left as written and ticks on the evidence route; the rationale is that a
+task can be closed without the dependency actually being resolved, and the build cannot be fooled that
+way.
 
 ### Steps
 
-_To be drafted once the criteria question above is answered. The shape is a `LAYER.md` § *CI a repo
-cannot pass* rewording plus the matching line in `adopt-project` step 4, both small; layer parity
-applies because `LAYER.md` changes, so `new-project` is checked in the same change even if it needs no
-edit._
+1. **`LAYER.md` § *Detect what the repo has*** — the `missing, not offered` state definition currently
+   justifies itself as an *adjudication* that stops the question being re-opened. Reword: the state is
+   **re-derived from its evidence every run**, and what it suppresses is the **offer**, not the check and
+   not the status line. Keep the reason travelling with the state.
+2. **`LAYER.md` § *CI a repo cannot pass*** — *"that state is what stops the next run from putting the
+   same question again"* is the sentence that invites a sticky implementation. Replace with the
+   three-act split, and say plainly that the isolation check is re-run each time so a resolved
+   dependency restores the offer with no bookkeeping.
+3. **`adopt-project` step 4** — the bucket line reads *"so a re-run reads the row as settled instead of
+   asking again"*, which is the same wrong framing on the reading side. Reword to match, and note that
+   the owning task id may appear in the line as information only.
+4. **Layer parity** — `LAYER.md` moves, so `new-project` is inspected in the same change. Expect no
+   edit (greenfield has no history to re-derive against and no prior verdict to expire) but confirm it
+   rather than assume, and record which it was.
+5. **Register-on-introduce check** — "a derived state must never be cached as a decision" is a candidate
+   cross-cutting rule for `AGENTS.md § Conventions`; it is the mirror of the existing *read the
+   declaration, never infer it*. Decide with `/verify-conventions` at close rather than pre-judging.
+6. `skills-lint` + `skills-lint-test`. Prose-only change, so green is expected and proves little — the
+   drill is the test.
+
+### Layer parity — inspected, no edit needed (2026-08-19)
+
+`LAYER.md` changed, so `new-project` was read rather than assumed. **No edit required, and the reason is
+worth recording:** the state this task reworded is only ever *produced* on the adoption path.
+`new-project` runs once on a greenfield repo — there is no re-run, no prior verdict, and nothing to
+expire — so the re-derivation framing has no application there.
+
+Found while checking, and **not folded in**: `new-project/SKILL.md:124` writes its CI stub with **no
+isolation check whatsoever** ("skip for docs-only, ask before assuming a non-GitHub CI host" is the only
+guard), so it cannot produce `missing, not offered` even when it should. That bites concretely —
+`birko-new-project`, which `new-project` chains, wires `$(BirkoSrc)` at a sibling framework tree, the
+exact `Latent` shape `LAYER.md` § *CI a repo cannot pass* was written for, on a **brand-new** project.
+That is **TASK-019**, already open; context added there rather than a duplicate filed here.
+
+### Drill record — 2026-08-19
+
+Subject: the `widget-store` fixture from TASK-020, which already carried this exact situation — CI
+`missing, not offered` because `tsconfig.json` mapped `@shared/*` outside the repo root, with the
+fixture's own TASK-002 owning the defect. The isolation check was re-derived from the manifests each
+time, exactly as `LAYER.md` § *CI a repo cannot pass* defines it (resolve the target; only an escape
+counts).
+
+| Item | Result |
+|---|---|
+| **1a — the guard.** Close TASK-002 **without** touching `tsconfig.json` | ✅ still `missing, not offered`, both mappings named. A closed task did not read as a resolved blocker |
+| **1b — the expiry.** Remove the dead mappings and rework `pricing.ts` off `@shared/http` | ✅ flipped to *offerable* on the next run, **no bookkeeping and no task consulted**; `npm test` still green |
+| **3 — deliberate external dep, no task.** Added `"@acme/pricing-client": "file:../vendor/pricing-client"`, filed nothing | ✅ two consecutive runs, both printed the status line, neither re-opened the offer, nothing recorded in between |
+| **4 — the two forms are distinguishable** | ✅ with an owner the line names it (`… escapes the root — TASK-002 owns it`); the deliberate case names only the dependency. **No task named = nobody plans to change it**, which is the "settled" reading |
+
+**1a is the item that justifies the whole design change.** Under the mechanism this task was originally
+filed with — expire the verdict when the owning task closes — that run would have offered CI to a repo
+whose build still could not resolve `@shared/http`, producing a workflow red on its first run: precisely
+the outcome § *CI a repo cannot pass* exists to prevent. The evidence route cannot be fooled that way,
+and the drill demonstrates the difference rather than arguing it.
+
+Fixture commits: the dependency fix and the deliberate-dependency addition are separate commits in
+`drill-020/widget-store`, so each run's input is reproducible.
+
+**Nothing was added to the skills to make this work.** The check already re-read the manifests; the
+defect was `LAYER.md` telling the reader it was a remembered adjudication. Three prose changes, no new
+mechanism, no new file, no persistence — which is why the parity inspection came back clean.

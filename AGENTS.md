@@ -119,6 +119,21 @@ The skills *are* the product, so their prose is the user interface. This subsect
   shared file gained a row tomorrow?*
 - **An owner verb reconciles; it does not assume.** A verb that owns a file shape must be able to answer *"is this instance current?"* — not only *"does it exist?"*. Existing is not current: the shape gains fields, and an instance written before one existed looks complete from outside. So an owner verb reconciles an older instance in place (add what is missing, never re-decide what is there), and reports **already current** distinctly from **brought up to date** — a caller cannot tell "your file is fine" from "I declined to look" when both print the same line. Applies to every row of `LAYER.md` with an **Owner**, not just the one that exposed it.
 - **Read the declaration, never infer it.** Where one skill *records* a policy in a file (today `tasks/.config.yml`'s `integration:`), every other skill **reads that field** rather than deducing the policy from observable state — git history, folder shape, what the last commit happened to do. The failure is not that inference is usually wrong; it is that the two situations producing identical evidence are exactly where it breaks (a squash-merge history and a commit-to-main history are the same log), and an inference that happens to be right is still unreproducible. A field that is *absent* is a gap to ask about and backfill, never a licence to guess.
+- **A derived state must never be cached as a decision.** The mirror of the rule above: where a value is
+  *computed from evidence the repo still holds* — today `missing, not offered`, computed from whether a
+  build's dependencies resolve inside the repo root — recompute it every run instead of remembering the
+  verdict. A remembered derivation cannot expire, so it goes wrong precisely when the underlying fact is
+  fixed, which is the one moment anybody cares. Two corollaries, both load-bearing: recomputing is not
+  the same as re-asking (suppress the *offer*, keep printing the *status*), and **never gate the
+  recomputation on a task's state** — a task can be closed while the fact is unchanged, and the evidence
+  cannot be fooled that way. Deciding whether something is a declaration to read or a derivation to
+  recompute is the actual judgement; getting it wrong in either direction is the same defect. **The
+  counter-example is `integration:`, and it matters**: that is a *declaration*, so it is read, never
+  re-derived — deducing it from `git log` is the defect TASK-021 and TASK-023 exist to have killed. The
+  test is whether the repo still holds evidence that *determines* the answer (a manifest path either
+  escapes the root or does not) or merely evidence *consistent with* several answers (a squash-merge
+  history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
+  it had to be declared.
 - **A format one skill reads is a contract the writing skill must state too.** When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 

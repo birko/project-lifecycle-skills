@@ -220,7 +220,7 @@ page does not need editing:
 - `present, outdated` — **what the owner's init reported as the delta, and whether it was reconciled.** "Brought up to date" and "nothing to do" are different outcomes; blurring them is how an old shape survives a pass that claims to reconcile it.
 - `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
-- `missing, not offered` — **the reason**, so a re-run reads the row as settled instead of asking again.
+- `missing, not offered` — **the reason**, re-derived this run rather than recalled from the last one (the survey and this report are stdout; nothing persists a verdict, and [LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* explains why nothing needs to). Print it every run: the line is status, not a question, and the offer stays suppressed only while the evidence still holds. Where a task owns the blocker, name it here as information — a re-run re-reads the evidence, never that task's state.
 
 **Defects found** get their own section, never a bucket. The buckets describe what this run did to
 the **layer**; a defect is the repo's own code, so `created` and `amended` would each state something

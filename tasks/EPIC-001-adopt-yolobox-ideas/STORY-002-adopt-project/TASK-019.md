@@ -37,6 +37,18 @@ Two front doors, one shared inventory, and the rule living only in the row that 
 read. It is the layer-parity failure mode described in `AGENTS.md § Conventions`, arriving through
 creation detail rather than through the inventory.
 
+**Confirmed still open, and sharpened, by TASK-031's parity inspection (2026-08-19).**
+`new-project/SKILL.md:124` carries no isolation guard at all — its only conditions are "skip for
+docs-only" and "ask before assuming a non-GitHub CI host" — so unlike `adopt-project` it cannot reach
+the `missing, not offered` state even where the state is correct. The worked case is not hypothetical:
+`birko-new-project`, chained by `new-project`, wires `$(BirkoSrc)` at a sibling framework tree, which is
+the `Latent` shape `LAYER.md` § *CI a repo cannot pass* exists for — arriving on a brand-new project
+rather than an adopted one.
+
+When this lands, carry `LAYER.md`'s re-derivation framing with it (reworded by TASK-031): the isolation
+check is re-read from the manifests, never a remembered verdict, and what it suppresses is the offer, not
+the status line.
+
 ## Acceptance criteria
 
 - [ ] `new-project`'s CI-stub step defers to `LAYER.md`'s CI row rather than restating the offer — the isolation check is the row's rule, and the step should not carry a second, weaker copy of it

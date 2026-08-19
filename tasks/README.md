@@ -8,10 +8,10 @@ _Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 20    |
-| in-progress  | 1     | 1       | 1     |
+| in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 16    |
+| done         | 0     | 1       | 17    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 17× P2 · 3× P3.
@@ -21,7 +21,7 @@ _Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set
   - **STORY-002** adopt-project — the brownfield front door
 
-- [**TASK-031**](EPIC-001-adopt-yolobox-ideas/STORY-002-adopt-project/TASK-031.md) — `missing, not offered` never reopens when its reason goes (P2, agent) — picked 2026-08-19
+_No task is currently in-progress — TASK-031 closed 2026-08-19. STORY-002 has two left: TASK-019, TASK-022._
 
 ## In review
 
@@ -53,7 +53,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
     TASK-020   Found defects get fixed but never get an id              [done]
     TASK-021   Survey infers what the layer records as a declaration    [done]
     TASK-022   Adoption leaves generated files it invalidated           [todo] P2
-    TASK-031   `missing, not offered` never reopens on a re-run         [in-progress] P2 ←
+    TASK-031   `missing, not offered` never reopens on a re-run         [done]
   STORY-003  domain — glossary and decision records                     [planned]
   STORY-004  The durable question ledger                                [planned]
   STORY-005  The merge gate's third axis — verify-intent                [planned]

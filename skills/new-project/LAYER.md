@@ -106,7 +106,7 @@ grows as real repos turn up conditions it cannot yet express:
 - **present, elsewhere** — found in another location or form. **Say where.** Never silently relocate it, and never offer to create a second one.
 - **unknown** — you could not determine it. Honest, and it stops the fill.
 - **missing** — you actively looked and it is genuinely absent.
-- **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because it records an adjudication: collapsed into `missing`, the question is re-opened on every re-run and the user re-reads the same explanation each time.
+- **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire — which is this rule's own mirror of § *Read the declaration, never infer it* in the consuming project's guide.
 
 *"I could not tell"* is a legitimate answer; *"you don't have it"* when you merely failed to look
 properly is a lie that invites a destructive fill. When in doubt, report **unknown** and ask.
@@ -161,8 +161,20 @@ sibling tree that a runner has no way to obtain.
 
 Making such a repo CI-able is a distribution decision (publish the framework as packages, vendor
 it, or check it out in the workflow), not something an adoption pass can settle. Report it as
-**missing, not offered** with the offending dependency named, and move on — that state is what
-stops the next run from putting the same question again.
+**missing, not offered** with the offending dependency named, and move on.
+
+**Re-run this check every time; do not remember its verdict.** The three acts come apart:
+
+| Act | Every run? |
+|---|---|
+| Resolving the dependency paths again | **yes** — it is a manifest read, and it is the only thing that can notice the blocker was fixed |
+| Re-opening the offer (*"shall I add a workflow?"*) | **no**, while a path still escapes the root |
+| One line of status naming the offending dependency | **yes** — a status line is not a question, and silence would hide a real gap |
+
+So a team that vendors the framework, publishes it, or deletes a dead mapping gets the CI offer back
+on the next run without anyone recording anything. **Do not gate the re-offer on a task's state**: a
+task can be closed while the dependency is still unresolved, and the manifest cannot be fooled that
+way. Where a task does own the blocker, name it in the status line as information — never read it back.
 
 ## Ordering
 
