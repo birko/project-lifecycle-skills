@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-08-18
-depends-on: []
+depends-on: [TASK-034]
 blocks: []
 findings: []
 pr: null
@@ -59,6 +59,13 @@ bodies once `.map.yml` lands, and each of those already has an owner to call.
 - [ ] Covers the second case the re-drill found — a generated file written by an **older template** (Presenter's dashboard had no `review` counts row). Re-running the owning verb is the fix for both, so the rule is one rule; what it must not assume is that a *current-looking* generated file is current
 - [ ] A regeneration **preserves project-specific provenance** the verb cannot reproduce: Presenter's dashboard header records that it came from `/tasks import` off `SPEC.md` § v2, and a template-faithful rewrite would have destroyed that. Decide and record whether the verb keeps such a line or the template gains a slot for it
 - [ ] `skills-lint` and `skills-lint-test` stay green
+
+**Dependency found at pick time, 2026-08-20: this task needs TASK-034 first.** Criterion 7 and
+TASK-034's criterion 1 are one problem from two ends — TASK-034 asks how `triage` regenerates without
+destroying unreproducible content; this task's deliverable is a tail step that *makes adoption re-run
+`triage` automatically*. Shipping the tail step first turns a latent hazard into an active one: adoption
+would wipe Presenter's `/tasks import` provenance header, and this repo's own TASK-004/018 caveats, on
+every run. Recorded as `depends-on: [TASK-034]` rather than discovered again later.
 
 ## Out of scope
 

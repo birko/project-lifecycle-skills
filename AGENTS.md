@@ -170,7 +170,20 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **Plan before implementing.** A non-trivial task gets its `## Implementation plan` before work starts.
 - **New scope discovered mid-work gets its own task** — offer `/tasks spawn` unprompted. Never widen the task in hand.
 - Before flipping a non-trivial task to `done`, run `/verify-conventions` (adherence) **and** `/code-review` (correctness) on the diff, then address or record the findings. This `/tasks close` step **is** the merge gate; `done` means merged.
-- **Generated files are owned by their verbs — never hand-edit them.** `docs/features/*/status.md` and `docs/features/README.md` are owned by `/feature status`; `tasks/README.md` by `/tasks triage`; `docs/specs/*.md` by `/specs regen` (only `.map.yml` is hand-edited). "Keep it current" means *run the owning verb*.
+- **Nothing goes in a generated file that its verb cannot derive.** The rule above says who *owns* a
+  generated file; this says what may go *in* one. If a sentence cannot be recomputed from the inputs, it
+  does not belong in the output — it belongs in one of three hand-owned homes: commentary about **one
+  task** goes on that task's file; cross-cutting **state or judgement** goes in the EPIC body
+  (`§ State as of`); **tree-level provenance** (where this task tree came from) goes in
+  `tasks/.config.yml`'s comments. Same for `/feature status`: per-feature commentary belongs in
+  `idea.md` / `decisions.md`, never in the generated `status.md` or index.
+  - **Why not simply give the generator a preserved region?** Because a partly-hand-owned generated file
+    is the ambiguity that produces the problem: every regeneration becomes a judgement call, and the
+    second copy grows back. Measured instance — `tasks/README.md` carried caveats about TASK-004 and
+    TASK-018 that were *lossy summaries* of fuller records already on those task files, plus a
+    verification-debt count that said "9" while `EPIC.md` said "seven". Two hand-written copies of one
+    non-derivable fact, disagreeing. Deleting the copies lost nothing.
+- **Generated files are owned by their verbs — never hand-edit them.**- **Generated files are owned by their verbs — never hand-edit them.** `docs/features/*/status.md` and `docs/features/README.md` are owned by `/feature status`; `tasks/README.md` by `/tasks triage`; `docs/specs/*.md` by `/specs regen` (only `.map.yml` is hand-edited). "Keep it current" means *run the owning verb*.
 - **Status changes go through their verbs, never hand-edits.** Hand-flipping `status: done` skips the gates that make the status trustworthy.
 - To see where things stand: `/tasks` (feature-aware snapshot) or `/roadmap` (full epic to feature to task view plus a divergence audit).
 - No `Co-Authored-By:` trailers in commit messages.
