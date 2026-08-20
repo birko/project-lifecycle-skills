@@ -3,7 +3,7 @@ id: TASK-044
 parent: STORY-011
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-20
@@ -79,8 +79,9 @@ router line is wrong and should be corrected whichever way this decision goes.
 
 - [x] After the change, run `/fix-next` against EPIC-002 and read its ranking paragraph: confirm it
       either names the ladder theme that broke the tie, or states that the key did not apply
-- [ ] Confirm two tasks from different stories that tie on every other key resolve in a defensible,
-      explainable order — and that a reader can tell *why* from the printed paragraph alone
+- [x] Confirm two tasks from different stories that tie on every other key resolve in a defensible,
+      explainable order — and that a reader can tell *why* from the printed paragraph alone — **drilled
+      2026-08-20 on TASK-039 vs TASK-029**, see the Outcome below
 
 ## Implementation plan
 
@@ -144,3 +145,22 @@ No `skills-lint.sh` change, so no new lint case is owed; the drill is the test.
   **not** satisfied: it needs two candidates tying on every one of keys 1-5, and no such pair arose at
   the decision point in this run. Task stays at `review` until a run produces one; closing it on a
   drill that did not exercise the rule would make the tick a lie.
+
+- 2026-08-20 — second test-plan item **discharged**, on the pool as it stood (19 todo). The pair is
+  **TASK-039** (STORY-011, `correctness-invariants`) against **TASK-029** (STORY-015,
+  `docs-i18n-coverage`), and they tie on every one of keys 1-5:
+
+  | Key | TASK-039 | TASK-029 | |
+  |---|---|---|---|
+  | 1 severity | nothing is wrong, the dashboard is thinner than it could be | the guide's case count lags; no wrong results | tie — both bottom tier |
+  | 2 reachability | internal only | internal only | tie |
+  | 3 silence | no answer is produced, so nothing can be plausibly wrong | same | tie — the key does not apply to either |
+  | 4 self-containment | add a template placeholder + a triage step line | document what the cases pin | tie — contained, no open design question |
+  | 5 verified | filed from TASK-034's criterion with evidence | noticed at TASK-026's close with evidence | tie |
+
+  **Key 6 breaks it**: `correctness-invariants` is ladder row 2, `docs-i18n-coverage` is row 7, so
+  TASK-039 ranks first. The demonstration is stronger than a confirmation — key 7 (`priority:`) also
+  ties at P3, and key 8 (oldest `created`) would have put **TASK-029 first** (2026-08-19 against
+  2026-08-20). So the ladder **reversed** the order the remaining keys would have produced. Had
+  `theme:` been absent, as it was before this task, the pool would have ordered these two the other way
+  round with nothing recording that a key had been skipped.
