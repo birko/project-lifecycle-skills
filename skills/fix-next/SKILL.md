@@ -249,7 +249,10 @@ Log: `- step 7 — respecced <area>; requirements changed: <list>`
 
 ## Step 8 — Close through the merge gate
 
-Run [`/tasks close`](../tasks/verbs/close.md). **Do not re-implement any of it** — `close` already owns
+Run [`/tasks close --unattended`](../tasks/verbs/close.md). **Pass the flag** — it is what tells step
+5d's out-of-scope sweep to spawn rather than offer, and without it the sweep meets a work bullet with
+nobody to answer: the reading that keeps the loop moving is to close anyway, which is precisely the
+evaporation the sweep exists to stop. **Do not re-implement any of it** — `close` already owns
 [[verify-conventions]] + [[code-review]] + conditional [[security-review]] on the diff, the merge
 decision, the commit (with this repo's staging and trailer discipline), the remote close, the dashboard
 regen and the STORY/EPIC rollup. Never skip the gate because a review skill's name didn't resolve;
@@ -280,7 +283,9 @@ Final report, short:
 
 1. What was broken, in one sentence a reader with no context understands.
 2. The step-6 split, as numbers.
-3. Anything flagged and not fixed, or any new task filed.
+3. Anything flagged and not fixed, and **every task id `close` spawned from the out-of-scope sweep** —
+   by id and one-line subject. Nobody watched the run; if the report doesn't name them, the only trace
+   is a file in the tree nobody knows to look for.
 4. **The next pick**, named.
 
 ## Verify the reset really is safe

@@ -8,12 +8,12 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 12      | —     |
+| planned      | 0     | 11      | —     |
 | todo         | —     | —       | 19    |
-| in-progress  | 2     | 1       | 0     |
+| in-progress  | 2     | 2       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 2       | 24    |
+| done         | 0     | 2       | 25    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -52,14 +52,14 @@ _None._
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/0 done)
   - STORY-008 Harvest the skill set's own specs — planned (0/0 done)
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/0 done)
-- EPIC-002 Close-gate findings on the skill set — in-progress (1/21 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (2/22 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — planned (0/2 done)
     - [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
     - [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — planned (0/8 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (1/8 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges (P2, unassigned)
     - [ ] TASK-010 /tasks pick walks past verification debt without mentioning it (P2, unassigned)
-    - [ ] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer (P3, unassigned)
+    - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer (P3, unassigned)
     - [ ] TASK-030 `close`'s single-branch SHA backfill instructs an impossible amend (P2, agent)
     - [ ] TASK-039 The dashboard template has no slot for the todo-by-priority breakdown (P3, agent)
     - [ ] TASK-041 `intake --adopt` cannot adopt a loose backlog — it assumes the epic already owns its tasks (P2, agent)
@@ -76,10 +76,11 @@ _None._
   - STORY-014 `specs` — two gates that pass without checking — planned (0/2 done)
     - [ ] TASK-033 `/specs init`'s coverage check can pass vacuously (P2, agent)
     - [ ] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status (P2, agent)
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (1/3 done)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (1/4 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin (P3, agent)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in (P2, agent)
     - [ ] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened (P3, agent)
+    - [ ] TASK-045 A flag one skill passes is never checked to exist in the receiving verb (P2, agent)
 
 ## Loose tasks
 

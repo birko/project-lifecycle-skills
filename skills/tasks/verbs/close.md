@@ -12,6 +12,10 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - `--story <STORY-NNN>` — close a STORY instead.
    - `--epic <EPIC-NNN>` — close an EPIC instead.
    - `--force` — with `--story`/`--epic`, close even when open children remain (see Edge cases).
+   - `--unattended` — **no user is present to answer anything.** Passed by [[fix-next]], which drives
+     this verb as its merge gate. It is a **declared** flag and never inferred: whether a human is
+     watching is not readable from the repo, and a close that guesses wrong either hangs on an offer
+     nobody can take or silently drops work. Today it changes exactly one step — 5d.
 
 3. **Locate the file** — Grep `^id: TASK-NNN$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
 
@@ -102,6 +106,19 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    share a theme belong in **one** task, because splitting them buries the connection that makes them
    cheap to do together; say in that task's body that it is a group and why.
 
+   **Under `--unattended`, spawn instead of offering.** The three outcomes and the grouping rule are
+   unchanged; only the *work* branch differs, because there is nobody to take an offer:
+   - **Work** → [`spawn`](spawn.md) it outright, no prompt. Record every id created.
+   - **A bullet you cannot confidently classify** → treat it as work and spawn it. The repo's standing
+     preference settles the tie: a spare task is cheap noise anyone can `cancel`, an untracked paragraph
+     is work that silently disappears.
+   - **Never close with the bullet unowned**, and never stop the run to ask. Both readings defeat the
+     step — stopping strands a half-closed task in an unwatched session, and closing anyway is the exact
+     evaporation this step exists to prevent, now with a rule quoted over the top of it.
+
+   The ids go to step 12 **by id, not only as a count**: a run nobody watched is read later from the
+   report alone, and `spawned: 3` tells that reader nothing they can act on.
+
    Why this is a step and not a habit: `## Out of scope` looks like documentation, so an unowned "X is
    also broken" reads as recorded when nothing ranks it — the same defect as a checklist bullet under a
    STORY (SKILL.md § *Findings become tasks*). It surfaces at close because that is when the section is
@@ -175,6 +192,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - **Changelog nudge** (don't auto-run; avoid double-nudging) — only for **task-only work that `/feature review` won't cover**: if the closed item has **no `feature:` link** (a `_loose` task or a feature-less EPIC/STORY) and represents a user-facing change, and the project has a `CHANGELOG.md`, print one line — *"consider `/roll-changelog` to record this for users."* Skip when the task has a `feature:` link (the feature's `/feature review` carries the nudge) or there's no `CHANGELOG.md`. The changelog is human-curated, so suggest, never auto-run.
 
 12. **Confirm** — print (include the step 5d outcome: `out-of-scope: N boundary, M spawned, K declined`,
+   naming each spawned id — under `--unattended` the report is the only place anyone will see them,
    so the sweep is visibly accounted for rather than assumed — a gate whose output is invisible when it
    passes is indistinguishable from one that never ran):
     - Which file was updated
