@@ -7,11 +7,11 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 19    |
+| todo         | —     | —       | 18    |
 | in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 20    |
+| done         | 0     | 1       | 21    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -20,10 +20,10 @@ _None._
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (15/16 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (16/16 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — done (1/1 done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
-  - STORY-002 `adopt-project` — the brownfield front door — in-progress (14/15 done)
+  - STORY-002 `adopt-project` — the brownfield front door — in-progress (15/15 done)
     - [x] TASK-003 adopt-project: survey and fill
     - [x] TASK-004 adopt-project: infer conventions from the code, then grill
     - [x] TASK-005 Layer parity: backport the brownfield rules into new-project
@@ -37,7 +37,7 @@ _None._
     - [x] TASK-019 new-project still offers a CI stub a fresh consumer cannot pass
     - [x] TASK-020 A defect found mid-adoption gets fixed and never gets an id
     - [x] TASK-021 The survey reads a repo's shape and history where the layer records a declared value
-    - [ ] TASK-022 Adoption invalidates generated files it never re-generates
+    - [x] TASK-022 Adoption invalidates generated files it never re-generates
     - [x] TASK-031 `missing, not offered` never reopens, even when a filed task removes the reason
   - STORY-003 `domain` — glossary and decision records — planned (0/0 done)
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0 done)

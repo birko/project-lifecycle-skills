@@ -199,6 +199,50 @@ layer's version of a file from displacing the repo's own; a defect fix brings no
 with it. It still needs the user's go-ahead on the specific change, exactly like an amendment — show
 what is wrong, offer the repair, and never fix a file unasked.
 
+### 3c. Regenerate what this run invalidated
+
+Adoption is the one pass that reshapes several trees at once, which makes it the likeliest thing in the
+set to leave a **stale generated file** behind it. The repo's rule is that generated files are owned by
+their verbs and *"keep it current"* means run the owning verb — so:
+
+**An adoption that creates an input to a generated file owes a re-run of that file's owning verb.**
+
+Derive the set from what this run **actually created**, not from a list here: walk
+[LAYER.md](../new-project/LAYER.md)'s rows, whose **Owner** column already names the verb for each shape,
+and ask of each artifact you wrote *"is anything's output computed from this?"*. A list in this file would
+go silently wrong the day the layer gains a row. Today's real edges: creating `docs/features/` makes
+`tasks/README.md`'s feature slice and drift callout renderable, so [[tasks]] `triage` is re-run;
+`CHANGELOG.md` feeds nothing; and `docs/specs/.map.yml` feeds the spec **bodies**, which stay an offer
+rather than a tail step — `/specs regen` is real token spend.
+
+**Render, compare, and only then write.** The obvious implementation regenerates and diffs afterwards,
+by which point anything lost is already gone. Produce the new content first, compare it with what is on
+disk, and branch:
+
+| The comparison shows | Do this |
+|---|---|
+| a pure no-op | **write nothing, and say nothing.** A re-run that finds nothing to do still writes nothing at all — that invariant outranks the tidiness of mentioning it |
+| only added or updated **derivable** rows | regenerate, and report it under `regenerated` |
+| content the verb **cannot reproduce** would be removed | **stop.** Report what would be lost and where it belongs; offer, never assume |
+
+That last row is not a new rule — it is step 3's *"never overwrite a file the repo already owns"* applied
+to a file whose shape a verb happens to own. **The repo still owns the content**, and a consumer's
+dashboard may legitimately carry provenance no verb can recompute (a tree imported from a spec document
+is the standing case). Where such content should live instead is the agent guide's rule — nothing in a
+generated file that its verb cannot derive — so the report has somewhere concrete to point.
+
+This also covers a generated file written by an **older template**, with nothing else needed: re-running
+the owner brings it to the current shape, and the gate above is what stops that from eating content on
+the way. A *current-looking* generated file is not evidence it is current, exactly as a present config is
+not evidence it carries today's fields.
+
+**Never hand-shape a generated file to satisfy this step.** It is a verb re-run or it does not happen; a
+row whose verb cannot be invoked is reported unregenerated. Hand-writing the shape is the same violation
+one layer along, and it is the tempting shortcut when a verb is awkward to call.
+
+**The regenerated files ride in the adoption commit.** A dashboard landing one commit later is a diff
+nobody reviews and one the user did not ask for.
+
 ### 4. Report what changed
 
 Report by outcome. Three buckets for what this run **did**:
@@ -208,6 +252,7 @@ Report by outcome. Three buckets for what this run **did**:
 | **created** | what was written |
 | **amended** | a file the repo already owned, changed with the user's consent — and *what* changed inside it: a section appended, a section replaced, lines added. **Never report an amendment as a creation**; on the upgrade path amendment is the normal outcome, so this is the busiest bucket, not an exotic one |
 | **left alone** | why — "present already", "you declined" |
+| **regenerated** | a generated file this run re-derived because it created one of its inputs (step 3c) — name the file *and* the verb that produced it. It needs its own name because the user did not write these files and should not have to work out why they moved; folding them into `amended` says they changed someone's own work, which is the opposite of true. **Report a declined or blocked regeneration here too** — silence reads as "nothing needed" |
 
 Then **one bucket per surveyed state the three above do not already absorb** — `present` is
 *left alone*, and a `missing` row you filled is *created*. [LAYER.md](../new-project/LAYER.md) owns

@@ -207,9 +207,17 @@ way. Where a task does own the blocker, name it in the status line as informatio
 
 ## Ordering
 
-Ground truth and the agent guide first (later steps read them), then `tasks init`, then
-`specs init` — the spec map wants the guide's architecture vocabulary, and `/tasks init` may need
-the task mode the guide records.
+Ground truth and the agent guide first (later steps read them), then **`docs/features/`**, then
+`tasks init`, then `specs init` — the spec map wants the guide's architecture vocabulary, and
+`/tasks init` may need the task mode the guide records.
+
+**`docs/features/` before `tasks init`, not after**, because `tasks/README.md`'s content depends on it:
+[[tasks]] `triage` renders a feature-aware slice and a drift callout **only when `docs/features/`
+exists**, so a dashboard generated first is stale the moment the folder appears. `new-project` already
+does this in bullet order; recording it here is what makes it true for the adoption path too, and stops a
+later reordering from silently reintroducing it. (Where an ordering cannot be arranged — an artifact
+created after its consumer — [[adopt-project]] § 3c re-runs the owning verb instead; ordering is the
+cheaper guarantee, so prefer it.)
 
 ## Rule
 
