@@ -30,7 +30,8 @@ carrying `CR-*` ids.
 
 This epic exists to supply that stamp. Those 17 were re-homed into it unchanged — placement and
 `parent:` only, no body edits. Three more (TASK-041, TASK-042, TASK-043) were authored directly here,
-filed by the close gate of the re-homing work itself, which is why the epic holds 20 and not 17. The
+filed by the close gate of the re-homing work itself, and TASK-044 by the close gate of *that* —
+which is why the epic holds 21 and not 17. The
 stories group by the **skill each defect lands in**, so a drain session stays inside one skill's surface
 instead of ping-ponging across the set.
 
@@ -40,12 +41,15 @@ instead of ping-ponging across the set.
 says to keep its order because it doubles as [[fix-next]]'s tie-breaker. These stories group by the
 **skill each defect lands in** instead, so a drain session stays inside one skill's surface.
 
-The cost is concrete, not theoretical: `fix-next` breaks ties on that ladder as ranking key 6
-(`skills/fix-next/SKILL.md:124-125`). No story here maps to a ladder theme, so on a tie — likely, since
-all 20 tasks are P2/P3 prose defects with similar blast radius — key 6 has nothing to match and ranking
-falls through to `priority:` then `created`. **This is a recorded deviation awaiting a decision, not a
-settled choice**: either regroup onto the ladder, or teach a story to declare its ladder theme so the
-tie-breaker keeps working. Tracked as TASK-044.
+**Resolved by TASK-044, and the resolution changed what the deviation costs.** Each story now declares
+its ladder position in a `theme:` field, which `fix-next` reads as tie-break key 6 — so subject grouping
+and the ladder coexist and nothing is inferred from a title. What the stamping exposed is that the
+ladder is **near-degenerate here**: as stamped, five of the six stories are `correctness-invariants`, because a
+codebase whose product is prose rules generates almost only broken-architectural-rule defects.
+Regrouping onto the ladder would therefore have produced one enormous correctness story and a small
+docs one, and discriminated no better — so the by-skill grouping costs nothing the ladder would have
+provided. Key 6 stays mostly inert on this epic; `fix-next` now has to *say* so rather than let a
+skipped key read like an applied one.
 
 ## Success criteria
 

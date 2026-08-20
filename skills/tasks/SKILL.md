@@ -21,7 +21,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `plan` | Draft `## Implementation plan` for a TASK (optional grill) | [verbs/plan.md](verbs/plan.md) |
 | `pick` | Pick task, offer to plan it first, mark in-progress, start work | [verbs/pick.md](verbs/pick.md) |
 | `spawn` | Work discovered mid-flight → its own task, placed under the right parent, wired into the origin's plan, reconciled with the feature ledger | [verbs/spawn.md](verbs/spawn.md) |
-| `intake` | A review/audit/spec-harvest **pass** → a drainable backlog: one EPIC (`kind: review-intake`), STORYs by severity theme, one TASK per fix group | [verbs/intake.md](verbs/intake.md) |
+| `intake` | A review/audit/spec-harvest **pass** → a drainable backlog: one EPIC (`kind: review-intake`), STORYs by subject theme, one TASK per fix group | [verbs/intake.md](verbs/intake.md) |
 | `close` | Merge gate — task → `done`, or `review` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
 | `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
@@ -69,7 +69,8 @@ Shared by `triage` and the bare-`/tasks` status snapshot. Single-pass enumerate 
    - `tasks/EPIC-*/STORY-*/TASK-*.md`
    - `tasks/EPIC-*/TASK-*.md`
    - `tasks/_loose/TASK-*.md`
-3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `created`, `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
+3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `theme` (stories, optional), `created`,
+   `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
 4. **Bucket** by level + status:
    - Counts: `{epics: {planned, in-progress, done, cancelled}, stories: {...}, tasks: {todo, in-progress, review, blocked, done, cancelled}}`
    - Priority sub-breakdown for `tasks.todo`: `{P0, P1, P2}`
@@ -247,10 +248,12 @@ non-obvious rules travel with this:
     paragraph is work that silently disappears. `close` step 5d enforces this mechanically, because
     intentions do not survive a long session — measured instance: one thread produced six such
     paragraphs across five closed tasks while the same session was quoting this very rule.
-- **Four optional frontmatter fields are owned by this pair and are not stray keys** — `triage` and
+- **Five optional frontmatter fields are owned by this pair and are not stray keys** — `triage` and
   `audit` must not flag them: `findings:` (task — the ids it remediates, `CR-*`/`SEC-*`/`SH-*`/`VC-*`),
   `kind: review-intake` + `source:` (epic — the stamp `fix-next` reads to find the pool, so no epic
-  id is ever hard-coded, plus where the findings came from), `picked-by:` (task — which autonomous
+  id is ever hard-coded, plus where the findings came from), `theme:` (story — its slug on
+  `intake`'s subject ladder, which `fix-next` reads as tie-break key 6 instead of inferring the theme
+  from a title), `picked-by:` (task — which autonomous
   skill owns an in-progress run), and a
   `## Progress log` body section (task — one line per completed step, written *as it happens*, so an
   interrupted run resumes from disk rather than from conversation memory; on a disagreement with git,

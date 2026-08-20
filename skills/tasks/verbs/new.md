@@ -71,6 +71,10 @@ Interactive scaffold of a new task tree node.
    - `{{FINDINGS}}` — the id list from `--from-review`, else `[]` (task only)
    - `{{KIND}}` — `review-intake` when [intake](intake.md) is scaffolding a review pass's epic, else omit the line entirely (epic only)
    - `{{SOURCE}}` — provenance for a `review-intake` epic: the report path(s), PR, or `<pass> <date>` when the findings arrived in-conversation. Omit the line for a normal epic (epic only)
+   - `{{THEME}}` — the subject-ladder **slug** from [intake](intake.md)'s table when it is scaffolding
+     a review-intake theme story, else **omit the field and its two comment lines entirely** (story
+     only). Same rule as `{{KIND}}`/`{{SOURCE}}`: an ordinary story has no ladder position, and a
+     rendered-but-empty `theme:` would read as a declared value rather than an absent one
    - `{{OWNER}}` — human/ai/both (epic only; default `human`)
    - `{{AFFECTS}}` — `[]` unless the EPIC is cross-cutting in an aggregator repo of a polyrepo family (see SKILL.md § Shape detection); then ask the user which sub-projects it affects and write the list
    - `{{TITLE}}` — the title from step 3

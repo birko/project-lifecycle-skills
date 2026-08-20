@@ -3,7 +3,7 @@ id: TASK-044
 parent: STORY-011
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: review
 priority: P2
 assignee: agent
 created: 2026-08-20
@@ -29,7 +29,11 @@ for the stories it creates:
 
 and says to keep that order because **it doubles as [[fix-next]]'s tie-breaker**. `fix-next` confirms
 it from the other side (`skills/fix-next/SKILL.md:124-125`): *"Ties break on the intake theme ladder …
-then `priority:`, then oldest `created`."* It is ranking key 6 of 6.
+then `priority:`, then oldest `created`."* It is tie-break key 6.
+
+(That sentence as filed said "key 6 of 6". It was wrong when written: the skill numbered only keys 1-5
+and then added three unnumbered tie-breaks, so the ordering had eight criteria and nothing named which
+was which. `/code-review` caught it at this task's own close gate; the fix numbers them 6/7/8.)
 
 EPIC-002 groups its six stories by **the skill each defect lands in** instead — `verify-conventions`,
 `tasks`, the universal layer, `roadmap`, `specs`, CI. That grouping is genuinely useful here: it keeps a
@@ -50,16 +54,16 @@ router line is wrong and should be corrected whichever way this decision goes.
 
 ## Acceptance criteria
 
-- [ ] The choice is made and recorded with its rationale: **regroup** EPIC-002's stories onto the
+- [x] The choice is made and recorded with its rationale: **regroup** EPIC-002's stories onto the
       ladder, or **let a story declare its ladder theme** so subject grouping and the tie-breaker can
       coexist, or **accept the deviation** and say plainly that key 6 is inert for this epic
-- [ ] Whichever is chosen, `fix-next`'s ranking is never left silently short a key — if a key cannot
+- [x] Whichever is chosen, `fix-next`'s ranking is never left silently short a key — if a key cannot
       apply, the ranking paragraph it prints says so
-- [ ] If the "declare a theme" route wins, the declaration is machine-readable rather than prose —
+- [x] If the "declare a theme" route wins, the declaration is machine-readable rather than prose —
       `fix-next` already carries a note that a prose marker beat it once (its DV12 carve-out) and that
       a machine-readable marker would have been better
-- [ ] `skills/tasks/SKILL.md`'s router row for `intake` no longer says "by severity theme"
-- [ ] If the ladder itself should admit subject grouping for adopted backlogs, that change lands in
+- [x] `skills/tasks/SKILL.md`'s router row for `intake` no longer says "by severity theme"
+- [x] If the ladder itself should admit subject grouping for adopted backlogs, that change lands in
       `intake.md` step 5 — not as a local exception in this epic
 
 ## Out of scope
@@ -80,4 +84,55 @@ router line is wrong and should be corrected whichever way this decision goes.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-044` — leave empty until then._
+**Decision taken: let a story declare its ladder theme.** Regrouping onto the ladder was rejected on
+evidence — see the finding below, which changes what this task can honestly claim to fix.
+
+**The finding that shapes the rest.** Mapping EPIC-002's six stories onto the ladder gives **theme 2
+(correctness & invariants) five times** and one arguable 7. That is not an artefact of the by-skill
+grouping: a repo whose product is prose rules produces almost only "broken architectural rule" defects,
+so *regrouping onto the ladder would have produced one enormous theme-2 story and a small theme-7 one*
+and discriminated no better. The ladder is **near-degenerate for this repo**, and the by-skill grouping
+therefore loses nothing the ladder would have provided.
+
+So this task cannot restore ranking power that was never available. What it can do — and what the
+acceptance criteria actually ask for — is stop the key failing **silently**:
+
+1. **`theme:` becomes an optional STORY frontmatter field** (`skills/tasks/templates/STORY.md`), an
+   integer 1-7 naming its ladder position. Machine-readable, per the acceptance criterion: `fix-next`
+   already carries a note that a prose marker beat it once and a machine-readable one would have won.
+2. **`intake` step 5 writes it** when it scaffolds a theme story — it already knows the number, it just
+   never recorded it, which is why `fix-next` had to infer the theme from a title.
+3. **`fix-next` step 2 reads it** for key 6, and its ranking paragraph must say when the key did not
+   discriminate — absent on the candidates, or identical across them. Both cases are real here.
+4. **`skills/tasks/SKILL.md`** — the router row saying `intake` produces "STORYs by severity theme" is
+   corrected to subject theme, and the "Four optional frontmatter fields" paragraph becomes five.
+5. **EPIC-002's six stories are stamped** with their honest theme, degeneracy included. Stamping five
+   identical values is the point: it makes the inertness visible instead of leaving it to be rediscovered.
+6. **`AGENTS.md § Conventions`** records the new field, per register-on-introduce.
+
+No `skills-lint.sh` change, so no new lint case is owed; the drill is the test.
+
+## Progress log
+
+- 2026-08-20 — `theme:` added to the STORY template, written by `intake` step 5, read by `fix-next` as
+  tie-break key 6. Router row corrected (`intake` themes by **subject**, not severity — the wrong
+  one-liner that caused this defect). Six EPIC-002 stories stamped. Registered in `AGENTS.md`.
+- 2026-08-20 — `/verify-conventions`: one warning, fixed. The new standing rule stated a **live count**
+  ("five of six stories are theme 2"), which is the same restating-a-growing-number defect `/code-review`
+  had just caught in STORY-015. Rewritten to state the mechanism instead of the tally.
+- 2026-08-20 — `/code-review`: 9 findings, all confirmed, all addressed. Two were high and one was
+  design-changing:
+  - **`theme:` is on the STORY, but `fix-next` ranks TASKs** — nothing said to resolve `parent:` to the
+    story to read it, so an agent would look on the task, find nothing, and report the key inert on a
+    backlog that does declare themes. Grepping `fix-next` for `parent:` or `STORY.md` returned zero hits.
+  - **`intake --adopt` never backfilled `theme:`** — the one path the change exists to serve was the one
+    path where the field stayed absent forever. It now offers a slug per story.
+  - **The field stored a row number**, freezing `intake`'s table order into every stamped story: insert
+    or reorder a theme and they all silently remap. Switched to a **slug**, with the table declared the
+    single source of the order and the restatement in `fix-next` deleted.
+  - Also: undeclared themes now sort *after* declared ones (a partially-declared pool had no defined
+    order, so two runs could rank it differently); tasks in `_loose/` or parented straight to an EPIC are
+    named as theme-less by construction; the tie-breaks are numbered 6/7/8 so "key 6" means something;
+    the Collection-pass capture list gained `theme`; the template comment and the stamped comment are now
+    byte-identical; and EPIC-002's body was reconciled — it still said no story mapped to a theme, and
+    still counted 20 tasks when TASK-044 made 21.

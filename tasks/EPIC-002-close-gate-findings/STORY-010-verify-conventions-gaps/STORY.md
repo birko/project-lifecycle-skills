@@ -4,6 +4,9 @@ parent: EPIC-002
 # status: planned | in-progress | done | cancelled
 status: planned
 created: 2026-08-20
+# theme: review-intake stories only — this story's slug on intake's subject ladder.
+# fix-next reads it as tie-break key 6; omit it on an ordinary story.
+theme: correctness-invariants
 ---
 
 # `verify-conventions` — what the lint skips and what it fails to say

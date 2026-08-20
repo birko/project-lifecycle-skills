@@ -122,8 +122,29 @@ settles nothing. Order the pool by these keys, in order:
 5. **Verified over unverified.** A finding confirmed by hand is safer to start than one filed straight
    from a harvest.
 
-Ties break on the intake theme ladder (security & tenancy → correctness → data integrity → contract
-drift → performance → reuse → docs), then `priority:`, then oldest `created`.
+6. **Subject theme**, ordered by [`intake`](../tasks/verbs/intake.md)'s ladder table — that table is
+   the single source of the order; don't restate it here or anywhere else, read it. A candidate's
+   theme is **not on the task**: it is the `theme:` slug on its parent STORY, so resolve the task's
+   `parent:` to that `STORY.md` and read the field there. **Never infer a theme from a title** — an
+   adopted backlog is often grouped some other way (by subject, by subsystem), and a title match
+   silently resolves to nothing exactly there.
+7. **`priority:`** — the coarse bucket, demoted to a tie-break for the reason at the top of this step.
+8. **Oldest `created`** — the last resort, and the only key that can never tie.
+
+**Two candidate shapes have no theme by construction**, and they are not defects: a task in
+`tasks/_loose/`, and a task parented directly to an EPIC rather than a STORY. Treat them exactly like a
+STORY that declares nothing.
+
+**An undeclared theme sorts *after* every declared one**, never before and never interleaved. Without
+that rule a partially-declared pool — the normal state once a second intake epic exists, or straight
+after an adoption — has no defined order, and two runs over the same pool can rank it differently. That
+non-reproducibility is the thing this key was added to remove, so don't reintroduce it at the boundary.
+
+**Say which key broke the tie, and say when key 6 could not.** Three cases make it inert: no candidate
+declares a theme, every candidate declares the *same* one, or the pool separated on keys 1-5 before
+reaching it. A degenerate ladder is normal on a repo whose defects cluster in one theme — a codebase
+whose product is prose rules yields almost only correctness defects — so a run that never mentions key
+6 is indistinguishable from one where the key did the work.
 
 State the ranking in one short paragraph — the top pick and *why it beat the runner-up* — then start.
 **Don't ask which to take;** that's the decision this skill exists to make. Do stop and ask only if the

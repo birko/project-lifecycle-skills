@@ -9,9 +9,9 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 1     | 13      | —     |
-| todo         | —     | —       | 21    |
+| todo         | —     | —       | 20    |
 | in-progress  | 1     | 0       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 2       | 22    |
 | cancelled    | 0     | 0       | 0     |
@@ -23,6 +23,7 @@ _None._
 ## In review
 
 - TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
+- TASK-044 EPIC-002 groups by subject, so fix-next's theme tie-breaker has nothing to read (P2, agent)
 
 ## Tree
 

@@ -87,17 +87,25 @@ different source of work.
      `## Area of concern` — what was reviewed, by what, on which commit, how many findings, and the
      dropped list from step 3.
    - **STORY per theme** — only for themes that actually got findings; don't scaffold empty ones. Use
-     this ladder, and keep the order (it doubles as [[fix-next]]'s tie-breaker):
+     this ladder, and keep the order (it doubles as [[fix-next]]'s tie-breaker). **Pass the theme's
+     slug as `{{THEME}}`** so the story records its ladder position in frontmatter: `fix-next` reads
+     that field for the tie-break rather than inferring the theme from a title, which fails the moment
+     a backlog is grouped any other way (a subject-grouped adoption, a retitled story):
 
-     | # | Theme | Covers |
-     |---|---|---|
-     | 1 | Security & tenancy | authn/authz, permission coverage, tenant/account isolation, secrets |
-     | 2 | Correctness & invariants | data-corrupting bugs, broken architectural rules, query/predicate mistranslation |
-     | 3 | Data integrity | money and unit handling, numbering/sequences, cascade & orphan cleanup |
-     | 4 | Contract drift | client↔API mismatches, binding, missing endpoints, enum/status drift |
-     | 5 | Performance | N+1 loops, unpaged reads, full scans |
-     | 6 | Reuse & dead code | duplication, unreachable code, simplification |
-     | 7 | Docs, i18n & coverage | audits that *spawn* fix work rather than fixing in place |
+     | # | `theme:` | Theme | Covers |
+     |---|---|---|---|
+     | 1 | `security-tenancy` | Security & tenancy | authn/authz, permission coverage, tenant/account isolation, secrets |
+     | 2 | `correctness-invariants` | Correctness & invariants | data-corrupting bugs, broken architectural rules, query/predicate mistranslation |
+     | 3 | `data-integrity` | Data integrity | money and unit handling, numbering/sequences, cascade & orphan cleanup |
+     | 4 | `contract-drift` | Contract drift | client↔API mismatches, binding, missing endpoints, enum/status drift |
+     | 5 | `performance` | Performance | N+1 loops, unpaged reads, full scans |
+     | 6 | `reuse-dead-code` | Reuse & dead code | duplication, unreachable code, simplification |
+     | 7 | `docs-i18n-coverage` | Docs, i18n & coverage | audits that *spawn* fix work rather than fixing in place |
+
+     **This table is the single source of the ladder and its order — no other file restates it.**
+     Stories record the **slug**, never the row number: a number would freeze this table's ordering
+     into every already-stamped story, so inserting a theme or reordering the rows would silently
+     remap them all with nothing to signal it. Adding a row is safe; the slugs stay stable.
 
    - **TASK per group** — chain [new.md](new.md) (`task`) with
      `--from-review <ids> [--source <ref>] --no-plan`, parented to its theme story. Priority from
@@ -132,6 +140,11 @@ different source of work.
   tasks from ids already named in their bodies. One line makes an existing backlog drainable; without
   the stamp [[fix-next]] reads an empty pool and correctly refuses to guess. Say how many tasks got
   ids and how many didn't, rather than inventing ids for the rest.
+  **Also offer to stamp `theme:` on the epic's stories**, proposing a slug per story from the ladder
+  table and letting the user correct each. An adopted backlog is grouped however its author grouped it,
+  so this is the one path where the field is otherwise absent forever — and `fix-next`'s key 6 would
+  announce itself inert on exactly the trees this verb exists to rescue. Offer it; never guess silently,
+  and a story the user won't classify stays unstamped rather than mis-stamped.
 - **One or two findings only** — don't scaffold an epic for it. Say so and use
   [`/tasks spawn`](spawn.md) (or `/tasks new`) instead; the ceremony costs more than it tracks.
 - **Findings span several existing epics' areas** — still file them under the review epic. The pass is

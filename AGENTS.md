@@ -134,6 +134,14 @@ The skills *are* the product, so their prose is the user interface. This subsect
   escapes the root or does not) or merely evidence *consistent with* several answers (a squash-merge
   history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
   it had to be declared.
+- **A ranking key that cannot discriminate must say so, not pass quietly.** Where one skill orders work
+  by several keys in sequence (today [[fix-next]]'s eight), a key whose input is absent or identical
+  across every candidate has not been *applied* — it has been skipped, and a run that never mentions it
+  reads exactly like one where it did the work. So the key's input is **declared in frontmatter, never
+  inferred from a title** (`theme:` on a review-intake STORY, written by `/tasks intake`, read by
+  `/fix-next`), and the ranking paragraph names the key that actually broke the tie. Degeneracy is
+  normal and is not the defect — a prose-rule codebase produces almost only correctness defects, so its
+  review-intake stories cluster on one theme. Silent degeneracy is the defect.
 - **A format one skill reads is a contract the writing skill must state too.** When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 

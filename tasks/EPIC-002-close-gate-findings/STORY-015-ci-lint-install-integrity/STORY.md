@@ -4,6 +4,9 @@ parent: EPIC-002
 # status: planned | in-progress | done | cancelled
 status: planned
 created: 2026-08-20
+# theme: review-intake stories only — this story's slug on intake's subject ladder.
+# fix-next reads it as tie-break key 6; omit it on an ordinary story.
+theme: docs-i18n-coverage
 ---
 
 # CI lint and install integrity — the repo's only gate, and what it cannot see
