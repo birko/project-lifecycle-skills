@@ -144,10 +144,39 @@ an MSBuild `Import` or `ProjectReference` that escapes the repo root, a `path =`
 **Resolve the path; do not count the dots.** A reference is only a problem if the resolved target
 lands outside the repo root. `..\..\src\Foo\Foo.csproj` from `tests/Foo.Tests/` goes up two
 levels and back down *inside* the repo — perfectly normal, and flagging it would skip CI on repos
-that could run it fine. Two things do count: a target that resolves outside the root, and a path
-rooted at a `$(Variable)` or environment variable, which cannot be resolved at all and therefore
-cannot be guaranteed present on a runner. (Written down because counting `..` is the obvious
-implementation and it is wrong — it over-reported on the first repo it met.)
+that could run it fine. (Written down because counting `..` is the obvious implementation and it is
+wrong — it over-reported on the first repo it met.)
+
+**A variable in the path is not the test either — obtainability is.** Ask: *can the repo tell a runner
+how to get the target?* A restore feed can; a developer's sibling checkout cannot. So an unresolvable
+path blocks CI only when nothing in the repo would put the target on the runner:
+
+| Target | Runner obtains it? | Blocks? |
+|---|---|---|
+| `$(NuGetPackageRoot)…` | yes — `dotnet restore`, which is the workflow's own first step | **no** |
+| `$(MSBuildExtensionsPath*)`, `$(MSBuildThisFileDirectory)`, `$(MSBuildProjectDirectory)`, `$(MSBuildSDKsPath)` | yes — the SDK defines them | **no** |
+| `$(BirkoSrc)`, `%SOME_SRC%` — a sibling source tree named by an env var | no | **yes** |
+| a relative path resolving outside the repo root | no | **yes** |
+
+Judge an unfamiliar variable by the question, not by whether it appears above. **And never scan `obj/`
+or `bin/`** — they are build output, not source manifests: `obj/*.nuget.g.props` is written *by* restore
+and is full of `$(NuGetPackageRoot)` imports that mean nothing about isolation.
+
+(Measured on `Symbio`, a real consumer: applying the old blanket clause over
+`*.props`/`*.csproj`/`*.projitems`/`*.targets` gave **318** variable-rooted hits; excluding build output
+and obtainable variables left **99**, every one of them the genuine `$(BirkoSrc)`. The 219 difference is
+why this is spelled out. The false negative was measured too, and it is cheaper to trigger than it
+looks: a plain `dotnet new console` plus **one** ordinary package reference
+(`Microsoft.Extensions.Configuration.UserSecrets`) is enough — restore then writes an
+`<Import Project="$(NuGetPackageRoot)…buildTransitive…props">` into `obj/`, and the old clause denied that
+repo a workflow it would have passed. A *bare* console app with no packages does not trigger it, which is
+exactly why eyeballing a trivial fixture would have missed this. That is the false negative on CI, the
+direction this whole section exists to avoid.)
+
+**Other ecosystems: unverified.** The `Cargo.toml` `path =`, `package.json` `file:` and editable-install
+cases above are resolvable paths, so the obtainability test applies to them unchanged. Whether those
+ecosystems have their own *obtainable-variable* equivalents has not been measured on a real repo — treat
+it as unknown rather than assuming they do or don't.
 
 When you find one, **skip the offer and say why** — name the dependency and what would have to
 exist on a runner for the build to work. A workflow that is red on its first run and stays red is

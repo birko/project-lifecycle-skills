@@ -3,7 +3,7 @@ id: TASK-038
 parent: null
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-19
@@ -56,22 +56,116 @@ that could pass — and every .NET repo scaffolded or adopted from now on hits i
 
 ## Acceptance criteria
 
-- [ ] The check ignores build output — `obj/` and `bin/` are not source manifests and are never scanned
-- [ ] A variable a runner resolves for itself does not block the offer: `$(NuGetPackageRoot)`, `$(MSBuildExtensionsPath*)`, `$(MSBuildThisFileDirectory)`, `$(MSBuildProjectDirectory)`, `$(MSBuildSDKsPath)` at minimum, with the *principle* stated so the list is not the contract
-- [ ] The principle is written down: a variable blocks only when **the repo cannot tell a runner how to obtain the target** — a restore feed can, a developer's sibling checkout cannot
-- [ ] Verified on Symbio: the check reports `$(BirkoSrc)` and nothing else (measured: 99 hits, down from 318)
-- [ ] Verified on a **self-contained** .NET repo: CI is **offered**, proving the false-positive is gone rather than merely reduced
-- [ ] Layer parity: the rule lives in `LAYER.md`, so both front doors are reconciled in the same change
-- [ ] `skills-lint` and `skills-lint-test` stay green
+- [x] The check ignores build output — `obj/` and `bin/` are not source manifests and are never scanned
+- [x] A variable a runner resolves for itself does not block the offer: `$(NuGetPackageRoot)`, `$(MSBuildExtensionsPath*)`, `$(MSBuildThisFileDirectory)`, `$(MSBuildProjectDirectory)`, `$(MSBuildSDKsPath)` at minimum, with the *principle* stated so the list is not the contract
+- [x] The principle is written down: a variable blocks only when **the repo cannot tell a runner how to obtain the target** — a restore feed can, a developer's sibling checkout cannot
+- [x] Verified on Symbio: the check reports `$(BirkoSrc)` and nothing else (measured: 99 hits, down from 318)
+- [x] Verified on a **self-contained** .NET repo: CI is **offered**, proving the false-positive is gone rather than merely reduced
+- [x] Layer parity: the rule lives in `LAYER.md`, so both front doors are reconciled in the same change
+- [x] `skills-lint` and `skills-lint-test` stay green
 
 ## Out of scope
 
 - Whether Birko consumers should be CI-able — a distribution decision, STORY-009's territory.
 - `new-project`'s deference to the row — TASK-019 owns that, and it is what surfaced this.
-- Non-.NET ecosystems' variable forms (Cargo, npm, Python). Note whether they need the same treatment; do not guess at their variable names without a repo to measure.
+- Non-.NET ecosystems' variable forms (Cargo, npm, Python) — **noted, not deferred**: `LAYER.md` now records them as *unverified* rather than guessing, since their resolvable-path cases (`path =`, `file:`, editable installs) are already covered by the obtainability test. Measuring whether they have obtainable-variable equivalents needs a real repo in each; nobody has one to hand, and inventing the variable names is the exact literal-list failure this task fixed.
 
 ## Human test plan
 
-- [ ] Run the corrected check on Symbio and confirm `$(BirkoSrc)` only
-- [ ] Run it on a self-contained .NET repo with a normal `obj/` and confirm CI is offered
-- [ ] Confirm a genuine sibling-source import is still caught when it appears **outside** `obj/`
+- [x] Run the corrected check on Symbio and confirm `$(BirkoSrc)` only
+- [x] Run it on a self-contained .NET repo with a normal `obj/` and confirm CI is offered
+- [x] Confirm a genuine sibling-source import is still caught when it appears **outside** `obj/`
+
+## Implementation plan
+
+### The sentence being fixed
+
+`LAYER.md` § *CI a repo cannot pass*, second paragraph: *"Two things do count: a target that resolves
+outside the root, and **a path rooted at a `$(Variable)` or environment variable, which cannot be
+resolved at all and therefore cannot be guaranteed present on a runner.**"*
+
+The first clause is fine. The second is the defect, and the irony is that the paragraph exists to stop
+over-reporting — *"counting `..` is the obvious implementation and it is wrong — it over-reported on the
+first repo it met"* — then introduces a second over-report of its own.
+
+### The principle, which is what actually needs writing down
+
+Not a variable blocklist. The test is **can the repo tell a runner how to obtain the target?**
+
+| Target | Runner can get it? | Blocks CI? |
+|---|---|---|
+| `$(NuGetPackageRoot)…` | yes — `dotnet restore`, which is step one of the workflow being considered | **no** |
+| `$(MSBuildExtensionsPath*)`, `$(MSBuildThisFileDirectory)`, `$(MSBuildProjectDirectory)`, `$(MSBuildSDKsPath)` | yes — the SDK defines them | **no** |
+| `$(BirkoSrc)` / `%BIRKO_SRC%` | no — a developer's sibling checkout, named by an env var the repo cannot supply | **yes** |
+| `../shared/lib` resolving outside the root | no | **yes** |
+
+State the principle, then the list as *examples of it*, so a variable nobody has met yet is judged by
+the rule rather than by absence from a list. This is the same shape as § *Detect what the repo has* —
+"detect by evidence, not by path".
+
+### Steps
+
+1. **`LAYER.md` § *CI a repo cannot pass*** — replace the blanket `$(Variable)` clause with the
+   obtainability test, plus the four/two examples above. Keep the `..`-resolution guard untouched; it is
+   correct and it is the precedent this fix follows.
+2. **Exclude build output.** Add it as a scope rule for the check: `obj/` and `bin/` are generated, not
+   source manifests. This is the bigger half of the 219 false hits and is not a variable question at
+   all — `obj/*.nuget.g.props` is written *by* restore. Say why, or someone will scan them again.
+3. **Layer parity — fires this time.** `LAYER.md` changes, so `new-project` **and** `adopt-project` are
+   both reconciled in the same change. Expect no edit to either (TASK-019 just made `new-project` defer
+   to this row, and `adopt-project` already defers), but confirm and record rather than assume — that is
+   the rule's whole point.
+4. **Non-.NET ecosystems**: note explicitly whether Cargo/npm/Python need the same treatment. Per this
+   task's own out-of-scope, do **not** invent their variable forms without a repo to measure — say what
+   is unknown.
+5. `skills-lint` + `skills-lint-test`, then the drill.
+
+### Risks and open questions
+
+- **Verification needs two subjects, and only one exists so far.** Symbio proves the false hits go away
+  (318 → 99). It cannot prove the false *negative* is gone, because Symbio genuinely is blocked. Criterion
+  5 needs a **self-contained .NET repo with a populated `obj/`** — a throwaway `dotnet new` + `dotnet
+  restore` in the scratchpad should do it, and `dotnet 10.0.400` is present. If restore needs a feed this
+  machine cannot reach, say so rather than claiming the criterion.
+- **The check is prose, not code.** There is no implementation to fix — the fix is the wording an agent
+  follows, so the drill is the only real verification. Measuring with a throwaway script (as on Symbio) is
+  evidence the *rule* is right, not that any code was corrected; do not present it as the latter.
+- **Do not turn the examples into the contract.** The failure mode being fixed is a list applied
+  literally; replacing one literal list with another would repeat it one layer along.
+
+### Drill record — 2026-08-20
+
+Three subjects, each run under the **old** wording and the **new** one, so the change is shown rather
+than asserted. The checker is a throwaway script implementing the rule as written — evidence about the
+*rule*, not a code fix; there is no implementation in this repo to correct.
+
+| Subject | Old rule | New rule |
+|---|---|---|
+| `Symbio` (real consumer) | BLOCKED — **318** hits, `BirkoSrc` + `NuGetPackageRoot` | BLOCKED — **99** hits, `BirkoSrc` only ✅ |
+| Self-contained .NET + 1 package | **BLOCKED — 2 hits, `NuGetPackageRoot`** | **CI OFFERED** ✅ |
+| Birko-shaped fixture (imports outside `obj/`) | BLOCKED — 2 hits, `BirkoSrc` | BLOCKED — 2 hits, `BirkoSrc` ✅ |
+
+All three criteria met: the false hits go, the false *negative* goes, and a genuine sibling-source
+import outside `obj/` is still caught.
+
+**A claim I had written into `LAYER.md` was wrong, and the drill caught it.** I had asserted a
+self-contained .NET repo is blocked "since its `obj/` carries `$(NuGetPackageRoot)` too". A bare
+`dotnet new console` is **not** blocked — `nuget.g.props` only gains
+`<Import Project="$(NuGetPackageRoot)…">` lines once a restored package ships build/buildTransitive
+assets, and a trivial project has none. It took adding **one** ordinary package
+(`Microsoft.Extensions.Configuration.UserSecrets`) to trigger it. The sentence now states exactly that,
+including the fact that a bare fixture would have missed it — which is the more useful warning, since a
+trivial fixture is what anyone would reach for first.
+
+That is also the second time on this task's lineage that the *fixture* was too clean to expose the
+defect: Symbio (the user's suggestion) found the over-report, and only a package-bearing project found
+the under-offer.
+
+### Layer parity — fired, inspected, no edit needed
+
+`LAYER.md` changed, so both front doors were read in the same change rather than assumed. **Neither
+needed an edit, and the check was mechanical:** grepping `skills/` for the rule's own vocabulary
+(`NuGetPackageRoot`, the obtainability wording) returns **`LAYER.md` only**. `new-project` defers to the
+row (TASK-019, yesterday) and `adopt-project` points at the section; the two `$(BirkoSrc)` mentions in
+`new-project` are illustrative shapes, not a definition of what blocks — they stay correct if this rule
+gains a row tomorrow, which is the test `AGENTS.md` sets for a restatement.

@@ -7,21 +7,21 @@ _Generated 2026-08-19. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 20    |
+| todo         | —     | —       | 19    |
 | in-progress  | 1     | 1       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 18    |
+| done         | 0     | 1       | 19    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 16× P2 · 3× P3.
+`todo` by priority: 16× P2 · 3× P3.
 
 ## In progress now
 
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set
   - **STORY-002** adopt-project — the brownfield front door
 
-_No task is currently in-progress — TASK-019 closed 2026-08-19. STORY-002 has one left: TASK-022._
+_No task is currently in-progress — TASK-038 closed 2026-08-20. STORY-002 has one left: TASK-022._
 
 ## In review
 
@@ -87,7 +87,7 @@ EPIC-001  Adopt the yolobox skill ideas into the lifecycle set          [in-prog
 - **TASK-035** Nothing owns the `integration:` question — three rules each hand it on — `todo`, P2
 - **TASK-036** `/specs regen`'s state gate can read the commented enum, not the status — `todo`, P2
 - **TASK-037** Nothing detects a `skills-pi/` stub shadowing a real built-in — `todo`, P2
-- **TASK-038** The CI isolation check over-reports on any real .NET repo — `todo`, **P1** (found on Symbio)
+- **TASK-038** The CI isolation check over-reports on any real .NET repo — **`done`** (found on Symbio; 318 hits -> 99, and the false negative on a package-bearing self-contained repo fixed)
 
 _Fourteen tasks complete and STORY-001 closed. The survey-behaviour set (TASK-003, 007, 008, 012,
 018) closed on the 2026-08-18 six-repo sweep; TASK-002, 005 and 006 on the fixture round; TASK-021
