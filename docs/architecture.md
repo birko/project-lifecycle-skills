@@ -46,11 +46,35 @@ The router stays small; anything that matters to exactly one verb lives in that 
 verb must read correctly on its own, because that is how an agent loads it — never as a section
 that assumes the router is already in context.
 
+**A reference file may be shared across skills, by relative path.** `skills/new-project/LAYER.md` is
+read by `adopt-project` as `../new-project/LAYER.md` — the first structural case of one skill's file
+being consumed by another rather than duplicated into it. That is deliberate: the alternative is two
+copies of the same inventory drifting apart, which is exactly the failure the layer-parity rule exists
+to prevent. Two consequences worth knowing before adding another: the path is checked by
+`skills-lint` (check 3), so a rename breaks the build rather than rotting quietly; and the owning
+skill's folder becomes load-bearing for a skill that does not live in it, so it cannot be moved
+casually.
+
+## The shared inventory
+
+`skills/new-project/LAYER.md` is the single definition of what a lifecycle-ready repo contains: one row
+per artifact, naming the skill that **owns its shape** and what to do when a repo **already has one**.
+`new-project` creates that layer; `adopt-project` reconciles an existing repo against it. Both read the
+same file, which is what makes the layer-parity rule real rather than aspirational — a change to the
+layer is one edit, not two that drift.
+
+It also carries the rules that decide *whether* an artifact is offered at all (the CI isolation test is
+the standing example) and the **ordering** between artifacts, since later steps read what earlier ones
+write. Where a generated file's inputs are created after it, `adopt-project` re-runs the owning verb
+instead; ordering is the cheaper guarantee, so the inventory prefers it.
+
 ## How the skills compose
 
 ```
 new-project ──seeds──▶ the universal layer (agent guide, docs/, tasks/, CHANGELOG)
-adopt-project ─reconciles──▶ the same layer, for a repo that already has code   [planned]
+adopt-project ─reconciles──▶ the same layer, for a repo that already has code
+     │
+     └── both read LAYER.md, the single inventory (see below)
 
 feature ──rides on──▶ tasks ──tracked by──▶ roadmap (+ divergence audit)
    │                    │
@@ -61,6 +85,9 @@ feature ──rides on──▶ tasks ──tracked by──▶ roadmap (+ diver
    └──uses──▶ grill-me (interrogation) · prototype (stakeholder artifact)
 
 fix-next ──drains──▶ what tasks/intake filed from a review pass
+
+roll-changelog ──records──▶ CHANGELOG.md, what shipped for people who install these skills
+handoff ──compacts──▶ a conversation into a brief another agent can pick up
 ```
 
 Two structural rules hold this together:

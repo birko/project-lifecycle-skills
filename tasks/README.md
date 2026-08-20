@@ -7,11 +7,11 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 18    |
+| todo         | —     | —       | 17    |
 | in-progress  | 1     | 0       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 2       | 21    |
+| done         | 0     | 2       | 22    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -54,7 +54,7 @@ _None._
 - [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
 - [ ] TASK-010 /tasks pick walks past verification debt without mentioning it (P2, unassigned)
 - [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
-- [ ] TASK-014 The repo's own records don't reflect the day's shipped skills (architecture doc + changelog) (P2, unassigned)
+- [x] TASK-014 The repo's own records don't reflect the day's shipped skills (architecture doc + changelog) (P2, unassigned)
 - [ ] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer (P3, unassigned)
 - [x] TASK-023 `/tasks init` cannot reconcile a config written by an older version of itself (P1, agent)
 - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current (P2, agent)

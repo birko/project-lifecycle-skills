@@ -2,7 +2,7 @@
 id: TASK-014
 parent: null
 feature: null
-status: todo
+status: done
 priority: P2
 assignee: unassigned
 created: 2026-08-18
@@ -43,10 +43,10 @@ Both are cheap and share a reader; splitting them buries the connection (`close`
 
 ## Acceptance criteria
 
-- [ ] `docs/architecture.md` no longer marks `adopt-project` as `[planned]`, and its compose diagram shows the built relationship
-- [ ] `LAYER.md` appears in that doc as the shared inventory both front doors consume, with the cross-skill relative-path reference noted in the skill-anatomy block
-- [ ] `CHANGELOG.md` § Unreleased covers the 2026-08-18 skill work, written for someone installing these skills rather than as a commit list — produced by `/roll-changelog`, not hand-edited
-- [ ] A skim of both files finds no other artifact from today still described as planned or absent
+- [x] `docs/architecture.md` no longer marks `adopt-project` as `[planned]`, and its compose diagram shows the built relationship
+- [x] `LAYER.md` appears in that doc as the shared inventory both front doors consume, with the cross-skill relative-path reference noted in the skill-anatomy block
+- [x] `CHANGELOG.md` § Unreleased covers the 2026-08-18 skill work, written for someone installing these skills rather than as a commit list — produced by `/roll-changelog`, not hand-edited
+- [x] A skim of both files finds no other artifact from today still described as planned or absent
 
 ## Out of scope
 
@@ -55,9 +55,33 @@ Both are cheap and share a reader; splitting them buries the connection (`close`
 
 ## Human test plan
 
-- [ ] Read `docs/architecture.md` cold and confirm it describes the tree as it exists today
-- [ ] Confirm `/roll-changelog` (not a hand edit) produced the changelog entries, per the generated-files-owned-by-their-verbs rule
+- [x] Read `docs/architecture.md` cold and confirm it describes the tree as it exists today
+- [x] Confirm `/roll-changelog` (not a hand edit) produced the changelog entries, per the generated-files-owned-by-their-verbs rule
 
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-014`._
+
+### Done 2026-08-20
+
+**Scope corrected before the work, not after.** Criterion 3 said "the 2026-08-18 skill work" because that
+is when the task was filed. The boundary is actually the backfill commit `1886df7` named in the changelog
+itself, and 42 commits have landed since — spanning 08-18 to 08-20. Rolled the whole range; the criterion
+would otherwise have been ticked over two days of unrecorded work.
+
+**Changelog** — produced by `/roll-changelog`, merged into the existing `Unreleased` rather than
+clobbering it (15 Added / 13 Changed / 12 Fixed). Written for someone installing the skills, not as a
+commit list: 42 commits became ~17 bullets, and the pure-internal churn was dropped. Also corrected the
+section's own note, which claimed to hold "the whole history to date" — true when written, false since.
+
+**Architecture doc** — `adopt-project` no longer reads `[planned]`; the compose graph shows both front
+doors reading `LAYER.md`; a new § *The shared inventory* explains what that file is and why one copy
+matters; and the skill-anatomy block records the **cross-skill relative-path reference** as a structural
+pattern, with the two consequences of adding another (the path is lint-checked, and the owning folder
+becomes load-bearing for a skill that does not live in it).
+
+**Found beyond the criteria and fixed, because the human test demanded it:** `handoff` and
+`roll-changelog` were named nowhere in the architecture doc. They predate this task, so criterion 4
+("no other artifact **from today**") did not cover them — but the human test says the doc must describe
+the tree *as it exists today*, and 11 of 13 skills is not that. All 13 are now named. Verified by
+enumerating `skills/` against the doc rather than by reading it.
