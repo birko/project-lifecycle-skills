@@ -1,7 +1,7 @@
 ---
 id: EPIC-002
 # status: planned | in-progress | done | cancelled
-status: planned
+status: in-progress
 created: 2026-08-20
 owner: František Bereň
 affects: skills/, .github/
@@ -36,9 +36,8 @@ stories group by the **skill each defect lands in**, so a drain session stays in
 instead of ping-ponging across the set.
 
 **The grouping deviates from `intake`'s theme ladder, and that has a cost.** `intake` step 5
-(`verbs/intake.md:92-98`) mandates a fixed seven-theme subject ladder — security & tenancy, correctness
-& invariants, data integrity, contract drift, performance, reuse & dead code, docs & coverage — and
-says to keep its order because it doubles as [[fix-next]]'s tie-breaker. These stories group by the
+(`verbs/intake.md:92-98`) mandates a fixed subject ladder — that table is the single source of it, so
+it is not copied here — and says to keep its order because it doubles as [[fix-next]]'s tie-breaker. These stories group by the
 **skill each defect lands in** instead, so a drain session stays inside one skill's surface.
 
 **Resolved by TASK-044, and the resolution changed what the deviation costs.** Each story now declares

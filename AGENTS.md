@@ -164,7 +164,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   copy — MSYS `ln -s` copies unless `winsymlinks` is set, and the repo's Windows installer creates
   junctions anyway, so the fallback tests the real artifact rather than a POSIX stand-in. Keep the
   POSIX path first so CI exercises it, and keep the fallback guarded on `cygpath` being present.
-- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 31 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 34 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 
@@ -204,8 +204,9 @@ The skills *are* the product, so their prose is the user interface. This subsect
 # Re-run BOTH after ADDING a skill folder — one junction is made per folder, so a new one
 # has none and the skill is invisible to both runtimes. Editing an existing skill needs no re-run.
 bash .github/workflows/skills-lint.sh    # run the CI lint locally
-# The lint's check 4 reports install-root drift — a skill folder with no junction, or a junction
-# whose source folder is gone. Advisory: it never fails the run, because the fix is an installer
-# re-run, not a code change. Absent root (no pi installed) => it says so and moves on.
+# The lint's check 4 reports install-root drift — a skill folder with no junction, a junction whose
+# source folder is gone, or a junction into a tree that root was never meant to hold (a skills-pi/
+# stub shadowing a runtime built-in). Advisory: it never fails the run, because the fix is an
+# installer re-run or a junction removal, not a code change. Absent root (no pi installed) => it says so and moves on.
 # Override the roots for testing:  CLAUDE_SKILLS_ROOT=... PI_SKILLS_ROOT=... bash .../skills-lint.sh
 ```

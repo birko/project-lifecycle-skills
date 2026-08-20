@@ -3,7 +3,7 @@ id: TASK-040
 parent: null
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-20
@@ -94,9 +94,9 @@ content changes; this is placement and frontmatter only.
       tasks plus TASK-040
 - [x] Run `/roadmap` — EPIC-002 renders with its six stories and per-story task counts; confirm DV12
       reports nothing (no story under the new `review-intake` epic has unticked lines without an open task)
-- [ ] Run `/fix-next` and confirm it builds a **non-empty** pool spanning the re-homed tasks and ranks
+- [x] Run `/fix-next` and confirm it builds a **non-empty** pool spanning the re-homed tasks and ranks
       by blast radius rather than by `priority:`; stop it before it begins editing, or let it drain one
-- [ ] Confirm `/fix-next` reported a pool drawn from the 21 tasks now under EPIC-002 rather than the 2 it sees
+- [x] Confirm `/fix-next` reported a pool drawn from the 21 tasks now under EPIC-002 rather than the 2 it sees
       today. It may legitimately exclude some — its step 1 drops anything whose acceptance is "decide X"
       as needing a user — so check it *reports* those exclusions rather than silently shrinking the pool
 
@@ -156,3 +156,7 @@ content changes; this is placement and frontmatter only.
   ladder is `fix-next`'s ranking key 6 — became TASK-044. One corrected TASK-043's own evidence table
   from 9 findings to 20, of which 7 come from that task's body. The rest were stale citations and a
   missing triage step-8b drift callout, all fixed.
+- 2026-08-20 — human test plan run. `/fix-next` built a pool of **20** — every `todo` task under
+  EPIC-002, correctly excluding TASK-044 (at `review`, not `todo`) from the 21 the epic holds. Against
+  the 2 it saw before this change. Ranking was by blast radius, not `priority:`: the top pick is a P2
+  and P3s sort both above and below P2s in the ordering, which `priority:` alone cannot produce.

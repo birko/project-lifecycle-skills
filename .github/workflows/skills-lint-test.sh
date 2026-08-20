@@ -155,6 +155,18 @@ r_stale()   { mkdir -p "$1/roots/claude" "$1/roots/pi" "$1/skills/ghost"
               printf -- '---\nname: ghost\ndescription: d\n---\n\nGhost.\n' > "$1/skills/ghost/SKILL.md"
               mk_link "$1/roots/claude/ghost" "$1/skills/ghost"
               rm -rf "$1/skills/ghost"; }              # link now dangles; source gone
+r_shadow()  { mkdir -p "$1/roots/claude" "$1/roots/pi"
+              # The defect TASK-037 names: a skills-pi/ stub junctioned into the CLAUDE root. Its
+              # source exists, so the staleness half passes it; it is missing from nowhere, so the
+              # missing half passes it too. Only a tree-membership test sees it.
+              #
+              # The pi root is linked correctly on purpose. Leave it empty and it legitimately prints
+              # "nothing is linked into it" for its OWN reasons, which would make the companion
+              # assertion below pass or fail for the wrong root.
+              mk_link "$1/roots/pi/alpha" "$1/skills/alpha"
+              mk_link "$1/roots/pi/beta"  "$1/skills/beta"
+              mk_link "$1/roots/pi/gamma" "$1/skills-pi/gamma"
+              mk_link "$1/roots/claude/gamma" "$1/skills-pi/gamma"; }
 r_foreign() { mkdir -p "$1/roots/claude" "$1/roots/pi" "$WORK/other-repo/skills/foreign"
               mk_link "$1/roots/claude/foreign" "$WORK/other-repo/skills/foreign"
               rm -rf "$WORK/other-repo/skills/foreign"; }   # dangling, but not ours
@@ -166,6 +178,13 @@ case_says   "one drifted skill is named"          r_partial "beta is not linked 
 case_says   "junction whose source is gone"       r_stale   "stale junction"
 case_silent "a link into another repo is ignored" r_foreign "stale junction"
 case_silent "skills-pi absent from claude root"   r_linked  "gamma is not linked into"
+case_says   "skills-pi shadowing the claude root" r_shadow  "never linked into this root"
+# The false-positive direction, and it must be a POSITIVE assertion: a bare "must not appear" check
+# passes trivially when the section is deleted. `roots/pi is in sync` can only print if the loop ran
+# AND cleared every legitimate skills-pi link in the pi root — which is the whole real-world install.
+case_says   "legit skills-pi link in the pi root"  r_linked  "roots/pi is in sync"
+# A root holding only a shadow is not an empty root; the two advisories must not contradict.
+case_silent "shadow root is not called empty"      r_shadow  "nothing is linked into it"
 
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

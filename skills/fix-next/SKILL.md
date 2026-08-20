@@ -135,6 +135,11 @@ settles nothing. Order the pool by these keys, in order:
 `tasks/_loose/`, and a task parented directly to an EPIC rather than a STORY. Treat them exactly like a
 STORY that declares nothing.
 
+**A slug that is not on the ladder counts as undeclared**, and is reported as such. `--adopt`
+proposes slugs for a human to correct, and a hand-stamped story can carry a typo, so an
+unrecognised value is reachable — and it is neither declared nor undeclared unless this says which,
+leaving its position undefined and the ranking irreproducible.
+
 **An undeclared theme sorts *after* every declared one**, never before and never interleaved. Without
 that rule a partially-declared pool — the normal state once a second intake epic exists, or straight
 after an adoption — has no defined order, and two runs over the same pool can rank it differently. That

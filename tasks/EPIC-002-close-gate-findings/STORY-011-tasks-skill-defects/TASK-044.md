@@ -77,7 +77,7 @@ router line is wrong and should be corrected whichever way this decision goes.
 
 ## Human test plan
 
-- [ ] After the change, run `/fix-next` against EPIC-002 and read its ranking paragraph: confirm it
+- [x] After the change, run `/fix-next` against EPIC-002 and read its ranking paragraph: confirm it
       either names the ladder theme that broke the tie, or states that the key did not apply
 - [ ] Confirm two tasks from different stories that tie on every other key resolve in a defensible,
       explainable order — and that a reader can tell *why* from the printed paragraph alone
@@ -136,3 +136,11 @@ No `skills-lint.sh` change, so no new lint case is owed; the drill is the test.
     the Collection-pass capture list gained `theme`; the template comment and the stamped comment are now
     byte-identical; and EPIC-002's body was reconciled — it still said no story mapped to a theme, and
     still counted 20 tasks when TASK-044 made 21.
+- 2026-08-20 — human test plan **partially** run. The `theme:` lookup works end to end: `fix-next`
+  resolved each candidate's `parent:` to its `STORY.md` and read the slug, which is the contract that
+  did not exist before. The ranking paragraph correctly reports key 6 as **not engaged** — the pool
+  separated on keys 1-5 — and the top pick is `docs-i18n-coverage`, the theme that sorts *last*,
+  which demonstrates key 6 is a tie-break rather than a primary sort. The second test-plan item is
+  **not** satisfied: it needs two candidates tying on every one of keys 1-5, and no such pair arose at
+  the decision point in this run. Task stays at `review` until a run produces one; closing it on a
+  drill that did not exercise the rule would make the tick a lie.

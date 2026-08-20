@@ -126,7 +126,7 @@ check_root() {
   fi
   # `tree` and `d` are also loop variables earlier in this script; localize them so check 4 cannot
   # clobber them. It runs last today, so nothing breaks — but that is position, not safety.
-  local missing=0 stale=0 total=0 name t names="" tree d l
+  local missing=0 stale=0 shadow=0 total=0 name t tree_of allowed names="" tree d l
   for tree in "$@"; do
     for d in "$tree"/*/; do
       [ -d "$d" ] || continue
@@ -139,16 +139,6 @@ check_root() {
       fi
     done
   done
-  # "Nothing is linked" is ONE condition, not N findings. Naming all 16 skills for a root the
-  # installer has simply never been run against buries the case that matters — a single skill that
-  # drifted — under a wall of text. Measured in the drill: 30+ lines for two empty roots.
-  if [ "$missing" -gt 0 ] && [ "$missing" -eq "$total" ]; then
-    advise "$root exists but nothing is linked into it ($total skills) — run the installer"
-  else
-    for name in $names; do
-      advise "$name is not linked into $root — re-run the installer so the skill resolves"
-    done
-  fi
   for l in "$root"/*; do
     [ -L "$l" ] || continue
     # Read the RAW target. A dangling link cannot be canonicalised, so resolving here would lose
@@ -163,16 +153,52 @@ check_root() {
     # test therefore skips the link as "not ours" and silently loses the stale case, which is the whole
     # point of this half. (If two clones share a basename, a link into the other clone is reported here;
     # that is worth surfacing anyway — the installers already warn "links elsewhere" for it.)
+    #
+    # Which of this repo's trees does the link point into? Derived from the path, never from a list
+    # of tree names — a hard-coded `skills|skills-pi` alternation goes wrong silently the day a third
+    # tree is added, and this check would keep passing while missing it.
     case "$t" in
-      */"$repo_name"/skills/*|*/"$repo_name"/skills-pi/*) ;;
+      */"$repo_name"/*) tree_of=${t#*/"$repo_name"/}; tree_of=${tree_of%%/*} ;;
       *) continue ;;
     esac
+    # A link pointing into a tree this root was NOT asked to hold is a SHADOW, not a stale link: its
+    # source exists, so the staleness test below passes it as healthy. That is the whole gap — the
+    # Claude root is called with `skills` only, so a `skills-pi` junction there resolves the runtime's
+    # own built-in review passes to this repo's fallback stubs. Nothing errors and the output still
+    # looks like a review, which is why no other check can see it.
+    allowed=0
+    # basename: the argument is the caller's string, `$tree_of` is derived from a path. They match
+    # today only because both call sites pass bare relative names — `"$PWD/skills"` is an equally
+    # valid argument for the loop above, and would leave `allowed` permanently 0, reporting every
+    # in-repo junction as a shadow.
+    for tree in "$@"; do [ "$(basename "$tree")" = "$tree_of" ] && allowed=1; done
+    if [ "$allowed" -eq 0 ]; then
+      advise "$(basename "$l") in $root points into $tree_of/, which is never linked into this root — remove the junction (a skills-pi/ stub here shadows the runtime's own review pass)"
+      shadow=$((shadow+1))
+      # NO `continue`: a shadow can also dangle, and both facts are separately actionable. Skipping
+      # the staleness test here would report a junction as shadowing something that is already gone.
+    fi
     if [ ! -d "$t" ]; then
       advise "$(basename "$l") in $root points at $t, which no longer exists — stale junction"
       stale=$((stale+1))
     fi
   done
-  if [ "$missing" -eq 0 ] && [ "$stale" -eq 0 ]; then
+  # Reported AFTER the link loop, because "nothing is linked" is only true if nothing is linked —
+  # a root holding nothing but shadow junctions is not empty, and telling the user to run the
+  # installer there adds the missing links and leaves the shadow in place. The two advisories would
+  # contradict each other.
+  #
+  # "Nothing is linked" is ONE condition, not N findings. Naming all 16 skills for a root the
+  # installer has simply never been run against buries the case that matters — a single skill that
+  # drifted — under a wall of text. Measured in the drill: 30+ lines for two empty roots.
+  if [ "$missing" -gt 0 ] && [ "$missing" -eq "$total" ] && [ "$shadow" -eq 0 ]; then
+    advise "$root exists but nothing is linked into it ($total skills) — run the installer"
+  else
+    for name in $names; do
+      advise "$name is not linked into $root — re-run the installer so the skill resolves"
+    done
+  fi
+  if [ "$missing" -eq 0 ] && [ "$stale" -eq 0 ] && [ "$shadow" -eq 0 ]; then
     advise "$root is in sync"
   fi
 }

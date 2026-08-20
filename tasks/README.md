@@ -8,12 +8,12 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 1     | 13      | —     |
-| todo         | —     | —       | 20    |
-| in-progress  | 1     | 0       | 0     |
-| review       | —     | —       | 2     |
+| planned      | 0     | 12      | —     |
+| todo         | —     | —       | 19    |
+| in-progress  | 2     | 1       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 2       | 22    |
+| done         | 0     | 2       | 24    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -22,7 +22,6 @@ _None._
 
 ## In review
 
-- TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
 - TASK-044 EPIC-002 groups by subject, so fix-next's theme tie-breaker has nothing to read (P2, agent)
 
 ## Tree
@@ -53,7 +52,7 @@ _None._
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/0 done)
   - STORY-008 Harvest the skill set's own specs — planned (0/0 done)
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/0 done)
-- EPIC-002 Close-gate findings on the skill set — planned (0/21 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (1/21 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — planned (0/2 done)
     - [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
     - [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
@@ -77,14 +76,14 @@ _None._
   - STORY-014 `specs` — two gates that pass without checking — planned (0/2 done)
     - [ ] TASK-033 `/specs init`'s coverage check can pass vacuously (P2, agent)
     - [ ] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status (P2, agent)
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — planned (0/3 done)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (1/3 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin (P3, agent)
-    - [ ] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in (P2, agent)
+    - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in (P2, agent)
     - [ ] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened (P3, agent)
 
 ## Loose tasks
 
-- [ ] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
+- [x] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
 - [x] TASK-006 verify-conventions reports "no conventions" on repos full of conventions (P1, unassigned)
 - [x] TASK-014 The repo's own records don't reflect the day's shipped skills (architecture doc + changelog) (P2, unassigned)
 - [x] TASK-023 `/tasks init` cannot reconcile a config written by an older version of itself (P1, agent)

@@ -13,8 +13,12 @@ though, so a **newly added skill** is live only after the installers are re-run;
 folder exists in this repo and resolves nowhere.
 
 That drift is now **detected rather than merely documented**: `skills-lint.sh`'s check 4 compares both
-install roots back against the trees and reports a folder with no junction, or a junction whose source
-folder has gone (a rename or delete — the installers only ever add, so nothing prunes). It is
+install roots back against the trees and reports a folder with no junction, a junction whose source
+folder has gone (a rename or delete — the installers only ever add, so nothing prunes), or a junction
+pointing into a tree that root was never meant to hold. That last one is why the asymmetry is
+enforceable rather than merely written down: a `skills-pi/` stub linked into the Claude root has a
+source that exists and is missing from nowhere, so both other conditions pass it as healthy while
+`/code-review` silently resolves to the fallback instead of the native pass. It is
 deliberately **advisory** and never fails the run: the remedy is an installer re-run, which no diff can
 perform, and the roots are absent on the CI runner. It detects; it never repairs, and it ignores links
 pointing outside this repo, since those roots also hold the user's own skills.
