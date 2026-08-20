@@ -78,7 +78,9 @@ The STORY template carries no `blocked-by` field, so the dependency edges live h
 exists (TASK-010, open), so keep running bare `/tasks` first.
 
 **The backlog has inverted.** 18 of 21 open tasks are unparented defect debt and every one is P2/P3;
-only STORY-002 has open tasks (three). Seven of the loose tasks were filed on 2026-08-19 by two close
+**STORY-002 closed 2026-08-20** with all 15 tasks done, so no story has open tasks at all — every
+remaining item is unparented defect debt, and STORY-003 to 009 have never been decomposed. Seven of the
+loose tasks were filed on 2026-08-19 by two close
 gates — the 5d out-of-scope sweep, `/verify-conventions` and `/code-review` each produced work. Closing
 tasks currently *creates* more tracked work than it removes, which is the drills-find-more-than-building
 judgement below, still holding a day later.

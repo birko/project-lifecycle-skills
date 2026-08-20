@@ -8,10 +8,10 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
 | todo         | —     | —       | 18    |
-| in-progress  | 1     | 1       | 0     |
+| in-progress  | 1     | 0       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 1       | 21    |
+| done         | 0     | 2       | 21    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -23,7 +23,7 @@ _None._
 - EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (16/16 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — done (1/1 done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
-  - STORY-002 `adopt-project` — the brownfield front door — in-progress (15/15 done)
+  - STORY-002 `adopt-project` — the brownfield front door — done (15/15 done)
     - [x] TASK-003 adopt-project: survey and fill
     - [x] TASK-004 adopt-project: infer conventions from the code, then grill
     - [x] TASK-005 Layer parity: backport the brownfield rules into new-project

@@ -2,7 +2,7 @@
 id: STORY-002
 parent: EPIC-001
 # status: planned | in-progress | done | cancelled
-status: in-progress
+status: done
 created: 2026-08-18
 ---
 
@@ -29,3 +29,15 @@ adopting these skills does not mean hand-assembling a dozen files or clobbering 
 **Why this is second, not last:** STORY-003 through STORY-007 each extend the universal layer, and
 every extension strands projects already using the skills. Build the upgrader before shipping
 upgrades. The layer-parity rule in `AGENTS.md § Conventions` is what keeps it from falling behind.
+
+## Closed 2026-08-20
+
+All 15 tasks done. The brownfield front door is built and drilled: survey by evidence rather than by
+expected shape, an inference round that scopes or skips itself and says which, declarations read rather
+than inferred, defects filed as well as fixed, generated files regenerated only when doing so loses
+nothing, and a CI offer gated on whether a runner could actually obtain the build's dependencies.
+
+**What the story is not:** tested on a large real repo's *fill*. Seven repos were surveyed and two
+throwaway fixtures were drilled end to end, but the biggest fill remains `Presenter`'s two small
+artifacts. The honest next subject is a genuinely unadopted real repo, which does not exist in the fleet
+yet — recorded on TASK-004 and in the EPIC's state block rather than left as an assumption of coverage.
