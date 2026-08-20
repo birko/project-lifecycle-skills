@@ -54,6 +54,14 @@ explicitly whether the intent axis is unconditional (it probably is — every ta
 - [ ] `verify-intent` still runs standalone with no task, gate, or feature in play
 - [ ] The runtime-degradation pattern the gate already uses for [[code-review]] is followed, so a
       runtime without the skill still closes
+- [ ] `README.md`'s merge-gate documentation is updated from two axes to three — the two-question
+      framing (*"code-review asks is this correct? · verify-conventions asks does this match how we
+      build?"*) and the gate diagram both predate this axis and describe the gate as it will no longer be.
+      Deliberately **not** done when `verify-intent` shipped standalone under TASK-046: the README
+      documents the gate that exists, and until this task wires it, a third axis there would be fiction
+- [ ] The **never merge or rerank** rule is registered in `AGENTS.md § Conventions`, per
+      register-on-introduce. It lives inside one skill today, which is the definition of a pattern not
+      yet a convention; wiring it into the gate is what makes it cross-cutting
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope

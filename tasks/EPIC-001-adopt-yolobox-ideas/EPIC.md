@@ -84,12 +84,14 @@ re-homed on 2026-08-20 into **EPIC-002**, stamped `kind: review-intake` so [[fix
 17 carried no finding id, and no epic carried the stamp, so `/fix-next` saw two of them. Nothing about
 the findings changed; only where they live.
 
-What that leaves here is the epic's *own* shape: **STORY-001 and STORY-002 are done, and STORY-003 to
-009 have never been decomposed.** So this epic has no open tasks — not because the work is finished, but
-because the next unit of work in it is a decomposition, not a task. Pick a story to expand before
-looking for a task to pick. STORY-005 and STORY-006 each declare themselves independent of everything
-past STORY-001; STORY-008 declares that it runs last and means it; STORY-009 needs a decision about
-polyrepo tracking before any code changes, which makes it a `/feature new` grill rather than a decompose.
+What that leaves here is the epic's *own* shape. **STORY-005 was decomposed on 2026-08-20** into
+TASK-046 to 049, so this epic now has open tasks and a picker should look there first — TASK-046 is
+`in-progress`, TASK-047 and TASK-049 depend on it, TASK-048 is independent of all three.
+
+**STORY-003, 004, 006, 007, 008 and 009 have still never been decomposed**, and the reading order among
+them is unchanged: STORY-006 declares itself independent of everything past STORY-001; STORY-008
+declares that it runs last and means it; STORY-009 needs a decision about polyrepo tracking before any
+code changes, which makes it a `/feature new` grill rather than a decompose.
 
 **Closing tasks still creates more tracked work than it removes** — that is the
 drills-find-more-than-building judgement below, and moving the debt to EPIC-002 did not change it. It
