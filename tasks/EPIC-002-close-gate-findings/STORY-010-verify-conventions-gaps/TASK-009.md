@@ -1,6 +1,6 @@
 ---
 id: TASK-009
-parent: null
+parent: STORY-010
 feature: null
 status: todo
 priority: P3

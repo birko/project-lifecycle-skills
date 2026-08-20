@@ -71,19 +71,29 @@ The STORY template carries no `blocked-by` field, so the dependency edges live h
 | STORY-007 `improve-architecture` | 003 | names modules using glossary terms |
 | STORY-008 `specs` regen across the skill set | 002–007 | regenerating before the set stabilises means regenerating twice |
 
-## State as of 2026-08-19 — read before picking new work
+## State as of 2026-08-20 — read before picking new work
 
 **Verification debt is zero** — nothing at `review`, nothing in-progress. It stood at seven on
 2026-08-18 and cleared over that day and the next. `/tasks pick` still will not mention debt when it
 exists (TASK-010, open), so keep running bare `/tasks` first.
 
-**The backlog has inverted.** 18 of 21 open tasks are unparented defect debt and every one is P2/P3;
-**STORY-002 closed 2026-08-20** with all 15 tasks done, so no story has open tasks at all — every
-remaining item is unparented defect debt, and STORY-003 to 009 have never been decomposed. Seven of the
-loose tasks were filed on 2026-08-19 by two close
-gates — the 5d out-of-scope sweep, `/verify-conventions` and `/code-review` each produced work. Closing
-tasks currently *creates* more tracked work than it removes, which is the drills-find-more-than-building
-judgement below, still holding a day later.
+**This epic's defect debt has moved out.** Superseding the 2026-08-19 note that "every remaining item
+is unparented defect debt": the 17 open defect tasks that had accumulated in `tasks/_loose/` were
+re-homed on 2026-08-20 into **EPIC-002**, stamped `kind: review-intake` so [[fix-next]] can drain them
+(TASK-040). They were filed correctly all along but sat outside every pool that ranks work — 15 of the
+17 carried no finding id, and no epic carried the stamp, so `/fix-next` saw two of them. Nothing about
+the findings changed; only where they live.
+
+What that leaves here is the epic's *own* shape: **STORY-001 and STORY-002 are done, and STORY-003 to
+009 have never been decomposed.** So this epic has no open tasks — not because the work is finished, but
+because the next unit of work in it is a decomposition, not a task. Pick a story to expand before
+looking for a task to pick. STORY-005 and STORY-006 each declare themselves independent of everything
+past STORY-001; STORY-008 declares that it runs last and means it; STORY-009 needs a decision about
+polyrepo tracking before any code changes, which makes it a `/feature new` grill rather than a decompose.
+
+**Closing tasks still creates more tracked work than it removes** — that is the
+drills-find-more-than-building judgement below, and moving the debt to EPIC-002 did not change it. It
+made it countable.
 
 Three judgements that the task files alone will not convey:
 

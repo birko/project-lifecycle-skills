@@ -1,6 +1,6 @@
 ---
 id: TASK-028
-parent: null
+parent: STORY-012
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
 status: todo

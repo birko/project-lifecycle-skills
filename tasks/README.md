@@ -1,15 +1,17 @@
 # Tasks — The Project Lifecycle Skills
 
+> ⚠ **Feature drift (1):** EPIC-001 + EPIC-002 DV5 — tasks tracked in one tree only, `docs/features/` holds no feature folders — run `/roadmap --check`.
+
 _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 7       | —     |
-| todo         | —     | —       | 17    |
+| planned      | 1     | 13      | —     |
+| todo         | —     | —       | 21    |
 | in-progress  | 1     | 0       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 2       | 22    |
 | cancelled    | 0     | 0       | 0     |
@@ -17,6 +19,10 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None._
+
+## In review
+
+- TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
 
 ## Tree
 
@@ -46,29 +52,41 @@ _None._
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/0 done)
   - STORY-008 Harvest the skill set's own specs — planned (0/0 done)
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/0 done)
+- EPIC-002 Close-gate findings on the skill set — planned (0/21 tasks done)
+  - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — planned (0/2 done)
+    - [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
+    - [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — planned (0/8 done)
+    - [ ] TASK-001 STORY.md cannot express dependency edges (P2, unassigned)
+    - [ ] TASK-010 /tasks pick walks past verification debt without mentioning it (P2, unassigned)
+    - [ ] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer (P3, unassigned)
+    - [ ] TASK-030 `close`'s single-branch SHA backfill instructs an impossible amend (P2, agent)
+    - [ ] TASK-039 The dashboard template has no slot for the todo-by-priority breakdown (P3, agent)
+    - [ ] TASK-041 `intake --adopt` cannot adopt a loose backlog — it assumes the epic already owns its tasks (P2, agent)
+    - [ ] TASK-042 Nothing says where a new task is filed, so findings land where nothing can rank them (P2, agent)
+    - [ ] TASK-044 EPIC-002 groups by subject, so fix-next's theme tie-breaker has nothing to read (P2, agent)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — planned (0/4 done)
+    - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current (P2, agent)
+    - [ ] TASK-027 `present, uncommitted` is blind to work that was staged but never committed (P2, agent)
+    - [ ] TASK-028 The inference skip rule counts five subsections when one of them is conditional (P2, agent)
+    - [ ] TASK-035 Nothing owns the `integration:` question — three rules each hand it to another (P2, agent)
+  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — planned (0/2 done)
+    - [ ] TASK-025 DV10's "real code" test cannot see a repo whose code is prose (P2, agent)
+    - [ ] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made (P2, agent)
+  - STORY-014 `specs` — two gates that pass without checking — planned (0/2 done)
+    - [ ] TASK-033 `/specs init`'s coverage check can pass vacuously (P2, agent)
+    - [ ] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status (P2, agent)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — planned (0/3 done)
+    - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin (P3, agent)
+    - [ ] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in (P2, agent)
+    - [ ] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened (P3, agent)
 
 ## Loose tasks
 
-- [ ] TASK-001 STORY.md cannot express dependency edges (P2, unassigned)
+- [ ] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
 - [x] TASK-006 verify-conventions reports "no conventions" on repos full of conventions (P1, unassigned)
-- [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
-- [ ] TASK-010 /tasks pick walks past verification debt without mentioning it (P2, unassigned)
-- [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
 - [x] TASK-014 The repo's own records don't reflect the day's shipped skills (architecture doc + changelog) (P2, unassigned)
-- [ ] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer (P3, unassigned)
 - [x] TASK-023 `/tasks init` cannot reconcile a config written by an older version of itself (P1, agent)
-- [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current (P2, agent)
-- [ ] TASK-025 DV10's "real code" test cannot see a repo whose code is prose (P2, agent)
 - [x] TASK-026 `/specs regen` attributes provenance on a mention, not on authorship (P1, agent)
-- [ ] TASK-027 `present, uncommitted` is blind to work that was staged but never committed (P2, agent)
-- [ ] TASK-028 The inference skip rule counts five subsections when one of them is conditional (P2, agent)
-- [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin (P3, agent)
-- [ ] TASK-030 `close`'s single-branch SHA backfill instructs an impossible amend (P2, agent)
-- [ ] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made (P2, agent)
-- [ ] TASK-033 `/specs init`'s coverage check can pass vacuously (P2, agent)
 - [x] TASK-034 `tasks/README.md` holds narrative its own template cannot regenerate (P2, agent)
-- [ ] TASK-035 Nothing owns the `integration:` question — three rules each hand it to another (P2, agent)
-- [ ] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status (P2, agent)
-- [ ] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in (P2, agent)
 - [x] TASK-038 The CI isolation check over-reports on any real .NET repo (P1, agent)
-- [ ] TASK-039 The dashboard template has no slot for the todo-by-priority breakdown (P3, agent)
