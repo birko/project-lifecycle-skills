@@ -29,8 +29,8 @@ shape a rulebook takes, not the definition of one. Work down this ladder and sto
 3. **Any section carrying normative content** — sustained *must / never / always / don't* (and their equivalents in the guide's language). A section titled `## Transakcna hranica` full of "KRITICKE" rules is a rulebook section whatever its name.
 4. **The whole guide** — if rules are woven throughout rather than sectioned, lint against all of its normative statements.
 
-**Say which sections you read** at the top of the report. The user needs to see what you treated as
-the rulebook, both to trust the findings and to catch you reading the wrong thing.
+**Say which sections you read** — and which rung matched — at the top of every report. § *Output
+format* owns the shape of that line; don't restate it here.
 
 **Only report "no conventions recorded" when the guide carries no normative content at all.** A
 guide full of rules under unfamiliar headings is a rulebook you failed to find, not an absent one —
@@ -65,7 +65,27 @@ its own headings has solved this; the skill adapts to the project, not the rever
 
 ## Output format
 
-Group findings by severity; quote the source rule on each so it's auditable:
+**Open every report — clean or not — with the rulebook you read.** One line naming the file, the
+headings you treated as normative *in the guide's own language*, and which rung of the ladder matched:
+
+```
+Rulebook: AGENTS.md § Conventions (via the CLAUDE.md @import bridge) — ladder rung 1, the seed shape.
+          Subsections read: Framework/stack, Output/prose rules, Code structure & patterns, Naming,
+          Testing, Keeping conventions current, Working rules. Also § Architecture.
+```
+
+Three reasons it leads rather than trails, and the third is the one that bites:
+
+- The ladder's whole value is that it may pick an **unexpected** section. Unreported, the user cannot
+  correct a wrong pick — and a wrong pick is exactly when the findings are worthless.
+- It separates *found little* from *linted against little*. A two-finding report over a rich rulebook
+  and a two-finding report over one heading are different claims.
+- **A clean pass is where this matters most.** `✅` with no source line states a verdict and hides what
+  produced it, so a pass that read the wrong section is indistinguishable from a real one. That is the
+  invisible-gate defect [`/tasks close`](../tasks/verbs/close.md) step 12 already avoids by printing its
+  sweep outcome even when it passes.
+
+Then group findings by severity; quote the source rule on each so it's auditable:
 
 - **🛑 Blockers** — a hard, unambiguous rule is violated (e.g. "all DB access goes through the repository layer" but the diff queries the driver directly; a forbidden dependency was added).
 - **⚠ Warnings** — a likely violation needing human judgment (heuristic match, a convention with stated exceptions).
@@ -83,7 +103,16 @@ Sample:
    Fix: record the state-management choice in § Conventions (or revert if unintended).
 ```
 
-If clean: `✅ Change follows the project's documented conventions.`
+If clean, the source line still leads — the verdict alone is the defect:
+
+```
+Rulebook: AGENTS.md § Conventions — ladder rung 1. Subsections read: Framework/stack, Naming, Testing.
+✅ Change follows the project's documented conventions.
+```
+
+**A guide with no normative content is a different report, not an empty section list.** Say plainly that
+the project has recorded no conventions and point at the seed (§ *Finding the rulebook*), so a true
+negative never renders as though a rulebook was read and found silent.
 
 ## Where this runs in the lifecycle
 

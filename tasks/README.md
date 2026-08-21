@@ -8,12 +8,12 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 10      | —     |
-| todo         | —     | —       | 22    |
-| in-progress  | 2     | 3       | 0     |
+| planned      | 0     | 9       | —     |
+| todo         | —     | —       | 21    |
+| in-progress  | 2     | 4       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 2       | 28    |
+| done         | 0     | 2       | 29    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -56,10 +56,10 @@ _None._
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/0 done)
   - STORY-008 Harvest the skill set's own specs — planned (0/0 done)
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/0 done)
-- EPIC-002 Close-gate findings on the skill set — in-progress (4/23 tasks done)
-  - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — planned (0/2 done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (5/23 tasks done)
+  - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — in-progress (1/2 done)
     - [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
-    - [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
+    - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (3/9 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges (P2, unassigned)
     - [ ] TASK-010 /tasks pick walks past verification debt without mentioning it (P2, unassigned)
