@@ -134,6 +134,14 @@ The skills *are* the product, so their prose is the user interface. This subsect
   escapes the root or does not) or merely evidence *consistent with* several answers (a squash-merge
   history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
   it had to be declared.
+- **A vocabulary shared by several skills has one owning file, and the owner is wherever it already
+  lives.** Today the code-smell inventory sits in `skills/tdd/refactoring.md`, written for the TDD
+  refactor step and now also read by [[verify-conventions]] as its baseline for a repo that documented
+  nothing. The pull toward a second copy is strong, because the two skills use the list for different
+  jobs — one prescribes a refactoring, the other reports a finding — and that difference is exactly what
+  makes a copy look justified. It is not: the *list* is one inventory, and the job-specific part is the
+  handful of rules around it, which is what each consumer adds locally. Expand the existing owner rather
+  than starting a neutral one; moving a list to a "better" home breaks its current readers for no gain.
 - **A flag that declares an absent capability must define behaviour at every point that needs it.**
   Where a skill takes a flag asserting something is *not available* — today `close`'s `--unattended`,
   meaning no user is present to answer — the flag's definition enumerates **every** step that would

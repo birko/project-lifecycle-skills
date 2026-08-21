@@ -3,7 +3,7 @@ id: TASK-048
 parent: STORY-005
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-20
@@ -47,17 +47,17 @@ because either order works and a false dependency blocks the ready pool for no r
 
 ## Acceptance criteria
 
-- [ ] The twelve smells are recorded with the observable signal that identifies each — not the name alone
-- [ ] The repo-overrides rule is stated with its rationale, and a worked example shows a documented rule
+- [x] The twelve smells are recorded with the observable signal that identifies each — not the name alone
+- [x] The repo-overrides rule is stated with its rationale, and a worked example shows a documented rule
       suppressing a conflicting smell
-- [ ] Smell findings are emitted as labelled judgement calls, distinguishable in the output from a
+- [x] Smell findings are emitted as labelled judgement calls, distinguishable in the output from a
       documented-rule violation — a reader must be able to tell which kind a finding is without guessing
-- [ ] The skip-what-tooling-enforces rule is stated
-- [ ] A repo with **no** recorded conventions now gets a useful pass instead of "nothing to verify" —
+- [x] The skip-what-tooling-enforces rule is stated
+- [x] A repo with **no** recorded conventions now gets a useful pass instead of "nothing to verify" —
       and the report still says plainly that no documented rules were found, so the two are not confused
-- [ ] The existing behaviour on a repo **with** a rulebook is unchanged; the rulebook sweep still runs
+- [x] The existing behaviour on a repo **with** a rulebook is unchanged; the rulebook sweep still runs
       first and still leads the report
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -68,14 +68,62 @@ because either order works and a false dependency blocks the ready pool for no r
 
 ## Human test plan
 
-- [ ] Run against a repo with no recorded conventions and confirm the pass is useful, with every finding
-      labelled a judgement call
-- [ ] Run against this repo and confirm the documented rules still lead, and that no smell contradicts
-      a recorded rule
-- [ ] Construct a case where a documented rule and a smell disagree, and confirm the rule wins and the
-      smell is suppressed rather than reported alongside
-- [ ] Confirm a smell a linter already reports is not restated
+- [x] Run against a repo with no recorded conventions and confirm the pass is useful, with every finding
+      labelled a judgement call — fixture A: two findings (repeated switches, data clumps), both prefixed
+      `smell:` and both carrying the "not a documented rule" line. Previously printed "nothing to verify"
+- [x] Run against this repo and confirm the documented rules still lead, and that no smell contradicts
+      a recorded rule — confirmed; the baseline runs after the § Conventions sweep and never reorders it
+- [x] Construct a case where a documented rule and a smell disagree, and confirm the rule wins and the
+      smell is suppressed rather than reported alongside — fixture B: a guide forbidding a mapper layer
+      against textbook duplicated code. Suppressed, and **reported as suppressed** — silence there is
+      indistinguishable from the baseline having missed it
+- [x] Confirm a smell a linter already reports is not restated — fixture C: `.eslintrc.json` erroring on
+      `no-unused-vars` and `complexity`; the unused parameter is listed as tooling-enforced, not reported
 
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-048` — leave empty until then._
+
+## Progress log
+
+- step 2 — picked as the last piece making `verify-conventions` useful on a repo with no rulebook, and
+  materially cheaper now that TASK-013 and TASK-009 settled the report header it extends.
+- step 3 — verified: held, and **rescoped before writing**. The task assumed a new twelve-smell list.
+  `skills/tdd/refactoring.md` already held six candidates, two of them among the twelve — so this is a
+  shared-inventory change, not a new list.
+- step 4 — layer: local.
+- step 5 — fix in `skills/tdd/refactoring.md` (expanded to 15 rows, each with an observable signal and a
+  suggested move) and `skills/verify-conventions/SKILL.md` (the baseline section, the `smell:` label in
+  § Output format, and the frontmatter description). Registered in `AGENTS.md`.
+- step 6 — **no guard to fail**; the lint reads frontmatter, wikilinks and file references, not a skill's
+  reasoning. Evidence is the four drills, recorded as drills.
+- step 7 — no usable spec map (`areas: []`). Nothing to respec.
+
+## Outcome
+
+**What was broken.** On a repo that documented nothing, the standards axis was empty: the skill read the
+guide, found no normative content, and correctly reported there was nothing to verify against. Correct,
+and useless exactly where help is most needed.
+
+**The rescope, and the reason it matters.** The task assumed a new list of twelve smells.
+`skills/tdd/refactoring.md` already carried six candidates including two of the twelve, so writing a
+second list would have been the defect this repo's own convention forbids. The pull toward a copy was
+strong **because** the two skills use the list for different jobs — TDD's refactor step prescribes a
+move, a review gate reports a finding — and that difference is precisely what makes a copy look
+justified. It is not: the list is one inventory, and the job-specific part is the handful of rules each
+consumer adds around it. Expanded the existing owner to 15 rows rather than starting a neutral one, since
+moving a list to a "better" home breaks its current reader (`tdd/SKILL.md:123`) for no gain.
+
+**Judgement call: suppression is reported, not silent.** A documented rule that conflicts with a smell
+suppresses it — but the report *says* it suppressed one and which rule did it. Silence there is
+indistinguishable from the baseline having missed the smell, which is the same invisible-gate defect
+TASK-013 fixed for the rulebook line and TASK-009 for the exclusions. The three compose: the header now
+accounts for what was read, what was skipped, and what was overridden.
+
+**Judgement call: `smell:` is a prefix, not a tone.** A reader who cannot distinguish a heuristic from a
+rule the project wrote down will either dismiss the real violations or act on the heuristics as though
+they were agreed. Never a 🛑.
+
+**Drilled on four fixtures** — no rulebook (findings appear, labelled), a rule that conflicts
+(suppressed and said so), a linter that already covers it (skipped as tooling-enforced), and this repo
+(documented rules still lead).

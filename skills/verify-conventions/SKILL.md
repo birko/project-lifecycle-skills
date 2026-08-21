@@ -1,6 +1,6 @@
 ---
 name: verify-conventions
-description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions in a seeded project, but equally `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Never tells a project with a working rulebook that it has recorded nothing. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local variant that shadows this one inside that repo with concrete, stack-specific checks.
+description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions in a seeded project, but equally `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Never tells a project with a working rulebook that it has recorded nothing, and never tells a project without one that there is nothing to check — a code-smell baseline applies as a floor, always labelled as judgement calls and always suppressed by a documented rule that conflicts with it. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local variant that shadows this one inside that repo with concrete, stack-specific checks.
 ---
 
 # verify-conventions
@@ -47,7 +47,33 @@ Observed in the field: a 1835-line guide with a dozen rule sections, and a guide
 - **`## Architecture`** — the living structure description; a change that contradicts it is either a violation or an architecture update that wasn't made.
 - Any project-specific checklist the guide links to.
 
-If the guide carries **no normative content anywhere** — you worked the whole ladder and found nothing that reads as a rule — say so and stop with a pointer: *"This project hasn't recorded conventions yet — add a `## Conventions` block to CLAUDE.md (see the [[new-project]] seed) so there's something to verify against."* Don't invent rules the project never agreed to.
+If the guide carries **no normative content anywhere** — you worked the whole ladder and found nothing that reads as a rule — say so, point at the seed (*"This project hasn't recorded conventions yet — add a `## Conventions` block to CLAUDE.md (see the [[new-project]] seed) so there's something to verify against."*), and **then run the smell baseline below**. Don't invent rules the project never agreed to; the baseline is not invented rules, it is the floor that applies with or without a rulebook.
+
+### The smell baseline — what to say when the repo documented nothing
+
+**The inventory lives in [[tdd]]'s [refactor candidates](../tdd/refactoring.md)** — one list, read here,
+never copied. It carries each smell's observable signal and a suggested move.
+
+This is a **floor**, not a rulebook, and three rules keep it from behaving like one:
+
+- **The repo always overrides.** A documented standard wins and **suppresses a conflicting smell
+  outright** — not "reports both". The premise of this skill is that it checks what the project agreed
+  to, not what it believes; a baseline that argues with a recorded rule inverts that. *Worked example:* a
+  guide that says *"handlers construct their own DTOs inline — no mapper layer"* suppresses **duplicated
+  code** findings across those handlers. The duplication is real, it is also the documented design, and
+  reporting it makes the pass adversarial to its own project.
+- **Every smell is a labelled judgement call**, never a blocker. They are heuristics with known false
+  positives, and § *Output format* has the slot: they land as ⚠ or 💡 and **carry the `smell:` label**, so
+  a reader can tell a heuristic from a rule the project wrote down without inferring it from tone.
+- **Skip anything tooling already enforces.** If a linter, formatter, compiler warning or analyzer in
+  this repo already reports it, restating it buries the findings only a reader can make. Check for the
+  config before reporting: a repo with an analyzer set to error on unused parameters does not need this
+  pass mentioning them.
+
+**A repo with a rulebook still gets the rulebook first.** The baseline runs *after* the § Conventions
+sweep and never reorders it — the documented rules lead the report, and smells follow, clearly separated.
+It is additional signal for a repo that has recorded little, not a second opinion on a repo that has
+recorded a lot.
 
 **Never suggest restructuring a guide to match the seed.** A project with a working rulebook under
 its own headings has solved this; the skill adapts to the project, not the reverse.
@@ -127,6 +153,11 @@ Then group findings by severity; quote the source rule on each so it's auditable
 - **⚠ Warnings** — a likely violation needing human judgment (heuristic match, a convention with stated exceptions).
 - **💡 Suggestions** — register-on-introduce gaps, architecture-doc drift, soft style rules.
 
+**A smell-baseline finding is prefixed `smell:` and never a 🛑.** It is a judgement call from a
+project-independent floor, so it must be distinguishable at a glance from a rule this project wrote
+down — a reader who cannot tell them apart will either dismiss the real violations or act on the
+heuristics as though they were agreed.
+
 Sample:
 
 ```
@@ -137,6 +168,14 @@ Sample:
 💡 Suggestion — package.json:18
    New framework introduced (`zustand`) but CLAUDE.md § Conventions › Framework lists only Redux.
    Fix: record the state-management choice in § Conventions (or revert if unintended).
+```
+
+```
+⚠ smell: repeated switches — src/billing/rate.py:88, :140, :203
+   Signal: the same `match plan_kind` chain in three places; adding a plan means finding all three.
+   Judgement call from the smell baseline ([[tdd]] § refactor candidates), not a documented rule —
+   this project has recorded no conventions.
+   Suggested move: polymorphism, or one lookup table.
 ```
 
 If clean, the source line still leads — the verdict alone is the defect:
