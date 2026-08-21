@@ -60,11 +60,19 @@ cheapest moment to capture them. Collect two kinds:
 - **Recurring nouns** — the entities the code is organised around.
 - **Suspected synonyms** — two names that appear to mean one concept (`Tenant`/`Organization`, `User`/`Account`, `Customer`/`Client`). These are the valuable ones: ask *"same thing, or genuinely different?"*. A "yes, same" is a real defect surfaced, and it is nearly invisible from inside the project.
 
-Hand these to the `domain` skill **once it exists** — it is not installed yet, so this is
-deliberately not a `[[link]]`: a wikilink to an absent skill resolves to nothing at runtime and
-the reference degrades silently. Until then, record the candidates in the agent guide under the
-domain vocabulary heading and **say plainly that no glossary skill is present**, so they are not
-quietly dropped.
+Hand these to [[domain]], which owns the glossary and the four behaviours that keep it honest — the
+**suspected synonyms** are what it most wants, since *"same thing, or genuinely different?"* is the
+question a project cannot answer from the inside.
+
+**Record them in the agent guide meanwhile, under its § Conventions › Naming subsection**, and say
+plainly that they are unresolved candidates rather than settled vocabulary. **Retire that copy the moment
+`docs/glossary.md` exists** — two records of one vocabulary is exactly the rot AGENTS.md § *The five
+records* exists to prevent, and nothing else will prompt the removal. Naming the subsection matters
+because two adoptions of one repo must land the list in the same place for `domain` to find it later.
+
+Whether the layer *creates* a glossary, and how an adopter reports one that is legitimately absent, is
+not settled here — that is a `LAYER.md` row and it belongs to the change that adds it. Don't branch on
+the file's existence until then.
 
 ## Asking
 

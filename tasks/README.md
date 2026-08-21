@@ -8,10 +8,10 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 9       | —     |
-| todo         | —     | —       | 21    |
-| in-progress  | 2     | 2       | 0     |
-| review       | —     | —       | 0     |
+| planned      | 0     | 8       | —     |
+| todo         | —     | —       | 20    |
+| in-progress  | 2     | 3       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 4       | 33    |
 | cancelled    | 0     | 0       | 0     |
@@ -22,7 +22,7 @@ _None._
 
 ## In review
 
-_None._
+- TASK-051 `domain` — the skill and its glossary half (P1, agent)
 
 ## Tree
 
@@ -45,7 +45,7 @@ _None._
     - [x] TASK-021 The survey reads a repo's shape and history where the layer records a declared value
     - [x] TASK-022 Adoption invalidates generated files it never re-generates
     - [x] TASK-031 `missing, not offered` never reopens, even when a filed task removes the reason
-  - STORY-003 `domain` — glossary and decision records — planned (0/4 done)
+  - STORY-003 `domain` — glossary and decision records — in-progress (0/4 done)
     - [ ] TASK-051 `domain` — the skill and its glossary half (P1, agent)
     - [ ] TASK-052 `domain`'s decision-record half — the three-part bar and where records live (P1, agent)
     - [ ] TASK-053 Layer parity — both front doors learn the glossary and the ADR home (P1, agent)

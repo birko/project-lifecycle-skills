@@ -50,10 +50,17 @@ So a naive widening reports 19 false positives to catch 1 real one. A check at t
 and this repo already has a rule about that: an advisory section still has to be *tested*, and a muted
 check is worth what an unrun one is.
 
-The forward-reference case is the harder one and is not noise: `[[domain]]` is *correct today* and must
-resolve later. `adopt-project/INFER.md` already hit this from the other side — it names `domain` in
-plain text precisely because a wikilink to an absent skill fails the lint, and STORY-003 is scheduled to
-promote it. Whatever this check does must let a forward reference be declared rather than forcing prose.
+The forward-reference case was the harder one, and **it evaporated on 2026-08-21**: TASK-051 shipped
+`skills/domain/`, so `[[domain]]` now resolves and `INFER.md`'s plain-text workaround is gone. Both
+premises this task reasoned from are false, which changes what it can claim rather than what it should do.
+
+Read that as evidence, not as a reprieve. The workaround existed *because* the lint blocks a wikilink to
+an absent skill — so the constraint is real and will recur the next time a skill is referenced before it
+is built, which on this epic's trajectory is routine. What is gone is the **live example**, so the
+requirement below is now **hypothetical**: implement the declaration mechanism against a fixture, and say
+in the outcome that no real forward reference existed at the time. A mechanism designed against no
+example is the weaker deliverable; the alternative — waiting for the next one — leaves the check
+un-widened indefinitely.
 
 ## Acceptance criteria
 
@@ -62,8 +69,9 @@ promote it. Whatever this check does must let a forward reference be declared ra
 - [ ] The check distinguishes a **reference** from a **syntax example**; the mechanism is stated
       explicitly (a fenced/inline-code exemption, an ignore list, an escape form — the choice is the
       task's substance, not an implementation detail)
-- [ ] A **forward reference to a not-yet-built skill** can be declared and does not fail the run;
-      `[[domain]]` is the live case and must pass while STORY-003 is open
+- [ ] A **forward reference to a not-yet-built skill** can be declared and does not fail the run.
+      `[[domain]]` was the live case until TASK-051 resolved it on 2026-08-21, so this must be exercised
+      against a **fixture** — and the outcome says plainly that no real instance existed when it was built
 - [ ] `AGENTS.md § Conventions` no longer claims CI resolves links it does not resolve — either the
       claim is narrowed to the trees actually covered, or the coverage is widened to match the claim
 - [ ] At least one `.github/workflows/skills-lint-test.sh` case fails without the change, and the

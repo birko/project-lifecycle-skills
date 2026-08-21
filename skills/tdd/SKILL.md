@@ -76,7 +76,7 @@ RIGHT (vertical):
 
 ### 1. Planning
 
-When exploring the codebase, use the project's domain glossary so that test names and interface vocabulary match the project's language, and respect ADRs in the area you're touching.
+When exploring the codebase, use the project's domain glossary ([[domain]]) so that test names and interface vocabulary match the project's language, and respect the decision records (ADRs, `docs/adr/`) in the area you're touching — where the project keeps them; no skill creates that directory yet.
 
 Before writing any code:
 

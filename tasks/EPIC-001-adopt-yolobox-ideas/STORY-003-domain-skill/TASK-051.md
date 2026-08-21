@@ -3,7 +3,7 @@ id: TASK-051
 parent: STORY-003
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: review
 priority: P1
 assignee: agent
 created: 2026-08-21
@@ -39,20 +39,20 @@ present. Same change, both files.
 
 ## Acceptance criteria
 
-- [ ] `skills/domain/` exists, frontmatter `name: domain` matching the folder, `description` carrying the
+- [x] `skills/domain/` exists, frontmatter `name: domain` matching the folder, `description` carrying the
       trigger phrases including the Slovak ones this team uses
-- [ ] The **four live behaviours** are the body of the skill, each with the signal that triggers it:
+- [x] The **four live behaviours** are the body of the skill, each with the signal that triggers it:
       challenge a term that conflicts with the glossary; sharpen a fuzzy or overloaded term into a
       canonical one; stress-test relationships with concrete edge-case scenarios; cross-reference against
       the code and surface contradictions
-- [ ] **Lazy creation** is stated: `docs/glossary.md` is written only when there is something to write.
+- [x] **Lazy creation** is stated: `docs/glossary.md` is written only when there is something to write.
       No empty scaffold — an empty glossary is worse than none, because it reads as "the vocabulary is
       settled and thin"
-- [ ] The glossary's boundaries are stated: **no implementation detail, no spec, no scratch pad**. A term
+- [x] The glossary's boundaries are stated: **no implementation detail, no spec, no scratch pad**. A term
       and what it means; where a definition wants a file path or an interface, that belongs elsewhere
-- [ ] `skills/tdd/SKILL.md:79` becomes a proper `[[domain]]` link
-- [ ] `skills/adopt-project/INFER.md`'s plain-text `domain` becomes `[[domain]]`
-- [ ] `bash .github/workflows/skills-lint.sh` passes, and **both installers are re-run** — a new skill
+- [x] `skills/tdd/SKILL.md:79` becomes a proper `[[domain]]` link
+- [x] `skills/adopt-project/INFER.md`'s plain-text `domain` becomes `[[domain]]`
+- [x] `bash .github/workflows/skills-lint.sh` passes, and **both installers are re-run** — a new skill
       folder gets no junction until then, so neither runtime can resolve `[[domain]]` (the TASK-011
       defect, and check 4 now reports it)
 
@@ -66,14 +66,76 @@ present. Same change, both files.
 
 ## Human test plan
 
-- [ ] Run it during a real grill in this repo and confirm it challenges at least one term that is used
-      loosely here, rather than producing a generic vocabulary list
-- [ ] Confirm no `docs/glossary.md` is created when there is nothing worth recording — the lazy rule is
-      the one most likely to be quietly ignored
+- [x] Run it during a real grill in this repo and confirm it challenges at least one term that is used
+      loosely here — it fired behaviour 2 on **`review`**, the skill set's most-used word, which carries
+      four distinct senses including two that mean opposite things (*in review* = unfinished, *passed
+      review* = finished). Also on **`decision`**, two records under one word
+- [x] Confirm the lazy rule behaves — and it was exercised in the **firing** direction, which is the
+      more useful half: two genuinely overloaded terms existed, so `docs/glossary.md` was written. Five
+      entries, all from the drill, none padded
 - [ ] Drill on a consumer repo with established vocabulary (Symbio's Slovak `KRITICKE` sections define
-      many terms in prose) and confirm the cross-reference behaviour surfaces a real contradiction
-- [ ] After re-running the installers, confirm `[[domain]]` resolves from both roots
+      many terms in prose) and confirm the cross-reference behaviour surfaces a real contradiction —
+      **not run.** Left outstanding deliberately rather than ticked on the this-repo drill: a repo whose
+      vocabulary is defined in prose in another language is the case most likely to break behaviour 4
+- [x] After re-running the installers, confirm `[[domain]]` resolves from both roots — both junctions
+      created; check 4 reported it unlinked the moment the folder appeared, then in sync
 
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-051` — leave empty until then._
+
+## Progress log
+
+- step 2 — picked interactively. **Not a `fix-next` run** — see the review note below; the
+  `picked-by:` stamp I first wrote was wrong.
+- step 3 — verified: held. `tdd/SKILL.md:79` and `adopt-project/INFER.md` both pointed at artifacts
+  nothing created, and INFER's plain text was an explicit lint-driven workaround.
+- step 5 — `skills/domain/SKILL.md`, both references promoted, both installers re-run.
+- step 6 — **no guard to fail**; the lint reads frontmatter, wikilinks and file references, not a
+  skill's behaviour. Evidence is the drill.
+- step 7 — no usable spec map in this repo (`areas: []`). Nothing to respec.
+- step 8 — `/code-review`: 9 findings, all confirmed, all addressed. See Outcome.
+
+## Outcome
+
+**What shipped.** `skills/domain/` — a discipline, not a verb: four behaviours keyed on signals that
+occur mid-conversation, plus one narrow cold path. `docs/glossary.md` is written lazily, on the first
+term worth recording, with three boundaries stated (no implementation detail, no spec, no scratch pad)
+because each is a way the file rots.
+
+**The drill found a real overload in this repo's own vocabulary.** `review` — the skill set's most-used
+word — carries four senses, two of which mean opposite things: *"the task is in review"* (unfinished)
+against *"the task passed review"* (finished). Both sentences are said here. `decision` is two records
+under one word. So the glossary exists because there was something to record, which exercised the lazy
+rule in the direction that matters.
+
+**My own stamp was the highest-severity finding.** I wrote `picked-by: fix-next` out of habit on a task
+that is not in `fix-next`'s pool — `findings: []`, and EPIC-001 carries no `kind: review-intake` — and
+without the `## Progress log` that stamp is contractually paired with. Step 0 of the next drain would
+have hit an `in-progress` task it could neither own nor safely leave. The stamp is the defect, not the
+missing log: this was interactive story work. Removed.
+
+**Two regressions I introduced while fixing a dangling reference.** Rewriting `INFER.md`'s glossary
+handoff dropped both the *target* (which guide subsection the candidates land in) and the *retirement
+path* ("retire this copy once `docs/glossary.md` exists") — turning a deliberately temporary duplicate
+into a permanent second record of one vocabulary, which is precisely the rot § *The five records* exists
+to prevent. And it made `adopt-project` branch on a file `LAYER.md` does not list, which is the layer
+parity rule. Both restored; the branching is deferred to TASK-053, which owns the row.
+
+**Judgement call: define the cold path rather than drop the trigger.** The description advertised
+`/domain` while the body said "not a one-shot command" and defined nothing for it. Dropping the trigger
+was simpler and wrong — people will type it. It now runs behaviour 4 over the existing glossary, and
+says so.
+
+**A ripple traced rather than left.** TASK-043 reasoned from `[[domain]]` as its *live* forward-reference
+case; this change resolved it, so both its premises are now false. Its Context and one criterion are
+updated: the constraint is still real and will recur, but the example is gone, so the mechanism must be
+built against a fixture and the outcome must say no real instance existed.
+
+**And I put a live count in a glossary** — "363 uses", unreproducible by any grep variant — the exact
+defect I have flagged three times this session in other people's prose. Removed, along with two
+enumerative lists that would go stale when a review pass or a gate is added.
+
+**Left outstanding:** the consumer-repo drill (behaviour 4 against Symbio's Slovak prose definitions).
+Not ticked, because a vocabulary defined in prose in another language is the case most likely to break
+cross-referencing, and the this-repo drill is not evidence for it.
