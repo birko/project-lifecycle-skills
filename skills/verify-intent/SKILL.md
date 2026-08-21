@@ -23,19 +23,58 @@ The **fidelity axis** of a review gate: *did this change build what was asked?*
 
 ## What it reads — say so, every run
 
-This release reads **one** source: the task's `## Acceptance criteria`.
+Two **intent** sources and one **baseline**, and the difference between those two words is the whole of
+this section. Print what you actually read at the top of every report: a reader cannot tell a thorough
+pass from a shallow one unless the pass names its inputs, and "checked against the task" is a much weaker
+claim than "checked against the task, the agreed decisions, and the area's current spec".
 
-| Given | Intent comes from |
+### Intent — what was asked
+
+| Given | Read |
 |---|---|
 | A task id (`/verify-intent TASK-046`) | that task's `## Acceptance criteria` |
+| That task carries `feature: FEATURE-NNN` | **also** the `approved` and `changed` rows of `docs/features/FEATURE-NNN/decisions.md` — the `Decision` column is the statement, the `→ Tasks` column says which tasks were meant to carry it |
 | Nothing, but a task is in progress | that task's criteria — name which task you picked |
-| Nothing, and no task in flight | ask the user what the change was meant to do, in one line, and use their answer |
+| Nothing, and no task in flight | ask the user what the change was meant to do, in one line |
 
-**Print the source at the top of the report, always.** A reader cannot tell a thorough pass from a
-shallow one unless the pass names its inputs, and "I checked it against the task" and "I checked it
-against the task, the approved decisions and the specs" are very different claims. Approved decisions
-and `docs/specs/` are **not** read yet — say that rather than letting a one-source pass be mistaken for
-a three-source one.
+**The states that are *not* intent still carry information.** Read `approved` and `changed` as what was
+asked — and treat a diff that implements a `removed` or `deferred` row as **scope creep of the worst
+kind**: not merely unasked-for, but decided against, with the rationale and date sitting in the same row.
+Quote that rationale in the finding; it is the strongest evidence this skill can offer. `proposed` is
+neither — it has not been decided, so a diff implementing it is a decision taken by whoever wrote the
+code, and worth surfacing as one. (These are reachable, not theoretical: one real consumer ledger carries
+332 `approved`, 4 `changed`, 3 `removed`, 1 `deferred` and 1 `proposed`.)
+
+**A decision outranks a task criterion, and a disagreement between them is itself a finding.** The ledger
+is what was agreed; the criteria are one decomposition of it, and a decomposition can drift. A diff that
+satisfies its task and contradicts an `approved` decision is precisely the "clean code implementing the
+wrong thing" this axis exists to catch — report it against the decision, quoting both.
+
+Read the ledger through [[roadmap]]'s Cross-tree pass rather than re-parsing `decisions.md` here; that
+engine already owns the feature↔task join.
+
+### Baseline — what the area already does
+
+`docs/specs/` is **not** an intent source, and treating it as one is the mistake to avoid. Specs are
+**harvested from the code** ([[specs]]), so a spec states what an area *currently promises*, not what
+anyone asked for. That still makes it valuable, for a different question: a diff that contradicts a spec
+requirement **no decision or criterion asked to change** is unasked-for behavioural change — *scope creep
+at spec altitude*, the kind a per-file read cannot see.
+
+Resolve which areas cover the changed files with [[specs]]' `.map.yml` globs; don't invent a mapping.
+Then, per requirement the diff contradicts:
+
+| Does a decision or criterion ask for this change? | Outcome |
+|---|---|
+| Yes | not a finding — the spec is simply stale now, and `/specs regen` is the follow-up rather than anything to fix here |
+| No | **scope creep**, quoting the spec requirement and the `file:line` that contradicts it |
+
+### When a source is absent, say which — never fall back silently
+
+No `docs/features/`, a task with `feature: null`, a missing or empty `areas:` map: each is normal, and
+each **narrows the claim the report can make**. Name the sources read and the ones that were not there. A
+pass that read only the task's criteria while printing the header of a three-source pass is the
+invisible-gate defect this skill set keeps rediscovering.
 
 ## The ticked-box trap — read this before writing a finding
 
@@ -92,7 +131,9 @@ Lead with the source, then group by class. Quote on every finding, so a reader c
 re-deriving the judgement:
 
 ```
-Intent source: TASK-046 § Acceptance criteria (8 criteria). Feature decisions and docs/specs not read.
+Intent:   TASK-046 § Acceptance criteria (8) · FEATURE-012 decisions.md (3 approved, 1 changed)
+Baseline: docs/specs/auth-session.md — covers 4 of 6 changed files
+Not read: no other mapped area matches this diff
 
 🛑 Missing — criterion 4, expected at skills/verify-intent/SKILL.md § What it reads
    "Runs standalone against the working tree or a named diff, with no task id required"

@@ -9,11 +9,11 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 18    |
-| in-progress  | 2     | 3       | 0     |
+| todo         | —     | —       | 17    |
+| in-progress  | 2     | 2       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 3       | 32    |
+| done         | 0     | 4       | 33    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -26,7 +26,7 @@ _None._
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (19/20 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (20/20 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — done (1/1 done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — done (15/15 done)
@@ -47,9 +47,9 @@ _None._
     - [x] TASK-031 `missing, not offered` never reopens, even when a filed task removes the reason
   - STORY-003 `domain` — glossary and decision records — planned (0/0 done)
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0 done)
-  - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — in-progress (3/4 done)
+  - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — done (4/4 done)
     - [x] TASK-046 `verify-intent` — the fidelity axis, grounded in the task's acceptance criteria (P1, agent)
-    - [ ] TASK-047 `verify-intent` reads the feature ledger and the specs, not just the task (P1, agent)
+    - [x] TASK-047 `verify-intent` reads the feature ledger and the specs, not just the task (P1, agent)
     - [x] TASK-048 The smell baseline — `verify-conventions` has something to say about a repo that documented nothing (P2, agent)
     - [x] TASK-049 Two axes at the gate, reported side by side and never reranked into one list (P1, agent)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0 done)

@@ -3,7 +3,7 @@ id: TASK-047
 parent: STORY-005
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-20
@@ -40,15 +40,15 @@ repo to exercise — say which was used rather than marking the plan run on the 
 
 ## Acceptance criteria
 
-- [ ] Given a task carrying `feature: FEATURE-NNN`, the approved and `changed` decisions in that
+- [x] Given a task carrying `feature: FEATURE-NNN`, the approved and `changed` decisions in that
       feature's ledger are read as intent alongside the task's criteria
-- [ ] Given a diff touching files a `docs/specs/` area covers, that area's spec is read as intent
-- [ ] The precedence between disagreeing sources is **stated**, and a contradiction between them is
+- [x] Given a diff touching files a `docs/specs/` area covers, that area's spec is read as intent
+- [x] The precedence between disagreeing sources is **stated**, and a contradiction between them is
       reported as its own finding rather than silently resolved
-- [ ] Absent sources degrade cleanly and **say so** — no features, no spec map, or a task with
+- [x] Absent sources degrade cleanly and **say so** — no features, no spec map, or a task with
       `feature: null` must report which sources it actually read, not fall silently back to one
-- [ ] Reuses [[roadmap]]'s collection pass and [[specs]]' area mapping rather than re-deriving either
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Reuses [[roadmap]]'s collection pass and [[specs]]' area mapping rather than re-deriving either
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -59,13 +59,64 @@ repo to exercise — say which was used rather than marking the plan run on the 
 
 ## Human test plan
 
-- [ ] On a repo or fixture with a real feature ledger, run against a diff that satisfies the task's
-      criteria but contradicts an approved decision, and confirm the contradiction is reported
-- [ ] Run against a diff touching a spec-covered area and confirm the spec is named among the sources read
-- [ ] Run in this repo — no features, empty spec map — and confirm it reports reading only the task's
-      criteria, explicitly, rather than appearing to have checked all three
-- [ ] Record which repo or fixture was used for the first two steps; they are not drillable here
+- [x] On a repo or fixture with a real feature ledger — **Symbio** (93 features, 93 `decisions.md`,
+      218 tasks carrying `feature:` links). Ledger shape confirmed against the real table: the `Decision`
+      column is the statement, `→ Tasks` names the tasks meant to carry it, and a decision outranks a
+      task criterion with any disagreement reported against the decision
+- [x] Run against a diff touching a spec-covered area and confirm the spec is named among the sources
+      read — and the drill **rescoped the design**: see the Outcome. The spec is named as a **baseline**,
+      not as intent
+- [x] Run in this repo — no features, empty spec map — and confirm it reports reading only the task's
+      criteria, explicitly. Also drilled **Presenter** (42 mapped areas, **0** generated bodies, no
+      features): the second degradation shape, where a spec layer is declared and empty
+- [x] Record which repo or fixture was used — Symbio for the ledger, Presenter and this repo for the
+      two degradation shapes, with Birko.Framework and WorkoutTracker available as independent
+      confirmations. No fixture was needed; all four are real
 
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-047` — leave empty until then._
+
+## Progress log
+
+- step 2 — picked as STORY-005's last task. Drill targets supplied by the user: Symbio, Presenter,
+  WorkoutTracker and `Birko.Framework` under `C:\Source\Birko`.
+- step 3 — verified: held, and **rescoped**. See the Outcome: `docs/specs/` is not an intent source.
+- step 4 — layer: local.
+- step 5 — fix in `skills/verify-intent/SKILL.md`: § *What it reads* split into Intent / Baseline /
+  absent-source reporting, plus the non-intent decision states.
+- step 6 — **no guard to fail**; the lint does not read a skill's source resolution. Evidence is the
+  drills against four real repos.
+- step 7 — no usable spec map in *this* repo (`areas: []`). Nothing to respec here.
+
+## Outcome
+
+**The rescope is the substance.** The task, and STORY-005 before it, framed this as *three intent
+sources*: the task's criteria, the feature's approved decisions, and `docs/specs/`. Reading a real
+ledger and a real spec map showed the third is not intent at all. **Specs are harvested from the code**,
+so a spec states what an area *currently promises* — using it as "what was asked" would have the skill
+judging a diff against the very behaviour the diff is changing, and reporting every intended change as a
+deviation.
+
+It is still valuable, for a different question: a diff contradicting a spec requirement that **no
+decision or criterion asked to change** is unasked-for behavioural change — scope creep at spec altitude,
+which a per-file read cannot see. So the section is now Intent (criteria + decisions) versus Baseline
+(specs), and the two are labelled separately in the report header.
+
+**Precedence, stated.** A decision outranks a task criterion, because the ledger is what was agreed and
+the criteria are one decomposition of it — which can drift. A diff satisfying its task while
+contradicting an `approved` decision is exactly this axis's reason to exist.
+
+**What real data added.** Symbio's ledgers carry 332 `approved`, 4 `changed`, **3 `removed`**, 1
+`deferred` and 1 `proposed`. The non-intent states are not noise: a diff implementing a `removed` or
+`deferred` row is scope creep of the worst kind — decided against, with the rationale in the same row to
+quote back. A `proposed` row implemented in code is a decision taken by whoever wrote it.
+
+**Absent sources are the normal case, not an edge.** Across the four repos, most mapped spec areas have
+**no generated body** — 199 of 224 in `Birko.Framework`, 121 of 134 in WorkoutTracker, 92 of 124 in
+Symbio, all 42 in Presenter. So "name the sources you read and the ones that were not there" is the
+common path, and a header that silently implies three sources would mislead on nearly every run.
+
+**A measurement error caught in passing:** counting areas with `grep -c '^\s*- '` also counts the
+`ignore:` block and inflates every figure. Areas must be read from the `areas:` block alone. My first
+survey reported Presenter as 60 areas; it is 42.
