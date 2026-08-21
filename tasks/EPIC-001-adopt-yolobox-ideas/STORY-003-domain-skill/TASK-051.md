@@ -3,7 +3,7 @@ id: TASK-051
 parent: STORY-003
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-21
@@ -73,10 +73,10 @@ present. Same change, both files.
 - [x] Confirm the lazy rule behaves — and it was exercised in the **firing** direction, which is the
       more useful half: two genuinely overloaded terms existed, so `docs/glossary.md` was written. Five
       entries, all from the drill, none padded
-- [ ] Drill on a consumer repo with established vocabulary (Symbio's Slovak `KRITICKE` sections define
-      many terms in prose) and confirm the cross-reference behaviour surfaces a real contradiction —
-      **not run.** Left outstanding deliberately rather than ticked on the this-repo drill: a repo whose
-      vocabulary is defined in prose in another language is the case most likely to break behaviour 4
+- [x] Drill on a consumer repo with established vocabulary and confirm the cross-reference behaviour
+      surfaces a real contradiction — **run on Symbio 2026-08-21, and it found one.** See the Outcome:
+      `Machine` and `Device` are two vocabularies for what looks like one physical thing, meeting inside
+      one event handler that carries both ids and dispatches on the device
 - [x] After re-running the installers, confirm `[[domain]]` resolves from both roots — both junctions
       created; check 4 reported it unlinked the moment the folder appeared, then in sync
 
@@ -139,3 +139,38 @@ enumerative lists that would go stale when a review pass or a gate is added.
 **Left outstanding:** the consumer-repo drill (behaviour 4 against Symbio's Slovak prose definitions).
 Not ticked, because a vocabulary defined in prose in another language is the case most likely to break
 cross-referencing, and the this-repo drill is not evidence for it.
+
+- 2026-08-21 — outstanding drill run. Symbio has **no** `docs/glossary.md`, so the cold path applied:
+  cross-reference against the guide's prose definitions. Finding below. Behaviour 4 held in the hardest
+  case — vocabulary defined in prose, in Slovak, with no glossary to compare against.
+
+## Outcome — addendum: the Symbio cross-reference
+
+**Machine vs Device, one concept under two names.** `Device*` types are IoT-shaped
+(`IDeviceCollector`, `IDeviceAdapter`, `DeviceConfigBase`, `DeviceRef`) and live under
+`Edge/Symbio.Edge.IoT` and `Sdk/Symbio.Sdk.IoT`. `Machine*` types are scheduling-shaped (`MachineJob`,
+`MachineAssignment`, `MachineJobTelemetry`) and live under
+`Modules/Business/Symbio.Module.Manufacturing`.
+
+They meet in one event flow, and nothing names the relationship.
+`Symbio.Module.IoT/EventHandlers/MachineJobCancelledHandler.cs:22` logs *"Machine job {MachineJobId}
+cancelled for device {DeviceId}"* and then dispatches on the device — so the event holds both ids while
+no type states whether a Machine *is* a Device with a schedule, or a Device hosts many Machines.
+
+The sharpest evidence is `MachineJobTelemetry`: a Manufacturing entity carrying `Progress`,
+`MetricsJson` and `Timestamp`, while telemetry is collected by `IDeviceCollector` on the Edge side. That
+reads as one concept crossing a module boundary and changing its name as it crosses.
+
+The guide does not settle it — 9 mentions of *device*, 1 of *machine*, no definition of either — and it
+tilts the other way from the entities: `iot:device:create` is the permission format and "device IDs" are
+what get validated, so `device` holds authority in the permission model while `Machine` owns the domain
+entities.
+
+**Why this is the right kind of finding.** Each module's vocabulary is internally consistent, which is
+exactly why nobody inside the project would notice: you only see it by reading two modules against each
+other. And per the skill's own rule it stays a **finding** — unifying the names would be a `/tasks spawn`
+in Symbio, not something this drill does to someone else's repo.
+
+Two further candidates left unresolved, since one question per drill is enough to prove the behaviour:
+`User`(16 files) / `Account`(35), and `Customer`(31) / `Client`(2) — the second lopsided enough to look
+like a leftover rather than a live concept.
