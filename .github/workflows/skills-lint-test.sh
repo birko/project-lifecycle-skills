@@ -167,6 +167,14 @@ r_shadow()  { mkdir -p "$1/roots/claude" "$1/roots/pi"
               mk_link "$1/roots/pi/beta"  "$1/skills/beta"
               mk_link "$1/roots/pi/gamma" "$1/skills-pi/gamma"
               mk_link "$1/roots/claude/gamma" "$1/skills-pi/gamma"; }
+r_nested()  { mkdir -p "$1/roots/claude" "$1/roots/pi" "$1/wt/case/skills/alpha" "$1/wt/case/skills/beta"
+              # The fixture dir is $WORK/case, so `case` is the repo name — and this layout repeats it
+              # as an ancestor, the way a worktree at <repo>/wt/<repo> or a clone at ~/src/<r>/<r> does.
+              # Shortest-prefix removal takes the FIRST `case/` and derives tree `wt`, which is in no
+              # root's tree list, so every link here gets reported as a shadow. Longest-prefix derives
+              # `skills` and the root is correctly in sync.
+              mk_link "$1/roots/claude/alpha" "$1/wt/case/skills/alpha"
+              mk_link "$1/roots/claude/beta"  "$1/wt/case/skills/beta"; }
 r_foreign() { mkdir -p "$1/roots/claude" "$1/roots/pi" "$WORK/other-repo/skills/foreign"
               mk_link "$1/roots/claude/foreign" "$WORK/other-repo/skills/foreign"
               rm -rf "$WORK/other-repo/skills/foreign"; }   # dangling, but not ours
@@ -185,6 +193,11 @@ case_says   "skills-pi shadowing the claude root" r_shadow  "never linked into t
 case_says   "legit skills-pi link in the pi root"  r_linked  "roots/pi is in sync"
 # A root holding only a shadow is not an empty root; the two advisories must not contradict.
 case_silent "shadow root is not called empty"      r_shadow  "nothing is linked into it"
+# A root holding ONLY shadows still collapses to one line — gating the collapse on shadow==0 printed
+# one advisory per skill instead, the wall of text the collapse was measured to remove.
+case_says   "shadow-only root collapses, precisely"  r_shadow  "only shadow junctions"
+# The repo name repeating as an ancestor component must not turn every in-repo link into a shadow.
+case_says   "repo name repeated in the target path" r_nested  "roots/claude is in sync"
 
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

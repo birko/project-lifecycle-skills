@@ -158,7 +158,11 @@ check_root() {
     # of tree names — a hard-coded `skills|skills-pi` alternation goes wrong silently the day a third
     # tree is added, and this check would keep passing while missing it.
     case "$t" in
-      */"$repo_name"/*) tree_of=${t#*/"$repo_name"/}; tree_of=${tree_of%%/*} ;;
+      # `##` not `#`: shortest-prefix removal takes the FIRST occurrence of the repo name, so a
+      # layout that repeats it as an ancestor (a worktree at <repo>/wt/<repo>, a clone at
+      # ~/src/<repo>/<repo>) would yield the wrong tree and report every in-repo junction as a shadow.
+      # Longest-prefix matches the tail, which is what the comment above has always claimed.
+      */"$repo_name"/*) tree_of=${t##*/"$repo_name"/}; tree_of=${tree_of%%/*} ;;
       *) continue ;;
     esac
     # A link pointing into a tree this root was NOT asked to hold is a SHADOW, not a stale link: its
@@ -191,8 +195,17 @@ check_root() {
   # "Nothing is linked" is ONE condition, not N findings. Naming all 16 skills for a root the
   # installer has simply never been run against buries the case that matters — a single skill that
   # drifted — under a wall of text. Measured in the drill: 30+ lines for two empty roots.
-  if [ "$missing" -gt 0 ] && [ "$missing" -eq "$total" ] && [ "$shadow" -eq 0 ]; then
-    advise "$root exists but nothing is linked into it ($total skills) — run the installer"
+  if [ "$missing" -gt 0 ] && [ "$missing" -eq "$total" ]; then
+    # Kept as a collapse even when a shadow is present: gating it on `shadow -eq 0` sent an otherwise
+    # unlinked root down the per-skill branch and printed one line per skill — the 30+ line wall this
+    # collapse was measured to remove, and reachable exactly in the TASK-037 case (a stale skills-pi
+    # junction in a root where skills/ was never linked). The contradiction the gate was meant to fix
+    # was the WORDING, so fix the wording: say what is not linked rather than that nothing is.
+    if [ "$shadow" -gt 0 ]; then
+      advise "$root has none of the $total expected skills linked (only shadow junctions) — run the installer, and remove the shadows reported above"
+    else
+      advise "$root exists but nothing is linked into it ($total skills) — run the installer"
+    fi
   else
     for name in $names; do
       advise "$name is not linked into $root — re-run the installer so the skill resolves"

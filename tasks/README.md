@@ -9,11 +9,11 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 10      | —     |
-| todo         | —     | —       | 23    |
+| todo         | —     | —       | 22    |
 | in-progress  | 2     | 3       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 2       | 27    |
+| done         | 0     | 2       | 28    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -56,11 +56,11 @@ _None._
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/0 done)
   - STORY-008 Harvest the skill set's own specs — planned (0/0 done)
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/0 done)
-- EPIC-002 Close-gate findings on the skill set — in-progress (3/23 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (4/23 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — planned (0/2 done)
     - [ ] TASK-009 verify-conventions has no rule about generated and vendored files (P3, unassigned)
     - [ ] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it (P2, unassigned)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (2/9 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (3/9 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges (P2, unassigned)
     - [ ] TASK-010 /tasks pick walks past verification debt without mentioning it (P2, unassigned)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer (P3, unassigned)
@@ -69,6 +69,7 @@ _None._
     - [ ] TASK-041 `intake --adopt` cannot adopt a loose backlog — it assumes the epic already owns its tasks (P2, agent)
     - [ ] TASK-042 Nothing says where a new task is filed, so findings land where nothing can rank them (P2, agent)
     - [x] TASK-044 EPIC-002 groups by subject, so fix-next's theme tie-breaker has nothing to read (P2, agent)
+    - [x] TASK-050 `--unattended` promises what it does not deliver — close still stops to ask in three other places (P1, agent)
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — planned (0/4 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current (P2, agent)
     - [ ] TASK-027 `present, uncommitted` is blind to work that was staged but never committed (P2, agent)

@@ -129,7 +129,11 @@ settles nothing. Order the pool by these keys, in order:
    adopted backlog is often grouped some other way (by subject, by subsystem), and a title match
    silently resolves to nothing exactly there.
 7. **`priority:`** — the coarse bucket, demoted to a tie-break for the reason at the top of this step.
-8. **Oldest `created`** — the last resort, and the only key that can never tie.
+8. **Oldest `created`** — the last resort. It is a **date with no time**, and `/tasks intake` files an
+   entire pass in one of them, so it ties routinely: twelve tasks in this repo share `2026-08-20`. Keys
+   1-8 therefore do **not** guarantee a total order, which is why the "genuinely inseparable" branch
+   below is a reachable path rather than dead prose — reach it and *say* the keys were exhausted, per the
+   rule that a key which cannot discriminate must announce itself.
 
 **Two candidate shapes have no theme by construction**, and they are not defects: a task in
 `tasks/_loose/`, and a task parented directly to an EPIC rather than a STORY. Treat them exactly like a
@@ -249,10 +253,14 @@ Log: `- step 7 — respecced <area>; requirements changed: <list>`
 
 ## Step 8 — Close through the merge gate
 
-Run [`/tasks close --unattended`](../tasks/verbs/close.md). **Pass the flag** — it is what tells step
-5d's out-of-scope sweep to spawn rather than offer, and without it the sweep meets a work bullet with
-nobody to answer: the reading that keeps the loop moving is to close anyway, which is precisely the
-evaporation the sweep exists to stop. **Do not re-implement any of it** — `close` already owns
+Run [`/tasks close --unattended`](../tasks/verbs/close.md). **Pass the flag.** `close` § step 2 carries
+the table of what it governs — four steps that would otherwise stop for input, including the **merge
+decision at 5c, which unattended resolves as *merge***. Read that table rather than assuming this step
+knows: it grew once already, because the flag first shipped covering only the out-of-scope sweep while
+5c still asked a mandatory question on PR-per-task projects — the documented default, and exactly the
+projects where this skill cuts a branch. Without the flag the sweep meets a work bullet with nobody to
+answer, and the reading that keeps the loop moving is to close anyway, which is the evaporation the
+sweep exists to stop. **Do not re-implement any of it** — `close` already owns
 [[verify-conventions]] + [[code-review]] + conditional [[security-review]] on the diff, the merge
 decision, the commit (with this repo's staging and trailer discipline), the remote close, the dashboard
 regen and the STORY/EPIC rollup. Never skip the gate because a review skill's name didn't resolve;

@@ -79,7 +79,11 @@ noise nobody trusts.
 2. **Resolve the intent source** per the table above, and note it for the report header.
 3. **Read the criteria as a list of claims**, ignoring their checkboxes entirely.
 4. **Walk the diff once**, mapping each hunk to the criterion it serves, or to nothing.
-5. **Emit findings** — unmatched criteria are *missing* or *wrong*; unmatched hunks are *scope creep*.
+5. **Emit findings**, taking the class from the table above, not from this line: an **unmatched**
+   criterion is *Missing*; a **matched but divergent** one is *Wrong* — a Wrong finding is matched by
+   definition, so routing it through "unmatched" would empty the class. Unmatched hunks are *scope
+   creep*. A criterion the diff cannot settle either way is **unverifiable**, which is its own outcome
+   and not a fourth class.
 6. **Report**, leading with what was read.
 
 ## Output format

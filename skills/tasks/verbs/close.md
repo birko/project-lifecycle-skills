@@ -15,16 +15,46 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - `--unattended` — **no user is present to answer anything.** Passed by [[fix-next]], which drives
      this verb as its merge gate. It is a **declared** flag and never inferred: whether a human is
      watching is not readable from the repo, and a close that guesses wrong either hangs on an offer
-     nobody can take or silently drops work. Today it changes exactly one step — 5d.
+     nobody can take or silently drops work.
+     **Every step below that can stop for input defines its unattended behaviour, and this list is the
+     contract** — a flag that promises "nobody is present" while one step still asks is worse than no
+     flag, because the run blocks in the one configuration nobody tested:
+
+     | Step | Interactive | `--unattended` |
+     |---|---|---|
+     | 4 | already `done`/`cancelled` → ask "reopen and re-close?" | **refuse and report.** Never silently reopen a closed record |
+     | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `review`, never `done` |
+     | 5 (`review` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
+     | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
+     | 5d | work bullet → offer `spawn` | **spawn** it; *decided not to do* is unavailable |
+     | 7 (dirty tree) | ask commit / reference / skip | **commit**, with step 7's explicit staging — never blanket `git add -A` |
+     | 7 (clean tree) | optionally ask for an existing PR / SHA | **skip it**; leave `pr:` as-is |
+     | 11 spec regen | if `pr:` references are missing, ask which areas | **skip the regen and say so.** Guessing an area writes a spec diff nobody asked for |
+     | Jira not authenticated | prompt, and pause until confirmed | **skip the remote step and report it.** An unattended run cannot authenticate |
+
+     **Step 7 is the row that matters most, and the first version of this table omitted it.** Step 6 has
+     just rewritten the task's frontmatter, so `git status --porcelain` is *never* clean when step 7
+     runs — the ask fired on **every** unattended close, on every project shape, including the
+     `single-branch` repos that never reach 5c. A flag whose contract table omits the one ask that always
+     fires is worse than no flag. **An ask reachable under `--unattended` and absent from this table is a
+     defect in the table, not a judgement call to improvise at runtime.**
 
 3. **Locate the file** — Grep `^id: TASK-NNN$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
 
 4. **Read current status**:
    - Already `done` → warn, ask "reopen and re-close?" or abort.
    - `cancelled` → warn similarly.
+   - **`--unattended` → refuse and report; do not reopen.** Reaching here means something upstream is
+     wrong — [[fix-next]]'s step 0 resume exists precisely so a drain never re-picks a closed task — and
+     silently reopening a closed record to re-close it would erase the evidence of that.
 
 5. **Verify the Human test plan** (tasks only):
    - Read the `## Human test plan` section. If it still holds the template placeholder text (un-filled), warn: "Human test plan was never filled — confirm it's genuinely `N/A` or fill it before closing." Let the user proceed or pause.
+     - **`--unattended` → resolve it rather than proceeding past it**, exactly as the absent-section rule
+       below requires: write the manual steps the task actually needs, or write `N/A` with the reason a
+       human adds nothing. If real manual steps exist and have not been run, the close lands at
+       `review`. "Proceed anyway" is not an unattended option — it is how a task reaches `done` with its
+       verification neither run nor recorded.
    - **A section that is ABSENT is not the same as one that says `N/A`, and must never default to
      `review`.** When the task has no `## Human test plan` heading at all, stop and resolve it: either
      write the manual steps, or write `N/A — fully covered by automated tests` **with the reason a human
@@ -54,8 +84,9 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
        can fail*) → tick the box; it counts toward `done`.
      - Genuine human-judgement / hardware step still unrun → the task closes to `review`, below.
    - If it has real steps with unchecked `[ ]` boxes, **don't close to `done`** — the manual/visual sign-off hasn't happened. Either (a) the user confirms they just ran it → check the boxes and proceed to `done`, or (b) it's not verified yet → set **`status: review`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
-     - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (review — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `review` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test.
+     - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (review — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `review` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
+     - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `review` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `review` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
      - Then **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `review`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `review` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `review → done`, re-run `close` once the human step is checked off.)
 
@@ -82,6 +113,13 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - Ask (AskUserQuestion): *"Merge `task/TASK-NNN` into the default branch as part of this close?"*
      Default: **Yes, merge now.** Step 8 executes whichever answer you get; this step only decides,
      so that step 6 knows which status is true.
+   - **`--unattended` → merge, without asking.** Every gate has already run and passed by this point,
+     `done` already means *merged* in this skill set, and [[fix-next]] states that `close` "settles the
+     merge decision … and merges". **Rejected: ending at `blocked` instead.** It is the safer-looking
+     option and it makes the drain pointless — every run would leave a finished-but-unmerged task for
+     someone to sweep, and `blocked` would come to mean both "waiting on a dependency" and "waiting on
+     a human", which is the kind of overloaded state this vocabulary exists to avoid. **Also rejected:
+     a per-repo `unattended-merge:` field** — it needs a default anyway, and the default would be this.
    - **Why here and not at step 8:** `done` means *merged*. If the frontmatter flips to `done` and
      the merge is then declined, the file claims a state the repo doesn't have, and the commit made
      in step 7 bakes that claim into history. Deferral is known at close time (a stacked PR, an
@@ -112,6 +150,11 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **A bullet you cannot confidently classify** → treat it as work and spawn it. The repo's standing
      preference settles the tie: a spare task is cheap noise anyone can `cancel`, an untracked paragraph
      is work that silently disappears.
+   - **"Decided not to do" is unavailable unattended.** Interactively it is a legitimate outcome, because
+     a human is affirming the decision. Unattended it is a decision nobody sanctioned that *destroys the
+     finding* — the bullet gets rewritten and no id is left behind. Spawning is cheap and reversible;
+     discarding is neither. A bullet that genuinely reads as a settled non-goal still gets spawned, and
+     the task can be `cancel`led by whoever knows.
    - **Never close with the bullet unowned**, and never stop the run to ask. Both readings defeat the
      step — stopping strands a half-closed task in an unwatched session, and closing anyway is the exact
      evaporation this step exists to prevent, now with a rule quoted over the top of it.
@@ -151,7 +194,8 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
 7. **Commit progress / record reference** (tasks only, skip if `--no-pr`):
    - **Is it git-tracked?** Run `git rev-parse --is-inside-work-tree` from the task root. If it's not a git repo (or the command errors), skip this whole step and leave `pr:` as-is.
-   - **Anything to commit?** Run `git status --porcelain`. If the tree is clean, don't offer a commit — just optionally ask for an existing PR number / commit SHA (accept empty as skip) and continue.
+   - **Anything to commit?** Run `git status --porcelain`. If the tree is clean, don't offer a commit — just optionally ask for an existing PR number / commit SHA (accept empty as skip) and continue. **`--unattended` → skip that prompt** and continue with `pr:` as-is.
+   - **`--unattended` → commit, without asking.** Take the "commit the progress now" branch below with its staging discipline intact: stage the task file plus the change set explicitly, never blanket `git add -A`, and sanity-check `git diff --cached --name-only` first. Step 6 has already written the frontmatter, so this is *always* the branch taken — the tree cannot be clean here.
    - **If there are uncommitted changes, ask the user** (AskUserQuestion) what to do:
      - **Commit the progress now** → stage the work plus the updated task file (already flipped in step 6 — to `done`, or to `blocked` when the merge was deferred at 5c) and create one commit.
        - Message: `{{ID}}: {{task title}}`, mirroring the repo's existing style if there is one (e.g. a `@ <area>:` prefix — check `git log --oneline -5`). **Keep the id in the *subject*, ahead of any other task id it mentions** — a prefix before it is fine. [[specs]] provenance attributes a commit to the task whose id leads its subject and treats an id in the body as a cross-reference, so a subject that buries the id makes this task's work invisible to `shaped-by`. Show the message and the file list before committing.
@@ -188,7 +232,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - If closing a STORY leaves an EPIC with no open stories → suggest `/tasks close <EPIC-ID>`.
     - But default behaviour for STORY/EPIC is to stay open — areas of concern keep gaining work.
     - **Feature rollup** — any task with `feature: FEATURE-NNN` that changed status here (`done`, parked at `review`, *or* `blocked` on a deferred merge) → chain `/feature status FEATURE-NNN` (single-feature mode) so `status.md` and the index row reflect the new task state; the rollup must never lag a close. If it was the last open task for that feature, also suggest `/feature review FEATURE-NNN`.
-    - **Spec regen offer** (STORY close only; when the project has real code but no `docs/specs/.map.yml` **or the map's `areas:` list is empty** — the [[new-project]] scaffold seeds exactly such an empty anchor — print one line — *"no usable spec map — run `/specs init` to bootstrap the spec layer"* — instead of skipping silently): map the story's merged work to spec areas — resolve its tasks' `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`) and match them against the `.map.yml` globs; if references are missing, ask which areas. Then **offer** — don't auto-run — `/specs regen <areas> --story STORY-NNN`. The regen's diff review is the "was this behavioral change intended?" check (the [[specs]] skill); an unexpected spec diff at story close is a finding, not churn.
+    - **Spec regen offer** (STORY close only; when the project has real code but no `docs/specs/.map.yml` **or the map's `areas:` list is empty** — the [[new-project]] scaffold seeds exactly such an empty anchor — print one line — *"no usable spec map — run `/specs init` to bootstrap the spec layer"* — instead of skipping silently): map the story's merged work to spec areas — resolve its tasks' `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`) and match them against the `.map.yml` globs; if references are missing, ask which areas — **`--unattended` → skip the regen and report that references were missing**, because guessing an area writes a spec diff nobody asked for. Then **offer** — don't auto-run — `/specs regen <areas> --story STORY-NNN`. The regen's diff review is the "was this behavioral change intended?" check (the [[specs]] skill); an unexpected spec diff at story close is a finding, not churn.
     - **Changelog nudge** (don't auto-run; avoid double-nudging) — only for **task-only work that `/feature review` won't cover**: if the closed item has **no `feature:` link** (a `_loose` task or a feature-less EPIC/STORY) and represents a user-facing change, and the project has a `CHANGELOG.md`, print one line — *"consider `/roll-changelog` to record this for users."* Skip when the task has a `feature:` link (the feature's `/feature review` carries the nudge) or there's no `CHANGELOG.md`. The changelog is human-curated, so suggest, never auto-run.
 
 12. **Confirm** — print (include the step 5d outcome: `out-of-scope: N boundary, M spawned, K declined`,
@@ -213,7 +257,7 @@ Container closes are simpler than task closes — no human-test plan, no merge g
 
 - **PR-only close, no GH issue link** — that's fine. `pr:` is just a backreference.
 - **GH issue close fails** (e.g. already closed remotely) — log warning, still mark local done.
-- **Jira MCP not authenticated** — prompt user to run authentication; pause the verb until they confirm.
+- **Jira MCP not authenticated** — prompt user to run authentication; pause the verb until they confirm. **`--unattended` → skip the remote step and report it**; an unattended run cannot authenticate, and pausing forever is the failure the flag exists to prevent.
 - **Closing EPIC with open children** — block by default ("EPIC-001 has 3 open tasks; close them first or pass `--force`").
 - **Merge deferred at 5c** — the task ends the close at `blocked`, not `done`, with the reason recorded. It stays out of "Next up", the remote issue stays open, and the ship-moment hints don't fire. Resume with `/tasks unblock {{ID}}` then re-run `close` — it re-enters at step 8 and merges. This is the merge-side mirror of parking at `review` for an unrun Human test plan: both are honest non-completion, neither is `done`.
 - **Merge conflict / rejected push at step 8** — the close failed. Report it, leave the task at its pre-close status, and don't let the frontmatter claim `done` over work that never landed on the default branch.

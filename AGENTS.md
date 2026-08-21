@@ -134,6 +134,15 @@ The skills *are* the product, so their prose is the user interface. This subsect
   escapes the root or does not) or merely evidence *consistent with* several answers (a squash-merge
   history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
   it had to be declared.
+- **A flag that declares an absent capability must define behaviour at every point that needs it.**
+  Where a skill takes a flag asserting something is *not available* — today `close`'s `--unattended`,
+  meaning no user is present to answer — the flag's definition enumerates **every** step that would
+  otherwise depend on it, and adding such a step means adding a row. A flag scoped to one step while
+  three others still ask is worse than no flag: the caller reads the promise, not the scope, and the run
+  blocks in whichever configuration nobody tested. Measured instance: `--unattended` shipped covering
+  the out-of-scope sweep alone while the merge question still fired on PR-per-task projects — the
+  documented default — and the defect was invisible here only because this repo declares
+  `single-branch`. The configuration that hides such a gap is usually the one it was written on.
 - **A ranking key that cannot discriminate must say so, not pass quietly.** Where one skill orders work
   by several keys in sequence (today [[fix-next]]'s eight), a key whose input is absent or identical
   across every candidate has not been *applied* — it has been skipped, and a run that never mentions it
@@ -164,7 +173,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   copy — MSYS `ln -s` copies unless `winsymlinks` is set, and the repo's Windows installer creates
   junctions anyway, so the fallback tests the real artifact rather than a POSIX stand-in. Keep the
   POSIX path first so CI exercises it, and keep the fallback guarded on `cygpath` being present.
-- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 34 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 36 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 
