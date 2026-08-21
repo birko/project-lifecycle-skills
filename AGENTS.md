@@ -134,6 +134,16 @@ The skills *are* the product, so their prose is the user interface. This subsect
   escapes the root or does not) or merely evidence *consistent with* several answers (a squash-merge
   history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
   it had to be declared.
+- **Independent review axes are reported side by side and never merged or reranked.** Where a gate runs
+  more than one pass answering a *different question* — today `close` step 5b's standards
+  ([[verify-conventions]]), fidelity ([[verify-intent]]) and correctness ([[code-review]]) — each keeps
+  its own verdict and its own severity ordering, and nothing sorts across them. Merging is tempting
+  because one ranked list is easier to read, and that is exactly the harm: a convention warning placed
+  above an unbuilt requirement reads as the larger problem. A change can pass every documented standard
+  while implementing the wrong thing, or do exactly what was asked while breaking the rulebook — the
+  whole point of a second axis is that the first cannot see it, which a blended ranking throws away.
+  A merge decision therefore states each verdict, because *standards pass, intent fail* is a distinct
+  outcome and a single summary cannot express it.
 - **A vocabulary shared by several skills has one owning file, and the owner is wherever it already
   lives.** Today the code-smell inventory sits in `skills/tdd/refactoring.md`, written for the TDD
   refactor step and now also read by [[verify-conventions]] as its baseline for a repo that documented

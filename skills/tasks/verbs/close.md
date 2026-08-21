@@ -31,6 +31,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      | 7 (clean tree) | optionally ask for an existing PR / SHA | **skip it**; leave `pr:` as-is |
      | 11 spec regen | if `pr:` references are missing, ask which areas | **skip the regen and say so.** Guessing an area writes a spec diff nobody asked for |
      | Jira not authenticated | prompt, and pause until confirmed | **skip the remote step and report it.** An unattended run cannot authenticate |
+     | 5b [[verify-intent]] | its no-task branch asks what the change was meant to do | **cannot fire here** — a close always supplies the closing task, so its intent source is resolved. Recorded rather than assumed: adding a pass that *can* ask into a step this flag governs is how the gap this table exists to close would come back |
 
      **Step 7 is the row that matters most, and the first version of this table omitted it.** Step 6 has
      just rewritten the task's frontmatter, so `git status --porcelain` is *never* clean when step 7
@@ -90,9 +91,23 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      - Then **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `review`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `review` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `review → done`, re-run `close` once the human step is checked off.)
 
-5b. **Convention + correctness check — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
+5b. **Standards + fidelity + correctness — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
    - Run [[verify-conventions]] on the task's diff — does it follow the project's documented rules in `CLAUDE.md § Conventions` (framework/stack, UI/UX, structure, naming, testing)? Address 🛑 blockers before `done`, or note in the task why any are deferred.
    - If the work **introduced a new cross-cutting pattern** (new framework/dependency, UI pattern, layer, naming/testing convention), the register-on-introduce rule applies: confirm `CLAUDE.md § Conventions` (and `## Architecture` if structure changed) was updated in the same change — closing without recording it leaves the rulebook lying. `verify-conventions` flags this.
+   - Run [[verify-intent]] on the diff against this task's `## Acceptance criteria` — did it build what
+     was asked? **Unconditional** for every task reaching this step, and that is the deliberate contrast
+     with [[security-review]] below: security is conditional because most diffs have no security surface
+     to test for, whereas *every* task has acceptance criteria, so there is no condition to evaluate — a
+     task with nothing to check against is a task whose criteria need writing, which is a finding in
+     itself. Repo-shipped rather than runtime-provided, so **if the name doesn't resolve, do the pass
+     inline** (read the criteria, judge each against the diff, never against its checkbox) — same rule as
+     `code-review`: never skip the gate because a skill didn't resolve. A consumer who added the skill
+     folder without re-running an installer is the common cause.
+   - **The two axes are reported side by side and never merged or reranked into one list.** A change can
+     follow every documented standard while implementing the wrong thing, or do exactly what was asked
+     while breaking the rulebook. One ordered list lets a convention warning sit above an unbuilt
+     requirement and read as the larger problem — so: two verdicts, each with its own findings and its
+     own severity ordering, and nothing sorted across them.
    - Run [[code-review]] on the working diff for correctness (the existing CLAUDE.md rule). The two are complementary: adherence vs. bugs. `code-review` is runtime-provided (a Claude Code built-in); **if this runtime has no such skill, do the pass inline** — read the diff and check for logic errors, unhandled edge cases, regressions, and security-sensitive changes; address blockers before `done`. Never skip the gate because the skill name didn't resolve.
    - **If the diff touches a security surface, run [[security-review]] on it too** — auth/session
      flows, data access queries, user-input or file/path handling, crypto, secrets/config, a new
@@ -110,6 +125,9 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 5c. **Merge decision — settle it BEFORE writing frontmatter** (PR-per-task projects; skip entirely
    when step 8's skip conditions apply — `--no-pr`, non-git, `integration: single-branch`, or not on a
    `task/TASK-NNN` branch):
+   - **State both gate verdicts in the question**, not one blended summary — *standards pass, intent
+     fail* is a different situation from *both pass*, and a merge decision taken from a single merged
+     verdict cannot tell them apart.
    - Ask (AskUserQuestion): *"Merge `task/TASK-NNN` into the default branch as part of this close?"*
      Default: **Yes, merge now.** Step 8 executes whichever answer you get; this step only decides,
      so that step 6 knows which status is true.

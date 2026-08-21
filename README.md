@@ -635,8 +635,11 @@ of satellite skills. Each slots into a named stage.
    └─ simplify ....... quality cleanup pass on the diff
 
 /tasks close ────┬─ code-review ........ correctness on the working tree (pre-PR)
-   (the MERGE     ├─ verify-conventions . adherence to CLAUDE.md § Conventions
-    gate)         ├─ security-review .... CONDITIONAL — only if the diff touches auth / data
+   (the MERGE     ├─ verify-conventions . adherence to CLAUDE.md § Conventions, plus a
+    gate)         │                       code-smell floor when the repo documented none
+                  ├─ verify-intent ...... did the diff build what the task asked? Reported
+                  │                       BESIDE conventions, never reranked against it
+                  ├─ security-review .... CONDITIONAL — only if the diff touches auth / data
                   │                       access / input / crypto / secrets / deps / endpoints
                   ├─ review ............. the PR diff on GitHub
                   └─ (merge → status done)   ← code is reviewed ONCE, here, per task
@@ -738,7 +741,7 @@ catch). It runs at `/tasks close` — the per-task merge gate — **alongside `c
 both fire once per task at the right altitude (not re-run wholesale at `/feature review`, which
 only *confirms* a new pattern got recorded). The two answer different questions:
 
-> **`code-review` asks "is this correct?" · `verify-conventions` asks "does this match how we build?"**
+> **`code-review` asks "is this correct?" · `verify-conventions` asks "does this match how we build?" · `verify-intent` asks "did this build what was asked?"** — three questions, three answers, never merged into one ranked list.
 
 The closed loop: rules in `CLAUDE.md` (auto-loaded) → followed by every task → linted at
 the close/review gate → a new pattern forces a rulebook update → the next task sees it.
