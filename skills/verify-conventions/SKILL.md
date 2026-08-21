@@ -56,6 +56,42 @@ its own headings has solved this; the skill adapts to the project, not the rever
 
 1. **Determine the diff.** Prefer staged (`git diff --cached`); fall back to the working tree (`git diff`) or, if asked, a branch range. If not git-tracked, ask the user which files to check.
 2. **Read the project's `CLAUDE.md`**, locate the rulebook via the ladder above, and extract its rules into a working checklist. Where the guide uses the seed's subsections, follow them; where it does not, group the rules however that guide groups them — do not force a foreign structure onto it, and do not drop a rule because it fits no subsection.
+2b. **Drop generated, vendored and minified files from the diff — a rule the author never wrote cannot
+   be violated by output they never typed.** Findings against a bundle are noise at best, and at worst
+   point at code nobody can act on: the fix lives in the source, not the artifact.
+
+   **Read the project's declaration first; never start from a built-in list.**
+
+   | Order | Source | Notes |
+   |---|---|---|
+   | 1 | `.gitattributes` — `linguist-generated`, `linguist-vendored` | purpose-built, and the one to recommend when absent |
+   | 2 | the project's guide naming its build-output or vendor paths | it knows what it emits |
+   | 3 | heuristics — `.map`, lockfiles, known vendor directories (`node_modules/`, `vendor/`, `packages/`), minified shape (very long lines, a huge byte-to-line ratio) | **partial by construction — see below** |
+
+   **The heuristics catch bundles and miss small generated files, which is why order 1 is not merely
+   tidier.** Measured on a real diff: a `.map` at 7 lines with a 4,154,785-character line and a bundle
+   at 75,037 lines with 19,028-character lines are both obvious — while a generated service worker at
+   **128 lines, longest line 104** is indistinguishable from hand-written code by every signal there is.
+   A heuristic-only pass drops the two obvious files, keeps linting the third, and now *claims* to have
+   handled generated output.
+
+   **When you cannot classify a file, lint it and say so.** The directions are not symmetric: a false
+   inclusion produces noise a reader dismisses in a second, a false exclusion silently stops checking
+   code a human wrote. Never guess toward exclusion — and when a file was excluded on a heuristic rather
+   than a declaration, name it as such, so a wrong exclusion is visible.
+
+   **Recommend the durable fix rather than growing a list here.** Only the project knows what it emits;
+   a `linguist-generated` line settles it permanently and for every other tool too.
+
+   **Never repurpose a list that answers a different question.** `docs/specs/.map.yml`'s `ignore:` is the
+   live temptation — it exists, it is right there, and on a real repo it declares `**/wwwroot/**`, which
+   would have covered two of three generated files. It also declares `tests/**`, `docs/**`, `tasks/**`
+   and `tools/**`, every one hand-written. Use it as a generated-file oracle and you silently stop
+   linting tests, which is exactly where a § Testing convention applies.
+
+   **If the diff is entirely generated, say so** — `nothing to lint — all N changed files are generated
+   output (excluded: <list, with the reason for each>)`. Silence here reads as a pass.
+
 3. **Check each changed file against each applicable rule.** A rule applies to a file when the file's kind/path matches the rule's domain (a UI/UX rule applies to component/style files; a naming rule applies to new files/symbols; a testing rule applies to new public surface). For every violation, report:
    - **File + line** (clickable `path:line`)
    - **The rule** (quote the CLAUDE.md line it comes from — so the finding is traceable, not made up)
@@ -107,8 +143,14 @@ If clean, the source line still leads — the verdict alone is the defect:
 
 ```
 Rulebook: AGENTS.md § Conventions — ladder rung 1. Subsections read: Framework/stack, Naming, Testing.
+Linted 4 of 7 changed files; 3 excluded as generated (app.js, app.js.map — minified shape; sw.js —
+declared linguist-generated).
 ✅ Change follows the project's documented conventions.
 ```
+
+**The exclusions belong on that header for the same reason the rulebook does.** A pass over four files
+and a pass over seven are different claims, and an exclusion nobody sees is how a wrongly-skipped
+hand-written file stays skipped.
 
 **A guide with no normative content is a different report, not an empty section list.** Say plainly that
 the project has recorded no conventions and point at the seed (§ *Finding the rulebook*), so a true
