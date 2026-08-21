@@ -45,10 +45,19 @@ entries carrying their reasoning inline, because there was nowhere to put it. Ei
 | 7 | A flag declaring an absent capability must cover every point needing it | scoping it narrowly looks safer and blocks in the untested configuration |
 | 8 | A ranking key that cannot discriminate must say so | silent degeneracy is indistinguishable from the key having worked |
 
+**The list was short by one, found while drilling TASK-052.** The decision that
+`close --unattended` **merges** is a ninth owed record, and the strongest candidate of the set: unlike
+these eight it has a real decider, an explicit question, and two rejected alternatives on record. It is
+already written — `docs/adr/0001-unattended-close-merges.md`, produced as TASK-052's drill — and it is
+the only **contemporaneous** record here, so use it as the shape the eight retroactive ones aim at.
+
+Two consequences for this task: the count below is **eight remaining, nine total**, and numbering starts
+at `0002`.
+
 ## Acceptance criteria
 
-- [ ] Eight records exist under `docs/adr/`, each carrying context, the decision, the **rejected**
-      alternatives, and consequences
+- [ ] Eight further records exist under `docs/adr/` (numbered from `0002`), each carrying context, the
+      decision, the **rejected** alternatives, and consequences
 - [ ] Each is **dated honestly** — the date the decision was made, not the date it was written down, with
       the retroactive authorship stated so nobody reads it as contemporaneous
 - [ ] Each of rules 5-8 has its `§ Conventions` bullet **trimmed to the enforceable one-liner plus a

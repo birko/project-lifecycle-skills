@@ -9,11 +9,11 @@ _Generated 2026-08-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 8       | —     |
-| todo         | —     | —       | 20    |
+| todo         | —     | —       | 19    |
 | in-progress  | 2     | 3       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 34    |
+| done         | 0     | 4       | 35    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -26,7 +26,7 @@ _None._
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (21/24 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (22/24 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — done (1/1 done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — done (15/15 done)
@@ -45,9 +45,9 @@ _None._
     - [x] TASK-021 The survey reads a repo's shape and history where the layer records a declared value
     - [x] TASK-022 Adoption invalidates generated files it never re-generates
     - [x] TASK-031 `missing, not offered` never reopens, even when a filed task removes the reason
-  - STORY-003 `domain` — glossary and decision records — in-progress (1/4 done)
+  - STORY-003 `domain` — glossary and decision records — in-progress (2/4 done)
     - [x] TASK-051 `domain` — the skill and its glossary half (P1, agent)
-    - [ ] TASK-052 `domain`'s decision-record half — the three-part bar and where records live (P1, agent)
+    - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live (P1, agent)
     - [ ] TASK-053 Layer parity — both front doors learn the glossary and the ADR home (P1, agent)
     - [ ] TASK-054 Backfill the decision records this repo already owes (P2, agent)
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0 done)
