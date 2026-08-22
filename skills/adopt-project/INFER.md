@@ -70,9 +70,14 @@ plainly that they are unresolved candidates rather than settled vocabulary. **Re
 records* exists to prevent, and nothing else will prompt the removal. Naming the subsection matters
 because two adoptions of one repo must land the list in the same place for `domain` to find it later.
 
-Whether the layer *creates* a glossary, and how an adopter reports one that is legitimately absent, is
-not settled here — that is a `LAYER.md` row and it belongs to the change that adds it. Don't branch on
-the file's existence until then.
+The layer now carries the glossary as a **lazy** row — see
+[LAYER.md](../new-project/LAYER.md) § *Lazily-created rows* for what that means, and its
+§ *Detect what the repo has* for how an absent one is reported. So **branch on the file's existence**:
+
+- **Present** → append confirmed terms through [[domain]] rather than to the guide, and retire the
+  guide-side copy per the paragraph above.
+- **Absent** → the candidates are a finding for [[domain]], and the row itself is `not applicable yet`.
+  Never report the pair as a gap: a candidate list is evidence about the code, not a missing artifact.
 
 ## Asking
 

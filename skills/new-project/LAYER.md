@@ -21,6 +21,8 @@ for adoption — **what to do when the repo already has one**.
 | Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
 | `docs/architecture.md` | — | Leave it; report if absent. |
+| `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
+| `docs/adr/` **(lazy)** | [[domain]] | **Never create the directory.** It appears with its first record, and only [[domain]]'s three-part bar can justify one. Absent → **not applicable yet**: nothing observable at scaffold or adoption time can decide that a past decision *owed* a record — that is a judgement, not a probe. Present → **leave it, and it is current**: each record's parts are checked when that record is written, so there is no sweep to run and nothing to reconcile. |
 | `docs/features/` + `README.md` index | [[feature]] | Create the folder + index if absent. Never regenerate an existing index by hand — that is `/feature status`'s job. |
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
 | `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. |
@@ -62,6 +64,21 @@ has told you it did not act, not that the file matches the current shape. Where 
 answer available, report the row **unknown** and name the init that could not answer; do not upgrade
 its silence into a clean bill of health. An init that cannot express a delta is a defect in **that**
 skill, and it gets its own task rather than a workaround here.
+
+## Lazily-created rows
+
+A row marked **(lazy)** is part of the layer, and **nothing creates it** — not the scaffolder, not
+the adopter. The file appears the first time there is something real to put in it, and its owner
+decides when that is.
+
+**Why, since every other row is created on sight:** an empty instance of a lazy artifact is not a
+neutral placeholder, it is a **claim**. An empty `docs/glossary.md` says the vocabulary was examined
+and found thin; an empty `docs/adr/` says nothing here was hard to reverse. Both are false in a young
+repo, and both are the kind of false that stops anyone looking again. [[domain]] carries that
+argument; the row only has to stop both front doors seeding one.
+
+So absence is the **expected** state of a lazy row, which is why § *Detect what the repo has* gives
+it a state of its own — `not applicable yet` — instead of `missing`.
 
 ## The adopted-repo brief
 
@@ -107,6 +124,8 @@ grows as real repos turn up conditions it cannot yet express:
 - **unknown** — you could not determine it. Honest, and it stops the fill.
 - **missing** — you actively looked and it is genuinely absent.
 - **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire — which is this rule's own mirror of § *Read the declaration, never infer it* in the consuming project's guide.
+
+- **not applicable yet** — a **lazy** row (§ *Lazily-created rows*) with no instance, in a repo that has nothing to record. **This is not a gap and is never reported as drift.** It suppresses both the fill *and the offer*: asking *"shall I create a glossary?"* is how the empty file the lazy rule exists to prevent arrives **with** the user's consent instead of without it, so the offer is the defect here, not the fill. **Claimable only where the row declares itself lazy** — an absent artifact whose row creates it is `missing`, and relabelling it here would launder a real gap into a design choice, which is the false-`present` failure pointing the other way. Distinct from `missing, not offered`: that is a genuine gap *adjudicated* unfillable for now, so its offer returns when the evidence changes; this one has nothing to fill and no evidence that could change.
 
 *"I could not tell"* is a legitimate answer; *"you don't have it"* when you merely failed to look
 properly is a lie that invites a destructive fill. When in doubt, report **unknown** and ask.

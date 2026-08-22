@@ -49,6 +49,11 @@ These consequences decide behaviour:
   leave the version question to it rather than guessing here; where no verb owns the shape, the
   thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
   § *Delegation follows the row, not the artifact's appearance*).
+- **A lazy row's absence is not a gap.** Where the row declares itself **(lazy)**, an absent artifact
+  is `not applicable yet`: report it as part of the layer and move on. Do not fill it, do not offer
+  to, and never count it toward what the repo is missing. Stated here because the first bullet —
+  *when in doubt, `unknown`, never `missing`* — is otherwise the only absence guidance on this page,
+  and for these rows it points the wrong way: there is no doubt to resolve.
 
 Alongside it, detect the facts the fill will need: the stack (manifests, source layout), whether a
 test runner already works, whether a git remote exists, whether the repo is captured by an
@@ -266,6 +271,7 @@ page does not need editing:
 - `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
 - `missing, not offered` — **the reason**, re-derived this run rather than recalled from the last one (the survey and this report are stdout; nothing persists a verdict, and [LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* explains why nothing needs to). Print it every run: the line is status, not a question, and the offer stays suppressed only while the evidence still holds. Where a task owns the blocker, name it here as information — a re-run re-reads the evidence, never that task's state.
+- `not applicable yet` — **that the artifact is part of the layer, and that its absence is correct.** Never under a heading that reads as a gap, and never with an offer attached. Where the inference round's glossary-candidate pass turned up recurring nouns or suspected synonyms, they travel as a **finding handed to [[domain]]**, not as drift against this row: a candidate list is evidence about the code, not a missing artifact. Say this explicitly, because adoption *does* produce glossary input, and a reader who sees candidates plus an absent glossary will otherwise read the pair as a gap the pass declined to fill.
 
 **Defects found** get their own section, never a bucket. The buckets describe what this run did to
 the **layer**; a defect is the repo's own code, so `created` and `amended` would each state something

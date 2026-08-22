@@ -45,6 +45,12 @@ the commit's inferred evidence for every template-generated task, `done` ones in
 dangerous direction: `shaped-by-unresolved` climbs while `shaped-by-derived:` still reads `true`, so
 [[roadmap]]'s DV8 and DV11 read a generator gap as a project gap, and nothing errors.
 
+**Measured instance, 2026-08-22.** A count run during TASK-053's close used `grep -c '^status: '` across
+every task file and got 61 statuses from 60 files. The extra one was **this task's own code block above** —
+anchoring to column 0 is not enough, because a fenced example sits at column 0 too. The read has to be
+scoped to the frontmatter between the first two `---`. Cheap to hit, silent when hit, and it happened on
+the first real attempt.
+
 **That is a reachable mistake, not a mandated one** — which is exactly why the fix is worth doing and
 why it is P2 rather than P1. Every task file in this repo and in any repo scaffolded from the template
 carries the comment line, so the trap is always armed; it just needs someone to write the naive grep.

@@ -170,6 +170,18 @@ The skills *are* the product, so their prose is the user interface. This subsect
   normal and is not the defect — a prose-rule codebase produces almost only correctness defects, so its
   review-intake stories cluster on one theme. Silent degeneracy is the defect.
 - **A format one skill reads is a contract the writing skill must state too.** When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
+- **A layer artifact that would lie when empty is declared `(lazy)`, and nothing creates it.** Most of the
+  universal layer is created on sight, so the exception needs saying: where an empty instance would make a
+  **claim** rather than hold a place — an empty `docs/glossary.md` asserts the vocabulary was examined and
+  found thin — the inventory marks the row `(lazy)` and both front doors leave it to its owner, who writes
+  it on first real content. Two consequences travel with the marker, and skipping either is the whole
+  defect: the scaffolder must **read the marker off the inventory**, never a copied list of which artifacts
+  are lazy, or a row added later gets seeded by a door that never heard about it; and the adopter reports an
+  absent one `not applicable yet`, which suppresses **the offer as well as the fill** — asking *"shall I
+  create a glossary?"* is how the empty file arrives with the user's consent instead of without it. The
+  marker and the state are defined once, in `skills/new-project/LAYER.md` (§ *Lazily-created rows*, and its
+  § *Detect what the repo has*); this entry is the pointer, not a second copy. Claimable **only** where the
+  row declares itself lazy — relabelling an ordinary absence launders a real gap into a design choice.
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming
