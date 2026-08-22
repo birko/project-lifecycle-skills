@@ -87,13 +87,17 @@ result of a real trade-off**. Miss any one and skip it.
 
 | Test | Fails when | Example of a fail |
 |---|---|---|
-| Hard to reverse | changing your mind later costs a line | a prose rule in one skill file |
+| Hard to reverse | nothing exists that reversing would leave behind | a rule that produced only its own wording — read the standing-rule paragraph below before applying this row |
 | Surprising without context | the next reader would have done the same | following a convention the guide already states |
 | The result of a real trade-off | there was no rejected alternative | the only option that worked |
 
-**For a standing rule, "hard to reverse" means what was PRODUCED under it — not the cost of editing the
-sentence.** Read this before applying the bar to a convention, because the literal reading and the fail
-table above disagree, and the disagreement is not academic:
+**"Hard to reverse" means what was PRODUCED under the decision — not the cost of editing the sentence.**
+Read this before applying the row above to anything. It was first written for conventions, but it governs
+**every** candidate: `0001`, `0004` and `0005` in this repo are a flag behaviour, a per-repo declaration and
+a one-off strategic choice — none of them a standing rule — and each clears only on this reading. `0001`'s
+own Context applies it verbatim (*"not because the code is hard to change, but because … the history it
+produced was produced under this policy"*). A scope clause that excluded them would disown three records
+that depend on it:
 
 - Almost every entry in a project's rulebook is *"a prose rule in one skill file"*, so the literal reading
   disqualifies nearly all of them — while § *When a record hardens into a standing rule* below tells you to
@@ -120,6 +124,13 @@ point the records that *did* matter are lost too.
 ```
 docs/adr/0001-slug.md      # NNNN, zero-padded, allocated in order and never reused
 ```
+
+**A retired number leaves a gap, and the gap needs a reason on disk.** *Never reused* means a record that
+is deleted takes its number with it — so a reader meeting `0005, 0007` cannot tell whether `0006` was
+declined, deleted, or lost. That is the same *decline out loud* failure the bar guards against, one level up.
+Record a retirement where the directory itself will show it: a `0000-retired.md` ledger, one line per
+withdrawn number and why. (Live instance: `0006` was written and then withdrawn on 2026-08-22 for failing the
+hard-to-reverse test.)
 
 Four parts, and the third is the one people drop:
 

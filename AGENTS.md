@@ -64,7 +64,9 @@ common way the trail rots, so route by the question being answered:
 An ADR that hardens into a standing rule gets a **one-line entry in § Conventions pointing back at
 it** — the ADR carries the trade-off and the alternatives, the convention carries the enforceable
 one-liner. Offer an ADR only when all three hold: **hard to reverse**, **surprising without
-context**, and **the result of a real trade-off**.
+context**, and **the result of a real trade-off**. **"Hard to reverse" is not the cost of editing the
+sentence — it is what was produced under the decision;** [[domain]] § *The bar is a conjunction* owns the
+full test and this line is the pointer, not a second copy.
 
 ## Architecture
 
@@ -159,7 +161,9 @@ The skills *are* the product, so their prose is the user interface. This subsect
   blocks in whichever configuration nobody tested. Measured instance: `--unattended` shipped covering
   the out-of-scope sweep alone while the merge question still fired on PR-per-task projects — the
   documented default — and the defect was invisible here only because this repo declares
-  `single-branch`. The configuration that hides such a gap is usually the one it was written on.
+  `single-branch`. The configuration that hides such a gap is usually the one it was written on. The
+  trade-off that produced the flag is [ADR 0001](docs/adr/0001-unattended-close-merges.md); this rule is its
+  enforcement half.
 - **A ranking key that cannot discriminate must say so, not pass quietly.** Where one skill orders work by
   several keys in sequence (today [[fix-next]]'s eight), the key's input is **declared in frontmatter, never
   inferred from a title** (`theme:` on a review-intake STORY, written by `/tasks intake`, read by

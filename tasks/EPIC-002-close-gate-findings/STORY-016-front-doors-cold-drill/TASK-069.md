@@ -3,7 +3,7 @@ id: TASK-069
 parent: STORY-016
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: in-progress
 priority: P1
 assignee: agent
 created: 2026-08-22
@@ -106,8 +106,10 @@ promise.
 
 ## Acceptance criteria
 
-- [x] The bar-versus-split contradiction is resolved **in `skills/domain/SKILL.md`**, with the losing reading explicitly disowned so it cannot be picked again
-- [x] The resolution is tested against the current directory: state, per record, whether it still clears the bar under the new reading — including the already-deleted 0006 and the already-declined flag rule
+- [ ] The bar-versus-split contradiction is resolved **in `skills/domain/SKILL.md`**, with the losing reading explicitly disowned so it cannot be picked again
+      — ⚠ **NOT MET.** Partly done: the fail-table row that stated the losing reading is rewritten, the scope clause widened, the mirror turned into a pointer. But the cold read found three ambiguities that still hand the verdict to the reader — see below. The contradiction is narrowed, not resolved.
+- [ ] The resolution is tested against the current directory: state, per record, whether it still clears the bar under the new reading — including the already-deleted 0006 and the already-declined flag rule
+      — ⚠ **NOT MET as a *test*.** A table was produced (below) but a cold reader applying the same rule reached different verdicts on 0003, 0007 and 0001, so the table records the author's reading rather than the rule's. That is the criterion's whole point.
 - [x] The brief-rationale-inline versus trade-off-out tension is reconciled in one sentence, wherever it belongs
 - [x] `close.md`'s axis arity matches reality: three named passes, plus a stated answer for the conditional [[security-review]] — either its own slot or an explicit reason it has none
 - [x] No remaining text in `close.md` says "two axes" / "two verdicts" / "both verdicts"
@@ -193,6 +195,68 @@ produces a *stable* verdict for someone who has not seen the verdicts — and I 
 re-deriving it proves nothing. This is the same asymmetry the TASK-053 and TASK-054 drills established: the
 author cannot test whether a rule is followable without knowing what it was meant to say. A cold read with
 the verdict table withheld is what clears these.
+
+### Cold read #2, 2026-08-22 — the fix does not pass its own test
+
+Third cold run of the session, briefed to apply the resolved bar to every record and every trade-off-bearing
+bullet, with the verdict table withheld. Verdict: **"more stable than the literal reading it replaced, and it
+still does not settle a large minority of cases without the author present."** It decided about half the
+candidates and handed back the rest.
+
+**Three ambiguities, each independently fatal to stability:**
+
+1. **"Produced" is undefined for a repo whose product is prose.** The sentence *"a rule that has produced
+   nothing but its own wording is reversible"* has no boundary here, because everything this repo produces is
+   wording. Two readings, opposite directories: count downstream prose edits and `0007` clears along with four
+   declined bullets; require non-prose artifacts and `0007` fails along with `0005`'s main leg. **Same
+   sentence, both verdicts.**
+2. **Prospective versus retrospective is never chosen.** *"What **now** exists"* is retrospective, but the
+   skill fires *during* a grill or design — so at decision time **every** decision fails the test, nothing
+   having been produced yet. `0001` was written the day its decision was taken. The rule either demands a
+   forecast it does not constrain, or forbids the record at the one moment the reasoning is fresh.
+3. **The revision made the false-negative direction worse.** A rule about *not* persisting, *not* moving,
+   *not* creating, *not* merging produces nothing **by construction** — and the four longest bullets in
+   § Conventions are all that shape. So the bar's letter now mandates precisely the outcome the companion rule
+   calls the defect: *"the rule list becomes an essay collection."*
+
+**The inconsistency this task existed to kill is reproducible today.** Three structurally identical rules —
+reject the tidier arrangement because a second copy diverges silently — with all three possible treatments:
+`ADR 0007` (recorded), *independent review axes* (declined out loud), *nothing goes in a generated file*
+(no record, no clause, and stronger durable production than 0007). Test 1 does not discriminate between them,
+so the discriminator is still the author's intuition.
+
+### Fixed in this pass — the unambiguous half
+
+- **The fail table no longer contradicts the gloss.** It stated the losing reading as its example while prose
+  three paragraphs later disowned it — and by this repo's own § Output/prose rules the *table* is what an agent
+  branches on. Row rewritten; the correction is no longer buried in prose.
+- **The scope clause is widened.** It said *"for a standing rule"*, yet `0001`, `0004` and `0005` are not
+  standing rules and each clears only on this reading. A clause that excluded them disowned three records.
+- **The `AGENTS.md` mirror is now a pointer**, not a second copy that taught only the disowned reading.
+- **The ADR 0001 pointer exists.** `0001`'s header claimed *"that bullet points back here"* and no such
+  pointer was in `AGENTS.md` — an earlier edit had silently failed to match. Exactly the staleness that
+  header was congratulating itself for having fixed.
+- **`docs/adr/0000-retired.md`** now records why `0006` is missing. *Never reused* means a deletion leaves a
+  permanent gap, and from the directory alone nobody could tell declined from deleted from lost — the same
+  *decline out loud* failure one level up. `domain` § Shape gained the rule.
+
+### Blocked on a decision that is not the implementer's
+
+The three ambiguities above cannot be closed by better wording; each needs a **choice**, and two of them
+**change existing verdicts**:
+
+- **Define "produced" for a prose repo.** The cold reader's proposal — *state a future reader would find and
+  have to reason about even after the rule is deleted*, explicitly excluding a pointer or a restatement —
+  is coherent and testable. It also **inverts two settled outcomes**: recorded verdicts in closed task files
+  would count, bringing the review-axes rule back in (un-retiring `0006`), while `0007` would fail and be
+  withdrawn. Adopting it means accepting that flip.
+- **Choose prospective or retrospective**, and if prospective, say what a forecast may rely on.
+- **Decide whether hard-to-reverse is the right first test for a convention at all**, given that it
+  structurally excludes every *don't-do-X* rule. This is the one that might mean redesigning the bar rather
+  than glossing it.
+
+Not resolved here deliberately: picking any of them silently would repeat this task's own defect at a larger
+blast radius, with two records flipping on an implementer's reading.
 
 ## Implementation plan
 
