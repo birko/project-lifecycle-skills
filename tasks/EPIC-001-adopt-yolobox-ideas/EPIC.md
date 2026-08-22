@@ -71,7 +71,7 @@ The STORY template carries no `blocked-by` field, so the dependency edges live h
 | STORY-007 `improve-architecture` | 003 | names modules using glossary terms |
 | STORY-008 `specs` regen across the skill set | 002–007 | regenerating before the set stabilises means regenerating twice |
 
-## State as of 2026-08-20 — read before picking new work
+## State as of 2026-08-22 — read before picking new work
 
 **Verification debt is zero** — nothing at `review`, nothing in-progress. It stood at seven on
 2026-08-18 and cleared over that day and the next. `/tasks pick` still will not mention debt when it
@@ -84,14 +84,40 @@ re-homed on 2026-08-20 into **EPIC-002**, stamped `kind: review-intake` so [[fix
 17 carried no finding id, and no epic carried the stamp, so `/fix-next` saw two of them. Nothing about
 the findings changed; only where they live.
 
-What that leaves here is the epic's *own* shape. **STORY-005 was decomposed on 2026-08-20** into
-TASK-046 to 049, so this epic now has open tasks and a picker should look there first — TASK-046 is
-`in-progress`, TASK-047 and TASK-049 depend on it, TASK-048 is independent of all three.
+**STORY-005 is closed.** Superseding the 2026-08-20 note that it "now has open tasks and a picker should
+look there first": TASK-046 to 049 all landed, so the merge gate's third axis (`verify-intent`) ships and
+the story is `done`.
 
-**STORY-003, 004, 006, 007, 008 and 009 have still never been decomposed**, and the reading order among
-them is unchanged: STORY-006 declares itself independent of everything past STORY-001; STORY-008
-declares that it runs last and means it; STORY-009 needs a decision about polyrepo tracking before any
-code changes, which makes it a `/feature new` grill rather than a decompose.
+**STORY-003 is decomposed and two-thirds built** — the one place a picker should look first. TASK-051
+(glossary half), TASK-052 (decision-record half) and TASK-053 (layer parity) are `done`; **TASK-054,
+055 and 056 are open**, so `domain` ships but the story does not close yet. TASK-056 is blocked on
+nothing but reads best after 053, which it depends on.
+
+**The layer grew on 2026-08-22, and that has a consequence outside this repo.** TASK-053 added
+`docs/glossary.md` and `docs/adr/` to the universal inventory as **`(lazy)`** rows — part of the layer,
+created by nobody, written by `/domain` on first real content. Layer *parity* is satisfied (both front
+doors learned them in one change), but parity is about the two skills agreeing, not about repos already
+in the field: every consumer already on the layer is now on an older one. **TASK-059** owns that
+reconciliation and is the first real exercise of `adopt-project`'s advertised upgrade path.
+
+**STORY-009 has a task but is still not decomposed, and the distinction matters.** TASK-059 arrived as a
+*spawn* from TASK-053's out-of-scope sweep, not as a decomposition. The 2026-08-20 reading still holds:
+STORY-009 needs a decision about polyrepo tracking before any code changes, which makes it a
+`/feature new` grill rather than a `decompose`. Do not read its single task as the story having been
+planned.
+
+**STORY-004, 006, 007 and 008 have still never been decomposed**, and the reading order among them is
+unchanged: STORY-006 declares itself independent of everything past STORY-001; STORY-008 declares that
+it runs last and means it; STORY-004 is unblocked now that STORY-003's glossary half exists, since the
+grill's frontier is written in glossary terms.
+
+**One method is worth reusing and is recorded nowhere yet.** TASK-053's human test plan was run as a
+**cold drill** — a fresh agent executed the changed skills with the test plan's *expected answers
+withheld*, so it reported what the prose led it to instead of confirming a claim. All four drills passed,
+and the run additionally surfaced ten defects in the surrounding skills that the author provably could
+not see. For a repo whose product is prose an agent reads, that asymmetry is the whole game: the author
+cannot un-know what a sentence was meant to mean. Capturing the method is an acceptance criterion on
+**TASK-060**.
 
 **Closing tasks still creates more tracked work than it removes** — that is the
 drills-find-more-than-building judgement below, and moving the debt to EPIC-002 did not change it. It

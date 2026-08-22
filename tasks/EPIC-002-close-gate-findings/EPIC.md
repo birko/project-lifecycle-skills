@@ -58,3 +58,40 @@ skipped key read like an applied one.
   lint-visible
 - The epic ends empty. It is a holding pen for found work, not a living area of concern — when the last
   task closes it goes `done`, and the next review pass gets its own intake epic rather than reopening this one
+
+## State as of 2026-08-22 — read before picking new work
+
+**6 of 26 tasks done.** Nothing is `in-progress` and nothing is at `review`, so there is no verification
+debt here — every open item is a `todo` that has never been started.
+
+**TASK-060 sits at epic level and is the highest-value pick.** It is P1 and it is a *holding pen with a
+deadline*: it carries **ten findings** from a single cold-drill pass and its own job is to be
+decomposed, not fixed. Until it is routed, ten defects are ranked as one item, which understates them —
+three are structural (`LAYER.md` declaring itself the canonical inventory while `new-project` creates
+three artifacts it has no rows for; the test-harness evidence ladder reporting `missing` on the repo
+that ships it; `present, outdated` being unclaimable for the agent guide, which is the upgrade path's
+headline case). It is filed at epic level rather than under a story precisely because it fans out across
+`new-project`, `adopt-project`, `LAYER.md` and `tasks`, and any single story would pre-judge that.
+
+**⚠ Do not trust `/fix-next`'s ordering on this epic until TASK-058 lands.** STORY-015 carries
+`theme: docs-i18n-coverage` over four correctness defects in `skills-lint.sh` — the repo's *only*
+automated gate. That theme is rung 7, the bottom of `intake`'s ladder, and `fix-next` reads it as
+tie-break key 6, so the gate's own defects currently rank below every other story here (all
+`correctness-invariants`). TASK-044 added the field to make ranking reproducible rather than inferred
+from titles; here it is reproducibly wrong, which is the trade a declared field makes. Fix the label
+before draining by rank, or drain by hand.
+
+**Where the newest findings came from, and why that shifts the epic's character.** The `source:` line
+records this epic's original intake. Everything filed since — TASK-057, TASK-058, TASK-060 — came from
+**close gates on other tasks**, not from a standing review pass: TASK-053's gate alone produced two
+tasks plus the ten-finding drill. So the "ends empty" success criterion is under real pressure. That is
+not a reason to relax it; it is the measurement that makes the pressure visible, and the honest reading
+is that this epic drains slower than the work feeding it. Whether that means a second intake epic or a
+faster drain is a judgement for whoever picks next.
+
+**One finding here is about this repo's own records.** `docs/features/README.md` carries a hand-written
+line (`_No features yet._ See EPIC-001 in tasks/ — the current work is deliberately task-only.`) that
+`AGENTS.md` forbids in a generated file. It reached two independent passes from opposite directions at
+TASK-053's gate: the cold drill flagged the line itself, and `/code-review` caught that same line being
+used to justify suppressing the dashboard's DV5 drift callout. Its home is an EPIC body's
+`§ State as of` — like this one. Tracked inside TASK-060.
