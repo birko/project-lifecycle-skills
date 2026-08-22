@@ -16,9 +16,41 @@ github-issue: null
 jira-key: null
 ---
 
-# Two records the backfill missed, found by looking for the wrong thing
+# The decline clauses the rulebook owes — and one record it actually does
 
 ## Context
+
+> **⚠ This task's original premise was overturned on 2026-08-22, after it was filed.** It was written to say
+> *"the set is missing a record more clearly than it has a surplus one"* and to add records for the
+> generated-file rule and the declare-versus-derive pair. **Both are rulebook entries**, and under the
+> rescoped bar (TASK-069) a rulebook entry keeps its reasoning inline and gets **no** record. The two
+> candidates are therefore correctly absent, not owed. The original text is kept below the line because the
+> *evidence* it gathered is still good — only the conclusion changed.
+
+**What is actually owed.** A cold read found that of every § Conventions bullet carrying a trade-off with no
+record, **exactly one** carried the decline clause the rule requires (*"name the test that failed when you
+decline, and decline out loud"*). Every other is silently absent — which the rule itself names as the failure
+mode: *"a skipped record and an unnoticed one are indistinguishable afterwards."*
+
+Bullets identified as needing a clause: the `(lazy)` layer artifact rule, the derived-state rule, the
+format-is-a-contract rule, the owner-verb-reconciles rule, and the placeholder-token rule. Two more were
+written during TASK-069 and already carry one (review axes, shared vocabulary), which is the shape to copy.
+
+**And one record genuinely is owed — from a section nobody swept.** The companion rule only ever patrols
+§ Conventions, so **§ Architecture** was never checked. It carries this:
+
+> Both installers **link** rather than copy, so an edit here is live in every consuming project immediately.
+> The corollary bites: a link is created per *folder*, at install time … The installers only ever *add*, so
+> renaming or deleting a skill also needs a manual sweep of both roots; nothing prunes the old junction.
+
+Under the rescoped bar this is a **project decision with a footprint outside the rulebook**: junctions exist
+on every developer machine and in every consuming project, and every consumer depends on edit-liveness.
+Reversing to copy semantics does not remove them and silently changes the contract. Surprising, and a real
+trade-off (link versus copy, with a stated cost). **That is a record.**
+
+---
+
+_Original context, filed before the bar was rescoped:_
 
 **From the cold read of `docs/adr/` on 2026-08-22.** TASK-054 backfilled the records this repo owed and
 was checked for records that should not exist. The cold reader was also asked the inverse question — *is
@@ -89,11 +121,11 @@ order and never reused"*), so the gap in the directory is deliberate and this ta
 
 ## Acceptance criteria
 
-- [ ] The generated-file rule is judged against the **resolved** bar and either gets a record or a recorded refusal naming the failed test
-- [ ] The declare-versus-derive trade-off is judged the same way, as **one** record covering both bullets — not two
-- [ ] If records are written: numbered from `0009`, `0006` left vacant, and each bullet trimmed to rule-plus-pointer in the same change
-- [ ] The triplicated squash-merge sentence exists in **one** place afterwards, with the other two pointing at it
-- [ ] Every record written carries the graded-provenance and `Filed:` shape TASK-054's cold read settled on
+- [ ] Every § Conventions bullet that carries a trade-off and has no record gains a **decline clause** naming why — matching the shape of the two written at TASK-069
+- [ ] The generated-file rule and the declare-versus-derive pair are recorded as **correctly absent** with the reason (rulebook entries), not left silent — the evidence gathered below is what the clause cites
+- [ ] The declare-versus-derive **triplication** is fixed regardless: the squash-merge counter-example currently sits in two bullets and ADR 0004; it ends up in one place with the others pointing at it
+- [ ] The installer link-versus-copy decision in § Architecture gets a record, numbered from `0009` (`0006` and `0007` are retired and must not be reused)
+- [ ] § Architecture is swept for any other unrecorded project decision, and the sweep's outcome is stated either way — this was the unpatrolled lane
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope

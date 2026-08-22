@@ -145,14 +145,19 @@ The skills *are* the product, so their prose is the user interface. This subsect
   "blocker" from a correctness pass. A *weighted* merge is worse, not better — any fixed weighting that puts
   correctness first buries the case this axis exists to catch, a change that is perfectly correct while
   implementing the wrong thing. So a merge decision states each verdict, because *standards pass, intent
-  fail* is a distinct outcome a single summary cannot express. **No record: reversing this costs two
-  paragraphs of prose and nothing durable was produced under it — it misses the bar's hard-to-reverse
-  test, so the reasoning stays here.**
+  fail* is a distinct outcome a single summary cannot express. *No record: this is a rulebook entry — a
+  convention about how a result is presented — so its reasoning belongs here, whole.*
 - **A vocabulary shared by several skills has one owning file, and the owner is wherever it already lives.**
-  Expand the existing owner in place; never start a neutral third home, and never keep a second copy for a
-  consumer whose job differs. Today: the code-smell inventory in `skills/tdd/refactoring.md`, read by
-  [[verify-conventions]] as its baseline **for a repo that documented nothing of its own**. Trade-off and rejected alternatives:
-  [ADR 0007](docs/adr/0007-one-owning-file-per-shared-vocabulary.md).
+  Today the code-smell inventory sits in `skills/tdd/refactoring.md`, written for the TDD refactor step and now
+  also read by [[verify-conventions]] as its baseline for a repo that documented nothing of its own. The pull
+  toward a second copy is strong, because the two skills use the list for different jobs — one prescribes a
+  refactoring, the other reports a finding — and that difference is exactly what makes a copy look justified.
+  It is not: the *list* is one inventory, and the job-specific part is the handful of rules around it, which is
+  what each consumer adds locally. **Expand the existing owner rather than starting a neutral one**; moving a
+  list to a "better" home breaks its current readers for no gain, and a partial copy is worse than either —
+  it diverges like a full copy while also being silently narrower. *No record: this is a rulebook entry, not a
+  project decision — its footprint is a file that did not move, so there is no artifact outside the rulebook
+  for a record to explain.*
 - **A flag that declares an absent capability must define behaviour at every point that needs it.**
   Where a skill takes a flag asserting something is *not available* — today `close`'s `--unattended`,
   meaning no user is present to answer — the flag's definition enumerates **every** step that would

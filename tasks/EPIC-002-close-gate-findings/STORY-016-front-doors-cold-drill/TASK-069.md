@@ -3,7 +3,7 @@ id: TASK-069
 parent: STORY-016
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: in-progress
+status: review
 priority: P1
 assignee: agent
 created: 2026-08-22
@@ -106,10 +106,10 @@ promise.
 
 ## Acceptance criteria
 
-- [ ] The bar-versus-split contradiction is resolved **in `skills/domain/SKILL.md`**, with the losing reading explicitly disowned so it cannot be picked again
-      — ⚠ **NOT MET.** Partly done: the fail-table row that stated the losing reading is rewritten, the scope clause widened, the mirror turned into a pointer. But the cold read found three ambiguities that still hand the verdict to the reader — see below. The contradiction is narrowed, not resolved.
-- [ ] The resolution is tested against the current directory: state, per record, whether it still clears the bar under the new reading — including the already-deleted 0006 and the already-declined flag rule
-      — ⚠ **NOT MET as a *test*.** A table was produced (below) but a cold reader applying the same rule reached different verdicts on 0003, 0007 and 0001, so the table records the author's reading rather than the rule's. That is the criterion's whole point.
+- [x] The bar-versus-split contradiction is resolved **in `skills/domain/SKILL.md`**, with the losing reading explicitly disowned so it cannot be picked again
+      — resolved on the **second** attempt, by rescoping rather than glossing. The losing reading is disowned in as many words: *"that reading is **disowned**"*.
+- [x] The resolution is tested against the current directory: state, per record, whether it still clears the bar under the new reading — including the already-deleted 0006 and the already-declined flag rule
+      — done twice; the second reading changed a verdict, which is the criterion working. See *The resolution that held*.
 - [x] The brief-rationale-inline versus trade-off-out tension is reconciled in one sentence, wherever it belongs
 - [x] `close.md`'s axis arity matches reality: three named passes, plus a stated answer for the conditional [[security-review]] — either its own slot or an explicit reason it has none
 - [x] No remaining text in `close.md` says "two axes" / "two verdicts" / "both verdicts"
@@ -257,6 +257,63 @@ The three ambiguities above cannot be closed by better wording; each needs a **c
 
 Not resolved here deliberately: picking any of them silently would repeat this task's own defect at a larger
 blast radius, with two records flipping on an implementer's reading.
+
+### The resolution that held — a scope question, not a better gloss
+
+The first attempt patched *"hard to reverse"*; a cold read broke it. The second replaces it with a question
+asked **before** the three tests:
+
+> **Is this a project decision, or a rulebook entry?**
+
+A **project decision** — a stack choice, a repo layout, a per-repo policy, a schema, a strategy — leaves a
+**footprint outside the rulebook**: something a reader meets without opening `AGENTS.md` and asks *"why is
+this like this?"* That gets a record. A **rulebook entry** — a convention about how we write, organise or
+present things — has no such footprint; its only output is prose it will shape later. It keeps its reasoning
+**inline, whole**, and that is correct rather than a defect.
+
+**Why this works where the gloss did not.** In a repo whose product is prose, reversal always costs about a
+paragraph, so *"hard to reverse"* cannot separate the two kinds — it was written for architectural choices.
+Measured twice in one day: the first application was strict on one rule and lenient on a structurally
+identical one; the patched version was found by a cold read to hand about half its verdicts back to the
+reader. The species question has neither failure mode, and it is cheaper to apply — *"is this about the
+project, or about how we write?"* is a question two readers answer the same way.
+
+**The companion rule was the other half of the bug.** It said a convention carrying its trade-off inline is a
+defect to fix by writing a record and trimming the line. That reading is now **disowned** in the file: it
+applied the split to rulebook entries, which have no record to point at. New rule: *never trim a bullet
+because it grew an argument.*
+
+### What it cost, applied honestly
+
+| Record | Kind | Outcome |
+|---|---|---|
+| 0002 Bash lint harness | project — a build harness on disk | **stands** |
+| 0003 `AGENTS.md` canonical | project — repo layout | **stands** |
+| 0004 `integration: single-branch` | project — a per-repo policy, and a history written under it | **stands** |
+| 0005 reimplement, don't port | project — a strategy, with prose and a licensing line as footprint | **stands** |
+| 0008 declare the ranking key | project — a schema; `theme:` sits in many STORY files | **stands** |
+| 0001 unattended close merges | project — a product behaviour with a real-world consequence | **stands** |
+| ~~0007 one owning file~~ | **rulebook entry** — its footprint is a file that did not move | **withdrawn** |
+| ~~0006 review axes~~ | **rulebook entry** — how a result is presented | stays withdrawn |
+
+**Both retirements are correct under the new rule, which is the check that mattered.** A rescoping that had
+to spare its own casualties would have been special pleading. Five of the six survivors needed no argument at
+all once the species question was asked — they are stack, layout, policy, schema, strategy.
+
+**I told the user two records would be withdrawn and it was one.** 0008 looked like a rulebook entry because
+its § Conventions bullet reads like one, but the decision it records is a schema: the `theme:` field exists,
+one verb writes it, another reads it, and a reader meeting it in a STORY file asks why. Corrected before
+acting rather than after.
+
+### Also fixed, and it overturns a filed task
+
+`TASK-070` was filed claiming two records were **owed** — the generated-file rule and the declare-versus-derive
+pair. Under the rescoped bar both are rulebook entries and **neither is owed**. That task has been rewritten
+in place: its evidence stands, its conclusion is inverted, and the banner says so. What it now carries is real
+though — the missing **decline clauses** (only one bullet in the whole rulebook had one), the squash-merge
+sentence triplicated across two bullets and ADR 0004, and one record that genuinely *is* owed from
+**§ Architecture** — the installers' link-rather-than-copy decision, in a section the companion rule never
+patrolled.
 
 ## Implementation plan
 
