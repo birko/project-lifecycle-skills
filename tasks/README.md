@@ -9,11 +9,11 @@ _Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 31    |
+| todo         | —     | —       | 30    |
 | in-progress  | 2     | 3       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 37    |
+| done         | 0     | 4       | 38    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -22,15 +22,15 @@ _None_
 
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (23/27 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (24/27 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
-  - STORY-003 `domain` — glossary and decision records — in-progress (3/6)
+  - STORY-003 `domain` — glossary and decision records — in-progress (4/6)
     - [x] TASK-051 `domain` — the skill and its glossary half
     - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live
     - [x] TASK-053 Layer parity — both front doors learn the glossary and the ADR home
     - [ ] [TASK-054](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-054.md) Backfill the decision records this repo already owes
-    - [ ] [TASK-055](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-055.md) `tdd` still says nothing creates `docs/adr/`
+    - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
     - [ ] [TASK-056](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-056.md) The seeded rulebook never learns where a term or a decision goes
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)

@@ -3,7 +3,7 @@ id: TASK-055
 parent: STORY-003
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-22
@@ -48,14 +48,37 @@ exist yet), so it likely needs nothing. Confirm rather than assume.
 
 ## Acceptance criteria
 
-- [ ] The `no skill creates that directory yet` clause is gone from `skills/tdd/SKILL.md:79`
-- [ ] What replaces it (if anything) does **not** restate `LAYER.md`'s row content — `tdd` is a
+- [x] The `no skill creates that directory yet` clause is gone from `skills/tdd/SKILL.md:79`
+- [x] What replaces it (if anything) does **not** restate `LAYER.md`'s row content — `tdd` is a
       consumer of the vocabulary, not a second home for the layer inventory
-- [ ] The sentence still reads correctly for a project that has **no** `docs/adr/` yet — absence is
+- [x] The sentence still reads correctly for a project that has **no** `docs/adr/` yet — absence is
       legitimate under the lazy rule, so `tdd` must not imply every project has one
-- [ ] The glossary half of the same sentence is checked and either left alone (with the reason) or
+- [x] The glossary half of the same sentence is checked and either left alone (with the reason) or
       corrected
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
+
+**Closed 2026-08-22.** The clause is gone — `grep 'no skill creates' skills/` returns nothing.
+
+**The glossary half needed correcting too, not just checking (AC 4).** The old sentence opened *"use the
+project's domain glossary ([[domain]])"*, which presumes one exists; under the lazy rule a project may
+legitimately have neither artifact. The absence clause now covers **both**, so the sentence is honest for
+a repo that has done no `/domain` work at all.
+
+**No row content was copied (AC 2).** The sentence says who owns them and that either may be absent — the
+consequence `tdd` actually needs. It does not mention the `(lazy)` marker, the `not applicable yet` state,
+or the create-nothing rule; those stay in `LAYER.md`.
+
+**One addition beyond the criteria, recorded rather than hidden:** *"don't start one mid-cycle — a glossary
+entry or decision record written to unblock a refactor records the refactor's view, not the project's."*
+It serves AC 3 by saying what to do on absence, and it enforces TASK-053's rule at the point of use, since
+a TDD agent seeding a lazy artifact outside its owner is what that change exists to prevent.
+
+**Out-of-scope sweep ran and found nothing to spawn.** The third bullet below is conditional on another
+stale cross-reference turning up in `tdd`; `grep -rn -i 'glossary|docs/adr|\[\[domain\]\]' skills/tdd/`
+returns this one line and nothing else, so the condition did not fire.
+
+**Gate:** step 5b skipped under its own one-liner clause; the three axes were checked inline instead —
+standards pass, intent pass, correctness pass. Lint `OK (18 skills)`.
 
 ## Out of scope
 
