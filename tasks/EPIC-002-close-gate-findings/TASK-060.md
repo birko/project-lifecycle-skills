@@ -3,7 +3,7 @@ id: TASK-060
 parent: EPIC-002
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-22
@@ -72,12 +72,40 @@ exists at all — there is no documented empty render, so someone wrote one by h
 
 ## Acceptance criteria
 
-- [ ] Each of the ten findings is **routed**, not fixed here: decomposed into tasks via [`/tasks intake --epic EPIC-002`](../../skills/tasks/verbs/intake.md), or — where one is judged a non-defect — recorded as such **with the reason**, in this task's body
-- [ ] The routing decision names, per finding, which skill owns the fix (`new-project`, `adopt-project`, `LAYER.md`, `tasks`) so the intake groups by subject rather than by discovery order
-- [ ] DRILL-053-7 and DRILL-053-8 are considered **together** — both are "the skill assumes every run is a full run", and splitting them buries that
-- [ ] Any finding that turns out to duplicate an open task (TASK-024 for the reconcile family, TASK-025 for the "code that is prose" family) is **linked, not re-filed** — the audit duplicate rule
-- [ ] This task closes only when every finding has an id or a recorded non-defect verdict; a finding listed with neither means the routing did not run
-- [ ] The cold-drill method is recorded somewhere durable enough to repeat — withholding the expected answers is what made this pass work, and it is not written down anywhere yet
+- [x] Each of the ten findings is **routed**, not fixed here: decomposed into tasks via [`/tasks intake --epic EPIC-002`](../../skills/tasks/verbs/intake.md), or — where one is judged a non-defect — recorded as such **with the reason**, in this task's body
+- [x] The routing decision names, per finding, which skill owns the fix (`new-project`, `adopt-project`, `LAYER.md`, `tasks`) so the intake groups by subject rather than by discovery order
+- [x] DRILL-053-7 and DRILL-053-8 are considered **together** — both are "the skill assumes every run is a full run", and splitting them buries that
+- [x] Any finding that turns out to duplicate an open task (TASK-024 for the reconcile family, TASK-025 for the "code that is prose" family) is **linked, not re-filed** — the audit duplicate rule
+- [x] This task closes only when every finding has an id or a recorded non-defect verdict; a finding listed with neither means the routing did not run
+- [x] The cold-drill method is recorded somewhere durable enough to repeat — withholding the expected answers is what made this pass work, and it is not written down anywhere yet
+
+### Routing outcome — 2026-08-22
+
+All ten findings have an id. Nothing was dropped and nothing was judged a non-defect.
+
+| Finding | Routed to | Why |
+|---|---|---|
+| DRILL-053-1 | **TASK-061** | inventory omits three artifacts it creates |
+| DRILL-053-2 | **TASK-062** | evidence ladder cannot see a prose repo's suite |
+| DRILL-053-3 | **TASK-063** | upgrade path's headline case has no state |
+| DRILL-053-4 + -5 | **TASK-064** | both are "the minimal seed path was never walked end to end" — same file, same step, one review |
+| DRILL-053-6 | **TASK-035** (linked, not re-filed) | that task already owns *nothing owns the `integration:` question*; this is its greenfield half. The audit duplicate rule — evidence appended, `findings:` extended |
+| DRILL-053-7 + -8 | **TASK-065** | one assumption from two sides: the skill assumes every run is a full run. Grouped per this task's own criterion |
+| DRILL-053-9 | **TASK-066** | land-vs-regenerate precedence |
+| DRILL-053-10 (a+b) | **TASK-067** | both halves are "the generator was specified for the populated case only". Carries this repo's own hand-written features-index line, which is the same defect's consequence |
+| the method itself | **TASK-068** | epic level, because it changes how every skill's test plan is run |
+
+**Structure:** seven tasks under a new **STORY-016** (`theme: correctness-invariants`), so *"how much of
+the drill is left?"* stays answerable — intake's rule that the pass is the unit. TASK-068 sits at epic
+level with this task; it is method, not a defect in one subject.
+
+**Two adjacencies checked and deliberately kept separate**, each cross-referenced both ways rather than
+merged: TASK-062 ↔ **TASK-025** (both are "our detection assumes code, our product is prose" — two files,
+two consumers) and TASK-063 ↔ **TASK-024** (verbs that cannot answer, versus a row with no verb to ask).
+
+**One loose end is now itself tracked:** the `DRILL-*` prefix is not among the four `intake` defines, so
+TASK-068 carries either registering it or remapping the ids. Recorded rather than quietly regularised —
+an unregistered prefix in shipped frontmatter is the register-on-introduce gap this repo lints for.
 
 ## Out of scope
 

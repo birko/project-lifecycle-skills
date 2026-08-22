@@ -9,7 +9,7 @@ assignee: agent
 created: 2026-08-19
 depends-on: []
 blocks: []
-findings: [CR-020-2, CR-020-3]
+findings: [CR-020-2, CR-020-3, DRILL-053-6]
 pr: null
 github-issue: null
 jira-key: null
@@ -47,6 +47,29 @@ asking:
 The likely shape of the fix: the skip is scoped to **proposals**, not to the round that also carries
 **declarations**, and one step is named as the owner of probing a declaration a verb will need. Do not
 treat that as decided — it is the reviewer's reading and mine, not a tested one.
+
+### Measured evidence — the greenfield half, from the 2026-08-22 cold drill (DRILL-053-6)
+
+A cold drill of `new-project` produced a concrete instance of exactly this gap, on the **scaffold** path
+rather than the adoption path:
+
+`new-project/SKILL.md:99` chains `/tasks init mode=<mode>` and passes **no** `integration=`, so
+`tasks/verbs/init.md:30` writes the template default `pr-per-task`. The drill was told to skip `git init`,
+so the scaffolded repo ended up **declaring a PR-per-task policy with no git repository at all** — a
+declaration nobody was asked for, in a repo where it cannot be true.
+
+Two things this sharpens about the task:
+
+- **`init.md:32` protects the wrong direction.** It stops an *existing* config's silence from being
+  defaulted over, which is the upgrade case. A brand-new config gets the default written silently and is
+  never asked — so the field this repo treats as a *declaration to read, never infer* is itself created by
+  inference.
+- **It confirms the "three rules each hand it to another" shape reaches past adoption.** The intake asks
+  for task *mode* and not integration; step 3 delegates to the owner; the owner defaults. Whoever fixes
+  ownership has to cover the scaffolder, or the same unasked declaration keeps being minted.
+
+Filed here rather than as its own task under STORY-016 (the drill's story) because this task already owns
+the question and a second task would re-litigate it — the audit duplicate rule.
 
 ## Acceptance criteria
 
