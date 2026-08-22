@@ -9,9 +9,9 @@ _Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 30    |
+| todo         | —     | —       | 29    |
 | in-progress  | 2     | 3       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 4       | 38    |
 | cancelled    | 0     | 0       | 0     |
@@ -19,6 +19,10 @@ _Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_
+
+## In review (awaiting sign-off)
+
+- [TASK-054](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-054.md) — Backfill the decision records this repo already owes (P2, agent)
 
 ## Tree
 
@@ -29,7 +33,7 @@ _None_
     - [x] TASK-051 `domain` — the skill and its glossary half
     - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live
     - [x] TASK-053 Layer parity — both front doors learn the glossary and the ADR home
-    - [ ] [TASK-054](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-054.md) Backfill the decision records this repo already owes
+    - [ ] [TASK-054](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-054.md) Backfill the decision records this repo already owes 🔍 review
     - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
     - [ ] [TASK-056](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-056.md) The seeded rulebook never learns where a term or a decision goes
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)

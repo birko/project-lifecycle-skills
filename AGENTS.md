@@ -135,23 +135,16 @@ The skills *are* the product, so their prose is the user interface. This subsect
   history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
   it had to be declared.
 - **Independent review axes are reported side by side and never merged or reranked.** Where a gate runs
-  more than one pass answering a *different question* — today `close` step 5b's standards
-  ([[verify-conventions]]), fidelity ([[verify-intent]]) and correctness ([[code-review]]) — each keeps
-  its own verdict and its own severity ordering, and nothing sorts across them. Merging is tempting
-  because one ranked list is easier to read, and that is exactly the harm: a convention warning placed
-  above an unbuilt requirement reads as the larger problem. A change can pass every documented standard
-  while implementing the wrong thing, or do exactly what was asked while breaking the rulebook — the
-  whole point of a second axis is that the first cannot see it, which a blended ranking throws away.
-  A merge decision therefore states each verdict, because *standards pass, intent fail* is a distinct
-  outcome and a single summary cannot express it.
-- **A vocabulary shared by several skills has one owning file, and the owner is wherever it already
-  lives.** Today the code-smell inventory sits in `skills/tdd/refactoring.md`, written for the TDD
-  refactor step and now also read by [[verify-conventions]] as its baseline for a repo that documented
-  nothing. The pull toward a second copy is strong, because the two skills use the list for different
-  jobs — one prescribes a refactoring, the other reports a finding — and that difference is exactly what
-  makes a copy look justified. It is not: the *list* is one inventory, and the job-specific part is the
-  handful of rules around it, which is what each consumer adds locally. Expand the existing owner rather
-  than starting a neutral one; moving a list to a "better" home breaks its current readers for no gain.
+  more than one pass answering a *different* question — today `close` step 5b's standards
+  ([[verify-conventions]]), fidelity ([[verify-intent]]) and correctness ([[code-review]]) — each keeps its
+  own verdict and its own severity ordering, and nothing sorts across them. A merge decision states each
+  verdict, because *standards pass, intent fail* is a distinct outcome. Trade-off and rejected alternatives:
+  [ADR 0006](docs/adr/0006-review-axes-are-never-merged.md).
+- **A vocabulary shared by several skills has one owning file, and the owner is wherever it already lives.**
+  Expand the existing owner in place; never start a neutral third home, and never keep a second copy for a
+  consumer whose job differs. Today: the code-smell inventory in `skills/tdd/refactoring.md`, read by
+  [[verify-conventions]] as its baseline. Trade-off and rejected alternatives:
+  [ADR 0007](docs/adr/0007-one-owning-file-per-shared-vocabulary.md).
 - **A flag that declares an absent capability must define behaviour at every point that needs it.**
   Where a skill takes a flag asserting something is *not available* — today `close`'s `--unattended`,
   meaning no user is present to answer — the flag's definition enumerates **every** step that would
@@ -161,14 +154,12 @@ The skills *are* the product, so their prose is the user interface. This subsect
   the out-of-scope sweep alone while the merge question still fired on PR-per-task projects — the
   documented default — and the defect was invisible here only because this repo declares
   `single-branch`. The configuration that hides such a gap is usually the one it was written on.
-- **A ranking key that cannot discriminate must say so, not pass quietly.** Where one skill orders work
-  by several keys in sequence (today [[fix-next]]'s eight), a key whose input is absent or identical
-  across every candidate has not been *applied* — it has been skipped, and a run that never mentions it
-  reads exactly like one where it did the work. So the key's input is **declared in frontmatter, never
+- **A ranking key that cannot discriminate must say so, not pass quietly.** Where one skill orders work by
+  several keys in sequence (today [[fix-next]]'s eight), the key's input is **declared in frontmatter, never
   inferred from a title** (`theme:` on a review-intake STORY, written by `/tasks intake`, read by
-  `/fix-next`), and the ranking paragraph names the key that actually broke the tie. Degeneracy is
-  normal and is not the defect — a prose-rule codebase produces almost only correctness defects, so its
-  review-intake stories cluster on one theme. Silent degeneracy is the defect.
+  `/fix-next`), and the ranking paragraph names the key that actually broke the tie. Degeneracy is normal;
+  silent degeneracy is the defect. Trade-off and rejected alternatives:
+  [ADR 0008](docs/adr/0008-declare-a-ranking-key-rather-than-infer-it.md).
 - **A format one skill reads is a contract the writing skill must state too.** When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
 - **A layer artifact that would lie when empty is declared `(lazy)`, and nothing creates it.** Most of the
   universal layer is created on sight, so the exception needs saying: where an empty instance would make a
