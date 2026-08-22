@@ -137,13 +137,19 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **Independent review axes are reported side by side and never merged or reranked.** Where a gate runs
   more than one pass answering a *different* question — today `close` step 5b's standards
   ([[verify-conventions]]), fidelity ([[verify-intent]]) and correctness ([[code-review]]) — each keeps its
-  own verdict and its own severity ordering, and nothing sorts across them. A merge decision states each
-  verdict, because *standards pass, intent fail* is a distinct outcome. Trade-off and rejected alternatives:
-  [ADR 0006](docs/adr/0006-review-axes-are-never-merged.md).
+  own verdict and its own severity ordering, and nothing sorts across them. Merging is tempting because one
+  ranked list is easier to read, and that ease is exactly the harm: a convention warning placed above an
+  unbuilt requirement reads as the larger problem, and "blocker" from a lint is not the same quantity as
+  "blocker" from a correctness pass. A *weighted* merge is worse, not better — any fixed weighting that puts
+  correctness first buries the case this axis exists to catch, a change that is perfectly correct while
+  implementing the wrong thing. So a merge decision states each verdict, because *standards pass, intent
+  fail* is a distinct outcome a single summary cannot express. **No record: reversing this costs two
+  paragraphs of prose and nothing durable was produced under it — it misses the bar's hard-to-reverse
+  test, so the reasoning stays here.**
 - **A vocabulary shared by several skills has one owning file, and the owner is wherever it already lives.**
   Expand the existing owner in place; never start a neutral third home, and never keep a second copy for a
   consumer whose job differs. Today: the code-smell inventory in `skills/tdd/refactoring.md`, read by
-  [[verify-conventions]] as its baseline. Trade-off and rejected alternatives:
+  [[verify-conventions]] as its baseline **for a repo that documented nothing of its own**. Trade-off and rejected alternatives:
   [ADR 0007](docs/adr/0007-one-owning-file-per-shared-vocabulary.md).
 - **A flag that declares an absent capability must define behaviour at every point that needs it.**
   Where a skill takes a flag asserting something is *not available* — today `close`'s `--unattended`,
@@ -221,7 +227,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
     TASK-018 that were *lossy summaries* of fuller records already on those task files, plus a
     verification-debt count that said "9" while `EPIC.md` said "seven". Two hand-written copies of one
     non-derivable fact, disagreeing. Deleting the copies lost nothing.
-- **Generated files are owned by their verbs — never hand-edit them.**- **Generated files are owned by their verbs — never hand-edit them.** `docs/features/*/status.md` and `docs/features/README.md` are owned by `/feature status`; `tasks/README.md` by `/tasks triage`; `docs/specs/*.md` by `/specs regen` (only `.map.yml` is hand-edited). "Keep it current" means *run the owning verb*.
+- **Generated files are owned by their verbs — never hand-edit them.** `docs/features/*/status.md` and `docs/features/README.md` are owned by `/feature status`; `tasks/README.md` by `/tasks triage`; `docs/specs/*.md` by `/specs regen` (only `.map.yml` is hand-edited). "Keep it current" means *run the owning verb*.
 - **Status changes go through their verbs, never hand-edits.** Hand-flipping `status: done` skips the gates that make the status trustworthy.
 - To see where things stand: `/tasks` (feature-aware snapshot) or `/roadmap` (full epic to feature to task view plus a divergence audit).
 - No `Co-Authored-By:` trailers in commit messages.

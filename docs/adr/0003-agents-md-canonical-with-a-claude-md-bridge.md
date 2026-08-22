@@ -3,6 +3,7 @@
 - **Date:** 2026-08-18 — both files landed in `1886df7`
 - **Decided by:** reconstructed 2026-08-22 from the repo's own evidence (TASK-054). The `new-project` intake offers this shape as an option, so the choice was made deliberately at scaffold time; no discussion survives. A reconstruction.
 - **Status:** accepted
+- **Filed:** 2026-08-22 (retroactively — see *Decided by*)
 - **Rule it produced:** none standing. The shape is enforced mechanically instead — `.github/workflows/ci.yml` asserts `CLAUDE.md` is exactly `@AGENTS.md`.
 
 ## Context

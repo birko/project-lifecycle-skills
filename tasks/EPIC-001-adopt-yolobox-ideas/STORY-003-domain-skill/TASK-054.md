@@ -3,7 +3,7 @@ id: TASK-054
 parent: STORY-003
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-21
@@ -58,7 +58,7 @@ at `0002`.
 
 - [ ] Eight further records exist under `docs/adr/` (numbered from `0002`), each carrying context, the
       decision, the **rejected** alternatives, and consequences
-      — ⚠ **NOT MET as written: seven written (0002–0008), one declined under AC 5.** Not softened; see below.
+      — ⚠ **NOT MET as written: six stand (0002–0005, 0007, 0008).** One declined at writing under AC 5; one more (0006) written, then deleted after the cold read found it failed the same test. Not softened; see below.
 - [x] Each is **dated honestly** — the date the decision was made, not the date it was written down, with
       the retroactive authorship stated so nobody reads it as contemporaneous
 - [x] Each of rules 5-8 has its `§ Conventions` bullet **trimmed to the enforceable one-liner plus a
@@ -137,11 +137,61 @@ Nothing reads as contemporaneous except `0001`, which is.
 
 ## Human test plan
 
-- [ ] Read records 5-8 cold and confirm each explains a rule whose § Conventions line no longer carries
+- [x] Read records 5-8 cold and confirm each explains a rule whose § Conventions line no longer carries
       its own justification — the two halves must compose without repeating
-- [ ] Confirm no record reads as contemporaneous when it was written retroactively
-- [ ] Pick the weakest of the eight and argue it against the three-part bar out loud; if it fails, delete
+- [x] Confirm no record reads as contemporaneous when it was written retroactively
+- [x] Pick the weakest of the eight and argue it against the three-part bar out loud; if it fails, delete
       it and record that it failed. A backfill that quietly waves the bar through discredits the bar
+
+### Cold read, 2026-08-22 — the third item did not pass, which is the point
+
+Run by a fresh agent with the author's conclusions withheld: no access to `tasks/`, no `git log` subjects
+or bodies (the commit message states the whole refusal), dates only. It was asked to find the bar and the
+split **itself**, and to answer the inverse question — *is any bullet still owed a record?* — so the
+refusal of #7 could be contradicted rather than confirmed.
+
+**Items 1 and 2 passed.** The halves compose; each trimmed bullet is followable alone. Essentially nothing
+was lost — the reader checked each dropped clause against the records and found them relocated, not
+deleted, with one exception now fixed (0007's bullet had dropped *"for a repo that documented nothing"*).
+And *"no record overstates what it knows"*: not one reads as minutes when it is a reconstruction.
+
+**Item 3 failed, and the failure was mine.** Asked to pick the weakest and argue it, the reader chose
+**0006 (review axes)** and concluded it does not clear the bar. Its argument is the table this task should
+have built — *what was produced under each decision that reversal cannot undo*: 0001 → commits already
+merged to `main`; 0004 → a linear history; 0007 → every reference into `tdd/refactoring.md`; 0008 →
+`theme:` stamped across the tree; **0006 → nothing.**
+
+**The inconsistency is the real finding.** #7 was declined because it is *"a discipline about how to
+document a flag, and reversing it costs one table edit."* 0006 is a discipline about how one step prints
+its output, reversible with two paragraph edits — and it was kept, with the bar's weak leg noted and waved
+through (*"I'd say ✓ marginally"*). Same test, two answers. A bar applied inconsistently is not a bar.
+
+**Acted on, per this plan's own instruction:** `0006` deleted, its weighted-merge argument — the sharpest
+thing in it — folded back into the § Conventions bullet, and the bullet now states out loud why it carries
+its reasoning. **`0006` is retired and must not be reused**; the gap is deliberate.
+
+**The refusal of #7 survived, and the reader improved it.** It independently found that the reasoning
+already lives in **ADR 0001** — whose header still read *"Rule it produced: none yet"* though the rule
+hardened into a bullet the same day. So no new record was owed, but the bullet needed a pointer and 0001
+needed correcting. Both done. That is a better answer than *"the reasoning stays inline"*.
+
+**Four further repairs to this task's own work**, all from the same read: 0002's Decision sentence was
+false as written (*"One Bash script… and no other executable code"* in a repo with seven scripts,
+contradicted by its own Consequences) → corrected; 0005–0008 lacked a `Filed:` line so `Date:` could be
+misread as the writing date → added to all; the *"one-line entry"* claim in three headers was untrue of
+all three → corrected to say the split is about where the trade-off lives, not line count; and a doubled
+bullet fragment in `AGENTS.md` (pre-existing) fixed in passing.
+
+**Six records stand: 0002, 0003, 0004, 0005, 0007, 0008.** The reader ranked them and called 0004
+marginal — *keep, but repair its hard-to-reverse claim and its thin second alternative* — which is left to
+TASK-069, since it turns on the bar being fixed first.
+
+### Three findings routed rather than absorbed
+
+- **TASK-069** — the bar and the split **contradict each other** (the bar fails a prose rule; the split demands a record for any bullet carrying a trade-off; nearly every bullet is both), which is what made the inconsistency above reachable. Carries two more: `close.md` still says **two axes** where the rule says three, with a conditional fourth unslotted — a live defect in the gate every task here passes; and `LAYER.md`'s ADR row claims *"nothing to reconcile"*, which this read disproved three times over.
+- **TASK-070** — the set is **missing** a record more clearly than it had a surplus one: the generated-file rule (184 words, an explicitly labelled rejected alternative, content deleted under it) and the declare-versus-derive pair as one record, killing a sentence currently triplicated across two bullets and 0004.
+- **TASK-071** — the rulebook says wikilinks are resolved by CI; `skills-lint.sh` never scans `docs/`, where nine of them live.
+
 
 ## Implementation plan
 

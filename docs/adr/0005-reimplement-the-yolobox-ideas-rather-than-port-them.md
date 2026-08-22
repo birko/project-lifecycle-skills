@@ -3,6 +3,7 @@
 - **Date:** 2026-08-18 — recorded in `EPIC-001`'s § Provenance the day the epic was charted (`1886df7`)
 - **Decided by:** the maintainer. Unlike records 0002–0004 this one is **not** reconstructed guesswork — the reasoning was written into `EPIC-001` at the time and this record consolidates it. Retroactively *filed*, not retroactively invented.
 - **Status:** accepted
+- **Filed:** 2026-08-22 — filed from reasoning written at the time
 - **Rule it produced:** none standing. It is the trade-off that defines EPIC-001's shape.
 
 ## Context

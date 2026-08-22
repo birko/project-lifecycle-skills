@@ -3,6 +3,7 @@
 - **Date:** 2026-08-18 — the field was written with the initial `tasks/.config.yml` (`1886df7`)
 - **Decided by:** reconstructed 2026-08-22 from the repo's own evidence (TASK-054). The config carries a written rationale for `mode: local` but not for `integration:`, so the reasoning below is inferred from the repo's shape and from what the choice later cost. A reconstruction.
 - **Status:** accepted
+- **Filed:** 2026-08-22 (retroactively — see *Decided by*)
 - **Rule it produced:** none standing — it is a per-repo declaration, not a convention. The rule it *exercises* is `AGENTS.md § Conventions › Read the declaration, never infer it`, of which this field is the canonical instance.
 
 ## Context

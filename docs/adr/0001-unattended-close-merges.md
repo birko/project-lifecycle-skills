@@ -3,8 +3,10 @@
 - **Date:** 2026-08-21
 - **Decided by:** the maintainer, asked directly — this was not a judgement the implementer could take
 - **Status:** accepted
-- **Rule it produced:** none yet. The behaviour lives in `skills/tasks/verbs/close.md` step 5c; if it
-  hardens into a standing rule, that rule gets a one-line § Conventions entry pointing here.
+- **Rule it produced:** `AGENTS.md § Conventions` — *"a flag that declares an absent capability must define
+  behaviour at every point that needs it."* It hardened on 2026-08-21, the same day, and that bullet points
+  back here for the trade-off. (This line read *"none yet"* until 2026-08-22, when a cold read of the
+  directory caught it — the header had not been revisited after the rule landed.)
 
 ## Context
 

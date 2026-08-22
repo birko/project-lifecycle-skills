@@ -9,33 +9,30 @@ _Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 29    |
+| todo         | —     | —       | 32    |
 | in-progress  | 2     | 3       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 38    |
+| done         | 0     | 4       | 39    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
 
 _None_
 
-## In review (awaiting sign-off)
-
-- [TASK-054](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-054.md) — Backfill the decision records this repo already owes (P2, agent)
-
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (24/27 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (25/29 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
-  - STORY-003 `domain` — glossary and decision records — in-progress (4/6)
+  - STORY-003 `domain` — glossary and decision records — in-progress (5/8)
     - [x] TASK-051 `domain` — the skill and its glossary half
     - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live
     - [x] TASK-053 Layer parity — both front doors learn the glossary and the ADR home
-    - [ ] [TASK-054](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-054.md) Backfill the decision records this repo already owes 🔍 review
+    - [x] TASK-054 Backfill the decision records this repo already owes
     - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
     - [ ] [TASK-056](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-056.md) The seeded rulebook never learns where a term or a decision goes
+    - [ ] [TASK-070](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-070.md) Two records the backfill missed, found by looking for the wrong thing
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0)
@@ -44,7 +41,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (7/34 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (7/36 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (3/10)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -68,13 +65,14 @@ _None_
   - STORY-014 `specs` — two gates that pass without checking — planned (0/2)
     - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously
     - [ ] [TASK-036](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-036.md) `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (1/5)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (1/6)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [ ] [TASK-043](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-043.md) The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
     - [ ] [TASK-045](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-045.md) A flag one skill passes is never checked to exist in the receiving verb
     - [ ] [TASK-058](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-058.md) STORY-015's theme ranks the repo's only gate last
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — planned (0/7)
+    - [ ] [TASK-071](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-071.md) The wikilink contract says "CI resolves it", and in `docs/` that is false
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — planned (0/8)
     - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [ ] [TASK-062](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-062.md) The test-harness ladder reports `missing` on the repo that ships it
     - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
@@ -82,6 +80,7 @@ _None_
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [ ] [TASK-066](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-066.md) Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
+    - [ ] [TASK-069](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-069.md) The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [ ] [TASK-068](EPIC-002-close-gate-findings/TASK-068.md) The cold drill — write down the one test method that works on prose (P1)

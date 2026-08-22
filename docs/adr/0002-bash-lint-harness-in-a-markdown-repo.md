@@ -3,6 +3,7 @@
 - **Date:** 2026-08-18 — the day the harness and the stack rule landed together (`1886df7`)
 - **Decided by:** reconstructed 2026-08-22 from the repo's own evidence (TASK-054). No contemporaneous discussion survives; the reasoning below is inferred from what the commit did and from the rule it had to satisfy. Read it as a reconstruction, not as minutes.
 - **Status:** accepted
+- **Filed:** 2026-08-22 (retroactively — see *Decided by*)
 - **Rule it produced:** `AGENTS.md § Conventions › Framework / stack` — *"Don't introduce a language, package manager, or generator without an ADR."* This record is the ADR that clause anticipated.
 
 ## Context
@@ -21,7 +22,7 @@ a human reviewer skims past.
 
 ## Decision
 
-**One Bash script, run by CI, and no other executable code in the repo.** The harness is treated as
+**The lint harness and its own test suite, in Bash, run by CI — and no executable code in the *product*.** The harness is treated as
 *test tooling*, not as part of the product: skills stay pure markdown, and the only thing that ever
 executes is the gate that checks them. The stack rule's spirit is "a skill has no runtime", not "the
 repository contains no scripts".

@@ -3,7 +3,8 @@
 - **Date:** 2026-08-21 — the rule landed in `AGENTS.md` in `4417f9a`, alongside TASK-048
 - **Decided by:** the maintainer, via TASK-048. The reasoning was written at the time; this record consolidates it out of the § Conventions bullet that had been carrying it inline.
 - **Status:** accepted
-- **Rule it produced:** `AGENTS.md § Conventions › Code structure & patterns` — the one-line entry pointing here.
+- **Filed:** 2026-08-22 — relocated from the § Conventions bullet
+- **Rule it produced:** `AGENTS.md § Conventions › Code structure & patterns` — the enforceable rule plus a pointer here. (Not literally one line: the rule needs its scope stated to be followable at all. The split is about where the *trade-off* lives, not about line count.)
 
 ## Context
 
