@@ -3,7 +3,7 @@ id: TASK-069
 parent: STORY-016
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: review
 priority: P1
 assignee: agent
 created: 2026-08-22
@@ -106,13 +106,73 @@ promise.
 
 ## Acceptance criteria
 
-- [ ] The bar-versus-split contradiction is resolved **in `skills/domain/SKILL.md`**, with the losing reading explicitly disowned so it cannot be picked again
-- [ ] The resolution is tested against the current directory: state, per record, whether it still clears the bar under the new reading — including the already-deleted 0006 and the already-declined flag rule
-- [ ] The brief-rationale-inline versus trade-off-out tension is reconciled in one sentence, wherever it belongs
-- [ ] `close.md`'s axis arity matches reality: three named passes, plus a stated answer for the conditional [[security-review]] — either its own slot or an explicit reason it has none
-- [ ] No remaining text in `close.md` says "two axes" / "two verdicts" / "both verdicts"
-- [ ] `LAYER.md`'s `docs/adr/` row no longer claims there is nothing to reconcile, **or** states precisely what it does and does not check — coordinated with TASK-063, which is reopening the same row's neighbours
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The bar-versus-split contradiction is resolved **in `skills/domain/SKILL.md`**, with the losing reading explicitly disowned so it cannot be picked again
+- [x] The resolution is tested against the current directory: state, per record, whether it still clears the bar under the new reading — including the already-deleted 0006 and the already-declined flag rule
+- [x] The brief-rationale-inline versus trade-off-out tension is reconciled in one sentence, wherever it belongs
+- [x] `close.md`'s axis arity matches reality: three named passes, plus a stated answer for the conditional [[security-review]] — either its own slot or an explicit reason it has none
+- [x] No remaining text in `close.md` says "two axes" / "two verdicts" / "both verdicts"
+- [x] `LAYER.md`'s `docs/adr/` row no longer claims there is nothing to reconcile, **or** states precisely what it does and does not check — coordinated with TASK-063, which is reopening the same row's neighbours
+- [x] `bash .github/workflows/skills-lint.sh` passes
+
+### The resolution — "hard to reverse" reads differently for a standing rule (AC 1, 3)
+
+`skills/domain/SKILL.md` now says, before the fail table is applied to any convention: **for a standing
+rule, "hard to reverse" means what was *produced* under it, not the cost of editing the sentence.** The
+literal reading disqualified nearly every rulebook entry while the split rule demanded a record for any
+that grew a trade-off — both readings available, which is precisely how one person applied the bar two ways
+in one sitting. The measured instance is named in the rule itself.
+
+The useful corollary is stated too: **length is not evidence.** A 200-word bullet that produced nothing
+fails; a one-line bullet that stamped a field across the tree passes.
+
+**The split gained the precondition it was missing:** it assigns *where* reasoning goes and never licenses a
+record — run the bar first. And when the bar fails, the reasoning **stays in the bullet and the bullet says
+so**, naming the failed test, which is the same *decline out loud* discipline the bar already demanded.
+
+**The `§ Output / prose rules` tension is reconciled in one sentence** (AC 3): brief rationale — *why this
+rule* — stays inline always, because a rule an agent does not understand is one it routes around. What moves
+out, and only when the bar passes, is the **trade-off**: *why not the other options*.
+
+### Applied to the whole directory (AC 2)
+
+| Record | What exists that reversal would not undo | Verdict |
+|---|---|---|
+| 0001 unattended close merges | commits an autonomous loop already merged to `main` | **clears** |
+| 0002 Bash lint harness | the harness, its 36-case suite, a CI workflow, a stack rule written around the exception | **clears** |
+| 0003 `AGENTS.md` canonical | the bridge file and a CI assertion policing it | **clears** |
+| 0004 `integration: single-branch` | ~100 commits of linear history | **clears** |
+| 0005 reimplement, don't port | five reimplemented stories; a licensing line not crossed | **clears** |
+| 0007 one owning file per vocabulary | the reference graph pointing into `tdd/refactoring.md` — reversal means migrating readers | **clears** |
+| 0008 declare the ranking key | `theme:` stamped across STORY frontmatter | **clears** |
+| ~~0006 review axes~~ (deleted) | nothing | **fails — deletion confirmed** |
+| flag-covers-every-point (declined) | a contract table, i.e. prose only | **fails — refusal confirmed** |
+
+**The new reading is consistent with both earlier decisions and kills no survivor** — which is the result
+that matters, because a reading invented to justify a deletion would be worthless. It also **strengthens
+0004**, the one the cold read called marginal on exactly this test: a linear history is durable, so it
+clears cleanly rather than barely.
+
+### The live defect (AC 4, 5)
+
+`close.md` step 5b no longer hard-codes a count. It reports **one verdict per pass that ran**, names the
+three unconditional passes, and gives [[security-review]] its answer: **its own verdict when it runs, and
+an explicit *not applicable* line with the reason when it does not** — silence cannot be told apart from a
+skip. The rationale explains why it is a rule and not a number, without quoting the stale strings, so a
+grep for them stays clean.
+
+### The over-claim (AC 6)
+
+`LAYER.md`'s `docs/adr/` row no longer says *"nothing to reconcile."* It now says adoption has **no shape**
+to reconcile and runs no sweep, then states plainly that this is **narrower than "current"**: a record can
+carry all four parts and still cite a rule that changed or a decision the code no longer matches, which a
+parts-check cannot see because nothing is missing. Content goes to `/domain`'s cross-reference pass, per the
+same file's presence-versus-content line, with the measured instance cited.
+
+**The glossary row was checked and deliberately left alone.** It uses similar wording but already carries
+the distinction — it hands content currency to `/domain` in the same cell — and for free prose "no shape to
+be outdated" is simply true. Narrowing it further would be churn. Coordinated with TASK-063, which is
+reopening what the neighbouring rows can honestly promise.
+
 
 ## Out of scope
 
@@ -124,8 +184,15 @@ promise.
 ## Human test plan
 
 - [ ] Apply the resolved bar to all seven surviving records without reading their verdicts first; confirm the outcome is stable rather than re-argued each time
-- [ ] Run `/tasks close` on any task and confirm the number of verdicts reported matches the number of passes run
+- [x] Run `/tasks close` on any task and confirm the number of verdicts reported matches the number of passes run
+      — verified on this close: three passes ran, three verdicts reported, and [[security-review]] got its explicit *not applicable* line rather than silence
 - [ ] Hand the resolved bar to a fresh reader with one borderline candidate and confirm they reach the same verdict the rule intends — a bar that needs its author present has not been fixed
+
+**Parked at `review`: items 1 and 3 require a reader who is not me.** Both ask whether the resolved bar
+produces a *stable* verdict for someone who has not seen the verdicts — and I wrote the table above, so my
+re-deriving it proves nothing. This is the same asymmetry the TASK-053 and TASK-054 drills established: the
+author cannot test whether a rule is followable without knowing what it was meant to say. A cold read with
+the verdict table withheld is what clears these.
 
 ## Implementation plan
 

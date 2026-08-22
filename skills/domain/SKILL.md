@@ -91,6 +91,23 @@ result of a real trade-off**. Miss any one and skip it.
 | Surprising without context | the next reader would have done the same | following a convention the guide already states |
 | The result of a real trade-off | there was no rejected alternative | the only option that worked |
 
+**For a standing rule, "hard to reverse" means what was PRODUCED under it — not the cost of editing the
+sentence.** Read this before applying the bar to a convention, because the literal reading and the fail
+table above disagree, and the disagreement is not academic:
+
+- Almost every entry in a project's rulebook is *"a prose rule in one skill file"*, so the literal reading
+  disqualifies nearly all of them — while § *When a record hardens into a standing rule* below tells you to
+  write a record for any such rule that grew a trade-off. **Both readings were available, and that is how
+  the bar gets applied inconsistently by the same person in one sitting.** Measured: a backfill on
+  2026-08-22 declined one rule as "reversible with one table edit" and kept a structurally identical one,
+  and a cold read caught it.
+- **The deciding question is therefore: what now exists that reversing the rule would not undo?** A
+  stamped frontmatter field, files migrated to a new home, history written under a policy, a directory
+  someone deleted content from — those make a rule expensive to reverse whatever its prose costs. A rule
+  that has produced nothing but its own wording is reversible, however long the wording is.
+- **Corollary, and it is the useful half:** rule *length* is not evidence. A 200-word bullet that produced
+  nothing fails; a one-line bullet that stamped a field across the tree passes.
+
 **Name the test that failed when you decline**, and decline out loud. A skipped record and an unnoticed
 one are indistinguishable afterwards, and the second is how the bar quietly stops applying.
 
@@ -127,7 +144,20 @@ load-bearing and easy to get backwards:
 
 A convention carrying its own trade-off inline is the inverse of this, and it is what happens when there
 is nowhere to put the reasoning: the rule list becomes an essay collection and `/verify-conventions` has
-to lint prose. Where you find one, the fix is to write the record and trim the line.
+to lint prose. Where you find one, the fix is to write the record and trim the line — **but only if the bar
+passes first.** This section assigns *where* reasoning goes; it never licenses a record. Run the bar, in its
+standing-rule reading above, before trimming anything.
+
+**When the bar fails, the reasoning stays in the bullet — and the bullet says so.** That is not a
+consolation prize, it is the correct outcome: a rule whose trade-off is worth stating but which produced
+nothing durable belongs in one place, whole. Add a short clause naming the test it failed
+(*"no record: reversing this costs two paragraphs and nothing durable was produced under it"*), so the next
+reader finds a decision instead of an omission — the same *decline out loud* discipline the bar demands.
+
+**Brief rationale stays inline either way.** `§ Output / prose rules` requires a non-obvious rule to state
+*why* it exists, briefly, and that never moves: a rule an agent does not understand is one it routes around.
+What moves out — and only when the bar passes — is the **trade-off**: the rejected alternatives and what was
+weighed against what. *Why this rule* stays; *why not the other options* goes to the record.
 
 ## What this skill does NOT do
 

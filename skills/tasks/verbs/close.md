@@ -103,11 +103,21 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      inline** (read the criteria, judge each against the diff, never against its checkbox) — same rule as
      `code-review`: never skip the gate because a skill didn't resolve. A consumer who added the skill
      folder without re-running an installer is the common cause.
-   - **The two axes are reported side by side and never merged or reranked into one list.** A change can
+   - **Every axis is reported side by side and never merged or reranked into one list.** A change can
      follow every documented standard while implementing the wrong thing, or do exactly what was asked
      while breaking the rulebook. One ordered list lets a convention warning sit above an unbuilt
-     requirement and read as the larger problem — so: two verdicts, each with its own findings and its
-     own severity ordering, and nothing sorted across them.
+     requirement and read as the larger problem — so: **one verdict per pass that ran**, each with its own
+     findings and its own severity ordering, and nothing sorted across them.
+     - **Count the verdicts off the passes that ran, never off a number written here.** Three run
+       unconditionally — standards, fidelity, correctness — and [[security-review]] makes a **fourth when
+       the diff touches a security surface**. A conditional pass still gets its own verdict when it runs,
+       and when it does not, the report says *not applicable* and why in one line: silence cannot be told
+       apart from a pass that was skipped.
+     - Why this is phrased as a rule rather than a count: an earlier version of this step hard-coded the
+       number, [[verify-intent]] later arrived as an additional axis, and the arity prose was never updated —
+       so the step's own heading listed more passes than its rule demanded verdicts, and a closer following
+       the text had documented permission to drop one. A hard-coded count is a fact that rots; the number of
+       passes that actually ran is not.
    - Run [[code-review]] on the working diff for correctness (the existing CLAUDE.md rule). The two are complementary: adherence vs. bugs. `code-review` is runtime-provided (a Claude Code built-in); **if this runtime has no such skill, do the pass inline** — read the diff and check for logic errors, unhandled edge cases, regressions, and security-sensitive changes; address blockers before `done`. Never skip the gate because the skill name didn't resolve.
    - **If the diff touches a security surface, run [[security-review]] on it too** — auth/session
      flows, data access queries, user-input or file/path handling, crypto, secrets/config, a new
@@ -125,9 +135,10 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 5c. **Merge decision — settle it BEFORE writing frontmatter** (PR-per-task projects; skip entirely
    when step 8's skip conditions apply — `--no-pr`, non-git, `integration: single-branch`, or not on a
    `task/TASK-NNN` branch):
-   - **State both gate verdicts in the question**, not one blended summary — *standards pass, intent
-     fail* is a different situation from *both pass*, and a merge decision taken from a single merged
-     verdict cannot tell them apart.
+   - **State every gate verdict in the question**, not one blended summary — *standards pass, intent
+     fail* is a different situation from *all pass*, and a merge decision taken from a single merged verdict
+     cannot tell them apart. That means each pass 5b actually ran, including [[security-review]] when the
+     diff reached it.
    - Ask (AskUserQuestion): *"Merge `task/TASK-NNN` into the default branch as part of this close?"*
      Default: **Yes, merge now.** Step 8 executes whichever answer you get; this step only decides,
      so that step 6 knows which status is true.

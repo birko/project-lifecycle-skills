@@ -9,9 +9,9 @@ _Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 32    |
+| todo         | —     | —       | 31    |
 | in-progress  | 2     | 3       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 4       | 39    |
 | cancelled    | 0     | 0       | 0     |
@@ -19,6 +19,10 @@ _Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_
+
+## In review (awaiting sign-off)
+
+- [TASK-069](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-069.md) — The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule (P1, agent)
 
 ## Tree
 
@@ -80,7 +84,7 @@ _None_
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [ ] [TASK-066](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-066.md) Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
-    - [ ] [TASK-069](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-069.md) The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
+    - [ ] [TASK-069](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-069.md) The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule 🔍 review
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [ ] [TASK-068](EPIC-002-close-gate-findings/TASK-068.md) The cold drill — write down the one test method that works on prose (P1)
