@@ -16,6 +16,31 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      [[feature]]'s `/feature pick` hands off once a feature is decomposed)
    - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5
 
+2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` — code
+   complete, sign-off pending — and report them **before** the candidate list. They are deliberately
+   **not** candidates (the `--status todo` default is right: a task awaiting sign-off is not work to
+   start), so the job here is to *surface* the debt, never to offer unfinished work as new work.
+
+   | Debt | Do |
+   |---|---|
+   | none | say nothing; go to step 3 |
+   | 1–2 | one line — `⚠ 2 in review awaiting sign-off: TASK-046, TASK-048` — then continue |
+   | 3 or more | the same line, then **ask**: *"Clear verification debt first?"* Default **yes**. The user may decline and pick anyway |
+
+   Count plus ids, not a full listing — the bare `/tasks` snapshot owns the readable version, and this
+   is a nudge, not a second dashboard. Use its words: a `review` task is **verification debt**, and it
+   *"should be closed (run the test → `done`) before new scope"* (SKILL.md § Lifecycle).
+
+   **Why this is here and not left to the snapshot.** `pick` is the natural way to resume a session, and
+   it was the one place the verification-debt rule was never stated — so a session opening with `/tasks
+   pick` got handed fresh work while code-complete tasks sat unverified, and never learned they existed.
+   Picking new work over unverified work is exactly what the rule exists to prevent.
+
+   **The threshold is a nudge, not a gate.** 3 is a starting point, tuned with use. Never block the pick:
+   debt is a judgement call — a user may have a good reason to push on — and a gate that cannot be
+   overridden gets worked around, which costs more than the reminder is worth. ([[fix-next]] already does
+   its own version of this at step 1, so a defect drain needs nothing added here.)
+
 3. **Collect candidates** — every TASK file whose frontmatter matches the filters. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
