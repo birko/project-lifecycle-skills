@@ -44,7 +44,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
    tasks/  (<mode>[: <provider details>])
 
    <E> epics · <S> stories · <T> tasks
-     ├─ todo:        <n>   (<p0>× P0, <p1>× P1, <p2>× P2)
+     ├─ todo:        <n>   (<n>× P1, <n>× P2, …)      ← one term per priority present, in order
      ├─ in-progress: <n>
      ├─ review:      <n>
      ├─ blocked:     <n>
@@ -74,7 +74,9 @@ Shared by `triage` and the bare-`/tasks` status snapshot. Single-pass enumerate 
    `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
 4. **Bucket** by level + status:
    - Counts: `{epics: {planned, in-progress, done, cancelled}, stories: {...}, tasks: {todo, in-progress, review, blocked, done, cancelled}}`
-   - Priority sub-breakdown for `tasks.todo`: `{P0, P1, P2}`
+   - Priority sub-breakdown for `tasks.todo`: **one bucket per priority actually present**, ordered P0→P1→P2→P3→…
+     Do **not** hard-code the set. A fixed `{P0, P1, P2}` silently drops any other value in use — measured on
+     this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
    - `inReviewTasks[]` — TASKs with `status: review` (code done, awaiting sign-off)

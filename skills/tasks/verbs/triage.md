@@ -50,6 +50,10 @@ This verb is also chained automatically by `new`, `pick`, `close`, `import`, `ex
    - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`
    - `{{TIMESTAMP}}` — current date/time, e.g. `2026-05-28 14:32`
    - counts placeholders — including `{{TK_REVIEW}}` (the `review` row is verification debt; never drop it from the table)
+   - `{{TODO_BY_PRIORITY}}` — the `todo` breakdown, as `` `todo` by priority: 4× P1 · 17× P2 · 1× P3. ``
+     **One term per priority actually present**, in order, never a fixed set (see the Collection pass note).
+     **Suppress zeros** — a priority with no tasks is omitted, not shown as `0×`, matching the stdout snapshot.
+     **Omit the whole line** when there are no `todo` tasks, rather than rendering an empty tail.
    - `{{INPROGRESS_LIST}}` (or "_None_" if empty)
    - `{{INREVIEW_SECTION}}` (entire section omitted if no `review` tasks)
    - `{{TREE_VIEW}}`

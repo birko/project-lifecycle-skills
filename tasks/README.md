@@ -9,12 +9,14 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 23    |
+| todo         | —     | —       | 22    |
 | in-progress  | 2     | 5       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 51    |
+| done         | 0     | 4       | 52    |
 | cancelled    | 0     | 0       | 0     |
+
+`todo` by priority: 4× P1 · 17× P2 · 1× P3.
 
 ## In progress now
 
@@ -41,16 +43,16 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (19/40 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (20/40 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (8/11)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (9/11)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
     - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
     - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-030 `close`'s single-branch SHA backfill instructs an impossible amend
-    - [ ] [TASK-039](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-039.md) The dashboard template has no slot for the todo-by-priority breakdown
+    - [x] TASK-039 The dashboard template has no slot for the todo-by-priority breakdown
     - [x] TASK-041 `intake --adopt` cannot adopt a loose backlog — it assumes the epic already owns its tasks
     - [x] TASK-042 Nothing says where a new task is filed, so findings land where nothing can rank them
     - [x] TASK-057 Four summaries that contradict the body they summarise
