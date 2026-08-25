@@ -97,7 +97,10 @@ exactly these rules.
 ### Framework / stack
 - **Markdown + YAML frontmatter only.** A skill is prose an agent reads; it has no runtime, no build step, and no dependencies. Don't introduce a language, package manager, or generator without an ADR.
 - **Frontmatter is mandatory** on every `SKILL.md`: `name` (matching the folder) and `description` (carrying the trigger phrases users actually type, including the Slovak ones this team uses).
-- **Cross-skill references use `[[skill-name]]`**, never a bare path — the link is the contract, and CI resolves it.
+- **Cross-skill references use `[[skill-name]]`**, never a bare path — the link is the contract. **CI resolves it inside `skills/` and `skills-pi/`, and nowhere else.** That scope is deliberate, not an oversight:
+  - **Elsewhere the form is documentation, not a contract.** `tasks/`, `docs/` and this file all use it for readability, and a broken one there costs a reader one lookup rather than breaking a skill at runtime. Write it freely; do not rely on it being checked.
+  - **Widening the check was measured and rejected.** Outside the two trees: **170 wikilinks, 24 unresolved, and every one of the 24 is a syntax placeholder** — `[[wikilink]]`, `[[link]]`, `[[skill-name]]`, `[[name]]`, `[[not-a-skill]]` — written by prose that has to name the syntax to discuss it. Zero are genuine broken references. A check at 24:0 gets muted, and a muted check is worth what an unrun one is. (First measured at 19:1 when `[[domain]]` was still a forward reference; that one resolved when the skill shipped, taking the ratio to 24:0.)
+  - **Three names resolve in one runtime only, and that is not a defect either.** `[[review]]`, `[[code-review]]` and `[[security-review]]` exist as folders in `skills-pi/` alone — Claude Code provides them as built-ins, so installing copies would shadow the natives (see § Architecture). A link to one is correct in both runtimes and *resolvable as a folder* in only one.
 
 ### Output / prose rules
 The skills *are* the product, so their prose is the user interface. This subsection is what
