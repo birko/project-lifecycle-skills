@@ -9,11 +9,11 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 29    |
+| todo         | —     | —       | 28    |
 | in-progress  | 2     | 5       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 44    |
+| done         | 0     | 4       | 45    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -41,7 +41,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (12/39 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (13/39 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (4/11)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -66,11 +66,11 @@ _None_
   - STORY-014 `specs` — two gates that pass without checking — in-progress (1/2)
     - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (2/6)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (3/6)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [ ] [TASK-043](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-043.md) The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
-    - [ ] [TASK-045](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-045.md) A flag one skill passes is never checked to exist in the receiving verb
+    - [x] TASK-045 A flag one skill passes is never checked to exist in the receiving verb
     - [x] TASK-058 STORY-015's theme ranks the repo's only gate last
     - [ ] [TASK-071](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-071.md) The wikilink contract says "CI resolves it", and in `docs/` that is false
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (2/9)

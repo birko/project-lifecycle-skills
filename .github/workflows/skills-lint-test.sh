@@ -11,7 +11,7 @@ LINT="$(pwd)/.github/workflows/skills-lint.sh"
 WORK=$(mktemp -d); trap 'rm -rf "$WORK"' EXIT
 pass=0; fail=0
 
-# Check 4 (install roots) reads $HOME by default. Point it at nothing so every case below is
+# Check 5 (install roots) reads $HOME by default. Point it at nothing so every case below is
 # hermetic: a suite whose result depends on which skills the developer happens to have installed
 # is not a test. The install-root cases override these per case.
 export CLAUDE_SKILLS_ROOT="$WORK/no-such-root" PI_SKILLS_ROOT="$WORK/no-such-root"
@@ -68,16 +68,51 @@ case_silent() { # name, mutation, substring that must NOT appear
   build "$d"; "$mut" "$d"
   out=$(roots_run "$d"); rc=$?
   # Require the check to have RUN. A bare "must not contain" passes trivially when check 4 is absent
-  # altogether, which is the vacuous pass this repo has already been bitten by once — so these guards
+  # altogether, which is the vacuous pass this repo has already been bitten by once (check 5 here) — so these guards
   # would have had power only against a buggy check, never against a deleted one.
-  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- '== 4. install roots' && ! printf '%s' "$out" | grep -qF -- "$pat"; then
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- '== 5. install roots' && ! printf '%s' "$out" | grep -qF -- "$pat"; then
     printf '  ok    %s\n' "$name"; pass=$((pass+1))
   else
-    printf '  FAIL  %s (exit %s; wanted check 4 to run and output NOT to contain: %s)\n' "$name" "$rc" "$pat"; fail=$((fail+1))
+    printf '  FAIL  %s (exit %s; wanted check 5 to run and output NOT to contain: %s)\n' "$name" "$rc" "$pat"; fail=$((fail+1))
   fi
 }
 
 m_noop()      { :; }
+# check 4 — cross-skill flags. alpha's router tells you to run beta's verb with a flag; the pair of
+# mutations is the point: the first must fail, the second must not, or the check is either blind or
+# indiscriminate.
+m_flagbad()   { printf -- '
+Run `/beta go --nosuch` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+m_flagok()    { printf -- '
+Run `/beta go --real` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+# The receiving side may declare its flags in a TABLE rather than bullets — tasks/verbs/import.md does.
+# Keying on an "## Args" bullet list reported import's real flags as missing, so this pins the whole-file read.
+m_flagtable() { printf -- '
+Run `/beta go --tabled` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+| Invocation | Purpose |
+|---|---|
+| `/beta go --tabled` | a thing |
+' > "$1/skills/beta/verbs/go.md"; }
+# A flag aimed at something that is not a skill must be ignored, not reported.
+m_flagforeign() { printf -- '
+Run `/usr/bin/thing go --whatever` first.
+' >> "$1/skills/alpha/SKILL.md"; }
 m_miscased()  { printf '\nSee [[Beta]].\n' >> "$1/skills/alpha/SKILL.md"; }
 m_underscore(){ printf '\nSee [[jira_task]].\n' >> "$1/skills/alpha/SKILL.md"; }
 m_bogus()     { printf '\nSee [[no-such-skill]].\n' >> "$1/skills/alpha/SKILL.md"; }
@@ -103,6 +138,13 @@ case_is "unknown wikilink"                 1 m_bogus
 case_is "name does not match folder"       1 m_mismatch
 case_is "name only inside a fenced block"  1 m_fencename
 case_is "missing description"              1 m_nodesc
+
+printf 'Check 4 — cross-skill flags
+'
+case_is   "flag not declared in receiving verb"  1 m_flagbad
+case_is   "flag declared in receiving verb"      0 m_flagok
+case_is   "receiver declares flags in a table"   0 m_flagtable
+case_is   "flag aimed at a non-skill path"       0 m_flagforeign
 case_is "skill folder with no SKILL.md"    1 m_noskill
 case_is "broken link in a companion doc"   1 m_badlink
 case_is "a whole skill tree is missing"    1 m_notree
@@ -135,7 +177,7 @@ case_is "tilde fence"                      0 m_tilde
 case_is "root-relative link"               0 m_rootrel
 case_is "stale .lint-fail in the repo"     0 m_sentinel
 
-# --- check 4: install roots (advisory) ---
+# --- check 5: install roots (advisory) ---
 r_absent()  { :; }                                    # roots/ is never created
 r_empty()   { mkdir -p "$1/roots/claude" "$1/roots/pi"; }
 r_partial() { mkdir -p "$1/roots/claude" "$1/roots/pi"

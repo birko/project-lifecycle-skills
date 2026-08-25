@@ -175,7 +175,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   `/fix-next`), and the ranking paragraph names the key that actually broke the tie. Degeneracy is normal;
   silent degeneracy is the defect. Trade-off and rejected alternatives:
   [ADR 0008](docs/adr/0008-declare-a-ranking-key-rather-than-infer-it.md).
-- **A format one skill reads is a contract the writing skill must state too.** When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
+- **A format one skill reads is a contract the writing skill must state too**, and where the contract is a **flag**, the lint enforces it (check 4: every `/skill verb --flag` in `skills/` must name a flag the receiving verb declares — existence only, never semantics). When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
 - **A layer artifact that would lie when empty is declared `(lazy)`, and nothing creates it.** Most of the
   universal layer is created on sight, so the exception needs saying: where an empty instance would make a
   **claim** rather than hold a place — an empty `docs/glossary.md` asserts the vocabulary was examined and
@@ -209,7 +209,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   copy — MSYS `ln -s` copies unless `winsymlinks` is set, and the repo's Windows installer creates
   junctions anyway, so the fallback tests the real artifact rather than a POSIX stand-in. Keep the
   POSIX path first so CI exercises it, and keep the fallback guarded on `cygpath` being present.
-- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, 36 cases over a throwaway fixture, run by CI *before* the lint. It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, **40** cases over a throwaway fixture, run by CI *before* the lint. (The count has moved four times — 16 → 25 → 36 → 40 — which is TASK-029's whole argument: nothing records what any of them pin, so a case deleted in a refactor is indistinguishable from one that never existed.) It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 

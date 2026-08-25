@@ -100,7 +100,39 @@ find skills skills-pi -name '*.md' ! -path '*/templates/*' | sort | while read -
   done
 done
 
-printf '== 4. install roots (advisory) ==\n'
+printf '== 4. cross-skill flags ==\n'
+# A skill that tells you to run another skill's verb WITH a flag is asserting that flag exists.
+# Nothing enforced that: rename or typo the flag on either side and the caller keeps passing an
+# argument the receiver silently ignores. Measured when this was written: 30 such invocations, all
+# of the form `/skill verb --flag`, and 0 mismatches — so this check exists to keep it that way
+# rather than to clear a backlog.
+#
+# Existence only, never semantics: whether the receiver does the right thing with the flag is not
+# checkable here. The receiving side is read WHOLE rather than from an "## Args" block, because two
+# declaration styles are in use — bullets in most verbs, and an invocation table in
+# tasks/verbs/import.md. Keying on bullets alone reported import's real flags as missing.
+#
+# The skill name is NOT a hard-coded list. An alternation of today's skills would go quietly stale
+# the day a skill is added — the restated-list defect this repo lints for elsewhere — and could not be
+# exercised on a fixture whose skills are named something else. Match any `/word verb --flag` and let
+# the existence of `skills/<word>/` decide whether it is one of ours; a stray `/usr/bin/x y --z` in
+# prose resolves to no skill folder and is skipped.
+grep -rnoE '/[a-z][a-z-]* [a-z][a-z-]* --[a-z-]+' skills/ 2>/dev/null \
+| while IFS= read -r hit; do
+  src=${hit%%:*}
+  inv=${hit#*:}; inv=${inv#*:}
+  skill=$(printf '%s' "$inv" | sed -E 's|^/([a-z-]+).*|\1|')
+  verb=$(printf '%s' "$inv"  | sed -E 's|^/[a-z-]+ ([a-z-]+) .*|\1|')
+  flag=$(printf '%s' "$inv"  | grep -oE '\-\-[a-z-]+' | head -1)
+  [ -n "$flag" ] || continue
+  recv="skills/$skill/verbs/$verb.md"
+  [ -e "$recv" ] || recv="skills/$skill/SKILL.md"
+  [ -e "$recv" ] || continue
+  grep -qF -- "$flag" "$recv" || \
+    suberr "$src passes $flag to /$skill $verb — not declared in $recv"
+done
+
+printf '== 5. install roots (advisory) ==\n'
 # ADVISORY — this check never touches `fail` and can never change the exit code. Two reasons, and
 # the first is the real one: a missing junction is fixed by re-running an installer, which lives
 # OUTSIDE this repo, so no diff can clear the finding and a repo gate must not block on it. Second,
