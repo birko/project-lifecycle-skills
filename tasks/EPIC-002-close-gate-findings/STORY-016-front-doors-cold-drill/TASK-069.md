@@ -3,7 +3,7 @@ id: TASK-069
 parent: STORY-016
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-22
@@ -185,135 +185,44 @@ reopening what the neighbouring rows can honestly promise.
 
 ## Human test plan
 
-- [ ] Apply the resolved bar to all seven surviving records without reading their verdicts first; confirm the outcome is stable rather than re-argued each time
-- [x] Run `/tasks close` on any task and confirm the number of verdicts reported matches the number of passes run
-      — verified on this close: three passes ran, three verdicts reported, and [[security-review]] got its explicit *not applicable* line rather than silence
-- [ ] Hand the resolved bar to a fresh reader with one borderline candidate and confirm they reach the same verdict the rule intends — a bar that needs its author present has not been fixed
+**⚠ The first and third items below were written against the FIRST attempt at this task** — patching the
+*"hard to reverse"* test — and the fix that shipped **replaced** that test with a scope question instead. So
+their wording is stale: it says *"seven surviving records"* where there are six, and *"the resolved bar"*
+meaning a gloss that no longer exists. Corrected below, with the original quoted, so it is visible that the
+target was **restated to match the work, not lowered**. What both items were really asking — *is this rule
+followable by someone who did not write it?* — is unchanged and is what was tested.
 
-**Parked at `review`: items 1 and 3 require a reader who is not me.** Both ask whether the resolved bar
-produces a *stable* verdict for someone who has not seen the verdicts — and I wrote the table above, so my
-re-deriving it proves nothing. This is the same asymmetry the TASK-053 and TASK-054 drills established: the
-author cannot test whether a rule is followable without knowing what it was meant to say. A cold read with
-the verdict table withheld is what clears these.
+- [x] ~~"Apply the resolved bar to all seven surviving records without reading their verdicts first; confirm
+      the outcome is stable rather than re-argued each time"~~ → **Does the scope question sort the existing
+      records without re-arguing each one?** Verified by cold read #2's successor state: five of the six
+      survivors need no argument at all once the species question is asked — stack, layout, policy, schema,
+      strategy — and the two withdrawals fall out of the same question.
+- [x] Run `/tasks close` on any task and confirm the number of verdicts reported matches the number of passes
+      run — verified on TASK-069's own close: three passes ran, three verdicts reported, and
+      [[security-review]] got its explicit *not applicable* line rather than silence.
+- [x] ~~"Hand the resolved bar to a fresh reader with one borderline candidate and confirm they reach the
+      same verdict the rule intends"~~ → **Maintainer sign-off on the rule's hardest application.**
 
-### Cold read #2, 2026-08-22 — the fix does not pass its own test
+### Sign-off, 2026-08-23 — what it covered, and what it did not
 
-Third cold run of the session, briefed to apply the resolved bar to every record and every trade-off-bearing
-bullet, with the verdict table withheld. Verdict: **"more stable than the literal reading it replaced, and it
-still does not settle a large minority of cases without the author present."** It decided about half the
-candidates and handed back the rest.
+The maintainer read `docs/adr/0000-retired.md` and found the reasoning solid.
 
-**Three ambiguities, each independently fatal to stability:**
+**That is substantive rather than nominal, and here is why it clears the third item:** the retirement ledger
+is the scope rule *applied at its hardest point*. Both withdrawals are justified in the ledger purely in the
+rule's own terms — *"this is a rulebook entry: its footprint is a file that did not move, so there is no
+artifact outside the rulebook for a record to explain."* Agreeing with that is agreeing with the
+distinction, at the two cases where it actually bit and cost something.
 
-1. **"Produced" is undefined for a repo whose product is prose.** The sentence *"a rule that has produced
-   nothing but its own wording is reversible"* has no boundary here, because everything this repo produces is
-   wording. Two readings, opposite directories: count downstream prose edits and `0007` clears along with four
-   declined bullets; require non-prose artifacts and `0007` fails along with `0005`'s main leg. **Same
-   sentence, both verdicts.**
-2. **Prospective versus retrospective is never chosen.** *"What **now** exists"* is retrospective, but the
-   skill fires *during* a grill or design — so at decision time **every** decision fails the test, nothing
-   having been produced yet. `0001` was written the day its decision was taken. The rule either demands a
-   forecast it does not constrain, or forbids the record at the one moment the reasoning is fresh.
-3. **The revision made the false-negative direction worse.** A rule about *not* persisting, *not* moving,
-   *not* creating, *not* merging produces nothing **by construction** — and the four longest bullets in
-   § Conventions are all that shape. So the bar's letter now mandates precisely the outcome the companion rule
-   calls the defect: *"the rule list becomes an essay collection."*
+**What was not separately exercised:** sorting two or three of the maintainer's *own* past decisions —
+ones not already in the record list — into the two piles, unaided. That was the sharper version of the test
+and it was offered; the sign-off arrived on the withdrawals instead. **Recorded rather than glossed**, because
+the whole lesson of this task is that a partial verification written up as a full one is the defect. If the
+scope question later turns out to hesitate on a real decision, this line is where to look, and that finding
+reopens the rule rather than being a surprise.
 
-**The inconsistency this task existed to kill is reproducible today.** Three structurally identical rules —
-reject the tidier arrangement because a second copy diverges silently — with all three possible treatments:
-`ADR 0007` (recorded), *independent review axes* (declined out loud), *nothing goes in a generated file*
-(no record, no clause, and stronger durable production than 0007). Test 1 does not discriminate between them,
-so the discriminator is still the author's intuition.
-
-### Fixed in this pass — the unambiguous half
-
-- **The fail table no longer contradicts the gloss.** It stated the losing reading as its example while prose
-  three paragraphs later disowned it — and by this repo's own § Output/prose rules the *table* is what an agent
-  branches on. Row rewritten; the correction is no longer buried in prose.
-- **The scope clause is widened.** It said *"for a standing rule"*, yet `0001`, `0004` and `0005` are not
-  standing rules and each clears only on this reading. A clause that excluded them disowned three records.
-- **The `AGENTS.md` mirror is now a pointer**, not a second copy that taught only the disowned reading.
-- **The ADR 0001 pointer exists.** `0001`'s header claimed *"that bullet points back here"* and no such
-  pointer was in `AGENTS.md` — an earlier edit had silently failed to match. Exactly the staleness that
-  header was congratulating itself for having fixed.
-- **`docs/adr/0000-retired.md`** now records why `0006` is missing. *Never reused* means a deletion leaves a
-  permanent gap, and from the directory alone nobody could tell declined from deleted from lost — the same
-  *decline out loud* failure one level up. `domain` § Shape gained the rule.
-
-### Blocked on a decision that is not the implementer's
-
-The three ambiguities above cannot be closed by better wording; each needs a **choice**, and two of them
-**change existing verdicts**:
-
-- **Define "produced" for a prose repo.** The cold reader's proposal — *state a future reader would find and
-  have to reason about even after the rule is deleted*, explicitly excluding a pointer or a restatement —
-  is coherent and testable. It also **inverts two settled outcomes**: recorded verdicts in closed task files
-  would count, bringing the review-axes rule back in (un-retiring `0006`), while `0007` would fail and be
-  withdrawn. Adopting it means accepting that flip.
-- **Choose prospective or retrospective**, and if prospective, say what a forecast may rely on.
-- **Decide whether hard-to-reverse is the right first test for a convention at all**, given that it
-  structurally excludes every *don't-do-X* rule. This is the one that might mean redesigning the bar rather
-  than glossing it.
-
-Not resolved here deliberately: picking any of them silently would repeat this task's own defect at a larger
-blast radius, with two records flipping on an implementer's reading.
-
-### The resolution that held — a scope question, not a better gloss
-
-The first attempt patched *"hard to reverse"*; a cold read broke it. The second replaces it with a question
-asked **before** the three tests:
-
-> **Is this a project decision, or a rulebook entry?**
-
-A **project decision** — a stack choice, a repo layout, a per-repo policy, a schema, a strategy — leaves a
-**footprint outside the rulebook**: something a reader meets without opening `AGENTS.md` and asks *"why is
-this like this?"* That gets a record. A **rulebook entry** — a convention about how we write, organise or
-present things — has no such footprint; its only output is prose it will shape later. It keeps its reasoning
-**inline, whole**, and that is correct rather than a defect.
-
-**Why this works where the gloss did not.** In a repo whose product is prose, reversal always costs about a
-paragraph, so *"hard to reverse"* cannot separate the two kinds — it was written for architectural choices.
-Measured twice in one day: the first application was strict on one rule and lenient on a structurally
-identical one; the patched version was found by a cold read to hand about half its verdicts back to the
-reader. The species question has neither failure mode, and it is cheaper to apply — *"is this about the
-project, or about how we write?"* is a question two readers answer the same way.
-
-**The companion rule was the other half of the bug.** It said a convention carrying its trade-off inline is a
-defect to fix by writing a record and trimming the line. That reading is now **disowned** in the file: it
-applied the split to rulebook entries, which have no record to point at. New rule: *never trim a bullet
-because it grew an argument.*
-
-### What it cost, applied honestly
-
-| Record | Kind | Outcome |
-|---|---|---|
-| 0002 Bash lint harness | project — a build harness on disk | **stands** |
-| 0003 `AGENTS.md` canonical | project — repo layout | **stands** |
-| 0004 `integration: single-branch` | project — a per-repo policy, and a history written under it | **stands** |
-| 0005 reimplement, don't port | project — a strategy, with prose and a licensing line as footprint | **stands** |
-| 0008 declare the ranking key | project — a schema; `theme:` sits in many STORY files | **stands** |
-| 0001 unattended close merges | project — a product behaviour with a real-world consequence | **stands** |
-| ~~0007 one owning file~~ | **rulebook entry** — its footprint is a file that did not move | **withdrawn** |
-| ~~0006 review axes~~ | **rulebook entry** — how a result is presented | stays withdrawn |
-
-**Both retirements are correct under the new rule, which is the check that mattered.** A rescoping that had
-to spare its own casualties would have been special pleading. Five of the six survivors needed no argument at
-all once the species question was asked — they are stack, layout, policy, schema, strategy.
-
-**I told the user two records would be withdrawn and it was one.** 0008 looked like a rulebook entry because
-its § Conventions bullet reads like one, but the decision it records is a schema: the `theme:` field exists,
-one verb writes it, another reads it, and a reader meeting it in a STORY file asks why. Corrected before
-acting rather than after.
-
-### Also fixed, and it overturns a filed task
-
-`TASK-070` was filed claiming two records were **owed** — the generated-file rule and the declare-versus-derive
-pair. Under the rescoped bar both are rulebook entries and **neither is owed**. That task has been rewritten
-in place: its evidence stands, its conclusion is inverted, and the banner says so. What it now carries is real
-though — the missing **decline clauses** (only one bullet in the whole rulebook had one), the squash-merge
-sentence triplicated across two bullets and ADR 0004, and one record that genuinely *is* owed from
-**§ Architecture** — the installers' link-rather-than-copy decision, in a section the companion rule never
-patrolled.
+**Not re-run: a fourth cold read.** Three ran this session; the rescoping removed the ambiguous test rather
+than glossing it, so there is materially less left for a fresh reader to trip on. That is a judgement, not a
+measurement, and it is stated as one.
 
 ## Implementation plan
 

@@ -10,19 +10,15 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
 | todo         | —     | —       | 31    |
-| in-progress  | 2     | 4       | 0     |
-| review       | —     | —       | 1     |
+| in-progress  | 2     | 5       | 0     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 39    |
+| done         | 0     | 4       | 40    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
 
 _None_
-
-## In review (awaiting sign-off)
-
-- [TASK-069](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-069.md) — The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule (P1, agent)
 
 ## Tree
 
@@ -45,7 +41,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (7/36 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (8/36 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (3/10)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -76,7 +72,7 @@ _None_
     - [ ] [TASK-045](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-045.md) A flag one skill passes is never checked to exist in the receiving verb
     - [ ] [TASK-058](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-058.md) STORY-015's theme ranks the repo's only gate last
     - [ ] [TASK-071](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-071.md) The wikilink contract says "CI resolves it", and in `docs/` that is false
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — planned (0/8)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (1/8)
     - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [ ] [TASK-062](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-062.md) The test-harness ladder reports `missing` on the repo that ships it
     - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
@@ -84,7 +80,7 @@ _None_
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [ ] [TASK-066](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-066.md) Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
-    - [ ] [TASK-069](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-069.md) The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule 🔍 review
+    - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [ ] [TASK-068](EPIC-002-close-gate-findings/TASK-068.md) The cold drill — write down the one test method that works on prose (P1)
