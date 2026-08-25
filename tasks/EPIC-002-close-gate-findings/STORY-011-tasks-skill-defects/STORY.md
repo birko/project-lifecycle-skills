@@ -1,7 +1,7 @@
 ---
 id: STORY-011
 parent: EPIC-002
-# status: planned | in-progress | done | cancelled
+# status — one of: planned, in-progress, done, cancelled
 status: in-progress
 created: 2026-08-20
 # theme: review-intake stories only — this story's slug on intake's subject ladder.

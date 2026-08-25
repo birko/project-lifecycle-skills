@@ -2,7 +2,7 @@
 id: TASK-041
 parent: STORY-011
 feature: null
-# status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
+# status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
 status: done
 priority: P2
 assignee: agent

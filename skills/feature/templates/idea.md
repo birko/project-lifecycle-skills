@@ -2,7 +2,7 @@
 id: {{ID}}
 created: {{CREATED}}
 owner: {{OWNER}}
-# status: idea | review (built, sign-off pending) | done | dropped | superseded
+# status — one of: idea, review (built, sign-off pending), done, dropped, superseded
 status: {{STATUS}}
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: {{ID}}
 parent: {{PARENT}}
-# status: planned | in-progress | done | cancelled
+# status — one of: planned, in-progress, done, cancelled
 status: {{STATUS}}
 created: {{CREATED}}
 # theme: review-intake stories only — this story's slug on intake's subject ladder.

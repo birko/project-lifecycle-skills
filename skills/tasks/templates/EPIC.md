@@ -1,6 +1,6 @@
 ---
 id: {{ID}}
-# status: planned | in-progress | done | cancelled
+# status — one of: planned, in-progress, done, cancelled
 status: {{STATUS}}
 created: {{CREATED}}
 owner: {{OWNER}}

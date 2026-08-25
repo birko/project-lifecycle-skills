@@ -1,7 +1,7 @@
 ---
 id: STORY-005
 parent: EPIC-001
-# status: planned | in-progress | done | cancelled
+# status — one of: planned, in-progress, done, cancelled
 status: done
 created: 2026-08-18
 ---
