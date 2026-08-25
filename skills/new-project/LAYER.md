@@ -108,11 +108,28 @@ So detect by **evidence**, not by path:
 
 | Row | Evidence, in order |
 |---|---|
-| Test harness | a test runner in the manifest (xunit, vitest, pytest, `go test`); then `*.Tests`/`*_test.*`/`*.spec.*`/`*Test*.cs` files **anywhere**; then a runner config. Sibling `X.Tests` projects are *the* .NET convention — a missing `tests/` folder means nothing on its own |
+| Test harness | **what the gate actually runs** — read the CI workflow (or task-runner target: a `Makefile`, `justfile`, `package.json` script) and see what it invokes; a repo's suite is whatever its gate executes, whatever the file is called. Then a test runner in the manifest (xunit, vitest, pytest, `go test`); then `*.Tests`/`*_test.*`/`*.spec.*`/`*Test*.cs` files **anywhere**; then a runner config. Sibling `X.Tests` projects are *the* .NET convention — a missing `tests/` folder means nothing on its own |
 | Rulebook | whatever [[verify-conventions]]'s ladder accepts. The two skills must agree on what a rulebook is, rather than each guessing separately |
 | Docs | `docs/` is a convention, not a requirement — architecture notes may live in the README, a `wiki/`, or `Documentation/` |
 | Changelog | `CHANGELOG.md`, but equally `HISTORY.md`, `NEWS.md`, or a releases section in the README |
 | Task tracking | `tasks/`, but a repo may track work in GitHub Issues or Jira alone — that is *tracking*, not an absence |
+
+**Why the test-harness row leads with observed execution rather than a name.** The other three entries are
+**declarations of intent** — a manifest says a runner *should* exist, a filename says a file *is* a test.
+Reading the gate is **observed execution**: if CI invokes it, the suite exists, whatever anyone called it.
+That direction cannot false-positive, which is why it goes first.
+
+It is also the entry whose absence produced the worst possible instance. **Measured on this repo, 2026-08-23:**
+no manifest, and `.github/workflows/skills-lint-test.sh` matches **none** of the four globs — hyphen-`test`,
+not underscore; `.sh`, not a test extension. Applied literally the ladder returned **`missing`** for the test
+harness of the repo that *defines the ladder*, with a 36-case suite that CI runs before every lint. That is
+the **false `missing`** this whole section calls the dangerous direction — fill acts on the survey, so
+`missing` would have invited [[populate-tests]] to wire a runner over a working suite.
+
+**The generalisation is deliberate, not a glob bolted on for `.sh`.** What the new entry covers is *any*
+project whose checks are invoked rather than named — shell suites, `Makefile` targets, `just` recipes, npm
+scripts, a compiled test binary called from CI. Adding `*-test.sh` to the glob list would have fixed this
+repo and left the next non-conventional stack to rediscover it.
 
 **Report the state precisely.** The distinctions matter, the number of them does not — this list
 grows as real repos turn up conditions it cannot yet express:

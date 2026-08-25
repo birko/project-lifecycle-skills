@@ -41,6 +41,17 @@ reminded about.
 The same blind spot hits any docs-first or config-first repo — a documentation site, a Terraform
 module collection, a prompt library, an ADR archive.
 
+**Sibling, not duplicate: TASK-062** (closed 2026-08-23) fixed the *same blind spot* in a different file —
+`LAYER.md`'s test-harness evidence ladder returned `missing` for this repo's own script suite, because every
+entry asked for a declaration (manifest, filename, config) and none asked what the gate actually runs.
+
+**They stay separate deliberately.** That was `adopt-project`'s survey deciding an artifact is absent; this is
+`roadmap`'s DV10 deciding a repo has no code worth speccing. Different consumer, different failure (a false
+`missing` that invites a fill, versus a check that never fires), different file. What they share is the
+premise — *detection written for compiled languages, applied to a repo whose product is prose*. TASK-062's
+fix is worth reading first: it generalised to **observed execution** rather than adding a glob, and the same
+move may apply here (what does the repo's gate treat as source?).
+
 ## Acceptance criteria
 
 - [ ] DV10's code-detection test recognises a repo whose tracked source is neither a `src/` tree nor a build manifest. What counts as "real code" is the judgement to make explicitly — a candidate is *tracked files that the spec map's own `ignore:` list does not exclude*, which for this repo is `skills/**` and nothing else

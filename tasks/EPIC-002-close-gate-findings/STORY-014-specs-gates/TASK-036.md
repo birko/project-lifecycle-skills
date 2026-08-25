@@ -51,6 +51,26 @@ anchoring to column 0 is not enough, because a fenced example sits at column 0 t
 scoped to the frontmatter between the first two `---`. Cheap to hit, silent when hit, and it happened on
 the first real attempt.
 
+**Second measured instance, 2026-08-23 — and it is the WRITE side, which this task does not yet cover.**
+A `/fix-next` run set its pick to `in-progress` with an unanchored substring replace of
+`"status: todo" -> "status: in-progress"`, first occurrence. The first occurrence in the file is **the
+comment**, so it rewrote the enum to `# status: in-progress | in-progress | …` and left the real
+`status: todo` untouched. The task then ran to completion — fix, verification, a full `## Outcome` — while
+its frontmatter still said `todo`, and a later close flipped the comment again rather than the field. Caught
+only because a task count came out one short.
+
+Two things this adds to the reading-side defect above:
+
+- **The hazard is symmetric.** A leading comment that contains every legal value is a trap for anything
+  doing a first-match *write*, not just a first-match read, and the write failure is worse: a read that
+  parses `todo` off the comment produces a wrong answer, while a write silently succeeds against the wrong
+  line and leaves the record claiming one state while the work claims another.
+- **Anchoring alone is what saved every other edit in that session.** `sed -i 's/^status: todo$/…/'` matched
+  the real line each time, because `^`/`$` exclude a line starting with `#`. The one edit that used an
+  unanchored substring is the one that broke. So the mitigation is cheap and mechanical — the question this
+  task should answer is whether the **template** should stop carrying an enum comment that shadows its own
+  field, rather than every reader and writer being expected to anchor.
+
 **That is a reachable mistake, not a mandated one** — which is exactly why the fix is worth doing and
 why it is P2 rather than P1. Every task file in this repo and in any repo scaffolded from the template
 carries the comment line, so the trap is always armed; it just needs someone to write the naive grep.

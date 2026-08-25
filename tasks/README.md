@@ -13,7 +13,7 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 2     | 5       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 41    |
+| done         | 0     | 4       | 42    |
 | cancelled    | 0     | 0       | 0     |
 
 ## In progress now
@@ -41,7 +41,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (9/36 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (10/37 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (3/10)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -72,14 +72,15 @@ _None_
     - [ ] [TASK-045](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-045.md) A flag one skill passes is never checked to exist in the receiving verb
     - [x] TASK-058 STORY-015's theme ranks the repo's only gate last
     - [ ] [TASK-071](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-071.md) The wikilink contract says "CI resolves it", and in `docs/` that is false
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (1/8)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (2/9)
     - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
-    - [ ] [TASK-062](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-062.md) The test-harness ladder reports `missing` on the repo that ships it
+    - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
     - [ ] [TASK-064](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-064.md) What a minimal repo gets: step 3 and the templates disagree, and one token has no source
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [ ] [TASK-066](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-066.md) Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
+    - [ ] [TASK-072](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-072.md) `populate-tests adopt` cannot wire a harness for a project with no package manager
     - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
