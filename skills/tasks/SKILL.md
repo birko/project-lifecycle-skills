@@ -23,6 +23,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `spawn` | Work discovered mid-flight → its own task, placed under the right parent, wired into the origin's plan, reconciled with the feature ledger | [verbs/spawn.md](verbs/spawn.md) |
 | `intake` | A review/audit/spec-harvest **pass** → a drainable backlog: one EPIC (`kind: review-intake`), STORYs by subject theme, one TASK per fix group | [verbs/intake.md](verbs/intake.md) |
 | `close` | Merge gate — task → `done`, or `review` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
+| `move` | Re-home a task/story under a different parent — file **and** `parent:` together, with both sides' parents rolled up | [verbs/move.md](verbs/move.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
 | `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
 | `import` | Import from file / GH issue / Jira ticket | [verbs/import.md](verbs/import.md) |

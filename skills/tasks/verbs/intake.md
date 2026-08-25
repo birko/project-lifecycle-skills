@@ -32,7 +32,8 @@ different source of work.
 - `--epic <EPIC-NNN>` — file into an existing `kind: review-intake` epic instead of creating one
   (a second pass over the same scope, or a review split across sessions).
 - `--adopt <EPIC-NNN>` — no new findings; stamp an existing hand-built review epic so it becomes
-  drainable (see Edge cases). Runs steps 7–8 only.
+  drainable (see Edge cases). Runs steps 7–8 only. **Requires the epic to already own the tasks** — if the
+  findings are filed but *loose*, re-home them first with [`move`](move.md); see the loose-backlog edge case.
 - `--dry-run` — print the proposed tree and stop. Nothing written.
 
 ## Steps
@@ -134,6 +135,20 @@ different source of work.
 
 ## Edge cases
 
+- **Findings already filed as tasks, but with no epic to stamp** — the case that falls between this verb's
+  two entrances, and the most common shape a real backlog arrives in. `--adopt` needs an epic that owns the
+  tasks; `intake` proper *creates* tasks from findings. Loose tasks are neither: correctly written, and
+  outside [[fix-next]]'s pool entirely (SKILL.md § *A task outside a pool*). **Measured on this repo: 17 open
+  loose defect tasks, pool = 2.**
+  **Two steps, in this order, and neither is folded into the other:**
+  1. `/tasks new epic` for the pass if none exists, then [`/tasks move <ids> --to EPIC-NNN`](move.md) — that
+     verb moves the file *and* `parent:` together and rolls up both sides' parents.
+  2. `/tasks intake --adopt EPIC-NNN` — stamps `kind: review-intake` and best-effort backfills `findings:`.
+  **Why not have `--adopt` do the moving.** Re-homing is a tree operation, not an intake one: most moves have
+  nothing to do with review findings, and burying the mechanism in this flag means the next person who needs
+  to re-home an ordinary task hand-edits `parent:` instead — which is exactly the hole `move` was added to
+  close. Composing two verbs also keeps `--adopt` idempotent, since it never has to ask whether a task it can
+  see is one it moved.
 - **Adopting a review backlog that predates this verb** — a project may already have an epic full of
   review findings filed by hand. Don't re-file it. `/tasks intake --adopt <EPIC-NNN>` (or just say so):
   add `kind: review-intake` to the epic's frontmatter, and — best-effort — backfill `findings:` on its

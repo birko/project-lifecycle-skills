@@ -241,7 +241,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
     verification-debt count that said "9" while `EPIC.md` said "seven". Two hand-written copies of one
     non-derivable fact, disagreeing. Deleting the copies lost nothing.
 - **Generated files are owned by their verbs — never hand-edit them.** `docs/features/*/status.md` and `docs/features/README.md` are owned by `/feature status`; `tasks/README.md` by `/tasks triage`; `docs/specs/*.md` by `/specs regen` (only `.map.yml` is hand-edited). "Keep it current" means *run the owning verb*.
-- **Status changes go through their verbs, never hand-edits.** Hand-flipping `status: done` skips the gates that make the status trustworthy.
+- **Status changes go through their verbs, never hand-edits.** Hand-flipping `status: done` skips the gates that make the status trustworthy. **Placement is the same, as of `/tasks move`:** a task's location and its `parent:` field are two records of one fact, so they change together or they disagree — and a move has to roll up the parents on *both* sides, which a hand-edit never does. Moving a file and editing `parent:` by hand is the placement equivalent of hand-flipping a status.
 - To see where things stand: `/tasks` (feature-aware snapshot) or `/roadmap` (full epic to feature to task view plus a divergence audit).
 - No `Co-Authored-By:` trailers in commit messages.
 
