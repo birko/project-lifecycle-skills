@@ -80,6 +80,13 @@ returns this one line and nothing else, so the condition did not fire.
 **Gate:** step 5b skipped under its own one-liner clause; the three axes were checked inline instead —
 standards pass, intent pass, correctness pass. Lint `OK (18 skills)`.
 
+**Sibling instance: TASK-057** (closed 2026-08-23) fixed four more of the same shape — a summary, count or
+pointer that restates something maintained elsewhere and has since drifted from it. This task was the fifth
+instance and was filed first. A reader of either should find the pattern: `fix-next` stating a count of a
+table that had grown, two `verify-intent` *Related skills* lines contradicting their own page, and
+`docs/architecture.md` describing an artifact as still arriving. **No lint was owed** — TASK-057 swept nine
+stated counts in shipped prose and found the rest accurate, so this is a review concern, not a mechanical one.
+
 ## Out of scope
 
 - The `LAYER.md` rows and both front doors — **TASK-053** owns those.

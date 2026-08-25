@@ -171,5 +171,9 @@ the same source line, so a clean pass still shows what it checked.
 - [[verify-conventions]] — the standards axis; the other half of the pair. Same advisory posture, same severities.
 - [[code-review]] — the correctness axis. Runtime-provided in Claude Code.
 - [[tasks]] — owns the `## Acceptance criteria` this skill reads, and `spawn` is where scope creep usually goes.
-- [[feature]] — owns the decision ledger a later release will read as a second intent source.
-- [[specs]] — owns `docs/specs/`, the third intended source.
+- [[feature]] — owns the decision ledger this skill reads **now** as its second intent source: the
+  `approved` and `changed` rows, per § *Intent*. `close` step 5b depends on that.
+- [[specs]] — owns `docs/specs/`, which is the **baseline, not an intent source.** A spec says what an area
+  *currently promises*, because it was harvested from the code; treating it as intent is the mistake
+  § *Baseline* exists to prevent. It answers a different question — *did this change behaviour nobody asked
+  to change?*

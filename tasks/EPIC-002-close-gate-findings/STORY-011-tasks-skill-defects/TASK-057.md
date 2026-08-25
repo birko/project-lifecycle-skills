@@ -3,9 +3,10 @@ id: TASK-057
 parent: STORY-011
 feature: null
 # status: todo | in-progress | review (code done, sign-off pending) | blocked | done | cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
+picked-by: fix-next
 created: 2026-08-22
 depends-on: []
 blocks: []
@@ -50,12 +51,12 @@ up — a stated count that could be derived — spawn it separately rather than 
 
 ## Acceptance criteria
 
-- [ ] `fix-next/SKILL.md:257` no longer states a count — it points at the table instead, so the sentence survives the table growing again
-- [ ] `verify-intent/SKILL.md:174` describes the ledger as an intent source **read now**, matching the § *Intent* table
-- [ ] `verify-intent/SKILL.md:175` no longer calls `docs/specs/` an intent source; it names it as the **baseline**, matching the body
-- [ ] `docs/architecture.md:105` lists `docs/glossary.md`, and the `docs/adr/` entry reads as arrived rather than arriving
-- [ ] Each fix is checked against the body it summarises, not just made internally consistent — the body is the authority in all four
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `fix-next/SKILL.md:257` no longer states a count — it points at the table instead, so the sentence survives the table growing again
+- [x] `verify-intent/SKILL.md:174` describes the ledger as an intent source **read now**, matching the § *Intent* table
+- [x] `verify-intent/SKILL.md:175` no longer calls `docs/specs/` an intent source; it names it as the **baseline**, matching the body
+- [x] `docs/architecture.md:105` lists `docs/glossary.md`, and the `docs/adr/` entry reads as arrived rather than arriving
+- [x] Each fix is checked against the body it summarises, not just made internally consistent — the body is the authority in all four
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -73,3 +74,58 @@ same file now agree. A human running a drill would be re-reading the same two pa
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-057` — leave empty until then._
+
+## Outcome
+
+**What was broken.** Four places where a short summary restated something maintained elsewhere and had since
+drifted from it. All four were *readable prose that is confidently wrong*, which is worse than a gap: an
+agent skimming the summary never reaches the body that contradicts it.
+
+| # | Fix |
+|---|---|
+| 1 | `fix-next` said `close` step 2's table governs **"four steps"**; it spans far more. Now says **every** step, plus *"read the table for the count; do not restate it here — it has grown twice."* The count is gone rather than corrected, so it cannot drift again. |
+| 2 | `verify-intent`'s *Related skills* said [[feature]]'s ledger is what *"a later release will read"*. It reads it **now** — the § *Intent* table takes `approved`/`changed` rows and `close` 5b depends on it. Reworded to say so, and to name which rows. |
+| 3 | The same list called `docs/specs/` *"the third intended source"*, flatly contradicting the page's own rule two hundred lines up. Now names it the **baseline, not an intent source**, with the one-line reason (a spec says what an area *currently promises*, being harvested from code) and the different question it answers. |
+| 4 | `docs/architecture.md` listed `docs/adr/` as *"arrives with the `domain` skill"* — it arrived at TASK-052 — and omitted `docs/glossary.md` entirely. Both now listed as arrived, and named as the layer's two **lazy** rows. |
+
+**Step 3 — one finding was verified wrong before being believed, then re-verified right.** Finding 4 initially
+appeared not to hold: a grep for its sentence returned nothing. The sentence wraps across two lines, so the
+single-line pattern missed it. Worth recording because the instinct at that moment is to reject the finding
+and move on — which would have left a live defect closed as a false positive. The task's own step-3 rule
+(*"do not trust the task's own description"*) cuts both ways.
+
+**Step 6 — the shape of the check, honestly.** There is nothing to revert-and-split: the fix is prose, and the
+guard is a reader noticing that two passages agree. What *is* checkable, and what this task did instead, is
+the **sweep** — every stated count of the repo's own structure in shipped prose, tested against reality:
+
+| Claim | Reality | Verdict |
+|---|---|---|
+| `AGENTS.md` — lint has "36 cases" | `skills-lint-test: 36 passed` | correct |
+| `AGENTS.md` + ADR 0008 — `fix-next`'s "eight" keys | 8 numbered keys in step 2 | correct |
+| `AGENTS.md` + `domain` — "five records" | the five-records table has 5 rows | correct |
+| `LAYER.md` — "the other three entries" (ladder) | 4 entries, so 3 others | correct (this task's own text) |
+| `LAYER.md` — "two rows that work this way today" | 2 unconditional delegations; the test-harness row has a terminating condition and is discussed separately | defensible as written |
+| `LAYER.md` — "a cold read of seven records" | dated 2026-08-22, when there were seven | correct — a dated measurement does not go stale |
+| `specs` — "the two keys"; `migrate` — "two passes"; `INFER.md` — "two records" | not structural counts | cannot drift |
+
+**So the conditional out-of-scope bullet did not fire, and that is the finding.** It said to spawn a
+mechanical lint *"if a checkable subset turns up"*. One did — a stated count — but it was eliminated by
+**deleting the count** rather than by checking it, and every other stated count in shipped prose is currently
+accurate. Nine claims, one wrong, and it is fixed. **This is a review concern, not a class**, so no lint task
+is owed. Recorded rather than left silent, because a condition nobody evaluated looks identical to one that
+did not fire.
+
+**Cross-referenced TASK-055** both ways, as this task's Context asked — it was the fifth instance of the same
+shape and was filed first.
+
+**Step 7.** No usable spec map (`areas: []`) — no regen. Stated, not skipped.
+
+## Progress log
+
+- step 2 — picked; ranked top of the pool. Key 1 (severity): finding 3 makes a **gate invert its own rule** — an agent skimming `verify-intent`'s Related skills reports spec drift as an unbuilt requirement, the exact inversion § *Baseline* was written to prevent. Silent (key 3), self-contained (key 4). Key 6 (theme) **inert**: every EPIC-002 story declares `correctness-invariants`.
+- step 3 — verified: **all four held.** Finding 4 needed a second look — a single-line grep missed a wrapped sentence and briefly read as a false positive.
+- step 4 — layer: **local**; three skill files and this repo's own architecture doc.
+- step 5 — fix in `skills/fix-next/SKILL.md`, `skills/verify-intent/SKILL.md` (two lines), `docs/architecture.md`.
+- step 6 — no revert-and-split applies to prose; ran the **stated-count sweep** instead: 9 claims checked, 8 accurate, 1 fixed. Lint + 36-case suite green.
+- step 7 — no usable spec map (`areas: []`); regen skipped and stated.
+- step 8 — 5d sweep: conditional lint bullet **evaluated and did not fire** (not a class). Nothing spawned. Gate: standards pass, intent pass, correctness pass; security not applicable.

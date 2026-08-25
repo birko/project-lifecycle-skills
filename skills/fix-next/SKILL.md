@@ -254,8 +254,9 @@ Log: `- step 7 — respecced <area>; requirements changed: <list>`
 ## Step 8 — Close through the merge gate
 
 Run [`/tasks close --unattended`](../tasks/verbs/close.md). **Pass the flag.** `close` § step 2 carries
-the table of what it governs — four steps that would otherwise stop for input, including the **merge
-decision at 5c, which unattended resolves as *merge***. Read that table rather than assuming this step
+the table of what it governs — **every** step that would otherwise stop for input, including the **merge
+decision at 5c, which unattended resolves as *merge***. **Read the table for the count; do not restate it
+here** — it has grown twice, and a number written into this sentence is wrong the next time it grows. Read that table rather than assuming this step
 knows: it grew once already, because the flag first shipped covering only the out-of-scope sweep while
 5c still asked a mandatory question on PR-per-task projects — the documented default, and exactly the
 projects where this skill cuts a branch. Without the flag the sweep meets a work bullet with nobody to

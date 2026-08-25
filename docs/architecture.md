@@ -102,8 +102,9 @@ Two structural rules hold this together:
 ## This repo's own lifecycle artifacts
 
 `docs/BRIEF.md` (verbatim ground truth) · `docs/features/` (empty by design — current work is
-task-only) · `docs/specs/` (seeded empty; filled at EPIC-001 / STORY-008) · `docs/adr/` (arrives
-with the `domain` skill at STORY-003) · `tasks/` (EPIC-001 and its stories) · `CHANGELOG.md`.
+task-only) · `docs/specs/` (seeded empty; filled at EPIC-001 / STORY-008) · `docs/glossary.md`
+and `docs/adr/` (both arrived with [[domain]] at STORY-003; the layer's two **lazy** rows, written on first
+real content rather than scaffolded) · `tasks/` (EPIC-001 and its stories) · `CHANGELOG.md`.
 
 ## Verification
 
