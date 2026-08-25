@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (1):** EPIC-001 + EPIC-002 DV5 — tasks tracked in one tree only, `docs/features/` holds no feature folders — run `/roadmap --check`.
 
-_Generated 2026-08-22. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -36,7 +36,7 @@ _None_
     - [x] TASK-054 Backfill the decision records this repo already owes
     - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
     - [ ] [TASK-056](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-056.md) The seeded rulebook never learns where a term or a decision goes
-    - [ ] [TASK-070](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-070.md) Two records the backfill missed, found by looking for the wrong thing
+    - [ ] [TASK-070](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-070.md) The decline clauses the rulebook owes — and one record it actually does
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0)
