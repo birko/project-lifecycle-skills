@@ -232,6 +232,24 @@ turned into tracked work is gone when the conversation ends. Two entry points, b
 adjacent finding surfaced while working → [`spawn`](verbs/spawn.md); a whole review **pass** →
 [`intake`](verbs/intake.md), which files it as EPIC → STORY → TASK for [[fix-next]] to drain. Two
 non-obvious rules travel with this:
+- ***A task outside a pool is filed but unranked — being a task is necessary, not sufficient.*** The rule
+  below stops one level short, and this is the level that bites. [[fix-next]]'s pool is **explicit**: a
+  `todo` task is in it only if it carries a non-empty `findings:` list **or** sits under an EPIC stamped
+  `kind: review-intake`. A task with neither — the usual shape of one dropped in `tasks/_loose/` — is
+  ranked by `pick` and the `Next up` snapshot on `priority:` alone, and review findings are filed P2/P3
+  almost by definition, so it sinks and stays sunk.
+  - **Measured, on this repo:** 17 correctly-written defect tasks accumulated in `_loose/` over three days
+    and `/fix-next` could see **2** of them. Nothing was wrong with the tasks; the container put them
+    outside the verb built to drain them.
+  - **So the routing has two arms, and the second is not a loophole.** A **review finding** goes into a
+    `kind: review-intake` epic, or carries its `findings:` id, or both. **Work that is not a finding** —
+    tree hygiene, scaffolding, a meta-task about the tree itself — legitimately stays loose, *and should*:
+    filing it into an intake epic makes that pool misreport what it contains, and the pool's count is what
+    tells you how much of a review is left.
+  - **Where this bites hardest is a fallback, not a decision.** [`spawn`](verbs/spawn.md) parents a
+    discovery to the origin's STORY, else its EPIC, else `_loose` — and a finding spawned from a task that
+    is itself loose lands loose by inheritance, with nobody choosing that. When the fallback is reached and
+    the discovery **is** a finding, stop and place it in a pool instead.
 - ***A checklist line is filed, not scheduled.*** Only `status: todo` **tasks** are ranked by `pick`,
   by the `Next up` snapshot, or by `fix-next`. A finding parked as a bullet under a STORY is invisible
   to all three and will never be worked. If it's worth doing, it's a task.

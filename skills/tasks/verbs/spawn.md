@@ -58,7 +58,12 @@ happened. Spawn instead of widening.
 
 4. **Create the task** — chain [verbs/new.md](new.md) (`/tasks new task`) with these defaults
    pre-filled so the user only confirms or corrects:
-   - **parent** — the origin's STORY; else the origin's EPIC; else `_loose`. Inheriting the
+   - **parent** — the origin's STORY; else the origin's EPIC; else `_loose`. **If you reach `_loose` and
+     the discovery is a review finding, stop and place it in a pool instead** — `_loose` with no
+     `findings:` id and no `kind: review-intake` ancestor is outside [[fix-next]]'s pool entirely, so the
+     task is filed and unranked (SKILL.md § *A task outside a pool*). The fallback is where this happens
+     by inheritance rather than by choice: a finding spawned from a loose origin lands loose with nobody
+     deciding it should. Inheriting the
      parent is what "place it correctly in the plan" means structurally — a spawned task that
      lands loose when its origin sits under a story is misfiled.
    - **feature** — inherit the origin's `feature: FEATURE-NNN` when the item belongs to the same
@@ -150,7 +155,7 @@ defect.
 ## Edge cases
 
 - **No origin task** (spotted during a conversational fix or a review) — still create the task;
-  skip step 5's wiring; place it under the best-matching story/epic, else `_loose`.
+  skip step 5's wiring; place it under the best-matching story/epic, else `_loose` — subject to the same check as step 4: a **finding** must not come to rest in `_loose`, because nothing ranks it there.
 - **Several items at once** — batch them: one task each, one shared History line per decision row.
   Don't merge unrelated discoveries into one task to save typing.
 - **Discovered during `/tasks close`** — spawn first, *then* re-ask whether the origin can close.
