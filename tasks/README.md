@@ -9,7 +9,7 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 31    |
+| todo         | —     | —       | 30    |
 | in-progress  | 2     | 5       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
