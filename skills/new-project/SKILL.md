@@ -44,12 +44,17 @@ The front door for a new project. Produces a **consistent universal layer** rega
 Gather in one or two question batches:
 
 1. **Project name** + **location** (absolute path). If the dir exists and is non-empty, confirm before writing; merge, don't clobber — [LAYER.md](LAYER.md)'s *already present?* column says what merging means for each artifact, so it is documented behaviour rather than a judgement call. **If the directory already holds a project** (source files, git history), stop and use [[adopt-project]] instead: it is built for that case, and it will not ask you to re-answer what the code already shows.
-2. **Kind** — library / service-or-API / web app / CLI / worker / other.
-3. **Tech stack** — .NET, TypeScript/Node, Python, Go, Rust, other, or "none yet / docs-only". This drives `.gitignore` and which skeleton step 5 creates.
-4. **Stack scaffolder check** — if a stack-specific scaffolding skill is installed that matches the chosen stack (check the available-skills list for a framework wiring skill), ask whether to chain it. If yes → it runs in step 5.
-5. **Task tracking mode** — local (files only) / hybrid (GitHub) / hybrid (Jira). Passed to the [[tasks]] init.
-6. **License** — MIT / Apache-2.0 / proprietary / none.
-7. **Agent config file** — **CLAUDE.md only** (default; Claude Code's native auto-loaded file — right for Claude-Code-only repos) / **AGENTS.md canonical + CLAUDE.md bridge** (when other agent tools — Codex, Cursor, etc. — also touch the repo; one source of truth, both tools satisfied). Only surface this if it's plausibly multi-tool; otherwise default silently to CLAUDE.md.
+2. **One-line purpose** — *"in one line, what is this for?"* Both `README.seed.md` and `CLAUDE.seed.md`
+   need it, and nothing else asks. **Never invent one:** a plausible-sounding purpose in the two files a
+   reader trusts most is the fabrication `docs/BRIEF.md` exists to prevent. If the user genuinely has none
+   (a scratch repo), write that the purpose was not stated and point at `docs/BRIEF.md` — an honest absence,
+   not a guess.
+3. **Kind** — library / service-or-API / web app / CLI / worker / other.
+4. **Tech stack** — .NET, TypeScript/Node, Python, Go, Rust, other, or "none yet / docs-only". This drives `.gitignore` and which skeleton step 5 creates.
+5. **Stack scaffolder check** — if a stack-specific scaffolding skill is installed that matches the chosen stack (check the available-skills list for a framework wiring skill), ask whether to chain it. If yes → it runs in step 5.
+6. **Task tracking mode** — local (files only) / hybrid (GitHub) / hybrid (Jira). Passed to the [[tasks]] init.
+7. **License** — MIT / Apache-2.0 / proprietary / none.
+8. **Agent config file** — **CLAUDE.md only** (default; Claude Code's native auto-loaded file — right for Claude-Code-only repos) / **AGENTS.md canonical + CLAUDE.md bridge** (when other agent tools — Codex, Cursor, etc. — also touch the repo; one source of truth, both tools satisfied). Only surface this if it's plausibly multi-tool; otherwise default silently to CLAUDE.md.
 
 ### 2. Offer a scope grill (optional — only for substantial projects)
 
@@ -61,7 +66,11 @@ Gather in one or two question batches:
 
 **[LAYER.md](LAYER.md) is the canonical inventory** — which artifacts make up the layer, who owns each shape, and what to do when one already exists. It is shared with [[adopt-project]], so an artifact added there is added for both skills. The bullets below carry the *creation detail* for the non-obvious ones; they do not redefine the list.
 
-- **`docs/BRIEF.md` — store the user's request VERBATIM (do this first, before any paraphrasing).** Capture the original ask word-for-word (typos and all), with a capture date and a "do not rewrite" note. README/CLAUDE/idea.md are all *distillations*; this is the ground truth they reconcile against. Without it, a paraphrase silently becomes the only record and nuance/requirements drift or vanish (a soft or secondary requirement is the classic casualty). The requirement→feature traceability table (in the seed EPIC) should cite `docs/BRIEF.md` as its source. Skip only for a truly throwaway/docs-only repo with no stated requirements.
+- **`docs/BRIEF.md` — store the user's request VERBATIM (do this first, before any paraphrasing).** Capture the original ask word-for-word (typos and all), with a capture date and a "do not rewrite" note. README/CLAUDE/idea.md are all *distillations*; this is the ground truth they reconcile against. Without it, a paraphrase silently becomes the only record and nuance/requirements drift or vanish (a soft or secondary requirement is the classic casualty). The requirement→feature traceability table (in the seed EPIC) should cite `docs/BRIEF.md` as its source. **Always create it — there is no skip.** `LAYER.md` lists the row unconditionally and this now agrees:
+  there is always *an* ask, even if it is "scaffold me a throwaway library", and for a bare scaffold the
+  verbatim record is the intake answers themselves. The file is cheap; the failure mode of skipping is that
+  the one **immutable** record never exists, and nobody retrofits ground truth later — which is exactly what
+  § *The adopted-repo brief* has to work around when a repo arrives without one.
   - **A repo with existing history and no surviving original ask** takes the adopted-repo form instead — stamp the adoption date and state that no original brief exists, per [LAYER.md](LAYER.md) § The adopted-repo brief. **Never reconstruct one from the README**: a paraphrase presented as ground truth is precisely what the verbatim rule exists to prevent, and it is worse than an absent file because it reads as authoritative.
   - **Keep it append-only as the project evolves.** The original block stays immutable, but when the user makes a later requirement-changing request (a new feature, a scope change), append it **verbatim** under an "Amendments" section with a date and the feature it became. The brief is the running ground truth of *everything the user asked for*, not just the opening ask — so a mid-project request (a new feature, mode, or integration) is logged here too, not only as a distilled feature.
 - **`README.md`** — render [templates/README.seed.md](templates/README.seed.md): title, one-paragraph purpose (from intake/grill), a "Getting started" stub, the "How we work" lifecycle section, layout tree, and license line. Set `{{AGENT_GUIDE_FILE}}` to `CLAUDE.md` (default) or `AGENTS.md` (canonical-AGENTS choice) so the "full convention" link points at the real guide.

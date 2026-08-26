@@ -36,6 +36,13 @@ idea ─▶ prototype ─▶ decisions ─▶ tasks ─▶ human-test ─▶ rev
 | introduces/alters a **requirement or scope** (what we build) | a `docs/BRIEF.md` amendment → new/changed feature |
 | alters **how an already-requested feature looks/behaves** | that feature's `decisions.md` (a `changed` decision) |
 | is a pure **implementation detail** (naming, data structure) | code / commits / `docs/architecture.md` |
+| settles **what a word means here** | `docs/glossary.md` — vocabulary only, never decisions |
+| settles **why we chose it**, for a choice that is hard to undo | a record under `docs/adr/` |
+
+**The last two rows are `/domain`'s, and neither file exists yet.** Both are written on the **first real
+term** and the **first choice worth explaining** — not scaffolded, because an empty glossary claims the
+vocabulary was examined and found thin, and an empty `docs/adr/` claims nothing here was hard to undo. Run
+`/domain` when you hit either; it decides whether a choice has earned a record, so don't pre-judge that here.
 
 Append to `BRIEF.md` **only** for the top row — a refinement of already-requested scope is a *decision*, not a brief amendment. Recognizing "this is new scope, not a tweak", and capturing the verbatim text *before* paraphrasing it into a feature, is the agent's job, not something to wait to be asked.
 

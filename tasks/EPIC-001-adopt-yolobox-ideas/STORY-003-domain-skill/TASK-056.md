@@ -3,7 +3,7 @@ id: TASK-056
 parent: STORY-003
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-22
@@ -58,18 +58,18 @@ and its reason — the seed's job is to be read by someone with an empty repo.
 
 ## Acceptance criteria
 
-- [ ] `CLAUDE.seed.md`'s routing table covers **where a term's meaning goes** and **where a
+- [x] `CLAUDE.seed.md`'s routing table covers **where a term's meaning goes** and **where a
       hard-to-reverse choice goes**, so neither question routes to a record that cannot answer it
-- [ ] The added rows name `[[domain]]` as the owning skill, so a reader has somewhere to go
-- [ ] A decision is recorded (in this task, at close) on whether the ADR↔convention protocol and the
+- [x] The added rows name `[[domain]]` as the owning skill, so a reader has somewhere to go
+- [x] A decision is recorded (in this task, at close) on whether the ADR↔convention protocol and the
       three-part "offer an ADR only when" bar belong in the seed or stay this repo's own — with the
       reason, not just the outcome
-- [ ] The seed does **not** imply a fresh project should already have a glossary or an ADR: both are
+- [x] The seed does **not** imply a fresh project should already have a glossary or an ADR: both are
       **lazy** rows per `LAYER.md`, so the wording survives an empty `docs/`
-- [ ] No second copy of `LAYER.md`'s row content lands in the seed — the artifacts are named, their
+- [x] No second copy of `LAYER.md`'s row content lands in the seed — the artifacts are named, their
       layer semantics are not restated
-- [ ] `bash .github/workflows/skills-lint.sh` passes
-- [ ] A scaffolded throwaway project's `CLAUDE.md` renders the new rows with **no unfilled template
+- [x] `bash .github/workflows/skills-lint.sh` passes
+- [x] A scaffolded throwaway project's `CLAUDE.md` renders the new rows with **no unfilled template
       tokens**
 
 ## Out of scope
@@ -95,3 +95,56 @@ and its reason — the seed's job is to be read by someone with an empty repo.
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-056` — leave empty until then._
+
+## Outcome
+
+**Done as one pass with TASK-064**, because a scan showed both edit `CLAUDE.seed.md` — one edit, one review,
+instead of two passes over the same file.
+
+**The two rows.** The seed's routing table gained *"settles **what a word means here**"* → `docs/glossary.md`
+(vocabulary only, never decisions) and *"settles **why we chose it**, for a choice that is hard to undo"* →
+a record under `docs/adr/`. So a consumer's routing question now has five answers instead of three, and the
+two artifacts the layer gives them are no longer unexplained.
+
+**AC 3 — the decision, and it is a refusal.** The criterion asked whether the ADR↔convention protocol and
+the three-part bar belong in the seed. **Neither does**, and the reason got clearer after TASK-069:
+
+- The **bar** is `/domain`'s, and applying it needs the scope question that task added — *project decision or
+  rulebook entry?* Copying a three-part conjunction into a consumer's guide hands them a test without the
+  thing that makes it decidable, which is how it was misapplied here twice in one day.
+- The **promotion protocol** (a record that hardens into a rule gets a one-line § Conventions entry pointing
+  back) only matters once a repo *has* records. On day one it is machinery for a situation that does not exist.
+- Both would be a **second copy of `/domain`'s content**, which AC 5 forbids outright.
+
+What the seed says instead is one sentence naming the owner: *"Run `/domain` when you hit either; **it**
+decides whether a choice has earned a record, so don't pre-judge that here."* The routing table tells them
+*where*; the skill tells them *whether*.
+
+**AC 4 — the rows do not imply the files exist.** They are followed by a note that both are written on the
+first real term and the first choice worth explaining, *"not scaffolded, because an empty glossary claims the
+vocabulary was examined and found thin."* A fresh repo reads that as correct rather than as a gap.
+
+**AC 5 — no `LAYER.md` content copied.** The note gives the *consequence* a consumer needs (the files arrive
+later, run `/domain`) and none of the row mechanics — no `(lazy)` marker, no `not applicable yet` state, no
+create-nothing rule. Those stay in the inventory, where the two front doors read them.
+
+**AC 7 — every template token has a named source.** Checked all sixteen across both seed templates:
+`ONE_LINE_PURPOSE` now comes from intake question 2 (TASK-064's half of this pass), and the five
+`§ Conventions` tokens are filled by step 3, which already carries the rule *"every subsection either carries
+a real rule or is removed — never a dangling `{{…}}`."* Nothing is unsourced.
+
+**Step 7.** No usable spec map (`areas: []`) — no regen. Stated, not skipped.
+
+**Not done.** No throwaway scaffold was run. The token check above is mechanical and complete, but whether
+the five-row table *reads* well to someone with an empty repo — whether they can find their row without
+being told which — is a cold-read question, and this closes STORY-003 without it.
+
+## Progress log
+
+- step 2 — picked to close STORY-003, batched with TASK-064 on the file-collision scan.
+- step 3 — verified: the table had three rows and named neither artifact the layer now ships.
+- step 4 — layer: **local.**
+- step 5 — two rows + the on-first-use note in `templates/CLAUDE.seed.md`.
+- step 6 — sixteen tokens checked for a named source; none unsourced; lint green.
+- step 7 — no usable spec map; regen skipped and stated.
+- step 8 — 5d sweep: Out of scope bullets are boundaries. Nothing spawned. Gate: standards pass, intent pass, correctness pass; security n/a.

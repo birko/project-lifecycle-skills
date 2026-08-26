@@ -9,14 +9,14 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 20    |
-| in-progress  | 2     | 5       | 0     |
+| todo         | —     | —       | 18    |
+| in-progress  | 2     | 4       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 4       | 54    |
+| done         | 0     | 5       | 56    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 15× P2 · 1× P3.
+`todo` by priority: 4× P1 · 13× P2 · 1× P3.
 
 ## In progress now
 
@@ -27,13 +27,13 @@ _None_
 - **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (25/29 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
-  - STORY-003 `domain` — glossary and decision records — in-progress (6/7)
+  - STORY-003 `domain` — glossary and decision records — (done) (7/7)
     - [x] TASK-051 `domain` — the skill and its glossary half
     - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live
     - [x] TASK-053 Layer parity — both front doors learn the glossary and the ADR home
     - [x] TASK-054 Backfill the decision records this repo already owes
     - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
-    - [ ] [TASK-056](EPIC-001-adopt-yolobox-ideas/STORY-003-domain-skill/TASK-056.md) The seeded rulebook never learns where a term or a decision goes
+    - [x] TASK-056 The seeded rulebook never learns where a term or a decision goes
     - [x] TASK-070 The decline clauses the rulebook owes — and one record it actually does
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
@@ -43,7 +43,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (21/40 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (23/40 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/11)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -76,11 +76,11 @@ _None_
     - [x] TASK-058 STORY-015's theme ranks the repo's only gate last
     - [x] TASK-071 The wikilink contract says "CI resolves it", and in `docs/` that is false — folded into TASK-043
     - [ ] [TASK-074](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-074.md) A skill cannot reference a skill that does not exist yet
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (2/9)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (3/9)
     - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
-    - [ ] [TASK-064](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-064.md) What a minimal repo gets: step 3 and the templates disagree, and one token has no source
+    - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [ ] [TASK-066](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-066.md) Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
