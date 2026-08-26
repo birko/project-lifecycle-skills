@@ -73,14 +73,14 @@ full test and this line is the pointer, not a second copy.
 Three trees, one install path.
 
 - **`skills/`** — the generic, stack-agnostic skill set. **Every new skill lands here**, because this is the only tree linked into *both* `~/.claude/skills` and `~/.pi/agent/skills`.
-- **`skills-pi/`** — **frozen**. Fallback definitions of review skills that Claude Code ships natively but pi does not (`code-review`, `review`, `security-review`). Linked into pi only; installing them into `~/.claude/skills` would shadow the native passes. Do not add new skills here.
+- **`skills-pi/`** — **frozen**. Fallback definitions of review skills that Claude Code ships natively but pi does not (`code-review`, `review`, `security-review`). Linked into pi only; installing them into `~/.claude/skills` would shadow the native passes ([ADR 0010](docs/adr/0010-skills-pi-is-frozen-and-pi-only.md)). Do not add new skills here.
 - **`docs/`, `tasks/`** — this repo's own lifecycle artifacts, produced by the skills it ships.
 
 A skill is a folder: `SKILL.md` (the router — kept small) plus optional `verbs/*.md` (one file per
 verb, standalone and directly readable) and `templates/*` (the file shapes the skill writes).
 Skills reference each other by `[[name]]`; those links are load-bearing and CI-checked.
 
-Both installers **link** rather than copy, so an edit here is live in every consuming project
+Both installers **link** rather than copy ([ADR 0009](docs/adr/0009-installers-link-rather-than-copy.md)), so an edit here is live in every consuming project
 immediately. The corollary bites: a link is created per *folder*, at install time, so **a new skill
 folder needs an installer re-run** before either runtime can resolve it — editing an existing one
 never does. The installers only ever *add*, so renaming or deleting a skill also needs a manual
@@ -93,6 +93,15 @@ This section is the project's **canonical, living rulebook**. It is auto-loaded 
 context (as `AGENTS.md`, behind a one-line `CLAUDE.md` import bridge), which is what makes "the
 next task follows the same pattern" actually true. `/verify-conventions` lints diffs against
 exactly these rules.
+
+**Almost none of these has a decision record, and that is correct — stated once here rather than on every
+bullet.** These are **rulebook entries**: a convention's footprint is the prose it will shape, so there is no
+artifact outside the rulebook for a record to explain. [[domain]]'s bar is scoped to **project decisions** —
+a stack choice, a repo layout, a per-repo policy, a schema, a strategy — and a rulebook entry keeping its
+trade-off inline is the intended shape, not a defect. **Where a bullet does have a record it points at it**,
+and where one might plausibly be expected and was declined for a reason of its own, the bullet says so.
+Saying it once is deliberate: the same clause repeated on twenty bullets is a restated list, which is the
+defect two of those bullets exist to prevent.
 
 ### Framework / stack
 - **Markdown + YAML frontmatter only.** A skill is prose an agent reads; it has no runtime, no build step, and no dependencies. Don't introduce a language, package manager, or generator without an ADR.

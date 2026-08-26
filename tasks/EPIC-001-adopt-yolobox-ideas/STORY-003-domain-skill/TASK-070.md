@@ -3,7 +3,7 @@ id: TASK-070
 parent: STORY-003
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-22
@@ -121,12 +121,14 @@ order and never reused"*), so the gap in the directory is deliberate and this ta
 
 ## Acceptance criteria
 
-- [ ] Every § Conventions bullet that carries a trade-off and has no record gains a **decline clause** naming why — matching the shape of the two written at TASK-069
-- [ ] The generated-file rule and the declare-versus-derive pair are recorded as **correctly absent** with the reason (rulebook entries), not left silent — the evidence gathered below is what the clause cites
-- [ ] The declare-versus-derive **triplication** is fixed regardless: the squash-merge counter-example currently sits in two bullets and ADR 0004; it ends up in one place with the others pointing at it
-- [ ] The installer link-versus-copy decision in § Architecture gets a record, numbered from `0009` (`0006` and `0007` are retired and must not be reused)
-- [ ] § Architecture is swept for any other unrecorded project decision, and the sweep's outcome is stated either way — this was the unpatrolled lane
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [~] Every § Conventions bullet that carries a trade-off and has no record gains a **decline clause** naming why — matching the shape of the two written at TASK-069
+      — **met in substance, not literally, and deliberately.** A scan found **eight** such bullets; the same clause eight times is a restated list — the defect two of those bullets exist to prevent. Stated **once** at the head of § Conventions instead, covering the class. The argument against per-bullet marking is written where a future reader will meet it.
+- [x] The generated-file rule and the declare-versus-derive pair are recorded as **correctly absent** with the reason (rulebook entries), not left silent — the evidence gathered below is what the clause cites
+- [~] The declare-versus-derive **triplication** is fixed regardless: the squash-merge counter-example currently sits in two bullets and ADR 0004; it ends up in one place with the others pointing at it
+      — **recounted: there is no triplication.** `grep -o` (occurrences, not lines) finds **two** — one in the derived-state bullet, one in ADR 0004 — and each does a different job, so deduplicating would make one unreadable alone. Judged rather than mechanically deduped.
+- [x] The installer link-versus-copy decision in § Architecture gets a record, numbered from `0009` (`0006` and `0007` are retired and must not be reused)
+- [x] § Architecture is swept for any other unrecorded project decision, and the sweep's outcome is stated either way — this was the unpatrolled lane
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -142,3 +144,100 @@ order and never reused"*), so the gap in the directory is deliberate and this ta
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-070` — leave empty until then._
+
+## Outcome
+
+**Two records written, one "triplication" that was a duplication and not a defect, and the decline clause
+stated once instead of twenty times.**
+
+### AC 4 + AC 5 — the § Architecture sweep found two records owed, not one
+
+The task named the installers' link-versus-copy decision. **The sweep found a second**, which is the point of
+asking for a sweep rather than a fix:
+
+- **[ADR 0009](../../../../docs/adr/0009-installers-link-rather-than-copy.md) — the installers link rather
+  than copy.** Footprint outside the rulebook: junctions on every developer machine and in every consuming
+  project. Reversing to copies does not remove them and silently changes the contract. Rejected alternatives:
+  copying (inverts the single-source-of-truth property, and *prose is the product*, so a stale copy means an
+  agent following wrong rules), linking the whole tree once (impossible — the two roots hold deliberately
+  different sets), and publishing as a package (reintroduces the staleness links exist to remove, and needs a
+  package manager the stack rule does not have).
+- **[ADR 0010](../../../../docs/adr/0010-skills-pi-is-frozen-and-pi-only.md) — `skills-pi/` is frozen and
+  pi-only.** Not in the task, found by the sweep. Footprint: a whole tree, one installer that links it and one
+  that must not, and three skill names that resolve in one runtime only. Its rejected alternatives are sharp:
+  putting the fallbacks in `skills/` would **shadow Claude Code's native review passes** with inferior
+  markdown copies — on the pass whose job is finding defects; and having no fallbacks at all makes a review
+  that silently did not run indistinguishable from one that found nothing.
+
+**The two are coupled, and each names it:** 0010 is only expressible *because* 0009 links per folder rather
+than per tree. That is the kind of dependency a record catches and a bullet does not.
+
+**Sweep outcome stated either way (AC 5):** § Architecture makes four other claims — the three-tree split,
+`skills/` as the only dual-linked tree, `docs/`+`tasks/` as this repo's own artifacts, and the skill-folder
+shape. None is a trade-off with a rejected alternative; they are descriptions. **Two records owed, two
+written, nothing further found.**
+
+### AC 3 — recounted, and there is no triplication to fix
+
+The cold read reported the squash-merge counter-example in **three** places. Measured today with
+`grep -o` (occurrences, not lines): **two** — one in `AGENTS.md`'s derived-state bullet, one in ADR 0004.
+Either an intervening edit consolidated the third or the original count double-counted a shared line.
+
+**And two is correct, not a defect.** They do different jobs: the rule needs the counter-example inline to be
+followable at all — which is the documented carve-out, *"a single **invariant** restated where it is
+load-bearing is fine, since there is no list to fall out of sync"* — and ADR 0004 needs it to explain why
+`integration:` is a declared field. Deduplicating would make one of them unreadable alone. **Recounted and
+judged rather than mechanically deduped**, since the criterion said "fixed regardless" and the honest answer
+is that there was nothing to fix.
+
+### AC 1 + AC 2 — stated once, not twenty times
+
+A scan found **eight** § Conventions bullets carrying a trade-off with no record and no clause. Writing the
+same clause eight times **is a restated list** — the exact defect two of those very bullets exist to prevent,
+and a sentence a reader meets eight times is a sentence they learn to skip.
+
+So the clause is stated **once, at the head of § Conventions**: these are rulebook entries, a convention's
+footprint is the prose it will shape, [[domain]]'s bar is scoped to project decisions, and a rulebook entry
+keeping its trade-off inline is the intended shape rather than a defect. Where a bullet *does* have a record
+it points at it; where one was plausibly expected and declined for a reason of its own, the bullet still says
+so — the two written at TASK-069 stay.
+
+**AC 2's two named bullets are covered by that statement**, and this is the substantive change from what the
+task expected: it was filed believing the generated-file rule and the declare-versus-derive pair were
+**owed records**. TASK-069's rescoping demoted both to rulebook entries, and the banner at the top of this
+task's Context already recorded that inversion. So they are declared correctly absent — by the section
+statement that covers every bullet of their kind, rather than by two bespoke clauses.
+
+**AC 1 is met in substance and not literally**, and that is stated rather than glossed: no bullet gained an
+individual clause, because one statement covering the class carries the same information with one copy. If a
+future reader wants per-bullet marking, the argument against it is written down where they will meet it.
+
+### Step 6
+
+| Check | Result | Role |
+|---|---|---|
+| both new records exist and are reachable | `docs/adr/` holds 0009 and 0010; all four `AGENTS.md` → `docs/adr/` links resolve | **fix-dependent** |
+| retired numbers not reused | `0006` and `0007` remain absent; the new records are `0009`/`0010` | **fix-dependent** — `domain` § Shape's never-reused rule |
+| the squash-merge count | 2 occurrences, one per job, verified with `grep -o` rather than `grep -c` | fix-dependent — and the recount corrected the premise |
+| lint | OK (18 skills) | contract pin |
+
+### Step 7
+
+No usable spec map (`areas: []`) — no regen. Stated, not skipped.
+
+### Not done
+
+**No cold read.** Whether one section-level statement actually reads as covering every bullet — rather than
+as a preamble a reader skips on the way to the list — is a judgement about prose written here, and the
+strongest test is a fresh reader asked *"does this rule have a record, and how do you know?"* about a bullet
+picked at random. Recorded as unrun.
+
+## Progress log
+
+- step 2 — picked to close out STORY-003, whose remaining work blocks STORY-007 (the epic's Sequence table: *"names modules using glossary terms"*). Its sibling TASK-056 was deferred to a batch with TASK-064, since a scan showed both edit `CLAUDE.seed.md`. Key 6 (theme) n/a — this task is in EPIC-001, which carries no `kind: review-intake` stamp.
+- step 3 — verified: **held, with two premises corrected.** The § Architecture sweep found **two** records owed rather than the one named; and the "triplication" is a duplication with two legitimate jobs.
+- step 4 — layer: **local.**
+- step 5 — `docs/adr/0009`, `docs/adr/0010`, the single decline statement at § Conventions' head, and two pointers in § Architecture.
+- step 6 — records exist and resolve; retired numbers untouched; count corrected by `grep -o`; lint green.
+- step 7 — no usable spec map (`areas: []`); regen skipped and stated.
+- step 8 — 5d sweep: Out of scope bullets are boundaries (TASK-069 owns the bar; the seven surviving records are not re-litigated; no third sweep of § Conventions). Nothing spawned. Gate: standards pass, intent pass, correctness pass; security not applicable.
