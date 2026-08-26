@@ -9,14 +9,14 @@ _Generated 2026-08-23. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 9       | —     |
-| todo         | —     | —       | 18    |
+| todo         | —     | —       | 24    |
 | in-progress  | 2     | 4       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 56    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 13× P2 · 1× P3.
+`todo` by priority: 5× P1 · 18× P2 · 1× P3.
 
 ## In progress now
 
@@ -38,12 +38,18 @@ _None_
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0)
-  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/0)
-  - STORY-008 Harvest the skill set's own specs — planned (0/0)
+  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/4)
+    - [ ] [TASK-075](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-075.md) Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
+    - [ ] [TASK-076](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-076.md) `improve-architecture` — the skill, its scoping pass, and the candidate filter
+    - [ ] [TASK-077](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-077.md) The report surface — an Artifact, a fallback, and what each candidate must carry
+    - [ ] [TASK-078](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-078.md) Findings end at `/tasks intake`, and the skill is actually installed
+  - STORY-008 Harvest the skill set's own specs — planned (0/2)
+    - [ ] [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) `/specs init` — build the area map, and turn the spec layer on (P1)
+    - [ ] [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) `/specs regen` — generate the specs, and review the diff as the deliverable ⚠ waits on STORY-004/006/007
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (23/40 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (23/46 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/11)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
