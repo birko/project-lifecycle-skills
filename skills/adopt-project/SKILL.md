@@ -143,6 +143,13 @@ The rules that bind the whole step:
 - **A `present, uncommitted` row is landed, not rewritten.** The file is already right; what is
   missing is the commit. Offer it in the adoption commit and report it. Rewriting it discards an
   earlier pass's work to produce, at best, the same bytes.
+  - **Order the landing before any re-run that would rewrite the same file — step 3c's included.**
+    3c derives its set from what this run *created*, not from survey rows, so it never passes this
+    bullet and will otherwise regenerate a file whose only copy is on disk. The order is the whole
+    difference between reversible and not: landed-then-overwritten is a `git revert` away,
+    overwritten-then-landed is gone with nothing to restore from. Land first even when the
+    regeneration looks certain to be a no-op — *"it'll be a no-op"* is precisely the reasoning that
+    skips the cheap irreversible step.
 - **A defect that blocks a delegation is handled at that delegation**, not deferred to the end — a
   broken build stops [[populate-tests]] `adopt` from wiring anything. Step 3b owns the rule and what
   the report then owes.
@@ -219,6 +226,11 @@ go silently wrong the day the layer gains a row. Today's real edges: creating `d
 `tasks/README.md`'s feature slice and drift callout renderable, so [[tasks]] `triage` is re-run;
 `CHANGELOG.md` feeds nothing; and `docs/specs/.map.yml` feeds the spec **bodies**, which stay an offer
 rather than a tail step — `/specs regen` is real token spend.
+
+**Land before you regenerate.** A file in this set may also be `present, uncommitted`, and then the
+commit goes first — step 3's *landed, not rewritten* bullet owns that ordering and the reason it is not
+a preference. It is easy to miss from here, because this step is reached through the Owner column rather
+than through a survey row.
 
 **Render, compare, and only then write.** The obvious implementation regenerates and diffs afterwards,
 by which point anything lost is already gone. Produce the new content first, compare it with what is on

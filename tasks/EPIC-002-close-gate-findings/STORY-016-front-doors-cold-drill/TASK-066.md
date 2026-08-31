@@ -3,9 +3,10 @@ id: TASK-066
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
+picked-by: fix-next
 created: 2026-08-22
 depends-on: []
 blocks: []
@@ -46,13 +47,38 @@ following an equally readable path to data loss.
 Small, and worth doing for that reason: it is one precedence sentence in a place where the wrong branch
 is unrecoverable.
 
+### Re-verified 2026-08-31 (`/fix-next` step 3) — holds, and the shape is an *ordering*
+
+Two things the filing did not have:
+
+- **A rule stating half of this already exists, and 3c cannot reach it.** `adopt-project/SKILL.md:143`
+  says *"A `present, uncommitted` row is landed, not rewritten … Rewriting it discards an earlier pass's
+  work."* That is the right answer — but it is a bullet in **step 3**, scoped to *a survey row*. Step 3c
+  does not walk rows; it walks files whose **inputs this run created**, and derives that set from the
+  Owner column. An agent arriving at 3c never passes the bullet that would have stopped it. So the gap is
+  not that nobody wrote the rule; it is that it was written where the collision does not happen.
+- **`LAYER.md:150` points at the destructive branch.** *"`present, uncommitted` adds the offer to commit
+  **on top of** whatever the row says, and never overrides it."* For a generated artifact the row's content
+  action **is** delegate-to-owner — a re-run. Read alone, that paragraph licenses regenerating first. It is
+  the passage most likely to be read at 3c, and it is the one arguing for the unrecoverable direction.
+
+**Therefore the deliberate answer is an ordering, not merely a winner.** Land first, then regenerate: an
+unlanded amendment overwritten by a verb re-run has no copy anywhere, whereas the same overwrite after the
+commit is a `git revert` away. 3c's stop-on-unreproducible-content row is unaffected and still decides
+whether the regen happens at all — this settles only what must have happened *before* it runs.
+
+**One home, two pointers.** The rule is scoped to adoption: `new-project` has no regenerate-over-existing
+step and never uses `present, uncommitted` (verified — the string does not occur in its `SKILL.md`), so
+layer parity is not engaged and `LAYER.md` gains a pointer, not a copy.
+
 ## Acceptance criteria
 
-- [ ] The precedence is stated where an agent hits the conflict — landing wins over regenerating for a generated file carrying non-derivable content, or whatever the deliberate answer turns out to be
-- [ ] The reason travels with the rule: one direction is reversible and the other is not
-- [ ] The rule is stated once and pointed at from the other side, not written into both `LAYER.md` and `adopt-project` § 3c
-- [ ] § 3c's stop-on-unreproducible-content row still holds — this must not become a licence to overwrite
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The precedence is stated **where an agent hits the conflict** (§ 3c), as an **ordering**: an uncommitted generated file is landed *before* its owner verb is re-run, never after
+- [x] The reason travels with the rule: one direction is reversible and the other is not
+- [x] The rule is stated once and pointed at from the other side, not written into both `LAYER.md` and `adopt-project` § 3c
+- [x] `LAYER.md`'s *"never overrides it"* orthogonality line no longer reads as licence to regenerate an unlanded file
+- [x] § 3c's stop-on-unreproducible-content row still holds — this must not become a licence to overwrite
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -65,8 +91,112 @@ is unrecoverable.
 N/A — fully covered by reading the two passages against each other, plus the lint. The failure is an
 agent choosing the destructive branch, which cannot be demonstrated without destroying a file; the check
 is that the precedence is stated and reachable from both sides. The next cold drill on `adopt-project`
-exercises it for real, which is **TASK-060**'s repeat-the-method note.
+exercises it for real — owned by **TASK-068** (the cold-drill method, open, P1). *Corrected 2026-08-31:
+this line named TASK-060, which is closed; TASK-060's own "record the method durably" criterion routed to
+TASK-068, so that is the live owner.*
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-066` — leave empty until then._
+1. **`adopt-project/SKILL.md` step 3, the existing `present, uncommitted` bullet** — extend it with the
+   ordering and its reason (one direction reversible, the other not), and say explicitly that it governs
+   step 3c's re-run set as well as the row. This is the single home: expand the owner that already holds
+   the vocabulary rather than opening a neutral one.
+2. **`adopt-project/SKILL.md` § 3c** — one pointer sentence in the render-compare-write block, before the
+   branch table, sending the reader to the step 3 bullet. No restatement of the reason.
+3. **`new-project/LAYER.md`**, the *Tracking is orthogonal* paragraph — one clause noting the composition
+   is ordered where the row's content action rewrites, with the adopter named as owner. Pointer only.
+4. Run `bash .github/workflows/skills-lint.sh` and `bash .github/workflows/skills-lint-test.sh`.
+
+**Not doing:** touching § 3c's stop row, or this repo's own `tasks/README.md` (both out of scope).
+
+## Outcome
+
+**What the fix was.** Adoption had two rules pointing at the same file and no stated order between them.
+Step 3 said an uncommitted file is *landed, not rewritten*; step 3c said an adoption that created an
+input to a generated file owes a re-run of the owning verb. A file can be both, and 3c reaches its set
+through `LAYER.md`'s **Owner** column rather than through a survey row — so it never passes the step 3
+bullet that would have stopped it. `LAYER.md`'s orthogonality paragraph then actively argued for the
+wrong branch: the land offer *"never overrides"* the row, and a generated artifact's row action **is**
+delegate-to-owner. An agent following that reading regenerates first, and an uncommitted amendment
+overwritten before it was ever committed has no copy anywhere.
+
+The fix states one ordering — **land, then regenerate** — in one place (step 3's existing bullet, the
+owner that already held this vocabulary), and points at it from the two places a reader arrives from:
+§ 3c, and `LAYER.md`'s orthogonality paragraph. The reason travels with the rule, because the reason is
+the rule: landed-then-overwritten is a `git revert`, overwritten-then-landed is gone. 3c's
+stop-on-unreproducible-content row is untouched and still decides whether the regeneration happens at
+all; this settles only what must have happened before it runs.
+
+**Step-6 split — the automated suite cannot fail on this, and saying so is the point.**
+
+| | With fix | Fix reverted (`git stash push skills/`) |
+|---|---|---|
+| `skills-lint.sh` | OK (18 skills) | **OK (18 skills)** — exit 0 |
+| `skills-lint-test.sh` | 40 passed, 0 failed | not re-run; nothing in it reads these passages |
+
+- **Fix-dependent tests: none.** Zero of the 40 cases and none of the lint's five checks discriminate
+  between the fixed and unfixed prose. That is not a gap in this task — the defect is a *reading* an
+  agent can reach, and no assertion over markdown detects a sentence that misdirects.
+- **Contract pins, not evidence:** all 40 lint-test cases, plus lint checks 1–4. They pin that this
+  change broke nothing structural — in particular check 2 resolves the new `[[adopt-project]]` wikilink
+  added to `LAYER.md`. A pin recorded as proof would be the misreading this table exists to prevent.
+- **The actual guard is a bidirectional reachability trace**, run by hand over the edited files in
+  isolation: *with* the fix, a reader entering at 3c reaches "land first" from 3c's own pointer and again
+  from `LAYER.md`; *without* it, the same entry reaches "run the owner verb" via the unqualified
+  *"never overrides it"*. Both directions confirmed. This is what the task's `N/A` human test plan
+  already predicted, and it is why that plan is `N/A` rather than unrun.
+
+**Judgement calls, and why the stricter option was rejected.**
+
+- **Home of the rule: step 3's existing bullet, not a new neutral section.** The repo's rule is to expand
+  the owner where the vocabulary already lives; the bullet already said *landed, not rewritten*, so it
+  gained the ordering rather than being superseded. A new section would have left two half-rules.
+- **`LAYER.md` gets a pointer, not the rule.** The stricter-looking option — state the ordering in the
+  shared inventory, since that is what both front doors read — was rejected: `new-project` has no
+  regenerate-over-existing step and the string `uncommitted` does not occur in its `SKILL.md`, so the
+  collision is adoption-only. Putting an adopter-only rule in the shared file is the second copy the
+  layer-parity rule exists to prevent. **Layer parity is therefore not engaged** — no row, state, or
+  artifact changed.
+- **Not touching 3c's stop row**, per `## Out of scope`. It answers a different question (may this
+  regeneration proceed) from the one fixed here (what must precede it).
+
+**Gate verdicts — three passes, side by side, not merged or reranked.**
+
+| Pass | Verdict |
+|---|---|
+| Standards ([[verify-conventions]]) | ⚠ 1 warning — the `N/A` test plan against § Testing's drill rule; reasoned, and its hand-off corrected to a live owner (below) |
+| Fidelity ([[verify-intent]]) | ✅ intent built, nothing unasked-for; 1 criterion unverifiable from the diff (the lint run) |
+| Correctness ([[code-review]]) | ✅ clean **on this task's diff** |
+| Security ([[security-review]]) | not applicable — the diff is skill prose, touching no auth, data access, input handling, crypto, secrets, dependency or endpoint |
+
+**The correctness pass overran its scope, and that is recorded rather than absorbed.** It reviewed 18
+unpushed commits plus the working tree instead of this task's diff. Against TASK-066 it found nothing and
+explicitly cleared the new `[[adopt-project]]` link. Its other eight findings belong to other tasks, so per
+`close` 5b they neither blocked this close nor were folded in — they were **spawned**, grouped by root cause:
+
+| Spawned | Covers |
+|---|---|
+| **TASK-081** (STORY-015) | one number naming two lint checks — `AGENTS.md:214/265`, `skills-lint.sh:159`, `skills-lint-test.sh:70`, plus a misplaced case heading at `:142` |
+| **TASK-082** (STORY-015) | check 4 enforces less than its stated contract — unanchored `grep -qF`, router-flag false blocker, no `templates/` exclusion |
+| **TASK-083** (STORY-011) | `fix-next` step 8 states the growth count twice, differently, while arguing against stating it |
+
+Two further findings — `tasks/README.md`'s priority breakdown reading `5× P1 · 18× P2` against an actual
+`4× P1 · 19× P2`, and EPIC-002's `23/46` rollup against 39 task files — needed no task: `tasks/README.md` is
+generated, and this close's **step 10** regenerates it. Independently corroborated, which is why they were not
+taken on the reviewer's word: this session's own collection pass computed `4 / 19 / 1` before the review ran.
+
+**Flagged, not fixed.** `docs/specs/.map.yml` carries `areas: []`, which every enforcement point treats
+as absent — so step 7's respec could not run. Reported, not skipped; it is already **TASK-079**
+(`/specs init`), open under STORY-008. Nothing new spawned.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-061 because this is the pool's only destructive failure mode (the losing branch overwrites non-derivable content and reports success), where TASK-061's consequence is a recoverable omission. Key 6 (theme) was degenerate — every declared theme in the pool is `correctness-invariants`.
+- step 3 — verified: held, rescoped to an *ordering* (land before regenerate) — found `SKILL.md:143` already states the rule but in step 3, unreachable from 3c; and `LAYER.md:150` actively points at the destructive branch. Context + criteria 1 and 3 corrected before any edit; implementation plan written.
+- step 4 — layer: local (root cause is this repo's own skill prose; no dependency involved).
+- step 5 — fix in skills/adopt-project/SKILL.md (step 3 bullet + § 3c pointer) and skills/new-project/LAYER.md (orthogonality pointer); skills-lint OK (18 skills), skills-lint-test 40/40 green.
+- step 6 — reverted fix: lint still exit 0, so 0/40+5 checks are fix-dependent; fix-dependent = none (prose reachability, traced bidirectionally by hand); contract pins = all 40 lint-test cases + lint checks 1-4 (check 2 resolves the new [[adopt-project]] link).
+- step 7 — respec skipped: docs/specs/.map.yml has `areas: []` (treated as absent). No usable spec map - run `/specs init` (TASK-079). Reported, not silent.
+- step 5d — out-of-scope sweep: 3 bullets, all boundaries with named owners (TASK-067, TASK-060's routing, STORY-016); 0 work bullets, 0 spawned. Also corrected the test plan's drill hand-off from closed TASK-060 to open TASK-068.
+- step 5b — standards ⚠1 (resolved), intent OK, correctness OK on this diff, security n/a. Reviewer overran scope onto 18 commits; 8 out-of-scope findings spawned as TASK-081/082/083, 2 dashboard findings deferred to step 10's regen.
+- step 6 — status: in-progress -> done (single-branch: 5c and 8 skip; `pr:` stays null by the no-fixed-point rule).

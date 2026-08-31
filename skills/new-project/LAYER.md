@@ -152,7 +152,10 @@ artifact's **content** — leave it, merge into it, delegate to its owner — an
 *"Present → leave"* still leaves it: landing an untracked file changes nothing inside it. So
 `present, uncommitted` adds the offer to commit **on top of** whatever the row says, and never
 overrides it. Without this line the two instructions read as a contradiction, and the row wins,
-which is how the artifact stays out of history.
+which is how the artifact stays out of history. **Composed, but ordered** — where the row's content
+action *rewrites* the file rather than leaving it (a generated artifact whose owner verb gets re-run),
+the commit happens first, since that is the only order in which a mistake survives. [[adopt-project]]
+step 3 owns that rule and its reason; this is the pointer, not a second copy.
 
 **Presence and shape, not content currency.** These states answer *does the artifact exist, and is
 it in the shape its owner currently writes* — never *is its prose still true*. A README whose status
