@@ -48,6 +48,14 @@ permanent. Classifying seven real porcelain outputs under the old rule and the n
 
 **Split: old 4/7, new 7/7.** That ran once, in a scratch directory, and then vanished.
 
+**A second instance, added 2026-08-31 from TASK-033's close.** `/specs init` step 4's coverage check had
+the same shape: an instruction naming a scan and a rule for reading its result, with no floor, so an empty
+scan set reported full coverage having examined nothing. The identical defect had already been found,
+**measured** and fixed on the sibling verb (`regen` step 6: 0 own sources while the map's globs reached 97
+sibling projects) and simply never applied to `init`. Nothing could have caught that — there is no
+mechanism in this repo that notices when a rule fixed in one verb is missing from its sibling. Two
+instances in two different skills is the argument for this task, not one.
+
 **The hard part is deciding where such a check lives, and that is the actual work.** `skills-lint-test.sh`
 tests the *lint*, not skill semantics, so dropping a git fixture in there needs a stated reason or it
 becomes a junk drawer. Two shapes worth weighing, and the answer may be "neither, and here is why":

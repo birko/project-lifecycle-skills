@@ -43,6 +43,7 @@ The keystone for tech-agnosticism: you can't hardcode what an "area of concern" 
 across stacks, so each project declares its own. Shape (see [templates/map.yml](templates/map.yml)):
 
 ```yaml
+coverage: verified                      # verified | not-applicable | unverified
 areas:
   - name: bulk-filter-updates          # kebab-case, becomes <area>.md
     title: Bulk filter-based updates
@@ -57,6 +58,15 @@ ignore:                                 # never counts as unmapped
 Rules:
 - **Granularity = capability**, not class or file — `auth-session`, `lazy-initialization`,
   `bulk-filter-updates`. A healthy project has ~5–20 areas.
+- **`coverage:` records whether the map was ever checked, and is written on every `init` run.**
+  `verified` (a non-empty scan set with nothing unmapped) · `not-applicable` (the repo has no
+  behavioral code) · `unverified` (everything else — discovery found nothing while sources exist,
+  unmapped files the user declined to map, or areas proposed as a partial guess). **An absent key
+  predates it and means `unverified`, never `verified`** — the same reading `regen` gives a missing
+  `shaped-by-derived`. It is a key rather than a comment so it survives re-serialization and can be
+  branched on; [init](verbs/init.md) step 2 reads it, and a populated map marked `unverified` must not
+  be treated as a blessed baseline. Distinct from an empty `areas:` list, which is already treated as
+  *absent* everywhere: this exists for a map that looks populated while nothing checked it.
 - **Unmapped code is a flag, not a silence.** `regen` and `verify` report project sources
   matched by no area and no `ignore` glob — the map grows with the project instead of
   silently under-covering it.
