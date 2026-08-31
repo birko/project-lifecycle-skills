@@ -9,14 +9,14 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 7       | —     |
-| todo         | —     | —       | 28    |
+| todo         | —     | —       | 27    |
 | in-progress  | 2     | 4       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 58    |
+| done         | 0     | 5       | 59    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 21× P2 · 3× P3.
+`todo` by priority: 4× P1 · 20× P2 · 3× P3.
 
 ## In progress now
 
@@ -49,7 +49,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (24/45 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (25/45 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -77,7 +77,7 @@ _None_
   - STORY-014 `specs` — two gates that pass without checking — planned (1/2) ⚠ status contradicts children
     - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (5/10)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/10)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -86,7 +86,7 @@ _None_
     - [x] TASK-071 The wikilink contract says "CI resolves it", and in `docs/` that is false — folded into TASK-043
     - [ ] [TASK-074](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-074.md) A skill cannot reference a skill that does not exist yet
     - [ ] [TASK-081](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-081.md) One number now names two different lint checks
-    - [ ] [TASK-082](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-082.md) Check 4 enforces something weaker than the contract it states
+    - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (4/9)
     - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
