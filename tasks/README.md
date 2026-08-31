@@ -8,19 +8,23 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 7       | —     |
-| todo         | —     | —       | 27    |
-| in-progress  | 2     | 4       | 0     |
-| review       | —     | —       | 0     |
+| planned      | 0     | 6       | —     |
+| todo         | —     | —       | 26    |
+| in-progress  | 2     | 5       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 59    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 20× P2 · 3× P3.
+`todo` by priority: 4× P1 · 19× P2 · 3× P3.
 
 ## In progress now
 
 _None_
+
+## In review (awaiting sign-off)
+
+- [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) — `/specs init`'s coverage check can pass vacuously (P2, agent) — four drill steps unrun
 
 ## Tree
 
@@ -74,8 +78,8 @@ _None_
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — planned (0/2)
     - [ ] [TASK-025](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-025.md) DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
-  - STORY-014 `specs` — two gates that pass without checking — planned (1/2) ⚠ status contradicts children
-    - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously
+  - STORY-014 `specs` — two gates that pass without checking — in-progress (1/2)
+    - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously 🔍 review
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/10)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
