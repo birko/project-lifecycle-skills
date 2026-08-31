@@ -109,6 +109,41 @@ Run `/beta go --tabled` when done.
 |---|---|
 | `/beta go --tabled` | a thing |
 ' > "$1/skills/beta/verbs/go.md"; }
+# A flag whose name is a PREFIX of a declared one must NOT pass. `grep -qF` matched --unattend
+# inside --unattended, so a truncated flag shipped green on the repo's only gate.
+m_flagprefix(){ printf -- '
+Run `/beta go --unattend` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--unattended` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+# The two below pin coverage this check ALREADY had, because a rewrite of check 4 nearly removed
+# both: skipping templates/ (as check 3 does) and filtering to *.md. Neither fails against the
+# previous lint — they are contract pins, not evidence — and both guard something real:
+# new-project/templates/CLAUDE.seed.md carries `/tasks pick --feature` and SHIPS to consumers, and
+# skills/ holds two README.md.tmpl files a *.md filter would silently drop.
+m_flagtemplatereal(){ mkdir -p "$1/skills/alpha/templates"
+                printf -- '# seed
+
+Run `/beta go --nosuch` in the new project.
+' > "$1/skills/alpha/templates/seed.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+m_flagtmplext(){ mkdir -p "$1/skills/alpha/templates"
+                printf -- '# seed
+
+Run `/beta go --nosuch` here.
+' > "$1/skills/alpha/templates/README.md.tmpl"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
 # A flag aimed at something that is not a skill must be ignored, not reported.
 m_flagforeign() { printf -- '
 Run `/usr/bin/thing go --whatever` first.
@@ -145,6 +180,9 @@ case_is   "flag not declared in receiving verb"  1 m_flagbad
 case_is   "flag declared in receiving verb"      0 m_flagok
 case_is   "receiver declares flags in a table"   0 m_flagtable
 case_is   "flag aimed at a non-skill path"       0 m_flagforeign
+case_is   "flag is a prefix of a declared flag"  1 m_flagprefix
+case_is   "template naming a real skill is checked" 1 m_flagtemplatereal
+case_is   "invocation in a non-.md template file"  1 m_flagtmplext
 case_is "skill folder with no SKILL.md"    1 m_noskill
 case_is "broken link in a companion doc"   1 m_badlink
 case_is "a whole skill tree is missing"    1 m_notree

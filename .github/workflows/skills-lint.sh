@@ -128,7 +128,12 @@ grep -rnoE '/[a-z][a-z-]* [a-z][a-z-]* --[a-z-]+' skills/ 2>/dev/null \
   recv="skills/$skill/verbs/$verb.md"
   [ -e "$recv" ] || recv="skills/$skill/SKILL.md"
   [ -e "$recv" ] || continue
-  grep -qF -- "$flag" "$recv" || \
+  # ANCHORED, not a bare substring test. `grep -qF -- "$flag"` matched --unattend inside
+  # --unattended and --dry inside --dry-run, so a truncated or prefix-colliding flag shipped green
+  # on the repo's only gate. Bound both sides by the flag's own character class. Still existence
+  # only, never semantics: a receiver naming a flag in prose to say it is UNSUPPORTED still
+  # satisfies this, which AGENTS.md scopes the check out of deliberately.
+  grep -qE -- "(^|[^a-z-])${flag}([^a-z-]|$)" "$recv" || \
     suberr "$src passes $flag to /$skill $verb — not declared in $recv"
 done
 
