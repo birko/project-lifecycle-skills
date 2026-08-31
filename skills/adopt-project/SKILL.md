@@ -57,8 +57,11 @@ These consequences decide behaviour:
 
 Alongside it, detect the facts the fill will need: the stack (manifests, source layout), whether a
 test runner already works, whether a git remote exists, whether the repo is captured by an
-ancestor git repo, and whether anything the layer owns is sitting on disk **untracked** — the
-signature of an earlier pass that wrote and never committed.
+ancestor git repo, and whether anything the layer owns is on disk but **not yet in history** — the
+signature of an earlier pass that wrote and never committed. *Untracked is only half of that*, and
+the staged half is the easier one to miss, so read the probe and its rule off
+[LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* (the `present, uncommitted` state)
+rather than restating either here.
 
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
 written.
