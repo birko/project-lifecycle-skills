@@ -8,15 +8,15 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 8       | —     |
-| todo         | —     | —       | 26    |
-| in-progress  | 2     | 3       | 0     |
+| planned      | 0     | 7       | —     |
+| todo         | —     | —       | 28    |
+| in-progress  | 2     | 4       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 57    |
+| done         | 0     | 5       | 58    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 20× P2 · 2× P3.
+`todo` by priority: 4× P1 · 21× P2 · 3× P3.
 
 ## In progress now
 
@@ -49,7 +49,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (23/42 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (24/45 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -64,18 +64,20 @@ _None_
     - [x] TASK-057 Four summaries that contradict the body they summarise
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — planned (0/4)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (1/6)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
-    - [ ] [TASK-027](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-027.md) `present, uncommitted` is blind to work that was staged but never committed
+    - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
     - [ ] [TASK-028](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-028.md) The inference skip rule counts five subsections when one of them is conditional
     - [ ] [TASK-035](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-035.md) Nothing owns the `integration:` question — three rules each hand it to another
+    - [ ] [TASK-085](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-085.md) `LAYER.md`'s survey-state list has outgrown the shape it is written in
+    - [ ] [TASK-086](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-086.md) Adoption cannot tell its own unlanded writes from the user's work in progress
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — planned (0/2)
     - [ ] [TASK-025](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-025.md) DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
   - STORY-014 `specs` — two gates that pass without checking — planned (1/2) ⚠ status contradicts children
     - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (5/9)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (5/10)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -85,6 +87,7 @@ _None_
     - [ ] [TASK-074](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-074.md) A skill cannot reference a skill that does not exist yet
     - [ ] [TASK-081](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-081.md) One number now names two different lint checks
     - [ ] [TASK-082](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-082.md) Check 4 enforces something weaker than the contract it states
+    - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (4/9)
     - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
