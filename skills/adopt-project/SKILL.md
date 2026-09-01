@@ -255,6 +255,13 @@ so the next agent to read it will take anything untracked as something that was 
 
 **File through the owning verb, never by hand — and into the adopted repo's tracker.** The defect
 belongs to that repo, so the task lands in *its* `tasks/`, never the caller's: use `/tasks new` there.
+
+**One defect is not that repo's, and must not be filed there: a row that cannot decide.** Where a survey
+row reached `unknown` because *the rule* ran out rather than the evidence ([LAYER.md](../new-project/LAYER.md)
+§ *Two things reach `unknown`*), the defect is in **these instructions**. Nobody in the adopted repo can fix
+it, and filing it there buries an upstream problem in a tracker whose owners cannot act on it — while the
+next repo meets the same row. Report it to the user in step 4's *Defects found* and leave it out of
+`/tasks new` entirely.
 [[tasks]] `spawn` is right **only** when the origin task already lives in the repo being adopted —
 spawn resolves the origin from the in-flight task and inherits *its* parent and `feature:`, so run
 from a different repo it files the defect into the wrong tree entirely. Hand-writing the file skips
@@ -342,6 +349,7 @@ page does not need editing:
 - `present, outdated` — **what the owner's init reported as the delta, and whether it was reconciled.** "Brought up to date" and "nothing to do" are different outcomes; blurring them is how an old shape survives a pass that claims to reconcile it.
 - `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
+  - **And which kind of `unknown`** — evidence, or the rule (see [LAYER.md](../new-project/LAYER.md) § *Two things reach `unknown`*). An evidence one goes to step 2's round as it always has. A **rule** one also goes in *Defects found* as a finding **against these instructions**, naming the row, the evidence you gathered and the question the row leaves open — and it is the one defect that does **not** get filed into this repo's tracker by step 3b, because the row belongs upstream and nobody here can fix it. Claim it only with the enumeration; without it the state is plain `unknown`.
 - `missing, not offered` — **the reason**, re-derived this run rather than recalled from the last one (the survey and this report are stdout; nothing persists a verdict, and [LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* explains why nothing needs to). Print it every run: the line is status, not a question, and the offer stays suppressed only while the evidence still holds. Where a task owns the blocker, name it here as information — a re-run re-reads the evidence, never that task's state.
 - `not applicable yet` — **that the artifact is part of the layer, and that its absence is correct.** Never under a heading that reads as a gap, and never with an offer attached. Where the inference round's glossary-candidate pass turned up recurring nouns or suspected synonyms, they travel as a **finding handed to [[domain]]**, not as drift against this row: a candidate list is evidence about the code, not a missing artifact. Say this explicitly, because adoption *does* produce glossary input, and a reader who sees candidates plus an absent glossary will otherwise read the pair as a gap the pass declined to fill.
 

@@ -433,7 +433,7 @@ grows as real repos turn up conditions it cannot yet express:
   **The git-ignored carve-out holds for free**: an ignored path produces *no* output, so it falls through to plain `present` with no exception written for it. **The no-repo carve-out does not, and must be checked explicitly.** It is tempting to say the probe simply fails outside a work tree — it does in a bare directory, printing nothing to stdout — but the case this pair actually meets is a directory **captured by an ancestor repo**, where `git rev-parse --is-inside-work-tree` says `true` and the probe happily prints `?? subproject/CLAUDE.md` for every layer artifact. Reported as this state, adoption would offer to land the whole layer **into the ancestor's** history. So compare `git rev-parse --show-toplevel` with the directory being adopted: equal ⇒ this state is meaningful; an ancestor ⇒ it is not, and [[adopt-project]]'s surface-the-resolved-ancestor offer owns the case, because only the user knows whether that ancestor is intended. Verified 2026-08-31. This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
 - **present, outdated** — there, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
 - **present, elsewhere** — found at another **path**, under another **name**, or inside another **file**. **Say where.** Never silently relocate it, and never offer to create a second one. **Any deviation from the row's canonical path or name lands here** — see § *Location is orthogonal too*, which also settles that this composes with every row rather than only the ones whose cells mention it.
-- **unknown** — you could not determine it. Honest, and it stops the fill.
+- **unknown** — you could not determine it. Honest, and it stops the fill. **Name what was missing, and say which kind of missing** — evidence, or the rule itself. See § *Two things reach `unknown`*.
 - **missing** — you actively looked and it is genuinely absent.
 - **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire — which is this rule's own mirror of § *Read the declaration, never infer it* in the consuming project's guide.
 
@@ -504,6 +504,36 @@ because of its filename would have the survey judging a document the guide never
 absence of a link as a defect would invent a requirement nobody stated. **This branch is stated because the
 rule above is otherwise silent on it**, and silence is how the fourth file stayed unclassified while the
 other three were resolved.
+
+**Two things reach `unknown`, and only one of them is ignorance.**
+
+| | **Evidence ran out** | **The rule ran out** |
+|---|---|---|
+| What happened | the survey could not find the fact | the survey found **every** relevant fact and the row still does not say which side they fall on |
+| Who can resolve it | the **user**, in step 2's round | **nobody in this repo** — the row needs amending |
+| What the report owes | the fact that was missing | the facts you *did* gather, and what the row fails to decide about them |
+
+**They are the same state and different findings, which is why this is a reporting rule and not a ninth
+state.** The artifact's condition is identical in both — the survey cannot say — and a state describes the
+artifact, not who can fix it. The list is already eight states an agent picks exactly one from, and adding a
+label that does not describe the artifact would make that branch worse while answering a question about
+routing. `unknown` already requires naming what is missing; this only says that when the named-missing-thing
+is **the row itself**, the finding goes somewhere else as well.
+
+**A rule-ran-out `unknown` is a defect in the layer, and the layer is not the adopted repo's to fix.**
+Report it to the user as a finding against these instructions — naming the row, the evidence gathered, and
+the question the row leaves open — and **do not file it into the adopted repo's tracker**: [[adopt-project]]
+§ 3b files defects belonging to *that* repo, and a row that cannot decide belongs upstream, exactly as
+[[fix-next]] § *Fix at the right layer* sends a symptom here to the defect there. Sending it to step 2 alone
+is the failure this rule exists to stop: the user answers, the run proceeds correctly, and the row stays
+broken for the next repo with nothing anywhere recording why.
+
+**You may only claim the second kind if you can say what you read.** A runner who stopped looking and a
+runner who read everything both feel certain, and only one of them is entitled to blame the rule. So the
+claim requires the gathered evidence *in the report*; without it the state is plain `unknown` and the round
+asks. Measured: the runner that produced this distinction had grepped every config source and every
+environment read in the repo before saying *"no fact is missing here… what is unsettled is the row's own
+boundary, not my knowledge."* That is the bar — an enumeration, not a feeling.
 
 **Presence and shape, not content currency.** These states answer *does the artifact exist, and is
 it in the shape its owner currently writes* — never *is its prose still true*. A README whose status

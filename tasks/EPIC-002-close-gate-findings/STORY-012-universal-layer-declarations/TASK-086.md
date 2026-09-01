@@ -10,7 +10,7 @@ created: 2026-08-31
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [CR-027-2]
+findings: [CR-027-2, DRILL-097-1]
 pr: null
 github-issue: null
 jira-key: null
@@ -53,6 +53,32 @@ is exactly the "decision nobody sanctioned" that the guardrails forbid.
 **The sharpest sub-case to keep in view:** a *directory* artifact like `tasks/`, where the probe returns
 members. One member from an old adoption pass and one from the user's WIP produce a single row and a single
 offer.
+
+### Independent second instance, 2026-09-01 (DRILL-097-1)
+
+A cold drill of `WorkoutTracker` reached this exact conflation from the other direction, with no knowledge of
+this task, and articulated the defect more sharply than the filing did:
+
+> *"The probe rule is mechanical and I applied it mechanically. But the seven modified files here are **not**
+> an unlanded adoption pass — they are current work (two generated files `/feature status` owns, three
+> generated spec bodies, one in-flight task file). **"The file is already right" is an assumption that does
+> not hold for someone's WIP**, and *"offer it in the adoption commit"* would sweep unrelated work into an
+> adoption commit. Nothing in the instructions distinguishes the two provenances, so I assigned the state and
+> am flagging that the remedy attached to it looks wrong for this instance."*
+
+**What this adds to the filing.** The original was written around the *offer* being wrong. This runner
+locates it one step earlier: the state's **justification** — *"the file is already right; what is missing is
+the commit"* — is itself false for WIP, so the remedy is wrong because the premise is. That reframes the fix:
+narrowing the offer is not enough if the state's own rationale still asserts something untrue about half the
+cases it catches.
+
+**It also raises the count of measured instances to two, on different repos, from independent runners** — and
+this one is seven files at once, including three files a *different* verb owns (`/specs regen` bodies) plus a
+task file mid-edit. A wholesale land offer here would commit another verb's in-flight regeneration.
+
+**Not resolved by TASK-091's location work or TASK-097's `unknown` split** — both were checked. This is
+provenance, not location, and not a state-versus-finding question: the state is correct and its attached
+remedy is not.
 
 ## Acceptance criteria
 

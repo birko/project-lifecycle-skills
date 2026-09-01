@@ -4,13 +4,13 @@ parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
 status: todo
-priority: P3
+priority: P2
 assignee: agent
 created: 2026-09-01
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [DRILL-091-2]
+findings: [DRILL-091-2, DRILL-097-2]
 pr: null
 github-issue: null
 jira-key: null
@@ -58,6 +58,28 @@ and the inventory has grown steadily.
 **Do not answer it by splitting the row.** Two rows for one deployment concern would report two states for
 one decision, and the `(conditional)` marker would then have to be duplicated and kept in sync — the
 restated-list defect at row granularity.
+
+### A second row with the same shape, from the 2026-09-01 `WorkoutTracker` drill (DRILL-097-2)
+
+The `tasks/` row is written `` `tasks/` (`.config.yml` + `README.md`) `` — the same parenthesised-companion
+shape as the `Dockerfile` row, and it produced the same undecided question, on a row where **the answer
+changes the state**:
+
+> *"Probed as those two files it is plain **present**; probed as the directory it is **present, uncommitted**
+> (`TASK-166…md` modified). I took the directory reading — the state's own text treats these as *'the layer's
+> directory artifacts'* — and I am reporting both readings **because the choice changes the row**."*
+
+Both named files were **clean**; only a third file inside the directory was modified. So the narrow reading
+says `present` and the directory reading says `present, uncommitted`, and the row does not say which it is.
+
+**This widens the task in two ways.** First, it is no longer one row: two rows carry the parenthesis, so
+whatever lands must cover both rather than being written for `Dockerfile`. Second — and this is the harder
+half — the two rows want **different** answers. `.dockerignore` is a *sibling artifact* the tooling pairs by
+filename; `.config.yml` and `README.md` are *members of a directory the row names*. A rule that folds a
+sibling into its partner's state does not obviously tell you whether a directory row is probed as its named
+members or as the whole directory. The state's own prose calls these *"the layer's directory artifacts"*,
+which points at the directory reading — but that phrase sits in a state definition, not in the row, and the
+runner had to go find it.
 
 ## Acceptance criteria
 
