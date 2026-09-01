@@ -201,6 +201,37 @@ could not spawn one, so the drill in the test plan is owed and the task ends at 
   is not — it rides on its row as `present` with the gap named, per the thin-but-present rule. A
   clarification of a sentence this change wrote, so it belonged in the change.
 
+## Drill record
+
+Run 2026-09-01, after the fix was committed at `review`. **Two cold readers, expected answers withheld**,
+per the method TASK-068 exists to write down.
+
+**Fixture choice is part of the test.** A rule that cites a named file in a named repo cannot be
+independently drilled on that repo — the instructions would pre-adjudicate the case. Measured against the
+changed files:
+
+| Repo | Named by | Verdict |
+|---|---|---|
+| `Presenter` | `adopt-project/SKILL.md`, `LAYER.md`, `init.md` — **all three about `integration:` specifically** | disqualified, hard |
+| `WorkoutTracker` | `INFER.md`'s measured coverage example — the very skip logic under test | disqualified, hard |
+| `Symbio`, `Latent` | `LAYER.md`, on unrelated grounds (CI isolation) | avoided as a precaution |
+| **`BardStudio`** | **nothing in the changed prose** | **fixture A** — dense rulebook (all five subsections under `## Key Conventions`), `integration:` absent |
+| **`Birko.Framework`** | **nothing in the changed prose** | **fixture B** — `integration:` present |
+
+**Both briefs were read-only** — the target repos carry uncommitted adoption work, and a drill that writes
+into them would be destroying evidence to test a survey. Neither runner was allowed to read this repo's
+`tasks/` or `docs/`, which would have handed them the answer.
+
+**What the briefs withheld.** Neither mentions `integration:`, declarations, proposals, or the skip path,
+and neither says what the run *should* produce. The load-bearing question is asked as *"the complete list
+of questions you would put to the user, in the exact grouping and number of rounds"* — so the field either
+appears in that list on its own or the prose does not work. Turning that into *"confirm it asks once"*
+would convert the test into a confirmation, which is the failure mode the method exists to prevent.
+Alongside it both briefs ask for **what the instructions left undecided** and **what had to be inferred** —
+the two questions that produced ten findings on the 2026-08-22 drill and the part most likely to be
+dropped. Fixture B additionally asks what a **second identical run** would do differently, which is
+criterion 3's re-run arm.
+
 ## Progress log
 
 - step 2 — picked; ranked above TASK-086 because key 3 (silence): this defect writes a false `integration:` declaration with nobody asked, where TASK-086's conflation surfaces as a refusable offer. Key 4 agreed — acceptance here is determined, TASK-086 still has four live design candidates. Key 6 (theme) was inert: every candidate STORY declares `correctness-invariants`.
