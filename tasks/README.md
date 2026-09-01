@@ -9,22 +9,18 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 26    |
+| todo         | —     | —       | 29    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 59    |
+| done         | 0     | 5       | 60    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 19× P2 · 3× P3.
+`todo` by priority: 4× P1 · 21× P2 · 4× P3.
 
 ## In progress now
 
 _None_
-
-## In review (awaiting sign-off)
-
-- [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) — `/specs init`'s coverage check can pass vacuously (P2, agent) — four drill steps unrun
 
 ## Tree
 
@@ -53,7 +49,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (25/45 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (26/48 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -78,8 +74,11 @@ _None_
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — planned (0/2)
     - [ ] [TASK-025](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-025.md) DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
-  - STORY-014 `specs` — two gates that pass without checking — in-progress (1/2)
-    - [ ] [TASK-033](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-033.md) `/specs init`'s coverage check can pass vacuously 🔍 review
+  - STORY-014 `specs` — two gates that pass without checking — in-progress (2/5)
+    - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
+    - [ ] [TASK-087](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-087.md) A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
+    - [ ] [TASK-088](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-088.md) Nothing says whether one source file may belong to two capability areas
+    - [ ] [TASK-089](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-089.md) `coverage: unverified` has never once been produced, across three drills
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/10)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
