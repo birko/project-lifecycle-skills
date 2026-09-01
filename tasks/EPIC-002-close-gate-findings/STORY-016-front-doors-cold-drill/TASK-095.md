@@ -10,7 +10,7 @@ created: 2026-09-01
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [DRILL-035-4]
+findings: [DRILL-035-4, DRILL-091-1]
 pr: null
 github-issue: null
 jira-key: null
@@ -54,12 +54,39 @@ be genuinely finished, and three vague ones can be thin. The BardStudio runner's
 carries ≥ 2 normative rules with measured counts"* — is a heuristic, not a threshold, and encoding it as a
 threshold is how a judgement becomes a wrong answer with a number attached.
 
+### A second instance, on a different rule (DRILL-091-1)
+
+The 2026-09-01 `Symbio` drill hit the same defect class in § *Matching a guide's sections* rather than in
+`INFER.md`: **by-meaning matching has no depth bar either.**
+
+The seed's `## How we work — feature lifecycle` section answers the flow, the `/feature` verbs, the decision
+states, the task-first gate, the human test plan, the review gate and the record-altitude table. The runner
+found that `README.md` § *How we work* carries a record-altitude map, the flow and the branch convention —
+and resolved the section `present` on it, while naming what that answer does **not** reach:
+
+> *"README's is pointer-depth — it does not carry the prototype/decide/decompose verbs, the review gate, the
+> task-first gate, or the register-on-introduce rule. **Nothing in the text sets a depth bar for 'answers
+> the question'.** I resolved it `present` and am naming the shortfall here rather than silently."*
+
+**Why this belongs here rather than in its own task:** it is the same shape as the thin/covered split — a
+by-meaning verdict with a binary outcome and no stated bar — and the two may well take **one** answer. It is
+also evidence that the gap is not peculiar to proposal coverage, which was the reading available when this
+task was filed from two runs of one rule.
+
+**The two are not identical, and the fix must not assume they are.** Proposal coverage has a safe fallback
+(*offer, don't run*) that both runners found; section matching has **no third option** — a section is
+answered or it is not, and the runner had to pick one and annotate it. So whatever bar is chosen, section
+matching may need an *undetermined* route that § *Matching a guide's sections* already provides for genuine
+ambiguity but not for a **shallow** answer, which is a different thing from an ambiguous one.
+
 ## Acceptance criteria
 
 - [ ] The thin/covered line is decidable well enough that two runs over one unchanged guide reach the same verdict, **or** the rule states plainly that the verdict is a judgement and always routes to the **offer** — either is acceptable, silence is not
 - [ ] If it stays a judgement, the offer becomes the *stated* default for the borderline case rather than something two runners each had to derive
 - [ ] The rule does not become a rule count, and says why not
 - [ ] The existing WorkoutTracker calibration point is kept or replaced with a better one, not deleted
+- [ ] **§ *Matching a guide's sections*' answer-depth verdict is covered too** (DRILL-091-1) — either by the same answer or by its own, and if by its own, the reason the two differ is stated
+- [ ] A **shallow** answer is distinguishable from an **ambiguous** one, since that section's existing *undetermined* route was written for the second and a shallow answer is not that
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope

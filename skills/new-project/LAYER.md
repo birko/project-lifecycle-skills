@@ -18,7 +18,7 @@ for adoption — **what to do when the repo already has one**.
 | Artifact | Owner | Already present? |
 |---|---|---|
 | `README.md` | — | **Leave it.** Offer to append a short "How we work" pointer at the end; never rewrite a human's README. |
-| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
+| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** **A companion the guide links (`CLAUDE-*.md` and the like) is part of this one artifact** — not a separate row, not `present, elsewhere` — and is classified by **existence and role only** — its prose is content, not shape. See § *Location is orthogonal too*. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
 | `docs/architecture.md` | — | Leave it; report if absent. |
 | `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
@@ -347,9 +347,20 @@ guide.
 `BardStudio`'s guide has no `## Commands` counterpart while its `README.md` §§ Build / Run carry exactly
 that content. Reporting it missing would offer to append a second copy of something the repo already
 documents, which is the false-`missing` this file calls the dangerous direction — and *"a repo that solved
-it differently has solved it"* is the standing rule. **The one exception is `## Conventions`**, which the
-guide must carry itself: it is the file [[verify-conventions]] reads at every gate, so rules parked
-elsewhere are not reachable by the thing that enforces them. Flag that one loudly, as the row says.
+it differently has solved it"* is the standing rule. **`## Conventions` is the one section with a narrower
+test**, and the test is **reachability from the guide**, not residence in it. [[verify-conventions]] reads
+the guide at every gate *and* — by its own § *Finding the rulebook* — *"any project-specific checklist the
+guide links to"*. So rules in a **companion the guide links** are enforced and count as answering; rules in
+a file nothing links, or in a `README.md` the ladder never treats as a rulebook, are not reachable by the
+thing that enforces them and do **not** count. Flag that case loudly, as the row says.
+
+*Stated this way because the two readings collide and one is wrong.* An earlier wording said the guide must
+carry its conventions **itself**, which contradicts § *Location is orthogonal too*'s rule that a linked
+companion is part of the one artifact — and a drill runner hit both sentences together on a repo holding
+fourteen UI rule sections in a linked companion. It resolved the case only because that guide *also* carried
+forty rule sections of its own, and said so: *"had the rules been only in the companion, the two sentences
+would genuinely conflict and the text does not say which wins."* Reachability is what both sentences were
+reaching for.
 
 ## The adopted-repo brief
 
@@ -421,7 +432,7 @@ grows as real repos turn up conditions it cannot yet express:
 
   **The git-ignored carve-out holds for free**: an ignored path produces *no* output, so it falls through to plain `present` with no exception written for it. **The no-repo carve-out does not, and must be checked explicitly.** It is tempting to say the probe simply fails outside a work tree — it does in a bare directory, printing nothing to stdout — but the case this pair actually meets is a directory **captured by an ancestor repo**, where `git rev-parse --is-inside-work-tree` says `true` and the probe happily prints `?? subproject/CLAUDE.md` for every layer artifact. Reported as this state, adoption would offer to land the whole layer **into the ancestor's** history. So compare `git rev-parse --show-toplevel` with the directory being adopted: equal ⇒ this state is meaningful; an ancestor ⇒ it is not, and [[adopt-project]]'s surface-the-resolved-ancestor offer owns the case, because only the user knows whether that ancestor is intended. Verified 2026-08-31. This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
 - **present, outdated** — there, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
-- **present, elsewhere** — found in another location or form. **Say where.** Never silently relocate it, and never offer to create a second one.
+- **present, elsewhere** — found at another **path**, under another **name**, or inside another **file**. **Say where.** Never silently relocate it, and never offer to create a second one. **Any deviation from the row's canonical path or name lands here** — see § *Location is orthogonal too*, which also settles that this composes with every row rather than only the ones whose cells mention it.
 - **unknown** — you could not determine it. Honest, and it stops the fill.
 - **missing** — you actively looked and it is genuinely absent.
 - **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire — which is this rule's own mirror of § *Read the declaration, never infer it* in the consuming project's guide.
@@ -441,6 +452,58 @@ which is how the artifact stays out of history. **Composed, but ordered** — wh
 action *rewrites* the file rather than leaving it (a generated artifact whose owner verb gets re-run),
 the commit happens first, since that is the only order in which a mistake survives. [[adopt-project]]
 step 3 owns that rule and its reason; this is the pointer, not a second copy.
+
+**Location is orthogonal too.** Exactly as tracking is: the *Already present?* column decides what to do
+with an artifact's **content**, and *where* the artifact sits is a different axis. So the location states
+compose with **every** row — conditional or plain — and a row whose cell never mentions them still gets
+them. Without this line each row cell would have to enumerate them, which is the restated-list defect, and
+the rows that forgot would silently report `missing`.
+
+**Measured across three row kinds, by four independent runners:** a conditional row's artifact at another
+**path** (`deploy/Dockerfile` rather than root); a conditional row's artifact under another **name**
+(`License.md` rather than `LICENSE`); and a **plain** row's artifact inside another **file** (architecture
+notes living in the agent guide and README, with no `docs/architecture.md`). The plain-row case is why this
+is stated here rather than in § *Conditional rows* — the gap was never specific to them.
+
+**A deviation in name lands in `present, elsewhere` just as a deviation in path does, and this had to be
+decided rather than left open.** Two runners met the same `License.md` and split: one reported
+`present, elsewhere` naming the file, the other reported plain `present`, reasoning that the file is in the
+expected *location* and differs only in name — and said outright that *"the text does not draw"* that
+distinction. Both reasoned soundly, which made the survey non-reproducible on that row. **The tie is broken
+by what the state is *for*:** its load-bearing half is *never offer to create a second one*, and a repo with
+`License.md` is exactly a repo that must not be offered a `LICENSE`. Plain `present` carries no such guard,
+so it loses the only consequence that matters. Directory depth was never the question.
+
+**"Inside another file" means the artifact's *purpose* is served there, not that its subject is mentioned.**
+Prose describing what an artifact would contain is not that artifact: a deployment guide naming a required
+environment variable, with a recipe for generating it, does not stand in for the valueless template a
+contributor copies. Such a row is **`missing`** — and the report **says where the fact is already
+documented**, so the fill adds the artifact without duplicating the explanation. That last clause is the
+point: the *never offer a second one* guard is what tempts the other reading, and it is satisfied by
+reporting the location rather than by mislabelling the state. A drill runner reached exactly this fork and
+named it: *"the text does not settle which wins when another file documents the **fact** but not the
+artifact's **form**."*
+
+**A guide that delegates to sibling files is one artifact, not several.** The agent-guide row names the
+canonical entry point (`CLAUDE.md`, or `AGENTS.md` + bridge); files that entry point **links** —
+`CLAUDE-maintenance.md`, `CLAUDE-projects.md` and the like — are part of the same artifact, not extra rows
+and not `present, elsewhere`. They are where a section's content may legitimately live, which
+§ *Matching a guide's sections* already allows. Two measured instances had four and two such siblings, and
+a survey that treated them as unclassified would either ignore rules the repo really has or offer to append
+sections it has already written down. **Classified by existence and role, never by quality** — whether a
+companion's prose is current or good is content, which § *A guide's vintage is not surveyable* excludes; a
+companion is part of the artifact because the entry point links it, not because it reads well.
+
+**The link is what makes it a companion — a shared name prefix does not.** A `CLAUDE-*.md` the entry point
+links from nowhere is **not** part of the guide: it is a separate document that happens to share a prefix,
+and the survey neither folds it into the guide row nor reports it as a gap. Measured on the same repo: of
+four `CLAUDE-*.md` files beside the guide, **three are linked** from it (a routing table sends UI work and
+new-module work to two of them, and a documentation index names a third) and **one is not** — a
+copy-paste prompt template for humans, referenced by nothing. Treating it as part of the rule surface
+because of its filename would have the survey judging a document the guide never adopted; treating its
+absence of a link as a defect would invent a requirement nobody stated. **This branch is stated because the
+rule above is otherwise silent on it**, and silence is how the fourth file stayed unclassified while the
+other three were resolved.
 
 **Presence and shape, not content currency.** These states answer *does the artifact exist, and is
 it in the shape its owner currently writes* — never *is its prose still true*. A README whose status
