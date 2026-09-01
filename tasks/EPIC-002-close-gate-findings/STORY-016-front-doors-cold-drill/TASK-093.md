@@ -217,7 +217,13 @@ a solution file, and of the two that reference `Birko.Xaml.*` as real assemblies
 `BardStudio`) **both** hard-code the identical path — while the other three never hit it, using the pure
 aggregator pattern where framework source arrives via `.projitems` and no framework `.csproj` is
 referenced at all. Filed `_loose` deliberately: `EPIC-001-foundation` owns build wiring by subject but is
-`done`, and a `todo` in a closed epic makes that epic misreport itself.
+`done`, and a `todo` in a closed epic makes that epic misreport itself. **The same wiring exists in
+`BardStudio` and was filed there too** (its commit `e699fac`, `EPIC-001/TASK-027`) — but verified rather
+than copied, and it is **a different defect**: that repo's `CLAUDE.md:10` scopes its claim to *"all
+projitems imports and Birko project references"*, and a `.slnx` `<Project Path=>` entry is neither, so the
+sentence is **true as written** and no rule is broken. What is wrong there is that the guide documents a
+three-level resolution chain without saying one file is pinned to its third level. Filing it as a broken
+convention would have been wrong, and copying Latent's task would have done exactly that.
 
 **Filed as TASK-096:** the `.env.example` row cannot say what *"here"* means for an aggregator whose 343
 projects all live in sibling repos, and does not distinguish a **build-time** environment variable from
