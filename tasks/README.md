@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (1):** EPIC-001 + EPIC-002 DV5 — tasks tracked in one tree only, `docs/features/` holds no feature folders — run `/roadmap --check`.
 
-_Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-01. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -11,7 +11,7 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 6       | —     |
 | todo         | —     | —       | 28    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 63    |
 | cancelled    | 0     | 0       | 0     |
@@ -21,6 +21,10 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_
+
+## In review (awaiting sign-off)
+
+- [TASK-035](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-035.md) — Nothing owns the `integration:` question — three rules each hand it to another (P2, agent)
 
 ## Tree
 
@@ -49,7 +53,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (29/50 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (29/51 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -64,13 +68,14 @@ _None_
     - [x] TASK-057 Four summaries that contradict the body they summarise
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (1/6)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (1/7)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
     - [ ] [TASK-028](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-028.md) The inference skip rule counts five subsections when one of them is conditional
-    - [ ] [TASK-035](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-035.md) Nothing owns the `integration:` question — three rules each hand it to another
+    - [ ] [TASK-035](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-035.md) Nothing owns the `integration:` question — three rules each hand it to another 🔍 review
     - [ ] [TASK-085](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-085.md) `LAYER.md`'s survey-state list has outgrown the shape it is written in
     - [ ] [TASK-086](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-086.md) Adoption cannot tell its own unlanded writes from the user's work in progress
+    - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — planned (0/2)
     - [ ] [TASK-025](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-025.md) DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
