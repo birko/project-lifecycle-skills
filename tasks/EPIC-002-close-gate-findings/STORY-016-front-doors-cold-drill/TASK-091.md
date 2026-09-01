@@ -198,7 +198,19 @@ distinguishable from an **ambiguous** one — its existing undetermined route wa
 guide routes an agent to a *"register-on-introduce in the lifecycle section"* that does not exist — the guide
 has no lifecycle section and the phrase appears nowhere in it or its three linked companions; and
 `CLAUDE-project-status.md:66` links `../Birko.Framework/tasks/README.md`, which has no correct target under
-any resolution (`../Birko.Framework` does not exist, and the real framework tree has no `tasks/`).
+any resolution.
+
+**Both filed into `Symbio` on 2026-09-01** (its commit `45cc0eda`), under
+`EPIC-028/STORY-059-docs-test-coverage-sync` rather than `_loose` — that epic is `kind: review-intake`, so
+they are drainable by `/fix-next` there, and the story already holds doc-drift findings. **`Symbio` TASK-646
+(P2)** and **TASK-647 (P3)**. Verifying by hand before filing **overturned the runner's conclusion on the
+second**: it reported the link as having *"no correct target under any resolution"* because it checked
+`Framework/tasks/` and found nothing — but `Framework/Birko.Framework/tasks/` **does** exist. `Framework/` is
+the tree, `Framework/Birko.Framework/` is the aggregator repo inside it, so the link *text* is right and only
+the `../` prefix is wrong. The remedy inverts on that: *"points nowhere, delete it"* versus *"off by one
+segment, fix it"*. Filing the runner's version would have destroyed a working pointer to a real backlog, and
+the trap that caught it — a tree and a repo one level apart sharing a name — is recorded in the task so the
+next reader is not caught the same way.
 
 ## Progress log
 
