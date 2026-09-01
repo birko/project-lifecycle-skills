@@ -3,9 +3,10 @@ id: TASK-063
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: review
 priority: P1
 assignee: agent
+picked-by: fix-next
 created: 2026-08-22
 depends-on: []
 blocks: []
@@ -58,12 +59,12 @@ explicitly rather than silently.
 
 ## Acceptance criteria
 
-- [ ] The stale-vintage-guide case has **one** documented outcome: a state, an explicit content-audit hand-off, or a stated limitation — chosen deliberately, with the reason recorded
-- [ ] If the resolution is a limitation, `adopt-project`'s **description** stops promising to reconcile what it cannot, so the advertising matches the behaviour
-- [ ] Whatever is chosen holds for the measured WorkoutTracker case: every `##` section present, three working rules absent, `/verify-conventions` missing from the close gate
-- [ ] `present, outdated`'s "claim it only where something can tell you" guard is left intact — this must not become a licence to judge prose
-- [ ] TASK-024 is cross-referenced, with a line on whether the two are one change or two
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The stale-vintage-guide case has **one** documented outcome: a state, an explicit content-audit hand-off, or a stated limitation — chosen deliberately, with the reason recorded
+- [x] If the resolution is a limitation, `adopt-project`'s **description** stops promising to reconcile what it cannot, so the advertising matches the behaviour
+- [x] Whatever is chosen holds for the measured WorkoutTracker case: every `##` section present, three working rules absent, `/verify-conventions` missing from the close gate
+- [x] `present, outdated`'s "claim it only where something can tell you" guard is left intact — this must not become a licence to judge prose
+- [x] TASK-024 is cross-referenced, with a line on whether the two are one change or two
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -74,9 +75,77 @@ explicitly rather than silently.
 ## Human test plan
 
 - [ ] Run `adopt-project`'s survey against `Birko/Consumers/WorkoutTracker` and confirm the guide's staleness lands in a named outcome rather than as free prose under the table
-- [ ] Confirm a *current* guide (this repo's `AGENTS.md`) does not trip the new outcome — the check must distinguish an older vintage from a guide that is simply dense
+- [x] Confirm a *current* guide (this repo's `AGENTS.md`) does not trip the new outcome — the check must distinguish an older vintage from a guide that is simply dense
 - [ ] Read `adopt-project`'s description against what the run actually did, and confirm they agree
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-063` — leave empty until then._
+1. Establish whether a non-prose-judging delta exists for the guide. **It does not** — see the Outcome's
+   three measurements. This step is the task.
+2. State the limitation in `LAYER.md` (a section plus a clause on the guide row).
+3. Correct `adopt-project`'s description so the upgrade promise is scoped to shape.
+4. Cross-reference TASK-024 with the verdict on one-change-or-two.
+5. `skills-lint` + `skills-lint-test`.
+
+## Outcome
+
+**What the fix was: a stated limitation, and an advertisement corrected to match it.** `adopt-project`
+billed itself as *"the UPGRADE path — re-run it whenever the universal layer grows"*, and the artifact the
+layer grows fastest is the agent guide. A guide with every `##` section present but an older vintage of the
+rules inside surveyed as `present`, so the flagship upgrade case reported nothing. The survey now says
+plainly that it reconciles the layer's **shape** and does not judge whether the prose inside a hand-written
+document is current — in a new § *A guide's vintage is not surveyable*, in the guide row, and in the
+skill's own description.
+
+**The task predicted this answer and I dismissed it.** Its Context said *"the honest answer might be 'the
+rule is right and the advertising is wrong'"*, and warned **do not assume a new state is the answer**. I
+built a third option instead — diffing the guide against the seed's named rule list, on the grounds that
+list membership is not prose judgement — and the gate demolished it. Three measurements, all reproducible:
+
+| Attempted rule-list diff | Result |
+|---|---|
+| Is it a check for the shape we would have made? | **Yes** — `Symbio`'s guide is 239 KB of Slovak with **40 `KRITICKE` sections and 345 mentions of tasks**, and the test reports it missing four English rules and offers to append them |
+| Does the negative control survive? | **No** — this repo's own `AGENTS.md`, the guide the human test plan uses to prove a current guide is not flagged, omits two of the seed's named items |
+| Is the inventory reproducible? | **No** — the seed's `### Working rules` carries **eight** bullets plus the skills its close gate names; my own two measurements both said "four", picked by me |
+
+That last one is the tell: the state's own test is *could you write the missing items down as a list before
+looking at the repo?* — and I could not, twice, while asserting I had.
+
+**Step-6 split.** There is no fix-dependent automated test; the change is a stated limitation. What exists:
+`skills-lint` OK (18 skills) and 43/43 lint-test cases, both **contract pins, not evidence** — neither reads
+this prose. The real evidence is the three measurements above, which are reproducible from the repos named,
+and the fact that the rejected alternative *fails* two of them.
+
+**Judgement calls, and why the stricter option was rejected.**
+
+- **Rejected: a new survey state.** It needs a delta over named things, and the only named inventory
+  available is the seed's — which is our shape, not the repo's. A repo stating the same rule in its own
+  words is the normal case.
+- **Rejected: a content-audit hand-off to a verb.** Nothing owns the question. `/verify-conventions` reads
+  a guide as the source of truth rather than auditing it; `/domain`'s cross-reference pass audits a
+  glossary against code. Inventing an auditor for someone's rulebook is a much larger decision than this
+  task, and it would still be judging prose.
+- **What a reader gets instead**, and it is not nothing: [[verify-conventions]] lints real diffs against
+  whatever the guide records, so a rule a project never adopted surfaces the moment code contradicts it —
+  judged against **that project's** rulebook rather than ours.
+- **TASK-024 is two tasks, not one, and 063 did not narrow it.** An earlier draft of that cross-reference
+  claimed it had; that claim depended on the loosened owner definition, which was reverted. The bar for
+  `present, outdated` is unchanged. What survives is the distinction 063 paid for: **an owner may answer
+  where it wrote the shape itself, and must not where a human wrote the content** — every row TASK-024
+  covers is the first kind, which is why this limitation does not reach them.
+
+**Flagged, not fixed:** nothing. `docs/specs/.map.yml` here still carries `areas: []`, so step 7's respec
+could not run — **TASK-079** owns it.
+
+## Progress log
+
+- step 2 - picked; ranked above TASK-035 on key 1: adopt-project's description promises an UPGRADE path, and the artifact the layer grows fastest (the agent guide) has no state and no remedy, so a stale one reports `present`. A promise the front door cannot keep beats a question nobody owns, though both are silent front-door defects. Key 6 degenerate. Picked with the user available, since the resolution is a genuine fork.
+- step 3 — verified: HOLDS. WorkoutTracker re-measured 2026-09-01 — 342 lines, all four `##` sections present, four named rules absent.
+- step 4 — layer: local.
+- step 5 — FIRST ATTEMPT (rejected): loosened `present, outdated` to accept a template's named rule list as a delta source, so the guide row could report a vintage.
+- step 5b — correctness rejected that attempt on three measurements: it is a check for the shape we would have made (Symbio: 40 KRITICKE sections, 345 task mentions, reported missing four English rules), the negative control fails (this repo's own AGENTS.md omits two seed items), and the inventory is not reproducible (8 bullets, my measurements both said 4). Also found a contradiction (never touch a section's content vs offer to add rules), no fill path for a non-verb owner, and a stale pointer. REVERTED the whole attempt.
+- step 5 (second) — implemented the limitation the task itself predicted: a § *A guide's vintage is not surveyable* section, a clause on the guide row, and a scoped upgrade promise in the description. Lint OK (18 skills), 43/43.
+- step 6 — no fix-dependent test exists (a stated limitation). Lint + 43 cases are contract pins, NOT evidence; the evidence is the three measurements, and that the rejected alternative fails two of them.
+- step 5d — 3 boundaries, 0 spawned. TASK-024's cross-reference corrected: it had recorded 063 as resolved on the reverted approach.
+- step 7 — respec skipped: `areas: []` (TASK-079).
+- step 8 — parked at REVIEW: two drill steps in the human test plan are real and unrun.

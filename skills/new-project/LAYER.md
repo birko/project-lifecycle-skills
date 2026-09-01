@@ -18,7 +18,7 @@ for adoption — **what to do when the repo already has one**.
 | Artifact | Owner | Already present? |
 |---|---|---|
 | `README.md` | — | **Leave it.** Offer to append a short "How we work" pointer at the end; never rewrite a human's README. |
-| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. |
+| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
 | `docs/architecture.md` | — | Leave it; report if absent. |
 | `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
@@ -139,6 +139,41 @@ settles it alongside the other choices. Do not default to *not applicable*: that
 a real gap disappear. Measured on the same three repos — one had no licence evidence in any direction and
 correctly landed `unknown`, while another was settled `not applicable` by one line in its README. The
 difference between those two is the whole point of the state.
+
+## A guide's vintage is not surveyable
+
+The agent guide is the artifact the layer grows fastest, so *"this guide is a 2026-08 vintage and the rules
+have moved on"* is the single most valuable thing an upgrade run could report. **It is also the one thing
+this survey must not attempt**, and saying so plainly is better than leaving a gap that looks like an
+oversight.
+
+**Measured on `WorkoutTracker`, 2026-09-01:** 342 lines, all four `##` sections present, and the task-first
+gate, `/verify-conventions` in the close gate, *generated files are owned by their verbs* and *status
+changes go through their verbs* all absent. It is genuinely an older vintage, it surveys as `present`, and
+that is the correct answer for reasons that only appear when you try to build the alternative.
+
+**Why a rule-list diff against the seed does not work — attempted, measured, rejected 2026-09-01.** The
+seed carries named rules, so "which of these is absent?" looks like a list-membership test rather than a
+judgement. Three measurements say otherwise:
+
+- **It is a check for the shape we would have made**, which is what this file's own § *Detect what the
+  repo has* forbids by name. `Symbio`'s guide is a 239 KB Slovak document with **40 `KRITICKE` rule
+  sections and 345 mentions of tasks**; a membership test for four English phrases reports it missing all
+  four and offers to append them. A repo stating the same rule *in its own words* is the normal case, not
+  the exotic one.
+- **The negative control fails.** This repo's own `AGENTS.md` — current, dense, the thing an upgrade run
+  must **not** flag — omits two of the seed's named items. The test flags the guide it was built to leave
+  alone.
+- **The inventory is not reproducible.** The seed's `### Working rules` holds **eight** bullets, plus the
+  skills its close gate names; two runs picking different subsets produce different "missing" lists, so
+  the state fails its own test — *could you write the missing items down before looking at the repo?*
+
+**So the honest outcome is a limitation, and the advertising now matches it.** The skill's description says
+the upgrade path reconciles the layer's **shape**, not the currency of anyone's prose. Report the guide
+`present`, name any missing `##` section, and leave the rules inside alone. **What a reader gets instead**
+is [[verify-conventions]], which lints real diffs against whatever the guide records — so a rule the guide
+never adopted shows up the moment code contradicts it, judged against that project's own rulebook rather
+than against ours.
 
 ## The adopted-repo brief
 

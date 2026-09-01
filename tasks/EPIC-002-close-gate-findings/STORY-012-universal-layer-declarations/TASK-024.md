@@ -53,6 +53,23 @@ it is noise that will train people to skim the report.
 each; splitting buries what makes them cheap together. Whether each verb needs *reconciliation* or
 only the *three-outcome report* differs though, and that judgement per verb is the work.
 
+**Cross-reference from TASK-063, closed 2026-09-01 — these are two tasks, and 063 did not narrow this one.**
+
+TASK-063 asked what a survey does with an agent guide that is present, complete by section, and an older
+vintage inside. It **first tried to generalise what counts as an owner** — allowing `present, outdated` to
+diff against a template's named rule list rather than a verb's answer — and that attempt was **measured and
+rejected**: a membership test for the seed's phrases is a check for the shape `new-project` would have made,
+it flags a 239 KB Slovak rulebook as missing four English rules, and it flags this repo's own `AGENTS.md`.
+063 closed instead on a **stated limitation**: a guide's rule vintage is content, the survey does not judge
+it, and the skill's description no longer promises to.
+
+**What that means here, and it is the opposite of a narrowing:** the bar for `present, outdated` is
+**unchanged** — an owner that can report a delta over its own named fields. This task's rows (`/tasks init`,
+`/specs init`, …) still qualify in principle, because a config's field set genuinely is enumerable in a way a
+hand-written guide's prose is not. **The distinction 063 paid for is the useful part**: an owner may answer
+where it wrote the shape itself, and must not where a human wrote the content. Every row here is the first
+kind, which is why the limitation 063 accepted does not reach them.
+
 ## Acceptance criteria
 
 - [ ] Each owner verb reached from `LAYER.md`'s Owner column either reports the three outcomes (**created** / **already current** / **brought up to date**) or records why the distinction does not apply to it — decided per verb, in that verb's file
