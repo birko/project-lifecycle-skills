@@ -74,8 +74,17 @@ explicitly rather than silently.
 
 ## Human test plan
 
-- [ ] Run `adopt-project`'s survey against `Birko/Consumers/WorkoutTracker` and confirm the guide's staleness lands in a named outcome rather than as free prose under the table
-- [x] Confirm a *current* guide (this repo's `AGENTS.md`) does not trip the new outcome — the check must distinguish an older vintage from a guide that is simply dense
+*Amended 2026-09-01, **before** the drill ran. The first two items were written expecting a new survey
+state, and the resolution is a **limitation**: item 1 asked that the staleness "land in a named outcome",
+which is precisely what the fix declines to do, and item 2's negative control is moot because with nothing
+to trip, no guide can trip it. **Item 2 had also been ticked in error** — on a measurement produced by the
+approach that was subsequently rejected, using four probes I chose myself rather than the seed's eight.
+Amending a **test plan** to match a settled resolution is legitimate; rewriting an **acceptance criterion**
+after the fact is not, and criterion 1 already admitted "a stated limitation" as one of its three outcomes.*
+
+- [ ] Run `adopt-project`'s survey against `Birko/Consumers/WorkoutTracker` — every `##` section present, four named rules absent — and confirm the run reports the guide `present`, **invents no state for the vintage**, and does not leave the gap as free prose under the table
+- [ ] Repeat against `Birko/Consumers/Symbio`, a 239 KB Slovak rulebook with its own 40 `KRITICKE` sections, and confirm it is **not** reported as lacking the seed's rules — the case the limitation exists for
+- [ ] Confirm the run tells the reader *why* the vintage is not assessed, rather than silently omitting it — a limitation nobody is told about is indistinguishable from an oversight
 - [ ] Read `adopt-project`'s description against what the run actually did, and confirm they agree
 
 ## Implementation plan
