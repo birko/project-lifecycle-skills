@@ -9,14 +9,14 @@ _Generated 2026-09-01. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 31    |
+| todo         | —     | —       | 30    |
 | in-progress  | 2     | 5       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 68    |
+| done         | 0     | 5       | 69    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 23× P2 · 6× P3.
+`todo` by priority: 1× P1 · 23× P2 · 6× P3.
 
 ## In progress now
 
@@ -49,7 +49,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (34/58 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (35/58 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -113,7 +113,7 @@ _None_
     - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
-    - [ ] [TASK-068](EPIC-002-close-gate-findings/TASK-068.md) The cold drill — write down the one test method that works on prose (P1)
+    - [x] TASK-068 The cold drill — write down the one test method that works on prose
 
 ## Loose tasks
 

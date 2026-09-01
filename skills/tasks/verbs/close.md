@@ -78,6 +78,11 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
        column bound to the wrong key, a display transform) → a **browser-level** test. A pure-HTTP
        check *cannot* catch these; the defect lives in the rendered output, not the response.
      - Authoring belongs to [[populate-tests]] — chain it. This step is the gate, not the how.
+     **A step that stays manual because the product *is* prose has its own instrument** — a cold drill,
+     [[populate-tests]] § *The cold drill*: the instructions executed by a reader denied the expected
+     answer, because an author cannot un-know their own intent. That section owns the brief's shape,
+     the fixture-contamination rule and the warranted-when test; this step only requires that a manual
+     step which qualifies actually gets it rather than a re-read by the author.
      A step stays `[manual]` **only** when it needs genuine human judgement (visual layout and feel,
      whether copy reads naturally, UX polish) or **physical hardware**. Both are legitimate; "I didn't
      get round to automating it" is not.

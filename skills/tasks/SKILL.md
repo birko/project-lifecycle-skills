@@ -270,7 +270,7 @@ non-obvious rules travel with this:
     intentions do not survive a long session — measured instance: one thread produced six such
     paragraphs across five closed tasks while the same session was quoting this very rule.
 - **Five optional frontmatter fields are owned by this pair and are not stray keys** — `triage` and
-  `audit` must not flag them: `findings:` (task — the ids it remediates, `CR-*`/`SEC-*`/`SH-*`/`VC-*`),
+  `audit` must not flag them: `findings:` (task — the ids it remediates; [verbs/intake.md](verbs/intake.md) owns the prefix list, so a new source is one row there),
   `kind: review-intake` + `source:` (epic — the stamp `fix-next` reads to find the pool, so no epic
   id is ever hard-coded, plus where the findings came from), `theme:` (story — its slug on
   `intake`'s subject ladder, which `fix-next` reads as tie-break key 6 instead of inferring the theme

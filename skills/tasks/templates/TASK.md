@@ -9,7 +9,7 @@ assignee: {{ASSIGNEE}}
 created: {{CREATED}}
 depends-on: []
 blocks: []
-# findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
+# findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
 findings: []
 pr: null
 github-issue: null
@@ -37,6 +37,8 @@ What this task does and why it exists. Include enough background that an AI agen
 ## Human test plan
 
 _For behaviour that unit/AI tests can't fully cover (UI/UX, edge cases, system integrations, manual verification). A human or agent runs these steps at `/tasks close` time and when `/feature review` checks the feature._
+
+_State the expected outcome here — that is what makes a step checkable. **If these steps will be run by a cold reader, the brief they get is a different document that withholds it**: see [[populate-tests]] § *The cold drill*, which also says when that is worth doing and when it is over-ceremony._
 
 - [ ] Step a tester can follow without re-discovery — exact action + expected result
 - [ ] Edge case / boundary to exercise by hand

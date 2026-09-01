@@ -90,6 +90,114 @@ hidden by a loosened assertion, but a real fix unprotected by a test that was ne
 [[fix-next]] runs this as a required step; [[tasks]] `close` requires it before an automated check can
 retire a `[manual]` ledger line.
 
+## The cold drill — the one test method that works on prose
+
+Layer 3's `[manual]` lines exist because a human must eye something. **A repo whose product *is* prose —
+instructions an agent reads — has a fourth case, and neither automation nor eyeballing reaches it.** The
+failure mode there is not a crash: it is a sentence that carries its meaning only for someone who already
+knows the intent. **The author cannot test for that, because they cannot un-know the intent.**
+
+So the instrument is a **cold drill**: hand the changed instructions to a reader who has not seen the
+change, have them *execute* the instructions against a real target, and report where the prose led them.
+
+**The mechanism is withholding the answer, and it is the whole mechanism.** A `## Human test plan` says
+*"confirm the survey reports `not applicable`"* — handed to a runner verbatim, that converts the test into a
+confirmation: the runner knows the target and reports hitting it. **The plan and the brief are two different
+documents**, and that distinction is the method:
+
+| | The `## Human test plan` | The drill brief |
+|---|---|---|
+| Written for | the author, and the record | the runner |
+| States the expected outcome | **yes** — that is what makes it checkable | **never** |
+| Asks | *confirm X* | *carry out the steps and report what you concluded* |
+
+### The brief's shape — five asks, and five things they do not cover
+
+1. **Execute, don't evaluate.** *"Follow these instructions against this target and report where they led
+   you"* — not *"is this skill any good"*. A runner asked to critique writes criticism; one asked to execute
+   produces evidence.
+2. **Ask for the outcome in the instructions' own terms** — the table it was told to print, the states it
+   assigned, the questions it would ask — and never name the value you expect.
+3. **Ask what the instructions left undecided**, quoting the sentence.
+4. **Ask what had to be inferred** rather than read off a file or a rule.
+5. **Ask what it read that nothing sent it to.**
+
+**Rows 3 to 5 are where the yield is, and they are the rows most likely to be dropped.** Measured: they are
+what produced the defects, repeatedly, including defects *in the change being drilled*. Row 3 paired against
+its inverse — *"and separately, what did the instructions settle for you that you would otherwise have had to
+work out"* — is stronger still, because an absence in one list only means something beside the other.
+
+**These are prompts to include, not text to paste** — and a drill of this very section found five gaps in
+them, each of which the runner had to invent before it could write a usable brief. They are load-bearing:
+
+1. **Bar the lookup; do not assume it.** *"A reader who has not seen the change"* describes a starting
+   state, not a prohibition — and it **expires at the first `git log`**. Say plainly: no diffs, no history,
+   no task notes, no planning docs. Row 5 then audits whether that held.
+2. **A setup step can leak the axis by itself, and the withholding rule above does not cover it.** A plan
+   that says *"make an unrelated edit, staged and again unstaged"* announces that staged-versus-unstaged is
+   the subject, and the state cannot be built without saying so. The workable line: **give provenance
+   mechanically, never the classification** — *"a file the tooling created"* and *"a file you wrote
+   yourself"*, never *"an unlanded artifact"* and *"user work in progress"*, which are the verdict.
+3. **Say what to do with a question the instructions raise.** Where the prose has the runner *ask* the user
+   something, a runner who actually asks either stalls or is handed the answer. Tell it to **write the
+   question out verbatim and continue as if unanswered** — often the question *is* the finding.
+4. **Matching the report back to the plan is the author's step, and it is where honesty is spent.** The plan
+   states outcomes and the brief must not, so nobody but the author can tick the boxes. That is also where a
+   discounted or weak-evidence result must stay unticked rather than ticked with a caveat beside it — a
+   caveat disappears, an unticked box does not.
+5. **A fresh agent with no prior context is runner enough.** Tell it that it is running a drill; withhold
+   only the change. Concealing the exercise buys nothing, concealing the change is the entire mechanism.
+
+### Choosing a target, which is harder than it looks
+
+**A rule that cites a named file in a named repo cannot be drilled on that repo** — the instructions have
+already adjudicated the case, so the runner's judgement is not independent. Measured repeatedly: a change
+that justified itself with three named repos disqualified all three as fixtures for its own drill, and one
+measurement fingerprinted its fixture so precisely (*"holds only `docs/` and `tasks/`… 343 projects"*) that
+the runner recognised itself.
+
+Three corollaries, each measured:
+
+- **Contamination is per *question*, not per repo.** A repo named for its guide can still drill an unrelated
+  row. Say which question is contaminated and discount that part of the report.
+- **The strongest form is an A/B on one unchanged target** — drill it before the change and after. Same
+  input, opposite outcome, and nothing else can move.
+- **A contaminated drill can still produce a conclusive *negative*.** If the runner still reports having to
+  decide, the fix failed, whatever it guessed about the answer. Use the asymmetry deliberately and say that
+  a pass there is weak evidence.
+
+**Prefer a real target to a fixture you built.** A fixture tests the author's model: one built to defeat
+source discovery simply failed to — the runner read the README and recovered.
+
+**Leave the target as you found it.** A real target usually has someone's uncommitted work in it — measured
+across this fleet, four of five consumer repos did — so a drill that must dirty the tree runs on a **clone or
+worktree**, and a drill that only needs to *read* is told read-only in the brief and never stages, commits or
+edits anything. A clone with real history is still a real target; the git state the drill sets up is its
+**input**, not a fabricated repo.
+
+### When it is warranted, and when it is over-ceremony
+
+It costs one runner, several minutes, and a brief that must be *written* rather than pasted. **That is not
+free and it is not always right.**
+
+| Drill it | Don't |
+|---|---|
+| the change **adds or rewrites a rule** a reader must apply | a typo, a link, a rename, a deletion |
+| the rule has a **branch** — states, conditions, an ordering | prose that only restates something already true |
+| getting it wrong is **silent** — a clean-looking report, a laundered state | a change whose failure is loud, or one a lint already pins |
+| the change **cites its own justification** and you cannot tell whether the prose or the example is doing the work | a change whose test is mechanical: a link resolves, a count matches, a case fails without the fix |
+
+**The test in one question:** *could a careful reader, without knowing what I intended, reach a different
+answer than the one I intended?* If no, a drill tells you nothing you don't have. If you cannot tell — drill
+it; that uncertainty is the condition.
+
+**Expect the drill to find something in the change itself.** That is the normal outcome, not the alarming
+one, and it is the strongest argument for the cost.
+
+**This does not replace anything.** § *Prove the guard can fail* still governs a regression test, and
+[[tasks]] `close` step 5's *automate before you accept a manual step* still applies first: a drill is what a
+step that stays manual gets, never a reason to leave a mechanisable check unautomated.
+
 ## Transferable principles (learned the hard way)
 
 - **Single test-runner instance** — the runner (Playwright/vitest/…) must be ONE copy reachable by both

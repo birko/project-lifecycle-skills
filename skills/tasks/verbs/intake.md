@@ -53,6 +53,13 @@ different source of work.
    | `SEC-*` | [[security-review]] |
    | `SH-*` | [[specs]] harvest — an unexplained behavioral change in a regen diff |
    | `VC-*` | [[verify-conventions]] — adherence |
+   | `DRILL-*` | a **cold drill** — the prose executed by a reader denied the expected answer ([[populate-tests]] § *The cold drill*) |
+
+   **This table is the only list of prefixes.** A prefix names the *pass* that produced the finding, so a
+   new source gets a row here and nothing else changes — `templates/TASK.md` and [SKILL.md](../SKILL.md)
+   point at this table rather than repeating it. `DRILL-*` was added 2026-09-01 after nine drills had
+   already minted such ids: a drill produces findings by **execution**, which none of the four review
+   passes above describes, so remapping them would have filed them under a pass that never ran.
 
    Number within the pass (`CR-1`, `CR-2`, …). If `--epic` targets an existing intake epic, continue
    its numbering rather than restarting — grep the epic's tasks' `findings:` lists for the current max.
