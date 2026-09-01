@@ -200,6 +200,27 @@ The skills *are* the product, so their prose is the user interface. This subsect
   marker and the state are defined once, in `skills/new-project/LAYER.md` (§ *Lazily-created rows*, and its
   § *Detect what the repo has*); this entry is the pointer, not a second copy. Claimable **only** where the
   row declares itself lazy — relabelling an ordinary absence launders a real gap into a design choice.
+- **A layer artifact that only some projects take is declared `(conditional)`, and the row names the
+  condition it turns on.** The sibling of the `(lazy)` rule above, and it exists because the alternative was
+  measured: `LICENSE`, `.env.example` and `Dockerfile` sat outside the inventory *because* they were
+  conditional, which made `LAYER.md`'s "single definition" claim false by three artifacts and — the part that
+  made it a defect rather than an untidiness — left [[adopt-project]], which walks those rows and nothing
+  else, permanently unable to notice a repo with no licence. **Measured 2026-09-01: five of seven consumer
+  repos have none, and the survey could not raise the question.** Plain rows were rejected for the
+  mirror-image reason: *absent ⇒ missing* would report a missing `Dockerfile` on every CLI and library, two
+  false gaps each on three of those same seven.
+  - **The condition is not always the kind, and a marker that said so was itself the defect.** `.env.example`
+    and `Dockerfile` turn on kind; `LICENSE` turns on **licensing posture** — a proprietary and an
+    open-source service are the same kind and want opposite answers. So each row states its condition and the
+    evidence that settles it, rather than every consumer reaching for one shared fact.
+  - **`not applicable` is not `(lazy)`'s `not applicable yet`** — a library does not acquire a `Dockerfile` by
+    aging, so one state is settled and the other is pending, and collapsing them loses whether anyone should
+    look again. **Undetermined evidence yields `unknown` and a question in the adopter's frontier round, never
+    `not applicable`** — defaulting there is how a real gap is laundered into a design choice, and the kinds
+    hardest to evidence (CLI, `other`) are exactly the ones these rows exclude.
+  - Marker, states and the kind signals are defined once, in `skills/new-project/LAYER.md` § *Conditional
+    rows*; this is the pointer. **A row's condition and its creator must agree** — the same change that adds a
+    row fixes the scaffolder line that contradicts it.
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming

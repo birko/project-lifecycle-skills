@@ -54,8 +54,25 @@ These consequences decide behaviour:
   to, and never count it toward what the repo is missing. Stated here because the first bullet —
   *when in doubt, `unknown`, never `missing`* — is otherwise the only absence guidance on this page,
   and for these rows it points the wrong way: there is no doubt to resolve.
+- **A conditional row's absence depends on that row's own condition.** Where the row declares itself
+  **(conditional)**, it names the condition and the evidence that settles it — read them off the row;
+  do not keep a list of which rows are conditional here, because a row added tomorrow would not be on it.
+  An absent artifact is `missing` when the condition holds and `not applicable` when it does not, and the
+  two are not interchangeable: a missing `Dockerfile` reported on a CLI is the false gap that teaches a
+  reader to skim the survey, while `not applicable` on a service that genuinely lacks one hides a real
+  gap. **Where the evidence does not settle the condition, the state is `unknown`**, naming the fact that
+  was missing, and step 2's round resolves it — never `not applicable`, which launders the gap away.
+  [LAYER.md](../new-project/LAYER.md) § *Conditional rows* owns the rule and the reasoning; this bullet
+  exists because the absence guidance on this page would otherwise point the wrong way, exactly as it
+  would for a lazy row.
 
-Alongside it, detect the facts the fill will need: the stack (manifests, source layout), whether a
+**Resolve these before the table prints, not after** — three rows above are conditional and cannot be
+stated without them, so detecting them late means printing `unknown` on every run and calling it a survey.
+Detect the stack (manifests, source layout); **the project's kind** — service / API / web UI / library /
+CLI / worker / other, read off the signals [LAYER.md](../new-project/LAYER.md) § *Conditional rows* lists,
+and `unknown` where they do not settle it; **the licensing posture** (a README licence line, a manifest
+`license:` field, an SPDX header) — a different question from the kind, and the one the `LICENSE` row turns
+on; whether a
 test runner already works, whether a git remote exists, whether the repo is captured by an
 ancestor git repo, and whether anything the layer owns is on disk but **not yet in history** — the
 signature of an earlier pass that wrote and never committed. *Untracked is only half of that*, and

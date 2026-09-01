@@ -27,7 +27,10 @@ for adoption — **what to do when the repo already has one**.
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
 | `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
-| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. |
+| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
+| `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture: a licence line in the README, a `license:` field in a package manifest, an SPDX header in sources. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
+| `.env.example` **(conditional — on kind)** | [[new-project]] seed | Service / API / web / worker → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). Library / CLI → **not applicable**. Kind `other` or undetermined → **unknown**, resolved in step 2's round. Present → **leave it**; whether it still lists the right variables is content, not shape. |
+| `Dockerfile` (+ `.dockerignore`) **(conditional — on kind)** | [[new-project]] seed | Service / API / web / worker → absent is **missing**, offered and never forced. Library / CLI → **not applicable**. Kind `other` or undetermined → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
 | Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. |
 | CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack — **but only if the repo can build in isolation**; see *CI a repo cannot pass* below. |
@@ -79,6 +82,51 @@ argument; the row only has to stop both front doors seeding one.
 
 So absence is the **expected** state of a lazy row, which is why § *Detect what the repo has* gives
 it a state of its own — `not applicable yet` — instead of `missing`.
+
+## Conditional rows
+
+A row marked **(conditional)** is part of the layer for **some projects and not others**, and it names
+its own condition. Where the condition does not hold, the honest state is **not applicable**, and the row
+is reported that way rather than quietly dropped from the survey.
+
+**The condition is not always the kind, and assuming it is was a real defect.** `.env.example` and
+`Dockerfile` turn on the project kind; `LICENSE` turns on **licensing posture** — a proprietary service
+and an open-source service are the same kind and want opposite answers. A marker that said
+*kind-conditional* invited an agent to reach for the kind, get "library", and report an unlicensed
+open-source library **not applicable** — laundering away the single gap this section was written for.
+Each row therefore states the condition it turns on, and the evidence that settles it.
+
+**Why they are rows at all, rather than left to the scaffolder:** the alternative was to keep them out
+of this inventory on the grounds that they are conditional — which is what the file did until
+2026-09-01, and it made the opening claim above false by three artifacts. **The cost was one-directional
+and that is what made it a defect rather than an untidiness:** [[adopt-project]] walks these rows and
+nothing else, so it could never notice a repo with no `LICENSE`. An artifact the scaffolder creates and
+the adopter cannot see is a gap that only ever appears in greenfield repos.
+
+**Why not plain rows:** a plain row means *absent ⇒ missing*, so adoption would report a missing
+`Dockerfile` on every CLI and every library — a false gap on the majority of real repos, and the fastest
+way to teach a reader to skim the survey. Measured 2026-09-01 across seven consumer repos: three are
+library/CLI shaped and would each have shown two false gaps on their first run.
+
+**`not applicable` is not `not applicable yet`.** The lazy rows above are *waiting*: the artifact may
+appear the moment there is something to put in it, and the state says so. A conditional row whose condition
+does not hold is **settled** — a library does not acquire a `Dockerfile` by aging. Reporting either one
+as `missing` is the same false-gap error; collapsing the two into one state loses whether anybody should
+ever look again.
+
+**The kind is evidenced, and evidence that does not settle it yields `unknown` — not a guess.**
+[[new-project]] knows the kind because intake asked; that is a **declaration**. [[adopt-project]] has only
+signals: a listening port and an entry point say service; a console entry point or a `bin` mapping with no
+server binding says CLI; a published package manifest with no host says library; a long-running entry point
+with neither a port nor a `bin` mapping says worker.
+
+**Treat those as evidence, never as an answer.** They are *consistent with* several readings — a library
+shipping a sample server, a CLI that also serves — which by § *A derived state must never be cached as a
+decision* in the consuming project's guide is the shape that **had to be declared**. So where the signals
+conflict or run out, the state is **unknown**, the row names the fact that was missing, and step 2's
+question round settles it in the same breath as the other choices. Do not default to *not applicable*:
+that is the reading which makes a real gap disappear, and the kinds hardest to evidence — CLI and
+`other` — are exactly the ones the sibling rows exclude.
 
 ## The adopted-repo brief
 
@@ -155,6 +203,7 @@ grows as real repos turn up conditions it cannot yet express:
 - **missing** — you actively looked and it is genuinely absent.
 - **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire — which is this rule's own mirror of § *Read the declaration, never infer it* in the consuming project's guide.
 
+- **not applicable** — a **conditional** row (§ *Conditional rows*) whose condition does not hold for this project: a `Dockerfile` in a CLI, an `.env.example` in a library, a `LICENSE` in a proprietary repo. **Settled, not pending** — unlike the state below, nothing will change it, so it suppresses the fill, the offer, and any later re-ask. Claimable only where the row declares itself conditional **and** its condition was actually settled by evidence; where the evidence ran out the state is `unknown`, naming what was missing, because defaulting to this one is how a real gap is laundered into a design choice.
 - **not applicable yet** — a **lazy** row (§ *Lazily-created rows*) with no instance, in a repo that has nothing to record. **This is not a gap and is never reported as drift.** It suppresses both the fill *and the offer*: asking *"shall I create a glossary?"* is how the empty file the lazy rule exists to prevent arrives **with** the user's consent instead of without it, so the offer is the defect here, not the fill. **Claimable only where the row declares itself lazy** — an absent artifact whose row creates it is `missing`, and relabelling it here would launder a real gap into a design choice, which is the false-`present` failure pointing the other way. Distinct from `missing, not offered`: that is a genuine gap *adjudicated* unfillable for now, so its offer returns when the evidence changes; this one has nothing to fill and no evidence that could change.
 
 *"I could not tell"* is a legitimate answer; *"you don't have it"* when you merely failed to look

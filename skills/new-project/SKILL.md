@@ -20,7 +20,7 @@ The front door for a new project. Produces a **consistent universal layer** rega
   .gitignore                ← stack-appropriate (always ignores .env)
   .gitattributes            ← line-ending normalization (text=auto eol=lf)
   .editorconfig             ← shared editor style
-  .env.example              ← service/API/web kinds only (real .env stays ignored)
+  .env.example              ← service / API / web / worker kinds (real .env stays ignored)
   LICENSE                   ← full text with year+author, if chosen
   docs/
     BRIEF.md                ← the user's ask, VERBATIM (append-only ground truth — written first)
@@ -30,7 +30,7 @@ The front door for a new project. Produces a **consistent universal layer** rega
     # nothing LAYER.md marks (lazy) is created here — today glossary.md + adr/, written by [[domain]] on first use
   tasks/                    ← initialized via the [[tasks]] skill (.config.yml, README.md)
   .github/workflows/ci.yml  ← install→build→test gate, if a stack with known CI was chosen
-  Dockerfile (+ .dockerignore) ← service/API/web kinds only
+  Dockerfile (+ .dockerignore) ← service / API / web / worker kinds
   .git/ (+ origin remote)   ← git init; remote offered for hybrid task mode
   src/ (+ tests/)           ← stack-idiomatic source root + tests, if a stack was chosen
   <manifest + skeleton>     ← package.json / pyproject.toml / go.mod / Cargo.toml …
@@ -86,10 +86,10 @@ Gather in one or two question batches:
     - **Testing** — `{{TEST_CONVENTION}}` from the stack.
     - Fold in any scope-grill output. Leave the register-on-introduce + working-rules sub-blocks as-is.
     - **Rule:** every subsection either carries a real rule or is removed — never a dangling `{{…}}`. From here, [[verify-conventions]] lints diffs against this block and the lifecycle keeps it current.
-- **`.gitignore`** — stack-appropriate (e.g. `bin/ obj/` for .NET, `node_modules/ dist/` for Node, `__pycache__/ .venv/` for Python). For "none yet", a minimal OS/editor ignore. **Always include `.env` and `.env.*`** (never commit secrets).
+- **`.gitignore`** — stack-appropriate (e.g. `bin/ obj/` for .NET, `node_modules/ dist/` for Node, `__pycache__/ .venv/` for Python). For "none yet", a minimal OS/editor ignore. **Always include `.env` and `.env.*`** (never commit secrets) — **followed by `!.env.example`**, or the same glob swallows the committed template the `.env.example` row exists to provide, and it is then invisible to every later survey (an ignored path reports `present`, so nothing offers to land it).
 - **`.gitattributes`** — `* text=auto eol=lf` line-ending normalization (matters on a Windows shop committing cross-platform). Add stack-specific binary markers if relevant.
 - **`.editorconfig`** — basic shared style (UTF-8, final newline, stack-idiomatic indent) so editors agree regardless of contributor.
-- **`.env.example`** — for service / API / web kinds, a documented (valueless) template of required env vars; the real `.env` stays gitignored. Skip for pure libraries.
+- **`.env.example`** — for service / API / web / worker kinds, a documented (valueless) template of required env vars; the real `.env` stays gitignored (with `!.env.example` so the template itself is not). Skip for libraries and CLIs. *(The two halves of this file used to disagree about CLIs — the summary said "service/API/web only" and this line said "skip for pure libraries"; the row in [LAYER.md](LAYER.md) is the one both now match.)*
 - **`LICENSE`** — if chosen, write the **full license text** (MIT/Apache-2.0) with the current year and the **copyright holder** filled in — not just a name reference. Intake doesn't ask for the holder; derive it from `git config user.name` (and an org if the remote/owner is known), and only ask if that's empty. Skip for proprietary/none (note it in README instead).
 - **`CHANGELOG.md`** — a [Keep a Changelog](https://keepachangelog.com) stub with an `## [Unreleased]` section. This is the *code* changelog (maintained by the [[roll-changelog]] skill); it's distinct from the *decision* ledger in `docs/features/` — the lifecycle tracks both.
 - **`docs/features/`** — create the directory and a **`docs/features/README.md` features index** (the human entry point: a table of every feature with status, linking each folder), rendered from the [[feature]] skill's `templates/README.md.tmpl`. The table is empty at birth **only when no roadmap stubs were seeded** — when this scaffold seeds `idea.md` stubs (the multi-feature-brief rule below), render one `idea`-phase row per stub so the index never lies about the tree it fronts (equivalently: run `/feature status` all-features mode once, as the last scaffold step). Don't rely on a `.gitkeep` alone — the index doubles as the tracked-dir anchor and the at-a-glance list. From then on `/feature status` (all-features mode) owns regenerating it; don't hand-roll its shape here — use the feature skill's template so the two stay in sync.
@@ -137,7 +137,7 @@ no-op.) This makes the CI gate and the lifecycle's **PROVE** leg
 - **When the check forbids it, skip the stub** — and don't announce it here. Step 6's checklist owns that line; a workflow plus an apology is the outcome to avoid, and so is silence.
 - **When the check allows it**, the creation detail is this step's: a minimal `.github/workflows/ci.yml` (or the host's equivalent) running **install → build → test** on push/PR, matched to the stack — `dotnet restore/build/test`, `npm ci && npm run build && npm test`, `uv sync && pytest`, `cargo build && cargo test`, `go build ./... && go test ./...`. Keep it to one job; the user expands it later. Skip for docs-only, and ask before assuming a non-GitHub CI host.
 
-**Dockerfile** (service / API / web-UI kinds only — skip libraries/CLIs): a minimal multi-stage `Dockerfile` + `.dockerignore` for the chosen stack. When a chained stack scaffolder documents its own Docker pattern, follow that instead of the generic template. Offer it; don't force it.
+**Dockerfile** (service / API / web-UI / worker kinds — skip libraries and CLIs): a minimal multi-stage `Dockerfile` + `.dockerignore` for the chosen stack. When a chained stack scaffolder documents its own Docker pattern, follow that instead of the generic template. Offer it; don't force it.
 
 ### 6. Git + remote + finish
 
