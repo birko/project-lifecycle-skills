@@ -18,7 +18,7 @@ for adoption — **what to do when the repo already has one**.
 | Artifact | Owner | Already present? |
 |---|---|---|
 | `README.md` | — | **Leave it.** Offer to append a short "How we work" pointer at the end; never rewrite a human's README. |
-| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
+| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
 | `docs/architecture.md` | — | Leave it; report if absent. |
 | `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
@@ -173,7 +173,7 @@ have moved on"* is the single most valuable thing an upgrade run could report. *
 this survey must not attempt**, and saying so plainly is better than leaving a gap that looks like an
 oversight.
 
-**Measured on `WorkoutTracker`, 2026-09-01:** 342 lines, all four `##` sections present, and the task-first
+**Measured on `WorkoutTracker`, 2026-09-01:** 342 lines, every one of the seed's `##` sections present, and the task-first
 gate, `/verify-conventions` in the close gate, *generated files are owned by their verbs* and *status
 changes go through their verbs* all absent. It is genuinely an older vintage, it surveys as `present`, and
 that is the correct answer for reasons that only appear when you try to build the alternative.
@@ -196,10 +196,78 @@ judgement. Three measurements say otherwise:
 
 **So the honest outcome is a limitation, and the advertising now matches it.** The skill's description says
 the upgrade path reconciles the layer's **shape**, not the currency of anyone's prose. Report the guide
-`present`, name any missing `##` section, and leave the rules inside alone. **What a reader gets instead**
+`present`, name any missing `##` section — § *Matching a guide's sections* owns the inventory and the
+by-meaning rule, and explains why a section diff is allowed where this rule-list diff was not — and leave
+the rules inside alone. **What a reader gets instead**
 is [[verify-conventions]], which lints real diffs against whatever the guide records — so a rule the guide
 never adopted shows up the moment code contradicts it, judged against that project's own rulebook rather
 than against ours.
+
+## Matching a guide's sections
+
+The guide row asks which of the seed's `##` sections a repo's guide is missing. Two things make that
+answerable, and leaving either unsaid is how a survey reports a guide complete when it is not.
+
+**The inventory is the seed's own headings** — [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md), whose
+`##` headings *are* the list. Read them off that file every run; do not keep a copy of them here, in a front
+door, or in a survey's prose. **Read each section's body too, not only its heading** — matching by meaning
+means asking what question a section exists to answer, and a heading alone does not say. Two drill runners
+reached for the bodies unprompted and one said so outright: *"matching by meaning is impossible without
+knowing what question each heading covers."* A copy goes silently wrong the day the seed gains a section, and the survey
+would then report a guide complete against a list one section short — the failure this section exists to
+prevent, arriving by the tidy route. **Measured 2026-09-01: nothing in the survey's reading set named this
+file at all**, and one cold runner reached into it uninstructed while another projected that a run which did
+not *"would report the guide `present` with no missing sections named"* on a repo whose guide was missing the
+one section explaining the 18 features it already kept.
+
+**Match by meaning, never by heading text.** A repo states the same thing in its own words and its own
+language, and § *Detect what the repo has* forbids checking for the shape we would have made. So:
+
+| Seed section | What decides whether a guide answers it |
+|---|---|
+| `## Conventions` | **[[verify-conventions]] § *Finding the rulebook*'s ladder owns this one** — do not write a second test. `INFER.md` already defers to the same ladder, so all three skills agree on what a rulebook is. |
+| every other section | *Does the guide answer the question this section exists to answer?* — not *does a heading resemble ours*. |
+
+**Why this coarse test is allowed where § *A guide's vintage is not surveyable* rejected a finer one.** That
+section measured a **rule-list** diff against the seed and rejected it on three grounds. A **section** diff
+survives all three, and the difference is granularity rather than luck:
+
+- **The negative control passes.** The rule-list test flagged this repo's own current guide, which is the
+  thing an upgrade run must leave alone. On sections, that guide answered **every section the seed carried
+  when this was measured (2026-09-01)**, and so did `WorkoutTracker`'s. *The score is deliberately not
+  written as a number here:* a count is exactly what the pointer above exists to avoid, and a reader who
+  trusts a stale one stops checking the sections added since. Measured instance — a drill run against a
+  five-section seed met "4 of 4" in this very paragraph and had to choose between the number and the
+  instruction; it chose the instruction and reported *"had I trusted the number, the fifth would never
+  have been checked."*
+- **The shape-we-would-have-made objection is real, and by-meaning matching answers it.** `Symbio`'s guide
+  is 19 `##` sections of Slovak with **not one** matching a seed heading by text — a text match reports all
+  four missing, which is precisely the rejected behaviour. By meaning it resolves three (`Architektura —
+  vrstvy`; the `smerovnik` router plus eleven `Pravidla … (KRITICKE)` sections; `Dev tools`) and leaves one
+  honest judgement.
+- **Four whole topics are reproducible where eight-plus named rules were not.** *Does the guide answer this
+  at all* has one answer per section; *which of these rules is absent* had two runs producing two lists.
+
+**Where the meaning-match is genuinely ambiguous, name it in the report — never decide it silently.**
+The coarse test removes most of the judgement, not all of it: on `Symbio`, three sections resolve cleanly
+and whether `Ako pouzivat s AI agentom` answers the lifecycle section is a real call. Report that one as
+*undetermined, and why*, and let step 2's round settle it — the same treatment a conditional row's
+unsettled condition gets. A silent yes appends nothing and hides a gap; a silent no offers to append a
+section the guide may already answer, and neither is recoverable from the table.
+
+**A guide whose rules are woven through it rather than sectioned is not missing `## Conventions`.** That is
+the ladder's own rung 4, and it matters here because the row's remedy is to *append*: appending a
+`## Conventions` block to a guide that already states its rules elsewhere in itself creates a second home
+for rules, and the next task gets to pick which one wins. Answered is answered, wherever it sits inside the
+guide.
+
+**A section whose content lives in another file is `present`, and the report says where.** Measured:
+`BardStudio`'s guide has no `## Commands` counterpart while its `README.md` §§ Build / Run carry exactly
+that content. Reporting it missing would offer to append a second copy of something the repo already
+documents, which is the false-`missing` this file calls the dangerous direction — and *"a repo that solved
+it differently has solved it"* is the standing rule. **The one exception is `## Conventions`**, which the
+guide must carry itself: it is the file [[verify-conventions]] reads at every gate, so rules parked
+elsewhere are not reachable by the thing that enforces them. Flag that one loudly, as the row says.
 
 ## The adopted-repo brief
 
