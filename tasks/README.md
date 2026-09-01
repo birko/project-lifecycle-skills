@@ -11,9 +11,9 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 6       | —     |
 | todo         | —     | —       | 27    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 61    |
+| done         | 0     | 5       | 62    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 3× P1 · 20× P2 · 4× P3.
@@ -21,10 +21,6 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_
-
-## In review (awaiting sign-off)
-
-- [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) — `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists (P1, agent) — survey drill unrun
 
 ## Tree
 
@@ -53,7 +49,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (27/48 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (28/48 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -95,8 +91,8 @@ _None_
     - [ ] [TASK-081](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-081.md) One number now names two different lint checks
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (4/9)
-    - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists 🔍 review
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (5/9)
+    - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
