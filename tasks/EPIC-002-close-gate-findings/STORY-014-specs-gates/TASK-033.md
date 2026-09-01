@@ -3,7 +3,7 @@ id: TASK-033
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: in-progress
+status: review
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -263,3 +263,8 @@ Worth passing to whoever owns them: **WorkoutTracker** has 6 real source files n
 - DRILL 2026-09-01 - FAILED. Two cold drills (4 fixtures full-path, 5 real Birko repos read-only). Five defects in this task's own fix: verdict moment unspecified (flips 4/5 repos), one word cannot separate real drift from housekeeping, scan universe undefined (found by both drills independently), glob semantics unstated, dot-path handling unstated. Two adjacent gaps to spawn. status review -> in-progress.
 - 2026-09-01 - fixed drill defects C, D, E. All three land in SKILL.md's shared `Rules:` block (one home, read by init/regen/verify) with init step 4 pointing at them: the scan is every file git tracks; every glob is matched with `:(glob)`; a dot-prefixed path is an ordinary scan member. D was NOT restated - verify.md already owned it with a measurement, so the rule points there; recorded as a third instance on TASK-084. Lint OK (18 skills), 43/43.
 - STILL OPEN: defects A (the verdict's moment is unspecified - flips 4 of 5 real repos) and B (one word cannot separate real drift from housekeeping). The task cannot close until these are settled; the verdict remains unreproducible without A.
+- 2026-09-01 - fixed drill defects A and B, the two that made the verdict unreproducible.
+  A (which moment does the verdict describe): settled as the map AS WRITTEN, after step 4's own reconciliation - grading before the fix would mark a run `unverified` for a gap it went on to close. The earlier moment is not discarded, it becomes a number.
+  B (one word carrying four meanings): every file unmapped at first scan is now classified by HOW it left the set - folded into an area (behavioural drift) or into `ignore` (housekeeping) - and `coverage-drift` counts only the first. Measured justification: Symbio 33 unmapped / 0 drift and Latent 42 / 0 are pure tidying, while WorkoutTracker's 14 / 6 was real shipped behaviour invisible to every regen. Raw count ranks those backwards, which is the whole argument for the field.
+  Three keys now: `coverage`, `coverage-scanned`, `coverage-drift`. Absent companions read as NOT COMPUTED, never zero. Lint OK (18 skills), 43/43.
+- status in-progress -> review: all five drill defects are fixed, so the code is complete, but the human test plan has not been re-run against the changed prose. The previous drill FAILED; a fix for a failed drill is not done until the drill runs again.

@@ -44,6 +44,8 @@ across stacks, so each project declares its own. Shape (see [templates/map.yml](
 
 ```yaml
 coverage: verified                      # verified | not-applicable | unverified
+coverage-scanned: 3884                  # tracked files the last init examined
+coverage-drift: 0                       # of those unmapped at scan, how many were real source
 areas:
   - name: bulk-filter-updates          # kebab-case, becomes <area>.md
     title: Bulk filter-based updates
@@ -58,15 +60,19 @@ ignore:                                 # never counts as unmapped
 Rules:
 - **Granularity = capability**, not class or file — `auth-session`, `lazy-initialization`,
   `bulk-filter-updates`. A healthy project has ~5–20 areas.
-- **`coverage:` records whether the map was ever checked, and is written on every `init` run.**
-  `verified` (a non-empty scan set with nothing unmapped) · `not-applicable` (the repo has no
-  behavioral code) · `unverified` (everything else — discovery found nothing while sources exist,
-  unmapped files the user declined to map, or areas proposed as a partial guess). **An absent key
-  predates it and means `unverified`, never `verified`** — the same reading `regen` gives a missing
-  `shaped-by-derived`. It is a key rather than a comment so it survives re-serialization and can be
-  branched on; [init](verbs/init.md) step 2 reads it, and a populated map marked `unverified` must not
-  be treated as a blessed baseline. Distinct from an empty `areas:` list, which is already treated as
-  *absent* everywhere: this exists for a map that looks populated while nothing checked it.
+- **`coverage:` and its two companion numbers record whether the map was ever checked, how big the check was, and whether it found real blindness.** Written by every [init](verbs/init.md) run; all three are overwritten each time, so a repo whose discovery is later fixed clears a stale verdict by itself.
+
+  | Key | Value |
+  |---|---|
+  | `coverage` | `verified` · `not-applicable` (no behavioral code) · `unverified` |
+  | `coverage-scanned` | how many tracked files the scan examined |
+  | `coverage-drift` | of the files unmapped at first scan, how many were **behavioral** — i.e. folded into a capability area rather than into `ignore` |
+
+  **`coverage` describes the map as written — after step 4's own reconciliation, not before.** That has to be said, because step 4 both computes the verdict and fixes what it finds, and the two readings disagree: measured across four consumer maps, the pre-reconciliation reading calls all four `unverified` and the post reading calls all four `verified`. Recording `coverage-drift` is what makes the choice safe rather than lossy — the earlier moment is not thrown away, it is the number.
+
+  **`coverage-drift` is the field that carries meaning, and it exists because one word could not.** Measured 2026-09-01: `Symbio` had **33** files unmapped at scan and `Latent` **42**, and both were pure housekeeping — deploy scripts, committed agent skills, root docs, an ignore list that never covered the non-`src` side. `WorkoutTracker` had **14**, of which **6 were real capability source** that shipped after the map was last touched, invisible to every regen since. A single verdict renders those identically; `coverage-drift: 0` versus `coverage-drift: 6` is the difference between *"needed tidying"* and *"was blind to shipped behavior"*. Read the raw unmapped count alone and you would rank the two backwards.
+
+  **An absent key is unknown, never good news.** A map with no `coverage` predates the field and reads `unverified`; missing companions read as *not computed*, not as zero — the same reading `regen` gives a missing `shaped-by-derived`. Keys rather than comments so they survive re-serialization and can be branched on. Distinct from an empty `areas:` list, which is already treated as *absent* everywhere: these exist for a map that looks populated while nothing checked it.
 - **What the scan covers: every file git tracks.** Not "the source folders" — the whole tracked tree, `ignore` then removing what does not belong. This has to be stated because *unmapped* is meaningless without it, and every reader so far has had to guess. **Measured 2026-09-01** across four consumer maps: each reaches zero-unmapped only once it explicitly ignores `docs/**`, `tasks/**`, `*.md`, `**/*.csproj` — entries that are pointless unless those files were in scope to begin with. Untracked files are out: git is the arbiter of what the project consists of, and a build artifact nobody committed is not source. **A count you cannot reproduce is the defect** — two runs disagreeing about the universe disagree about the verdict.
 - **Match every glob as a git pathspec with `:(glob)`.** A pathspec is not a glob unless you say so, and the default lets `*` cross `/`, so `src/**/*.cs` silently misses a file sitting directly in `src/`. [verify](verbs/verify.md) § *Pathspecs are not globs* owns this rule and carries the measurement — 47 of 74 source globs in one aggregator had files at their root, 124 files the check could never see. It binds **every** verb that resolves a glob, not just `verify`: the same `**/*.props` either does or does not match a root-level `Directory.Build.props` depending on this one choice, and a map author writing `ignore:` entries assumes the `:(glob)` reading.
 - **A dot-prefixed path is an ordinary member of the scan, not implicit noise.** Only `.gitignore`, `.gitattributes` and `.editorconfig` are skipped without being named; everything else needs an explicit `ignore` entry to leave the scan. The repos settle this rather than taste: `WorkoutTracker`'s map already carries `.claude/**`, which its author would not have written if dot-directories were skipped anyway — and `Symbio`, whose map lacked that entry, had **12 committed `.claude/skills/*.md` files** sitting unmapped and invisible. Treating them as implicitly out of scope is how a repo that commits real content under a dot-directory gets silently under-covered.
