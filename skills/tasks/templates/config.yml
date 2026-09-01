@@ -6,6 +6,9 @@ mode: local                    # local | hybrid
 # Integration model. Default is pr-per-task: `pick` cuts task/TASK-NNN, `close` is the merge gate.
 # Set `single-branch` for repos that commit straight to the default branch — then `pick` doesn't
 # offer a branch and `close` skips its merge step instead of inferring the policy from the git log.
+# This is a declaration, so /tasks init only writes it once someone has actually chosen. The line
+# ABSENT (this comment left in place) means undeclared: consumers apply the pr-per-task default and
+# /adopt-project offers to backfill it. Never fill it in by guessing from `git log`.
 integration: pr-per-task       # pr-per-task | single-branch
 
 # When mode: hybrid, fill in the external section:

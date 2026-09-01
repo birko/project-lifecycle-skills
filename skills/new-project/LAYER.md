@@ -25,7 +25,7 @@ for adoption — **what to do when the repo already has one**.
 | `docs/adr/` **(lazy)** | [[domain]] | **Never create the directory.** It appears with its first record, and only [[domain]]'s three-part bar can justify one. Absent → **not applicable yet**: nothing observable at scaffold or adoption time can decide that a past decision *owed* a record — that is a judgement, not a probe. Present → **leave it.** Each record's four parts are checked when that record is written, so adoption has no shape to reconcile and runs no sweep. **That is a narrower claim than "current"**: a record can carry all four parts and still cite a rule that has since changed, or state a decision the code no longer matches — drift a parts-check cannot see, because nothing is missing. Adoption does not audit that (it is content, not shape — see § *Presence and shape, not content currency*); `/domain`'s cross-reference pass is where it belongs. Measured 2026-08-22: a cold read of seven records found three such drifts, none of them a missing part. |
 | `docs/features/` + `README.md` index | [[feature]] | Create the folder + index if absent. Never regenerate an existing index by hand — that is `/feature status`'s job. |
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
-| `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. |
+| `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. **Declaration this owner needs: `integration:` in `.config.yml`** — probe for it in the survey per § *A named declaration is not a version*, since the owner cannot be handed an answer nobody was asked for. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
 | `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
 | `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture: a licence line in the README, a `license:` field in a package manifest, an SPDX header in sources. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
@@ -67,6 +67,32 @@ has told you it did not act, not that the file matches the current shape. Where 
 answer available, report the row **unknown** and name the init that could not answer; do not upgrade
 its silence into a clean bill of health. An init that cannot express a delta is a defect in **that**
 skill, and it gets its own task rather than a workaround here.
+
+### A named declaration is not a version — and the survey owns it
+
+The deferral above is about an artifact's **version**, and it must not be read as covering a
+**declaration**. The two are different objects, and conflating them left `integration:` with no owner
+at all — three steps each handing the question to another, which is TASK-035's whole subject.
+
+| | A version | A named declaration |
+|---|---|---|
+| The question | *does this artifact match the shape its owner writes today?* | *is this specific field in this specific file?* |
+| Who can answer from outside | **nobody** — you would have to know the whole current template, which is the owner's knowledge | **anybody with a grep** |
+| Who owns finding out | the owner verb, at the delegation | **the survey**, step 1 |
+| What absence means | `present, outdated`, and only once the owner reports the delta | a **choice nobody has made yet**, carried into the one frontier round |
+
+A declaration is as observable as a git remote, and the survey already probes facts of exactly that
+kind. Deferring it to the delegation costs the run the only round in which it could have been asked
+alongside everything else, so the question either migrates into the fill — breaking the one-round rule
+— or falls out of the pass entirely and gets guessed from `git log` later.
+
+**Read which declaration a row needs off the row itself**, never off a list kept here or in a front
+door: a row added tomorrow would not be on such a list, and the probe would go quietly narrow. Today
+the `tasks/` row is the one that names one.
+
+**A declaration the file already carries is settled — do not ask about it.** That is the whole reason
+the probe belongs in the survey rather than in the round: without it the round asks blindly, and a repo
+that answered the question months ago gets asked again, on every re-run.
 
 ## Lazily-created rows
 

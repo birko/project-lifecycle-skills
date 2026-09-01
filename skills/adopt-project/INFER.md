@@ -125,6 +125,15 @@ skipped there is no proposal to shape, so the split is stated as a finding and l
 Announcing "skipping — your rulebook answers all five" and then opening a question round anyway is
 the contradiction this paragraph exists to prevent.
 
+**This skip is over *this file's* proposals. It does not reach a declaration.** The two are separated in
+[SKILL.md](SKILL.md) § 2, which owns the declaration list and the reason coverage cannot silence one: a
+rulebook answers what the repo has *decided*, and a declaration is a decision nobody has been asked for
+yet. So a repo that skips every subsection here and still owes one declaration gets a one-question round,
+and that is **not** the contradiction above — the paragraph forbids re-opening the *proposals* it just
+declined, not carrying an item this file never governed. Read the distinction as load-bearing: reading it
+the other way is what left `integration:` with three steps each deferring to another, and the question
+then either migrated into the fill or was guessed from `git log` after the pass.
+
 ## When nothing can be inferred
 
 A repo too small, too new, or too inconsistent to read rules from is a legitimate outcome. Say so,

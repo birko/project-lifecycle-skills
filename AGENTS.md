@@ -133,6 +133,19 @@ The skills *are* the product, so their prose is the user interface. This subsect
   shared file gained a row tomorrow?*
 - **An owner verb reconciles; it does not assume.** A verb that owns a file shape must be able to answer *"is this instance current?"* — not only *"does it exist?"*. Existing is not current: the shape gains fields, and an instance written before one existed looks complete from outside. So an owner verb reconciles an older instance in place (add what is missing, never re-decide what is there), and reports **already current** distinctly from **brought up to date** — a caller cannot tell "your file is fine" from "I declined to look" when both print the same line. Applies to every row of `LAYER.md` with an **Owner**, not just the one that exposed it.
 - **Read the declaration, never infer it.** Where one skill *records* a policy in a file (today `tasks/.config.yml`'s `integration:`), every other skill **reads that field** rather than deducing the policy from observable state — git history, folder shape, what the last commit happened to do. The failure is not that inference is usually wrong; it is that the two situations producing identical evidence are exactly where it breaks (a squash-merge history and a commit-to-main history are the same log), and an inference that happens to be right is still unreproducible. A field that is *absent* is a gap to ask about and backfill, never a licence to guess.
+  - **And someone must own *finding out* that it is absent, which is not the same rule.** A declaration
+    and an artifact's *version* look alike and are not: *is field X in file Y* is a grep, while *does this
+    file match the shape its owner writes today* needs the owner's own knowledge. So the survey owns the
+    first and the owner verb owns the second — and where a step is told to **ask** for a declaration, the
+    step that **discovers** it is outstanding is named too. Leave that unnamed and three steps each defer
+    to another: measured on `integration:`, where the survey deferred the question as a version, the
+    inference round was told to ask for knowledge it had no licence to gather, and a dense-rulebook repo
+    then either lost the question or had it surface inside the fill, breaking the one-round rule. **The
+    absent case must be written where the value is first created, not only where it is reconciled** — the
+    scaffolder minted `integration: pr-per-task` from a template default while the adopter's rule against
+    defaulting read *"into an existing repo"*, so the field this repo forbids inferring was itself created
+    by inference. Which declaration a row needs is read **off the row** (`skills/new-project/LAYER.md`),
+    never off a list in a consumer.
 - **A derived state must never be cached as a decision.** The mirror of the rule above: where a value is
   *computed from evidence the repo still holds* — today `missing, not offered`, computed from whether a
   build's dependencies resolve inside the repo root — recompute it every run instead of remembering the

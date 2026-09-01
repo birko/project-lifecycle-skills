@@ -49,6 +49,11 @@ These consequences decide behaviour:
   leave the version question to it rather than guessing here; where no verb owns the shape, the
   thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
   § *Delegation follows the row, not the artifact's appearance*).
+  - **This does not defer a declaration the row names.** *Is field X in file Y* is a grep, not a
+    version judgement, and this step owns it — see [LAYER.md](../new-project/LAYER.md) § *A named
+    declaration is not a version*. Deferring it is how `integration:` ended up with no owner: step 2
+    was told to ask for it, step 1 was read as forbidden to look, so the question migrated into the
+    fill or was guessed from `git log` afterwards.
 - **A lazy row's absence is not a gap.** Where the row declares itself **(lazy)**, an absent artifact
   is `not applicable yet`: report it as part of the layer and move on. Do not fill it, do not offer
   to, and never count it toward what the repo is missing. Stated here because the first bullet —
@@ -79,7 +84,13 @@ ancestor git repo, and whether anything the layer owns is on disk but **not yet 
 signature of an earlier pass that wrote and never committed. *Untracked is only half of that*, and
 the staged half is the easier one to miss, so read the probe and its rule off
 [LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* (the `present, uncommitted` state)
-rather than restating either here.
+rather than restating either here. Last, **for every present artifact whose row names a declaration its
+owner needs, probe whether the file actually carries it** — read the declaration off the row, not off a
+list here. An outstanding one is a choice nobody has made, so it is step 2's to ask; a carried one is
+settled and must not be asked again, which is the half a blind round gets wrong. **It is not a new
+survey state**: report it on the row it belongs to as `present`, with the outstanding declaration named
+as the gap, exactly as the thin-but-present rule above does. A row of its own would say the artifact is
+missing something structural, when what is missing is an answer.
 
 **Print the survey as a table and stop.** The user sees the whole picture before a single file is
 written.
@@ -105,10 +116,26 @@ questions in its own source — read the answers out and put them to the user **
 that suggested them**. See [INFER.md](INFER.md) for what to read per subsection, how to tell a
 convention from an accident, and how to collect glossary candidates.
 
-**The round is scoped to what the guide does not already answer, and may be skipped entirely** —
+**The *proposals* are scoped to what the guide does not already answer, and may be skipped entirely** —
 `INFER.md` § *When the rulebook already answers it* owns the conditions. A repo whose rulebook
 already exceeds the layer gets no proposals, because proposals there dilute a finished guide rather
-than filling a gap. **Say when you skip, and name what covered it** — in this step's own output, and again in step 4's
+than filling a gap.
+
+**That skip reaches the proposals and nothing else.** This step carries two kinds of item and only one
+of them is the coverage judgement's to silence:
+
+| | Proposals | Declarations |
+|---|---|---|
+| What they are | conventions inferred from the repo's own source | facts that are **choices**, not observations — listed below |
+| Skipped by a dense rulebook? | **yes** — the guide already answers | **never.** No amount of rulebook density answers a question the repo was never asked |
+| Where the gap is found | `INFER.md` § *What to read, per subsection* | **step 1's declaration probe** |
+
+So a repo whose rulebook covers every subsection **and** whose `tasks/.config.yml` predates
+`integration:` still gets exactly one round, carrying that one question. Announcing the proposal skip
+and then opening a round for an outstanding declaration is not a contradiction — they are different
+items, and `INFER.md` says so at its own § *When the rulebook already answers it*.
+
+**Say when you skip, and name what covered it** — in this step's own output, and again in step 4's
 report, which is the part that outlives the conversation. Not in the survey table: coverage is judged
 here, after that table has printed. A silent skip is indistinguishable from a skill that forgot the
 step, and the user cannot ask for a round they never knew was declined.
@@ -117,15 +144,22 @@ Two rules govern it: **propose, never assert** — an unconfirmed inference is d
 as a guess — and **show the evidence**, so the user can disagree specifically rather than
 rubber-stamp.
 
-Alongside the inferences, a few facts are choices rather than observations: task-tracking mode
-(local / hybrid), the integration model (`pr-per-task` / `single-branch`), whether the canonical
-guide is `CLAUDE.md` or `AGENTS.md` + bridge, and the license posture.
+Alongside the inferences, a few facts are choices rather than observations — **this is the declaration
+list the table above points at**: task-tracking mode (local / hybrid), the integration model
+(`pr-per-task` / `single-branch`), whether the canonical guide is `CLAUDE.md` or `AGENTS.md` + bridge,
+and the license posture. Which of them are outstanding is **step 1's answer, not a fresh judgement
+here**: for a choice about an artifact the survey found missing, the missing row is the whole trigger;
+for one that lives *inside* a present artifact — `integration:` is today's only such case, and its row
+in [LAYER.md](../new-project/LAYER.md) is what names it — the declaration probe is.
 
-Ask about an artifact the survey found **missing**, or about **a declaration a present artifact
-lacks** — a repo that already has a guide is not asked which guide it wants, but a repo whose
+Ask about an artifact the survey found **missing**, or about **a declaration step 1 reported
+outstanding** — a repo that already has a guide is not asked which guide it wants, but a repo whose
 `tasks/.config.yml` predates the `integration:` field *is* asked for it, because nothing in the repo
-answers and the alternative is guessing from `git log`. Pass the answers to the owning verb
-(`/tasks init` takes `mode=` and `integration=`) so nobody is asked twice.
+answers and the alternative is guessing from `git log`. **Step 1 is what establishes which of the two
+that repo is**, so this step never asks blindly and never re-asks a declaration the file already
+carries. Pass the answers to the owning verb (`/tasks init` takes `mode=` and `integration=`) so
+nobody is asked twice — and pass them **from here**, so the question stays in this round instead of
+surfacing inside step 3's delegation, which is the one-round rule below breaking by another route.
 
 Put the inferences and the choices in **one frontier round** ([[grill-me]]'s shape), not a queue of
 single questions. A 15-rule proposal asked one at a time becomes an interrogation, and the answers
