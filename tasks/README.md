@@ -9,18 +9,22 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 27    |
+| todo         | —     | —       | 26    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 62    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 3× P1 · 20× P2 · 4× P3.
+`todo` by priority: 2× P1 · 20× P2 · 4× P3.
 
 ## In progress now
 
 _None_
+
+## In review (awaiting sign-off)
+
+- [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) — The upgrade path's headline case has no state and no remedy (P1, agent) — two drill steps unrun
 
 ## Tree
 
@@ -94,7 +98,7 @@ _None_
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (5/9)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
-    - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
+    - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy 🔍 review
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
