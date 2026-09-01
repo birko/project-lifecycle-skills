@@ -55,6 +55,26 @@ is not free, and it is not warranted for every task — a six-word deletion does
 The judgement about **when** it earns its cost is the interesting part of this task and should not be
 skipped in favour of "always do it".
 
+### A brief-construction rule the 2026-09-01 drills produced
+
+**A rule that cites a named file in a named repo cannot be independently drilled on that repo.** The
+`/specs init` coverage rules justify a classification with a measured example — *"an `appsettings.json`
+carrying `Fetch.*`, `Session.*` and `Database.*` settings consumed by three existing areas is defensibly
+either"*. That example describes **one real file in `Presenter`**. A cold drill run against Presenter then
+met the exact file the instructions had already adjudicated, and said so: the instructions *"pre-loaded
+the example I was being asked to classify"*, so its judgement was not independent.
+
+**The fix is not to strip the example.** Measured justification is this repo's whole style and the example
+earns its place — it is what stopped `coverage-drift` being a bare count. The rule belongs to the *brief*:
+when drilling a rule that names a repo, pick a different one, and say in the report which repo the rule
+already speaks about. That is one more thing the drill brief has to decide, alongside withholding the
+expected answers.
+
+**Cheap to get wrong in the other direction, too.** Two of this session's drills were run on fixtures the
+author built to exhibit the defect; one of them (an `engine/*.rules` repo meant to defeat source
+discovery) simply failed to — the runner read the README and recovered. A fixture built by the author
+tests the author's model; a real repo the rule does not name is the stronger instrument.
+
 ### The loose thread
 
 The ten findings were given ids `DRILL-053-*`, and `DRILL-*` is **not** one of the four prefixes

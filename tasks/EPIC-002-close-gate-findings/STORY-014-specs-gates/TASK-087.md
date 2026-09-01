@@ -3,7 +3,7 @@ id: TASK-087
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -49,11 +49,11 @@ content its verb cannot reproduce.
 
 ## Acceptance criteria
 
-- [ ] A re-discovery's effect on hand-written comments is **stated** — preserved, or dropped with the loss announced, chosen deliberately
-- [ ] If preserved: what "preserve" means is concrete enough to follow (whole-file comments, per-area comments, or both), since a naive template re-render loses all of them
-- [ ] `SKILL.md`'s *"a comment is what any re-serialization drops"* line no longer reads as licence to drop the human's prose — it is an argument for keys, not against comments
-- [ ] The rule holds for the `ignore:` block too, which in three consumer maps carries per-entry explanations of why a path is not source
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] A re-discovery's effect on hand-written comments is **stated** — preserved, or dropped with the loss announced, chosen deliberately
+- [x] If preserved: what "preserve" means is concrete enough to follow (whole-file comments, per-area comments, or both), since a naive template re-render loses all of them
+- [x] `SKILL.md`'s *"a comment is what any re-serialization drops"* line no longer reads as licence to drop the human's prose — it is an argument for keys, not against comments
+- [x] The rule holds for the `ignore:` block too, which in three consumer maps carries per-entry explanations of why a path is not source
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -62,7 +62,7 @@ content its verb cannot reproduce.
 
 ## Human test plan
 
-- [ ] Run `/specs init` as a re-discovery against a map carrying hand-written comments (Presenter's is the standing example) and confirm the outcome matches whatever this task decided, rather than depending on how the agent felt about re-serializing
+- [x] Run `/specs init` as a re-discovery against a map carrying hand-written comments (Presenter's is the standing example) and confirm the outcome matches whatever this task decided, rather than depending on how the agent felt about re-serializing — **run 2026-09-01 on two write-enabled clones; passed, verified against byte-exact baselines**
 
 ## Implementation plan
 
@@ -116,6 +116,38 @@ because the endpoint contract is its own capability. No verb can recompute that.
 **Flagged, not fixed:** `docs/specs/.map.yml` here still carries `areas: []`, so step 7's respec could
 not run — **TASK-079** owns it. Nothing spawned: both out-of-scope bullets name owners.
 
+## Drill outcome — 2026-09-01: PASSED
+
+A cold drill ran `/specs init` **with writing enabled** on two throwaway clones, briefed without any
+mention of comments, preservation, or what the file was supposed to keep. It was asked what it *did to
+the file and by what mechanism*, and whether anything ended up lost.
+
+| Target | Shape | Comment lines | Deletions | Areas |
+|---|---|---|---|---|
+| `alpha` — clone of Presenter | populated map, 12 areas | 17 → **25** | **−0** | 11 → 11 |
+| `beta` — fixture | `areas: []` + seed note + 4 hand-chosen ignores | 8 → **15** | −1 (`areas: []` → populated) | 0 → 1 |
+
+**Verified against byte-exact baselines, not against the runner's summary**: every original comment line
+survives in both, and `alpha`'s diff is *purely additive*. The runner reached *"edited in place with two
+targeted edits — never re-rendered"* from the prose alone.
+
+**`beta` is the case this task's own first draft would have destroyed.** It is a map with an empty
+`areas:` list, which `SKILL.md` labels a *fresh discovery* — and the drill navigated exactly that
+collision correctly: *"an empty `areas:` list is treated as absent... so this ran as fresh discovery —
+but the file still exists on disk, so step 6's edit-not-rerender rule still applied."* That sentence is
+the fix working, in the words of someone who had not seen it explained.
+
+**One finding, and it is about drilling rather than about this rule.** The coverage rules justify a
+classification with a measured example naming `appsettings.json` in `Presenter` — and the drill met that
+exact file in that exact repo, reporting that the instructions *"pre-loaded the example I was being asked
+to classify"*, so its judgement there was not independent. The example earns its place and is not being
+removed; the constraint belongs to the brief. Recorded on **TASK-068**, which owns drill method.
+
+**Observed, not actioned:** nothing states that `.map.yml` itself is out of scope for an area glob. The
+drill inferred it belongs in `ignore` by analogy with `docs/**` and was right; the resolution is
+conventional and the harm of getting it wrong is a spec generated from a yaml file. Recorded here rather
+than filed, because the gap is a sentence nobody has needed yet — if it ever bites, this is the note.
+
 ## Progress log
 
 - step 2 - picked; ranked above TASK-061 on key 1: silent loss of human-authored content the verb cannot reproduce outranks a silent omission where nothing is destroyed. Key 2 agrees - fires on any re-discovery of a map carrying comments, and three consumer maps do. TASK-086 stays excluded as decision-shaped; this one has an obvious safe default. Key 6 degenerate.
@@ -127,3 +159,4 @@ not run — **TASK-079** owns it. Nothing spawned: both out-of-scope bullets nam
 - step 5d - 2 boundaries, 0 spawned.
 - step 7 - respec skipped: areas: [] (TASK-079).
 - step 8 - parked at REVIEW: the human test plan's drill is real and unrun.
+- 2026-09-01 drill - PASSED, write-enabled, two clones. alpha 17->25 comment lines with ZERO deletions; beta 8->15, only `areas: []` replaced. Verified against byte-exact baselines. beta exercised the empty-areas collision this task's first draft would have broken. One finding recorded on TASK-068 (a rule naming a repo cannot be independently drilled there). status review -> done.
