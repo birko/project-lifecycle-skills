@@ -205,6 +205,20 @@ reader against a grown seed could see it.
 runners reached for the section **bodies** as well, one explaining that *"matching by meaning is impossible
 without knowing what question each heading covers."* The rule now says to read the bodies too.
 
+**The `Latent` drill also found a defect in that repo, filed there on 2026-09-01** (its commit `b73032d`,
+`tasks/_loose/TASK-020`), never here: `CLAUDE.md:43` says *"never hard-code framework paths"*, every
+`.csproj` obeys via `$(BirkoSrc)`, and `Latent.slnx:7-8` lists `..\..\Framework\Birko.Xaml.*` literally.
+Verified by hand, and the verification changed the framing twice. The failure is **not cosmetic**:
+`Directory.Build.props` resolves `BirkoSrc` through `/p:BirkoSrc` → `BIRKO_SRC` → a default of
+`..\..\Framework`, and the solution's literal path matches only the default — so pointing `BIRKO_SRC` at
+another checkout makes the solution open projects from a different tree than the build compiles. And the
+**rule may be what is wrong**: measured across all five consumer repos, **zero** use an MSBuild property in
+a solution file, and of the two that reference `Birko.Xaml.*` as real assemblies (`Latent` and
+`BardStudio`) **both** hard-code the identical path — while the other three never hit it, using the pure
+aggregator pattern where framework source arrives via `.projitems` and no framework `.csproj` is
+referenced at all. Filed `_loose` deliberately: `EPIC-001-foundation` owns build wiring by subject but is
+`done`, and a `todo` in a closed epic makes that epic misreport itself.
+
 **Filed as TASK-096:** the `.env.example` row cannot say what *"here"* means for an aggregator whose 343
 projects all live in sibling repos, and does not distinguish a **build-time** environment variable from
 runtime config — the latter derived independently by three runners across four drills, which is the
