@@ -70,6 +70,14 @@ hand-written guide's prose is not. **The distinction 063 paid for is the useful 
 where it wrote the shape itself, and must not where a human wrote the content. Every row here is the first
 kind, which is why the limitation 063 accepted does not reach them.
 
+**Third independent corroboration, 2026-09-01.** A cold survey drill over `WorkoutTracker` and `Symbio`
+reached this unprompted: *"a bare table cell reading `tasks/: present` looks like a clean bill of health…
+the survey format has no way to distinguish 'present and I checked its shape' from 'present and I couldn't
+check its shape' other than the reader also knowing the rule."* Both repos' `.config.yml` happen to carry
+`mode:` **and** `integration:`, so there was no live gap to find — which is the point: **the format cannot
+rule one out**, and a reader who has not read `SKILL.md`'s caveat reads `present` as *done*. That is three
+separate drills now landing on this cell.
+
 ## Acceptance criteria
 
 - [ ] Each owner verb reached from `LAYER.md`'s Owner column either reports the three outcomes (**created** / **already current** / **brought up to date**) or records why the distinction does not apply to it — decided per verb, in that verb's file

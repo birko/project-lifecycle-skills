@@ -3,7 +3,7 @@ id: TASK-063
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 picked-by: fix-next
@@ -82,10 +82,10 @@ approach that was subsequently rejected, using four probes I chose myself rather
 Amending a **test plan** to match a settled resolution is legitimate; rewriting an **acceptance criterion**
 after the fact is not, and criterion 1 already admitted "a stated limitation" as one of its three outcomes.*
 
-- [ ] Run `adopt-project`'s survey against `Birko/Consumers/WorkoutTracker` — every `##` section present, four named rules absent — and confirm the run reports the guide `present`, **invents no state for the vintage**, and does not leave the gap as free prose under the table
-- [ ] Repeat against `Birko/Consumers/Symbio`, a 239 KB Slovak rulebook with its own 40 `KRITICKE` sections, and confirm it is **not** reported as lacking the seed's rules — the case the limitation exists for
-- [ ] Confirm the run tells the reader *why* the vintage is not assessed, rather than silently omitting it — a limitation nobody is told about is indistinguishable from an oversight
-- [ ] Read `adopt-project`'s description against what the run actually did, and confirm they agree
+- [x] Run `adopt-project`'s survey against `Birko/Consumers/WorkoutTracker` — every `##` section present, four named rules absent — and confirm the run reports the guide `present`, **invents no state for the vintage**, and does not leave the gap as free prose under the table
+- [x] Repeat against `Birko/Consumers/Symbio`, a 239 KB Slovak rulebook with its own 40 `KRITICKE` sections, and confirm it is **not** reported as lacking the seed's rules — the case the limitation exists for
+- [x] Confirm the run tells the reader *why* the vintage is not assessed, rather than silently omitting it — a limitation nobody is told about is indistinguishable from an oversight
+- [x] Read `adopt-project`'s description against what the run actually did, and confirm they agree
 
 ## Implementation plan
 
@@ -146,6 +146,48 @@ and the fact that the rejected alternative *fails* two of them.
 **Flagged, not fixed:** nothing. `docs/specs/.map.yml` here still carries `areas: []`, so step 7's respec
 could not run — **TASK-079** owns it.
 
+## Drill outcome — 2026-09-01: PASSED
+
+A cold survey drill ran `adopt-project` step 1, read-only, against `WorkoutTracker` (a guide with every
+`##` section and four named rules absent) and `Symbio` (a 239 KB Slovak rulebook with 40 `KRITICKE`
+sections of its own). The brief never used the words *vintage*, *stale* or *limitation*.
+
+**The question that decides whether a stated limitation is honest, and its answer:**
+
+> *"Do you know whether each guide is up to date? If not, say whether the instructions **explained why
+> not**, or simply **left it unaddressed** — and whether you noticed the difference."*
+
+> **"No, and the instructions explain why in so many words rather than leaving a silent gap… I noticed the
+> difference (I can *see* WorkoutTracker's guide predates several current conventions, and Symbio's uses a
+> wholly different structure) but the skill explicitly instructs me not to certify currency from that
+> observation, and I didn't."**
+
+That is the whole test. A limitation nobody is told about is indistinguishable from the oversight this task
+started as; the runner was told, understood why, and could still see the staleness it was declining to
+grade.
+
+**Symbio is the case the limitation exists for, and it held.** Guide reported `present`; the absent English
+section names were **not** flagged. In the runner's words: *"I did not run the check the passage says is
+wrong to run."* The rejected approach would have offered to append four English rules to that file.
+
+**The advertising matches.** Asked to read the `description:` against its own run, the drill found the one
+clause added by this task — *"it does NOT judge whether the prose inside a hand-written document is still
+current"* — and reported it as *"precisely the boundary I hit and honored on the agent-guide row."*
+
+**It also independently exercised TASK-061's conditional rows**, which had only ever been drilled once:
+`WorkoutTracker` `.env.example` **missing** on real evidence (`Reps__Seed__Enabled` documented in
+`Program.cs`), `Symbio` `LICENSE` **not applicable** (README: *Proprietary — Birko s.r.o.*), `Dockerfile`
+**present, elsewhere** (`deploy/Dockerfile`).
+
+**Three findings, none of them this task's to fix:**
+
+- The survey cannot say whether a run is a **first adoption or a re-run**, though both repos' briefs say so
+  and the skill advertises both as use cases → **TASK-090**.
+- `present, elsewhere` on a conditional row, and a guide **split across companion files**, are both
+  undefined → **TASK-091**.
+- `tasks/: present` reads as *done* — **third** drill to land on that cell; recorded on **TASK-024**, which
+  owns it.
+
 ## Progress log
 
 - step 2 - picked; ranked above TASK-035 on key 1: adopt-project's description promises an UPGRADE path, and the artifact the layer grows fastest (the agent guide) has no state and no remedy, so a stale one reports `present`. A promise the front door cannot keep beats a question nobody owns, though both are silent front-door defects. Key 6 degenerate. Picked with the user available, since the resolution is a genuine fork.
@@ -158,3 +200,6 @@ could not run — **TASK-079** owns it.
 - step 5d — 3 boundaries, 0 spawned. TASK-024's cross-reference corrected: it had recorded 063 as resolved on the reverted approach.
 - step 7 — respec skipped: `areas: []` (TASK-079).
 - step 8 — parked at REVIEW: two drill steps in the human test plan are real and unrun.
+- 2026-09-01 drill — PASSED. WorkoutTracker + Symbio, read-only, brief withheld the words vintage/stale/limitation. Runner: "the instructions explain why in so many words rather than leaving a silent gap", and it noticed the staleness it was declining to grade. Symbio's guide NOT flagged for missing English sections — "I did not run the check the passage says is wrong to run." Description clause confirmed as the boundary it honoured.
+- Spawned TASK-090 (first adoption vs re-run is invisible) and TASK-091 (present-elsewhere on a conditional row; a split agent guide). Third corroboration of the `tasks/: present` cell recorded on TASK-024.
+- status review -> done.
