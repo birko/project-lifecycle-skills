@@ -27,9 +27,9 @@ for adoption — **what to do when the repo already has one**.
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
 | `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. **Declaration this owner needs: `integration:` in `.config.yml`** — probe for it in the survey per § *A named declaration is not a version*, since the owner cannot be handed an answer nobody was asked for. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
-| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. **Covered means covered by a file the repo tracks** — see § *Covered means covered in the repo*. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
+| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. **Covered means covered by the repo's own ignore file, not the machine's** — see § *Covered means covered in the repo*, which also settles how this composes with `present, uncommitted`. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
 | `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture: a licence line in the README, a `license:` field in a package manifest, an SPDX header in sources. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
-| `.env.example` **(conditional — does anything here read runtime config from the environment?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it**; whether it still lists the right variables is content, not shape. |
+| `.env.example` **(conditional — does anything here *require* an environment variable to run?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. **A build-time variable is not a Yes, and "here" stops at this repo** — § *Conditional rows* owns both, with `BIRKO_SRC` as the worked example. Present → **leave it**; whether it still lists the right variables is content, not shape. |
 | `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
 | Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. |
@@ -146,8 +146,62 @@ slot for a **desktop app** — and a real repo declares its kind as *"desktop ap
 at once. Measured 2026-09-01: of three consumer repos surveyed, **all three were compound** — a web app plus
 a console importer, an API host plus a frontend, a desktop app plus a CLI plus a library. A row that
 demanded one kind would have had to pick one and discard the rest. So each row above asks a question the
-repo can answer directly — *does anything here read runtime config from the environment?*, *is anything here
+repo can answer directly — *does anything here require an environment variable to run?*, *is anything here
 deployed as a running service?* — and **any** component answering yes settles it.
+
+**"Here" is the repository being surveyed — the git work tree whose root the survey resolved, and nothing
+outside it.** A component in a sibling directory is not evidence, however tightly this repo's build depends
+on it. The reason is what the answer is *for*: the layer is per-repo, so a `Dockerfile` a sibling needs is
+an artifact nobody adopting *this* repo can supply, and reporting it here produces a gap with no owner.
+
+**This scopes an *obligation*, not every question about out-of-root files — and the difference is load-bearing.**
+A conditional row asks *would this repo need us to create X?*, and a sibling's needs cannot create an
+obligation here. Other rows ask *does this repo already have a working Y?*, and there a component outside
+the root can be perfectly good evidence: the test-harness row says `*.Tests` files count **anywhere** and
+calls sibling `X.Tests` projects *the* .NET convention, which is deliberate — a parallel test tree this
+repo's own solution registers **is** this repo's harness, and reporting it `missing` would invite
+[[populate-tests]] to wire a second runner over a working one. So the rule is: **an out-of-root component
+never creates an obligation, and may still evidence a capability.** A drill runner hit the two sentences
+together, spotted that this one is scoped to conditional rows while the harness row's own word is
+"anywhere", and resolved it correctly to `present, elsewhere` — but it had to reason it out, which is what
+this paragraph removes.
+
+**This is a different question from § *CI a repo cannot pass*, and the two must not be collapsed.** That
+section asks whether a build input is **obtainable** on a runner, and answers *blocker* for a path escaping
+the repo root. This one asks whether an out-of-root component **counts as evidence** about the layer, and
+answers *no*. The same fact — a sibling source tree — is therefore load-bearing there and irrelevant here.
+Measured 2026-09-01 on an aggregator repo whose root holds only `docs/` and `tasks/` while its solution
+registers 343 projects, every one in a sibling git repo: its runner scoped "here" to the adopted repo,
+reached the right states, and said *"nothing in the instructions settles whether an aggregator surveys its
+aggregate."* It was deciding, not reading.
+
+**A repo with no components of its own answers *no*, and that is settled rather than `unknown`.** Nothing
+that does not run can read runtime config, and nothing without an entry point is deployed — so the
+evidence **determines** the answer instead of merely being consistent with several, which is the test
+§ *A derived state must never be cached as a decision* sets in the consuming project's guide. Do not read
+"no source to inspect" as "cannot tell": that is the route by which an aggregator's correct
+`not applicable` would become an `unknown` and a question nobody can answer.
+
+**The condition means *requires*, not merely *reads* — the row's own definition says so and the question did
+not.** `.env.example` is *"the documented, valueless template of **required** env vars"*, so an optional
+override with a committed default needs no template and does not trigger the row. Measured 2026-09-01 on a
+web app that reads three runtime environment variables — a framework environment selector, an app-specific
+seed toggle documented in a comment, and a test base URL written `?? 'http://localhost:5170'` — while
+booting correctly with **none** of them set, because every value lives in committed `appsettings*.json`.
+Read as *reads*, the row triggers and reports a missing template for variables nobody must supply; read as
+*requires*, it is `not applicable`. Its runner spotted the mismatch between the condition and the
+artifact's own definition and had to reason past the text to resolve it, which is what this paragraph
+removes. **Ask: would a new contributor be unable to run this without being told a value?**
+
+**A build-time environment variable does not satisfy the condition either.** The
+question is whether a **running** process needs its configuration from the environment; a variable consumed
+by the build system — a path locator, a toolchain switch — is not that, and `.env` files are not how a
+build reads one. Worked example: every repo in this fleet reads `BIRKO_SRC`, an MSBuild property resolving
+the framework checkout, and none of them has runtime environment config at all. **Three separate drill
+runners each derived this from scratch and each logged it as an inference**, one adding that *"the row does
+not distinguish build-time from runtime env vars in so many words"* — a rule three readers must each
+reconstruct is a rule that is not written down, and the fourth is the one who reports a
+`missing .env.example` on a desktop app that has no runtime configuration.
 
 **Kind is evidence toward that question, and a declaration beats a signal.** Read the kind where the repo
 states it: `new-project` knows it because intake asked, and a repo already carrying an agent guide often

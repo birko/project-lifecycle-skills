@@ -4,19 +4,25 @@ parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
 status: todo
-priority: P3
+priority: P2
 assignee: agent
 created: 2026-09-01
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [DRILL-063-2, DRILL-063-3, DRILL-035-5, DRILL-094-1]
+findings: [DRILL-063-2, DRILL-063-3, DRILL-035-5, DRILL-094-1, DRILL-096-2]
 pr: null
 github-issue: null
 jira-key: null
 ---
 
 # Two artifact shapes the row definitions do not cover
+
+> **Priority raised P3 → P2 on 2026-09-01**, on evidence rather than opinion. Filed as a tidiness gap in
+> row wording; it is now a **measured reproducibility failure** — two independent runners assigned opposite
+> states to one unchanged file (DRILL-096-2), and the instance count reached five findings across three
+> row kinds, one of them a plain row rather than a conditional one. A survey whose state depends on which
+> agent ran it is not a survey, and P3 no longer describes that.
 
 ## Context
 
@@ -83,6 +89,27 @@ a non-canonical path, a licence under a non-canonical name, and now architecture
 *file* are three shapes of one omission — the location states exist generically and no row cell mentions
 them. Whatever lands should therefore say once, where the states are defined, that the location states
 compose with **every** row rather than being enumerated per row.
+
+### Two runners, opposite states, one file — the sharpest evidence yet (DRILL-096-2)
+
+The `Birko.Framework` drill of 2026-09-01 met the **same `License.md`** as the run recorded above and
+reached the **other** answer:
+
+> *"The row names `LICENSE`; the file is `License.md`. **Chosen: `present`**, naming the actual path — on
+> the 'solved it differently' rule. I specifically did **not** use `present, elsewhere`, on the reasoning
+> that the file is in the expected *location* and differs only in name and extension. **That distinction
+> between 'another location' and 'another name' is mine; the text does not draw it**, and a reader could
+> defensibly report `present, elsewhere` instead."*
+
+So one runner reported `present, elsewhere` and another reported `present`, on one unchanged file, each
+with sound reasoning. That is no longer an argument that the rule is *missing* — it is a measured
+demonstration that the survey is **not reproducible** on this row today, which is the property this repo
+removes everywhere else by declaring rather than deriving.
+
+**It also names the axis the fix must cover:** *location* and *name* are different, and the state list
+mentions only the first (*"found in another location or form"* — where "form" is doing unexamined work).
+With DRILL-094-1's plain-row instance, the fix now owes three axes — another path, another name, another
+file — stated once where the states are defined rather than per row.
 
 ## Acceptance criteria
 

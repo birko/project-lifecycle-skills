@@ -143,6 +143,16 @@ report if absent"* while § *Detect what the repo has* says architecture notes m
 rule. Appended to **TASK-091** as a third instance rather than filed — that task already owns
 `present, elsewhere` on rows whose cells do not discuss it.
 
+## Follow-up
+
+**2026-09-01, during TASK-096:** this change's correctness fix updated § *Covered means covered in the repo*
+from *"a file this repository tracks"* to *which file carries the line*, but left the `.gitignore` **row
+cell** carrying the superseded wording — so the row contradicted the section it points at, and the row is
+what a survey reads first. Repaired in TASK-096's commit as a one-phrase out-of-scope fix, with the reason
+recorded there. **The lesson is general enough to be worth stating:** when a fix changes a definition that
+a row cell *summarises*, the summary is part of the change — a pointer that paraphrases can go stale
+exactly like a copied list, and this one went stale within the same hour.
+
 ## Progress log
 
 - step 2 — picked; **this revises the previous run's stated next pick (TASK-096)**, on key 1. I had under-weighted the `.gitignore` half: the row says check `.env` is *"covered"* without saying **by what**, so a runner that accepts a global-gitignore hit fires no offer and the repo ships with no `.env` protection of its own — a credential-exposure path on the next clone, which outranks TASK-096's wrong-survey-state on the severity ladder. The bundled *"print the table and stop"* half adds defect evaporation, this repo's most-measured process failure. Beat TASK-086 on key 3 (both halves fail silently; 086 surfaces a refusable offer) and key 4 (086 still has four undecided design candidates). Key 6 inert — `correctness-invariants` throughout.
