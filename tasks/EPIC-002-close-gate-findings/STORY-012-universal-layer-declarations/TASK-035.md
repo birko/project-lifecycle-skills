@@ -275,6 +275,24 @@ user, in the exact grouping and number of rounds."* The field surfaced in that l
 three real `BardStudio` defects, and filed none — correctly, since filing is a write and those tasks belong
 in that repo's own tree, not this one.
 
+**Those three were then verified by hand and dispositioned, 2026-09-01** — filed into `BardStudio`'s own
+`tasks/` under its `EPIC-001-code-review-follow-ups` (its commit `fcee1d1`), never here:
+**BardStudio TASK-025 (P1)** — `CLAUDE.md` mandates that domain failures return `Result<T>` and says the
+type *"is copied from Symbio's shape"*, but no such type exists in source; all 11 `Result<` hits are inside
+a compiled `BardStudio.Birko.dll` under `bin/`/`obj/`. The rule is explicitly forward-looking, so new code
+in four projects cannot comply and `/verify-conventions` will enforce it against correct changes.
+**BardStudio TASK-026 (P2)** — two distinct `PlaylistViewModel` types in one solution, and § Naming
+reserves `*ViewModel` for MVVM view models, which mislabels *every* Birko projection rather than one file,
+so the likely fix is the rule not the code. **The third was declined:** the dashboard was flagged as
+possibly stale for carrying no feature slice, and it is correct — `docs/features/` holds zero feature
+folders, so there is nothing for the slice to render. A correct no, recorded rather than filed.
+
+`BardStudio`'s `CLAUDE.md` was deliberately excluded from that commit: its **48 uncommitted lines are the
+entire `## Key Conventions` subsection split**, unreviewed work in flight, and sweeping it into a filing
+commit is exactly the conflation TASK-086 exists to stop. Left for its owner. Filing there also produced
+live corroboration for **TASK-094**: git warned `LF will be replaced by CRLF` on all three paths, which is
+the missing `.gitattributes` that drill surveyed as `missing`.
+
 **Findings the drills produced, all filed:** **TASK-093** (P1 — the guide row demands a diff against a
 section list no surveyed file carries; both runners hit it independently, and one measured that a compliant
 run would report a guide complete while missing the highest-value gap in an 18-feature repo),
