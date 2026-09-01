@@ -157,6 +157,20 @@ irrelevant), states that a repo with no components of its own answers *no* **set
   `.claude/scheduled_tasks.lock` uncovered by its own `.gitignore`. One pleasing confirmation: the `Latent`
   runner found TASK-020 already filed and said *"No new task owed"* — the filing earlier today did its job.
 
+**All four were filed on 2026-09-01, into the repos that own them**, each verified by hand first rather
+than taken from its runner's report — and the verification changed two of them:
+**`Birko.Framework` TASK-290** (`_loose`, commit `0c0d6f8`) — the `.vscode` targets are dead, and the
+sharper fact is that the repo contains **no `.csproj` at all**, so these are the *only* task-runner targets
+in it; anything asking what the gate runs meets a broken build task first, which is what the survey itself
+hit. **`WorkoutTracker` TASK-174 + TASK-175** (commit `410b1c3`, filed under `STORY-010-reps-adopt-cleanups`,
+the story that owns this class) — the link is on line 8 not 7 as reported, and the test-output defect has
+**two halves with different remedies**: the file needs `git rm --cached` because an ignore line will not
+untrack it, and `playwright.config.ts` sets no `outputDir`, so an explicit one may beat a root ignore line.
+**`Latent` TASK-021** (`_loose`, commit `ae02808`) — filed on the *shape* rather than the file: the ignore
+names one `.claude` path by filename, this is the second file to appear there, and the negation list is the
+part to get right. Every commit staged explicit paths only; all three repos' pre-existing uncommitted work
+was left untouched.
+
 ## Progress log
 
 - step 2 — picked. Beat **TASK-091** (whose scope widened earlier today with DRILL-094-1) on key 3: this task's failure is a **laundered** `not applicable` that makes a real gap disappear, where 091's false `missing` surfaces an offer the user can refuse. 091 wins keys 4 and 5 (more contained, four findings from four runners), but silence outranks both. Beat **TASK-068** — the pool's only remaining P1 — on key 1: 068 is a missing *practice*, not a wrong *result*, and key 4 disfavours it further since its "when is a drill warranted" test is an open judgement. **Noted against my own interest:** this session has minted `DRILL-035-*`, `DRILL-063-*`, `DRILL-093-*` and `DRILL-094-*` ids, so it has actively enlarged 068's unregistered-prefix half. That is an argument for doing 068 soon, not for reordering the keys. Key 6 inert — `correctness-invariants` throughout.
