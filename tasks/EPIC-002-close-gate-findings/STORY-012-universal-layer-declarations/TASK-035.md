@@ -3,7 +3,7 @@ id: TASK-035
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -91,9 +91,9 @@ the question and a second task would re-litigate it — the audit duplicate rule
 
 ## Human test plan
 
-- [ ] Drill a repo with a dense rulebook and a config lacking `integration:`; confirm one round, one question, no `git log` inference
-- [ ] Drill a repo whose config already has the field; confirm it is not asked, then re-run and confirm it is still not asked
-- [ ] Confirm the skip announcement still names what covered the inferences (TASK-017's rule) in both cases
+- [x] Drill a repo with a dense rulebook and a config lacking `integration:`; confirm one round, one question, no `git log` inference
+- [x] Drill a repo whose config already has the field; confirm it is not asked, then re-run and confirm it is still not asked
+- [x] Confirm the skip announcement still names what covered the inferences (TASK-017's rule) in both cases
 
 ## Implementation plan
 
@@ -232,6 +232,61 @@ the two questions that produced ten findings on the 2026-08-22 drill and the par
 dropped. Fixture B additionally asks what a **second identical run** would do differently, which is
 criterion 3's re-run arm.
 
+### Results — all three plan items passed
+
+**Item 1, fixture A (`BardStudio`) — the ask arm. Passed.** The runner's pre-table detections include
+*"Declaration probe (per row, `tasks/` is the only row naming one) | `integration:` **absent**"* — read off
+the row, as the rule requires, not off a list. Its `tasks/` row then reports exactly the shape the gate's
+inline fix specified: *"the outstanding declaration is reported **on this row as `present` with the gap
+named**, not as a new state — and it is step 2's to ask."* Step 2's own verdict: **"I ran a round, but a
+*scoped* one: the proposals were skipped entirely, and the round carries declarations only."** It quoted
+the new Proposals/Declarations table as its authority and observed *"That describes BardStudio exactly."*
+The round it produced is **one round, and it names its own arithmetic**: integration model, licence posture,
+plus the naming *offer*. `git log` inference was explicitly declined at the point of maximum temptation —
+*"My recommendation: single-branch. Evidence: no git remote at all, sole author, 15 commits straight onto
+main… **But this is exactly the inference the rule forbids, which is why it's a question and not a
+default.**"* And criterion 5's hand-off held: *"Where the answer goes: passed from here into `/tasks init`
+as `integration=…` so nobody is asked twice."*
+
+**Item 2, fixture B (`Birko.Framework`) — the no-ask arm and the re-run. Passed.** *"declaration probe:
+carried … Both declarations settled ⇒ **not to be asked**."* Its question round opens by stating the
+negative explicitly — *"No declaration is outstanding: your `tasks/.config.yml` already carries `mode:
+local` and `integration: single-branch`"* — and the re-run projection is unambiguous: *"The
+`integration:`/`mode:` probe would again find both carried and again ask neither."*
+
+**Item 3 — the skip announcement names what covered it, in both cases. Passed.** Fixture A named all five
+subsections and the evidence per subsection; fixture B announced a *partial* skip and named the covering
+sections plus the two it dropped and why. Neither announced a bare skip.
+
+**Criterion 4 confirmed from the outside, which is the strongest result here.** Fixture A listed the
+skip-then-round tension as a live decision point and recorded that it resolved *from the text*:
+*"`INFER.md` forbids 'Announcing skipping … and then opening a question round anyway' — which is literally
+what I do. Both files pre-empt it."* Fixture B reported the same. A cold reader hitting the exact
+contradiction the criterion was written about, and being turned around by the amendment, is what the
+criterion asked for.
+
+**Contamination check.** Neither fixture is named anywhere in the changed prose (`Presenter` and
+`WorkoutTracker` both are, and both were disqualified for it). Neither runner read this repo's `tasks/` or
+`docs/`. Neither brief mentioned `integration:`, declarations, proposals, or the skip path, and neither
+stated an expected outcome — the crux was asked as *"the complete list of questions you would put to the
+user, in the exact grouping and number of rounds."* The field surfaced in that list on its own.
+
+**Both runs were read-only and both stopped at the first write.** Fixture A reached step 3b, reported
+three real `BardStudio` defects, and filed none — correctly, since filing is a write and those tasks belong
+in that repo's own tree, not this one.
+
+**Findings the drills produced, all filed:** **TASK-093** (P1 — the guide row demands a diff against a
+section list no surveyed file carries; both runners hit it independently, and one measured that a compliant
+run would report a guide complete while missing the highest-value gap in an 18-feature repo),
+**TASK-094** (two instructions whose literal reading diverges from intent — *"print the table and stop"*
+nearly ended a run with three defects unfiled, and the `.gitignore` row's *"covered"* does not say by
+what), **TASK-095** (*"thinly answered"* has one calibration point and the two runners split on it), and
+**DRILL-035-5 appended to TASK-091** rather than filed, since that task already owns the
+`present, elsewhere`-on-a-conditional-row gap and this is a second instance of it — a licence file under a
+non-canonical *name* beside its Dockerfile at a non-canonical *path*. One finding was **considered and
+declined**: step 3b's probe set is not reproducible run to run, which is correct by design — the reasoning
+is recorded in TASK-094's Out of scope so it is findable rather than rediscovered.
+
 ## Progress log
 
 - step 2 — picked; ranked above TASK-086 because key 3 (silence): this defect writes a false `integration:` declaration with nobody asked, where TASK-086's conflation surfaces as a refusable offer. Key 4 agreed — acceptance here is determined, TASK-086 still has four live design candidates. Key 6 (theme) was inert: every candidate STORY declares `correctness-invariants`.
@@ -242,3 +297,4 @@ criterion 3's re-run arm.
 - step 7 — respecced: skipped, documented branch. `docs/specs/.map.yml` carries `areas: []`, so per `fix-next` step 7 there is no usable spec map; run `/specs init` (tracked as EPIC-001 / STORY-008, TASK-079). Requirements changed: none.
 - step 8 — merge gate run via `/tasks close --unattended`. **Three verdicts, side by side, unmerged and unreranked** (§ *Independent review axes*): **standards ([[verify-conventions]]) — pass.** Rulebook: `AGENTS.md § Conventions` via the `CLAUDE.md` `@AGENTS.md` bridge, ladder rung 1; subsections read Framework/stack, Output/prose rules, Code structure & patterns, Naming, Testing, Keeping conventions current, Working rules, plus § Architecture. 7 files linted, 0 excluded (none generated). Layer parity satisfied structurally — `LAYER.md` plus both front doors. Register-on-introduce satisfied: the new pattern is recorded in § Conventions in this change, extending the existing declaration bullet rather than adding a competitor. § Architecture and `docs/architecture.md` need no edit — neither describes the survey at this altitude (checked: zero mentions of survey/declaration/integration). **fidelity ([[verify-intent]]) — pass.** All seven acceptance criteria built and traceable to specific prose; no requirement only partly built. Scope beyond the criteria is limited to two supporting edits that the criteria's mechanism requires (`templates/config.yml`'s absent-means-undeclared comment, `init.md` step 5 reporting an unresolved field) plus the `new-project` arm, which is `findings: DRILL-053-6` on this task and named in its Context — recorded rather than waved through. **correctness ([[code-review]]) — pass with two spawned findings and one fixed inline.** Fixed inline: the probe's report shape was undefined (now `present` with the gap named, not a new survey state). Spawned as **TASK-092**: `init`'s unreachable unattended branch, and declined-vs-never-asked being the same absence. **[[security-review]] — not applicable**: the diff is instructional prose across five skill files, one YAML comment and two markdown records; no auth, data access, input handling, crypto, secrets or dependency surface. 5c skipped entirely — this repo declares `integration: single-branch`, which is step 8's documented skip condition. 5d swept `## Out of scope`: all three pre-existing bullets are boundaries (naming TASK-028, TASK-023, and a deliberate limit); the two new work items got TASK-092 rather than prose.
 - step 9 — stopped clean. Two commits: `1abf6b3` (the fix, parked at `review`) and `21e9cfb` (dashboard regen). Working tree clean. Next pick, if the pool is drained again: **TASK-086** — this run's runner-up, adoption's inability to tell its own unlanded writes from the user's work in progress. Read TASK-092 first: it is the same probe-cannot-see-intent shape, and whoever picks 086 should know 092 exists before choosing among its four candidate designs.
+- step 8b — drill run and passed; `review` → `done`. Two cold readers on two independent fixtures confirmed criteria 1-5 from the outside. Four new findings filed (TASK-093/094/095, plus DRILL-035-5 appended to TASK-091); one declined with reasons recorded. Three defects in `BardStudio` itself were found and correctly left unfiled — they belong in that repo's tree.

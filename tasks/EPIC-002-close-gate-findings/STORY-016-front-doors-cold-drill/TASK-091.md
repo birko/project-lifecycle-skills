@@ -10,7 +10,7 @@ created: 2026-09-01
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [DRILL-063-2, DRILL-063-3]
+findings: [DRILL-063-2, DRILL-063-3, DRILL-035-5]
 pr: null
 github-issue: null
 jira-key: null
@@ -44,6 +44,25 @@ the one graded artifact, `present, elsewhere` content, or out of scope.
 
 This matters more than a tidy-up because the guide is the artifact the whole layer is built to feed. A
 survey that silently ignores four sibling guide files is not reporting on the thing it says it is.
+
+### Second instance of the same gap, from the 2026-09-01 `Birko.Framework` drill (DRILL-035-5)
+
+Independent corroboration on a **different conditional row**, which is why it is appended here rather than
+filed separately: this task already owns the rule, and a second task would re-litigate it.
+
+That repo's licence is `License.md`, not `LICENSE`. The row's branches are binary — *"Open posture and no
+`LICENSE` file → **missing**"* / *"Present → **leave it**"* — and neither covers a licence file under a
+different name. The runner reached the same conclusion by the same route as the Dockerfile case:
+
+> *"The row's binary … does not say which side a differently-named licence file lands on. I chose
+> `present, elsewhere`, naming `License.md` — because § *Detect what the repo has* is emphatic that
+> detection is by evidence and not by path, and reporting `missing` here would have been exactly the
+> false-`missing` that section calls the dangerous direction."*
+
+**Two conditional rows, two independent runners, the same missing state.** The Dockerfile case was a
+canonical artifact at a non-canonical *path*; this one is a canonical artifact under a non-canonical
+*name*. Both resolve correctly under `present, elsewhere` and neither row says so, which sharpens the fix:
+whatever lands must cover name as well as location, or the next differently-named artifact reopens it.
 
 ## Acceptance criteria
 
