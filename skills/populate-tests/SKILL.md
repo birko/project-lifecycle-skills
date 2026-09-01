@@ -175,6 +175,18 @@ worktree**, and a drill that only needs to *read* is told read-only in the brief
 edits anything. A clone with real history is still a real target; the git state the drill sets up is its
 **input**, not a fabricated repo.
 
+**But a clone drops every uncommitted and untracked file, which is exactly what some drills are about.**
+`git clone` copies history, not a working tree — so the state you deliberately construct arrives and *all
+other* in-flight state silently does not. A runner reasoning from that absence reports a defect that does
+not exist. Measured: a drill on a cloned consumer reported that a filed task *"describes a repo state that
+does not exist"* — the `.claude/` directory it cited was untracked and the `.gitignore` block it quoted was
+uncommitted, so both were real in the source repo and neither survived the clone. What saved it was that the
+runner had flagged its own reasoning as an inference.
+
+**So when a drill's subject is uncommitted state, say in the brief what the checkout is** — that it is a
+clone, and that the absence of any *other* in-flight work is an artefact of cloning rather than evidence
+about the repo. Without that line the fixture manufactures findings, and they look exactly like real ones.
+
 ### When it is warranted, and when it is over-ceremony
 
 It costs one runner, several minutes, and a brief that must be *written* rather than pasted. **That is not

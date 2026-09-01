@@ -200,9 +200,16 @@ The rules that bind the whole step:
     ask-to-fill rule above. The artifact is sitting right there; asking whether to create it is
     absurd, and the honest output is "present, and `<verb>` could not tell me whether it is
     current".
-- **A `present, uncommitted` row is landed, not rewritten.** The file is already right; what is
-  missing is the commit. Offer it in the adoption commit and report it. Rewriting it discards an
-  earlier pass's work to produce, at best, the same bytes.
+- **A `present, uncommitted` row is landed, not rewritten.** What is missing is the commit, not the
+  content. Offer it in the adoption commit and report it. Rewriting it discards an earlier pass's work
+  to produce, at best, the same bytes.
+  - **One itemised offer — the paths listed, a subset acceptable — and say you cannot tell whose work it is.** The probe
+    answers *is all of this in history?* and nothing more — an earlier pass's leftovers, the user's work
+    in progress, and another verb's half-finished regeneration are indistinguishable to it, so a
+    wholesale *shall I land these?* asks the user to consent to a set they cannot see. **A directory row
+    lists its members**, because that is where the damage happens: one leftover plus one file the user is
+    editing is a single row, and a single yes commits both. [LAYER.md](../new-project/LAYER.md)
+    § *`present, uncommitted` says nothing about whose work it is* owns the rule; this is the pointer.
   - **Order the landing before any re-run that would rewrite the same file — step 3c's included.**
     3c derives its set from what this run *created*, not from survey rows, so it never passes this
     bullet and will otherwise regenerate a file whose only copy is on disk. The order is the whole
@@ -347,7 +354,7 @@ page does not need editing:
 
 - `present, elsewhere` — **where**: the paths or form actually found. Never offer to create a second one.
 - `present, outdated` — **what the owner's init reported as the delta, and whether it was reconciled.** "Brought up to date" and "nothing to do" are different outcomes; blurring them is how an old shape survives a pass that claims to reconcile it.
-- `present, uncommitted` — whether the offer to land it was taken. Silence loses the artifact at the next clone.
+- `present, uncommitted` — **each path, and whether its offer was taken** — not a count and not one line for the row. Silence loses the artifact at the next clone; a wholesale line loses which of them the user actually consented to. Where a path self-attributes to an earlier pass, say so; where adoption could not tell whose work it was, say that too.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
   - **And which kind of `unknown`** — evidence, or the rule (see [LAYER.md](../new-project/LAYER.md) § *Two things reach `unknown`*). An evidence one goes to step 2's round as it always has. A **rule** one also goes in *Defects found* as a finding **against these instructions**, naming the row, the evidence you gathered and the question the row leaves open — and it is the one defect that does **not** get filed into this repo's tracker by step 3b, because the row belongs upstream and nobody here can fix it. Claim it only with the enumeration; without it the state is plain `unknown`.
 - `missing, not offered` — **the reason**, re-derived this run rather than recalled from the last one (the survey and this report are stdout; nothing persists a verdict, and [LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* explains why nothing needs to). Print it every run: the line is status, not a question, and the offer stays suppressed only while the evidence still holds. Where a task owns the blocker, name it here as information — a re-run re-reads the evidence, never that task's state.

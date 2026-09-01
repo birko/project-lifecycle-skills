@@ -430,7 +430,7 @@ grows as real repos turn up conditions it cannot yet express:
 
   The shapes stay worth knowing as **illustrations, never as the rule** — the untracked member is what matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind; the tracked-but-uncommitted amendment is the more common one on the upgrade path, since a pass that appended `## Conventions` to an already-tracked guide leaves nothing untracked at all. (`git ls-files -- <path>` answers "is any of it tracked", a different and useless question here; `git ls-files --others` sees that amended guide as a clean repo and loses the work just as quietly.)
 
-  **The git-ignored carve-out holds for free**: an ignored path produces *no* output, so it falls through to plain `present` with no exception written for it. **The no-repo carve-out does not, and must be checked explicitly.** It is tempting to say the probe simply fails outside a work tree — it does in a bare directory, printing nothing to stdout — but the case this pair actually meets is a directory **captured by an ancestor repo**, where `git rev-parse --is-inside-work-tree` says `true` and the probe happily prints `?? subproject/CLAUDE.md` for every layer artifact. Reported as this state, adoption would offer to land the whole layer **into the ancestor's** history. So compare `git rev-parse --show-toplevel` with the directory being adopted: equal ⇒ this state is meaningful; an ancestor ⇒ it is not, and [[adopt-project]]'s surface-the-resolved-ancestor offer owns the case, because only the user knows whether that ancestor is intended. Verified 2026-08-31. This state is normally an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
+  **The git-ignored carve-out holds for free**: an ignored path produces *no* output, so it falls through to plain `present` with no exception written for it. **The no-repo carve-out does not, and must be checked explicitly.** It is tempting to say the probe simply fails outside a work tree — it does in a bare directory, printing nothing to stdout — but the case this pair actually meets is a directory **captured by an ancestor repo**, where `git rev-parse --is-inside-work-tree` says `true` and the probe happily prints `?? subproject/CLAUDE.md` for every layer artifact. Reported as this state, adoption would offer to land the whole layer **into the ancestor's** history. So compare `git rev-parse --show-toplevel` with the directory being adopted: equal ⇒ this state is meaningful; an ancestor ⇒ it is not, and [[adopt-project]]'s surface-the-resolved-ancestor offer owns the case, because only the user knows whether that ancestor is intended. Verified 2026-08-31. This state is **often** an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. **But the probe cannot see provenance, so the state must not claim any** — see § *`present, uncommitted` says nothing about whose work it is*. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
 - **present, outdated** — there, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
 - **present, elsewhere** — found at another **path**, under another **name**, or inside another **file**. **Say where.** Never silently relocate it, and never offer to create a second one. **Any deviation from the row's canonical path or name lands here** — see § *Location is orthogonal too*, which also settles that this composes with every row rather than only the ones whose cells mention it.
 - **unknown** — you could not determine it. Honest, and it stops the fill. **Name what was missing, and say which kind of missing** — evidence, or the rule itself. See § *Two things reach `unknown`*.
@@ -534,6 +534,45 @@ claim requires the gathered evidence *in the report*; without it the state is pl
 asks. Measured: the runner that produced this distinction had grepped every config source and every
 environment read in the repo before saying *"no fact is missing here… what is unsettled is the row's own
 boundary, not my knowledge."* That is the bar — an enumeration, not a feeling.
+
+**`present, uncommitted` says nothing about whose work it is.** The probe answers one question — *is all of
+this in history?* — and every reason for *no* looks identical to it:
+
+| Why the path is unlanded | What adoption should do |
+|---|---|
+| an earlier pass wrote it and stopped | land it — the state's whole purpose |
+| **the user has work in progress** under a layer path | **nothing.** Not adoption's to commit |
+| **another verb is mid-regeneration** — a dashboard, a spec body, a feature status | nothing, and landing half of it is worse than leaving it |
+
+**So the state is kept and its *claim* is dropped.** The old remedy asserted *"the file is already right;
+what is missing is the commit"* — true for the first row and **false** for the other two, which is why the
+offer was wrong: the premise was. A drill runner put it exactly, having found seven modified files that were
+none of them an adoption's leftovers: *"'the file is already right' is an assumption that does not hold for
+someone's WIP, and 'offer it in the adoption commit' would sweep unrelated work into an adoption commit."*
+
+**Three consequences, and the third is the one that bites.**
+
+1. **One offer, itemised — not one question per path, and not one blind question for all of them.** The
+   user is the only party who knows whose work it is, and they cannot answer a question that does not name
+   what it would commit; equally, a queue of single questions is the interrogation the one-frontier-round
+   rule exists to prevent. So: list the paths in a single offer and let the answer take a **subset**.
+2. **Say what you cannot tell.** The report states that adoption cannot determine provenance, so a *yes* is
+   the user's judgement rather than a confirmation of adoption's.
+3. **A directory row lists its members individually.** This is where a wholesale offer does its damage:
+   `tasks/` with one leftover from an old pass and one file the user is editing produces **one** row, and a
+   single *yes* commits both. The probe already names members (that is what `--untracked-files=all` is for),
+   so the offer follows the probe's granularity, not the row's.
+
+**Self-attribution is evidence, never a licence.** Some artifacts say who wrote them — measured on a real
+repo, a `.gitignore` block reading *"added by adopt-project 2026-08-18"* and a `.map.yml` header reading
+*"Proposed by adopt-project 2026-08-18"*. Report that beside the path; it is exactly what lets a user answer
+quickly. It does **not** authorise sweeping the file in unasked, because the same file may have been edited by
+hand since, and nothing in the probe would show it.
+
+**Rejected: restricting the state to artifacts this run created.** It reads as the clean fix and it destroys
+the state's purpose — the whole case is a *previous* run's leftovers, which this run did not create. Also
+rejected: diffing each file against what the fill *would* write, which needs the fill to have already run and
+so cannot inform the decision that precedes it.
 
 **Presence and shape, not content currency.** These states answer *does the artifact exist, and is
 it in the shape its owner currently writes* — never *is its prose still true*. A README whose status
