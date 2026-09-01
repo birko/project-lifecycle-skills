@@ -9,18 +9,22 @@ _Generated 2026-08-31. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 28    |
+| todo         | —     | —       | 27    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 61    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 4× P1 · 20× P2 · 4× P3.
+`todo` by priority: 3× P1 · 20× P2 · 4× P3.
 
 ## In progress now
 
 _None_
+
+## In review (awaiting sign-off)
+
+- [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) — `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists (P1, agent) — survey drill unrun
 
 ## Tree
 
@@ -92,7 +96,7 @@ _None_
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (4/9)
-    - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
+    - [ ] [TASK-061](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-061.md) `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists 🔍 review
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [ ] [TASK-063](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-063.md) The upgrade path's headline case has no state and no remedy
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
