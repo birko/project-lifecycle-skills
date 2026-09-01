@@ -6,15 +6,153 @@
 # (task-tracking, feature-lifecycle, spec-harvesting), not one file.
 # Healthy: ~5-20 areas.
 #
-# SEEDED EMPTY on 2026-08-18. An empty `areas:` list is treated as *absent* at every
-# enforcement point, so nothing false-fires while it is unfilled. Run `/specs init` to
-# propose the area map, then `/specs regen` — tracked as EPIC-001 / STORY-008.
+# Discovered 2026-09-01 by /specs init (TASK-079), replacing the empty seed that had
+# stood since 2026-08-18. 16 areas over 63 tracked files.
+#
+# WHY THESE AREAS: the product is 18 skills, and one area per skill would be the wrong
+# shape and roughly the wrong count. These are grouped by the capability a consumer
+# installs them FOR — the two front doors are one area and the two testing skills are one,
+# while `tasks` and `feature` are large enough to stand alone.
+#
+# NAMED FROM THE OUTSIDE IN, after a cold read said the first draft was not. A reader given
+# only the names called four of them internal groupings — they named the authors' file
+# layout ("cross-tree"), a circumstance rather than a capability ("review-gate-fallbacks"),
+# an author-side metaphor ("spec-harvesting"), and an ambiguous subject ("skill-set-
+# validation": whose skills?). One name carried an "and" that turned out to be two separate
+# skills stapled together, and it was split. Titles were rewritten too: they leaned on
+# definite articles for terms the reader had not met ("THE universal project layer"), which
+# is the clearest symptom of naming from the inside out.
 
-areas: []
+# The scan set — tracked files left after `ignore` — was 63 of the 221 below. That number
+# is deliberately NOT a key: the contract defines three coverage keys and no more, and a
+# second number beside the tree size reads as a coverage fraction, which it is not.
+coverage: verified
+tracked-files-at-scan: 221
+# Unmapped at first scan because the seed ignored `.github/**` wholesale. 548 lines of
+# executable shell, five checks, 43 test cases — the only executable behaviour in the repo —
+# so the ignore was narrowed to `ci.yml` alone and these were folded into an area. Drift
+# (behaviour the map could not see), not housekeeping sent to `ignore`.
+coverage-drift:
+  - ".github/workflows/skills-lint.sh"
+  - ".github/workflows/skills-lint-test.sh"
+
+areas:
+  - name: work-tracking
+    title: Tracking developer work as epics, stories and tasks, with a gate before done
+    sources:
+      - "skills/tasks/**"
+
+  - name: feature-lifecycle
+    title: Taking a stakeholder-facing idea to shipped, recording every decision on the way
+    sources:
+      - "skills/feature/**"
+
+  - name: project-scaffolding
+    title: Giving any repo the same baseline of docs and tracking, new or existing
+    sources:
+      - "skills/new-project/**"
+      - "skills/adopt-project/**"
+
+  - name: specs-from-code
+    title: Specifications generated from the code itself, so they cannot silently go stale
+    sources:
+      - "skills/specs/**"
+
+  - name: defect-draining
+    title: Working a filed review backlog down, one defect per run, without supervision
+    sources:
+      - "skills/fix-next/**"
+
+  - name: convention-conformance
+    title: Checking a change against the rules this project itself wrote down
+    sources:
+      - "skills/verify-conventions/**"
+
+  - name: intent-verification
+    title: Checking a change actually built what the task asked for, and nothing more
+    sources:
+      - "skills/verify-intent/**"
+
+  - name: code-and-security-review
+    title: Reviewing a change for correctness bugs, and for security when it touches one
+    # Kept separate from convention-conformance and intent-verification, deliberately: these three are
+    # frozen fallbacks that exist in ONE runtime only — Claude Code ships them natively, so
+    # installing copies would shadow the natives (ADR 0010). A consumer's answer to "what
+    # reviews my code" therefore differs by runtime, which is a capability boundary, not a
+    # packaging detail. Folding them in would make one spec describe two runtimes at once.
+    sources:
+      - "skills-pi/**"
+
+  - name: test-authoring
+    title: Writing tests first, filling coverage gaps, and proving a test can actually fail
+    sources:
+      - "skills/tdd/**"
+      - "skills/populate-tests/**"
+
+  - name: vocabulary-and-decision-records
+    # The "and" reflects the skill's own scope, not a filing decision: one skill owns both
+    # halves, so no split is available to this map. Both cold reads called the pairing a
+    # grouping, and both were right about the product rather than about this file.
+    title: Fixing what each term means, and recording why a hard choice was made
+    sources:
+      - "skills/domain/**"
+
+  - name: roadmap
+    title: One view across planned features and tracked work, flagging where the two disagree
+    sources:
+      - "skills/roadmap/**"
+
+  - name: changelog-maintenance
+    title: Turning shipped work into a changelog a human would want to read
+    sources:
+      - "skills/roll-changelog/**"
+
+  - name: idea-interrogation
+    title: Interrogating a plan until every unresolved branch has been decided
+    sources:
+      - "skills/grill-me/**"
+
+  - name: session-handoff
+    title: Compacting a working session into something another agent can continue from
+    sources:
+      - "skills/handoff/**"
+
+  - name: installation
+    title: Installing the skills into an agent runtime (Claude Code, or pi)
+    sources:
+      - "install.sh"
+      - "install.ps1"
+      - "pi-install.sh"
+      - "pi-install.ps1"
+
+  - name: skill-contract-lint
+    # Consumer-facing because a consuming repo may ship its own project-local skill that
+    # shadows one of these — the contract is what such a skill must satisfy. Two cold reads
+    # both took the name as maintainer-only, so the title now says the audience outright.
+    title: If you write your own skill, the shape it must have — frontmatter, links, refs
+    sources:
+      - ".github/workflows/skills-lint.sh"
+      - ".github/workflows/skills-lint-test.sh"
 
 ignore:
+  # Not product: this repo's own lifecycle artifacts, produced BY the skills it ships.
   - "docs/**"
   - "tasks/**"
-  - ".github/**"
+  # Config, not behaviour — the two shell scripts beside it are mapped above.
+  - ".github/workflows/ci.yml"
+  # The file shapes skills write. Data the skill emits, not logic: each template's owning
+  # skill is mapped, and its spec describes the shape. Revisit if a template ever carries
+  # behaviour its skill's prose does not state.
   - "**/templates/**"
+  # Repo furniture — the project's own rulebook, licence, changelog and dotfiles. Normative
+  # for contributors, but not a capability the product provides. `docs/**` is ignored on the
+  # same reasoning.
+  - "AGENTS.md"
+  - "CLAUDE.md"
+  - "README.md"
+  - "CHANGELOG.md"
+  - "LICENSE"
+  - ".editorconfig"
+  - ".gitattributes"
+  - ".gitignore"
   - "**/*.tmp"
