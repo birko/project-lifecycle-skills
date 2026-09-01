@@ -146,6 +146,19 @@ The skills *are* the product, so their prose is the user interface. This subsect
     defaulting read *"into an existing repo"*, so the field this repo forbids inferring was itself created
     by inference. Which declaration a row needs is read **off the row** (`skills/new-project/LAYER.md`),
     never off a list in a consumer.
+- **A repo-level check is answered by what the repo tracks, never by the machine it runs on.** Where a
+  skill asks whether a repository *has* something — today [[adopt-project]]'s survey asking whether `.env`
+  and agent-tool local state are covered — the evidence must be the repository's own file rather than the machine's (whether that file is *committed* yet is a separate, composing question). A
+  developer's global `core.excludesFile`, an installed tool, an exported variable: all genuinely true, none
+  of them travelling to the next clone, which is the party every such check exists to protect. Accepting
+  machine state does not make a check lenient, it **inverts** it — the repo that most needs the finding is
+  the one where a local convenience hides it. The corollary is that the obvious probe is usually the wrong
+  one: `git check-ignore <path>` answers *"ignored on this machine"*, and only `git check-ignore -v`'s
+  **source** answers the question actually asked. **The apparent counter-example confirms the rule:**
+  `skills-lint.sh` check 5 *does* read machine state (install-root drift) and is for that exact reason
+  **advisory** — machine state may be reported, never converted into a verdict about the repo. Owner of the
+  detail and the measured instance: `skills/new-project/LAYER.md` § *Covered means covered in the repo*;
+  this entry is the pointer.
 - **A derived state must never be cached as a decision.** The mirror of the rule above: where a value is
   *computed from evidence the repo still holds* — today `missing, not offered`, computed from whether a
   build's dependencies resolve inside the repo root — recompute it every run instead of remembering the

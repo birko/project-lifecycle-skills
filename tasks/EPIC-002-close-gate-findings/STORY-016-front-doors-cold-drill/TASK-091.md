@@ -10,7 +10,7 @@ created: 2026-09-01
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [DRILL-063-2, DRILL-063-3, DRILL-035-5]
+findings: [DRILL-063-2, DRILL-063-3, DRILL-035-5, DRILL-094-1]
 pr: null
 github-issue: null
 jira-key: null
@@ -63,6 +63,26 @@ different name. The runner reached the same conclusion by the same route as the 
 canonical artifact at a non-canonical *path*; this one is a canonical artifact under a non-canonical
 *name*. Both resolve correctly under `present, elsewhere` and neither row says so, which sharpens the fix:
 whatever lands must cover name as well as location, or the next differently-named artifact reopens it.
+
+### Third instance, from the 2026-09-01 `BardStudio` drill (DRILL-094-1)
+
+A **plain** row this time, not a conditional one, which widens the rule the fix owes.
+
+`docs/architecture.md`'s cell reads only *"Leave it; report if absent"* — which taken alone yields
+`missing`. But § *Detect what the repo has* says architecture notes *"may live in the README, a `wiki/`, or
+`Documentation/`"*. The runner:
+
+> *"The two do not resolve each other, and the row names no verb to defer to. **I chose
+> `present, elsewhere`**, because the false-`missing` direction is the one the file calls dangerous … and
+> because the row's own instruction — *report if absent* — is satisfied by naming where it actually is.
+> Reporting `missing` would invite creating a second architecture document beside `CLAUDE.md`
+> § Architecture."*
+
+It is right, and it had to derive it. **So the gap is not specific to conditional rows:** a `Dockerfile` at
+a non-canonical path, a licence under a non-canonical name, and now architecture notes in a different
+*file* are three shapes of one omission — the location states exist generically and no row cell mentions
+them. Whatever lands should therefore say once, where the states are defined, that the location states
+compose with **every** row rather than being enumerated per row.
 
 ## Acceptance criteria
 

@@ -27,7 +27,7 @@ for adoption — **what to do when the repo already has one**.
 | `docs/specs/.map.yml` | [[specs]] | Delegate to `/specs init`, which re-discovers and proposes a delta rather than dropping areas. Seed `areas: []` only when the repo has no code yet. |
 | `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. **Declaration this owner needs: `integration:` in `.config.yml`** — probe for it in the survey per § *A named declaration is not a version*, since the owner cannot be handed an answer nobody was asked for. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
-| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
+| `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. **Covered means covered by a file the repo tracks** — see § *Covered means covered in the repo*. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
 | `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture: a licence line in the README, a `license:` field in a package manifest, an SPDX header in sources. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
 | `.env.example` **(conditional — does anything here read runtime config from the environment?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it**; whether it still lists the right variables is content, not shape. |
 | `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
@@ -202,6 +202,34 @@ the rules inside alone. **What a reader gets instead**
 is [[verify-conventions]], which lints real diffs against whatever the guide records — so a rule the guide
 never adopted shows up the moment code contradicts it, judged against that project's own rulebook rather
 than against ours.
+
+## Covered means covered in the repo
+
+Wherever a row asks whether something is *covered* — today the `.gitignore` row's `.env` / `.env.*` and
+agent-tool local state — the question is **which file carries the line: the repo's own, or the machine's**.
+The repo's own counts. A user-level or global ignore does **not**, however genuinely it works right now.
+
+**Whether that file is committed yet is a different question, and the two compose.** A repo's `.gitignore`
+carrying the right lines but never landed is **covered *and* `present, uncommitted`** — per
+§ *Detect what the repo has*, tracking is orthogonal to the row's own content check, so report both rather
+than letting either answer suppress the other. Reading "covered" as "committed" would double-report a
+single gap and, worse, would tell a developer their lines are wrong when what is missing is the commit.
+
+**The reason is the row's entire purpose: the next clone.** A global ignore lives in one developer's
+`core.excludesFile` and travels nowhere. The repo it protects today ships without that protection, and the
+person it fails is whoever clones it next — which is exactly who the row exists for. So a survey that
+accepts a global hit inverts the row rather than merely being lenient.
+
+**This makes the obvious probe the wrong one.** `git check-ignore <path>` answers *"is this ignored on this
+machine"*, which is not the question. Use `git check-ignore -v <path>` and read the **source** it names:
+a line in the repo's own tracked ignore file counts, anything under the user's home or global config does
+not. Measured on a real consumer repo: `.claude/settings.local.json` came back ignored, sourced from
+`~/.config/git/ignore`, while `git ls-files .claude` was empty — the file was genuinely unprotected in the
+repo and genuinely ignored on that machine, and only the `-v` source distinguishes the two.
+
+**Report it as a gap and offer the line, saying that nothing is currently at risk.** Both halves matter:
+the gap is real for a clone, and a reader who is told they have a problem they cannot reproduce locally
+stops believing the survey.
 
 ## Matching a guide's sections
 

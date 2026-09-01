@@ -92,8 +92,13 @@ survey state**: report it on the row it belongs to as `present`, with the outsta
 as the gap, exactly as the thin-but-present rule above does. A row of its own would say the artifact is
 missing something structural, when what is missing is an answer.
 
-**Print the survey as a table and stop.** The user sees the whole picture before a single file is
-written.
+**Print the survey as a table before anything is written.** The user sees the whole picture first.
+
+**That is a barrier on *writes*, not the end of the run** — and it has to be said, because "stop" reads as
+both. A drill runner obeyed the earlier wording, nearly ended its run at the table with three real defects
+listed and unfiled, and recovered only by reading later paragraphs: *"a literal reading of 'stop' would
+have ended this run at the table … which is the exact untracked outcome § 3b exists to prevent."* Steps 2
+and 3 follow; when the run may genuinely finish is settled below and at step 3b, not here.
 
 **A defect the survey turns up does not belong in that table.** It is not a layer row, and the user
 needs to see it before deciding anything about the fill. List defects beneath the table and file them
