@@ -56,6 +56,15 @@ sibling projects) and simply never applied to `init`. Nothing could have caught 
 mechanism in this repo that notices when a rule fixed in one verb is missing from its sibling. Two
 instances in two different skills is the argument for this task, not one.
 
+**A third instance, 2026-09-01.** `verify.md` § *Pathspecs are not globs* has owned the `:(glob)` rule
+since it was written, with its own measurement — 47 of 74 source globs in one aggregator had files at their
+root, 124 files the check could never see. `init` and `regen` resolve globs too and were never told. A cold
+drill hit it from the other side: `**/*.props` matches a root-level `Directory.Build.props` under
+gitignore semantics and not under strict `fnmatch`, which flipped 3 files in Presenter and 3 in Latent
+between mapped and unmapped. **Three instances now, in three different verbs of two skills, all the same
+shape: a rule established with evidence in one place and absent from its siblings.** That is the argument
+for this task; the porcelain case was never the whole of it.
+
 **The hard part is deciding where such a check lives, and that is the actual work.** `skills-lint-test.sh`
 tests the *lint*, not skill semantics, so dropping a git fixture in there needs a stated reason or it
 becomes a junk drawer. Two shapes worth weighing, and the answer may be "neither, and here is why":

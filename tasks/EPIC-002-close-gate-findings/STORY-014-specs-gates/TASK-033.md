@@ -3,7 +3,7 @@ id: TASK-033
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: in-progress
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -164,6 +164,91 @@ agent executes; there is no runner, so no test can fail without the fix. What ex
 the `coverage:` key — which reads as `unverified`, correctly. **TASK-079** (`/specs init`) is the run that
 will set it, and this change is what makes that run's verdict meaningful.
 
+## Drill results — 2026-09-01 — FAILED, and the failure is in this task's own fix
+
+Two cold drills, both with expected answers withheld: one over four throwaway fixtures (full path,
+including the write), one over five real Birko consumer repos (BardStudio, Latent, Presenter,
+WorkoutTracker, Symbio — read-only, steps 1-4).
+
+**Verdict: the human test plan does not pass.** The fix stops `init` reporting coverage it never
+checked, but replaces it with a verdict that is neither reproducible nor informative.
+
+### Defect A — the verdict's *moment* is unspecified, and it flips four of five repos
+
+Step 4 both defines the verdict off "is anything left unmapped" **and**, in the same step, instructs
+the agent to fix unmapped files by extending an area or the ignore list. Nothing says which moment the
+verdict describes.
+
+- Read as the **first pass**: Latent, Presenter, WorkoutTracker and Symbio are all `unverified`.
+- Read as the **state after step 4's own remediation**: all five are `verified`.
+
+Same repos, same instructions, opposite answers. The drill reported both numbers per repo rather than
+choose. This is the defect the whole task was about — a verdict nobody can reproduce — reintroduced one
+level up.
+
+### Defect B — one word cannot carry what it is being asked to carry
+
+All four existing-map repos collapse to the same literal verdict for four unrelated reasons:
+
+| Repo | Unmapped at scan | What it actually means |
+|---|---|---|
+| Latent | 39 / 63 (62%) | the map never covered the repo — the entire non-`src` side was unaccounted for |
+| Presenter | 3 / 102 | a carefully-built 11-area map missing two host-config files and a `.gitkeep` |
+| WorkoutTracker | 11 / 558 | **6 are real capability source files that shipped after the map was last touched** — genuine behavioural drift |
+| Symbio | 29 / 3874 | numerically the largest and **100% non-behavioural** (deploy scripts, committed `.claude/skills/*.md`, root docs); zero real drift in 32 areas |
+
+"This map missed real behaviour" (WorkoutTracker) and "this map needs three lines of housekeeping"
+(Symbio) are the two a reader most needs told apart, and they read identically.
+
+### Defect C — the scan's universe is undefined, found independently by both drills
+
+Step 4 counts "source file[s]", and nothing says what the scan walks. The fixture drill excluded
+`README.md` "with no textual basis". The real-repo drill inferred *whole tracked repo* only from
+indirect evidence — that the four shipped maps reach zero-unmapped only by explicitly ignoring
+`docs/**`, `tasks/**`, `*.md`, `*.csproj`, which is meaningless unless those were in scope.
+**Every verdict is a function of this undefined term.**
+
+### Defect D — glob semantics unstated, and the choice moves real files
+
+`**/*.props` under strict POSIX `fnmatch` requires a literal `/` and does **not** match a root-level
+`Directory.Build.props`; under gitignore/minimatch semantics `**/` matches zero directories and it
+does. That single unstated choice flips 3 files in Presenter and 3 in Latent between mapped and
+unmapped.
+
+### Defect E — dot-prefixed paths, and the repos disagree
+
+Nothing says whether `.claude/`, `.editorconfig` or `.gitignore` are scannable. WorkoutTracker's own
+map carries an explicit `.claude/**` ignore rule — proof its author found it necessary — while no map
+ignores `.gitignore`. Reading `.claude/` as in-scope is what surfaced Symbio's 12 unmapped committed
+skill files.
+
+### Two adjacent gaps, not this task's
+
+- **A file legitimately owned by two areas.** Step 4's "extend an area or add one" presumes one home.
+  WorkoutTracker's map has a deliberate precedent (`ProgressEndpoints.cs`, shared, with a comment) and
+  the newly-drifted `plans-segments.ts` is shared the same way.
+- **No defined behaviour when nobody blesses the map.** Steps 5-6 speak of "the blessed areas"; an
+  unattended run has no textual instruction for who decides.
+
+### What the fixtures did establish, and what they failed to
+
+`not-applicable` was reached correctly and reported **distinctly** from an empty result (fixture B,
+scan-set 0), which is the collapse this fix exists to separate. Step 2 read the `coverage:` key on
+re-discovery as intended.
+
+**But no fixture reached `unverified`.** Fixture A was built as "sources exist, discovery does not
+recognise them" — `.rules` files, no conventional stack. The runner read the README, understood the
+sources, and returned `verified` with a scan set of 3. The assumption that an unusual extension defeats
+discovery was simply wrong, so the fix's central path went unexercised there; on the real repos it was
+reachable only under the ambiguous reading of Defect A.
+
+### Findings about the target repos themselves (not defects in this skill)
+
+Worth passing to whoever owns them: **WorkoutTracker** has 6 real source files no area covers
+(`ReplacedPeriod.cs`, `RestPrescription.cs`, `active-plan-mirror.ts`, `session-day-mirror.ts`,
+`plans-segments.ts`, `vh-debug.ts`); **Symbio** commits `.claude/skills/*.md` its map never ignores;
+**Latent**'s ignore list never covered the non-`src` side of its repo.
+
 ## Progress log
 
 - step 2 - picked; ranked above TASK-025 on key 3 (silence): a vacuous coverage check reports success having verified nothing and leaves a .map.yml that reads as validated, where DV10's blind spot is a visible under-report. Key 5 argues AGAINST this pick - the finding is explicitly unreproduced - but the task makes reproduction criterion 1 and blesses 'the check is sound' as a closing outcome, so the risk is bounded. Key 6 degenerate (pool is all correctness-invariants).
@@ -175,3 +260,6 @@ will set it, and this change is what makes that run's verdict meaningful.
 - step 5d - 3 boundaries, 0 spawned; the sibling-verb observation recorded on TASK-084.
 - step 7 - respec skipped: areas: [] (TASK-079).
 - step 8 - parked at REVIEW, not done: four drill steps in the human test plan are real and unrun, and per TASK-068 the author running them is a confirmation, not evidence.
+- DRILL 2026-09-01 - FAILED. Two cold drills (4 fixtures full-path, 5 real Birko repos read-only). Five defects in this task's own fix: verdict moment unspecified (flips 4/5 repos), one word cannot separate real drift from housekeeping, scan universe undefined (found by both drills independently), glob semantics unstated, dot-path handling unstated. Two adjacent gaps to spawn. status review -> in-progress.
+- 2026-09-01 - fixed drill defects C, D, E. All three land in SKILL.md's shared `Rules:` block (one home, read by init/regen/verify) with init step 4 pointing at them: the scan is every file git tracks; every glob is matched with `:(glob)`; a dot-prefixed path is an ordinary scan member. D was NOT restated - verify.md already owned it with a measurement, so the rule points there; recorded as a third instance on TASK-084. Lint OK (18 skills), 43/43.
+- STILL OPEN: defects A (the verdict's moment is unspecified - flips 4 of 5 real repos) and B (one word cannot separate real drift from housekeeping). The task cannot close until these are settled; the verdict remains unreproducible without A.
