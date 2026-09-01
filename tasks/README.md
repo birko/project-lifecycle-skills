@@ -9,14 +9,14 @@ _Generated 2026-09-01. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 29    |
+| todo         | —     | —       | 30    |
 | in-progress  | 2     | 5       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 71    |
+| done         | 0     | 5       | 72    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 24× P2 · 4× P3.
+`todo` by priority: 1× P1 · 25× P2 · 4× P3.
 
 ## In progress now
 
@@ -49,7 +49,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (37/59 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (38/61 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -92,7 +92,7 @@ _None_
     - [ ] [TASK-081](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-081.md) One number now names two different lint checks
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (11/19)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/21)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -103,9 +103,11 @@ _None_
     - [ ] [TASK-095](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-095.md) "Thinly answered" has one calibration point, and two drills split on it
     - [x] TASK-096 A conditional row cannot say what "here" means, or which kind of env var counts
     - [x] TASK-097 `unknown` is the only container for two different situations, and one of them is not ignorance
-    - [ ] [TASK-098](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-098.md) A row prescribes an action and is silent on the case where it is already done
+    - [x] TASK-098 A row prescribes an action and is silent on the case where it is already done
     - [ ] [TASK-099](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-099.md) A row that names two artifacts never says whether the second carries its own state
     - [ ] [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) Step 3c derives its set from what a run *created*, and landing invalidates without creating
+    - [ ] [TASK-101](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-101.md) Two rows read one fact in opposite directions, because "a working runner" names no bar
+    - [ ] [TASK-102](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-102.md) Nothing says whether a step-3 fill offer joins step 2's round or comes after it
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file

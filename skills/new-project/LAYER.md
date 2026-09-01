@@ -28,7 +28,7 @@ for adoption — **what to do when the repo already has one**.
 | `tasks/` (`.config.yml` + `README.md`) | [[tasks]] | Delegate to `/tasks init` — it adopts a pre-skill tree without disturbing it, **and reconciles a config written by an older version**, adding fields it predates and asking for any that are a real choice. Never write these shapes by hand. **Declaration this owner needs: `integration:` in `.config.yml`** — probe for it in the survey per § *A named declaration is not a version*, since the owner cannot be handed an answer nobody was asked for. |
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
 | `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. **Covered means covered by the repo's own ignore file, not the machine's** — see § *Covered means covered in the repo*, which also settles how this composes with `present, uncommitted`. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
-| `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture: a licence line in the README, a `license:` field in a package manifest, an SPDX header in sources. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
+| `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture, **either posture**: an explicit statement — a licence line or a *proprietary* / *all rights reserved* line in the README, a `license:` field in a package manifest, an SPDX header in sources. **A bare copyright notice is not evidence of anything**: project templates emit `<Copyright>` unconditionally, so it is *consistent with* both postures and settles neither. Reading it as proprietary is how the one gap this row exists for disappears — measured, a runner met exactly that and correctly landed `unknown`. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
 | `.env.example` **(conditional — does anything here *require* an environment variable to run?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. **A build-time variable is not a Yes, and "here" stops at this repo** — § *Conditional rows* owns both, with `BIRKO_SRC` as the worked example. Present → **leave it**; whether it still lists the right variables is content, not shape. |
 | `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
@@ -374,6 +374,19 @@ Instead, stamp the adoption:
 - An `## Origin` section recording the adoption date, that no original brief exists, and where the project's actual history lives (README, commit log).
 - An empty `## Amendments` section. The append-only log starts from the **first request made after adoption**.
 
+**Where a real opening ask *has* survived, the stamp does not fire — but the log still does.** A repo whose
+`docs/BRIEF.md` already carries a dated verbatim request has the thing `## Origin` substitutes for, so
+stamping one beside it would announce that no original exists next to the original. Report the row `present`
+and leave the text alone; the general rule is § *A prescribed action is suppressed when the repo has already
+done it*, and this is its sharpest instance because the artifact is **ground truth** — the one file the layer
+is least entitled to edit.
+
+**`## Amendments` is owed either way, and that is a decision rather than a consequence.** The stamp's two
+halves answer different questions: `## Origin` explains *why there is no original*, which a surviving ask
+makes moot; `## Amendments` is where the **next** requirement-changing request lands, which every adopted
+repo will eventually have. So offer the empty heading even when the ask survived — **as an item in step 2's one frontier round**, never appended unasked and never queued as a separate ask afterwards. It is a yes/no about writing to a file, which is exactly what that round is for. Measured twice: two repos with real verbatim asks, neither carrying the log,
+and both runners left it alone while flagging that nothing told them what to do.
+
 ## Detect what the repo has — never check for the shape you would have made
 
 The survey's job is to find out what a repo already solved, **not** to check whether it looks like
@@ -590,6 +603,29 @@ attributes") or give no number; a bare count reads as verified.
 
 **Never move a repo's files into the canonical layout.** The layer says what a project needs, not
 where it must live. A repo that solved it differently has *solved it*.
+
+**And a prescribed action is suppressed when the repo has already done it.** The sentence above covers a
+repo that solved something *differently*; this covers one that solved it **already**. Where a row says
+*offer X*, *stamp Y*, *append Z*, and the repo turns out to carry the thing that action would produce, the
+action does not fire — and the **report says so**, because a silently suppressed offer is indistinguishable
+from a step that was skipped.
+
+**Measured four times across three repos, and every runner decided it alone.** A `README.md` already
+carrying its lifecycle pointer, met by a row that says *offer to append one*. A `docs/BRIEF.md` carrying a
+real dated verbatim ask, met by a section written entirely for the repo that has none — twice, in two
+repos. Each runner suppressed correctly and each said the text did not license it: *"Nothing in the row says
+the offer is suppressible."*
+
+**Why suppression is the right default and not laziness.** Firing anyway produces the false-`missing` fill
+this file calls the dangerous direction — a second "How we work" pointer beside the first, an `## Origin`
+section announcing that no original ask exists **beside the original ask**. Both are worse than doing
+nothing, and both are hard to undo once the user has said yes to a question that looked routine.
+
+**The limit, so this is not a licence to skip work.** *Already satisfied* means the artifact carries what the
+action would have produced — not that something nearby is close enough, and never that the row looks
+tedious. When you cannot tell, the action fires: an unnecessary offer costs the user one *no*, and a
+suppressed necessary one costs them the artifact.
+
 
 ## CI a repo cannot pass
 

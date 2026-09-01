@@ -179,6 +179,7 @@ its **"already present?"** column in the same file.
 The rules that bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
+- **A row's action does not fire when the repo already carries what it would produce** — and the report says it was suppressed and why. See [LAYER.md](../new-project/LAYER.md) § *A prescribed action is suppressed when the repo has already done it*. Where you cannot tell, it fires: an unnecessary offer costs one *no*, a suppressed necessary one costs the artifact.
 - **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](../new-project/LAYER.md) § The adopted-repo brief).
 - **An `unknown` row is not filled — ask instead.** The survey never established that artifact was
   absent, so writing it is a guess aimed at the user's own files: the false-missing defect with one
