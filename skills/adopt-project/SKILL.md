@@ -68,11 +68,12 @@ These consequences decide behaviour:
 
 **Resolve these before the table prints, not after** — three rows above are conditional and cannot be
 stated without them, so detecting them late means printing `unknown` on every run and calling it a survey.
-Detect the stack (manifests, source layout); **the project's kind** — service / API / web UI / library /
-CLI / worker / other, read off the signals [LAYER.md](../new-project/LAYER.md) § *Conditional rows* lists,
-and `unknown` where they do not settle it; **the licensing posture** (a README licence line, a manifest
-`license:` field, an SPDX header) — a different question from the kind, and the one the `LICENSE` row turns
-on; whether a
+Detect the stack (manifests, source layout); **what the repo's components do** — whether anything listens,
+is deployed, reads env config, or ships as a package, which is what the conditional rows actually ask;
+**read a declared kind off the agent guide where the repo states one**, and fall back on
+[LAYER.md](../new-project/LAYER.md) § *Conditional rows*' signals only where nothing declares it; **the
+licensing posture** (a README licence line, a manifest `license:` field, an SPDX header) — a different
+question from the kind, and the one the `LICENSE` row turns on; whether a
 test runner already works, whether a git remote exists, whether the repo is captured by an
 ancestor git repo, and whether anything the layer owns is on disk but **not yet in history** — the
 signature of an earlier pass that wrote and never committed. *Untracked is only half of that*, and

@@ -3,7 +3,7 @@ id: TASK-061
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 picked-by: fix-next
@@ -62,7 +62,7 @@ survive is the current state, where the omission is indistinguishable from an ov
 
 ## Human test plan
 
-- [ ] Run `adopt-project`'s survey against a repo with **no** `LICENSE` and confirm the outcome matches whichever shape was chosen — a state, or a stated reason the row is absent from the survey
+- [x] Run `adopt-project`'s survey against a repo with **no** `LICENSE` and confirm the outcome matches whichever shape was chosen — a state, or a stated reason the row is absent from the survey — **run 2026-09-01 against three real repos; Symbio `not applicable` (evidenced), Latent `unknown` (no evidence), Affiliate `present` (control)**
 - [x] Re-read `LAYER.md`'s opening paragraph against its own table and confirm the claim it makes is now true
 
 ## Implementation plan
@@ -135,6 +135,58 @@ CLIs before this change. Both now match the row.
 
 **Flagged, not fixed:** nothing. Both out-of-scope bullets name owners.
 
+## Drill outcome — 2026-09-01: PASSED
+
+A cold survey drill ran `adopt-project` step 1, read-only, against three real consumer repos. The brief
+**never named the three new artifacts** and **never mentioned kind or licensing posture** — it asked for
+every row of the inventory with the state assigned, and for "any fact the instructions told you to
+determine before classifying". Anything that surfaced, surfaced from the prose.
+
+| Repo | `LICENSE` | `.env.example` | `Dockerfile` | Why it was the right answer |
+|---|---|---|---|---|
+| **Affiliate** *(control — has a licence)* | **present** | missing | missing | the check stays quiet when it should |
+| **Symbio** | **not applicable** | missing | present | posture settled by evidence: README's `## License` says *Proprietary — Birko s.r.o.* |
+| **Latent** | **unknown** | not applicable | not applicable | zero licence evidence in any direction — **did not launder to `not applicable`** |
+
+**The control is the result that matters most.** Every other drill this session confirmed a check *fires*;
+this is the first to confirm one stays **quiet**. A survey reporting a missing licence on the repo that has
+a `LICENSE` file would have been worse than the gap it was written to close. And the runner determined kind
+and licensing posture unprompted, which is the detection added to step 1 working.
+
+**Three defects it found, all fixed here.** The drill did not fail the criterion — it found that the
+condition was framed too narrowly:
+
+- **Kind labels run out.** `Latent` declares its kind as *"desktop app + CLI + core library"*. The intake
+  enum offers no **desktop app** at all, and the rows split service/API/web/worker against library/CLI, so
+  the runner had to map desktop onto a binary that does not contain it.
+- **Every repo surveyed was compound** — a web app plus a console importer, an API host plus a frontend, a
+  desktop app plus a CLI plus a library. Three of three. The prose said *"the project's kind"*, singular; a
+  row demanding one kind must pick one and discard the rest.
+- **A declared kind beat my signals, and my prose denied it existed.** § *Conditional rows* asserted the
+  adopter *"has only signals"* — false for any already-adopted repo, whose guide states the kind outright.
+  That is the consuming project's own *read the declaration, never infer it* rule, and this section was
+  arguing against it.
+
+**So the rows now ask a question about the artifact, not about the repo's label** — *does anything here read
+runtime config from the environment?*, *is anything here deployed as a running service?* — and any component
+answering yes settles it. Kind became evidence toward that answer, with a declared kind outranking an
+inferred one.
+
+**Findings that belong to other tasks, not fixed here:**
+
+- Latent's `tasks/` row reads **present** while the surveyor can plainly see `.config.yml` has no
+  `integration:` field. The runner called this out as the survey's most misleading cell and was right that
+  a reader stopping at the table is less informed than the surveyor. It is also *deliberate* — a shallow
+  read must not stand in for the owner verb's authoritative one — and it is exactly what **TASK-024** and
+  **TASK-035** already own. Corroboration, not a new finding.
+- Whether an agent guide's own architecture section satisfies the `docs/architecture.md` row is unsettled;
+  the runner extended the rule to reach *present, elsewhere* and flagged that a stricter reader would say
+  *missing*. Pre-existing, and it produced inconsistent answers across two repos on its first pass.
+- *"Whether a git remote exists"* is gathered by step 1 and consumed by no row in it. Pre-existing.
+- **Corroboration worth recording:** Latent's `.gitignore` already carries an uncommitted
+  `!.env.example` line, stamped *added by adopt-project 2026-08-18*. A previous adoption reached by hand
+  the exact fix this task just put into the seed.
+
 ## Progress log
 
 - step 2 - picked. Runner-up on four previous ranking passes, always losing on key 4 (self-containment): its resolution is a three-way design choice, which is a poor fit for an unattended drain. Picked now with the user available to settle it.
@@ -146,3 +198,6 @@ CLIs before this change. Both now match the row.
 - step 5d - 2 boundaries, 0 spawned.
 - step 7 - respec skipped: areas: [] (TASK-079).
 - step 8 - parked at REVIEW: the survey drill is real and unrun.
+- 2026-09-01 drill - PASSED. Three real repos, read-only, artifacts and facts unnamed in the brief. Control (Affiliate, has a LICENSE) correctly reported `present` - the first drill this session to confirm a check stays QUIET. Symbio `not applicable` from a README licence line; Latent `unknown` rather than laundered. Kind and posture were both determined unprompted.
+- Fixed three drill findings in the same close: kind labels run out (desktop app is in no enum), every repo surveyed was compound (3 of 3), and a declared kind beat my signals while my prose denied declarations exist. Rows now ask a question about the artifact; kind is evidence, and a declaration outranks a signal.
+- status review -> done.

@@ -209,10 +209,16 @@ The skills *are* the product, so their prose is the user interface. This subsect
   repos have none, and the survey could not raise the question.** Plain rows were rejected for the
   mirror-image reason: *absent ⇒ missing* would report a missing `Dockerfile` on every CLI and library, two
   false gaps each on three of those same seven.
-  - **The condition is not always the kind, and a marker that said so was itself the defect.** `.env.example`
-    and `Dockerfile` turn on kind; `LICENSE` turns on **licensing posture** — a proprietary and an
-    open-source service are the same kind and want opposite answers. So each row states its condition and the
-    evidence that settles it, rather than every consumer reaching for one shared fact.
+  - **The condition is not always the kind, and a marker that said so was itself the defect.** `LICENSE`
+    turns on **licensing posture** — a proprietary and an open-source service are the same kind and want
+    opposite answers. So each row states its condition and the evidence that settles it, rather than every
+    consumer reaching for one shared fact.
+  - **A row asks a question about the artifact, not "what kind is this repo".** Kind labels run out and
+    repos are compound: measured 2026-09-01, all three consumer repos surveyed were two or three kinds at
+    once, and one declares a kind (*desktop app*) the intake enum does not offer. So a row asks *does
+    anything here read runtime config from the environment?* and any component answering yes settles it.
+    Kind is **evidence** toward that answer, and a kind the repo **declares** outranks one inferred from
+    signals — the same precedence § *Read the declaration, never infer it* sets everywhere else.
   - **`not applicable` is not `(lazy)`'s `not applicable yet`** — a library does not acquire a `Dockerfile` by
     aging, so one state is settled and the other is pending, and collapsing them loses whether anyone should
     look again. **Undetermined evidence yields `unknown` and a question in the adopter's frontier round, never

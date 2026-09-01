@@ -29,8 +29,8 @@ for adoption — **what to do when the repo already has one**.
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
 | `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
 | `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture: a licence line in the README, a `license:` field in a package manifest, an SPDX header in sources. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
-| `.env.example` **(conditional — on kind)** | [[new-project]] seed | Service / API / web / worker → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). Library / CLI → **not applicable**. Kind `other` or undetermined → **unknown**, resolved in step 2's round. Present → **leave it**; whether it still lists the right variables is content, not shape. |
-| `Dockerfile` (+ `.dockerignore`) **(conditional — on kind)** | [[new-project]] seed | Service / API / web / worker → absent is **missing**, offered and never forced. Library / CLI → **not applicable**. Kind `other` or undetermined → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
+| `.env.example` **(conditional — does anything here read runtime config from the environment?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it**; whether it still lists the right variables is content, not shape. |
+| `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
 | Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. |
 | CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack — **but only if the repo can build in isolation**; see *CI a repo cannot pass* below. |
@@ -114,19 +114,31 @@ does not hold is **settled** — a library does not acquire a `Dockerfile` by ag
 as `missing` is the same false-gap error; collapsing the two into one state loses whether anybody should
 ever look again.
 
-**The kind is evidenced, and evidence that does not settle it yields `unknown` — not a guess.**
-[[new-project]] knows the kind because intake asked; that is a **declaration**. [[adopt-project]] has only
-signals: a listening port and an entry point say service; a console entry point or a `bin` mapping with no
-server binding says CLI; a published package manifest with no host says library; a long-running entry point
-with neither a port nor a `bin` mapping says worker.
+**Ask the artifact's own question, not "what kind is this repo".** A kind is a label, and the labels run
+out: `new-project`'s intake offers *library / service-or-API / web app / CLI / worker / other*, which has no
+slot for a **desktop app** — and a real repo declares its kind as *"desktop app + CLI + core library"*, three
+at once. Measured 2026-09-01: of three consumer repos surveyed, **all three were compound** — a web app plus
+a console importer, an API host plus a frontend, a desktop app plus a CLI plus a library. A row that
+demanded one kind would have had to pick one and discard the rest. So each row above asks a question the
+repo can answer directly — *does anything here read runtime config from the environment?*, *is anything here
+deployed as a running service?* — and **any** component answering yes settles it.
 
-**Treat those as evidence, never as an answer.** They are *consistent with* several readings — a library
+**Kind is evidence toward that question, and a declaration beats a signal.** Read the kind where the repo
+states it: `new-project` knows it because intake asked, and a repo already carrying an agent guide often
+declares it outright — which is the consuming project's own *read the declaration, never infer it* rule
+applying here. Only where nothing declares it do you fall back on signals: a listening port and an entry
+point say service; a console entry point or a `bin` mapping with no server binding says CLI; a published
+package manifest with no host says library; a long-running entry point with neither says worker; a
+windowing/UI toolkit dependency with no server binding says desktop.
+
+**Treat signals as evidence, never as an answer.** They are *consistent with* several readings — a library
 shipping a sample server, a CLI that also serves — which by § *A derived state must never be cached as a
-decision* in the consuming project's guide is the shape that **had to be declared**. So where the signals
-conflict or run out, the state is **unknown**, the row names the fact that was missing, and step 2's
-question round settles it in the same breath as the other choices. Do not default to *not applicable*:
-that is the reading which makes a real gap disappear, and the kinds hardest to evidence — CLI and
-`other` — are exactly the ones the sibling rows exclude.
+decision* in the consuming project's guide is the shape that **had to be declared**. So where they conflict
+or run out, the state is **unknown**, the row names the fact that was missing, and step 2's question round
+settles it alongside the other choices. Do not default to *not applicable*: that is the reading which makes
+a real gap disappear. Measured on the same three repos — one had no licence evidence in any direction and
+correctly landed `unknown`, while another was settled `not applicable` by one line in its README. The
+difference between those two is the whole point of the state.
 
 ## The adopted-repo brief
 
