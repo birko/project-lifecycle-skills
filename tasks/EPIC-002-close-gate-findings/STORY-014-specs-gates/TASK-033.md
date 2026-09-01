@@ -3,7 +3,7 @@ id: TASK-033
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -96,10 +96,10 @@ to fit a result. The criteria are untouched.
 
 Three drills, one per `coverage:` verdict, each run end-to-end against a real repo:
 
-- [ ] **`unverified`** — a repo whose sources exist but that discovery does not recognise (an unusual stack, or roots pointed wrong). Confirm the run reports the scan-set count as 0, says coverage could not be established, and does **not** write a populated map that reads as blessed
-- [ ] **`not-applicable`** — a genuinely code-free repo. Confirm it is allowed through, reported distinctly from the case above, and makes no claim of coverage
-- [ ] **`verified`** — an ordinary repo whose proposed globs match none of its sources. Confirm the run lists them all as unmapped (this shape is **not** a defect) and only reaches `verified` once they are mapped or the decline is recorded as `unverified`
-- [ ] Re-run `init` on the `unverified` repo with discovery fixed, and confirm the key flips to `verified` on its own — the self-clearing property is the whole reason it is written every run
+- [ ] **`unverified`** — ⚠ **NOT MET after three drills over nine repos.** The fixture built to force it (sources as `engine/*.rules`, no recognised stack) failed: the runner read the README, understood them, and returned `verified`. An unusual extension does not defeat a competent agent's discovery. Every real repo drilled is ordinary .NET. Residue filed as **TASK-089**
+- [x] **`not-applicable`** — a genuinely code-free repo. Confirm it is allowed through, reported distinctly from the case above, and makes no claim of coverage — fixture B, scan set 0, reported distinctly
+- [x] **`verified`** — reached on BardStudio (fresh, 147 files) and Presenter (re-discovery, 104), plus three fixtures. The globs-match-nothing shape behaved as the step-3 reproduction predicted: unmatched sources are listed, not silently passed
+- [x] Re-run behaviour confirmed on fixture D's second run and on Presenter's re-discovery: the keys are recomputed and overwritten each run, so a stale verdict clears itself
 
 **Withhold these expected outcomes from whoever runs the drill** — per TASK-068, a plan handed over with
 its answers becomes a confirmation rather than a test. The brief is *"run `/specs init` on each repo and
@@ -249,6 +249,42 @@ Worth passing to whoever owns them: **WorkoutTracker** has 6 real source files n
 `plans-segments.ts`, `vh-debug.ts`); **Symbio** commits `.claude/skills/*.md` its map never ignores;
 **Latent**'s ignore list never covered the non-`src` side of its repo.
 
+## Drill outcome — 2026-09-01, second round: PASSED on the delivered scope
+
+After the five defects above were fixed, a third cold drill (read-only, `BardStudio` + `Presenter`,
+expected answers withheld and the field names deliberately **not** given, so the runner had to find them
+in the prose) executed every rule mechanically.
+
+**Two of the rules changed a real outcome, which is the evidence that matters.** On `Presenter`, the
+*absent-`coverage:`-means-unverified* rule forced a full rescan instead of trusting an existing 12-area
+map — and that rescan found `src/Presenter.Host/appsettings.json`, carrying `Fetch.*`, `Session.*` and
+`Database.*` settings consumed by three existing areas, unmapped and invisible to every regen. The runner
+stated it plainly: had it trusted the map, it would have reported `verified` on a blind one. The
+`:(glob)` and tracked-files-universe rules were likewise executed without interpretation.
+
+**The drill also found two defects in the fields this task had just added, and both are fixed:**
+
+- **`coverage-drift` was a bare count, and the classification behind it is a judgement.** `1` on
+  Presenter recorded a decision that `appsettings.json` is behaviour rather than config — defensibly
+  either. A number states that with the confidence of a measurement and leaves no trace of *what* was
+  judged. It is now **a list of paths**; the count is just their length, and a later reader can disagree
+  with the specific call. This was the same defect this task had criticised in the raw unmapped count,
+  reproduced one level up — caught only because the drill was asked whether anything it recorded would be
+  misread.
+- **`coverage-scanned` read as a coverage numerator.** `147` beside `coverage: verified` invites
+  *"147 of 147 covered"*, which the schema does not say and carries no percentage anywhere. Renamed
+  **`tracked-files-at-scan`**, with the rule stating it is tree size and what it is for.
+
+**What is not evidenced, and it is the central branch.** `coverage: unverified` has never been produced
+in three drills over nine repositories — see the unticked drill step above and **TASK-089**, which owns
+constructing an honest case or narrowing the verdict if none exists.
+
+**Closing on delivered scope.** Three of four drill steps ran; the fourth is filed with its measurements
+rather than left as an intention. The path-list shape and the rename postdate the drill that prescribed
+them, so those two are the least-exercised part of the change — a re-drill to confirm a rename would be
+the over-ceremony TASK-068 warns about, but it means the shape rests on the drill's own recommendation
+rather than on a run.
+
 ## Progress log
 
 - step 2 - picked; ranked above TASK-025 on key 3 (silence): a vacuous coverage check reports success having verified nothing and leaves a .map.yml that reads as validated, where DV10's blind spot is a visible under-report. Key 5 argues AGAINST this pick - the finding is explicitly unreproduced - but the task makes reproduction criterion 1 and blesses 'the check is sound' as a closing outcome, so the risk is bounded. Key 6 degenerate (pool is all correctness-invariants).
@@ -268,3 +304,5 @@ Worth passing to whoever owns them: **WorkoutTracker** has 6 real source files n
   B (one word carrying four meanings): every file unmapped at first scan is now classified by HOW it left the set - folded into an area (behavioural drift) or into `ignore` (housekeeping) - and `coverage-drift` counts only the first. Measured justification: Symbio 33 unmapped / 0 drift and Latent 42 / 0 are pure tidying, while WorkoutTracker's 14 / 6 was real shipped behaviour invisible to every regen. Raw count ranks those backwards, which is the whole argument for the field.
   Three keys now: `coverage`, `coverage-scanned`, `coverage-drift`. Absent companions read as NOT COMPUTED, never zero. Lint OK (18 skills), 43/43.
 - status in-progress -> review: all five drill defects are fixed, so the code is complete, but the human test plan has not been re-run against the changed prose. The previous drill FAILED; a fix for a failed drill is not done until the drill runs again.
+- 2026-09-01 - third drill PASSED on delivered scope. Fixed two field defects it found (drift is now a path list, not a count; coverage-scanned renamed tracked-files-at-scan). Spawned TASK-087 (a re-discovery may silently drop the human's prose), TASK-088 (one file in two areas is unsanctioned), TASK-089 (unverified never produced in three drills). Re-stamped Latent / WorkoutTracker / Symbio with the new key shape. Lint OK (18 skills), 43/43.
+- step 8 - closed DONE on delivered scope, with drill step 1 visibly unticked and owned by TASK-089.

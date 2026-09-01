@@ -10,15 +10,16 @@
 #   coverage         verified | not-applicable (no behavioral code) | unverified
 #                    Describes the map AS WRITTEN, i.e. after init step 4 reconciled
 #                    what it found. Absent = predates the field = read as unverified.
-#   coverage-scanned how many tracked files that run examined.
-#   coverage-drift   of the files unmapped at first scan, how many were real source
-#                    folded into an area — as opposed to housekeeping sent to `ignore`.
-#                    This is the number that matters: a large raw unmapped count is
-#                    usually tidying, while a nonzero drift means the map was blind to
-#                    shipped behaviour. Absent = not computed, NOT zero.
+#   tracked-files-at-scan  tree size when the scan ran. NOT a coverage numerator — the
+#                    verdict is categorical and this file carries no percentage.
+#   coverage-drift   the PATHS unmapped at first scan that turned out to be real source
+#                    (folded into an area), as opposed to housekeeping sent to `ignore`.
+#                    A list, never a tally: the classification is a judgement, and a bare
+#                    count states it with the confidence of a measurement while leaving no
+#                    trace of what was judged. [] = looked, found none. Absent = not computed.
 coverage: verified
-coverage-scanned: 0
-coverage-drift: 0
+tracked-files-at-scan: 0
+coverage-drift: []
 
 areas:
   - name: example-capability          # kebab-case → docs/specs/example-capability.md
