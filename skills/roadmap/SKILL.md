@@ -89,7 +89,7 @@ Flag a feature (or task) when:
 | **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features), and **not raised at all against specs whose provenance was never derived** (see DV11) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way. **Report the area's `shaped-by-unresolved` count alongside the finding whenever it is non-zero** — `derived: true` is not a completeness claim, and a miss computed from a fraction of the trail is a weaker signal than one computed from all of it. Say which it is; don't let the reader assume the strong version. **A high count is often the project's commit trail, not its work**: regen refuses a commit that only *mentions* a task, and a task whose state says the work never landed ([[specs]] regen step 5a), so on a repo whose commits don't name tasks in their subjects most tasks resolve to nothing and this rule's miss is unproven either way |
 | **DV11** | A spec's `shaped-by-derived:` is `false` or absent (only when `docs/specs/.map.yml` exists) | Provenance was **never computed** for that area, so its `shaped-by: []` is unknown, not empty. Report it as its own finding and **suppress DV8 against those areas** — otherwise an unfilled field is indistinguishable from a genuine landing miss, and the audit reports a feature gap that is really a generator gap. Measured on Symbio 2026-08-01: all 31 areas carried `shaped-by: []` because `regen --all` resolved no `--feature` flag and, before that release, only flagged runs wrote the field at all. Fix: re-run `/specs regen <area>`, which now derives it |
 | **DV9** | A task carries `feature: FEATURE-NNN` but no decision row in that feature's `decisions.md` lists it in the `→ Tasks` column | The ledger doesn't know about its own work — one of the three backfills (`/tasks new` step 10b, `/tasks spawn` step 6, `/feature decompose` step 4) was missed; fix by writing the ID into the owning decision's row. **Expect the inherited case**: a task created under an existing parent picks up its `feature:` without passing through any of the three, which is why this rule is an audit and not a redundancy — `new` step 10b now triggers on the link rather than on `--from-feature`, but only at creation time |
-| **DV10** | The project has real code (a `src/` tree or build manifest with tracked sources) but no `docs/specs/.map.yml` — **or the map's `areas:` list is empty** (the [[new-project]] scaffold seed that was never filled) | The whole spec layer is silently absent — every spec check (story-close regen offer, DV7/DV8, `/feature review`'s spec-landing gate) skips when the map is missing/empty, so nothing else will ever surface this — **advisory**: run `/specs init` to bootstrap |
+| **DV10** | The repo has behaviour to spec — established by § *DV10: what counts as code* — but no `docs/specs/.map.yml`, **or the map's `areas:` list is empty** (the [[new-project]] scaffold seed that was never filled) and the map does not declare `coverage: not-applicable` | The whole spec layer is silently absent — every spec check (story-close regen offer, DV7/DV8, `/feature review`'s spec-landing gate) skips when the map is missing/empty, so nothing else will ever surface this — **advisory**: run `/specs init` to bootstrap |
 | **DV12** | Under an EPIC stamped `kind: review-intake`, a STORY carries unticked checklist lines in its body but has **no open TASK** (all children `done`/`cancelled`, or none exist) | Findings filed but never scheduled. Only `status: todo` tasks are ranked by `pick`, the `Next up` snapshot, or [[fix-next]] — a finding left as a checklist bullet is invisible to all three, so the review reads as drained while part of it was never worked. Fix by decomposing the remaining lines with [`/tasks intake --epic`](../tasks/verbs/intake.md) or `/tasks new` |
 
 ### 5. Output model
@@ -98,6 +98,42 @@ decisions:{proposed,approved,changed,deferred,removed}, tasksDone, tasksTotal, b
 divergences:[DVx…] }], specs: [{ area, generatedAt, stale, shapedBy, shapedByDerived, shapedByUnresolved }] | null,
 divergences:[{id, target, rule, detail}] }`. Renderers consume this;
 they do not re-derive it.
+
+### DV10: what counts as code
+
+**Do not ask for a `src/` tree or a build manifest.** Both are artifacts of compiled and packaged
+projects, and DV10's whole job is to notice a spec layer that went missing quietly — so a detector that
+only recognises one shape of project fails silently on every other. **Measured on this repo:**
+`docs/specs/.map.yml` sat at `areas: []` from 2026-08-18 to 2026-09-01 — every skill in the set
+unspecified, for two weeks — and DV10 never fired once, because the source is `skills/**/*.md` and there is no
+`src/` and no manifest. The check that exists to catch a silently-absent spec layer was itself silently
+absent, on the repo that ships it.
+
+**Ask the repo what its source is, in this order, and stop at the first that answers:**
+
+1. **The spec map's own `ignore:` list**, where a map exists — tracked files it does not exclude. A project
+   that has already told the spec layer what its source is should not have to tell `roadmap` again, and
+   this is the same declaration-over-inference rule the rest of the set runs on.
+2. **What the repo's own gate runs over**, where there is one — a CI workflow or task-runner target names
+   its inputs. This is [[adopt-project]]'s test-harness move applied here: the sibling blind spot in
+   `LAYER.md` was fixed by asking what the gate actually executes rather than adding another glob, and the
+   same generalisation is what makes this rule portable.
+3. **A `src/` tree or a build manifest** — the original test, kept last rather than deleted, so a
+   conventional project behaves exactly as before.
+4. **Nothing answered ⇒ stay silent, and say the check could not decide.** An undetermined repo is not a
+   finding. Firing here is what would make DV10 ignorable: a notes vault, an ADR archive or a fresh
+   scaffold carrying nothing but the layer would each get a permanent false gap, and a check that cries
+   wolf on correct repos is worth what an unrun one is.
+
+**`coverage: not-applicable` on the map ends it before any of that.** That verdict is `/specs init`'s own
+statement that it looked and found no behavioural code — a declaration, from the verb that owns the
+question. DV10 must not re-litigate it.
+
+**Why the ladder ends in silence rather than a guess.** Steps 1-3 are all *declarations* the repo made
+about itself; step 4 is the absence of one. Inferring "this markdown is behaviour" from markdown alone
+cannot distinguish a skill library from a notes vault, which is precisely the pair that must not collapse
+— so the rule declines instead. The remedy it prints when it *does* fire is `/specs init`, which resolves
+the ambiguity properly, because that verb can report `not-applicable` where DV10 can only suspect it.
 
 ## Render — full `/roadmap`
 
