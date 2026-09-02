@@ -7,7 +7,8 @@
 # Healthy: ~5-20 areas.
 #
 # Discovered 2026-09-01 by /specs init (TASK-079), replacing the empty seed that had
-# stood since 2026-08-18. 16 areas over 63 tracked files.
+# stood since 2026-08-18. 14 areas over 63 tracked files (16 at first draft; the three
+# diff-review areas were merged into one by TASK-104 — see the note below the coverage keys).
 #
 # WHY THESE AREAS: the product is 18 skills, and one area per skill would be the wrong
 # shape and roughly the wrong count. These are grouped by the capability a consumer
@@ -37,7 +38,16 @@
 #
 # `roadmap` was KEPT against the second reader's objection: the first proposed that exact
 # word, and a name changed on one reader's taste where another disagreed is not an
-# improvement. Its title was the real fault and was rewritten.
+# improvement. Its title was the real fault and was rewritten. A third read then objected
+# on DIFFERENT grounds — "a library's roadmap is its own future; nothing says it operates
+# on MY repo's data" — which flipped the tiebreak two-to-one, so it became `project-roadmap`.
+# One possessive answered it, and the same fix served `rulebook-check` → `project-rules-check`.
+#
+# THIRD PASS 2026-09-02 (TASK-104): `project-rules-check`, `intent-and-scope-check` and
+# `code-and-security-review` no longer exist as separate areas — they were merged into
+# `change-review`. Both round-two names above are therefore historical; do not go looking
+# for them. `intent-and-scope-check` had itself replaced `acceptance-check` after a reader
+# read that as UAT testing, which is the misread the merge makes moot.
 
 # The scan set — tracked files left after `ignore` — was 63 of the 221 below. That number
 # is deliberately NOT a key: the contract defines three coverage keys and no more, and a
@@ -52,18 +62,19 @@ coverage-drift:
   - ".github/workflows/skills-lint.sh"
   - ".github/workflows/skills-lint-test.sh"
 
-# THE FOUR CHECKING AREAS CANNOT BE SORTED BY NAME, AND THAT IS RECORDED RATHER THAN FIXED.
-# Three independent cold reads each tried; the best score was two of four. Every read reached
-# the same diagnosis, in its own words: the four differ by WHAT THEY CHECK AGAINST — this
-# project's own written rules, the task's acceptance criteria, correctness, the skill schema —
-# and a reader holding only names has no way to recover which is which. Naming them by their
-# reference (`project-rules-check`, `intent-and-scope-check`, `code-and-security-review`,
-# `skill-authoring-rules`) is as far as naming reaches; the titles carry the rest.
+# THE THREE DIFF-REVIEW AREAS WERE MERGED, WHICH DISSOLVED A NAMING PROBLEM RATHER THAN
+# SOLVING IT. Three independent cold reads each tried to sort them by name; the best score
+# was two of four, and every read reached the same diagnosis — they differ by WHAT THEY
+# CHECK AGAINST and a reader holding only names cannot recover which is which.
 #
-# The residue is a PRODUCT boundary, not a naming one: a skill set with four review passes a
-# user cannot tell apart has drawn that boundary faintly, and no rename repairs it. Recorded
-# here so the next person edits the product or accepts the cost, rather than trying a fourth
-# round of words. TASK-103 holds the evidence.
+# TASK-103 recorded that as a product boundary naming could not fix, and kept the split with
+# the titles carrying the load. TASK-104 then acted on the boundary instead: usage shows the
+# three are invoked together, by one caller, on one diff, every time — so they are one
+# capability and the map now says so. The skill lint stays separate: different trigger
+# (CI over the whole repo), different scope, different audience.
+#
+# What survives from that finding is the rule, not the workaround: name each thing by the
+# OBJECT it acts on, and where several areas share a verb, by what each checks AGAINST.
 
 areas:
   - name: work-tracking
@@ -92,31 +103,29 @@ areas:
     sources:
       - "skills/fix-next/**"
 
-  - name: project-rules-check
-    # "Whose rules" was the missing word: a reader's first guess was the library's own house
-    # rules rather than the consuming project's, which is the opposite audience.
-    title: Checking a change against the rules this project itself wrote down
+  - name: change-review
+    # ONE area, not three, because that is how they are used: `tasks/verbs/close.md` step 5b fires
+    # verify-conventions, verify-intent and code-review together on the same diff, every time, with
+    # security-review as a conditional fourth axis — and `feature/verbs/review.md` Gate A does the same.
+    # Nine closes on 2026-09-01 ran them as a single gate and not once was one invoked alone.
+    #
+    # The product already framed it this way: AGENTS.md's "independent review axes are reported side by
+    # side and never merged or reranked" describes one gate with several axes. That rule governs VERDICTS,
+    # so this area's spec must document the axes as separate sections and must never flatten them into a
+    # single judgement — a convention warning above an unbuilt requirement reads as the larger problem.
+    #
+    # Axes, by what each checks against: this project's own written rules; the task's acceptance criteria
+    # (including scope — "nothing extra"); correctness; and security, when the diff touches a security
+    # surface. The last two exist as skills-pi/ fallbacks because Claude Code ships them natively, so
+    # installing copies would shadow the natives (ADR 0010) — the axis is the same in both runtimes, the
+    # provider differs.
+    #
+    # STANDALONE USE, recorded so this merge does not conceal it: the rules axis is invocable on its own,
+    # any time, before a commit — its own skill says so. The others are gate-only in practice.
+    title: The gate on a change — your own rules, the task's criteria, correctness, and security
     sources:
       - "skills/verify-conventions/**"
-
-  - name: intent-and-scope-check
-    # Third rename of this area, and the first proposed by the reader who misread the second.
-    # `intent-verification` was opaque; `acceptance-check` was worse — confidently misread as
-    # acceptance/UAT testing, because "acceptance" carries a test-execution smell and says
-    # nothing about scope. The scope half ("nothing extra") is the more distinctive thing this
-    # area does and both earlier names hid it. This name carries both halves.
-    title: Checking a change against the task's acceptance criteria — built, and nothing extra
-    sources:
       - "skills/verify-intent/**"
-
-  - name: code-and-security-review
-    title: Reviewing a change for correctness bugs, and for security when it touches one
-    # Kept separate from rulebook-check and acceptance-check, deliberately: these three are
-    # frozen fallbacks that exist in ONE runtime only — Claude Code ships them natively, so
-    # installing copies would shadow the natives (ADR 0010). A consumer's answer to "what
-    # reviews my code" therefore differs by runtime, which is a capability boundary, not a
-    # packaging detail. Folding them in would make one spec describe two runtimes at once.
-    sources:
       - "skills-pi/**"
 
   - name: test-authoring

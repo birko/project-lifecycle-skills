@@ -3,7 +3,7 @@ id: TASK-103
 parent: STORY-008
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P3
 assignee: agent
 created: 2026-09-01
@@ -85,8 +85,8 @@ the one item here that is genuinely a naming defect rather than a product one.
 
 ## Human test plan
 
-- [ ] A third cold reader, given only names and titles, sorts the four review areas correctly by what each checks
-- [ ] The same reader does not guess `intent-verification`'s meaning wrong
+- [x] ~~A third cold reader, given only names and titles, sorts the four review areas correctly by what each checks~~ — **N/A as of TASK-104: there are no longer four review areas.** It was *run* and *failed* (2 of 4) before the merge, which is what produced the evidence the merge rests on. Recording it as N/A rather than failed, because the subject was removed rather than the test passed.
+- [x] ~~The same reader does not guess `intent-verification`'s meaning wrong~~ — **N/A, same reason.** It failed twice (opaque as `intent-verification`, then misread as UAT when renamed `acceptance-check`), and the second failure is precisely what made the merge look right rather than merely convenient.
 
 ## Implementation plan
 
@@ -107,3 +107,6 @@ _Populated by `/tasks plan TASK-103` — leave empty until then._
 - **`project-baseline` left alone: readers two and three contradict each other.** Two objected that *"scaffolding means source and framework wiring everywhere else"*; three wants `project-scaffolding` back and calls `baseline` a word needing a noun. Both dislike both candidates. Rule 5 applies exactly as written — no change on one reader's preference against another's.
 - **criterion 2 met by the escape it was written with, not by a fourth rename.** It permitted *"a stated decision that they are not [distinguishable] and why the titles carry it instead"*, and three reads now justify that decision rather than merely suspecting it: best score two of four, and every read reached the same diagnosis independently. The decision is recorded **in the map itself**, not only here, so the next person meets it before trying more words.
 - **closed at `review`, both human-test-plan items unticked.** Item 1 asked a third reader to sort the four checking areas correctly — it scored 2 of 4. Item 2 asked that the renamed area not be misread — it was. The renames are real improvements and the coverage is re-verified at 63/63, but the two things this plan set out to demonstrate did not happen, and ticking them would be the caveat-beside-a-tick this repo refuses. **Refusing a fourth round is the deliberate call:** three reads, a 2-of-4 ceiling, and two readers contradicting each other on two separate names is where more rounds fit taste instead of finding defects.
+- **closed `done` on 2026-09-02, after TASK-104 superseded the half that was blocking it.** This task's naming findings all stand: five renames, the `roadmap` tiebreak, and `project-baseline` left alone on a genuine reader deadlock. What it could *not* do was make four checking areas sortable by name — three reads, a 2-of-4 ceiling — and it recorded that as a product boundary rather than forcing more words. The user then made the product call and TASK-104 merged them, which removed the subject of both test-plan items.
+- **The recorded decision in `docs/specs/.map.yml` was rewritten by TASK-104**, so this task's conclusion no longer contradicts the file it was written into: the rule it established survives (name the object; where several areas share a verb, name each by what it checks against), the workaround it settled for does not.
+- Worth keeping in view for whoever reads this next: **the failure was the useful part.** Had the third read passed, the three areas would still be three, and the map would still be disagreeing with `AGENTS.md`'s own framing of the gate as one thing with several axes.

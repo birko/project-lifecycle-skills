@@ -11,9 +11,9 @@ _Generated 2026-09-01. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 6       | —     |
 | todo         | —     | —       | 29    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 2     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 72    |
+| done         | 0     | 5       | 74    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 25× P2 · 4× P3.
@@ -25,7 +25,6 @@ _None_
 ## In review (awaiting sign-off)
 
 - [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) — `/specs init` — build the area map, and turn the spec layer on (P1, agent)
-- [TASK-103](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-103.md) — Four capability areas are named for the product's shape rather than a consumer's need (P3, agent)
 
 ## Tree
 
@@ -48,9 +47,10 @@ _None_
     - [ ] [TASK-076](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-076.md) `improve-architecture` — the skill, its scoping pass, and the candidate filter
     - [ ] [TASK-077](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-077.md) The report surface — an Artifact, a fallback, and what each candidate must carry
     - [ ] [TASK-078](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-078.md) Findings end at `/tasks intake`, and the skill is actually installed
-  - STORY-008 Harvest the skill set's own specs — in-progress (0/3)
+  - STORY-008 Harvest the skill set's own specs — in-progress (2/5)
     - [ ] [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) `/specs init` — build the area map, and turn the spec layer on 🔍 review
-    - [ ] [TASK-103](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-103.md) Four capability areas are named for the product's shape rather than a consumer's need 🔍 review
+    - [x] TASK-103 Four capability areas are named for the product's shape rather than a consumer's need
+    - [x] TASK-104 Merge the three diff-review areas into one, because that is how they are used
     - [ ] [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) `/specs regen` — generate the specs, and review the diff as the deliverable ⚠ waits on STORY-004/006/007
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
