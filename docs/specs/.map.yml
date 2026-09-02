@@ -22,6 +22,22 @@
 # skills stapled together, and it was split. Titles were rewritten too: they leaned on
 # definite articles for terms the reader had not met ("THE universal project layer"), which
 # is the clearest symptom of naming from the inside out.
+#
+# SECOND PASS 2026-09-02 (TASK-103), after a second cold read of the revised list. The rule
+# both reads support: a clean name names the OBJECT you act on, an opaque one names the
+# PROPERTY you check — specs, tests, a changelog and a session read clean, while
+# conformance, verification and reporting did not. So `convention-conformance` →
+# `rulebook-check`, `intent-verification` → `acceptance-check` (a reader had guessed it
+# meant *inferring what code intends to do*, which is worse than opacity),
+# `project-scaffolding` → `project-baseline` (everywhere else "scaffolding" promises source
+# code, and this ships docs), `skill-contract-lint` → `skill-authoring-rules`, and
+# `vocabulary-and-decision-records` → `glossary-and-adrs`. Where several areas share a verb,
+# each is now named by what it checks AGAINST — the rulebook, the acceptance criteria,
+# correctness, the skill schema — because that is a reader's only discriminator.
+#
+# `roadmap` was KEPT against the second reader's objection: the first proposed that exact
+# word, and a name changed on one reader's taste where another disagreed is not an
+# improvement. Its title was the real fault and was rewritten.
 
 # The scan set — tracked files left after `ignore` — was 63 of the 221 below. That number
 # is deliberately NOT a key: the contract defines three coverage keys and no more, and a
@@ -36,18 +52,31 @@ coverage-drift:
   - ".github/workflows/skills-lint.sh"
   - ".github/workflows/skills-lint-test.sh"
 
+# THE FOUR CHECKING AREAS CANNOT BE SORTED BY NAME, AND THAT IS RECORDED RATHER THAN FIXED.
+# Three independent cold reads each tried; the best score was two of four. Every read reached
+# the same diagnosis, in its own words: the four differ by WHAT THEY CHECK AGAINST — this
+# project's own written rules, the task's acceptance criteria, correctness, the skill schema —
+# and a reader holding only names has no way to recover which is which. Naming them by their
+# reference (`project-rules-check`, `intent-and-scope-check`, `code-and-security-review`,
+# `skill-authoring-rules`) is as far as naming reaches; the titles carry the rest.
+#
+# The residue is a PRODUCT boundary, not a naming one: a skill set with four review passes a
+# user cannot tell apart has drawn that boundary faintly, and no rename repairs it. Recorded
+# here so the next person edits the product or accepts the cost, rather than trying a fourth
+# round of words. TASK-103 holds the evidence.
+
 areas:
   - name: work-tracking
-    title: Tracking developer work as epics, stories and tasks, with a gate before done
+    title: The developer-facing backlog — epics, stories and tasks, with a gate before done
     sources:
       - "skills/tasks/**"
 
   - name: feature-lifecycle
-    title: Taking a stakeholder-facing idea to shipped, recording every decision on the way
+    title: The stakeholder-facing half — an idea to shipped, with every decision recorded
     sources:
       - "skills/feature/**"
 
-  - name: project-scaffolding
+  - name: project-baseline
     title: Giving any repo the same baseline of docs and tracking, new or existing
     sources:
       - "skills/new-project/**"
@@ -63,19 +92,26 @@ areas:
     sources:
       - "skills/fix-next/**"
 
-  - name: convention-conformance
+  - name: project-rules-check
+    # "Whose rules" was the missing word: a reader's first guess was the library's own house
+    # rules rather than the consuming project's, which is the opposite audience.
     title: Checking a change against the rules this project itself wrote down
     sources:
       - "skills/verify-conventions/**"
 
-  - name: intent-verification
-    title: Checking a change actually built what the task asked for, and nothing more
+  - name: intent-and-scope-check
+    # Third rename of this area, and the first proposed by the reader who misread the second.
+    # `intent-verification` was opaque; `acceptance-check` was worse — confidently misread as
+    # acceptance/UAT testing, because "acceptance" carries a test-execution smell and says
+    # nothing about scope. The scope half ("nothing extra") is the more distinctive thing this
+    # area does and both earlier names hid it. This name carries both halves.
+    title: Checking a change against the task's acceptance criteria — built, and nothing extra
     sources:
       - "skills/verify-intent/**"
 
   - name: code-and-security-review
     title: Reviewing a change for correctness bugs, and for security when it touches one
-    # Kept separate from convention-conformance and intent-verification, deliberately: these three are
+    # Kept separate from rulebook-check and acceptance-check, deliberately: these three are
     # frozen fallbacks that exist in ONE runtime only — Claude Code ships them natively, so
     # installing copies would shadow the natives (ADR 0010). A consumer's answer to "what
     # reviews my code" therefore differs by runtime, which is a capability boundary, not a
@@ -89,7 +125,7 @@ areas:
       - "skills/tdd/**"
       - "skills/populate-tests/**"
 
-  - name: vocabulary-and-decision-records
+  - name: glossary-and-adrs
     # The "and" reflects the skill's own scope, not a filing decision: one skill owns both
     # halves, so no split is available to this map. Both cold reads called the pairing a
     # grouping, and both were right about the product rather than about this file.
@@ -97,8 +133,12 @@ areas:
     sources:
       - "skills/domain/**"
 
-  - name: roadmap
-    title: One view across planned features and tracked work, flagging where the two disagree
+  - name: project-roadmap
+    # Kept the word, added the possessive, after the tiebreak flipped. One reader proposed `roadmap`;
+    # two then objected on DIFFERENT grounds — "promises a timeline, delivers a drift report", and
+    # "a library's roadmap is its own future… nothing says it operates on MY repo's data". The second
+    # objection is the one a prospective installer hits first, and one word answers it.
+    title: One place to see every feature and every task in your project, and where the two have drifted
     sources:
       - "skills/roadmap/**"
 
@@ -108,7 +148,9 @@ areas:
       - "skills/roll-changelog/**"
 
   - name: idea-interrogation
-    title: Interrogating a plan until every unresolved branch has been decided
+    # Both cold reads took this for the opening phase of feature-lifecycle. It is usable on any plan,
+    # standing alone, and the title now says so rather than leaving the reader to assume containment.
+    title: Interrogating any plan — feature or not — until every unresolved branch is decided
     sources:
       - "skills/grill-me/**"
 
@@ -118,14 +160,19 @@ areas:
       - "skills/handoff/**"
 
   - name: installation
-    title: Installing the skills into an agent runtime (Claude Code, or pi)
+    # Not a capability, and the map says so rather than pretending: a reader called it "a README section",
+    # correctly. It is here because the four install scripts ARE behaviour — link rather than copy, one
+    # junction per folder, re-run required when a skill folder is added — and a map must cover behaviour.
+    # Not every behaviour is a capability. `pi` is an in-house agent runtime; a reader who does not know
+    # it should not have to guess, so the title names both targets plainly.
+    title: Installing the skills into an agent runtime — Claude Code, or the in-house pi runtime
     sources:
       - "install.sh"
       - "install.ps1"
       - "pi-install.sh"
       - "pi-install.ps1"
 
-  - name: skill-contract-lint
+  - name: skill-authoring-rules
     # Consumer-facing because a consuming repo may ship its own project-local skill that
     # shadows one of these — the contract is what such a skill must satisfy. Two cold reads
     # both took the name as maintainer-only, so the title now says the audience outright.

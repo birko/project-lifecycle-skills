@@ -9,14 +9,14 @@ _Generated 2026-09-01. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 6       | —     |
-| todo         | —     | —       | 30    |
+| todo         | —     | —       | 29    |
 | in-progress  | 2     | 5       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 72    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 25× P2 · 5× P3.
+`todo` by priority: 25× P2 · 4× P3.
 
 ## In progress now
 
@@ -25,6 +25,7 @@ _None_
 ## In review (awaiting sign-off)
 
 - [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) — `/specs init` — build the area map, and turn the spec layer on (P1, agent)
+- [TASK-103](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-103.md) — Four capability areas are named for the product's shape rather than a consumer's need (P3, agent)
 
 ## Tree
 
@@ -49,7 +50,7 @@ _None_
     - [ ] [TASK-078](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-078.md) Findings end at `/tasks intake`, and the skill is actually installed
   - STORY-008 Harvest the skill set's own specs — in-progress (0/3)
     - [ ] [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) `/specs init` — build the area map, and turn the spec layer on 🔍 review
-    - [ ] [TASK-103](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-103.md) Four capability areas are named for the product's shape rather than a consumer's need (P3)
+    - [ ] [TASK-103](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-103.md) Four capability areas are named for the product's shape rather than a consumer's need 🔍 review
     - [ ] [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) `/specs regen` — generate the specs, and review the diff as the deliverable ⚠ waits on STORY-004/006/007
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
