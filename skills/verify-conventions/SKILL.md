@@ -1,6 +1,6 @@
 ---
 name: verify-conventions
-description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions in a seeded project, but equally `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Never tells a project with a working rulebook that it has recorded nothing, and never tells a project without one that there is nothing to check — a code-smell baseline applies as a floor, always labelled as judgement calls and always suppressed by a documented rule that conflicts with it. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local variant that shadows this one inside that repo with concrete, stack-specific checks.
+description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions in a seeded project, but equally `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic — it reads the rules each project actually wrote down, so it works on any stack. Never tells a project with a working rulebook that it has recorded nothing, and never tells a project without one that there is nothing to check — a code-smell baseline applies as a floor, always labelled as judgement calls and always suppressed by a documented rule that conflicts with it. Also flags when a change INTRODUCES a new cross-cutting pattern that isn't yet recorded in CLAUDE.md (the "register-on-introduce" rule), so the rule list stays complete. Distinct from [[code-review]] (which judges correctness/bugs); this only checks adherence to the project's documented conventions. A repo may ship a project-local `verify-<project>-conventions` variant with concrete, stack-specific checks; step 0 discovers it by path and runs it, and says on the report header whether it ran. It cannot shadow this skill -- a colliding skill name resolves user-level first.
 ---
 
 # verify-conventions
@@ -9,9 +9,10 @@ A tech-agnostic adherence lint: does the current diff follow the conventions **t
 
 > **Adherence, not correctness.** [[code-review]] finds bugs and reasons about whether the code is *right*. This skill only asks *"does it match our documented conventions?"* — framework choices, UI/UX rules, structure, naming, testing. Run both at a review gate; they answer different questions.
 
-> **Scope layering.** A repo may ship a project-local variant with concrete checks (compiler-warning policy, path conventions, solution/workspace registration…). Two rules make that safe, and both are easy to get wrong:
-> - **Name it `verify-conventions`, exactly.** Shadowing works by folder name. A skill called `verify-<project>-conventions` shadows *nothing* — every `[[verify-conventions]]` call site (`/tasks close` step 5b, [[fix-next]]) keeps resolving to this generic skill, and the project's own checks never run at the gate even though the repo believes they do.
-> - **It must EXTEND this skill, not replace it.** Once it shadows, this file no longer runs, so the local variant owns everything below — in particular the live § Conventions sweep (step 3), **register-on-introduce** (step 4) and the **architecture-drift check** (step 5). A local skill that is only a list of concrete greps silently drops the rulebook-currency loop, and the rule list stops growing with the project. Have it run this generic pass first, then add its own checks.
+> **Scope layering.** A repo may ship a project-local variant with concrete checks (compiler-warning policy, path conventions, solution/workspace registration…). Three rules make that safe, and the first one used to be stated backwards here:
+> - ⚠ **It cannot shadow this skill by name — do not try.** Measured 2026-09-07 on Claude Code, from the skill loader's own banner: a name present at **both** user level (`~/.claude/skills/`) and project level (`<repo>/.claude/skills/`) resolves **user-level first**, so a project-local `verify-conventions` loses to the user-level one and never runs. Project-local skills *are* discoverable — a name with no user-level entry resolves to the repo — so the failure is **precedence, not discovery**. This file previously asserted the opposite (*"Shadowing works by folder name"*), and two consecutive fixes in one repo were built on that belief; both silently did nothing, and the gate reported clean passes throughout.
+> - **Give it a distinct name — `verify-<project>-conventions` — and let THIS skill find it.** Step 0 of § What to lint globs for it, runs the generic pass, hands off, and **names it on the report header**; if it exists and did not run, that is a 🛑. Reachability then does not depend on resolution order at all, and the local skill stays directly invokable by its own name as a second door.
+> - **It must EXTEND this skill, not replace it.** The local variant owns the stack-specific checks; this file keeps the live § Conventions sweep (step 3), **register-on-introduce** (step 4) and the **architecture-drift check** (step 5). A local skill that is only a list of concrete greps drops the rulebook-currency loop and the rule list stops growing with the project. Under the discovery hand-off the generic pass has *already* run when the local skill is reached — so tell it so, and have it skip re-running this pass rather than duplicating every finding.
 >
 > This generic skill is what runs in every other project, driven by whatever that project recorded in its own `CLAUDE.md`.
 
@@ -80,6 +81,28 @@ its own headings has solved this; the skill adapts to the project, not the rever
 
 ## What to lint
 
+0. **Discover the project-local extension — and never report a pass without saying whether one ran.**
+   A repo may ship concrete, stack-specific checks as a project-local skill. It **cannot** shadow this
+   file (§ Scope layering), so finding it is this skill's job:
+
+   - **Glob** the project for `.claude/skills/verify-*conventions*/SKILL.md`, excluding this file's own
+     directory. Also honour any path the project's guide names explicitly.
+   - **None found** → carry on, and put `project extension: none found` on the report header.
+   - **One or more found** → run steps 1–5 below, then read each one and **execute its checks**, and
+     name each on the header, e.g.
+     `project extension: .claude/skills/verify-birko-conventions/SKILL.md (ran)`. Tell it the generic
+     pass has already happened so it does not repeat it — otherwise every generic finding is reported
+     twice and the two skills can bounce off each other.
+   - **Found but not run** — you could not read it, it errored, or you chose not to — is a
+     🛑 **blocker**, never a clean pass:
+     `🛑 project extension found but NOT run — <path>. The stack-specific checks did not happen.`
+
+   **Why this is step 0 and not a footnote.** A gate whose output looks identical whether or not the
+   project's own checks ran is the invisible-gate defect, and it is measured rather than hypothetical: in
+   one repo the local variant went unrun at *every* close through two rounds of attempted fixes, because
+   both fixes assumed name-shadowing works. The report header is the only place a human can see the
+   difference, which is why the extension's status is required there even when everything passes.
+
 1. **Determine the diff.** Prefer staged (`git diff --cached`); fall back to the working tree (`git diff`) or, if asked, a branch range. If not git-tracked, ask the user which files to check.
 2. **Read the project's `CLAUDE.md`**, locate the rulebook via the ladder above, and extract its rules into a working checklist. Where the guide uses the seed's subsections, follow them; where it does not, group the rules however that guide groups them — do not force a foreign structure onto it, and do not drop a rule because it fits no subsection.
 2b. **Drop generated, vendored and minified files from the diff — a rule the author never wrote cannot
@@ -134,7 +157,12 @@ headings you treated as normative *in the guide's own language*, and which rung 
 Rulebook: AGENTS.md § Conventions (via the CLAUDE.md @import bridge) — ladder rung 1, the seed shape.
           Subsections read: Framework/stack, Output/prose rules, Code structure & patterns, Naming,
           Testing, Keeping conventions current, Working rules. Also § Architecture.
+Project extension: none found.
 ```
+
+**The extension's status belongs on that header on every run, pass or fail** (step 0). A report that
+does not say whether the project's own checks ran is the one shape this skill must never produce: the
+generic sweep looks the same either way, so its silence reads as a full pass.
 
 Three reasons it leads rather than trails, and the third is the one that bites:
 
@@ -182,6 +210,7 @@ If clean, the source line still leads — the verdict alone is the defect:
 
 ```
 Rulebook: AGENTS.md § Conventions — ladder rung 1. Subsections read: Framework/stack, Naming, Testing.
+Project extension: .claude/skills/verify-birko-conventions/SKILL.md (ran; 10 concrete checks).
 Linted 4 of 7 changed files; 3 excluded as generated (app.js, app.js.map — minified shape; sw.js —
 declared linguist-generated).
 ✅ Change follows the project's documented conventions.
@@ -219,7 +248,7 @@ shape is broken, because it meets repos it did not create.
 ## Related skills
 
 - [[code-review]] — the correctness half of a review gate; run both together. (Runtime-provided, e.g. a Claude Code built-in; the [[tasks]]/[[feature]] gate verbs carry inline fallbacks for runtimes without it.)
-- Project-local `verify-<project>-conventions` variants — shadow this skill inside their own repo with concrete checks (same scope layering as above).
+- Project-local `verify-<project>-conventions` variants — **discovered and run by step 0** inside their own repo, carrying concrete stack-specific checks. They do not shadow this skill; a colliding name would simply lose to the user-level copy (same scope layering as above).
 - [[new-project]] — seeds the structured `CLAUDE.md § Conventions` block this skill reads.
 - [[tasks]] / [[feature]] — invoke this at `close` / `review`; they also carry the "register a new pattern in CLAUDE.md as part of done" rule this skill enforces.
 - [[roll-changelog]] — the other generic "keep the project honest" maintainer (changelog currency); this one keeps convention currency.
