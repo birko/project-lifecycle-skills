@@ -7,7 +7,7 @@ status: review
 priority: P1
 assignee: agent
 created: 2026-08-26
-depends-on: []
+depends-on: [TASK-106]
 blocks: [TASK-080]
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: []
@@ -74,10 +74,16 @@ one-area-per-skill map would be the wrong shape and the wrong count.
 - **Generating the specs** — **TASK-080**, which depends on this and holds the epic's ordering constraint.
 - Fixing DV10's blindness to a prose codebase — **TASK-025**. This task makes the finding moot for *this* repo; the check stays broken for the next one.
 - `ignore:` glob tuning beyond what the areas need. The seed's globs are already repo-appropriate.
+- **The area-name collisions the third read found** — **TASK-105**. `change-review` vs `work-tracking`,
+  `feature-lifecycle` vs `glossary-and-adrs`, `defect-draining` vs `work-tracking`. Two of those three
+  pairs did not exist when this task's map was written; the `change-review` one was created by
+  TASK-104's merge.
+- **Making a cold reader available at all** — **TASK-106**, which this task now `depends-on`. Until it
+  lands, human test plan item 1 cannot be run, only approximated.
 
 ## Human test plan
 
-- [ ] Read the area list cold and confirm each name is a capability a *consumer* would recognise, not an internal file grouping — **unticked deliberately: two cold reads, the second still objecting to four names. The file-layout half of this item passes (no name refers to the repo's directories any more); the capability half does not, and the residue is filed as TASK-103. Not ticked with a caveat beside it, because a caveat disappears and an unticked box does not.**
+- [ ] Read the area list cold and confirm each name is a capability a *consumer* would recognise, not an internal file grouping — **unticked deliberately: two cold reads, the second still objecting to four names. The file-layout half of this item passes (no name refers to the repo's directories any more); the capability half does not, and the residue is filed as TASK-103. Not ticked with a caveat beside it, because a caveat disappears and an unticked box does not.** **Third read 2026-09-08: the runner was not cold (TASK-106), so the pass direction is unusable; its conclusive negatives are filed as TASK-105.**
 - [x] Run `/roadmap --check` and confirm the spec section now reports real state instead of silently skipping
 - [x] Confirm `git diff docs/specs/` contains **only** `.map.yml` — no generated bodies leaked in
 
@@ -102,3 +108,43 @@ _Populated by `/tasks plan TASK-079` — leave empty until then._
 - **stopped iterating rather than chasing a third reader.** Two independent readers disagreeing on one name is the point at which further rounds fit individual taste, and a check that reports differently every run is worth what an unrun one is — this repo's own argument about degenerate ranking keys. Applied only what both agreed on: the `skill-contract-lint` title now names its audience outright, and `vocabulary-and-decision-records` records that its "and" is the **skill's** scope, not a filing choice, so the map has no split available.
 - **the residue is a product finding wearing a naming complaint, and is filed as TASK-103.** Both reads independently produced the same structural objection: four areas that all read as *"something checks my change"* and cannot be sorted from names alone, three overlapping places work can live, and `idea-interrogation` reading as a phase of `feature-lifecycle` rather than a peer. Renaming areas cannot fix a boundary the product does not draw.
 - **closed at `review`, not `done`.** Human test plan item 1 failed twice and is unticked; items 2 and 3 pass. All seven acceptance criteria are met and the map itself is verified — 63 of 63 mapped, no overlaps, contract keys correct — but ticking a cold-read item after two failing cold reads would be exactly the caveat-beside-a-tick this session has been refusing all day.
+- **third cold read attempted 2026-09-08, and the instrument turned out to be broken.** The runner was
+  given the 14 names and titles alone — no repo, no files, no tools, and it used none — but its report
+  named ten skills whose names appear nowhere in the brief (`grill-me`, `handoff`, `populate-tests`,
+  `fix-next`, `new-project`, `adopt-project`, `roll-changelog`, `domain`, `tdd`, `write-a-skill`). A
+  subagent spawned in this repo inherits `AGENTS.md`, whose § *Naming* lists exactly those. **It could
+  not have been cold, and neither can any subagent runner here.** Filed as TASK-106; `populate-tests`
+  § *The cold drill* claims the opposite in as many words.
+- **item 1 stays unticked, now for a better-understood reason.** The method's own rule is that a
+  discounted or weak-evidence result stays unticked rather than ticked with a caveat, and a
+  contaminated runner is the definition of weak evidence in the pass direction. What the run *did*
+  produce is a conclusive **negative** — a reader who knew the product still could not choose between
+  `change-review` and `work-tracking` (*"the same sentence twice"*) — and that survives contamination
+  by the asymmetry the method names. Filed as TASK-105.
+- **what is NOT known, recorded rather than smoothed over:** this log's two earlier readers are
+  described above as *"given only the names and titles — no repo, no files"*, and nothing here records
+  **how they were obtained**. If they were subagents they were contaminated identically, and those two
+  entries claim more than the evidence supports. TASK-106 owns correcting that; it is not being
+  rewritten here, because an append is the honest shape and a rewrite would hide that the question was
+  ever open.
+- **the channel is now identified, and it was not the one this log blamed. (TASK-106, 2026-09-08.)** Two
+  contamination channels exist, not one: the project guide, **and** the user-level installed skill roster.
+  Measured — a print-mode session started in `WebChecker`, a repo with no agent guide at all, still listed
+  the full roster with descriptions; only disabling installed skills emptied it. So **no acquisition method
+  in use before 2026-09-08 excludes contamination**: subagent or fresh session, in this repo or any other,
+  the roster was loaded unless a flag nobody knew mattered was passed.
+- **what is not known, and now permanently:** whether readers one and two were subagents. Nothing recorded
+  it and nothing can reconstruct it. The entries above describe the **brief** they were given — *"given only
+  the names and titles — no repo, no files"* — which is silent about the channel that decides. That is
+  precisely the failure the new rule in `AGENTS.md` § Testing exists to prevent, and this log is the
+  measured instance it cites.
+- **what follows, stated conservatively.** Their pass-direction verdicts are weak evidence. Their
+  *objections* survive by the asymmetry the method names — a reader holding the answer who still could not
+  follow the prose has demonstrated something about the prose. **The renames applied on their strength are
+  not being unwound**, and the reason is not that the reads were sound: the map was verified mechanically
+  (63 of 63 mapped, no overlaps, contract keys correct) and the names have since been reviewed on their own
+  terms in TASK-103 and TASK-104. Say that, rather than implying the renames were cold-read-backed.
+- **what is now possible:** a cold runner is obtainable by the recipe recorded in `populate-tests`
+  § *Acquiring a cold runner*, so human test plan item 1 becomes runnable for the first time. That happens
+  under this task, not under TASK-106 — TASK-106 scopes it out explicitly, and harvesting its verification
+  run for item 1 would be the same author's-own-pass the drill method rejects.

@@ -97,8 +97,10 @@ instructions an agent reads — has a fourth case, and neither automation nor ey
 failure mode there is not a crash: it is a sentence that carries its meaning only for someone who already
 knows the intent. **The author cannot test for that, because they cannot un-know the intent.**
 
-So the instrument is a **cold drill**: hand the changed instructions to a reader who has not seen the
-change, have them *execute* the instructions against a real target, and report where the prose led them.
+So the instrument is a **cold drill**: hand the changed instructions to a reader who is cold in **both**
+senses — has not seen the change, **and** whose context does not already carry the subject — have them
+*execute* the instructions against a real target, and report where the prose led them. The two conditions
+are independent, and the brief controls only the first (§ *Acquiring a cold runner*).
 
 **The mechanism is withholding the answer, and it is the whole mechanism.** A `## Human test plan` says
 *"confirm the survey reports `not applicable`"* — handed to a runner verbatim, that converts the test into a
@@ -145,10 +147,85 @@ them, each of which the runner had to invent before it could write a usable brie
    states outcomes and the brief must not, so nobody but the author can tick the boxes. That is also where a
    discounted or weak-evidence result must stay unticked rather than ticked with a caveat beside it — a
    caveat disappears, an unticked box does not.
-5. **A fresh agent with no prior context is runner enough.** Tell it that it is running a drill; withhold
-   only the change. Concealing the exercise buys nothing, concealing the change is the entire mechanism.
+5. **Tell it that it is running a drill; withhold only the change.** Concealing the exercise buys nothing,
+   concealing the change is the entire mechanism. **What that does not buy you is a cold runner:** an agent
+   with no prior *conversation* is not an agent with no *context*, and it loads whatever the runtime gives
+   every session before it reads a word of your brief. No brief can fix that, which is why acquiring the
+   runner is a separate step with its own rules — § *Acquiring a cold runner*.
+
+### Acquiring a cold runner — the channel the brief cannot reach
+
+Coldness has two channels, and everything above closes only one of them.
+
+| Channel | Arrives through | Closed by | Confirmed by |
+|---|---|---|---|
+| the **instructions** | the brief, and a target the rule has already adjudicated | § *Choosing a target*, below | naming which question is contaminated, and discounting that part |
+| the runner's **ambient context** | whatever the runtime loads into every session — the project guide, user-level installed instructions | acquiring the runner outside both | the self-report and the scan, below |
+
+The second channel is **independent of how carefully the brief is written, and it is always open.** That is
+why the per-question rule below does not reach it, and why no brief can make a contaminated runner cold.
+
+**Acquire the runner outside both loaders — either half alone is insufficient.** Measured, not reasoned:
+
+| Runner | Held the subject's vocabulary? |
+|---|---|
+| a subagent spawned in the repo under drill | yes — the project guide names it |
+| a session started in an unrelated repo with no agent guide at all | **yes** — user-level installed instructions travel with the machine, not the directory |
+| the same session with those instructions disabled | no |
+
+**The middle row is the whole point.** *"Run it on another project"* is the remedy every reader reaches for,
+and it closes one channel of two. A consumer repo is the right fixture for drilling **behaviour**, and no
+help at all for drilling **prose about the product itself**. The test a reader can run: grep the candidate
+repo's agent guide for the terms the drill is about — a repo that adopted the product names at least one of
+them, so the clean rooms are the repos that never adopted it.
+
+*Measured 2026-09-08 on `WebChecker`, a repo with no agent guide: a print-mode session started there still
+listed the full installed skill roster with descriptions, and only `--disable-slash-commands` emptied it. In
+print mode the runner's own attempt to read the install root was refused by the permission prompt, so the
+roster is not recoverable through tools either — without that, a reader assumes the flag is cosmetic.*
+
+**Why the working directory cannot help:** the installer links skill folders into a **user-level** root, so
+every session on the machine receives them wherever it starts. That is correct behaviour serving another
+purpose, not a defect to route around — and the consequence deserves saying plainly: **installing a prose
+product is what makes every agent on that machine a contaminated reader of it.**
+
+**Confirm coldness; do not assume it.** Two signals, both arriving in-band and therefore free:
+
+- **The self-report.** Open every brief by asking the runner to list what instruction files and skills it
+  currently has loaded. It leaks nothing about the change, and the answer arrives with the report. It is
+  specified here rather than as a sixth ask above because it is a question about the **runner**, not about
+  the subject.
+- **The scan.** The report must name **no term from the subject's own vocabulary that the brief did not
+  supply**. One is enough. Scope it that way deliberately: *"no proper noun absent from the brief"*
+  over-triggers, because a genuinely cold reader writes `README`, `YAML` and `CI` unprompted — and a check
+  that fires on clean reports gets muted, which costs more than it saves. The price of the narrower form is
+  one judgement call about what counts as the subject's vocabulary; pay it knowingly.
+- **A separate pre-flight probe** — asking a candidate what it holds *before* spending a drill — is
+  warranted only when the acquisition route has not been verified on this machine, or when the runtime or
+  its flags have changed. Not per drill: a contaminated run still yields a conclusive negative, so spending
+  one is a partial loss rather than a total one, and a required step that feels redundant is the kind that
+  gets skipped.
+
+**The means will date; the check will not.** A flag that disables installed instructions is one runtime's
+mechanism on one day. The rule is *acquire outside both loaders*; treat any specific flag as a dated
+instance. If a future runtime loads them anyway, the self-report still catches it, and the run degrades into
+a known-contaminated one rather than a silently wrong one.
+
+A runner that fails either signal still produces a usable **negative**: if it could not follow the prose
+*while holding the answer*, the prose is the problem. Only the pass direction is lost.
+
+**Record how the runner was obtained**, wherever the drill is recorded — the command, the working directory,
+and the result of the coldness check. *"Was this reader cold?"* has to be answerable afterwards instead of
+assumed — the same reason `AGENTS.md` § *An owner verb reconciles; it does not assume* gives for every
+other artifact whose currency cannot be read off its existence.
+Measured failure: a record reading *"given only the names and titles — no repo, no files"* describes the
+**brief** and is silent about the channel that actually decides, so its readers can no longer be classified
+at all — not by the author, not by anyone.
 
 ### Choosing a target, which is harder than it looks
+
+**This section closes channel one — the instructions.** The runner's ambient context is
+channel two, and it is closed above, not here.
 
 **A rule that cites a named file in a named repo cannot be drilled on that repo** — the instructions have
 already adjudicated the case, so the runner's judgement is not independent. Measured repeatedly: a change
