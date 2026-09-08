@@ -8,7 +8,7 @@ affects: skills/, .github/
 # kind: omit for a normal epic; `review-intake` marks the epic a review pass was filed into
 kind: review-intake
 # source: review-intake epics only — where the findings came from (report path, PR, or "security-review <date>")
-source: close-gate passes at /tasks close, 2026-08-18 → 2026-08-20 — /verify-conventions, /code-review, and the step 5d out-of-scope sweep. Filed as loose tasks at the time; adopted into this epic by TASK-040.
+source: close-gate passes at /tasks close, 2026-08-18 → 2026-08-20 — /verify-conventions, /code-review, and the step 5d out-of-scope sweep. Filed as loose tasks at the time; adopted into this epic by TASK-040. Second pass 2026-09-08: /code-review medium over origin/main...HEAD during TASK-106's close gate, 8 findings CR-1…CR-8, filed by /tasks intake --epic EPIC-002.
 ---
 
 # Close-gate findings on the skill set
@@ -19,6 +19,31 @@ The defects this repo's own merge gate found while building EPIC-001. Every task
 `/tasks close` — its `/verify-conventions` pass, its `/code-review` pass, or its step 5d sweep for
 work described in prose but never given an id — while shipping something else. They are real findings
 against shipped skills, not planned work.
+
+### Second intake pass — `/code-review`, 2026-09-08
+
+Run as the correctness axis of TASK-106's close gate, scoped to `origin/main...HEAD` (146 files) rather
+than that task's own diff — so everything it found is **adjacent**, in already-committed work, and none
+of it blocked the close it was run for. Both gates were independently reproduced by the pass: lint OK
+(18 skills), suite 43/43.
+
+**8 findings, `CR-1` … `CR-8`. None dropped.** Two were duplicates of open tasks and were linked rather
+than re-filed — `CR-2` → **TASK-081** (the check-4/check-5 contradiction, both sites named), `CR-8` →
+**TASK-083** (a stutter in the same sentence-region, one edit). `CR-3` and `CR-5` share one root cause —
+*a template shipping a live value its own rules say must be chosen* — and are one task by the
+findings-travel-in-packs rule.
+
+| Task | Findings | Subject |
+|---|---|---|
+| TASK-108 | CR-1 | check 4 misses a flag that does not immediately follow the verb — ~20% of invocations |
+| TASK-109 | CR-3, CR-5 | two templates mint a value a faithful render should have left for a run to decide |
+| TASK-110 | CR-4 | the scaffolder gates two conditional rows on a kind list the inventory replaced |
+| TASK-111 | CR-6 | `regen.md` quotes a template format that no longer exists |
+| TASK-112 | CR-7 | the adopter's report list omits the `not applicable` state |
+
+**What this pass says about the epic:** three of the five are rules written *in this epic* whose
+enforcement half or template never followed — the conventions caught their own authors, which is the
+outcome § *Area of concern* above already claims for this tree.
 
 They were filed as tasks under `tasks/_loose/` as they arose, which is correct as far as it goes: each
 is self-contained, evidenced, and independently pickable. What it does not do is make them **drainable**.

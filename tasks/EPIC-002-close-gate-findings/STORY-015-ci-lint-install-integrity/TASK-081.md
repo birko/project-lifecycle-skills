@@ -48,6 +48,8 @@ five cases that follow (`skill folder with no SKILL.md`, `broken link in a compa
 is missing`, …) now print under the check-4 heading. A failure in one of those sends the reader to the wrong
 check — the same misdirection as the stale numbers, which is why it is grouped here.
 
+- **Confirmed by a [[code-review]] pass 2026-09-08 (CR-2), which found the contradiction still live and named both sites:** `AGENTS.md:267` (the normative advisory rule) and `AGENTS.md:319` (the Commands block) still say *"check 4, install-root drift"*, while `:158` says check 5 for drift and `:216` says check 4 for flags. The consequence is sharper than a stale number: a reader following `:267` concludes the **flag** check must never fail the build.
+
 ## Acceptance criteria
 
 - [ ] `AGENTS.md:214` and `:265` name the check that actually reports install-root drift

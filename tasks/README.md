@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (1):** EPIC-001 + EPIC-002 DV5 — tasks tracked in one tree only, `docs/features/` holds no feature folders — run `/roadmap --check`.
 
-_Generated 2026-09-01. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-08. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 6       | —     |
-| todo         | —     | —       | 28    |
-| in-progress  | 2     | 5       | 0     |
+| planned      | 0     | 4       | —     |
+| todo         | —     | —       | 35    |
+| in-progress  | 2     | 7       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 75    |
+| done         | 0     | 5       | 76    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 24× P2 · 4× P3.
+`todo` by priority: 2× P1 · 27× P2 · 6× P3.
 
 ## In progress now
 
@@ -24,21 +24,14 @@ _None_
 
 ## In review (awaiting sign-off)
 
-- [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) — `/specs init` — build the area map, and turn the spec layer on (P1, agent)
+- [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) — `/specs init` — build the area map, and turn the spec layer on (P1, agent) ⚠ blocked on TASK-106 — its remaining human-test item needs a cold reader
 
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (27/34 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (29/37 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
   - STORY-003 `domain` — glossary and decision records — (done) (7/7)
-    - [x] TASK-051 `domain` — the skill and its glossary half
-    - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live
-    - [x] TASK-053 Layer parity — both front doors learn the glossary and the ADR home
-    - [x] TASK-054 Backfill the decision records this repo already owes
-    - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
-    - [x] TASK-056 The seeded rulebook never learns where a term or a decision goes
-    - [x] TASK-070 The decline clauses the rulebook owes — and one record it actually does
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0)
@@ -49,15 +42,16 @@ _None_
     - [ ] [TASK-078](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-078.md) Findings end at `/tasks intake`, and the skill is actually installed
   - STORY-008 Harvest the skill set's own specs — in-progress (2/5)
     - [ ] [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) `/specs init` — build the area map, and turn the spec layer on 🔍 review
+    - [ ] [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) `/specs regen` — generate the specs, and review the diff as the deliverable ⚠ waits on STORY-004/006/007
     - [x] TASK-103 Four capability areas are named for the product's shape rather than a consumer's need
     - [x] TASK-104 Merge the three diff-review areas into one, because that is how they are used
-    - [ ] [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) `/specs regen` — generate the specs, and review the diff as the deliverable ⚠ waits on STORY-004/006/007
+    - [ ] [TASK-105](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-105.md) `change-review` and `work-tracking` describe the same gate in near-identical words
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (39/61 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (40/68 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/12)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/13)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
     - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
     - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
@@ -70,7 +64,8 @@ _None_
     - [x] TASK-057 Four summaries that contradict the body they summarise
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (3/7)
+    - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (3/8)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
     - [ ] [TASK-028](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-028.md) The inference skip rule counts five subsections when one of them is conditional
@@ -78,16 +73,18 @@ _None_
     - [ ] [TASK-085](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-085.md) `LAYER.md`'s survey-state list has outgrown the shape it is written in
     - [x] TASK-086 Adoption cannot tell its own unlanded writes from the user's work in progress
     - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
+    - [ ] [TASK-110](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-110.md) The scaffolder still gates two conditional rows on a kind list the inventory replaced
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
-  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/5)
+  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/6)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
     - [x] TASK-087 A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
     - [ ] [TASK-088](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-088.md) Nothing says whether one source file may belong to two capability areas
     - [ ] [TASK-089](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-089.md) `coverage: unverified` has never once been produced, across three drills
+    - [ ] [TASK-111](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-111.md) `regen.md` quotes a status-comment format the task template no longer emits
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/10)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/11)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -98,7 +95,8 @@ _None_
     - [ ] [TASK-081](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-081.md) One number now names two different lint checks
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/21)
+    - [ ] [TASK-108](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-108.md) Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -114,6 +112,7 @@ _None_
     - [ ] [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) Step 3c derives its set from what a run *created*, and landing invalidates without creating
     - [ ] [TASK-101](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-101.md) Two rows read one fact in opposite directions, because "a working runner" names no bar
     - [ ] [TASK-102](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-102.md) Nothing says whether a step-3 fill offer joins step 2's round or comes after it
+    - [ ] [TASK-112](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-112.md) The adopter's report list gained no entry for the `not applicable` state
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
     - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
     - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
@@ -123,13 +122,15 @@ _None_
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
+    - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
+    - [ ] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
 
 ## Loose tasks
 
 _All 7 loose tasks are `done` — listed under Completed._
 
 <details>
-<summary><strong>Completed</strong> — 4 done stories, 7 done loose tasks</summary>
+<summary><strong>Completed</strong> — 5 done stories, 7 done loose tasks</summary>
 
 **Done stories in active epics** (kept in the tree above, task lists collapsed here):
 
@@ -151,6 +152,14 @@ _All 7 loose tasks are `done` — listed under Completed._
   - [x] TASK-021 The survey reads a repo's shape and history where the layer records a declared value
   - [x] TASK-022 Adoption invalidates generated files it never re-generates
   - [x] TASK-031 `missing, not offered` never reopens, even when a filed task removes the reason
+- STORY-003 `domain` — glossary and decision records — 7/7
+  - [x] TASK-051 `domain` — the skill and its glossary half
+  - [x] TASK-052 `domain`'s decision-record half — the three-part bar and where records live
+  - [x] TASK-053 Layer parity — both front doors learn the glossary and the ADR home
+  - [x] TASK-054 Backfill the decision records this repo already owes
+  - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
+  - [x] TASK-056 The seeded rulebook never learns where a term or a decision goes
+  - [x] TASK-070 The decline clauses the rulebook owes — and one record it actually does
 - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — 4/4
   - [x] TASK-046 `verify-intent` — the fidelity axis, grounded in the task's acceptance criteria
   - [x] TASK-047 `verify-intent` reads the feature ledger and the specs, not just the task

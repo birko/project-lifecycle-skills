@@ -40,6 +40,8 @@ The likely cause is an edit that added the newer general warning without removin
 fix is to keep **one** — almost certainly the general "read the table, don't restate the count" form, with the
 concrete `--unattended` history kept as the *example* and its count dropped.
 
+- **Linked from a [[code-review]] pass 2026-09-08 (CR-8), same sentence-region, one edit:** `skills/fix-next/SKILL.md:258` also carries a stutter — *"**Read the table for the count; do not restate it here** — it has grown twice… Read that table rather than assuming this step knows"*. The second clause is pre-edit residue duplicating the first.
+
 ## Acceptance criteria
 
 - [ ] The paragraph states the growth count **once**, or not at all, consistent with its own rule against writing a number into the sentence
