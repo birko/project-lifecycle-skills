@@ -9,26 +9,22 @@ _Generated 2026-09-08. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 35    |
+| todo         | —     | —       | 36    |
 | in-progress  | 2     | 7       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 76    |
+| done         | 0     | 5       | 77    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 27× P2 · 6× P3.
+`todo` by priority: 2× P1 · 28× P2 · 6× P3.
 
 ## In progress now
 
 _None_
 
-## In review (awaiting sign-off)
-
-- [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) — `/specs init` — build the area map, and turn the spec layer on (P1, agent) ⚠ blocked on TASK-106 — its remaining human-test item needs a cold reader
-
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (29/37 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (30/38 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
   - STORY-003 `domain` — glossary and decision records — (done) (7/7)
@@ -40,12 +36,13 @@ _None_
     - [ ] [TASK-076](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-076.md) `improve-architecture` — the skill, its scoping pass, and the candidate filter
     - [ ] [TASK-077](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-077.md) The report surface — an Artifact, a fallback, and what each candidate must carry
     - [ ] [TASK-078](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-078.md) Findings end at `/tasks intake`, and the skill is actually installed
-  - STORY-008 Harvest the skill set's own specs — in-progress (2/5)
-    - [ ] [TASK-079](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-079.md) `/specs init` — build the area map, and turn the spec layer on 🔍 review
+  - STORY-008 Harvest the skill set's own specs — in-progress (3/6)
+    - [x] TASK-079 `/specs init` — build the area map, and turn the spec layer on
     - [ ] [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) `/specs regen` — generate the specs, and review the diff as the deliverable ⚠ waits on STORY-004/006/007
     - [x] TASK-103 Four capability areas are named for the product's shape rather than a consumer's need
     - [x] TASK-104 Merge the three diff-review areas into one, because that is how they are used
     - [ ] [TASK-105](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-105.md) `change-review` and `work-tracking` describe the same gate in near-identical words
+    - [ ] [TASK-113](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-113.md) Five capabilities a consumer would expect have no area, and one of them is writing the code
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 

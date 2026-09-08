@@ -1,0 +1,66 @@
+## Task 0
+
+**NONE.** No CLAUDE.md, instruction file, guide, skill, or slash-command content is present in my context. What I have is the system prompt (harness/environment/memory sections) and this message. A memory directory is *referenced* in the system prompt, but no `MEMORY.md` index or memory file contents have been loaded.
+
+---
+
+## Task A — user-facing name, or builder's label?
+
+| Name | Y/N | Note |
+|---|---|---|
+| work-tracking | **yes** | Standard vocabulary; people ask for backlog/issue tracking. |
+| feature-lifecycle | **no** | "Lifecycle" is process jargon, and the title gives it away — "the stakeholder-facing *half*" is a name defined by its position in the product's own split, not by what the user wants. |
+| project-baseline | **no** | "Baseline" is a builder's word for the initialized state. Nobody shops for a baseline. |
+| specs-from-code | **yes** | Mechanism-shaped, but the mechanism *is* the value proposition ("specs that can't go stale"), so it still reads as a thing to want. Borderline. |
+| defect-draining | **yes**, borderline | The capability is squarely user-facing (work my bug backlog down unattended); "draining" is coined vocabulary nobody would type. Yes on substance, fail on wording. |
+| change-review | **yes** | Close enough to "code review" to be found, though that's not the phrase most people use. Borderline. |
+| test-authoring | **yes** | "Authoring" is slightly stiff for "writing tests," but discoverable. |
+| glossary-and-adrs | **no** | Two unrelated deliverables joined by an "and" — that's a filing decision, not a capability. "ADR" is also insider shorthand. |
+| project-roadmap | **yes**, with a caveat | The word is user-facing, but it mis-describes its own title: the title is about traceability and drift between features and tasks, which is not what "roadmap" promises. |
+| changelog-maintenance | **yes** | "Changelog" is exactly what someone would search. |
+| idea-interrogation | **no** | Coined metaphor. Users decide about *plans*, not about "interrogation." |
+| session-handoff | **yes**, borderline | "Handoff" is emerging real vocabulary among people running agents; I'm hedging because it may only read clearly to that audience. |
+| installation | **yes** | Unambiguous. |
+| skill-authoring-rules | **yes**, borderline | It addresses a real audience making a real decision (people extending the product), but "rules" frames it as internal governance, and it is the one entry that documents the product's own construction conventions rather than a user capability. |
+
+---
+
+## Task B — reads as internal grouping
+
+Not NONE. Three, and I'd separate two failure modes:
+
+**Genuinely internal groupings** (make sense from inside the build):
+- **feature-lifecycle** — named as one half of a two-part split (`work-tracking` being the other). The user doesn't know there are halves, so "developer-facing" vs "stakeholder-facing" is invisible as a way to choose.
+- **project-baseline** — describes the product's notion of a standard initialized state.
+- **glossary-and-adrs** — a bin, not a capability; the "and" is where two things were filed together.
+
+**Coined vocabulary rather than internal grouping** — flagging as a distinct problem, since you asked for internal groupings specifically:
+- **defect-draining** and **idea-interrogation**. Both describe real user wants in words no user would reach for. Different defect, same symptom (undiscoverable).
+
+**skill-authoring-rules** sits on the line; I'd leave it as-is rather than claim it either way.
+
+---
+
+## Task C — what a user would have looked under
+
+- **feature-lifecycle** → "feature specs", "product requirements", or "feature planning". If the point is that decisions get recorded: "decision log".
+- **project-baseline** → "setup" / "getting started" — plus something explicit about the existing-repo case, e.g. "add to an existing project".
+- **glossary-and-adrs** → split it: **"glossary"** (already fine on its own) and **"decision records"** or **"why we chose this"**.
+- **defect-draining** → "bug fixing" or "work the bug backlog".
+- **idea-interrogation** → "pressure-test a plan" / "plan review". "Design review" if the scope is really broader than features.
+- **project-roadmap** → for what the title actually does: "traceability" or "coverage gaps". I'm not confident either is what a user would type — this one may need the name to follow the capability rather than the reverse, and I can't propose a phrase I'd bet on.
+- **skill-authoring-rules** → "write your own skill" / "extending". Marginal improvement at best.
+
+---
+
+## Task D — missing capabilities (titles only)
+
+The titles cover planning, tracking, reviewing, documenting, and handing off. Reading them cold, the conspicuous gaps:
+
+1. **Actually making the change.** Nothing in 14 titles says "implement the task" or "write the code". Tests get written, changes get reviewed, work gets tracked — but the step between "story" and "change under review" is absent. This is the gap I'd flag hardest; it's also the one most likely to be a deliberate framing choice rather than a hole, since the product may assume the agent just does that natively.
+2. **Finding and filing the bugs.** `defect-draining` explicitly starts from "a filed review backlog", and `change-review` files things. Nothing covers debugging, reproducing, root-causing, or triaging a bug reported from outside a review.
+3. **Release and versioning.** A changelog exists, but nothing about cutting a release, version numbers, or shipping — odd, given "an idea to shipped" appears in a title.
+4. **Refactoring, migrations, dependency upgrades.** No title covers work that changes no behavior. This is a large share of real backlogs.
+5. **Human-facing documentation.** Specs come from code and terms get defined, but there's no README / API reference / user guide capability.
+
+Weaker candidates I'd raise but not lean on: standalone security audit (security appears only as one clause inside the change gate), performance work, and coordination across more than one agent beyond the handoff snapshot.

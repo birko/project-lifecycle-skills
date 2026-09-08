@@ -3,7 +3,7 @@ id: TASK-079
 parent: STORY-008
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: agent
 created: 2026-08-26
@@ -83,7 +83,38 @@ one-area-per-skill map would be the wrong shape and the wrong count.
 
 ## Human test plan
 
-- [ ] Read the area list cold and confirm each name is a capability a *consumer* would recognise, not an internal file grouping — **unticked deliberately: two cold reads, the second still objecting to four names. The file-layout half of this item passes (no name refers to the repo's directories any more); the capability half does not, and the residue is filed as TASK-103. Not ticked with a caveat beside it, because a caveat disappears and an unticked box does not.** **Third read 2026-09-08: the runner was not cold (TASK-106), so the pass direction is unusable; its conclusive negatives are filed as TASK-105.**
+**RETIRED 2026-09-08 — not ticked, not softened, and deliberately not a checkbox.** The original item is
+  preserved verbatim below because `close` forbids rewriting a criterion to fit the result, and this must be
+  auditable as a *retirement with evidence* rather than a bar quietly lowered.
+
+  > ~~Read the area list cold and confirm each name is a capability a *consumer* would recognise, not an
+  > internal file grouping.~~
+
+  **Why it cannot be met by any run.** The item has two halves. The file-layout half is a fact about the
+  names and is stable. The *"a consumer would recognise"* half requires a reader's reaction, and four reads
+  produced four different sets of objections — about four names each, with only `glossary-and-adrs` objected
+  to more than once. Two reversals settle it:
+
+  | Name | Verdict |
+  |---|---|
+  | `installation` | read 2: *"not a capability at all… a README section."* read 4: *"unambiguous — yes."* Unchanged name, opposite verdicts. |
+  | `project-baseline` | **exists only because read 2 asked for it**; read 4 calls it *"a builder's word for the initialized state. Nobody shops for a baseline."* The fix one reader requested is what the next reader failed. |
+
+  So the loop has no terminal state: rename what a reader flags, and the next reader flags four others. The
+  test measures the reader, not the names. Read 4 was the **first verified-cold runner** this repo has ever
+  had (task 0 returned `NONE`; zero product vocabulary absent from its brief), so this is not a contamination
+  artefact — it is the item's own shape.
+
+- [x] **The achievable half, checked and passing:** no area name refers to the repo's file layout.
+      `cross-tree-reporting`, `review-gate-fallbacks` and `skill-set-validation` did; none of the 14 does now.
+      This is a fact about the names rather than a reaction to them, and every read has agreed on it since
+      read 1.
+
+**NOT claimed** (a note, deliberately not a checkbox — a box nobody can ever tick is the defect just
+  retired above, arriving again): that the names are good. Four cold reads say otherwise and their objections rotate.
+      The residue is **TASK-105**, which owns the part renaming cannot fix — two areas describing the same
+      gate — and **TASK-113**, which owns the capabilities no area covers. Left unticked on purpose: this
+      line is a pointer to open work, not a result.
 - [x] Run `/roadmap --check` and confirm the spec section now reports real state instead of silently skipping
 - [x] Confirm `git diff docs/specs/` contains **only** `.map.yml` — no generated bodies leaked in
 
@@ -148,3 +179,14 @@ _Populated by `/tasks plan TASK-079` — leave empty until then._
   § *Acquiring a cold runner*, so human test plan item 1 becomes runnable for the first time. That happens
   under this task, not under TASK-106 — TASK-106 scopes it out explicitly, and harvesting its verification
   run for item 1 would be the same author's-own-pass the drill method rejects.
+- **item 1 retired 2026-09-08, on the first verified-cold read this repo has obtained.** Runner acquired by
+  the recipe TASK-106 documents; titles generated from `.map.yml` rather than retyped, after the TASK-106 run
+  was found to have abbreviated `installation`'s title and drawn an objection to my transcription rather than
+  to the product. Result: 4 × `no` (`feature-lifecycle`, `project-baseline`, `glossary-and-adrs`,
+  `idea-interrogation`), 3 called internal groupings, and `defect-draining` / `idea-interrogation` flagged as
+  a *separate* failure — coined vocabulary rather than internal naming.
+- **the decision was the user's, taken on the rotating-objection evidence**, not mine to make: keep the half
+  that can pass, retire the half that cannot, and record why so nobody opens round five. The original wording
+  is preserved struck-through rather than edited away.
+- run preserved at `docs/DRILL-079-item1-2026-09-08.txt`.
+- closed 2026-09-08 via `/tasks close`. `integration: single-branch`, so no branch and no merge step.
