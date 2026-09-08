@@ -71,6 +71,51 @@ The STORY template carries no `blocked-by` field, so the dependency edges live h
 | STORY-007 `improve-architecture` | 003 | names modules using glossary terms |
 | STORY-008 `specs` regen across the skill set | 002–007 | regenerating before the set stabilises means regenerating twice |
 
+## State as of 2026-09-08 — read before picking new work
+
+Supersedes the specific claims named below. **Everything in the 2026-08-22 block not restated here still
+holds** — read both, this one first.
+
+**Verification debt is zero again, having not been.** The 08-22 note was true when written, went false on
+2026-09-01 when TASK-079 parked at `review`, and is true again as of today. Its parenthetical is now stale
+in your favour: **TASK-010 is `done`**, so `/tasks pick` does surface debt before offering work.
+
+**STORY-003 is closed** — superseding *"decomposed and two-thirds built"*. TASK-054, 055 and 056 all landed;
+`domain` ships whole and the story is `done` at 7/7.
+
+**STORY-008 has been decomposed** — superseding *"STORY-004, 006, 007 and 008 have still never been
+decomposed"*. It now carries six tasks and reads `in-progress`: TASK-079 (`done`), 103, 104 (`done`), and
+**080, 105, 113 open**. The other three stories in that sentence are unchanged and still undecomposed.
+- **TASK-080 is not unblocked by TASK-079 closing.** The story's *"runs last and stays last"* rule holds it
+  behind STORY-004, 006 and 007 — and that, not anything in this story, is what actually gates the epic.
+
+**The cold-drill method is recorded, and the recording was wrong.** Superseding *"one method is worth reusing
+and is recorded nowhere yet"*: TASK-060 and TASK-068 wrote `populate-tests` § *The cold drill*. **TASK-106
+then found its central claim false** — *"a fresh agent with no prior context is runner enough"*. It is not,
+here or in any consumer repo: the installer links skills into a **user-level** root, so every agent on the
+machine holds the vocabulary under drill regardless of working directory. Changing repository closes one
+contamination channel of two.
+- **Consequence for every drill recorded before 2026-09-08**, including the four this epic's 08-22 block
+  cites: none of them recorded how its runner was obtained, so none can now be classified as cold. Their
+  *objections* survive by the conclusive-negative asymmetry; their clean passes are weak evidence.
+- A verified recipe now exists (§ *Acquiring a cold runner*), and a drill record must name how its runner was
+  obtained — `AGENTS.md` § Testing. **TASK-107** owns giving that rule an enforcement point.
+
+**The epic is blocked on decomposition, not implementation** — the single most useful sentence for a picker,
+and it is not derivable from any task file. Of five open stories: **STORY-007 is the only ready lane**
+(four tasks, strict 075→076→077→078 chain, dependency STORY-003 now done). STORY-004 and STORY-006 have no
+tasks at all and the task-first gate bars editing until they do. STORY-009 needs a `/feature new` grill, not
+a decompose — the 08-20 reading still holds. STORY-008 runs last by its own rule.
+
+**A fourth judgement, added to the three below.** *Renaming rounds do not converge.* Four cold reads of the
+spec area map each objected to about four names, almost never the same four; `installation` drew opposite
+verdicts from two readers and `project-baseline` — a rename one reader requested — was failed by the next.
+TASK-079's item 1 was **retired** on that evidence rather than ticked, with the original wording preserved.
+Expect this wherever an acceptance criterion asks a reader to *certify* prose rather than *execute* it: the
+test measures the reader. What remains genuinely open is **TASK-105** (two areas describing one gate, which
+renaming cannot fix) and **TASK-113** (five capabilities with no area — the first being that nothing covers
+writing the code, which turns on a question `.map.yml`'s header has never answered).
+
 ## State as of 2026-08-22 — read before picking new work
 
 **Verification debt is zero** — nothing at `review`, nothing in-progress. It stood at seven on
