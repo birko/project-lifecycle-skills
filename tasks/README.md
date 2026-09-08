@@ -9,14 +9,14 @@ _Generated 2026-09-08. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 36    |
+| todo         | —     | —       | 42    |
 | in-progress  | 2     | 7       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 77    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 28× P2 · 6× P3.
+`todo` by priority: 3× P1 · 33× P2 · 6× P3.
 
 ## In progress now
 
@@ -24,11 +24,17 @@ _None_
 
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (30/38 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (30/44 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
   - STORY-003 `domain` — glossary and decision records — (done) (7/7)
-  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/0)
+  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/6)
+    - [ ] [TASK-114](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-114.md) The question table — the shape every other task in this story reads
+    - [ ] [TASK-115](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-115.md) `/feature new` writes the frontier it could not reach, instead of losing it
+    - [ ] [TASK-116](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-116.md) `/feature pick` gains one branch: open questions outstanding, resume at the frontier
+    - [ ] [TASK-117](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-117.md) `grill-me` switches from one question at a time to frontier rounds
+    - [ ] [TASK-118](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-118.md) `research` becomes a question type that dispatches a sub-agent, not a skill of its own
+    - [ ] [TASK-119](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-119.md) `feature` reconciles an `idea.md` written before the question table existed
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0)
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/4)
