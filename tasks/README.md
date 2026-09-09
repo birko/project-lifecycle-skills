@@ -9,14 +9,14 @@ _Generated 2026-09-08. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 42    |
+| todo         | —     | —       | 44    |
 | in-progress  | 2     | 7       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 77    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 3× P1 · 33× P2 · 6× P3.
+`todo` by priority: 3× P1 · 35× P2 · 6× P3.
 
 ## In progress now
 
@@ -52,9 +52,9 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (40/68 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (40/69 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/13)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/14)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
     - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
     - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
@@ -68,6 +68,7 @@ _None_
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
     - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
+    - [ ] [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) `pick`'s handoff branches on an `assignee:` value no task in the tree has
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (3/8)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -130,7 +131,9 @@ _None_
 
 ## Loose tasks
 
-_All 7 loose tasks are `done` — listed under Completed._
+- [ ] [TASK-121](_loose/TASK-121.md) `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice (P2, agent)
+
+_The other 7 loose tasks are `done` — listed under Completed._
 
 <details>
 <summary><strong>Completed</strong> — 5 done stories, 7 done loose tasks</summary>
