@@ -9,14 +9,14 @@ _Generated 2026-09-08. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 44    |
+| todo         | —     | —       | 48    |
 | in-progress  | 2     | 7       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 77    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 3× P1 · 35× P2 · 6× P3.
+`todo` by priority: 3× P1 · 38× P2 · 7× P3.
 
 ## In progress now
 
@@ -24,7 +24,7 @@ _None_
 
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (30/44 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (30/48 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
   - STORY-003 `domain` — glossary and decision records — (done) (7/7)
@@ -36,7 +36,11 @@ _None_
     - [ ] [TASK-118](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-118.md) `research` becomes a question type that dispatches a sub-agent, not a skill of its own
     - [ ] [TASK-119](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-119.md) `feature` reconciles an `idea.md` written before the question table existed
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
-  - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/0)
+  - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/4)
+    - [ ] [TASK-122](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-122.md) The slicing doctrine — what "atomic and independently completable" actually means
+    - [ ] [TASK-123](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-123.md) Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract
+    - [ ] [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?"
+    - [ ] [TASK-125](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-125.md) A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/4)
     - [ ] [TASK-075](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-075.md) Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
     - [ ] [TASK-076](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-076.md) `improve-architecture` — the skill, its scoping pass, and the candidate filter
