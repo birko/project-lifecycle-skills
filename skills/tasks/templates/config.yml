@@ -9,7 +9,8 @@ mode: local                    # local | hybrid
 # This is a declaration, so /tasks init only writes it once someone has actually chosen. The line
 # ABSENT (this comment left in place) means undeclared: consumers apply the pr-per-task default and
 # /adopt-project offers to backfill it. Never fill it in by guessing from `git log`.
-integration: pr-per-task       # pr-per-task | single-branch
+# Fill the line below in only with a real answer — an arg the caller passed, or one a user gave.
+# integration: <pr-per-task|single-branch>
 
 # When mode: hybrid, fill in the external section:
 # external:

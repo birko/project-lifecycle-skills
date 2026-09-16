@@ -174,6 +174,28 @@ The skills *are* the product, so their prose is the user interface. This subsect
   escapes the root or does not) or merely evidence *consistent with* several answers (a squash-merge
   history and a commit-to-main history are the same log). Determined ⇒ recompute. Merely consistent ⇒
   it had to be declared.
+- **A template ships nothing a render cannot make true.** The two rules above govern a *run*; this governs
+  the *file a run renders from*. A template is read as a thing to reproduce faithfully, so a plausible value
+  in one is minted as fact by a **correct** render rather than by a mistake — which is also why it survives
+  review, where an obvious stub would not. Which shape is right is read off the **schema's own** encoding of
+  "nobody established this" — **per field, not per file**: `map.yml` uses both shapes at once, a value for
+  `coverage:` and absence for its two companions, so a template is walked field by field:
+  - Where the schema says it with the **line's absence**, the field ships **commented out**, comment left in
+    place. `skills/tasks/templates/config.yml`'s `integration:` shipped a live `pr-per-task` while the comment
+    directly above it said an absent line means undeclared — so a render following `init.md` correctly minted
+    a declaration nobody made, re-creating DRILL-053-6 (a PR-per-task policy in a repo with no git). The
+    commented example carries a **choice** (`<pr-per-task|single-branch>`), never a value: a commented
+    concrete value rebuilds the same trap one keystroke away.
+  - Where the schema has its own **"not determined" value**, the template ships that and never a
+    determination. `skills/specs/templates/map.yml` shipped `coverage: verified` beside
+    `tracked-files-at-scan: 0` — a pair `/specs init`'s own verdict table calls impossible — and now ships
+    `unverified`, the one verdict a render can make true, because rendering scans nothing.
+
+  **Not machine-checkable** without a marker convention and its false positives, so it is on the reviewer —
+  the same disposition § Output/prose rules gives an unrendered token. And a `{{TOKEN}}` is the right shape in
+  a markdown template and the wrong one in YAML, where unrendered it is a parse error rather than a readable
+  gap. *No record: this is a rulebook entry whose footprint is the prose it shapes — reversing it is editing
+  the two template lines back, so the ADR bar's hard-to-reverse arm fails.*
 - **Independent review axes are reported side by side and never merged or reranked.** Where a gate runs
   more than one pass answering a *different* question — today `close` step 5b's standards
   ([[verify-conventions]]), fidelity ([[verify-intent]]) and correctness ([[code-review]]) — each keeps its

@@ -40,7 +40,9 @@ docs/specs/
 ## The area map — `.map.yml`
 
 The keystone for tech-agnosticism: you can't hardcode what an "area of concern" is
-across stacks, so each project declares its own. Shape (see [templates/map.yml](templates/map.yml)):
+across stacks, so each project declares its own. Shape — this block shows a **populated map, after a run**;
+the template itself makes no *determination* — it carries `coverage: unverified` and no scan figures
+(see [templates/map.yml](templates/map.yml)):
 
 ```yaml
 coverage: verified                      # verified | not-applicable | unverified

@@ -94,6 +94,16 @@ the `tasks/` row is the one that names one.
 the probe belongs in the survey rather than in the round: without it the round asks blindly, and a repo
 that answered the question months ago gets asked again, on every re-run.
 
+**Carries means a live, uncommented key — a commented example is the question, not an answer.** The probe
+is a grep, so it sees text rather than meaning, and the templates deliberately ship the field **commented
+out** so that a render cannot mint a declaration nobody made (`AGENTS.md` § *A template ships nothing a
+render cannot make true*). Those two facts collide unless this is stated: `# integration:
+<pr-per-task|single-branch>` is in every config the skills create, so a probe matching the bare word
+reports **settled** on a repo where nobody has chosen, the frontier round never asks, and the backfill
+never fires — turning a defect that used to reach only configs written before the field existed into one
+that reaches every repo these skills scaffold. Match the field **anchored and uncommented**
+(`^integration:`), and read a commented line as **absent**.
+
 ## Lazily-created rows
 
 A row marked **(lazy)** is part of the layer, and **nothing creates it** — not the scaffolder, not
