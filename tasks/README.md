@@ -9,14 +9,14 @@ _Generated 2026-09-16. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 51    |
+| todo         | —     | —       | 50    |
 | in-progress  | 2     | 7       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 78    |
+| done         | 0     | 5       | 79    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 41× P2 · 8× P3.
+`todo` by priority: 1× P1 · 41× P2 · 8× P3.
 
 ## In progress now
 
@@ -94,7 +94,7 @@ _None_
     - [ ] [TASK-128](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-128.md) Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - [ ] [TASK-129](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-129.md) A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/11)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (7/11)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -105,7 +105,7 @@ _None_
     - [ ] [TASK-081](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-081.md) One number now names two different lint checks
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
-    - [ ] [TASK-108](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-108.md) Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
+    - [x] [TASK-108](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-108.md) Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it

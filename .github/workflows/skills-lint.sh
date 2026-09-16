@@ -105,7 +105,9 @@ printf '== 4. cross-skill flags ==\n'
 # Nothing enforced that: rename or typo the flag on either side and the caller keeps passing an
 # argument the receiver silently ignores. Measured when this was written: 30 such invocations, all
 # of the form `/skill verb --flag`, and 0 mismatches — so this check exists to keep it that way
-# rather than to clear a backlog.
+# rather than to clear a backlog. THAT COUNT AND SHAPE ARE SUPERSEDED: see the paragraph below,
+# which measured 39 invocations of which 8 are NOT of that form. Kept because it records why the
+# check was added, not what it now matches.
 #
 # Existence only, never semantics: whether the receiver does the right thing with the flag is not
 # checkable here. The receiving side is read WHOLE rather than from an "## Args" block, because two
@@ -117,14 +119,30 @@ printf '== 4. cross-skill flags ==\n'
 # exercised on a fixture whose skills are named something else. Match any `/word verb --flag` and let
 # the existence of `skills/<word>/` decide whether it is one of ours; a stray `/usr/bin/x y --z` in
 # prose resolves to no skill folder and is skipped.
-grep -rnoE '/[a-z][a-z-]* [a-z][a-z-]* --[a-z-]+' skills/ 2>/dev/null \
+# An argument may sit BETWEEN the verb and its flag, and an invocation may carry MORE THAN ONE
+# flag. Matching only `/skill verb --flag` missed both: measured 8 of 39 real invocations (~20%)
+# -- `/specs regen <areas> --story`, `/tasks move <ids> --to`, `/tasks plan {{ID}} --replan`,
+# `/tasks block <origin> --on`, `/tasks export <ID> --to`, `/tasks new task --from-feature` --
+# and `--no-plan` in `/tasks new task --from-feature FEATURE-NNN --no-plan` was invisible even
+# when the first flag matched, because `grep -o` ends the match at it.
+#
+# WHAT AN ARGUMENT MAY LOOK LIKE IS THE WHOLE DESIGN, because this check is fatal and prose is
+# not a diff anyone can fix. A first attempt allowed any bare word between verb and flag; that
+# reads ordinary prose as an invocation -- `The /beta go step runs before the --nosuch cleanup.`
+# errored -- and `skills/` already carries unbackticked `/skill verb <word>` sentences that would
+# trip it the day one gained a flag. So an argument is a PLACEHOLDER (`<areas>`, `{{ID}}`), an
+# identifier or number starting upper-case or numeric (`FEATURE-NNN`, `3`), or an ellipsis --
+# plus AT MOST ONE lowercase word, in the subcommand slot (`/tasks new task ...`). Prose runs
+# several lowercase words together and therefore cannot match; an invocation does not.
+# That one-lowercase-word ceiling is deliberate, not an oversight: `/beta go a b c d e f --x`
+# is prose by construction, and widening it to reach such a line would reopen the false positive.
+ARG_RE='(<[^<>]*>|\{\{[^{}]*\}\}|[A-Z0-9][A-Za-z0-9_-]*|\.\.\.)'
+grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^ ]*)?( $ARG_RE)*)+" skills/ 2>/dev/null \
 | while IFS= read -r hit; do
   src=${hit%%:*}
   inv=${hit#*:}; inv=${inv#*:}
   skill=$(printf '%s' "$inv" | sed -E 's|^/([a-z-]+).*|\1|')
-  verb=$(printf '%s' "$inv"  | sed -E 's|^/[a-z-]+ ([a-z-]+) .*|\1|')
-  flag=$(printf '%s' "$inv"  | grep -oE '\-\-[a-z-]+' | head -1)
-  [ -n "$flag" ] || continue
+  verb=$(printf '%s' "$inv"  | sed -E 's|^/[a-z-]+ ([a-z-]+).*|\1|')
   recv="skills/$skill/verbs/$verb.md"
   [ -e "$recv" ] || recv="skills/$skill/SKILL.md"
   [ -e "$recv" ] || continue
@@ -133,8 +151,13 @@ grep -rnoE '/[a-z][a-z-]* [a-z][a-z-]* --[a-z-]+' skills/ 2>/dev/null \
   # on the repo's only gate. Bound both sides by the flag's own character class. Still existence
   # only, never semantics: a receiver naming a flag in prose to say it is UNSUPPORTED still
   # satisfies this, which AGENTS.md scopes the check out of deliberately.
-  grep -qE -- "(^|[^a-z-])${flag}([^a-z-]|$)" "$recv" || \
-    suberr "$src passes $flag to /$skill $verb — not declared in $recv"
+  #
+  # EVERY flag on the invocation, not just the first -- and each must be SPACE-ANCHORED. Grepping
+  # `--[a-z-]+` over the whole match reported `--known` out of an argument like `well--known`.
+  printf '%s' "$inv" | grep -oE ' --[a-z-]+' | sed 's/^ //' | while IFS= read -r flag; do
+    grep -qE -- "(^|[^a-z-])${flag}([^a-z-]|$)" "$recv" || \
+      suberr "$src passes $flag to /$skill $verb — not declared in $recv"
+  done
 done
 
 printf '== 5. install roots (advisory) ==\n'

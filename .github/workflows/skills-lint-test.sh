@@ -47,7 +47,7 @@ mk_link() { # $1 = link, $2 = existing target dir. A symlink on POSIX; a junctio
   [ -L "$1" ]
 }
 
-# Check 4 is advisory and never touches the exit code, so `case_is` cannot see it at all. These
+# Check 5 is advisory and never touches the exit code, so `case_is` cannot see it at all. These
 # assert on OUTPUT and still require exit 0 — an advisory that began failing the build would itself
 # be a regression.
 roots_run() { # $1 = fixture dir; echoes the lint's combined output
@@ -119,6 +119,51 @@ Run `/beta go --unattend` when done.
 
 - `--unattended` does a thing.
 ' > "$1/skills/beta/verbs/go.md"; }
+# An ARGUMENT between the verb and its flag. The check matched only `/skill verb --flag`, so every
+# invocation carrying an id, a placeholder or a subcommand first was invisible — measured at 8 of 39
+# real invocations (~20%) on this repo, including `/tasks move <ids> --to`, added by the same epic
+# that wrote this suite. These two are EVIDENCE, not pins: the first passes against the old lint.
+m_flagargbad(){ printf -- '
+Run `/beta go <target> --nosuch` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+m_flagargok() { printf -- '
+Run `/beta go <target> --real` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+# A SECOND flag on the same invocation. `grep -o` ended the match at the first one, so the second
+# went unchecked even when the first matched and the receiver was found. EVIDENCE: the first flag
+# here is declared, so the old lint saw the invocation, checked `--real`, passed, and never looked
+# further. Anything less than a real second flag would not reproduce it.
+m_flagsecond(){ printf -- '
+Run `/beta go --real VALUE --nosuch` when done.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
+# The widening must not read PROSE as an invocation. This check is fatal, and prose is not a diff
+# anyone can fix, so a false positive here is worse than the gap being closed. UNBACKTICKED and
+# several lowercase words — both deliberate: a first version wrapped the invocation in backticks,
+# which made the argument repetition unreachable and the case unable to fail under ANY widening.
+# Verified against a bare-word ARG_RE: this fixture errors. Against the shipped one it is clean.
+m_flagprose() { printf -- '
+The /beta go step runs before the --nosuch cleanup in your log.
+' >> "$1/skills/alpha/SKILL.md"
+                mkdir -p "$1/skills/beta/verbs"
+                printf -- '# go
+
+- `--real` does a thing.
+' > "$1/skills/beta/verbs/go.md"; }
 # The two below pin coverage this check ALREADY had, because a rewrite of check 4 nearly removed
 # both: skipping templates/ (as check 3 does) and filtering to *.md. Neither fails against the
 # previous lint — they are contract pins, not evidence — and both guard something real:
@@ -181,6 +226,10 @@ case_is   "flag declared in receiving verb"      0 m_flagok
 case_is   "receiver declares flags in a table"   0 m_flagtable
 case_is   "flag aimed at a non-skill path"       0 m_flagforeign
 case_is   "flag is a prefix of a declared flag"  1 m_flagprefix
+case_is   "arg between verb and flag, undeclared" 1 m_flagargbad
+case_is   "arg between verb and flag, declared"   0 m_flagargok
+case_is   "second flag on one invocation"         1 m_flagsecond
+case_is   "prose between verb and distant flag"   0 m_flagprose
 case_is   "template naming a real skill is checked" 1 m_flagtemplatereal
 case_is   "invocation in a non-.md template file"  1 m_flagtmplext
 case_is "skill folder with no SKILL.md"    1 m_noskill
