@@ -8,15 +8,15 @@ _Generated 2026-09-16. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 4       | —     |
-| todo         | —     | —       | 50    |
-| in-progress  | 2     | 7       | 0     |
+| planned      | 0     | 5       | —     |
+| todo         | —     | —       | 52    |
+| in-progress  | 3     | 7       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 79    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 41× P2 · 8× P3.
+`todo` by priority: 2× P1 · 42× P2 · 8× P3.
 
 ## In progress now
 
@@ -136,6 +136,11 @@ _None_
     - [x] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
     - [ ] [TASK-126](EPIC-002-close-gate-findings/TASK-126.md) Sweep every template for a shipped value its own skill says must be declared or derived
     - [ ] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
+
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (0/2 tasks done)
+  - STORY-017 Work that is filed correctly and reachable by nothing — planned (0/2)
+    - [ ] [TASK-130](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-130.md) `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
+    - [ ] [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
 
 ## Loose tasks
 
