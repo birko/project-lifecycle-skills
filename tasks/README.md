@@ -10,17 +10,17 @@ _Generated 2026-09-16. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
 | todo         | —     | —       | 51    |
-| in-progress  | 2     | 7       | 1     |
+| in-progress  | 2     | 7       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 77    |
+| done         | 0     | 5       | 78    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 2× P1 · 41× P2 · 8× P3.
 
 ## In progress now
 
-- [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it — P1, agent
+_None_
 
 ## Tree
 
@@ -133,7 +133,7 @@ _Generated 2026-09-16. Run `/tasks triage` to refresh. **Do not hand-edit** — 
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
-    - [ ] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it ← in-progress
+    - [x] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
     - [ ] [TASK-126](EPIC-002-close-gate-findings/TASK-126.md) Sweep every template for a shipped value its own skill says must be declared or derived
     - [ ] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
 
