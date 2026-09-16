@@ -2,25 +2,25 @@
 
 > ⚠ **Feature drift (1):** EPIC-001 + EPIC-002 DV5 — tasks tracked in one tree only, `docs/features/` holds no feature folders — run `/roadmap --check`.
 
-_Generated 2026-09-08. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-16. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 48    |
-| in-progress  | 2     | 7       | 0     |
+| todo         | —     | —       | 51    |
+| in-progress  | 2     | 7       | 1     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 77    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 3× P1 · 38× P2 · 7× P3.
+`todo` by priority: 2× P1 · 41× P2 · 8× P3.
 
 ## In progress now
 
-_None_
+- [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it — P1, agent
 
 ## Tree
 
@@ -85,12 +85,14 @@ _None_
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
-  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/6)
+  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/8)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
     - [x] TASK-087 A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
     - [ ] [TASK-088](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-088.md) Nothing says whether one source file may belong to two capability areas
     - [ ] [TASK-089](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-089.md) `coverage: unverified` has never once been produced, across three drills
     - [ ] [TASK-111](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-111.md) `regen.md` quotes a status-comment format the task template no longer emits
+    - [ ] [TASK-128](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-128.md) Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
+    - [ ] [TASK-129](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-129.md) A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (6/11)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
@@ -131,7 +133,9 @@ _None_
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
-    - [ ] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
+    - [ ] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it ← in-progress
+    - [ ] [TASK-126](EPIC-002-close-gate-findings/TASK-126.md) Sweep every template for a shipped value its own skill says must be declared or derived
+    - [ ] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
 
 ## Loose tasks
 

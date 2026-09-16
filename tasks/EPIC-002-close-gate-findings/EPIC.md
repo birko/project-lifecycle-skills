@@ -8,7 +8,7 @@ affects: skills/, .github/
 # kind: omit for a normal epic; `review-intake` marks the epic a review pass was filed into
 kind: review-intake
 # source: review-intake epics only — where the findings came from (report path, PR, or "security-review <date>")
-source: close-gate passes at /tasks close, 2026-08-18 → 2026-08-20 — /verify-conventions, /code-review, and the step 5d out-of-scope sweep. Filed as loose tasks at the time; adopted into this epic by TASK-040. Second pass 2026-09-08: /code-review medium over origin/main...HEAD during TASK-106's close gate, 8 findings CR-1…CR-8, filed by /tasks intake --epic EPIC-002.
+source: close-gate passes at /tasks close, 2026-08-18 → 2026-08-20 — /verify-conventions, /code-review, and the step 5d out-of-scope sweep. Filed as loose tasks at the time; adopted into this epic by TASK-040. Second pass 2026-09-08: /code-review medium over origin/main...HEAD during TASK-106's close gate, 8 findings CR-1…CR-8, filed by /tasks intake --epic EPIC-002. Third pass 2026-09-16: cold drill of /tasks init and /specs init (two runners, --disable-slash-commands, guide-free scratch roots, both confirmed cold), run as TASK-109's human test plan, 4 findings DRILL-109-1 to DRILL-109-4, filed by /tasks intake --epic EPIC-002.
 ---
 
 # Close-gate findings on the skill set
@@ -19,6 +19,32 @@ The defects this repo's own merge gate found while building EPIC-001. Every task
 `/tasks close` — its `/verify-conventions` pass, its `/code-review` pass, or its step 5d sweep for
 work described in prose but never given an id — while shipping something else. They are real findings
 against shipped skills, not planned work.
+
+### Third intake pass — a cold drill, 2026-09-16
+
+Run as TASK-109's `## Human test plan`, not as a standing review — which is why it found what it did.
+Two runners executed `/tasks init` and `/specs init` against throwaway fixtures, each in an isolated
+scratch root holding only a copy of the skill and the fixture. Both confirmed cold (*"None. The list is
+empty."*), both briefs grepped to zero hits on every subject word before running.
+
+**4 findings, `DRILL-109-1` to `DRILL-109-4`. None dropped.** Grouped into three tasks by root cause:
+TASK-127 (the two ask/blessing gaps, epic level because it spans `tasks` and `specs`), TASK-128 (step 4's
+unmapped-file exits contradicting the paragraphs below it) and TASK-129 (no stated answer below the area
+floor).
+
+**Two further findings were fixed inside TASK-109 rather than filed**, because they were defects *in that
+task's own change* and the drill is what exposed them: a create branch that never said to keep the comment
+block it depends on, and template-state prose in both templates that goes false the moment it is rendered.
+Recorded on TASK-109 under § *What the drill found that the author did not*.
+
+**One was a duplicate and one was adjacent:** the undefined `{{TREE_VIEW}}` empty render is TASK-067's
+(linked, not re-filed), and the template's five stack-specific `ignore:` globs travelling into a Python
+project belong with TASK-126's sweep.
+
+**Worth recording about the method, not just the findings.** The two runners disagreed usefully: B1 copied
+the template-state prose without objecting, B2 called it false-once-written. A single drill would have
+shipped that defect. The drill also cost two false starts — the first pair of runs were scoped out of their
+own fixture directories and produced no evidence at all, though the coldness check passed even there.
 
 ### Second intake pass — `/code-review`, 2026-09-08
 
