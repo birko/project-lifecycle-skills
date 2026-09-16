@@ -8,7 +8,7 @@ priority: P2
 assignee: agent
 created: 2026-08-19
 depends-on: []
-blocks: []
+blocks: [TASK-067]
 findings: []
 pr: null
 github-issue: null
@@ -42,6 +42,17 @@ generated file owned by `/feature status`, so the stance it currently states is 
 either. Note the shape is general, not DV5's alone: any rule can fire on a deliberate arrangement.
 DV8 already has a bespoke version of this (a `no spec surface` line in the ledger suppresses it), so
 the pattern exists but is per-rule and undiscoverable.
+
+### What this unblocks
+
+**TASK-067 waits on this** (`blocks: [TASK-067]`). Its criterion 3 deletes the
+`docs/features/README.md` line that the Context above quotes as this repo's "recorded stance" — so
+whatever acceptance record criterion 6 here produces becomes that line's proper home, and the two
+tasks should be read together even though they sit under different stories.
+
+Concretely: this task is why criterion 6 is not circular. The stance currently lives only in a
+generated file, so *recording this repo's DV5 as accepted* is both this task's own test and the
+destination TASK-067 needs to exist before it can remove the original.
 
 ## Acceptance criteria
 

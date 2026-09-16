@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-08-22
-depends-on: []
+depends-on: [TASK-032]
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: [DRILL-053-10]
@@ -57,6 +57,17 @@ not stay a formatting question, it becomes evidence somebody reasons from.
 Both halves are "the generator was specified for the populated case only". One pass through
 `new-project` step 3, the `feature status` template and `triage` fixes both, and splitting them invites
 two different answers to the same question.
+
+### Ordering — TASK-032 lands first
+
+Criterion 3 below names two outlets for the hand-written line, and **TASK-032 is likely to supply a
+third and better one**: it builds a hand-editable record for a divergence that has been *accepted*,
+which is precisely what that line is being used as. Landing this task first means choosing a home for
+the stance before TASK-032 has decided what such a record looks like — the "two different answers to
+the same question" that § *Why one task* above exists to prevent, one level up.
+
+The edge is `depends-on`, **not a `blocked` status**: half (a) is wholly independent of TASK-032, so
+`/tasks pick` should warn about the open dependency and still let the task through.
 
 ## Acceptance criteria
 
