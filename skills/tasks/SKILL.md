@@ -110,7 +110,24 @@ Walk up from cwd in this order:
 1. Directory containing `tasks/.config.yml` → use as task root. **Done.**
 2. Otherwise find project root: `*.slnx`/`*.sln` first, then `.git`.
 3. Task root is `<project-root>/tasks/`.
-4. Ambiguous → ask the user once and write `.config.yml` so the choice sticks.
+4. **Ambiguous → ask the user once** and write `.config.yml` so the choice sticks.
+
+   **Ambiguous means steps 1-3 all fell through**: no `tasks/.config.yml` anywhere up the walk, no
+   `*.slnx`/`*.sln`, and no `.git`. Naming the condition is half the fix — a branch whose trigger is only
+   the word *"ambiguous"* is never recognised as having fired, which is exactly what happened in the drill
+   this rule came from. Put this question:
+
+   > **I can't tell where this project's root is — there's no `tasks/.config.yml`, no solution file and no
+   > `.git` above `<cwd>`. Where should `tasks/` live?**
+   > · **`<cwd>/tasks/`** — treat the current folder as the project root.
+   > · **Somewhere else** — give the path.
+
+   **No answer, or nobody to ask:** use `<cwd>/tasks/`, and **report the root as inferred rather than
+   chosen**, naming the three signals that were absent. Do not write `.config.yml`'s marker silently on
+   that path — the marker is what makes step 1 skip this question forever, so writing it unasked converts
+   a guess into the permanent answer. Never infer the root from the surrounding brief or from what the
+   task text happens to mention: that is not evidence about the repo, and it is what a cold runner did
+   here when the branch gave it nothing.
 
 A project's own `CLAUDE.md` may override placement — e.g. an aggregator repo that hosts
 **cross-cutting epics for a polyrepo family** documents that rule locally (its epics list the

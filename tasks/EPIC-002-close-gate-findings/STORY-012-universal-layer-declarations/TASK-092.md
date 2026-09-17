@@ -76,6 +76,19 @@ Not decided here: whether the declination is recorded as a commented marker in `
 explicit third value, or somewhere else entirely. A marker is the obvious move and obvious is not the
 same as right — an explicit value would make every consumer's read of the field a three-way branch.
 
+### Note added 2026-09-17 from [[TASK-127]]'s work — `mode:` has the same gap, one field over
+
+TASK-127 gave the mode-detection ask a no-answer path: fall back to `local`, because it is the only mode
+needing no remote and no credential. But **`mode:` cannot be omitted** the way `integration:` can — every
+other verb reads it — so the fallback has to be *written*, and a written `mode: local` is indistinguishable
+from a chosen one. That is **CR-035-2 exactly, on a second field**.
+
+TASK-127 took the cheapest honest step within its scope — the fallback is written with an inline
+`# defaulted — nobody was asked` comment — and deliberately did **not** invent a config field, because
+choosing the representation for *declined vs never asked* is this task's call, not that one's. If the
+answer here is a schema-level marker, `mode:` needs it too; if it is a comment convention, the line
+TASK-127 wrote is already that convention and should be named as such rather than left as a one-off.
+
 ## Acceptance criteria
 
 - [ ] `/tasks init`'s unattended branch is reachable — either a declared way to tell it so, or a rewrite that does not depend on attendance — and no branch of step 3 describes a state no caller can put it in

@@ -136,9 +136,42 @@ Runs once per project, when `.config.yml` is missing.
    - `Test-Path .github/ISSUE_TEMPLATE` → suggest `hybrid (github)`
    - Grep CLAUDE.md + README for `*.atlassian.net/browse/` or another Jira-shaped URL → suggest `hybrid (jira)`
    - Neither → suggest `local`
-2. **Ask user** via AskUserQuestion with three options: local / hybrid (github) / hybrid (jira). Pre-select the suggested one.
-3. **For hybrid (github)**: ask for the repo. Default = `git remote get-url origin` parsed to `owner/name`. Optionally ask for `default-labels`.
-4. **For hybrid (jira)**: ask for the project key (e.g. `SUP`).
+2. **Ask the user**, via AskUserQuestion, with the scan's suggestion pre-selected. Put this question:
+
+   > **How should this project track tasks?**
+   > · **local** — markdown files in `tasks/` only.
+   > · **hybrid (github)** — files plus synced GitHub Issues.
+   > · **hybrid (jira)** — files plus synced Jira issues.
+
+   **No answer, or nobody to ask:** fall back to **`local`** and write it **annotated**, as
+
+   ```yaml
+   mode: local                    # defaulted — nobody was asked; change with /tasks migrate
+   ```
+
+   then say in the confirmation that the mode was defaulted rather than chosen. `local` is the only
+   option that needs no external credential and no remote, so it is the one value a run can pick without
+   asserting something about the world. Unlike `integration:`, **omitting `mode:` is not available** —
+   every other verb reads it — so this is the write-and-mark case rather than the leave-absent one, and
+   the annotation is what stops a later reader taking a fallback for a decision. **`/tasks migrate` is what
+   clears it**, not a later run of this flow — mode detection runs only when `.config.yml` is missing, so
+   once the annotated line exists nothing here revisits it.
+
+3. **For hybrid (github)**: ask for the repo, defaulting to `git remote get-url origin` parsed to `owner/name`:
+
+   > **Which GitHub repository should issues sync to?** (`owner/name` — `<parsed default>`)
+
+   Optionally, and only after that resolves: *"Any default labels to put on every synced issue? (blank for none)"*.
+   **No answer:** take the parsed default when there is one; with no remote **and** no answer, fall back to
+   `local` and say why (§ Edge cases already owns that fallback).
+
+4. **For hybrid (jira)**: ask for the project key:
+
+   > **Which Jira project key should issues be created under?** (e.g. `SUP`)
+
+   **No answer:** there is no defensible default — a wrong key files work into someone else's project — so
+   fall back to `local`, leave `project:` unwritten, and report the key as unresolved.
+
 5. **Write `tasks/.config.yml`** from [templates/config.yml](../templates/config.yml).
 
 ## Edge cases

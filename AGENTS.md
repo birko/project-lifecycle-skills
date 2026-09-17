@@ -120,6 +120,30 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **Tables and short lists beat paragraphs** for anything an agent must branch on. Reserve prose for the *why*.
 - **State the rationale for a non-obvious rule inline**, briefly. A rule an agent doesn't understand is a rule it will route around under pressure.
 - **Router `SKILL.md` files stay small**; detail lives in the verb that owns it. A verb file must be readable standalone — never "see the section above" across files.
+- **An ask-step carries the question it puts and the answer-less path, or it is not a step.** Where skill
+  prose tells an agent to ask the user something, it states **the question actually put** — the words, not
+  a description of them — **and** what the run does when no answer comes. Both halves, every time, because
+  they fail differently. A *described* question is re-invented on every run, so two runs of one verb ask
+  materially different things and neither is reproducible. A missing answer-less path is worse: it leaves
+  the run choosing between stalling and promoting its own **suggestion** into a written **declaration**,
+  which is the defect § *Read the declaration, never infer it* exists to prevent, arriving through the
+  interaction instead of through the file. So the unattended outcome is always a **reported unresolved
+  state** — never a value that *reads as decided*, and never silence, which the next reader cannot tell
+  from a decision either. That takes one of two shapes, and which one is read off the schema, exactly as
+  § *A template ships nothing a render cannot make true* reads it: where the field **may be absent**,
+  leave it absent and name it in the report; where it **cannot** be — a field every other verb reads —
+  write the safest fallback **and record beside it that nothing chose it**, the shape `/specs init`
+  already uses when it writes a map stamped `coverage: unverified`. A fallback written bare is the
+  defect wearing a different hat. Measured (DRILL-109-1 and -2, two cold runners, 2026-09-16): told to quote their questions
+  verbatim and continue as if unanswered, **neither could** — *"no question text is supplied … the
+  instruction **is** the prompt"* — and one, reaching `/tasks init`'s ambiguous branch with no user, picked
+  a task root by inference from its brief, while the other wrote `/specs init`'s blessing question itself
+  and proceeded as if blessed. **The rule is the authoring rule and lives here only**; each site's question
+  text is per-site data, not a restatement of it, and a skill file cannot point back at this file without
+  breaking in a consumer install. **Not machine-checkable** — a detector for *"this sentence is an
+  ask-step"* is prose-shaped and would carry the same false-positive profile § *Framework / stack* already
+  measured and rejected at 24:0 — so it is on the reviewer. *No record: a rulebook entry whose footprint is
+  the prose it shapes.*
 
 ### Code structure & patterns
 - **New skills go in `skills/`.** `skills-pi/` is frozen (see § Architecture).
