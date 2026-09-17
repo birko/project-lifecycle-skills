@@ -8,15 +8,19 @@ _Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 5       | —     |
+| planned      | 0     | 4       | —     |
 | todo         | —     | —       | 52    |
-| in-progress  | 3     | 7       | 0     |
-| review       | —     | —       | 0     |
+| in-progress  | 3     | 8       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 80    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 2× P1 · 42× P2 · 8× P3.
+
+## In review
+
+- [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) — cold drill written, not yet run
 
 ## In progress now
 
@@ -138,10 +142,11 @@ _None_
     - [ ] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (0/2 tasks done)
-  - STORY-017 Work that is filed correctly and reachable by nothing — planned (0/2)
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (0/3 tasks done)
+  - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (0/3)
     - [ ] [TASK-130](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-130.md) `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
-    - [ ] [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
+    - [~] [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id — **review**
+    - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
 
 ## Loose tasks
 
