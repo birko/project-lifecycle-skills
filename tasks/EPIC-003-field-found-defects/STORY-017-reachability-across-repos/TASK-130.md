@@ -54,6 +54,67 @@ dashboard, to `pick`, to `status`, and to [[fix-next]]. That is precisely the de
 own STORY-051 exists to record — *"a checklist line is filed, not scheduled"* — arriving through the
 tracking tool rather than through a review pass.
 
+### Re-measured 2026-09-17 on the real family — the premise above is scoped wrong
+
+**The table above measured `Framework\` and stated its conclusion about "the family".** Re-run over the
+whole of `C:\Source\Birko`, which is four groups, not one:
+
+| Group | Git repos | With a `tasks/` tree | Tasks filed |
+|---|---|---|---|
+| `Framework\` | 178 | **1** (`Birko.Framework`) | 314 |
+| `Framework.Tests\` | 167 | 0 | 0 |
+| `Consumers\` | 16 | **6** | 1,038 |
+| `Web\` | 4 | 0 | 0 |
+| **total** | **365** | **7** | **1,352** |
+
+**So "the prescribed placement has been followed zero times" is false at family scope — it has been
+followed six times, by exactly the population the polyrepo argument is about.** BardStudio, DraCode,
+Latent, Presenter, Symbio and WorkoutTracker each carry their own `tasks/` with their own `.config.yml`.
+Symbio alone holds 720 tasks.
+
+**And in `Framework\`, the aggregator pattern is working as documented, not being routed around.**
+`Birko.Framework/tasks/` holds cross-cutting epics that name their affected modules in frontmatter —
+`affects: [Birko.Web.Components]`, `affects: [Birko.Data.Redis]`, `affects: [Birko.Storage.Aws,
+Birko.Storage.Google, Birko.Storage.Minio]`. That is the documented rule executing correctly. The 178
+modules are **MSBuild shared projects, source-only, that always travel together** (the workspace's own
+structure note: splitting them "buys nothing"), so per-module task trees were never the right shape for
+them and their absence is not evidence of a broken convention.
+
+**What survives, and it is still a real defect:** there is no roll-up across the **7** trees that do
+exist, so no view spans them. That is a missing *view*, not an unusable rule — a materially smaller and
+better-shaped problem than the one filed.
+
+### The measurements AC3 and AC5 asked for, now taken
+
+- **Id collisions are pervasive, so AC3's second option is not viable.** **343 distinct TASK ids are
+  minted in more than one of the 7 trees**; `TASK-003`, `-006`, `-007`, `-008` and `-009` each exist in
+  **all seven**. AC3 offered "repo-qualified ids **or** detect-and-report a collision" — detect-and-report
+  would emit 343 findings on every run, which is a muted check by the second run. **Repo-qualification is
+  the only surviving option**; that arm of the decision is settled by measurement rather than taste.
+- **Scan cost is not the obstacle the task assumed.** Over all 365 repos: a full `find -maxdepth 3` for
+  `tasks/` averages **330-370 ms**; a targeted `test -d` probe over the known group dirs averages
+  **~200 ms**. AC5 asked for a bound so it is not "discovered as a slowdown" — it is sub-second, and the
+  7 trees are discoverable without walking any repo's contents.
+
+### What this does to AC1 — the decision is still yours, but it is a different decision
+
+The choice is no longer *roll up 178 sub-repos* vs *centralise*. The family has **two populations with
+different right answers**, and the filed framing collapses them:
+
+- **The framework group** already has its answer, in use: one aggregator tree, `affects:` naming the
+  modules. Nothing to decide.
+- **The consumer products** are independent, already each carry their own tree, and *should* — this is
+  the repo-is-self-contained property the polyrepo exists for.
+
+So the live question is narrower: **should a roll-up view exist over the 7 real trees, and where does it
+live** — in the aggregator's tree, or as a `--across` flag on the collection verbs that takes a declared
+sibling list from `.config.yml` rather than probing? That is a question about a *view*, and neither answer
+threatens the self-containment the original ⚠ was defending.
+
+**Fixture note for whatever lands:** this task is justified by naming the Birko family, so per
+`populate-tests` § *The cold drill* **Birko is disqualified as the drill fixture** for the fix. It is the
+right place to *measure* — as here — and the wrong place to *drill*.
+
 ## The two candidate fixes, and why the second is probably wrong
 
 1. **Roll up.** In an aggregator repo, collection verbs (`status`, dashboard, `pick`, `audit`) also scan
