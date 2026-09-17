@@ -29,8 +29,8 @@ for adoption — **what to do when the repo already has one**.
 | `CHANGELOG.md` | [[roll-changelog]] | Present → leave. Absent → seed the Keep a Changelog stub, and **offer** a backfill from history; do not backfill unasked, it is a judgement call about what mattered. |
 | `.gitignore` | — | Present → check that `.env` / `.env.*` are covered **and** that agent-tool local state is (`.claude/settings.local.json` at minimum); offer the lines if not. **Covered means covered by the repo's own ignore file, not the machine's** — see § *Covered means covered in the repo*, which also settles how this composes with `present, uncommitted`. Absent → create for the detected stack. The `.env` check pairs with the `.env.example` row below: `.env.*` **matches `.env.example` too**, so a `!.env.example` negation must follow it or the committed template is ignored and every later survey reports it `present` without it ever reaching history. Check for the negation wherever that row applies. |
 | `LICENSE` **(conditional — on licensing posture, not kind)** | [[new-project]] seed | **The condition is not the project kind**, so the kind detection cannot answer it. Evidence for the posture, **either posture**: an explicit statement — a licence line or a *proprietary* / *all rights reserved* line in the README, a `license:` field in a package manifest, an SPDX header in sources. **A bare copyright notice is not evidence of anything**: project templates emit `<Copyright>` unconditionally, so it is *consistent with* both postures and settles neither. Reading it as proprietary is how the one gap this row exists for disappears — measured, a runner met exactly that and correctly landed `unknown`. Open posture and no `LICENSE` file → **missing** — *report it; filling is out of scope here*. Proprietary or explicitly unlicensed → **not applicable**. **No evidence either way → `unknown`, and ask in step 2's question round** — never `not applicable`, which is how the one gap this row exists for disappears. Present → **leave it**: a licence is a legal choice, not a shape an owner verb reconciles. |
-| `.env.example` **(conditional — does anything here *require* an environment variable to run?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. **A build-time variable is not a Yes, and "here" stops at this repo** — § *Conditional rows* owns both, with `BIRKO_SRC` as the worked example. Present → **leave it**; whether it still lists the right variables is content, not shape. |
-| `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No — a library, a CLI, a desktop app — → **not applicable**. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
+| `.env.example` **(conditional — does anything here *require* an environment variable to run?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No → **not applicable** — *typically* a library, a CLI or a desktop app, but **read those as evidence, not as the answer**: a CLI that will not start without an API key is a Yes, and answering from the kind is the defect § *Conditional rows* opens on. Cannot tell → **unknown**, resolved in step 2's round. **A build-time variable is not a Yes, and "here" stops at this repo** — § *Conditional rows* owns both, with `BIRKO_SRC` as the worked example. Present → **leave it**; whether it still lists the right variables is content, not shape. |
+| `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No → **not applicable** — *typically* a library, a CLI or a desktop app, but **read those as evidence, not as the answer**: a CLI shipped as a hosted container job is a Yes. Cannot tell → **unknown**, resolved in step 2's round. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. |
 | Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. |
 | CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack — **but only if the repo can build in isolation**; see *CI a repo cannot pass* below. |
@@ -125,12 +125,23 @@ A row marked **(conditional)** is part of the layer for **some projects and not 
 its own condition. Where the condition does not hold, the honest state is **not applicable**, and the row
 is reported that way rather than quietly dropped from the survey.
 
-**The condition is not always the kind, and assuming it is was a real defect.** `.env.example` and
-`Dockerfile` turn on the project kind; `LICENSE` turns on **licensing posture** — a proprietary service
-and an open-source service are the same kind and want opposite answers. A marker that said
-*kind-conditional* invited an agent to reach for the kind, get "library", and report an unlicensed
-open-source library **not applicable** — laundering away the single gap this section was written for.
-Each row therefore states the condition it turns on, and the evidence that settles it.
+**The condition is never the kind, and assuming it is was a real defect — twice.** No row above turns on
+the project kind. `.env.example` and `Dockerfile` turn on questions about what this repo's components
+*do*; `LICENSE` turns on **licensing posture** — a proprietary service and an open-source service are the
+same kind and want opposite answers. A marker that said *kind-conditional* invited an agent to reach for
+the kind, get "library", and report an unlicensed open-source library **not applicable** — laundering away
+the single gap this section was written for.
+
+**The second time it was this paragraph, and that is why the sentence above is absolute.** It used to read
+*"`.env.example` and `Dockerfile` turn on the project kind"* — contradicting the two rows it names and
+§ *Ask the artifact's own question* below — and [[new-project]] was still gating both on a
+`service / API / web / worker` list long after those rows became questions, citing this file as the
+authority both now matched. A repo of kind `other`, or the **desktop app** kind the intake enum does not
+offer, therefore got no `.env.example` from the scaffolder while [[adopt-project]] walking the same row
+called it `missing` — the two front doors disagreeing about one repo, which is the failure layer parity
+exists to prevent. An inventory that half-licenses kind-gating produces a creator that fully does it, so
+each row states the condition it turns on and the evidence that settles it, and kind enters only as
+evidence toward an answer (§ *Kind is evidence toward that question*), never as the answer.
 
 **Why they are rows at all, rather than left to the scaffolder:** the alternative was to keep them out
 of this inventory on the grounds that they are conditional — which is what the file did until
