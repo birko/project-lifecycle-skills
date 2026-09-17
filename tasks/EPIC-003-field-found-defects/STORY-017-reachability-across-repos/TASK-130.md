@@ -130,15 +130,49 @@ So (1) unless measurement says otherwise — but the cost is real and belongs in
 178 directory probes, needs a bound on how far it looks, and needs id-collision handling (two sub-repos
 can both mint `TASK-007` with no shared counter).
 
+## Decision — 2026-09-17
+
+**An opt-in combined view. The lists stay where they are.**
+
+Chosen: collection verbs gain an **explicit across-projects switch**. Nothing changes about where a task
+is filed or how a single project behaves; asking for the combined view is the only thing that reaches
+other repos, and not asking is the default.
+
+**The polyrepo trade, named** (AC1 requires the counter-argument, not just the choice): centralising —
+moving all seven trees into the aggregator — was rejected because someone cloning `Symbio` alone must get
+Symbio's 720 tasks with it. Centralising makes one repo a single point of failure for every other repo's
+planning and destroys the repo-is-self-contained property that motivates a polyrepo at all. The measured
+data reinforced it: six consumer products **already** keep their own trees and are already doing the right
+thing, so centralising would be undoing working practice to fix a missing view.
+
+**Also rejected: rolling up implicitly, with no switch.** Tempting because it needs no flag and "just
+works". Rejected because it makes every ordinary `/tasks` run in a consumer repo reach outside that repo —
+changing what the default view means for the six projects that are currently correct and self-contained,
+to serve a question only occasionally asked. An opt-in costs one flag; an implicit roll-up costs every
+project its independence from the others.
+
+**Scope is declared; membership is recomputed.** Which directory the siblings live under is *not*
+determined by anything in the repo — a walk could stop at `../`, `../../`, or the drive root — so it is a
+**declaration** in `.config.yml`, per § *Read the declaration, never infer it*. Whether a given sibling
+*has* a `tasks/` tree **is** determined by the filesystem and must be **recomputed every run**, per
+§ *A derived state must never be cached as a decision* — a project that gains a task tree tomorrow must
+appear without anyone re-declaring anything. Measured cost makes this affordable: ~200 ms over 365 repos.
+
+**Ids are repo-qualified, and that arm was settled by measurement, not preference** — 343 colliding ids
+across the seven trees make detect-and-report useless (343 findings every run, muted by the second).
+
 ## Acceptance criteria
 
-- [ ] 1. Decide between roll-up and centralisation, **in writing, with the polyrepo trade named**. A
+- [x] 1. Decide between roll-up and centralisation, **in writing, with the polyrepo trade named**. A
       decision recorded as "we chose roll-up" without the counter-argument is not a decision.
-- [ ] 2. If roll-up: the aggregator's dashboard shows sub-repo tasks, labelled with their owning repo, and
-      `pick`/`status` can reach them.
-- [ ] 3. **Id collision is answered explicitly.** Sibling repos have no shared counter. Either ids become
-      repo-qualified for display, or the roll-up detects and reports a collision rather than silently
-      showing one of two tasks.
+      **Settled 2026-09-17 — see `## Decision` above: opt-in switch, both rejected options recorded.**
+- [ ] 2. The combined view shows every declared sibling's tasks, labelled with their owning repo, and is
+      reachable from the collection verbs. **It is opt-in**: without the switch, behaviour in any single
+      repo is byte-for-byte what it is today — that is the arm that protects the six already-correct trees.
+- [ ] 2b. **Scope is declared, membership recomputed.** The sibling root is a `.config.yml` field; whether
+      each sibling has a `tasks/` tree is probed every run, never cached.
+- [ ] 3. **Ids are repo-qualified for display.** Settled by measurement (343 collisions) rather than left
+      as a choice: detect-and-report was the other option and is not viable at that volume.
 - [ ] 4. ⚠ **A test with more than one sub-repo, at least one of which has no `tasks/` folder at all.**
       The 177-of-178 case *is* the common case, so a fixture where every repo has tasks measures the
       rare shape and would pass over the real bug.
