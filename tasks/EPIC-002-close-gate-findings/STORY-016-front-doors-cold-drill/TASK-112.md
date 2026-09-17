@@ -35,6 +35,19 @@ should look again."* A report list that names only the pending one invites exact
 will not misreport it — the defect is that the list contradicts the paragraph introducing it, and a
 reader trusting the list over the catch-all gets it wrong.
 
+### Note added 2026-09-17 by TASK-138 — the entry now has two sub-cases
+
+[[TASK-138]] made `not applicable` reachable by two different routes, and the scaffolder's closing
+checklist now distinguishes them: a No **declared** (the user or the repo said so) stays silent, while a
+No **derived** by classifying components gets a line naming what carried it — because a derived No is the
+only state that is otherwise invisible, `not applicable` being settled and therefore suppressing the fill,
+the offer and any re-ask.
+
+**Not folded into this task** — that is the scaffolder's reporting surface and this is the adopter's. But
+when this task adds the missing `not applicable` entry, the entry should carry the same split rather than
+a single line, or the two front doors will describe one state in two different shapes. See
+`skills/new-project/LAYER.md` § *Conditional rows*, the No-direction table.
+
 ## Acceptance criteria
 
 - [ ] The report list carries `not applicable` with its own line, distinct from `not applicable yet`

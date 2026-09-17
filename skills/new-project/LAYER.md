@@ -170,6 +170,46 @@ demanded one kind would have had to pick one and discard the rest. So each row a
 repo can answer directly — *does anything here require an environment variable to run?*, *is anything here
 deployed as a running service?* — and **any** component answering yes settles it.
 
+**The two directions are not symmetric, and the No is the one that has to be spelled out.** One component
+answering *yes* is enough, because the artifact is then owed whatever the others do. **No is a claim about
+every component**, so it requires that every component was actually *classified* — and *"no component
+answered yes"* is **not** the same sentence as *"every component answered no"*. They differ exactly when
+some component could not be classified at all, which is the case that matters:
+
+| What you found | State |
+|---|---|
+| at least one component answers **yes** | **Yes** — settled, whatever the rest do |
+| every component was classified and each answers **no** | **No** → `not applicable`, settled |
+| no component answers yes, but **one or more could not be classified** | **`unknown`** — name the component and what was missing, and ask in step 2's round |
+| the repo has **no components of its own** | **No** → `not applicable` (§ *A repo with no components of its own*) |
+
+**Read row 3 twice, because it is the one every reader reconstructs from scratch**, and the failure there
+is to collapse it into row 2. Reaching `not applicable` in row 3's situation is not a near-miss — it is the
+*worst* outcome the row can produce, and the one nothing else will surface: `not applicable` is
+**settled**, so it suppresses the fill, the offer and any later re-ask. A wrong **Yes** gets looked at,
+because an artifact appears or a survey reports `missing`; a wrong **No** is invisible by construction.
+
+**So a No that was *derived* is reported, and a No that was *declared* is not.** Rows 2 and 4 are the
+derived ones — row 2 by classifying every component, row 4 because there are none to classify — and both
+get one line naming what carried the answer. **Row 4 is included deliberately**: an aggregator whose root
+holds only `docs/` and `tasks/` settles *both* conditional rows with no components at all, and excluding it
+would make the one repo shape with the least evidence behind its answer the one shape that reports nothing.
+A No the user stated, or the repo declares, stays silent — it was decided. (Row 3 produces `unknown`, never
+a No; it is reported through the `unknown` line, not this one.)
+
+**Where that line is printed is per door, and only one door has it today.** [[new-project]] step 6's
+closing checklist carries it. **[[adopt-project]] has no `not applicable` entry in its per-state report
+list at all** — see TASK-112 — so on the door where component classification actually happens, a
+derived No is currently still silent. Stated rather than implied, because this file is read by both and a
+promise made once reads as a promise kept everywhere.
+
+Measured on **the rows this section corrects**, not on this section — a cold drill of TASK-110,
+2026-09-17, which ran before this text existed and is what showed the No direction was missing: its runner
+reached the right No, justified it by naming each component's run mode, then said it was *"the judgement
+I'm least able to point at a sentence for"*, adding that it would have asked had the brief been vaguer. It
+was right on both counts and had to derive both. **This section itself is undrilled**; its drill is
+TASK-138's `## Human test plan`.
+
 **"Here" is the repository being surveyed — the git work tree whose root the survey resolved, and nothing
 outside it.** A component in a sibling directory is not evidence, however tightly this repo's build depends
 on it. The reason is what the answer is *for*: the layer is per-repo, so a `Dockerfile` a sibling needs is

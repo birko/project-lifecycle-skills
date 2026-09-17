@@ -9,14 +9,18 @@ _Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 55    |
+| todo         | —     | —       | 54    |
 | in-progress  | 3     | 8       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 84    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 43× P2 · 11× P3.
+`todo` by priority: 1× P1 · 42× P2 · 11× P3.
+
+## In review
+
+- [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) — cold drill written, not yet run
 
 ## In progress now
 
@@ -84,7 +88,7 @@ _None_
     - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
     - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced
     - [ ] [TASK-136](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-136.md) Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently
-    - [ ] [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
+    - [~] [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports — **review**
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
