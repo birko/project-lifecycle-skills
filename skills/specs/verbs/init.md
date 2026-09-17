@@ -50,6 +50,8 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
 6. **Write** `docs/specs/.map.yml` with the blessed areas, and **always write step 4's three coverage keys** beside `areas:` — `coverage:`, `tracked-files-at-scan:` and `coverage-drift:` (a list of paths, `[]` when none).
 
+   **On the render branch, `areas:` and `ignore:` are values this run supplies, not lines it copies.** The template ships `areas: []` and its `ignore:` line commented out, because a render establishes neither — so write step 3's proposed ignore list as a **live** key here, and leave the commented examples where they are. Carrying them forward instead is how a .NET/JS list reached a Python repo.
+
    **Whether to re-render is decided by the file's existence, and by nothing else.** No `.map.yml` on disk → render [templates/map.yml](../templates/map.yml). A file on disk → this step is an **edit**: apply exactly the changes this run blessed — areas added, renamed, or removed with the user's consent (step 2) — plus any `ignore:` entries step 4's reconciliation added, plus the three coverage keys — and leave everything else as it stands.
 
    **Do not key this on the word "fresh".** [SKILL.md](../SKILL.md) calls a map with an empty `areas:` list a *fresh discovery*, and it is — there are no areas to propose a delta against. But the **file exists**, usually carrying a seed note saying when and why it was created and a stack-appropriate `ignore:` list somebody chose. This repo's own map is that shape. A fresh *discovery* over an existing *file* is still an edit, and reading "fresh" as licence to re-render deletes the seed's own reasoning — the precise loss this rule exists to prevent, arriving through the one door left open.

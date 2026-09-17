@@ -21,15 +21,25 @@
 #                    trace of what was judged. [] = looked, found none. Absent = not computed.
 coverage: unverified
 
-areas:
-  - name: example-capability          # kebab-case → docs/specs/example-capability.md
-    title: Example capability
-    sources:                          # globs, project-root-relative
-      - src/Example*.cs
+# areas — discovered, never copied. An entry here claims a capability was found in THIS
+# codebase, which a render establishes for no one, so the list ships empty: SKILL.md reads an
+# empty `areas:` as *absent* everywhere, which is the one state a render can make true.
+# /specs init step 6 writes the blessed areas over it. Shape of an entry:
+#   - name: example-capability        # kebab-case → docs/specs/example-capability.md
+#     title: Example capability
+#     sources:                        # globs, project-root-relative, matched as `:(glob)` pathspecs
+#       - src/Example*.cs
+areas: []
 
-ignore:                               # never reported as unmapped
-  - "**/bin/**"
-  - "**/obj/**"
-  - "**/node_modules/**"
-  - "**/*.test.*"
-  - "**/*Tests*/**"
+# ignore — never reported as unmapped. STACK-SPECIFIC, so the line ships commented out and this
+# comment stays: whoever renders this writes globs for the stack in front of them. /specs init
+# step 3 proposes them from the scan; [[new-project]] seeds them from the chosen stack. Copying
+# the examples below into a project they do not fit is the failure this shape exists to stop —
+# measured, a .NET/JS list rendered verbatim into a Python repo. Absent = nothing exempt yet,
+# which over-reports unmapped paths rather than hiding them, so it fails loud.
+# ignore:
+#   - "**/bin/**"                     # .NET build output
+#   - "**/obj/**"                     # .NET intermediates
+#   - "**/node_modules/**"            # JS dependencies
+#   - "**/*.test.*"                   # test files — co-located naming
+#   - "**/*Tests*/**"                 # test projects — .NET naming
