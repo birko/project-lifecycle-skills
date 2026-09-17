@@ -9,17 +9,18 @@ _Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 52    |
+| todo         | —     | —       | 53    |
 | in-progress  | 3     | 8       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 80    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 42× P2 · 8× P3.
+`todo` by priority: 2× P1 · 42× P2 · 9× P3.
 
 ## In review
 
+- [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) — cold drill written, not yet run
 - [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) — cold drill written, not yet run
 
 ## In progress now
@@ -60,13 +61,14 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (43/74 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (43/76 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/14)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/15)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
     - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
     - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
+    - [ ] [TASK-135](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-135.md) `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-030 `close`'s single-branch SHA backfill instructs an impossible amend
     - [x] TASK-039 The dashboard template has no slot for the todo-by-priority breakdown
@@ -89,7 +91,7 @@ _None_
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
-  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/8)
+  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/9)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
     - [x] TASK-087 A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
     - [ ] [TASK-088](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-088.md) Nothing says whether one source file may belong to two capability areas
@@ -97,6 +99,7 @@ _None_
     - [ ] [TASK-111](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-111.md) `regen.md` quotes a status-comment format the task template no longer emits
     - [ ] [TASK-128](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-128.md) Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - [ ] [TASK-129](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-129.md) A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding
+    - [ ] [TASK-134](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-134.md) `/specs init` step 1's meta-root ask has no question text and no unattended path
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (7/11)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
@@ -139,7 +142,7 @@ _None_
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
     - [x] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
     - [x] [TASK-126](EPIC-002-close-gate-findings/TASK-126.md) Sweep every template for a shipped value its own skill says must be declared or derived
-    - [ ] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
+    - [~] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers — **review**
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
 - **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (0/3 tasks done)
