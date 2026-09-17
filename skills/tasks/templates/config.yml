@@ -19,3 +19,16 @@ mode: local                    # local | hybrid
 #   project: SUP                 # jira only (project key)
 #   default-labels:
 #     - agent-pickable
+
+# Polyrepo scope — ONLY for a repo that sits in a family of sibling projects, each with its own
+# `tasks/` tree. It declares WHERE the siblings are; it never lists which ones have tasks.
+#   root:  the directory whose immediate children are the sibling projects, relative to this repo.
+# The line ABSENT (this comment left in place) means "not a polyrepo", which is the normal case —
+# every collection verb then behaves exactly as it does today. Absence is never a gap to fill.
+# Only the `--across` switch reads this; without it nothing here changes any output.
+# Scope is declared here because nothing in the repo determines it — a walk could stop one level up
+# or at the drive root. Which siblings actually HAVE a tasks/ tree is probed fresh on every run and
+# is deliberately not recorded here: a project that starts tracking tasks tomorrow must appear
+# without anyone editing this file.
+# siblings:
+#   root: <relative path to the folder holding the sibling projects, e.g. ..>

@@ -7,6 +7,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 1. **Find task root**.
 
 2. **Parse args**:
+   - `--across` — **refused here, and say why rather than ignoring it.** Picking marks a task
+     `in-progress`, may cut `task/TASK-NNN`, and starts editing — all **writes**, in a repo the user did
+     not invoke from. `--across` is a read-only view by construction (see the router and
+     [Collection pass](../SKILL.md#collection-pass) step 1b). Answer with the combined view's own
+     remedy: *"`--across` is read-only; run `/tasks --across` to see every project, then pick from inside
+     the repo that owns the task."* Ids there are printed `<repo>/TASK-NNN`, so the owning repo is
+     already named.
    - `--status` — default `todo` (don't include blocked unless asked)
    - `--priority` — filter (default: all)
    - `--assignee` — filter (default: all)

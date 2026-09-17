@@ -7,6 +7,28 @@ Analyze every task and report duplicates, mergeable/splittable items, stale work
 - `--fix` — after showing findings, walk through applying the **safe** ones interactively (one confirmation each). Without it, the verb is report-only.
 - `--scope <EPIC-NNN|STORY-NNN>` — restrict the audit to one subtree (default: whole backlog).
 - `--checks <a,b,...>` — run only named checks (default: all). Names below.
+- `--across` — audit every project of a polyrepo, not just this repo
+  ([Collection pass](../SKILL.md#collection-pass) step 1b). Ids are reported `<repo>/TASK-NNN`.
+  - **`--fix` is refused together with `--across`** — a fix edits files, and editing another repo's tasks
+    from this one is the write that `--across` deliberately is not. Say so rather than silently fixing
+    only locally, and **suppress the report footer's `--fix` offer** in this mode: advertising a flag the
+    same run refuses is worse than not offering it.
+  - **`--scope` is refused together with `--across`.** A scope id is bare, and this same mode exists
+    because bare ids collide — `--scope EPIC-002` would match several projects' subtrees or one of them
+    arbitrarily. Ask for the repo-qualified form or a single-repo run.
+  - ⚠ **Every check still runs *within* one project. Nothing resolves across a repo boundary**, and this
+    is the load-bearing half of across-mode for this verb: the checks are defined over "the collected
+    set", so merging first silently changes what they mean.
+    - **`broken-links`** — a dangling `depends-on: TASK-004` must **not** be satisfied by another
+      project's `TASK-004`. With 343 ids minted in more than one tree, merging first **suppresses real
+      findings in the invoking repo**, which is the opposite of what an audit is for.
+    - **`cycles`** — walk each project's `depends-on` graph separately, or invent an A→…→A that spans
+      unrelated products.
+    - **`duplicates` / `mergeable`** — a cross-project pair is not actionable: the printed action
+      ("merge X into Y", "reparent under EPIC-NNN") is a write across a boundary this mode forbids.
+      Report cross-project similarity, if at all, as an observation that names both repos — never as a
+      proposed edit.
+    - **`orphans`** — resolve `feature:` against **that project's own** `docs/features/`, never another's.
 
 ## Steps
 

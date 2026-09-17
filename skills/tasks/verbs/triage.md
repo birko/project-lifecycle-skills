@@ -4,9 +4,18 @@ Rebuild `tasks/README.md` from the current state of every file in `tasks/`.
 
 This verb is also chained automatically by `new`, `pick`, `close`, `import`, `export`, and `migrate` after they touch files. When called directly, it just refreshes the dashboard and prints a one-line summary.
 
+## Args
+
+- `--across` — **refused here, and the refusal is the feature.** This verb writes `tasks/README.md`, a
+  **per-repo generated file**; no repo owns a dashboard of seven, and rendering one repo's file from
+  another's contents is exactly the drift the generated-file ownership rule prevents. Say so in one line
+  and point at the bare `/tasks --across` snapshot, which renders the same view to stdout and writes
+  nothing. Declared rather than ignored so a caller gets an answer instead of a dashboard that quietly
+  covers one repo while claiming to cover the family.
+
 ## Steps
 
-1. **Run the [Collection pass](../SKILL.md#collection-pass)** — gives you the file list, parsed frontmatter, status buckets, `inProgressTasks[]`, `byParent` map, and mode/provider info. Don't duplicate the enumeration here.
+1. **Run the [Collection pass](../SKILL.md#collection-pass)** — gives you the file list, parsed frontmatter, status buckets, `inProgressTasks[]`, `byParent` map, and mode/provider info. Don't duplicate the enumeration here. **Always single-repo** — see § Args.
 
 2. **Build the counts table** from the buckets — epics × statuses, stories × statuses, tasks × statuses. Use `—` for status/level pairs that don't apply (e.g. epics have no `todo` or `blocked`).
 

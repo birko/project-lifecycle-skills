@@ -27,6 +27,19 @@ Invoked as `/roadmap [args]`:
 - `/roadmap --check` — divergence audit only (skip the full tree); fastest "are we in sync?" answer.
 - `/roadmap EPIC-NNN` — scope the render to one epic.
 - `/roadmap --fix` — after the audit, *propose* the concrete reconciliation edits (does not apply them; hand off to [[tasks]] / [[feature]] `decide` to action). Never auto-edits — drift fixes are judgment calls (e.g. approving decisions, flipping a feature to `done`).
+- `/roadmap --across` — render every sibling project of a polyrepo, not just this repo. Passed straight
+  through to [[tasks]]' [Collection pass](../tasks/SKILL.md#collection-pass) step 1b, which owns the
+  declared root, the one-level bound and the `<repo>/TASK-NNN` id qualification — **read it there; do not
+  restate the walk here.** Each sibling's `docs/features/` joins to that sibling's own tasks only:
+  **the cross-tree join is per repo, and never across two.** A feature in one project and a task in
+  another are not a pair, and treating them as one would manufacture divergence findings out of two
+  unrelated trees.
+  **A project with `docs/features/` and no `tasks/` still renders here**, unlike in [[tasks]]' own
+  across-mode: this skill's contract is *both* trees, and its single-repo path already handles a repo with
+  only one of them. So widen the participation probe to `tasks/` **or** `docs/features/` for this verb —
+  a features-only project is invisible otherwise, which is the drift a roadmap exists to catch.
+  **`--fix` is refused together with `--across`**, for the reason [`audit`](../tasks/verbs/audit.md) gives
+  for the same pair: its proposals are edits, and across-mode is read-only.
 
 If neither tree exists, print one line: `No tasks/ or docs/features/ in this project.` and exit.
 

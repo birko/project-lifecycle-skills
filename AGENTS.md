@@ -259,6 +259,23 @@ The skills *are* the product, so their prose is the user interface. This subsect
   `/fix-next`), and the ranking paragraph names the key that actually broke the tie. Degeneracy is normal;
   silent degeneracy is the defect. Trade-off and rejected alternatives:
   [ADR 0008](docs/adr/0008-declare-a-ranking-key-rather-than-infer-it.md).
+- **A widening switch is opt-in, read-only, and refused by name where it cannot apply.** Where a verb can
+  reach beyond the repo it was invoked in — today `/tasks --across`, which collects a polyrepo's sibling
+  projects — three things travel together and dropping any one re-creates the defect the switch was
+  built to fix. **Opt-in:** the default run must be byte-for-byte what it is today, because sibling
+  projects are independent on purpose and a verb that reaches out unasked takes that from every project
+  at once to answer an occasional question. **Read-only:** a view may cross a repo boundary, a write may
+  not — `pick` and `triage` therefore *refuse* the flag and **declare the refusal in their own files**,
+  since a flag silently ignored by one verb is worse than one it never had (the caller reads the promise,
+  not the scope — the same failure § *A flag that declares an absent capability* measures for
+  `--unattended`). **Qualified on output:** ids from different repos genuinely collide — measured on a
+  real 365-repo family, **343 ids exist in more than one tree and five exist in all seven** — so the
+  combined view prints `<repo>/TASK-NNN` and never renumbers a file. And the scope/membership split is
+  the two rules above applied together: **where** to look is a declaration (`siblings.root` in
+  `.config.yml`, since nothing in a repo determines whether siblings are one level up or at the drive
+  root), while **which** siblings participate is derived from the filesystem and so is recomputed every
+  run, never listed. *No record: a rulebook entry whose footprint is the prose it shapes; the decision
+  that produced it, with both rejected alternatives, is on TASK-130.*
 - **A format one skill reads is a contract the writing skill must state too**, and where the contract is a **flag**, the lint enforces it (check 4: every flag passed to a skill verb in `skills/` must name a flag the receiving verb declares — **every** flag on the invocation, and arguments may sit between the verb and the flag, so `/tasks move <ids> --to` and the `--no-plan` in `/tasks new task --from-feature FEATURE-NNN --no-plan` are both checked. Existence only, never semantics, and matched **anchored**, so `--unattend` does not satisfy a receiver declaring `--unattended`. The narrower `/skill verb --flag` form this sentence used to describe left 8 of 39 real invocations unchecked while still claiming enforcement). When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
 - **A layer artifact that would lie when empty is declared `(lazy)`, and nothing creates it.** Most of the
   universal layer is created on sight, so the exception needs saying: where an empty instance would make a

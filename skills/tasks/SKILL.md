@@ -34,6 +34,28 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 If user types `/tasks` with no verb → render the **status snapshot** (see below).
 If user types `/tasks help` → print the verb table above and exit.
 
+**`--across`** — widen a *reading* verb to the sibling projects of a polyrepo, per § *Collection pass*
+step 1b. Accepted by the bare `/tasks` snapshot, [`audit`](verbs/audit.md), and [[roadmap]].
+**Every other verb rejects it rather than ignoring it** — `show`, `new`, `close`, `move`, `spawn`,
+`intake`, `cancel`, `block`, `import`, `export`, `migrate`: print
+`--across is not supported by this verb; it applies to /tasks, audit and roadmap.` and do nothing else.
+A flag silently swallowed by eleven verbs is the exact failure § *A flag that declares an absent
+capability* records — the caller reads the promise, not the scope — and a `show` invocation carrying the
+flag is both plausible and, given the measured id collisions, ambiguous by construction (which repo's
+`TASK-012`?).
+
+**The rule lives here, once, rather than as a declaration in each of the eleven files.** That is
+deliberate: a twelfth verb added tomorrow is covered by a blanket rule and would be missed by a list.
+`pick` and `triage` are stated separately because they refuse it for *reasons of their own* — a write
+crossing a repo boundary — which a blanket sentence cannot carry.
+
+**Refused with a reason by two more**, because a view and a write are different things:
+- **`triage`** owns `tasks/README.md`, a **per-repo generated file** — no repo owns a dashboard of seven,
+  and writing one repo's file from another's contents is the drift that rule exists to prevent. Across-mode
+  renders to stdout instead; say so rather than silently writing.
+- **`pick`** would cut a branch and edit files in a repo the user did not invoke from. Across-mode
+  **names the owning repo** so a human can go there and pick it normally.
+
 ## Status snapshot (bare `/tasks`)
 
 Compact terminal view — counts, what's active, what's next. Renders to stdout only; does not touch `tasks/README.md` (that's `triage`'s job).
@@ -57,13 +79,84 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
      TASK-NNN  <title>  <priority>  <assignee>
      ...
    ```
+2b. **In `--across` mode**, the header names the declared root and how many projects participated, and
+   every id in the body is rendered `<repo>/TASK-NNN`. A project without a `tasks/` tree is counted in
+   the "of N" and never listed as missing. The header shape, written out so it is not re-invented:
+
+   ```
+   tasks/  (local) · root .. → family/ · 4 projects, 2 with task trees
+   ```
+
+   **Modes can differ between projects, so the slot renders the invoking repo's mode and says when the
+   others disagree** — `(local; 1 of 2 differs)`. One merged header cannot be true for every row, and
+   silently printing the first repo's mode makes it false for the rest.
+   **Without the switch, print nothing about any of this** — no scope line, no "siblings available" hint,
+   even when `siblings.root` *is* declared. The default output stays byte-for-byte what a repo with no
+   declaration produces. It is tempting to add one helpful line, and that line is a change to the default
+   view of every project in the family; the promise that the default is untouched is the whole thing
+   protecting projects that are already correct. Someone who wants the wider view asks for it.
 3. Append the `features/` slice — its shape and divergence rules are owned by [[roadmap]] (§ *Render — compact slice*); render that slice, don't re-derive the join here. In-review tasks are verification debt — surface them, don't bury them. Omit the `review:` line and "In review" section when no task is in review; omit the whole `features/` block when `docs/features/` doesn't exist. Suppress trailing zeros in the priority breakdown.
 
 ## Collection pass
 
 Shared by `triage` and the bare-`/tasks` status snapshot. Single-pass enumerate + read + bucket — keep it cache-friendly.
 
+**Default scope is one repo, and `--across` is the only thing that widens it.** Step 1b below is the
+entire difference; every other step is unchanged, and a run without the switch must produce
+byte-for-byte what it produces today. That is not a nicety — a polyrepo's sibling projects are
+independent on purpose, and a collection verb that reaches outside its own repo unasked takes that away
+from every project at once to answer a question only occasionally asked.
+
 1. **Find task root** via shape detection.
+1b. **`--across` only — widen to the sibling projects.** Skip this step entirely otherwise.
+   - **Read `siblings.root` from `.config.yml`.** **A relative root resolves against the repo root — the
+     parent of `tasks/` — never against `tasks/` itself.** State it because the two readings produce
+     entirely different reports and nothing else in the file settles it: from `family/alpha`, `root: ..`
+     means `family/`, not `family/alpha`.
+   - **Absent → print exactly this line, first, before the header, then continue single-repo:**
+     `siblings.root is not declared in tasks/.config.yml — continuing single-repo; --across did not widen.`
+     Never infer the root from the directory layout: nothing in a repo determines whether "siblings" means
+     one level up or the drive root, which is exactly why it is a declaration (§ *Read the declaration,
+     never infer it* in a seeded project's guide). Sibling folders visibly sitting next to this one are
+     **not** evidence of the root — that is the inference this rule exists to forbid.
+   - **The invoking repo always participates, and is added explicitly rather than assumed to fall out of
+     the probe.** It is an immediate child of the root only when the root is *above* it (`root: ..`); an
+     **aggregator** declaring `root: .` is the *parent* of the probed children and is never returned by
+     the probe at all — which would silently drop exactly the cross-cutting epics § *Shape detection*
+     sends `--across` here to surface. So: probe the children, then **union the invoking repo in**, and
+     de-duplicate. The header counts **projects, not "siblings"** — a repo is not its own sibling, and
+     counting it as one made the number read as a contradiction.
+   - **Probe each *immediate* child of that root for a `tasks/` directory** — and **recompute this every
+     run**. Do not cache which projects participate, and do not let `.config.yml` list them: a project
+     that starts tracking tasks tomorrow has to appear without anyone editing a file, and a remembered
+     list goes wrong precisely when it changes.
+   - **Probe for `tasks/`, never for `tasks/.config.yml`.** § *Shape detection* steps 2-3 resolve a task
+     root from `*.sln`/`.git` for a tree that has **no** config — a pre-skill or older-version tree, which
+     `init`'s own edge cases call out as common. Gating on the config file would exclude a real, populated
+     backlog **and then count it under "with task trees" as having none**, which is worse than excluding
+     it loudly. It would also contradict the next bullet, which states the rule in terms of `tasks/`.
+     A participating project with no `.config.yml` simply has no declared `mode`; say so rather than
+     assuming one.
+   - **One level, never recursive.** The bound is for predictability, not speed: measured over a real
+     365-repo family the probe is ~200 ms, while an unbounded walk from a mistyped root is a disk crawl
+     with no obvious cause.
+   - **A declared root that does not resolve is reported, never worked around.** Missing, not a directory,
+     or resolving outside the filesystem root: print
+     `siblings.root '<value>' does not resolve to a directory — continuing single-repo.`
+     and continue single-repo. Do not fall back to a parent, and do not retry at another depth — a typo'd
+     root is the hazard the bound above is named for, so handle it here rather than letting the bound
+     quietly absorb it. A root that resolves but holds **no** project with a `tasks/` tree is a different,
+     legitimate outcome: report `0 projects with task trees` and print the invoking repo's own view.
+   - **A project with no `tasks/` is not participating — it is not an error and not a gap.** In a real
+     family this is the overwhelming *majority*: measured, **358 of 365 repos have no task tree** and only
+     7 do. Treating that as a finding produces a report which is 98% noise; treating it as a crash makes
+     the switch unusable.
+   - Run steps 2-6 **per participating repo**, then merge, tagging every record with its owning repo.
+   - **Qualify every id on output: `<repo>/TASK-NNN`.** Sibling repos have no shared counter, so bare ids
+     genuinely collide — measured on a real family, **343 ids are minted in more than one tree and five
+     exist in all seven**. That volume is why the alternative (detect and report collisions) was rejected:
+     343 findings a run is a muted check. **Qualification is display-only — never renumber a task in a
+     file**; independent numbering is the property being preserved, not a defect being worked around.
 2. **Glob** in one pass:
    - `tasks/EPIC-*/EPIC.md`
    - `tasks/EPIC-*/STORY-*/STORY.md`
@@ -133,6 +226,13 @@ A project's own `CLAUDE.md` may override placement — e.g. an aggregator repo t
 **cross-cutting epics for a polyrepo family** documents that rule locally (its epics list the
 affected sub-projects in `affects:` frontmatter); each sub-repo's own work stays in its own
 `tasks/` via the default walk-up. The auto-loaded project guide wins over this default.
+
+**That split is collectable, and `--across` is how.** A rule telling people to file in N places while
+every verb reads one of them is a rule the tool cannot execute — so the two halves are stated together:
+work is filed per sub-repo, and a combined view is asked for with `--across`, which reads
+`siblings.root` from `.config.yml` (§ *Collection pass* step 1b). **Opt-in, and read-only.** Measured on
+a real 365-repo family: the per-repo half is already being followed by every independent product in it,
+and the aggregator half is executing as written — what was missing was only the view across them.
 
 ## Mode (local | hybrid)
 

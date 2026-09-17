@@ -13,10 +13,10 @@ _Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 3     | 8       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 83    |
+| done         | 0     | 5       | 84    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 43× P2 · 10× P3.
+`todo` by priority: 1× P1 · 43× P2 · 11× P3.
 
 ## In progress now
 
@@ -142,9 +142,10 @@ _None_
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (1/4 tasks done)
-  - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (1/4)
-    - [ ] [TASK-130](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-130.md) `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (2/5 tasks done)
+  - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
+    - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
+    - [ ] [TASK-139](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-139.md) `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
