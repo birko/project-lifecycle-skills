@@ -59,9 +59,15 @@ A `status: todo` TASK is in the pool when **either** holds:
 - it sits under an EPIC stamped `kind: review-intake`.
 
 Both are written by [`/tasks intake`](../tasks/verbs/intake.md). Nothing here infers a defect from an
-epic's title or a task's prose — **the pool is explicit or it doesn't exist.** (A field-found bug filed
-by hand joins the pool the moment someone puts its finding id in `findings:`; that's the whole
-onboarding cost.)
+epic's title or a task's prose — **the pool is explicit or it doesn't exist.**
+
+**A defect found by using the product, with no review pass behind it, gets in through
+`/tasks new task --from-field`**, which mints a `FIELD-NNN` into `findings:`. Naming the verb matters more
+than it looks: this used to read *"joins the pool the moment someone puts its finding id in `findings:`"*,
+which assumed an id the reporter does not have — every prefix on [intake](../tasks/verbs/intake.md)'s table
+named a **pass**, and a field report has none. So the opt-in named a door with no key cut, and the failure
+was silent in the worst way: a real defect sat unranked while `--loop` reported the pool empty, *truthfully*.
+An already-filed task joins the same way — mint the id by that route and write it in.
 
 Exclude: unmet `depends-on`, `status: blocked`, and anything whose acceptance is *"decide X"* — a
 decision task needs the user and can't run unattended. Surface those in the closing report instead.

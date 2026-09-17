@@ -54,6 +54,7 @@ different source of work.
    | `SH-*` | [[specs]] harvest — an unexplained behavioral change in a regen diff |
    | `VC-*` | [[verify-conventions]] — adherence |
    | `DRILL-*` | a **cold drill** — the prose executed by a reader denied the expected answer ([[populate-tests]] § *The cold drill*) |
+   | `FIELD-*` | **no pass at all** — the product failing in ordinary use. Minted by [`new`](new.md)'s `--from-field`, not by this verb |
 
    **This table is the only list of prefixes.** A prefix names the *pass* that produced the finding, so a
    new source gets a row here and nothing else changes — `templates/TASK.md` and [SKILL.md](../SKILL.md)
@@ -61,8 +62,22 @@ different source of work.
    already minted such ids: a drill produces findings by **execution**, which none of the four review
    passes above describes, so remapping them would have filed them under a pass that never ran.
 
+   **`FIELD-*` is the row that breaks the "names a pass" shape, deliberately.** A defect found by *using*
+   the product has no sweep behind it — no reviewer, no harvest, no drill brief — so before this row every
+   available prefix required a pass to have run. [[fix-next]] § Step 1 told such a bug to join the pool by
+   putting "its finding id" in `findings:`, which named a door with no key cut: there was no id and nothing
+   issued one, so a genuine field defect could be worked only when a human named it. Borrowing an existing
+   prefix was the tempting alternative and is worse — `CR-*` on a bug nobody code-reviewed makes the
+   provenance the prefix exists to carry a lie.
+
    Number within the pass (`CR-1`, `CR-2`, …). If `--epic` targets an existing intake epic, continue
    its numbering rather than restarting — grep the epic's tasks' `findings:` lists for the current max.
+
+   **`FIELD-*` numbers tree-wide instead, because it has no pass to number within.** Field reports arrive
+   one at a time over months, not as a batch, so there is no epic or pass to scope a counter to — grep the
+   whole task tree's `findings:` lists for the current max `FIELD-NNN` and increment, zero-padded to three
+   digits. Scoping it to an epic would restart the count in each one and collide the moment two field
+   defects landed under different parents.
 
 3. **Triage before filing — not every finding is work.** Walk each one:
    - **Real defect / real adherence gap** → it becomes work (step 4).

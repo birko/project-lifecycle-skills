@@ -245,7 +245,10 @@ non-obvious rules travel with this:
     and `/fix-next` could see **2** of them. Nothing was wrong with the tasks; the container put them
     outside the verb built to drain them.
   - **So the routing has two arms, and the second is not a loophole.** A **review finding** goes into a
-    `kind: review-intake` epic, or carries its `findings:` id, or both. **Work that is not a finding** —
+    `kind: review-intake` epic, or carries its `findings:` id, or both — and **a finding from the field
+    rather than from a pass** reaches that same arm through [`new`](verbs/new.md)'s `--from-field`, which
+    mints the `FIELD-NNN` no pass was there to issue. Without it the first arm was unreachable for every
+    field-found bug, however correctly written. **Work that is not a finding** —
     tree hygiene, scaffolding, a meta-task about the tree itself — legitimately stays loose, *and should*:
     filing it into an intake epic makes that pool misreport what it contains, and the pool's count is what
     tells you how much of a review is left.

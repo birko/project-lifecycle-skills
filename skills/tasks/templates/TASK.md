@@ -9,7 +9,8 @@ assignee: {{ASSIGNEE}}
 created: {{CREATED}}
 depends-on: []
 blocks: []
-# findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
+# findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
+# field use with no pass behind it at all. Prefixes: see /tasks intake
 findings: []
 pr: null
 github-issue: null

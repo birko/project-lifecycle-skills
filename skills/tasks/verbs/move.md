@@ -60,6 +60,10 @@ defect tasks, pool = 2.** They were re-homed by hand because no verb could.
   [`intake --adopt`](intake.md)'s job; this verb only changes where the task lives. The two compose —
   move the loose tasks under an epic, then adopt that epic — and keeping them apart is deliberate: a
   move is a tree operation, and most moves have nothing to do with review findings.
+  - **Where the task has no review pass behind it, `--adopt` has no id to backfill**, and the route is
+    [`new`](new.md)'s `--from-field` instead, which mints a `FIELD-NNN`. Worth saying here because this
+    verb is where a field-found defect usually surfaces — it was filed loose, someone re-homes it, and
+    "backfill `findings:`" reads as an available step when for that task nothing could supply the value.
 - **Change status.** A moved task keeps it. `close`, `block` and `cancel` own status, and a re-home is
   not a reason to re-open or re-close anything.
 - **Edit the task's body.** If the move makes its `## Context` wrong, that is an edit for whoever knows

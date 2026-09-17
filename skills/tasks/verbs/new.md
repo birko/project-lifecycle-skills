@@ -23,6 +23,26 @@ Interactive scaffold of a new task tree node.
        hypothesis until step 3 of [[fix-next]] re-verifies it.
      - The caller passes `--no-plan` for batch intake; respect it.
      - `--from-feature` and `--from-review` compose: a finding inside a feature's surface carries both.
+   - `--from-field [--source <ref>]` — this task records a defect found by **using** the product, with no
+     review pass behind it. Where `--from-review` receives ids a pass already minted, this one **mints**
+     the id, because no pass ran to do it. When present:
+     - Mint the next `FIELD-NNN` — grep every `findings:` list in the whole task tree for the current max
+       `FIELD-NNN`, increment, zero-pad to three digits — and set `{{FINDINGS}}` to `[FIELD-NNN]`. The
+       counter is **tree-wide, not per-epic**; [intake.md](intake.md)'s prefix table owns the prefix and
+       the reason the scope differs from every other one.
+     - Write the **field evidence** into `## Context`: what was being done, what happened instead, and the
+       repo, version or invocation it happened in. `--source` carries a reference if there is one (an issue,
+       a transcript, a sibling repo's path). The same standing rule as `--from-review` applies and matters
+       more here: **the task must stand alone**, because a field report's context is a conversation that
+       will be gone.
+     - Draft `## Acceptance criteria` from *what must hold once fixed*. A field report describes a symptom;
+       the criteria are the independent target, and [[fix-next]] step 3 re-verifies the mechanism before
+       anything is written.
+     - **Report the minted id in step 13's summary.** The whole point of the flag is that the task is now
+       in [[fix-next]]'s pool, and a caller who is not told the id cannot tell that from a task that merely
+       looks like a defect.
+     - Composes with `--from-review` only in the odd case where a review *later* confirmed a field report;
+       then both ids ride in `findings:`. Do not mint a `FIELD-NNN` for a finding a pass already numbered.
 
 1. **Find task root** — walk up from cwd: a directory containing `tasks/.config.yml` wins; else the project root (`*.slnx`/`*.sln`, then `.git`) → `<root>/tasks/`. A project's CLAUDE.md may override placement (aggregator repos hosting cross-cutting epics for a polyrepo family).
    - If `tasks/.config.yml` is **missing** → run the [mode detection flow](#mode-detection-flow) first. Write `.config.yml` before creating any task files.
@@ -68,7 +88,8 @@ Interactive scaffold of a new task tree node.
    - `{{PRIORITY}}` — P0/P1/P2 (task only)
    - `{{ASSIGNEE}}` — human/ai/agent-name (task only)
    - `{{FEATURE}}` — `FEATURE-NNN` from `--from-feature`, else `null` (task only)
-   - `{{FINDINGS}}` — the id list from `--from-review`, else `[]` (task only)
+   - `{{FINDINGS}}` — the id list from `--from-review`, or the single `FIELD-NNN` minted by
+     `--from-field`, else `[]` (task only)
    - `{{KIND}}` — `review-intake` when [intake](intake.md) is scaffolding a review pass's epic, else omit the line entirely (epic only)
    - `{{SOURCE}}` — provenance for a `review-intake` epic: the report path(s), PR, or `<pass> <date>` when the findings arrived in-conversation. Omit the line for a normal epic (epic only)
    - `{{THEME}}` — the subject-ladder **slug** from [intake](intake.md)'s table when it is scaffolding
@@ -102,6 +123,10 @@ Interactive scaffold of a new task tree node.
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"
       - task → "Start work with `/tasks pick`" (or "Plan was skipped — run `/tasks plan {{ID}}` later" if `--no-plan`)
+    - **The minted `FIELD-NNN`, when `--from-field` was passed**, and what it bought: *"minted FIELD-003 — this
+      task is now in `/fix-next`'s pool."* Say the consequence, not just the id. A task that entered the pool
+      and one that merely reads like a defect are indistinguishable from the outside, and that ambiguity is the
+      whole reason the flag exists.
 
 ## Mode detection flow
 
