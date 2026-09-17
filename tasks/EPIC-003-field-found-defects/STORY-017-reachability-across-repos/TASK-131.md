@@ -2,7 +2,7 @@
 id: TASK-131
 parent: STORY-017
 feature: null
-status: review
+status: done
 priority: P2
 assignee: unassigned
 picked-by: fix-next
@@ -119,8 +119,8 @@ and `skills/fix-next/SKILL.md` as prose plus the fixture, and ask only:
 Do **not** say `FIELD`, do not name `--from-field`, and do not say the loose task should end up in the
 pool — naming any of those turns the drill into a confirmation.
 
-- [ ] Run the drill as specified above and record the runner, cwd and coldness check.
-- [ ] Classify the result against the pass/fail bar below; file any failure as `DRILL-131-*`.
+- [x] Run the drill as specified above and record the runner, cwd and coldness check.
+- [x] Classify the result against the pass/fail bar below; file any failure as `DRILL-131-*`.
 
 **Pass** = the runner reaches `--from-field` unaided, mints a `FIELD-NNN` (tree-wide counter, zero-padded),
 writes it into `findings:`, and then lists the loose task as in-pool *by that id*. **Fail, and the finding
@@ -189,3 +189,53 @@ this change absent.
 - step 6 — reverted fix: removed the `--from-field` declaration from the receiving verb (new.md) only; lint went OK → FAILED, 1 error, `skills/fix-next/SKILL.md passes --from-field to /tasks new — not declared in skills/tasks/verbs/new.md`. fix-dependent = that one check-4 assertion. contract pins = all 47 skills-lint-test.sh cases (green before and after; none exercises `--from-field`, so they pin the lint's own behaviour and are not evidence for this fix). The door-opens half of AC3 is not machine-checkable here and is the cold drill in `## Human test plan`.
 - step 7 — respecced: nothing to respec. The map is usable (14 areas; `work-tracking` → `skills/tasks/**` and `defect-draining` → `skills/fix-next/**` both cover this change), but `docs/specs/` holds only `.map.yml` — no spec body has ever been generated, because TASK-080 (the first full harvest) is still `todo`. Generating these two from scratch here would be TASK-080's job, and its diff would be "everything new", which carries no evidence for this fix. Requirements changed: none. Flagged, not skipped silently.
 - step 8 — 5b gate: **standards** (verify-conventions) pass after two self-findings fixed — a growable-list copy in `templates/TASK.md` and a "two arms" header contradicted by a three-item body in `tasks/SKILL.md`; rulebook read = AGENTS.md § Conventions via the CLAUDE.md @import bridge, ladder rung 1; project extension: none found. **fidelity** (verify-intent) pass — AC1/2/5 built, AC3 half-built and unticked with the gap named, AC4 n/a, nothing out of scope built. **correctness** (code-review) one real finding, fixed: `intake.md` quoted fix-next's opt-in in the present tense after this same diff deleted that sentence. **security-review** not applicable — the diff is markdown skill prose about task tracking, with no auth, data-access, input-handling, crypto, secrets, dependency or endpoint surface. Verdicts reported side by side, not merged. 5c skipped — `integration: single-branch`. 5d sweep: 2 bullets on Out of scope are boundaries; 1 aside reclassified as work and spawned as TASK-133 (`CR-131-1`). Closed **review**, not done: the cold drill is real and unrun. Commits 758a729 (work) + 8ccfe9d (rollup + dashboard).
+
+## Drill record — 2026-09-17
+
+**Runner.** `claude -p --disable-slash-commands --permission-mode acceptEdits` (Claude Code 2.1.274),
+cwd `…\Temp\claude\drills-133906\d131`, a throwaway directory with no `CLAUDE.md` or `AGENTS.md`
+anywhere above it. The drill directory held only its own brief, its own fixture and a **copy** of the
+instruction files (`tasks/`, `fix-next/`), so no other drill's material was visible.
+
+**Coldness check — both channels closed, and confirmed rather than assumed.**
+- *Ambient:* a pre-flight probe from the same directory returned **`NONE LOADED`** and answered *no* to
+  "do you know what a review-intake epic is". The runner's own §1 then reported no guide, no skills, no
+  memory index.
+- *Instructions:* the brief never said `FIELD`, never named `--from-field`, and never said the loose task
+  should end up in the pool.
+- *Scan:* the report uses no term from the subject's vocabulary that the supplied instruction files did
+  not contain.
+
+**First attempt was void and is recorded as such.** An earlier round pointed the runner at the installed
+skills by path; all four drills were refused at the sandbox boundary (`.claude\skills\…` resolves into
+`C:\Source\project-lifecycle-skills`, outside the session's working directory). **Every runner refused to
+reconstruct the instructions from plausibility** and reported the blocker instead — no evidence, but no
+invention either. One also reported that it could see the other drills' briefs in the shared working
+directory; that contamination is why each drill now gets its own tree. **A setup defect of the author's,
+not a finding about the skills.**
+
+**Result: PASS**, against the bar above.
+
+| Bar | Result |
+|---|---|
+| reaches `--from-field` unaided | **yes** — routed there from `fix-next` § Step 1, citing it |
+| mints a `FIELD-NNN`, tree-wide counter, zero-padded | **yes** — `FIELD-001`; grepped the whole tree first |
+| writes it into `findings:` | **yes** — verified on disk: `findings: [FIELD-001]`, a one-line diff |
+| lists the loose task as in-pool **by that id** | **yes** — pool of 2, TASK-002 qualifying on the `findings:` arm |
+| *fail:* invents an id by hand | no |
+| *fail:* borrows `CR-*` / `SEC-*` / `DRILL-*` | no — explicitly rejected it, quoting `intake.md` |
+| *fail:* widens the pool by reading prose | no — quoted *"nothing here infers a defect from … a task's prose"* |
+| *fail:* reports the pool without the new task | no |
+
+**It also declined two traps nobody set for it**: it refused to re-home the task under the
+`security-review` epic (*"would make that pool misreport what it contains"*), and it ran DV12 and the
+verification-debt check unprompted because Step 1 requires them.
+
+**Two real gaps surfaced by the drill's rows 3-6** — filed as [[TASK-137]], since neither is on the
+fail list above and both are genuine:
+1. **The `FIELD-*` mint rule never states the empty case.** *"Take the max, increment"* has no first-id
+   rule; the runner reached `FIELD-001` by analogy with `new.md` step 6's task-id rule and **logged it as
+   an inference**. Right answer, unreproducibly.
+2. **"An already-filed task joins the same way" does not say how much of `new`'s flow comes with it.**
+   Steps 11 (dashboard regen) and 12 (auto-plan) have no meaning for a task that already exists; the
+   runner stopped after the mint and the write, and said it was guessing at the boundary.

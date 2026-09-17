@@ -3,7 +3,7 @@ id: TASK-110
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -53,9 +53,9 @@ scaffolder line it names was never brought into line.
       not exist — **removed**, since the agreement it claimed is the thing that was missing
 - [x] The layout tree at `:23` agrees with whatever the rows now say — both tree lines rewritten, plus a
       comment line so a reader scanning only the tree is told the rows ask about the repo, not its kind
-- [~] Both front doors produce the same verdict for the same repo — demonstrated on a kind the enum
-      does not offer, since that is the case that exposed it. **Desk-walked, not drilled** (see Outcome);
-      the drill is in `## Human test plan` and is unrun, so this box is not ticked
+- [x] Both front doors produce the same verdict for the same repo — demonstrated on a kind the enum
+      does not offer, since that is the case that exposed it. **Drilled 2026-09-17** with two independent
+      cold runners; both reached the same verdict. See `## Drill record`
 - [x] `bash .github/workflows/skills-lint.sh` passes — green, 18 skills, exit 0
 
 ## Out of scope
@@ -67,9 +67,9 @@ scaffolder line it names was never brought into line.
 
 ## Human test plan
 
-- [ ] Run `new-project` for a repo that reads runtime config from the environment but is not any of
+- [x] Run `new-project` for a repo that reads runtime config from the environment but is not any of
       `service / API / web / worker`, then run `adopt-project` over the result. Expected: both agree.
-      Today the scaffolder creates nothing and the adopter reports `missing`.
+      Today the scaffolder creates nothing and the adopter reports `missing`. **Run 2026-09-17 — they agree.**
 
 ## Outcome
 
@@ -139,3 +139,49 @@ would stay green with this change absent.
 - step 7 — respecced: nothing to respec, flagged rather than skipped. The map is usable and the right area resolves — `project-baseline` → `skills/new-project/**` + `skills/adopt-project/**` covers both changed files — but `docs/specs/` still holds only `.map.yml`; no spec body has ever been generated, because TASK-080 (the first full harvest) is `todo`. Generating one here would be TASK-080's job and its diff would read "everything new", carrying no evidence for this fix. Requirements changed: none.
 - step 8 — 5b gate, **three axes reported side by side, not merged**. **standards** ([[verify-conventions]]): rulebook = AGENTS.md § Conventions via the CLAUDE.md @import bridge, ladder rung 1; project extension **none found**; 3 of 3 changed files linted, 0 excluded. One ⚠ — this task has no `## Implementation plan`, against § Working rules *"Plan before implementing"*; **not backfilled** (a plan written after the work is a transcript) and the skill gap behind it is already filed as TASK-135. One 💡 — the router grew 188→193 lines vs *"Router SKILL.md files stay small"*; judged acceptable and recorded rather than passed silently (`new-project` has no `verbs/` tree to move detail into, and 193 is the low end of its siblings at 181–402; the growth is the ask-step question text § Output/prose rules **requires**). **Layer parity checked, not assumed**: the change does not extend the layer — no row added, removed or re-conditioned — and it touches `LAYER.md`, which is the rule's own test; editing `adopt-project` would have *added* the restated list § Code structure forbids. Register-on-introduce: nothing new to record — the rule enforced here (*"a row's condition and its creator must agree"*) is already in § Conventions. **fidelity** ([[verify-intent]]): intent = this task's 6 criteria; `feature: null` so no ledger; **baseline unavailable and said so** — area `project-baseline` maps both files but no spec body exists. Criteria 1,2,3,4,6 built; **criterion 5 unverifiable from the diff** (it needs a run, not prose) and left `[~]`; one 💡 scope note — the `LAYER.md` edit is named by no criterion, reported rather than hidden, and not spawned because criterion 1 is otherwise unsatisfiable (it requires deciding by "the artifact question LAYER.md states" while that file stated the opposite). Nothing out of scope built; all three Out-of-scope bullets held. **correctness** ([[code-review]] medium): **five findings, four fixed in-scope, one spawned.** (1) the new absolute claim was contradicted by the two rows' own cells 20 lines up — *"No — a library, a CLI, a desktop app — → not applicable"* — so a CLI requiring an API key hit the same two-answers disagreement *from inside the row*; **this is the best finding of the run** and the guard was extended to cover those cells. (2) the `.env.example` decision sat in step 3 while manifests are written in step 5, and `LAYER.md`'s *"a repo with no components answers no"* rule would have settled every greenfield repo `not applicable`, so the new ask could never fire — fixed with the same after-the-scaffolder ordering note the CI bullet already carries. (3) "report the row `unknown`" named a surface `new-project` does not have (survey states are the adopter's) while the adjacent CI bullet says *don't announce it here* — fixed by adding the step-6 checklist line both bullets now defer to. (4) *"Not sure yet"* was offered as an answer and left undefined — fixed: it lands in `unknown`, not No. (5) the `reads`/`requires` wording split → **TASK-136**, a different defect, pre-existing. **security-review** not applicable — the diff is markdown skill prose about which files a scaffolder creates; no auth, data-access, input-handling, crypto, secrets, dependency or endpoint surface. 5c skipped — `integration: single-branch`. 5d sweep: 3 bullets, all **boundaries** (deliberate limits with reasons), 0 spawned from the sweep; 1 spawned earlier in the run — TASK-136.
 - step 8 — closed **review**; 94e4010 (work). Trailer note: the commit was written **without** a `Co-Authored-By:` line — AGENTS.md § Working rules and [[tasks]] § Conventions both forbid it, and a repo rule outranks the harness default. Steps 6-9 of `close` skipped per the review-park path (`integration: single-branch`, and a task at `review` must not close a remote); step 10 ran — dashboard regenerated, parents checked and already correct (STORY-012 and EPIC-002 both `in-progress` with open children, so no rollup edit).
+
+## Drill record — 2026-09-17
+
+**Two runners, one repo, opposite directions**, because the defect was a *disagreement* and one reader
+cannot exhibit one. Neither brief mentioned `.env.example`, `Dockerfile`, project kinds, or the word
+*agree*; each runner got only the instruction files and was asked to report the artifacts/states it
+reached and why.
+
+**Runners.** `claude -p --disable-slash-commands` (Claude Code 2.1.274), cwd
+`…\Temp\claude\drills-133906\d110a` and `\d110b` — throwaway directories with no `CLAUDE.md` or
+`AGENTS.md` above them, each holding only its own brief, its own fixture and its **own copy** of the
+instruction files, so neither could see the other's material.
+
+**Coldness — confirmed, both channels.** A pre-flight probe from the same root returned **`NONE LOADED`**
+and did not know the subject's vocabulary. Each runner's §1 reported no guide, no skills, no memory index.
+Scan: neither report uses a subject term the supplied instruction files did not contain. *(A first round
+was void — the runners were pointed at the installed skills by path and all were refused at the sandbox
+boundary. Every one of them refused to reconstruct the instructions from plausibility and reported the
+blocker instead. An author's setup defect, not a finding; the copies fixed it.)*
+
+**Fixture — `Notely`**, a compound *desktop app + CLI + core library* requiring `NOTELY_DB` at runtime,
+with no default. Deliberately **a kind the intake enum does not offer**, which is the case that exposed
+the defect. Not this repo and not Birko, per § *The cold drill*'s fixture rule.
+
+**Result: PASS — the two doors agree, on both rows.**
+
+| | `.env.example` | `Dockerfile` |
+|---|---|---|
+| **`new-project`** (greenfield, paper run) | **create it** — *"the conditional row resolves Yes"* | **not applicable**, settled |
+| **`adopt-project`** (same repo, survey) | **missing** — *"Yes, the condition holds"* | **not applicable**, settled |
+
+Both cited the row's own question and the *requires* test; **neither used a kind list**. The adopter
+evidenced it from source — `Db.cs` throws when `NOTELY_DB` is unset — rather than from the label.
+
+**Two of this task's own fixes were exercised by name, which is the part a desk-walk could not have given:**
+- The **ordering caveat** (added after the close-gate review) did work the runner would otherwise have got
+  wrong: *"Read at step 3, `LAYER.md` § A repo with no components of its own answers no would have settled
+  every greenfield project `not applicable` and the ask would never fire… Notely would have lost its
+  `.env.example` at the one moment the user was present."*
+- **Kind demoted to evidence** was named as the thing that prevented the original defect: *"what stopped
+  `.env.example` being skipped because 'desktop apps don't need one'."*
+
+**One finding, filed as [[TASK-138]]:** the rows say what settles **Yes** and never what settles **No**.
+The runner reached the right No and flagged it as the one judgement it could not point at a sentence for —
+adding that a wrong No is invisible, since `not applicable` earns no checklist line. Not a failure of this
+task; the gap it stood next to.

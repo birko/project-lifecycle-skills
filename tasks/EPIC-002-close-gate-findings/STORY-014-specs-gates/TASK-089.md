@@ -45,6 +45,20 @@ schema — it tells a later reader, and `init`'s own step 2, that a populated ma
 baseline. That branch currently rests on reasoning alone. Every other rule TASK-033 added was executed
 mechanically by a drill and two of them changed a real outcome; this one has never run.
 
+### Update 2026-09-17 — `unverified` has now been produced once, by a different route
+
+TASK-127's cold drill (`/tasks init` then `/specs init` against `tinyfmt`, a small JS formatter, runner
+confirmed cold) wrote `coverage: unverified` with the reason *"areas proposed but never blessed"*.
+
+**It does not close this task, and the reason matters.** That verdict came from the **blessing** branch —
+nobody was present to bless the proposed map — not from the **discovery-failed** branch this task is
+hunting, where the scan cannot establish what the sources are. Discovery worked fine there: 3 areas over
+5 tracked files.
+
+So the table above gains a row, and the question narrows rather than closes: the reachable case is
+*unblessed*, and *undiscoverable* remains unobserved across four drills. That is itself evidence for this
+task's own closing option — that `unverified`'s definition may need to narrow to what can actually occur.
+
 **The hard part is constructing an honest case, and that is the task.** A repo where discovery genuinely
 fails is not a repo with odd file extensions — the drill proved a competent agent reads the README and
 recovers. Candidates worth trying, none obviously right: a repo whose sources sit outside the project

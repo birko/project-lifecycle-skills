@@ -3,7 +3,7 @@ id: TASK-127
 parent: EPIC-002
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -133,9 +133,10 @@ question: `/tasks close` has `--unattended`, and `AGENTS.md` § Conventions requ
 
 ## Human test plan
 
-- [ ] Re-run the TASK-109 cold-drill recipe against both verbs with no user available, and confirm each
-      report can quote the questions verbatim and names each unresolved field
-- [ ] Confirm an unattended run writes no value that a user did not supply, for every one of the four
+- [x] Re-run the TASK-109 cold-drill recipe against both verbs with no user available, and confirm each
+      report can quote the questions verbatim and names each unresolved field — **run 2026-09-17, both held**
+- [x] Confirm an unattended run writes no value that a user did not supply, for every one of the four
+      — **held**; see the table in `## Drill record`
 
 ## Implementation plan
 
@@ -213,3 +214,52 @@ unmapped / blessing. **Contract pins, not evidence**: all 47 `skills-lint-test.s
 - step 7 — respecced: nothing to respec. The map is usable (14 areas; `work-tracking` → `skills/tasks/**` and `specs-from-code` → `skills/specs/**` both cover this change), but `docs/specs/` still holds only `.map.yml` — no spec body has ever been generated, because TASK-080 (the first full harvest) is `todo`. Generating these from scratch here would be TASK-080's job and its diff would be "everything new", carrying no evidence for this fix. Requirements changed: none. Flagged, not skipped silently.
 - step 8 — 5b gate, three axes reported side by side, not merged. **standards** ([[verify-conventions]]): rulebook = AGENTS.md § Conventions via the CLAUDE.md @import bridge, ladder rung 1; project extension none found; 8 of 8 changed files linted, 0 excluded. One ⚠ — TASK-127's own `## Implementation plan` never populated, against § Working rules *"Plan before implementing"* — **not backfilled** (a plan written after the work is a transcript) and the skill gap behind it spawned as TASK-135. One 💡 — the router grew 19 lines vs *"Router SKILL.md files stay small"*; judged acceptable and recorded rather than passed silently (no verb owns shape detection; 331 lines is mid-range among siblings at 255–402). Register-on-introduce satisfied: the ask-step contract is recorded in § Conventions in the same change. **fidelity** ([[verify-intent]]): AC1/2/3/4/7 built; AC5 half-built and annotated in place; AC6 unmet and annotated; nothing out of scope built — the three Out-of-scope bullets were respected, and the `--unattended`-flag question was left to TASK-092 rather than decided here. **correctness** ([[code-review]]): three real findings in my own diff, all fixed — (1) I inverted the grill/blessing order in specs step 5, which would have blessed a map the grill then edits; (2) the area-removal question covered only the no-glob-match trigger, narrowing step 2's *"never drop an existing area without asking"*; (3) new.md told the reader to drop the `# defaulted` comment "when a user actually answers", but mode detection runs only when `.config.yml` is missing, so that flow can never revisit it — `/tasks migrate` is the clearing path. **The step-6 assertion caught finding (2)'s fix itself** (9/9 → 8/9 until its regex was updated), which is the guard behaving as a guard. **security-review** not applicable — the diff is markdown skill prose about task tracking and spec maps, with no auth, data-access, input-handling, crypto, secrets, dependency or endpoint surface. 5c skipped — `integration: single-branch`. 5d sweep: 3 bullets, all **boundaries** with named owners (TASK-092, TASK-128, TASK-129), 0 spawned from the sweep; 2 spawned earlier in the run — TASK-134 (step 3) and TASK-135 (5b). Closed **review**, not done: the cold drill is real and unrun.
 - step 8 — closed **review**; b040801 (work) + dashboard rollup. Trailer note: the commit was written with a `Co-Authored-By:` line by default and **amended to strip it** — `AGENTS.md` § Working rules and [[tasks]] § Conventions both forbid it, and a repo rule outranks the harness default. Steps 8-9 of `close` skipped: `integration: single-branch`, and a task parked at `review` must not close a remote. Ship-moment hints suppressed — nothing shipped.
+
+## Drill record — 2026-09-17
+
+**Runner.** `claude -p --disable-slash-commands --permission-mode acceptEdits` (Claude Code 2.1.274), cwd
+`…\Temp\claude\drills-133906\d127` — a throwaway directory with no `CLAUDE.md`/`AGENTS.md` above it,
+holding only its own brief, its own fixture and its **own copy** of the `tasks/` and `specs/` skills.
+
+**Coldness — confirmed, both channels.** Pre-flight probe from the same root returned **`NONE LOADED`** and
+did not know the subject's vocabulary; the runner's §1 reported no guide, no skills, no memory index. The
+brief never named a question, a field or an expected value — it said only that nobody was available to
+answer, and asked for each question *quoted verbatim, word for word, as the instructions phrase it*, plus
+an explicit call-out where an instruction says to ask but supplies no wording.
+*(First round void — sandbox boundary refused the instruction files; every runner reported the blocker
+rather than reconstructing them. Author's setup defect, fixed by copying the skills in.)*
+
+**Fixture** — `tinyfmt`, a small JS formatter (library + `bin` entry point), git-initialised, no task tree,
+no spec map. Not this repo and not Birko.
+
+**Result: PASS on both boxes. This is the exact inversion of DRILL-109-1 and -2**, which is what the task
+was for: those two runners *could not* quote their questions — *"no question text is supplied … the
+instruction **is** the prompt"* — and one then wrote `/specs init`'s blessing question itself and proceeded
+as if blessed.
+
+**Box 1 — quoted verbatim.** Three questions fired and all three came back word for word: `/tasks` mode
+(three options), `/tasks` integration (two options), `/specs` blessing (three options, with the area count
+and coverage stamp interpolated). It also did the two harder things the rule asks for:
+- **Named the one place that still has no wording** — `specs/init.md` step 5's grill *offer* — rather than
+  inventing one, and took the escape the same sentence supplies (*"skip silently for small/obvious projects"*).
+- **Listed the questions whose trigger did not fire**, so their absence is legible rather than silent —
+  the mode-conflict and ambiguous-root questions, the GitHub/Jira detail questions, the per-area removal
+  and meta-root questions, and the unmapped-files question.
+
+**Box 2 — nothing a user did not supply.** Each of the three took its own answer-less path, and each wrote
+the shape its schema encodes for *nobody established this*:
+
+| Question | What was written | By what |
+|---|---|---|
+| mode | `mode: local    # defaulted — nobody was asked; change with /tasks migrate` | `new.md`'s no-answer branch, verbatim — the **cannot-be-absent** shape: safest fallback **plus** a record that nothing chose it. Notably the scan's own suggestion was also `local`, and the runner still annotated it |
+| integration | **nothing** — no live key; the template's comment block survives intact, `# integration: <pr-per-task\|single-branch>` still commented | `init.md` step 3's unattended branch, *"leave the field out and report it unresolved"*, and it was reported unresolved. **This is DRILL-053-6 not recurring**: the field this repo forbids inferring was not minted from a template default |
+| blessing | map written, `coverage: unverified`, reason *"areas proposed but never blessed"* | § *Blessing*'s no-answer branch — does not stall, does not treat silence as yes |
+
+**Side evidence for [[TASK-089]], recorded on that task too:** this run **produced `coverage: unverified`**
+— the value that task reports as never once reached across three drills and nine repositories. It arrived
+by the *unblessed* route rather than the *discovery-failed* route that task is hunting, so it does not
+close it, but it is the first observed instance and it narrows what remains unreachable.
+
+**No findings against this change.** The runner's undecided/inferred sections name spec-area granularity
+judgements (which files are housekeeping, how wide an `ignore` glob should be) — all owned by `/specs`, none
+of them about an ask-step.

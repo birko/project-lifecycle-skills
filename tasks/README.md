@@ -9,20 +9,14 @@ _Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 53    |
+| todo         | —     | —       | 55    |
 | in-progress  | 3     | 8       | 0     |
-| review       | —     | —       | 3     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 80    |
+| done         | 0     | 5       | 83    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 2× P1 · 42× P2 · 9× P3.
-
-## In review
-
-- [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) — cold drill written, not yet run
-- [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) — cold drill written, not yet run
-- [TASK-110](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-110.md) — cold drill written, not yet run
+`todo` by priority: 2× P1 · 43× P2 · 10× P3.
 
 ## In progress now
 
@@ -62,7 +56,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (43/77 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (45/79 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/15)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -80,7 +74,7 @@ _None_
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
     - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
     - [ ] [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) `pick`'s handoff branches on an `assignee:` value no task in the tree has
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (3/9)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (4/10)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
     - [ ] [TASK-028](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-028.md) The inference skip rule counts five subsections when one of them is conditional
@@ -88,8 +82,9 @@ _None_
     - [ ] [TASK-085](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-085.md) `LAYER.md`'s survey-state list has outgrown the shape it is written in
     - [x] TASK-086 Adoption cannot tell its own unlanded writes from the user's work in progress
     - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
-    - [~] [TASK-110](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-110.md) The scaffolder still gates two conditional rows on a kind list the inventory replaced — **review**
+    - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced
     - [ ] [TASK-136](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-136.md) Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently
+    - [ ] [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
@@ -144,13 +139,14 @@ _None_
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
     - [x] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
     - [x] [TASK-126](EPIC-002-close-gate-findings/TASK-126.md) Sweep every template for a shipped value its own skill says must be declared or derived
-    - [~] [TASK-127](EPIC-002-close-gate-findings/TASK-127.md) Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers — **review**
+    - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (0/3 tasks done)
-  - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (0/3)
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (1/4 tasks done)
+  - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (1/4)
     - [ ] [TASK-130](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-130.md) `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
-    - [~] [TASK-131](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-131.md) `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id — **review**
+    - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
+    - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
 
 ## Loose tasks
