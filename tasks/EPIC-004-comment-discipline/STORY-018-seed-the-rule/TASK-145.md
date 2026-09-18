@@ -3,11 +3,11 @@ id: TASK-145
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: blocked
 priority: P1
 assignee: unassigned
 created: 2026-09-18
-depends-on: [TASK-140]
+depends-on: [TASK-140, TASK-147]
 blocks: []
 findings: []
 pr: null
@@ -16,6 +16,11 @@ jira-key: null
 ---
 
 # Stop the scaffolder's "leave as-is" list going one short
+
+> Blocked 2026-09-18 — the wording fix is written and correct, but its own drill proved the
+> instruction is not followed at all: a cold scaffold run dropped **all three** static subsections,
+> including the two the old sentence named by name. The list was never the defect. TASK-147 owns the
+> real one; re-run this task's drill once it clears. Acceptance criteria 1–4 are met and ticked.
 
 ## Context
 
@@ -44,11 +49,11 @@ as written; confirm that rather than assume it, and change nothing if so.
 
 ## Acceptance criteria
 
-- [ ] `skills/new-project/SKILL.md:89` no longer enumerates which static sub-blocks to preserve.
-- [ ] Its replacement is **derived** — a reader can apply it to a subsection added tomorrow without this file being edited again.
+- [x] `skills/new-project/SKILL.md:89` no longer enumerates which static sub-blocks to preserve.
+- [x] Its replacement is **derived** — a reader can apply it to a subsection added tomorrow without this file being edited again.
 - [ ] The new `### Comments` subsection is preserved by that rule without being named in it.
-- [ ] Line 90 re-read and confirmed correct as written; any change to it is in this diff with a reason.
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] Line 90 re-read and confirmed correct as written; any change to it is in this diff with a reason.
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 ## Out of scope
 
@@ -60,6 +65,34 @@ as written; confirm that rather than assume it, and change nothing if so.
 - [ ] Scaffold a throwaway project with `/new-project` after TASK-140 has landed. Expected: the generated `CLAUDE.md` carries the `### Comments` subsection with its wording intact — not paraphrased, not reordered, not dropped.
 - [ ] Repeat with a stack that produces a lot of `{{CODE_STRUCTURE_RULES}}` content, so the renderer has real work to do in the neighbouring subsection. Expected: the same. A renderer that preserves the block only when it has nothing else to do has not been tested.
 - [ ] Read the replacement sentence and ask whether a subsection added next month would be covered by it without anyone editing this file. Expected: yes. If the answer needs the sentence amended, the fix reproduced the defect.
+
+### Drill record — 2026-09-18, FAIL (finding DRILL-145-1 → TASK-147)
+
+**Runner acquisition.** A separate `claude -p` process (CLI 2.1.276, `--permission-mode acceptEdits`)
+in an empty scratch directory outside this repo. Brief, in full: *"Scaffold a brand-new project in this
+directory using the new-project skill. It is a TypeScript CLI called 'tagsweep' that finds unused tags
+in a media library. Node 22, vitest for tests. Use integration model single-branch. Don't ask me
+questions - pick sensible answers and proceed."* The agent guide's **contents were never mentioned** —
+the instruction under test was the only thing that should have protected the block.
+
+**Coldness check — cold on the brief.** The brief named the project and nothing about `CLAUDE.md`'s
+shape. Context coldness is the usual partial claim: the skills are installed at user level, so the
+runner necessarily read `new-project/SKILL.md` and `CLAUDE.seed.md` — which is the point, since
+following them is what is being tested.
+
+**First attempt was blocked, not failed:** the sandbox denied the child process writes to its own
+working directory and reads of the skills tree, so nothing rendered. Re-run outside the sandbox.
+
+**Result: FAIL, and wider than this task's premise.** The generated `CLAUDE.md` (143 lines) carries a
+`## Conventions` with five subsections — Framework/stack, Code structure & patterns, Naming, Output/UX
+rules, Testing — all filled with real TypeScript content. Absent: `### Comments`, `### Keeping
+conventions current`, `### Working rules`, and with them the task-first gate, plan-before-implementing,
+the generated-files rule, the status-changes rule, register-on-introduce and the `Co-Authored-By` rule
+(grepped individually; 0 hits each).
+
+**So the reworded sentence is correct and insufficient.** Both sub-blocks the *old* wording named
+explicitly were dropped too, which rules out "the list went one short" as the mechanism: the scaffolder
+is not rendering the template at all. Filed as TASK-147, which this task now blocks on.
 
 ## Implementation plan
 

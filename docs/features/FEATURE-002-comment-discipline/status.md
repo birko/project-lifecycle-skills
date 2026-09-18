@@ -21,7 +21,7 @@ generated: 2026-09-18
 
 ## Build progress
 
-0 / 7 tasks done.
+1 / 8 tasks done.
 
 Broken down today into **EPIC-004**, two pieces of work:
 
@@ -63,6 +63,14 @@ whether each finding shows which rule caught it and what would happen to it befo
 
 ## Next step
 
-`/tasks pick TASK-145`. TASK-140's work is written and tested; TASK-145 closes the one gap it leaves
-open — the scaffolder is still told to preserve two named parts of the template, and there are now
-three, so nothing yet stops a future project build from rewriting the new one.
+`/tasks pick TASK-147`, and it is more urgent than anything else here.
+
+Testing the small fix uncovered a large problem that has nothing to do with comments. When this
+toolkit creates a new project it is supposed to hand it a rulebook containing the working rules that
+make the whole process hold together — write the ticket before the code, review before marking
+something done, never hand-edit a file a tool maintains. A test run showed that a newly created
+project gets **none of them**. It receives a rulebook that looks complete and full of sensible
+project-specific content, with the enforcement quietly missing.
+
+Every project created with this toolkit so far is affected. Nothing detects it, because the checker
+reads whatever rulebook it is given and a missing rule simply never gets enforced.

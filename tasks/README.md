@@ -12,11 +12,15 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
-| blocked      | —     | —       | 0     |
+| blocked      | —     | —       | 1     |
 | done         | 0     | 5       | 85    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 5× P1 · 44× P2 · 11× P3.
+
+## Blocked
+
+- [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) — wording fix done; its drill proved the scaffolder ignores the instruction entirely. Blocked on TASK-147.
 
 ## In review
 
@@ -25,7 +29,7 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_ — TASK-140 closed to `done` on 2026-09-18 (drill run and passed). Next unblocked work is
-[TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md).
+[TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md).
 
 ## Tree
 
@@ -218,7 +222,8 @@ _The other 7 loose tasks are `done` — listed under Completed._
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `in-progress`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
   - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `todo` P1 — adopt it in `AGENTS.md`, with the lint-script measurement
-  - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `todo` P1 — stop the scaffolder's preserve-list going one short
+  - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `blocked` P1 — preserve-list reworded; blocked on TASK-147
+  - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `todo` P1 — **the scaffolder does not render the seed; every universal rule is dropped**
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `todo` P2 — lint check: the rule's two copies must match
 - **STORY-019** — `review-comments`, the command `planned`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `todo` P1 — create the skill, diff and `--all` scopes
