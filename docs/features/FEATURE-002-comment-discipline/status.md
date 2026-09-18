@@ -21,7 +21,7 @@ generated: 2026-09-18
 
 ## Build progress
 
-1 / 8 tasks done.
+2 / 8 tasks done.
 
 Broken down today into **EPIC-004**, two pieces of work:
 
@@ -63,14 +63,11 @@ whether each finding shows which rule caught it and what would happen to it befo
 
 ## Next step
 
-`/tasks pick TASK-147`, and it is more urgent than anything else here.
+`/tasks pick TASK-141` — put the rule into this project's own rulebook, which is the last piece before
+the command itself.
 
-Testing the small fix uncovered a large problem that has nothing to do with comments. When this
-toolkit creates a new project it is supposed to hand it a rulebook containing the working rules that
-make the whole process hold together — write the ticket before the code, review before marking
-something done, never hand-edit a file a tool maintains. A test run showed that a newly created
-project gets **none of them**. It receives a rulebook that looks complete and full of sensible
-project-specific content, with the enforcement quietly missing.
-
-Every project created with this toolkit so far is affected. Nothing detects it, because the checker
-reads whatever rulebook it is given and a missing rule simply never gets enforced.
+Two tasks are done. The second was not the one anybody planned: testing the first uncovered that a
+newly created project was being handed the standing rules **reworded** rather than copied. Nothing was
+missing, which is why it had gone unnoticed since July — but it meant every project was being checked
+against slightly different wording. New projects now receive them word for word, verified on two
+different kinds of project.

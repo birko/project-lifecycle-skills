@@ -316,6 +316,21 @@ The skills *are* the product, so their prose is the user interface. This subsect
   - Marker, states and the kind signals are defined once, in `skills/new-project/LAYER.md` § *Conditional
     rows*; this is the pointer. **A row's condition and its creator must agree** — the same change that adds a
     row fixes the scaffolder line that contradicts it.
+- **Universal prose ships as a token-free template, spliced verbatim — never as static text inside a
+  tokened one.** Where a template mixes per-project fields with rules every project must receive
+  identically, the two halves live in separate files: the tokened one is filled, the token-free one
+  (today `skills/new-project/templates/CONVENTIONS-universal.md`) replaces a token at its position and
+  is copied byte for byte. **Measured 2026-09-18, and the failure is invisible rather than loud:** with
+  both halves in one file, two scaffold runs three months apart produced guides carrying every universal
+  rule *in reworded form* — nothing missing, nothing to notice, and [[verify-conventions]] then lints
+  each project against slightly different words. Splitting them took both stacks to byte-identical.
+  Three corollaries, each measured the hard way: the splice happens **at the token**, because `cat >>`
+  appends at end-of-file and lands the rules outside `## Conventions` where nothing lints them; the
+  token-free file carries **no scaffolder-facing comments**, because "verbatim" then ships this repo's
+  process notes into a consumer's rulebook (observed leaking in two of two runs); and a run that
+  **cannot read** the file must stop and report rather than compose a substitute, since prose describing
+  the rules is exactly what lets an agent write a plausible guide holding none of them. *No record: a
+  rulebook entry whose footprint is the prose it shapes; the measurements are on TASK-147.*
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming

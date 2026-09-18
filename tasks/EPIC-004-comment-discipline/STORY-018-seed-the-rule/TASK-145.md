@@ -3,7 +3,7 @@ id: TASK-145
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: blocked
+status: todo
 priority: P1
 assignee: unassigned
 created: 2026-09-18
@@ -17,7 +17,7 @@ jira-key: null
 
 # Stop the scaffolder's "leave as-is" list going one short
 
-> Blocked 2026-09-18 — the wording fix is written and correct, but its own drill proved the
+> Unblocked 2026-09-18 — TASK-147 closed. NOTE: its finding supersedes this task's premise. The wording fix is written and correct, but its own drill proved the
 > instruction is not followed at all: a cold scaffold run dropped **all three** static subsections,
 > including the two the old sentence named by name. The list was never the defect. TASK-147 owns the
 > real one; re-run this task's drill once it clears. Acceptance criteria 1–4 are met and ticked.

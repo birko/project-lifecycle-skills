@@ -305,7 +305,7 @@ judgement. Three measurements say otherwise:
 - **The negative control fails.** This repo's own `AGENTS.md` — current, dense, the thing an upgrade run
   must **not** flag — omits two of the seed's named items. The test flags the guide it was built to leave
   alone.
-- **The inventory is not reproducible.** The seed's `### Working rules` holds **eight** bullets, plus the
+- **The inventory is not reproducible.** `templates/CONVENTIONS-universal.md`'s `### Working rules` holds **eight** bullets, plus the
   skills its close gate names; two runs picking different subsets produce different "missing" lists, so
   the state fails its own test — *could you write the missing items down before looking at the repo?*
 

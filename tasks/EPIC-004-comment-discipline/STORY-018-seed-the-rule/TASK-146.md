@@ -50,7 +50,7 @@ to decide, rather than the copies quietly parting. Whichever you conclude, state
 
 ## Acceptance criteria
 
-- [ ] `skills-lint.sh` gains a check asserting the delimited comment-rule block in `CLAUDE.seed.md` matches the one in `AGENTS.md`.
+- [ ] `skills-lint.sh` gains a check asserting the delimited comment-rule block matches between `AGENTS.md` and **`templates/CONVENTIONS-universal.md`** — note the block moved there from `CLAUDE.seed.md` in TASK-147; a check written against the old path would compare nothing to nothing and pass.
 - [ ] A missing block on either side fails loudly and names which side is missing — not a silent pass, which is what a naive "compare what you find" check does when it finds nothing.
 - [ ] The check is **fatal**, not advisory: its remedy is a diff in this repo, unlike the install-root check whose remedy lives outside it.
 - [ ] At least one case in `skills-lint-test.sh` fails when the check is removed, and one fails when the two blocks are made to differ.
