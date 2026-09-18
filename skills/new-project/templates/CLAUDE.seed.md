@@ -87,6 +87,37 @@ This section is the project's **canonical, living rulebook** — the rules every
 - **Acceptance criteria belong on the feature** (`docs/features/FEATURE-NNN/`, authored at `/feature decompose`) and the task's Human test plan — that's how "what must be true" stays tied to "why we built it".
 - **Done-gate:** a task/feature is done only when **automated tests pass *and* its manual/acceptance checks were actually run** (see lifecycle step 7 — "automated tests passing ≠ the feature works"). The generated smoke is the floor, not the ceiling.
 
+<!-- comment-rule:start -->
+### Comments
+
+Write the comment the code cannot carry, and nothing else. Judge each line by **what it carries, not how many there are**: a long block where every line earns its place is correct, and a comment restating the line below it is not.
+
+**The test — delete the line, then ask where its content already lives:**
+
+| It already lives… | Then |
+|---|---|
+| in the code itself — the name, the type, the signature, the line below | delete it; if the comment was compensating for a bad name, fix the name |
+| in version history — the commit message, `git blame` | delete it; that is what the history is for |
+| in the ticket — `tasks/` | delete it; if the work is not filed yet, file it (`/tasks spawn`) and then delete it |
+| in a decision record — `docs/adr/`, the feature's `decisions.md` | delete it, or leave one line pointing at the record |
+| **nowhere** | **keep it, at whatever length it takes** |
+
+Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the content has no home but this comment — not merely that nobody has written it down yet. Content belonging in one of the first four rows goes there first, then the comment goes. Never delete the only copy of something: relocate it, then leave the pointer.
+
+**A pointer is not a copy.** One line naming where the rest lives is what makes the destination reachable, and it always survives — a test comment naming the finding it pins and the mechanism it proves, a line citing the record that explains a choice. What fails the test is reproducing the content here.
+
+**A doc comment is a published output, and its content is still checked.** A docstring, XML doc or JSDoc block is not commentary, so it survives even where it restates the signature — the published documentation needs it and a build may require it. It carries nothing else this section bans: judge each of its lines by what it adds beyond the signature. A line that adds nothing goes — unless the tag is structurally required, and then **fill it rather than delete it**. An empty `@param tolerance the tolerance` is the violation; the fix is saying what the caller cannot read off the type.
+
+**These four are always violations, and none of them is about length:**
+
+- **A changelog** — "2025-03-04 added X; 2025-05-11 renamed Y". Version history already has it.
+- **A QA log** — "tested 3.4.2025, works". That belongs in the ticket, or in a test that asserts it.
+- **A rationale essay above a declaration** — the paragraph arguing why this approach beat the alternatives. That is a decision record.
+- **Ten lines of prose above one property, const, enum member or field.** The length is the symptom; the violation is that nine of them restate the name. The same ten lines above an algorithm whose correctness is not visible from the code are correct.
+
+**Never report a comment for being long.** A thirty-line block explaining a non-obvious algorithm, a protocol quirk, or why the obvious implementation is wrong is compliant — every line carries something the code cannot. Comments that pass this test usually come out short, because most content has somewhere better to live; that is an outcome of the test, never a limit on it. Length is a reason to look, never a finding by itself.
+<!-- comment-rule:end -->
+
 ### Keeping conventions current (register-on-introduce)
 - When a change **introduces a new cross-cutting pattern** — a new framework/major dependency, a UI pattern, a new architectural layer or module shape, a new naming or testing convention — **record it in this section in the same change**. Updating the rulebook is part of "done", exactly like updating the decision ledger. A pattern that lives only in one file is not a convention; it's drift waiting to be copied wrong.
 - If the change alters structure, update **## Architecture** too — a stale architecture doc is a defect, not stale-but-harmless.

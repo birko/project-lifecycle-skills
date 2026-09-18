@@ -1,22 +1,22 @@
 # Tasks — The Project Lifecycle Skills
 
-> ⚠ **Feature drift (1):** EPIC-001 + EPIC-002 DV5 — tasks tracked in one tree only, `docs/features/` holds no feature folders — run `/roadmap --check`.
+> ⚠ **Feature drift (1):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link. `docs/features/` now holds FEATURE-001 and FEATURE-002 (EPIC-004 is linked to the latter) — run `/roadmap --check`.
 
-_Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 4       | —     |
-| todo         | —     | —       | 54    |
-| in-progress  | 3     | 8       | 0     |
+| planned      | 0     | 5       | —     |
+| todo         | —     | —       | 60    |
+| in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 84    |
+| done         | 0     | 5       | 85    |
 | cancelled    | 0     | 0       | 0     |
 
-`todo` by priority: 1× P1 · 42× P2 · 11× P3.
+`todo` by priority: 5× P1 · 44× P2 · 11× P3.
 
 ## In review
 
@@ -24,7 +24,8 @@ _Generated 2026-09-17. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 ## In progress now
 
-_None_
+_None_ — TASK-140 closed to `done` on 2026-09-18 (drill run and passed). Next unblocked work is
+[TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md).
 
 ## Tree
 
@@ -211,3 +212,15 @@ _The other 7 loose tasks are `done` — listed under Completed._
 - [x] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks
 
 </details>
+
+### EPIC-004 — Comment discipline in agent-written code `in-progress`
+
+- **STORY-018** — Seed the comment-discipline rule into both rulebooks `in-progress`
+  - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
+  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `todo` P1 — adopt it in `AGENTS.md`, with the lint-script measurement
+  - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `todo` P1 — stop the scaffolder's preserve-list going one short
+  - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `todo` P2 — lint check: the rule's two copies must match
+- **STORY-019** — `review-comments`, the command `planned`
+  - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `todo` P1 — create the skill, diff and `--all` scopes
+  - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `todo` P1 — only-copy relocation, never destroy the last record
+  - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `todo` P2 — wire into `/tasks close` as its own axis
