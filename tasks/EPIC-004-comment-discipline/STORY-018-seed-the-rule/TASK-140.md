@@ -19,7 +19,16 @@ jira-key: null
 
 ## Context
 
-Implements FEATURE-002 **D1, D2, D3, D4**. `skills/new-project/templates/CLAUDE.seed.md` is the
+Implements FEATURE-002 **D1, D2, D3, D4**, **D12**, **D13**.
+
+> **Reopened and reconciled 2026-09-19.** TASK-147 moved the rule out of `CLAUDE.seed.md` into
+> `skills/new-project/templates/CONVENTIONS-universal.md`, which is spliced into the seeded guide at
+> `{{UNIVERSAL_CONVENTIONS}}`. The rule reaches consumers exactly as agreed — now byte-for-byte rather
+> than paraphrased — so nothing here was undone; only the file holding it changed. Criteria and plan
+> below are repointed. The drill record is left as written: it was accurate on the day it ran, and
+> editing it would falsify the evidence rather than update it.
+
+`skills/new-project/templates/CLAUDE.seed.md` was the
 rulebook every scaffolded project receives; its § Conventions currently covers framework/stack,
 UI/UX, code structure, naming and testing, and says nothing about comments. This task adds the
 rule there.
@@ -41,7 +50,7 @@ the rule reads badly wedged in. Say which you chose and why in the close notes.
 
 ## Acceptance criteria
 
-- [x] `CLAUDE.seed.md` § Conventions states the rule as **necessity per line, never a line count**.
+- [x] The seeded rulebook states the rule as **necessity per line, never a line count** — now in `templates/CONVENTIONS-universal.md`, spliced into `## Conventions` (repointed 2026-09-19; it named `CLAUDE.seed.md`, which TASK-147 emptied of this block).
 - [x] The five-destination test is written out: code / version history / the ticket / a decision record / **nowhere**, with only *nowhere* surviving at any length.
 - [x] The four banned instances are named concretely: changelog, QA log, rationale essay above a declaration, a 10-line block on a single property/const/enum/field.
 - [x] The doc-comment clause (D12) is present: a docstring / XML doc / JSDoc survives the "restates the signature" destination because it is a published output, **and its content is still judged line by line** — no changelog, no QA note, no padding, each line earning its place by what it adds beyond the signature.
@@ -132,7 +141,8 @@ states the resolution (fill it, do not delete it). Logged on FEATURE-002 D12's H
 
 ### 0. What is actually being built
 
-One prose block in `skills/new-project/templates/CLAUDE.seed.md`. No code, no build. The whole risk is
+One prose block in the seeded rulebook — written into `CLAUDE.seed.md` here, relocated to
+`templates/CONVENTIONS-universal.md` by TASK-147. No code, no build. The whole risk is
 in the wording, and the wording has four specific traps (§ 4). *(The plan originally also covered a
 clause in `skills/new-project/SKILL.md`; that is now TASK-145.)*
 

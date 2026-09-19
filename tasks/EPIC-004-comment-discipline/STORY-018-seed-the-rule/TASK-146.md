@@ -21,7 +21,7 @@ jira-key: null
 
 Discovered while grilling TASK-140's implementation plan, and recorded as FEATURE-002 **D13**.
 
-The comment rule ends up written twice — in `skills/new-project/templates/CLAUDE.seed.md` (shipped
+The comment rule ends up written twice — in `skills/new-project/templates/CONVENTIONS-universal.md` (spliced into every scaffolded guide,
 to consumers, D4) and in this repo's own `AGENTS.md` (D11) — and **no pointer between them is
 possible**: a consumer's install cannot see this repository, so the seed has to carry the whole
 text. The five destinations are a list that can grow, which is precisely the shape AGENTS.md
@@ -67,7 +67,7 @@ to decide, rather than the copies quietly parting. Whichever you conclude, state
 ## Human test plan
 
 - [ ] Change one word in the `AGENTS.md` copy and run the lint. Expected: it fails, and says which two files disagree.
-- [ ] Delete the block from `CLAUDE.seed.md` entirely and run the lint. Expected: it fails naming the missing side. Expected failure mode: it passes, because the check compared nothing to nothing.
+- [ ] Delete the block from `templates/CONVENTIONS-universal.md` entirely and run the lint. Expected: it fails naming the missing side. Expected failure mode: it passes, because the check compared nothing to nothing.
 - [ ] Delete the check from `skills-lint.sh` and run `skills-lint-test.sh`. Expected: at least one case fails. A test suite that stays green without the thing it tests is not testing it.
 
 ## Implementation plan
