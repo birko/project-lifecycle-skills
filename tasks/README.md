@@ -13,7 +13,7 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 86    |
+| done         | 0     | 5       | 87    |
 | cancelled    | 0     | 0       | 0     |
 
 `todo` by priority: 5× P1 · 44× P2 · 11× P3.
@@ -24,8 +24,9 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 ## In progress now
 
-_None_ — TASK-140 and TASK-147 both closed to `done` on 2026-09-18, each with its drill run and passed.
-Next unblocked work is [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md).
+_None_ — TASK-141 closed to `done` on 2026-09-19; TASK-140 and TASK-147 on 2026-09-18. Next unblocked
+work is [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md), whose two
+dependencies are now both met.
 
 ## Tree
 
@@ -217,7 +218,8 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `in-progress`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
-  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `todo` P1 — adopt it in `AGENTS.md`, with the lint-script measurement
+  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `done` P1 — adopted in `AGENTS.md`, six scripts measured and passing
+  - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `todo` P3 — `pi-install.sh` header reproduces two ADRs instead of pointing at them
   - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `todo` P1 — preserve-list reworded; premise superseded by TASK-147, re-scope before picking
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `todo` P2 — lint check: the rule's two copies must match

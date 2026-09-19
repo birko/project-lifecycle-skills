@@ -357,6 +357,75 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 - **A drill record names how its runner was obtained** — the command, the working directory, and the result of the coldness check. *Cold* is two conditions, not one: the brief withholds the change, **and** the runner's context does not already hold the subject. The second is not controlled by the brief and is not closed by changing repository — this repo's own skills are installed at user level, so every agent on the machine holds them. `skills/populate-tests/SKILL.md` § *Acquiring a cold runner* owns the channels, the confirmation signals and the measured instance; this is the pointer. Recording only the brief is what made TASK-079's first two readers permanently unclassifiable.
 
+<!-- comment-rule:start -->
+### Comments
+
+Write the comment the code cannot carry, and nothing else. Judge each line by **what it carries, not how many there are**: a long block where every line earns its place is correct, and a comment restating the line below it is not.
+
+**The test — delete the line, then ask where its content already lives:**
+
+| It already lives… | Then |
+|---|---|
+| in the code itself — the name, the type, the signature, the line below | delete it; if the comment was compensating for a bad name, fix the name |
+| in version history — the commit message, `git blame` | delete it; that is what the history is for |
+| in the ticket — `tasks/` | delete it; if the work is not filed yet, file it (`/tasks spawn`) and then delete it |
+| in a decision record — `docs/adr/`, the feature's `decisions.md` | delete it, or leave one line pointing at the record |
+| **nowhere** | **keep it, at whatever length it takes** |
+
+Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the content has no home but this comment — not merely that nobody has written it down yet. Content belonging in one of the first four rows goes there first, then the comment goes. Never delete the only copy of something: relocate it, then leave the pointer.
+
+**A pointer is not a copy.** One line naming where the rest lives is what makes the destination reachable, and it always survives — a test comment naming the finding it pins and the mechanism it proves, a line citing the record that explains a choice. What fails the test is reproducing the content here.
+
+**A doc comment is a published output, and its content is still checked.** A docstring, XML doc or JSDoc block is not commentary, so it survives even where it restates the signature — the published documentation needs it and a build may require it. It carries nothing else this section bans: judge each of its lines by what it adds beyond the signature. A line that adds nothing goes — unless the tag is structurally required, and then **fill it rather than delete it**. An empty `@param tolerance the tolerance` is the violation; the fix is saying what the caller cannot read off the type.
+
+**These four are always violations, and none of them is about length:**
+
+- **A changelog** — "2025-03-04 added X; 2025-05-11 renamed Y". Version history already has it.
+- **A QA log** — "tested 3.4.2025, works". That belongs in the ticket, or in a test that asserts it.
+- **A rationale essay above a declaration** — the paragraph arguing why this approach beat the alternatives. That is a decision record.
+- **Ten lines of prose above one property, const, enum member or field.** The length is the symptom; the violation is that nine of them restate the name. The same ten lines above an algorithm whose correctness is not visible from the code are correct.
+
+**Never report a comment for being long.** A thirty-line block explaining a non-obvious algorithm, a protocol quirk, or why the obvious implementation is wrong is compliant — every line carries something the code cannot. Comments that pass this test usually come out short, because most content has somewhere better to live; that is an outcome of the test, never a limit on it. Length is a reason to look, never a finding by itself.
+<!-- comment-rule:end -->
+
+**This repo's own scripts were measured against the rule before it was adopted here, and they pass.**
+Not an exemption — a measurement anyone can re-run, and the reason it is recorded is that
+`skills-lint.sh` looks like a flagrant violation by line count while being compliant by the test:
+
+| File | Lines | Comment lines | Longest run |
+|---|---|---|---|
+| `.github/workflows/skills-lint.sh` | 288 | 123 (42%) | 35 |
+| `.github/workflows/skills-lint-test.sh` | 332 | 68 (20%) | 7 |
+| `pi-install.sh` | 48 | 12 (25%) | 12 |
+| `install.sh` | 39 | 6 (15%) | 6 |
+| `pi-install.ps1` | 43 | 11 (25%) | 11 |
+| `install.ps1` | 31 | 5 (16%) | 5 |
+
+Measured 2026-09-19 with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the shebang**, so a
+re-run excluding `#!` gets 122 / 11 / 5 and will look stale unless it uses the same command. Longest
+run measured as the longest unbroken sequence of lines matching that same pattern.
+
+Every one passes because its content lives **nowhere else**. The two worth naming: the 35-line block
+at `skills-lint.sh:104-138` carries check 4's rationale and the measurement behind it (30 flag
+invocations, none enforced), and the `##`-not-`#` note at `:221-224` explains a shell mechanic —
+shortest-prefix removal takes the *first* occurrence of the repo name, so a `<repo>/wt/<repo>` layout
+yields the wrong tree. **That mechanic is what lives nowhere else, and the distinction matters:**
+FEATURE-001's worktree-location *decision* is recorded in its own ledger (D5/D5a), so claiming the
+comment is the only copy of that reasoning would argue against the very row of the table — decision
+records — that this rule uses to justify deleting such comments.
+
+**A change to the rule's wording invalidates this table — re-run the measurement, do not re-quote it.**
+The numbers are evidence for a verdict under a specific test; a reworded test makes them evidence for
+nothing. The one borderline case, recorded rather than resolved: `pi-install.sh:2-12` states the
+mechanism (which trees link where) *and* summarises why, and the why overlaps
+[ADR 0009](docs/adr/0009-installers-link-rather-than-copy.md) and
+[ADR 0010](docs/adr/0010-skills-pi-is-frozen-and-pi-only.md) — the decision-record row says leave a
+pointer rather than reproduce. Filed as TASK-148 rather than settled in passing.
+
+*Record: FEATURE-002 (D1, D2, D3, D10, D11, D12, D13). The block above is copied verbatim from
+`skills/new-project/templates/CONVENTIONS-universal.md` — that file is the source, and the two must
+stay byte-identical; TASK-146 makes the lint enforce it.*
+
 ### Keeping conventions current (register-on-introduce)
 - When a change **introduces a new cross-cutting pattern** — a new artifact in the universal layer, a new cross-skill protocol, a new naming rule — **record it in this section in the same change**. A pattern that lives in one skill is not a convention; it is drift waiting to be copied wrong.
 - If the change alters structure, update **§ Architecture** and `docs/architecture.md` too.

@@ -3,7 +3,7 @@ id: TASK-141
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P1
 assignee: unassigned
 created: 2026-09-18
@@ -41,13 +41,13 @@ cross-cutting pattern introduced by a change gets recorded in § Conventions in 
 
 ## Acceptance criteria
 
-- [ ] `AGENTS.md` § Conventions carries the rule, in the same shape TASK-140 wrote for consumers — no second, drifting copy of the wording.
-- [ ] The entry follows this file's own convention for rulebook entries: rationale inline, and it says whether it has a decision record (it does — FEATURE-002) rather than leaving a reader to wonder.
-- [ ] The `AGENTS.md` copy is delimited by the **same `<!-- comment-rule:start/end -->` markers** TASK-140 shipped in the seed. Without them TASK-146's check finds a block on one side only — which its own criterion says must fail loudly, so the gate would block on a gap this task was never told to close.
-- [ ] The `skills-lint.sh` measurement is recorded with its numbers (288 lines / 123 comment lines / 42% / longest block 35 lines) and the date measured, plus the statement that it **passes** the rule and why.
-- [ ] The record says explicitly that a change to the rule's wording invalidates the measurement and requires re-running it, not re-quoting it.
-- [ ] Running `/verify-conventions` on this diff reports no finding against `skills-lint.sh`.
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] `AGENTS.md` § Conventions carries the rule, in the same shape TASK-140 wrote for consumers — no second, drifting copy of the wording.
+- [x] The entry follows this file's own convention for rulebook entries: rationale inline, and it says whether it has a decision record (it does — FEATURE-002) rather than leaving a reader to wonder.
+- [x] The `AGENTS.md` copy is delimited by the **same `<!-- comment-rule:start/end -->` markers** as `templates/CONVENTIONS-universal.md` (repointed at close: TASK-140 shipped them in `CLAUDE.seed.md`, from where TASK-147 moved them). Without them TASK-146's check finds a block on one side only — which its own criterion says must fail loudly, so the gate would block on a gap this task was never told to close.
+- [x] The `skills-lint.sh` measurement is recorded with its numbers (288 lines / 123 comment lines / 42% / longest block 35 lines) and the date measured, plus the statement that it **passes** the rule and why.
+- [x] The record says explicitly that a change to the rule's wording invalidates the measurement and requires re-running it, not re-quoting it.
+- [x] The rule is applied to this repo's scripts **directly**, per file, with the verdict and the reason recorded. (Repointed at close. As written this criterion asked for `/verify-conventions` to report no finding against `skills-lint.sh` — which it never could, because it lints **the diff** and that file is not in it. The criterion passed trivially, testing nothing. Third instance of this shape in EPIC-004, after TASK-140's "the only numeral" and TASK-147's "all six rules present", which the control also passed.)
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 ## Out of scope
 
@@ -63,4 +63,9 @@ cross-cutting pattern introduced by a change gets recorded in § Conventions in 
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-141` — leave empty until then._
+**Deliberately skipped, not forgotten.** The shape was fully determined before work started by this
+task's own criteria plus D13: copy the delimited block from `templates/CONVENTIONS-universal.md`
+byte-for-byte, add the measurement, place it to mirror the seed's position. A plan would have restated
+the criteria. Recorded here because `pick` flipping a task to `in-progress` over a placeholder plan is
+otherwise indistinguishable from skipping the gate by accident — raised by `/code-review` at this
+close, and a fair catch.

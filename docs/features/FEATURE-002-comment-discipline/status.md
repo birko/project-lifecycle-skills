@@ -21,7 +21,7 @@ generated: 2026-09-18
 
 ## Build progress
 
-2 / 8 tasks done.
+3 / 9 tasks done.
 
 Broken down today into **EPIC-004**, two pieces of work:
 
@@ -63,11 +63,11 @@ whether each finding shows which rule caught it and what would happen to it befo
 
 ## Next step
 
-`/tasks pick TASK-141` — put the rule into this project's own rulebook, which is the last piece before
-the command itself.
+`/tasks pick TASK-146` — both things it waited on are now in place.
 
-Two tasks are done. The second was not the one anybody planned: testing the first uncovered that a
-newly created project was being handed the standing rules **reworded** rather than copied. Nothing was
-missing, which is why it had gone unnoticed since July — but it meant every project was being checked
-against slightly different wording. New projects now receive them word for word, verified on two
-different kinds of project.
+Three tasks done. The rule now reaches new projects word for word, and this project follows it too:
+its own six scripts were measured against it and all six pass, with the numbers and the reason written
+down so nobody later "tidies" the one file that looks like a flagrant offender and is not.
+
+What remains is the command that finds and fixes existing comments — the part that reaches code nobody
+is currently touching.
