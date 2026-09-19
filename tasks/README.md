@@ -9,18 +9,18 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 59    |
+| todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
-| review       | —     | —       | 1     |
-| blocked      | —     | —       | 0     |
+| review       | —     | —       | 0     |
+| blocked      | —     | —       | 1     |
 | done         | 0     | 5       | 88    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 4× P1 · 44× P2 · 12× P3.
+`todo` by priority: 5× P1 · 44× P2 · 12× P3.
 
-## In review
+## Blocked
 
-- [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) — cold drill written, not yet run
+- [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) — cold drill **run 2026-09-19 and FAILED**: the rule is present and was satisfied on a false premise. Blocked on [TASK-149](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-149.md)
 
 ## In progress now
 

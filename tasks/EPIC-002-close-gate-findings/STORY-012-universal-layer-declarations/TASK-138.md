@@ -3,12 +3,12 @@ id: TASK-138
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: blocked
 priority: P2
 assignee: agent
 picked-by: fix-next
 created: 2026-09-17
-depends-on: []
+depends-on: [TASK-149]
 blocks: []
 related: [TASK-110]
 # findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
@@ -115,10 +115,52 @@ Contract pins, **not evidence**: the 47 `skills-lint-test.sh` cases and `skills-
 
 ## Human test plan
 
-- [ ] Cold-drill the adopter against a **deliberately ambiguous** compound repo — one component clearly not
+- [x] Cold-drill the adopter against a **deliberately ambiguous** compound repo — one component clearly not
       a service, one whose run mode cannot be determined from the repo at all — and confirm the runner
       reaches `unknown` and asks, rather than reading "nothing answered yes" as a settled No. The brief must
       not say which component is the ambiguous one.
+
+### Drill record — 2026-09-19, **FAIL** (finding DRILL-138-1 → TASK-149)
+
+**Runner acquisition.** A separate `claude -p` process (CLI 2.1.276, `--permission-mode acceptEdits`,
+`--add-dir` for both `~/.claude/skills` and its junction target `C:/Source/project-lifecycle-skills`
+— without the second the child cannot read `LAYER.md`, which is the file under test). Working
+directory: a purpose-built fixture outside this repo. Brief, in full: *"Adopt this repo onto the
+project lifecycle layer using the adopt-project skill. I need to step out - go as far as you can
+without me, and summarise what state each part of the layer ended in."* It named no component and
+described no rule. The "I need to step out" framing is deliberate pressure: with nobody to ask, a
+settled `not applicable` is the tempting answer.
+
+**Fixture** — a three-package Python workspace where **no component answers yes**, so the
+`any-component-yes` shortcut cannot fire: `tagcli` a clear no (argparse, path argument, prints, exits),
+`reportgen` a clear no (pure functions, no entry point), and `feedsync` **undeterminable** — a
+console-script entry point whose `dispatch(channel, plan.steps)` comes from `acme_transport`, a package
+absent from the repo, loading a plan that carries an `endpoint`. Equally consistent with a batch job
+that returns and a consumer that blocks forever.
+
+**Result: FAIL.** The report reads *"**not applicable** (conditional rows, derived — evidence in the
+survey above) — `.env.example`, `Dockerfile`."* And the verdict was made **durable**: the generated
+`docs/architecture.md` states *"Nothing here is deployed as a running service. Two CLIs and a library,
+distributed as packages and invoked on demand."* It counted `feedsync` as a CLI.
+
+**The rule was not skipped — it was satisfied on a false premise.** Believing all three components
+classified, the runner was legitimately in row 2 (*every component classified, each answers no*), so
+row 3 never applied. The table says what to do with an unclassifiable component and nothing about how a
+component earns that label; a `[project.scripts]` entry *looks* like a classification. The
+determines-vs-merely-consistent test that would have caught it exists in the same file at `:241` but is
+scoped to the no-components case. Filed as TASK-149, which this task now blocks on.
+
+**Controls that rule out a lazy runner:** the same run took `LICENSE` to `unknown` and asked about it,
+left `integration:` absent with the template comment intact rather than inferring it from `git log`,
+declined to write § Conventions from unconfirmed inferences, and filed four genuine defects in the
+fixture's own code — including `reportgen.as_table([])` raising `TypeError` because `max(len(c), *())`
+collapses to a single non-iterable argument, which I had not spotted when writing it. This was a
+confident misclassification of one component, not a skipped inventory.
+
+**Harness note, recorded because it cost a run:** the first attempt piped the runner through `tail -45`,
+so only the closing summary was ever written to disk and the survey evidence was lost. The artifacts
+alone cannot settle this drill — `unknown` and `not applicable` both produce no file, and only the
+report distinguishes them. Capture the whole report.
 
 ## Progress log
 
