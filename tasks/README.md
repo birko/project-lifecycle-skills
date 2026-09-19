@@ -13,16 +13,15 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 90    |
+| done         | 0     | 5       | 91    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 3× P1 · 44× P2 · 12× P3.
+`todo` by priority: 2× P1 · 45× P2 · 12× P3.
 
 ## In progress now
 
-_None_ — and **no verification debt for the first time in this tree**: TASK-138's cold drill ran, failed,
-produced TASK-149, and passed on re-run. Next unblocked work is
-[TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md), which opens
+_None_ — and **no verification debt**. Next unblocked work is
+[TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md), which opens
 STORY-019 — the `review-comments` command.
 
 ## Tree
@@ -219,8 +218,9 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `todo` P3 — `pi-install.sh` header reproduces two ADRs instead of pointing at them
   - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
+  - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `todo` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`
-  - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `todo` P1 — create the skill, diff and `--all` scopes
+  - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `todo` P1 — only-copy relocation, never destroy the last record
   - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `todo` P2 — wire into `/tasks close` as its own axis

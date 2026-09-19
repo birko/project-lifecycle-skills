@@ -353,7 +353,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 ### Testing
 - Tests: **`.github/workflows/skills-lint.sh`**, run by CI — validates frontmatter, resolves every `[[link]]`, and checks that files referenced by a `SKILL.md` exist. Run it locally with `bash .github/workflows/skills-lint.sh`.
 - **The lint may carry *advisory* sections; they never change its exit code.** A check whose remedy
-  lives **outside the repo** — today check 4, install-root drift, fixed by re-running an installer —
+  lives **outside the repo** — today check 6, install-root drift, fixed by re-running an installer —
   cannot be a blocker: no diff can clear it, and the roots do not exist on the CI runner, so making it
   fatal would leave the gate meaning different things on different machines. An advisory section still
   has to be *tested*, on its output rather than the exit code, and its negative assertions must require
@@ -474,7 +474,7 @@ stay byte-identical; TASK-146 makes the lint enforce it.*
 # Re-run BOTH after ADDING a skill folder — one junction is made per folder, so a new one
 # has none and the skill is invisible to both runtimes. Editing an existing skill needs no re-run.
 bash .github/workflows/skills-lint.sh    # run the CI lint locally
-# The lint's check 4 reports install-root drift — a skill folder with no junction, a junction whose
+# The lint's check 6 reports install-root drift — a skill folder with no junction, a junction whose
 # source folder is gone, or a junction into a tree that root was never meant to hold (a skills-pi/
 # stub shadowing a runtime built-in). Advisory: it never fails the run, because the fix is an
 # installer re-run or a junction removal, not a code change. Absent root (no pi installed) => it says so and moves on.
