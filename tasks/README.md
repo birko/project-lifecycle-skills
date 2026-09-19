@@ -9,19 +9,21 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 59    |
+| todo         | —     | —       | 58    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 92    |
+| done         | 0     | 5       | 93    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 46× P2 · 12× P3.
+`todo` by priority: 1× P1 · 45× P2 · 12× P3.
 
 ## In progress now
 
-_None_ — and **no verification debt**. Next unblocked work is
-[TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md), which opens
+_None_ — and **no verification debt**. **EPIC-004's build is complete** — the rule ships, this repo follows it, a lint check keeps the two
+copies identical, and the command exists, relocates safely and runs at the close gate. What remains are
+four follow-ups its own drills found. Next unblocked work is
+[TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md), which opens
 STORY-019 — the `review-comments` command.
 
 ## Tree
@@ -224,4 +226,4 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
   - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `todo` P2 — the invocation block promises a `PATH` argument it never defines
-  - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `todo` P2 — wire into `/tasks close` as its own axis
+  - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `done` P2 — wired into `close` step 5b as its own axis; no flag passed

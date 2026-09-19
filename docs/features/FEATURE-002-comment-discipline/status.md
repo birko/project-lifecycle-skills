@@ -21,7 +21,7 @@ generated: 2026-09-18
 
 ## Build progress
 
-6 / 13 tasks done (one cancelled).
+7 / 13 tasks done (one cancelled).
 
 Broken down today into **EPIC-004**, two pieces of work:
 
@@ -63,10 +63,12 @@ whether each finding shows which rule caught it and what would happen to it befo
 
 ## Next step
 
-`/tasks pick TASK-144` — the last piece: making the check run automatically when work is closed.
+`/tasks pick TASK-151`. Everything that was asked for is built; what is left are four problems the
+feature's own testing turned up.
 
-The safety rule is in and tested. Shown a comment describing a bug that was already on the backlog, it
-deleted the comment and left a line pointing at the ticket. Shown one describing a bug nobody had filed,
-it refused to delete anything, asked first, and — once told to go ahead — created the ticket, carried the
-description into it, and left a pointer by number. A comment that genuinely belonged where it was came
-through all of it untouched.
+New projects receive the rule word for word. This project follows it. An automated check refuses any
+change that lets the two copies of it drift. And the command runs by itself whenever work is closed,
+reporting comments that belong elsewhere — while refusing to destroy one that is the only record of
+what it says.
+
+The four follow-ups are worth reading as a set: each was found by testing the thing, not by planning it.

@@ -31,6 +31,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      | 7 (clean tree) | optionally ask for an existing PR / SHA | **skip it**; leave `pr:` as-is |
      | 11 spec regen | if `pr:` references are missing, ask which areas | **skip the regen and say so.** Guessing an area writes a spec diff nobody asked for |
      | Jira not authenticated | prompt, and pause until confirmed | **skip the remote step and report it.** An unattended run cannot authenticate |
+     | 5b [[review-comments]] | an only-copy finding asks whether to file its content and leave a pointer | **no answer is given, and that is already the right outcome** — the skill's own answer-less path leaves the comment untouched, creates nothing, and reports the finding `unresolved` with the unanswered question. So **no flag is passed and none is needed**: `review-comments` deliberately declares no `--unattended`, because a flag asserting an absent capability with no step of its own to govern is the defect § *A flag that declares an absent capability* names. What this row forbids is the tempting shortcut — deleting the comment because nobody was there to object, or dropping the finding so the report reads clean |
      | 5b [[verify-intent]] | its no-task branch asks what the change was meant to do | **cannot fire here** — a close always supplies the closing task, so its intent source is resolved. Recorded rather than assumed: adding a pass that *can* ask into a step this flag governs is how the gap this table exists to close would come back |
 
      **Step 7 is the row that matters most, and the first version of this table omitted it.** Step 6 has
@@ -131,6 +132,21 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      reach `done` on a correctness pass alone — `/feature review`'s security pass is optional and
      feature-scoped, so it is not a safety net for this. Same runtime-provided/inline-fallback rule
      as `code-review`; exploitable findings are 🛑 blockers and hold the merge.
+   - **Run [[review-comments]] on the task's diff — its own axis, whenever the diff carries a comment.**
+     One question the other passes do not ask: does a comment this change added or touched carry content
+     that already lives somewhere else? `verify-conventions` lints the diff against the whole rulebook and
+     will report a comment rule like any other line, but it reads the diff's *lines*; this pass reads the
+     comment *blocks* the diff attaches to, including a comment the change just made false without
+     editing. **Pass no flag.** The diff is its default scope; `--all` would sweep code this task never
+     touched, and a flag this verb does not pass is a contract it cannot break.
+     - **Skip conditions, stated because silence cannot be told from a pass.** The step-5b skip applies
+       first (docs, renames, one-liners). Beyond that: a diff carrying **no comment in range** gets
+       *not applicable — no comment in range* in one line, exactly as a conditional pass does above.
+     - **🛑 findings hold the merge; `held` findings do not.** A comment whose content demonstrably lives
+       at the destination is an ordinary blocker — address it or record why it is deferred. A comment whose
+       content lives **nowhere else** is reported `held`, and relocating it is a decision about where that
+       content belongs. That is not the merge gate's question, and forcing it here would make every close
+       a filing session. Note it in `## Out of scope` with an id if it is work, per step 5d.
    - **Findings outside this task's scope don't block the close and don't get folded in** — the
      review surfacing an adjacent bug or a wanted refactor is a [`/tasks spawn`](spawn.md), not an
      extra commit on this branch. Spawn it, note it in `## Out of scope`, then close on this task's
