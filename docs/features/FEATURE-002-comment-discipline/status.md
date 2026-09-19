@@ -21,7 +21,7 @@ generated: 2026-09-18
 
 ## Build progress
 
-3 / 9 tasks done.
+4 / 9 tasks done (one cancelled).
 
 Broken down today into **EPIC-004**, two pieces of work:
 
@@ -63,11 +63,8 @@ whether each finding shows which rule caught it and what would happen to it befo
 
 ## Next step
 
-`/tasks pick TASK-146` — both things it waited on are now in place.
+`/tasks pick TASK-142` — the rule half is finished; what is left is the command.
 
-Three tasks done. The rule now reaches new projects word for word, and this project follows it too:
-its own six scripts were measured against it and all six pass, with the numbers and the reason written
-down so nobody later "tidies" the one file that looks like a flagrant offender and is not.
-
-What remains is the command that finds and fixes existing comments — the part that reaches code nobody
-is currently touching.
+Four tasks done, one cancelled as unnecessary. New projects now receive the rule word for word, this
+project follows it, and an automated check refuses any change that lets the two copies of it drift
+apart — including, on its first run, a mistake in the check itself.

@@ -329,8 +329,19 @@ The skills *are* the product, so their prose is the user interface. This subsect
   token-free file carries **no scaffolder-facing comments**, because "verbatim" then ships this repo's
   process notes into a consumer's rulebook (observed leaking in two of two runs); and a run that
   **cannot read** the file must stop and report rather than compose a substitute, since prose describing
-  the rules is exactly what lets an agent write a plausible guide holding none of them. *No record: a
-  rulebook entry whose footprint is the prose it shapes; the measurements are on TASK-147.*
+  the rules is exactly what lets an agent write a plausible guide holding none of them.
+  - **Where the same prose must exist in two files, both copies are marker-delimited and the lint
+    compares them.** Today `<!-- comment-rule:start -->` / `<!-- comment-rule:end -->` wrap the comment
+    rule in `AGENTS.md` and in `templates/CONVENTIONS-universal.md`; `skills-lint.sh` check 5 asserts
+    they are byte-identical and **names which side is missing** when one is, because *"they differ"*
+    sends a reader to diff two files one of which is empty. **Byte-identical rather than something
+    looser, deliberately:** the whole purpose is that the fleet's rules are the *same words*, so the day
+    the two must legitimately diverge is the day somebody should be stopped and made to decide, not the
+    day a tolerance quietly absorbs it. The markers are the contract, so they are declared here and
+    **never explained inside the shipped template** — a comment telling a consumer about a lint in a
+    repo they cannot see is the defect the rule itself defines.
+  *No record: a rulebook entry whose footprint is the prose it shapes; the measurements are on
+  TASK-147, the check and its eight cases on TASK-146.*
 - **Layer parity (hard rule):** any change that extends the **universal project layer** must update **`new-project`** *and* **`adopt-project`** in the same change. The scaffolder creates the layer for new repos; the adopter reconciles it for existing ones. Extending one without the other silently strands every project already using the skills. In practice that means editing **`skills/new-project/LAYER.md`**, the single inventory both skills consume — if a layer change does not touch that file, it is being copied somewhere instead of shared.
 
 ### Naming

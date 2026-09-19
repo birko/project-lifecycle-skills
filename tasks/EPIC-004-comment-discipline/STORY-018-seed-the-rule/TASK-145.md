@@ -3,7 +3,7 @@ id: TASK-145
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P1
 assignee: unassigned
 created: 2026-09-18
@@ -17,7 +17,23 @@ jira-key: null
 
 # Stop the scaffolder's "leave as-is" list going one short
 
-> Unblocked 2026-09-18 — TASK-147 closed. NOTE: its finding supersedes this task's premise. The wording fix is written and correct, but its own drill proved the
+> **Cancelled 2026-09-19 — the work shipped, the remaining criterion became unmeetable.** The fix is
+> in `5b8c216` and survives at `skills/new-project/SKILL.md:93` (reworded by TASK-147, same derived
+> rule): the enumeration of which sub-blocks to preserve is gone, replaced by *"leave every subsection
+> carrying no `{{…}}` token exactly as written"*, which cannot go one short.
+>
+> **Why cancelled rather than closed `done`:** criterion 3 asked that the new `### Comments` subsection
+> be preserved by that rule without being named in it. It cannot be — TASK-147 moved all three static
+> subsections out of `CLAUDE.seed.md` into `templates/CONVENTIONS-universal.md`, so the seed now has
+> **zero** token-free subsections and the preserve rule protects nothing. Measured 2026-09-19. Writing
+> new criteria to fit what shipped is the move `close` forbids, so the honest state is cancelled with
+> the work recorded, not `done` over a criterion nobody can meet.
+>
+> **The sentence stays in `SKILL.md` regardless.** It costs one line and it is the correct instruction
+> the moment anyone adds a static subsection back to the seed — which is exactly the situation that
+> produced this defect. Do not delete it as dead prose.
+>
+> Superseded premise retained below for the trail. The wording fix is written and correct, but its own drill proved the
 > instruction is not followed at all: a cold scaffold run dropped **all three** static subsections,
 > including the two the old sentence named by name. The list was never the defect. TASK-147 owns the
 > real one; re-run this task's drill once it clears. Acceptance criteria 1–4 are met and ticked.

@@ -11,7 +11,7 @@ LINT="$(pwd)/.github/workflows/skills-lint.sh"
 WORK=$(mktemp -d); trap 'rm -rf "$WORK"' EXIT
 pass=0; fail=0
 
-# Check 5 (install roots) reads $HOME by default. Point it at nothing so every case below is
+# Check 6 (install roots) reads $HOME by default. Point it at nothing so every case below is
 # hermetic: a suite whose result depends on which skills the developer happens to have installed
 # is not a test. The install-root cases override these per case.
 export CLAUDE_SKILLS_ROOT="$WORK/no-such-root" PI_SKILLS_ROOT="$WORK/no-such-root"
@@ -68,12 +68,27 @@ case_silent() { # name, mutation, substring that must NOT appear
   build "$d"; "$mut" "$d"
   out=$(roots_run "$d"); rc=$?
   # Require the check to have RUN. A bare "must not contain" passes trivially when check 4 is absent
-  # altogether, which is the vacuous pass this repo has already been bitten by once (check 5 here) — so these guards
+  # altogether, which is the vacuous pass this repo has already been bitten by once (check 6 here) — so these guards
   # would have had power only against a buggy check, never against a deleted one.
-  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- '== 5. install roots' && ! printf '%s' "$out" | grep -qF -- "$pat"; then
+  if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- '== 6. install roots' && ! printf '%s' "$out" | grep -qF -- "$pat"; then
     printf '  ok    %s\n' "$name"; pass=$((pass+1))
   else
-    printf '  FAIL  %s (exit %s; wanted check 5 to run and output NOT to contain: %s)\n' "$name" "$rc" "$pat"; fail=$((fail+1))
+    printf '  FAIL  %s (exit %s; wanted check 6 to run and output NOT to contain: %s)\n' "$name" "$rc" "$pat"; fail=$((fail+1))
+  fi
+}
+
+case_fails_saying() { # name, mutation, substring that MUST appear on a FAILING run
+  local name="$1" mut="$2" pat="$3" d="$WORK/case" out rc
+  build "$d"; "$mut" "$d"
+  out=$( cd "$d" && bash .github/workflows/skills-lint.sh 2>&1 ); rc=$?
+  # Both halves matter: a check that fails with the wrong message sends the reader to the wrong file,
+  # and a check that prints the right message while exiting 0 is not a gate.
+  if [ "$rc" -ne 0 ] && printf '%s' "$out" | grep -qF -- "$pat"; then
+    printf '  ok    %s
+' "$name"; pass=$((pass+1))
+  else
+    printf '  FAIL  %s (exit %s; wanted non-zero AND output to contain: %s)
+' "$name" "$rc" "$pat"; fail=$((fail+1))
   fi
 }
 
@@ -264,7 +279,59 @@ case_is "tilde fence"                      0 m_tilde
 case_is "root-relative link"               0 m_rootrel
 case_is "stale .lint-fail in the repo"     0 m_sentinel
 
-# --- check 5: install roots (advisory) ---
+
+# --- check 5: universal-conventions copies ---
+# The rule exists in AGENTS.md and in templates/CONVENTIONS-universal.md, and neither can point at
+# the other, so only this check keeps them identical. These cases pin the four states it must tell
+# apart. The bare fixture has neither file, which is itself one of the four.
+UNIV_REL=skills/new-project/templates/CONVENTIONS-universal.md
+mk_rule_block() { # $1 = file, $2 = body line
+  printf -- '<!-- comment-rule:start -->\n### Comments\n\n%s\n<!-- comment-rule:end -->\n' "$2" >> "$1"
+}
+mk_new_project() { # the template lives inside a skill, so that skill must be valid or check 1 fires
+  mkdir -p "$1/skills/new-project/templates"
+  printf -- '---
+name: new-project
+description: d
+---
+
+Scaffolder.
+' > "$1/skills/new-project/SKILL.md"
+}
+u_pair()        { mk_new_project "$1"
+                  mk_rule_block "$1/$UNIV_REL" 'Write the comment the code cannot carry.'
+                  printf -- '# guide\n\n## Conventions\n\n' > "$1/AGENTS.md"
+                  mk_rule_block "$1/AGENTS.md" 'Write the comment the code cannot carry.'; }
+u_drifted()     { u_pair "$1"
+                  # One word. The whole point of the check is that this is not a stylistic variance.
+                  sed -i 's/cannot carry\./cannot carry, and nothing else./' "$1/AGENTS.md"; }
+u_no_agents()   { mk_new_project "$1"
+                  mk_rule_block "$1/$UNIV_REL" 'Write the comment the code cannot carry.'; }
+u_no_template() { printf -- '# guide\n\n## Conventions\n\n' > "$1/AGENTS.md"
+                  mk_rule_block "$1/AGENTS.md" 'Write the comment the code cannot carry.'; }
+
+case_is   "identical rule blocks pass"              0 u_pair
+case_is   "one word of drift fails"                 1 u_drifted
+case_is   "template has the block, AGENTS.md does not" 1 u_no_agents
+case_is   "AGENTS.md has the block, template does not" 1 u_no_template
+# Naming the side is the point: "they differ" sends a reader to diff two files, one of which is empty.
+case_fails_saying "missing AGENTS.md side is named"    u_no_agents   "AGENTS.md does not"
+case_fails_saying "missing template side is named"     u_no_template "consumers would receive nothing"
+case_fails_saying "drift names both files"             u_drifted     "differs between AGENTS.md"
+# A repo with neither file must pass — but VISIBLY. Asserting the exit code alone would also pass if
+# the whole check were deleted, which is the vacuous pass the check_silent guard above exists for.
+case_says "no pair present says so rather than passing in silence" m_noop "nothing to compare"
+# A file that DOCUMENTS the convention mentions the marker in prose above the block it describes.
+# Matching the marker as a substring starts the capture there and reports two identical copies as
+# differing — which is what happened the moment this convention was written into AGENTS.md.
+u_prose_mention() { u_pair "$1"
+                    printf -- 'Prose about `%s` and `%s` markers, above the block.
+
+'                       '<!-- comment-rule:start -->' '<!-- comment-rule:end -->' > "$1/tmp.md"
+                    cat "$1/AGENTS.md" >> "$1/tmp.md"; mv "$1/tmp.md" "$1/AGENTS.md"; }
+case_is   "prose mentioning the marker is not mistaken for the block" 0 u_prose_mention
+
+# --- check 6: install roots (advisory) ---
 r_absent()  { :; }                                    # roots/ is never created
 r_empty()   { mkdir -p "$1/roots/claude" "$1/roots/pi"; }
 r_partial() { mkdir -p "$1/roots/claude" "$1/roots/pi"

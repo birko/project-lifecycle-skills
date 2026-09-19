@@ -9,14 +9,14 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 60    |
+| todo         | —     | —       | 59    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 87    |
-| cancelled    | 0     | 0       | 0     |
+| done         | 0     | 5       | 88    |
+| cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 5× P1 · 44× P2 · 11× P3.
+`todo` by priority: 4× P1 · 44× P2 · 12× P3.
 
 ## In review
 
@@ -24,9 +24,9 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 ## In progress now
 
-_None_ — TASK-141 closed to `done` on 2026-09-19; TASK-140 and TASK-147 on 2026-09-18. Next unblocked
-work is [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md), whose two
-dependencies are now both met.
+_None_ — STORY-018's rule half is complete (TASK-140, 141, 146, 147 `done`; TASK-145 `cancelled`).
+Next unblocked work is [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md),
+which opens STORY-019 — the `review-comments` command.
 
 ## Tree
 
@@ -220,9 +220,9 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
   - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `done` P1 — adopted in `AGENTS.md`, six scripts measured and passing
   - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `todo` P3 — `pi-install.sh` header reproduces two ADRs instead of pointing at them
-  - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `todo` P1 — preserve-list reworded; premise superseded by TASK-147, re-scope before picking
+  - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
-  - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `todo` P2 — lint check: the rule's two copies must match
+  - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `todo` P1 — create the skill, diff and `--all` scopes
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `todo` P1 — only-copy relocation, never destroy the last record

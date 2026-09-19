@@ -8,7 +8,7 @@ priority: P1
 assignee: unassigned
 created: 2026-09-18
 depends-on: []
-blocks: [TASK-141, TASK-142, TASK-145, TASK-146]
+blocks: [TASK-141, TASK-142, TASK-146]
 findings: []
 pr: null
 github-issue: null

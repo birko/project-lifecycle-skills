@@ -4,6 +4,7 @@
 #   1. every SKILL.md has frontmatter, and its `name` matches its folder
 #   2. every [[wikilink]] resolves to a real skill (or a known runtime-provided reference)
 #   3. every relative file link points at a file that exists
+#   5. AGENTS.md and templates/CONVENTIONS-universal.md carry the same comment-rule block
 #
 # Checks 2 and 3 ignore fenced blocks and inline code spans: this repo teaches its own
 # conventions by example, so illustrative links in samples are content, not defects.
@@ -160,7 +161,47 @@ grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^
   done
 done
 
-printf '== 5. install roots (advisory) ==\n'
+printf '== 5. universal-conventions copies ==\n'
+# The comment rule exists twice on purpose: consumers receive it from
+# templates/CONVENTIONS-universal.md, and it governs this repo from AGENTS.md. Neither can point at
+# the other — a consumer install cannot see this repo — so the only thing keeping them from drifting
+# is this check. Fatal, not advisory: the remedy is a diff here, unlike check 6's installer re-run.
+UNIV_FILE=skills/new-project/templates/CONVENTIONS-universal.md
+RULE_START='<!-- comment-rule:start -->'
+RULE_END='<!-- comment-rule:end -->'
+
+rule_block() { # $1 = file. Empty output means "no delimited block here".
+  [ -f "$1" ] || return 0
+  # The marker must be ALONE on its line. A substring match instead captures from the first place the
+  # file merely *mentions* the marker — and AGENTS.md documents this very convention in prose a few
+  # hundred lines above the block it describes, so the substring version reported the two copies as
+  # differing the moment the convention was written down.
+  awk -v s="$RULE_START" -v e="$RULE_END" '
+    function bare(x) { gsub(/^[ 	]+|[ 	]+$/, "", x); return x }
+    bare($0) == s { inb = 1 }
+    inb           { print }
+    bare($0) == e { if (inb) exit }
+  ' "$1"
+}
+
+univ_block=$(rule_block "$UNIV_FILE")
+agents_block=$(rule_block AGENTS.md)
+
+if [ -z "$univ_block" ] && [ -z "$agents_block" ]; then
+  # Printed rather than skipped in silence: a reader cannot tell "no pair to check" from "the check
+  # did not run", and the second is how a gate quietly stops gating.
+  printf '  no universal-conventions pair in this tree — nothing to compare\n'
+elif [ -z "$agents_block" ]; then
+  err "$UNIV_FILE carries the comment-rule block but AGENTS.md does not — this repo ships a rule it does not follow"
+elif [ -z "$univ_block" ]; then
+  err "AGENTS.md carries the comment-rule block but $UNIV_FILE does not — consumers would receive nothing"
+elif [ "$univ_block" != "$agents_block" ]; then
+  err "the comment-rule block differs between AGENTS.md and $UNIV_FILE — they must be byte-identical, or every project is linted against different words"
+else
+  printf '  AGENTS.md and %s agree (%s lines)\n' "$UNIV_FILE" "$(printf '%s\n' "$univ_block" | wc -l | tr -d ' ')"
+fi
+
+printf '== 6. install roots (advisory) ==\n'
 # ADVISORY — this check never touches `fail` and can never change the exit code. Two reasons, and
 # the first is the real one: a missing junction is fixed by re-running an installer, which lives
 # OUTSIDE this repo, so no diff can clear the finding and a repo gate must not block on it. Second,
