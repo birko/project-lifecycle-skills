@@ -134,7 +134,7 @@ checkable rather than asserted.
 | ⚠ | the content appears to live at one of the table's destinations; a human should confirm |
 | 💡 | the comment passes, but its row suggests leaving a pointer rather than the body |
 | `universal:` (⚠ cap) | the project recorded no rule and the floor supplied it |
-| **held** | the content exists **nowhere else**. Reported, never acted on — not a request to delete anything |
+| **held** | the content exists **nowhere else**. Never deleted first — see § *The only copy* |
 
 **Never a finding:** a comment's length; a **pointer** — one line naming where the rest lives, which is
 what makes a destination reachable; a structurally required documentation tag that adds nothing, which the
@@ -195,9 +195,63 @@ it gets read three times.
 
 **Confirm before editing anything.** Findings are advisory until a human agrees to them.
 
-**Never delete the only record.** Where a comment's content exists nowhere else, it is reported as **held**
-and left in place. The search that proves content lives elsewhere, the relocation of an only copy, and the
-question put before anything is created are the only-copy rule's business, not this section's.
+### The only copy
+
+**Before a finding leads to a deletion, check that its content is actually at the destination the test
+named.** The destination is not a guess you have to make — step 4 already named it, so the search is
+scoped by it rather than sprayed across the repo:
+
+| Destination the finding named | What to check |
+|---|---|
+| the code itself | nothing to check. The code is on the next line; a row-1 finding is never an only copy |
+| version history | is it in `git log` / `git blame` for that file? **A comment on an uncommitted line has no history yet** — the destination is empty and this is an only copy |
+| the ticket | does an open task in the tracker carry it? Search by the behaviour described, not by wording |
+| a decision record | does a record under `docs/adr/`, or a feature's decision ledger, carry the reasoning? |
+
+**Found it? Delete the comment, and name in the report where the content already lives** — by task id,
+commit, or record path. That citation is what makes the deletion checkable instead of asserted.
+
+**Not found? It is an only copy, and nothing is deleted in the same step as the relocation being
+proposed.** The two are separate acts: propose, get an answer, relocate, and only then delete. A run that
+collapses them has no point at which a human could have said no.
+
+**Choose the destination by the content's kind**, not by convenience:
+
+- **A finding** — a bug, a defect, work someone should do → a **task**. Chain [[tasks]] `spawn`, which
+  places it under the right parent and inherits the feature link.
+- **A rationale** — why a choice was made, what was rejected → a **decision record** under `docs/adr/`, or
+  the owning feature's decision ledger if one exists.
+- **Anything else that is genuinely reference material** → a `docs/` page.
+- **Cannot tell?** Do not guess a destination. Report it held, say the kind is unclear, and let the answer
+  come from the person who knows.
+
+**Nothing is created without asking.** The question put, verbatim:
+
+> **`<path>:<lines>` — this content exists nowhere else.**
+> *"<the comment's first line, quoted>"*
+> Its destination is **<the row the test named>**, and nothing there carries it yet.
+> **File it as a <task | decision record | docs page> and leave a pointer, or keep the comment as it is?**
+
+**When no answer comes: the comment stays exactly as it is, nothing is created, and the finding is
+reported `unresolved` with the question that went unanswered.** Not a silent delete, and — the half that
+is easier to get wrong — **not a silent skip either**. A held finding that vanishes from the report is
+indistinguishable from one that passed, so an unanswered question gets a line of its own:
+
+```
+unresolved (1) — src/pricing.ts:1-10. Only copy; destination "version history" is empty.
+                 Asked whether to file it; no answer. Comment untouched, nothing created.
+```
+
+**After a relocation, the source carries a one-line pointer** naming where the content went — by id or
+path, not by description. *"`// rate history: TASK-214`"* is a pointer; *"`// see the ticket`"* is a
+second thing to go looking for. A pointer is what keeps the destination reachable, and it is never itself
+a finding.
+
+**On `--all`, only-copy findings are reported and never asked about.** The census run asks nothing at all
+(§ `--all`), so relocation belongs to a scoped run where a person is looking at one file. Asking three
+hundred times is not a usable flow, and batching the questions would make the answers arrive detached
+from the code that prompted them. The `--all` report therefore names each only copy and stops:
+`held — only copy, relocation not proposed (run scoped to act on it)`.
 
 ## Where this runs
 

@@ -13,15 +13,15 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 91    |
+| done         | 0     | 5       | 92    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 2× P1 · 45× P2 · 12× P3.
+`todo` by priority: 1× P1 · 46× P2 · 12× P3.
 
 ## In progress now
 
 _None_ — and **no verification debt**. Next unblocked work is
-[TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md), which opens
+[TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md), which opens
 STORY-019 — the `review-comments` command.
 
 ## Tree
@@ -222,5 +222,6 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
-  - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `todo` P1 — only-copy relocation, never destroy the last record
+  - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
+  - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `todo` P2 — the invocation block promises a `PATH` argument it never defines
   - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `todo` P2 — wire into `/tasks close` as its own axis

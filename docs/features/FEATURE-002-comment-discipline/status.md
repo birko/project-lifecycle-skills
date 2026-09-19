@@ -21,7 +21,7 @@ generated: 2026-09-18
 
 ## Build progress
 
-5 / 11 tasks done (one cancelled).
+6 / 13 tasks done (one cancelled).
 
 Broken down today into **EPIC-004**, two pieces of work:
 
@@ -63,9 +63,10 @@ whether each finding shows which rule caught it and what would happen to it befo
 
 ## Next step
 
-`/tasks pick TASK-143` — the safety rule that stops the command destroying the only record of something.
+`/tasks pick TASK-144` — the last piece: making the check run automatically when work is closed.
 
-The command now exists and works. Pointed at this very project it found four real problems in a file
-this project had already declared clean — including one in a check written the same morning. It was
-right, and the declaration was made by counting lines rather than by asking the question the rule
-actually asks.
+The safety rule is in and tested. Shown a comment describing a bug that was already on the backlog, it
+deleted the comment and left a line pointing at the ticket. Shown one describing a bug nobody had filed,
+it refused to delete anything, asked first, and — once told to go ahead — created the ticket, carried the
+description into it, and left a pointer by number. A comment that genuinely belonged where it was came
+through all of it untouched.
