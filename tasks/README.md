@@ -9,14 +9,14 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 60    |
+| todo         | —     | —       | 59    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 90    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 4× P1 · 45× P2 · 12× P3.
+`todo` by priority: 3× P1 · 44× P2 · 12× P3.
 
 ## In progress now
 
