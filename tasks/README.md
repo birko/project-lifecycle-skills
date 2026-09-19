@@ -12,21 +12,18 @@ _Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
-| blocked      | —     | —       | 1     |
-| done         | 0     | 5       | 88    |
+| blocked      | —     | —       | 0     |
+| done         | 0     | 5       | 90    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 5× P1 · 44× P2 · 12× P3.
-
-## Blocked
-
-- [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) — cold drill **run 2026-09-19 and FAILED**: the rule is present and was satisfied on a false premise. Blocked on [TASK-149](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-149.md)
+`todo` by priority: 4× P1 · 45× P2 · 12× P3.
 
 ## In progress now
 
-_None_ — STORY-018's rule half is complete (TASK-140, 141, 146, 147 `done`; TASK-145 `cancelled`).
-Next unblocked work is [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md),
-which opens STORY-019 — the `review-comments` command.
+_None_ — and **no verification debt for the first time in this tree**: TASK-138's cold drill ran, failed,
+produced TASK-149, and passed on re-run. Next unblocked work is
+[TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md), which opens
+STORY-019 — the `review-comments` command.
 
 ## Tree
 

@@ -3,12 +3,12 @@ id: TASK-138
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: blocked
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
 created: 2026-09-17
-depends-on: [TASK-149]
+depends-on: []
 blocks: []
 related: [TASK-110]
 # findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
@@ -120,7 +120,16 @@ Contract pins, **not evidence**: the 47 `skills-lint-test.sh` cases and `skills-
       reaches `unknown` and asks, rather than reading "nothing answered yes" as a settled No. The brief must
       not say which component is the ambiguous one.
 
-### Drill record — 2026-09-19, **FAIL** (finding DRILL-138-1 → TASK-149)
+### Drill record — 2026-09-19
+
+**Re-run after TASK-149: PASS.** The rule this task added was correct and incomplete — it said what to
+do with an unclassifiable component and not how a component earns that label, so the runner reached
+row 2 on a false premise. TASK-149 added the per-component determinacy test; the same fixture and brief
+then produced `unknown` on both conditional rows, naming `feedsync` and the absent `acme-transport`,
+and asserted no run mode anywhere. Full record on TASK-149. The first, failing run follows — kept
+because it is the before-half of the assertion, not because it is still true.
+
+### First run — 2026-09-19, FAIL (finding DRILL-138-1 → TASK-149)
 
 **Runner acquisition.** A separate `claude -p` process (CLI 2.1.276, `--permission-mode acceptEdits`,
 `--add-dir` for both `~/.claude/skills` and its junction target `C:/Source/project-lifecycle-skills`

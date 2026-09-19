@@ -170,6 +170,32 @@ demanded one kind would have had to pick one and discard the rest. So each row a
 repo can answer directly — *does anything here require an environment variable to run?*, *is anything here
 deployed as a running service?* — and **any** component answering yes settles it.
 
+**Classify each component from what this repo holds, and a component you cannot settle is *unclassified*,
+not a *no*.** An answer is **determined** only when the repo itself contains what settles it; where the
+repo is merely *consistent with* an answer, that component is unclassified and row 3 below is the one you
+are in. Stated here rather than only in the table because the failure is never "I read row 3 and chose
+wrong" — it is arriving at row 2 believing every component was classified. Three signals that look like
+classification and are not:
+
+- **An entry point says a component *can be started*, never *how it runs*.** A `[project.scripts]` console
+  script, a `main`, a `Program.cs` — daemons and one-shot jobs ship identically. Run mode is settled by
+  what the entry point *does*: a request loop, a scheduler, a blocking consumer — against an argument
+  parsed, work done, exit.
+- **Behaviour that hinges on code outside this repo is not readable from this repo.** Where an entry point
+  delegates to an absent dependency, the run mode is that dependency's and you cannot see it. **Measured
+  2026-09-19 (DRILL-138-1):** a package whose `main` called `dispatch(channel, plan.steps)` from an
+  uninstalled library was classified *"a CLI, invoked on demand"*, and both conditional rows were then
+  derived as settled `not applicable` — in the report **and** in a generated `docs/architecture.md`, which
+  is the worse half. That call is equally consistent with a batch job that returns and a consumer that
+  blocks forever, so the correct state was `unknown` for both rows.
+- **Naming a component is not classifying it.** A README line — *"`feedsync` — feed reconciliation"* — says
+  what a component is for. What it is for does not say whether it runs as a service or reads env vars.
+
+**The test is the same one applied to the repo as a whole below** (§ *A repo with no components of its
+own*), and to a derived state anywhere: does the evidence **determine** the answer, or is it merely
+consistent with several? One test, two altitudes — per component here, per repo there.
+
+
 **The two directions are not symmetric, and the No is the one that has to be spelled out.** One component
 answering *yes* is enough, because the artifact is then owed whatever the others do. **No is a claim about
 every component**, so it requires that every component was actually *classified* — and *"no component
@@ -180,7 +206,7 @@ some component could not be classified at all, which is the case that matters:
 |---|---|
 | at least one component answers **yes** | **Yes** — settled, whatever the rest do |
 | every component was classified and each answers **no** | **No** → `not applicable`, settled |
-| no component answers yes, but **one or more could not be classified** | **`unknown`** — name the component and what was missing, and ask in step 2's round |
+| no component answers yes, but **one or more could not be classified** (by the determinacy test above) | **`unknown`** — name the component and what was missing, and ask in step 2's round |
 | the repo has **no components of its own** | **No** → `not applicable` (§ *A repo with no components of its own*) |
 
 **Read row 3 twice, because it is the one every reader reconstructs from scratch**, and the failure there
@@ -238,8 +264,9 @@ aggregate."* It was deciding, not reading.
 
 **A repo with no components of its own answers *no*, and that is settled rather than `unknown`.** Nothing
 that does not run can read runtime config, and nothing without an entry point is deployed — so the
-evidence **determines** the answer instead of merely being consistent with several, which is the test
-§ *A derived state must never be cached as a decision* sets in the consuming project's guide. Do not read
+evidence **determines** the answer rather than merely being consistent with several. That is the same
+test § *Classify each component from what this repo holds* states above, at the other altitude, and it
+is § *A derived state must never be cached as a decision* in the consuming project's guide. Do not read
 "no source to inspect" as "cannot tell": that is the route by which an aggregator's correct
 `not applicable` would become an `unknown` and a question nobody can answer.
 
