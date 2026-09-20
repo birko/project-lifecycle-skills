@@ -156,10 +156,9 @@ grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^
 done
 
 printf '== 5. universal-conventions copies ==\n'
-# The comment rule exists twice on purpose: consumers receive it from
-# templates/CONVENTIONS-universal.md, and it governs this repo from AGENTS.md. Neither can point at
-# the other — a consumer install cannot see this repo — so the only thing keeping them from drifting
-# is this check. Fatal, not advisory: the remedy is a diff here, unlike check 6's installer re-run.
+# FATAL, unlike the advisory install-roots check below — the remedy here is a diff in this repo.
+# Why the rule exists in two files and why neither can point at the other: AGENTS.md § "Where the
+# same prose must exist in two files", and FEATURE-002 D13.
 UNIV_FILE=skills/new-project/templates/CONVENTIONS-universal.md
 RULE_START='<!-- comment-rule:start -->'
 RULE_END='<!-- comment-rule:end -->'
@@ -196,11 +195,8 @@ else
 fi
 
 printf '== 6. install roots (advisory) ==\n'
-# ADVISORY — this check never touches `fail` and can never change the exit code. Two reasons, and
-# the first is the real one: a missing junction is fixed by re-running an installer, which lives
-# OUTSIDE this repo, so no diff can clear the finding and a repo gate must not block on it. Second,
-# the roots do not exist on the CI runner, so a fatal check here would make this gate's meaning
-# depend on which machine ran it.
+# ADVISORY — never touches `fail`, so it cannot change the exit code, and must not be made to.
+# Why it has to stay that way: AGENTS.md § Testing.
 # Roots are overridable because the regression suite has to fabricate them — CI has none to find,
 # which would otherwise make every case below unwritable.
 CLAUDE_SKILLS_ROOT="${CLAUDE_SKILLS_ROOT:-$HOME/.claude/skills}"
