@@ -9,14 +9,14 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 61    |
+| todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 98    |
+| done         | 0     | 5       | 99    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 16× P3.
+`todo` by priority: 1× P1 · 44× P2 · 15× P3.
 
 ## In progress now
 
@@ -226,7 +226,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
   - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
-  - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `todo` P3 — four restatements, and one comment that should exist and doesn't
+  - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `done` P3 — 2 comments written, 5 cuts, 4 readers
   - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `done` P2 — sixth destination row shipped in both copies; 8 sites became reportable
   - [TASK-160](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-160.md) `done` P2 — eight guide-restatements cut; 4 readers confirmed
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `done` P3 — both headers now fact-then-pointer; verdict proven to read off the script

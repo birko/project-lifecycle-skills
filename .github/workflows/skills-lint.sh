@@ -6,7 +6,6 @@
 #
 # The wikilink and file-reference checks ignore fenced blocks and inline code spans: this repo
 # teaches its own conventions by example, so illustrative links in samples are content, not defects.
-# Named, not numbered, for the same reason the banners are not restated above.
 #
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
@@ -20,6 +19,11 @@ fail=0
 err() { printf '  ERROR %s\n' "$1"; fail=1; }
 suberr() { printf '  ERROR %s\n' "$1"; printf 'x' >> "$FAILFILE"; }
 
+# [[link]] targets with no skills/ folder behind them: `init` and `update-config` are Claude Code
+# built-ins, and `Explore` is an agent type rather than a skill at all. Without this list the
+# wikilink check reports a real, resolvable reference as broken.
+# The surrounding spaces are load-bearing — the test below is *" $link "*, so the first and last
+# entries match only when the string is padded at both ends.
 RUNTIME_REFS=" init update-config Explore "
 
 # Strip fenced blocks (backtick or tilde, tracking fence length so an inner ``` does not
@@ -74,7 +78,7 @@ find skills skills-pi -name '*.md' | sort | while read -r f; do
   body=$(strip_noise "$f")
   # An unclosed fence would swallow the rest of the file and the gate would pass vacuously.
   case "$body" in *SKILLS_LINT_UNBALANCED_FENCE*) suberr "$f has an unbalanced code fence — the rest of the file cannot be checked" ;; esac
-  # Aliased links ([[name|text]]) are checked on the name half, never skipped.
+  # Aliased links ([[name|text]]) are never skipped.
   printf '%s\n' "$body" | grep -ohE '\[\[[^]]+\]\]' | tr -d '[]' | cut -d'|' -f1 | sort -u | while read -r link; do
     [ -n "$link" ] || continue
     printf '%s\n' "$skill_names" | grep -qxF -- "$link" && continue
@@ -114,19 +118,17 @@ printf '== 4. cross-skill flags ==\n'
 # whose skills are named something else. Match any `/word verb --flag` and let
 # the existence of `skills/<word>/` decide whether it is one of ours; a stray `/usr/bin/x y --z` in
 # prose resolves to no skill folder and is skipped.
-# An earlier, narrower pattern required the flag to follow the verb immediately and stopped at the
-# first one, missing both cases — TASK-108 carries the measurement. The mechanic stays here because
-# it lives nowhere else: `grep -o` ends its match at the first flag, so a later flag on the same
+# Why the pattern is this shape and not a simpler one: TASK-108. The mechanic stays here because it
+# lives nowhere else: `grep -o` ends its match at the first flag, so a later flag on the same
 # invocation is invisible even when the first one matched.
 #
 # WHAT AN ARGUMENT MAY LOOK LIKE IS THE WHOLE DESIGN, because this check is fatal and prose is
 # not a diff anyone can fix. A first attempt allowed any bare word between verb and flag; that
 # reads ordinary prose as an invocation -- `The /beta go step runs before the --nosuch cleanup.`
 # errored -- and `skills/` already carries unbackticked `/skill verb <word>` sentences that would
-# trip it the day one gained a flag. So an argument is a PLACEHOLDER (`<areas>`, `{{ID}}`), an
-# identifier or number starting upper-case or numeric (`FEATURE-NNN`, `3`), or an ellipsis --
-# plus AT MOST ONE lowercase word, in the subcommand slot (`/tasks new task ...`). Prose runs
-# several lowercase words together and therefore cannot match; an invocation does not.
+# trip it the day one gained a flag. ARG_RE below is what replaced it, plus AT MOST ONE lowercase
+# word in the subcommand slot (`/tasks new task ...`). Prose runs several lowercase words together
+# and therefore cannot match; an invocation does not.
 # That one-lowercase-word ceiling is deliberate, not an oversight: `/beta go a b c d e f --x`
 # is prose by construction, and widening it to reach such a line would reopen the false positive.
 ARG_RE='(<[^<>]*>|\{\{[^{}]*\}\}|[A-Z0-9][A-Za-z0-9_-]*|\.\.\.)'
@@ -144,8 +146,8 @@ grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^
   # example are in AGENTS.md § "A format one skill reads is a contract", which also scopes out the
   # receiver that names a flag only to say it is UNSUPPORTED.
   #
-  # EVERY flag on the invocation, not just the first -- and each must be SPACE-ANCHORED. Grepping
-  # `--[a-z-]+` over the whole match reported `--known` out of an argument like `well--known`.
+  # Each flag must be SPACE-ANCHORED: grepping `--[a-z-]+` over the whole match reported `--known`
+  # out of an argument like `well--known`.
   printf '%s' "$inv" | grep -oE ' --[a-z-]+' | sed 's/^ //' | while IFS= read -r flag; do
     grep -qE -- "(^|[^a-z-])${flag}([^a-z-]|$)" "$recv" || \
       suberr "$src passes $flag to /$skill $verb — not declared in $recv"
@@ -160,13 +162,16 @@ UNIV_FILE=skills/new-project/templates/CONVENTIONS-universal.md
 RULE_START='<!-- comment-rule:start -->'
 RULE_END='<!-- comment-rule:end -->'
 
-rule_block() { # $1 = file. Empty output means "no delimited block here".
+rule_block() { # Empty output means "no delimited block here".
   [ -f "$1" ] || return 0
   # The marker must be ALONE on its line. A substring match instead captures from the first place the
   # file merely *mentions* the marker — and AGENTS.md documents this very convention in prose a few
   # hundred lines above the block it describes, so the substring version reported the two copies as
   # differing the moment the convention was written down.
   awk -v s="$RULE_START" -v e="$RULE_END" '
+    # The CR in the trailing class guards an awk that does NOT strip CR, reading a CRLF file.
+    # Kept rather than deleted as dead: the platform it guards is the one nobody tests on. Which
+    # platforms can currently reach it, and how that was measured: TASK-160.
     function bare(x) { gsub(/^[ 	]+|[ 	]+$/, "", x); return x }
     bare($0) == s { inb = 1 }
     inb           { print }
@@ -178,8 +183,8 @@ univ_block=$(rule_block "$UNIV_FILE")
 agents_block=$(rule_block AGENTS.md)
 
 if [ -z "$univ_block" ] && [ -z "$agents_block" ]; then
-  # Printed rather than skipped in silence: a reader cannot tell "no pair to check" from "the check
-  # did not run", and the second is how a gate quietly stops gating.
+  # Printed rather than skipped in silence — "no pair to check" and "the check did not run" must not
+  # look the same (AGENTS.md § "An owner verb reconciles").
   printf '  no universal-conventions pair in this tree — nothing to compare\n'
 elif [ -z "$agents_block" ]; then
   err "$UNIV_FILE carries the comment-rule block but AGENTS.md does not — this repo ships a rule it does not follow"
@@ -286,8 +291,8 @@ check_root() {
     # Kept as a collapse even when a shadow is present: gating it on `shadow -eq 0` sent an otherwise
     # unlinked root down the per-skill branch and printed one line per skill — the wall this
     # collapse exists to remove, and reachable exactly in the TASK-037 case (a stale skills-pi
-    # junction in a root where skills/ was never linked). The contradiction the gate was meant to fix
-    # was the WORDING, so fix the wording: say what is not linked rather than that nothing is.
+    # junction in a root where skills/ was never linked). The contradiction the gate was meant to
+    # fix is in the WORDING, and that is where it is fixed instead.
     if [ "$shadow" -gt 0 ]; then
       advise "$root has none of the $total expected skills linked (only shadow junctions) — run the installer, and remove the shadows reported above"
     else
