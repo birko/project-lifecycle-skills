@@ -12,9 +12,10 @@
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 
-# Failures are recorded in a temp file because checks 2 and 3 run inside `find | while`
-# subshells. It lives outside the repo so an interrupted run can never poison a later one,
-# and can never be committed by `git add -A`.
+# Failures are recorded in a temp file because the checks that run inside `find | while` and
+# `grep | while` subshells would lose a plain `fail=1` when the subshell exits. It lives outside
+# the repo so an interrupted run can never poison a later one, and can never be committed by
+# `git add -A`.
 FAILFILE=$(mktemp); trap 'rm -f "$FAILFILE"' EXIT
 fail=0
 err() { printf '  ERROR %s\n' "$1"; fail=1; }

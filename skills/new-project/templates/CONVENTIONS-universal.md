@@ -11,9 +11,10 @@ Write the comment the code cannot carry, and nothing else. Judge each line by **
 | in version history — the commit message, `git blame` | delete it; that is what the history is for |
 | in the ticket — `tasks/` | delete it; if the work is not filed yet, file it (`/tasks spawn`) and then delete it |
 | in a decision record — `docs/adr/`, the feature's `decisions.md` | delete it, or leave one line pointing at the record |
+| in the project's own guide — `CLAUDE.md` § Conventions, or wherever this project records its standing rules | delete it, or leave one line pointing at the section |
 | **nowhere** | **keep it, at whatever length it takes** |
 
-Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the content has no home but this comment — not merely that nobody has written it down yet. Content belonging in one of the first four rows goes there first, then the comment goes. Never delete the only copy of something: relocate it, then leave the pointer.
+Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the content has no home but this comment — not merely that nobody has written it down yet. Content belonging in one of the first five rows goes there first, then the comment goes. Never delete the only copy of something: relocate it, then leave the pointer.
 
 **A pointer is not a copy.** One line naming where the rest lives is what makes the destination reachable, and it always survives — a test comment naming the finding it pins and the mechanism it proves, a line citing the record that explains a choice. What fails the test is reproducing the content here.
 

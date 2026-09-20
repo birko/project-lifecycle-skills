@@ -176,7 +176,7 @@ everything, so name the comments the check deliberately left and why. This is th
 [[verify-conventions]] printing its exclusions on a clean pass.
 
 ```
-Comment rule: CLAUDE.md § Conventions › Comments — ladder rung 0, found by marker. Destinations: 5 rows.
+Comment rule: CLAUDE.md § Conventions › Comments — ladder rung 0, found by marker. Destinations: 6 rows.
 Scope:        working tree (nothing staged) — 6 changed files, 4 carrying comments in range.
               2 excluded as generated (app.js.map — minified shape; sw.js — declared linguist-generated).
 
@@ -198,7 +198,7 @@ Left alone, so you can see the check discriminates:
 Clean pass keeps the header — the verdict alone hides what produced it:
 
 ```
-Comment rule: CLAUDE.md § Conventions › Comments — ladder rung 0. Destinations: 5 rows.
+Comment rule: CLAUDE.md § Conventions › Comments — ladder rung 0. Destinations: 6 rows.
 Scope:        staged — 3 files, 1 carrying comments in range.
 ✅ No comment carries content that lives somewhere else.
 ```
@@ -254,6 +254,7 @@ scoped by it rather than sprayed across the repo:
 | version history | is it in `git log` / `git blame` for that file? **A comment on an uncommitted line has no history yet** — the destination is empty and this is an only copy |
 | the ticket | does an open task in the tracker carry it? Search by the behaviour described, not by wording |
 | a decision record | does a record under `docs/adr/`, or a feature's decision ledger, carry the reasoning? |
+| the project's own guide | does the section the finding named actually carry it? **Read the section, do not trust the name** — a guide's headings shift, and a pointer at a section that no longer says it is an only copy wearing a citation |
 
 **Found it? Delete the comment, and name in the report where the content already lives** — by task id,
 commit, or record path. That citation is what makes the deletion checkable instead of asserted.

@@ -381,9 +381,10 @@ Write the comment the code cannot carry, and nothing else. Judge each line by **
 | in version history — the commit message, `git blame` | delete it; that is what the history is for |
 | in the ticket — `tasks/` | delete it; if the work is not filed yet, file it (`/tasks spawn`) and then delete it |
 | in a decision record — `docs/adr/`, the feature's `decisions.md` | delete it, or leave one line pointing at the record |
+| in the project's own guide — `CLAUDE.md` § Conventions, or wherever this project records its standing rules | delete it, or leave one line pointing at the section |
 | **nowhere** | **keep it, at whatever length it takes** |
 
-Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the content has no home but this comment — not merely that nobody has written it down yet. Content belonging in one of the first four rows goes there first, then the comment goes. Never delete the only copy of something: relocate it, then leave the pointer.
+Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the content has no home but this comment — not merely that nobody has written it down yet. Content belonging in one of the first five rows goes there first, then the comment goes. Never delete the only copy of something: relocate it, then leave the pointer.
 
 **A pointer is not a copy.** One line naming where the rest lives is what makes the destination reachable, and it always survives — a test comment naming the finding it pins and the mechanism it proves, a line citing the record that explains a choice. What fails the test is reproducing the content here.
 
@@ -410,15 +411,15 @@ of them length findings. A table is evidence for the question it answered and fo
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | five sites remain → **TASK-158** (four restatements, plus `RUNTIME_REFS`, which carries no comment where the rule says one belongs). TASK-154's two check headers and TASK-157's six sites are cut | 318 | 123 (38%) | 30 |
+| `.github/workflows/skills-lint.sh` | thirteen sites remain — **TASK-158**'s five, and **TASK-160**'s eight, which D15's sixth destination row made reportable in one step. TASK-154's two headers, TASK-157's six and TASK-159's stale subshell claim are cut | 319 | 124 (38%) | 30 |
 | `.github/workflows/skills-lint-test.sh` | one block reproduces a measurement held on TASK-108 → **TASK-153** | 399 | 81 (20%) | 7 |
 | `pi-install.sh` | why-clause overlaps ADR 0009/0010 → **TASK-148** | 48 | 12 (25%) | 12 |
 | `pi-install.ps1` | same clause, same task | 43 | 11 (25%) | 11 |
 | `install.sh` | same single-source-of-truth why-clause → noted on **TASK-148** | 39 | 6 (15%) | 6 |
 | `install.ps1` | same clause, same task | 31 | 5 (16%) | 5 |
 
-Counts re-measured 2026-09-20 (third time — after TASK-154's cuts) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 122 / 80 / 11 / 5 for the four shell scripts and will look
+Counts re-measured 2026-09-20 (fourth time — after TASK-159) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 123 / 80 / 11 / 5 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits
