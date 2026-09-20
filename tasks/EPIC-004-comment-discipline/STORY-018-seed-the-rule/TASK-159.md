@@ -3,7 +3,7 @@ id: TASK-159
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: blocked
+status: todo
 priority: P2
 assignee: unassigned
 created: 2026-09-20
@@ -19,10 +19,12 @@ jira-key: null
 
 ## Context
 
-Surfaced by TASK-154's verification run and then confirmed textually. **Blocked, not `todo`:** the fix
-edits `CONVENTIONS-universal.md`, which ships byte-identical to every consumer and is lint-enforced by
-check 5, so it is a FEATURE-002 decision (**D15**, `proposed`) rather than an edit. Implementing an
-undecided row is the violation this repo names as coding without a task.
+Surfaced by TASK-154's verification run and then confirmed textually. **Unblocked 2026-09-20 — D15 is stamped `approved`.** It was
+held at `blocked` while `proposed`, because the fix edits `CONVENTIONS-universal.md`, which ships
+byte-identical to every consumer and is asserted by lint check 5; implementing an undecided row is the
+violation this repo names as coding without a task. **The decision is now made and the work is
+defined:** add a sixth row — *in the project's own guide — delete it, or leave one line pointing at the
+section* — to **both** copies, byte-identical.
 
 ### The gap, checkable in three steps
 
@@ -69,7 +71,7 @@ taxonomy says is a different record.
 
 ## Acceptance criteria
 
-- [ ] **D15 is stamped** by `/feature decide` before any file changes. The row is `proposed` today.
+- [x] **D15 is stamped** by `/feature decide` before any file changes — `approved` 2026-09-20, action *delete-or-pointer*.
 - [ ] Whichever way it goes, the rule says it **explicitly** — a reader must not have to infer from the absence of a row whether the guide counts.
 - [ ] If a row is added: it goes in `CONVENTIONS-universal.md` **and** `AGENTS.md`, between the markers, byte-identical, or check 5 fails. That is the mechanism, not an afterthought.
 - [ ] If a row is added: its action is stated (delete outright, or delete-or-pointer) — the existing rows differ on this and the difference is load-bearing.

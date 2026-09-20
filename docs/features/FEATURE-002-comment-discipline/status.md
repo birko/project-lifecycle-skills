@@ -13,7 +13,7 @@ generated: 2026-09-20
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 14 |
+| ✅ approved | 15 |
 | ✏️ changed | 1 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
@@ -24,9 +24,17 @@ to look at, and a third had been advertised to users since the day it shipped wi
 explained. It has now been defined, and the original decision was re-stamped rather than quietly
 widened, so the record shows the shape the requester approved and the shape that was built.
 
+**A fifteenth decision was taken today, and it came from the work checking itself.** The test that
+decides whether a comment should stay asks where else its content already lives, and offered five
+answers. It turned out to be missing one: the project's own rulebook, which is where most shared
+rules actually live here. So a comment could repeat a rule indefinitely and the check had no way to
+say so — and, going the other way, findings were being filed against the wrong answer, including one
+made by this work itself an hour earlier. The rulebook is now the sixth answer, and the remedy is the
+gentler of the two available: remove the copy, or leave a single line saying where the rule is.
+
 ## Build progress
 
-9 / 14 tasks done. One further task was cancelled — its work shipped inside another, and the
+10 / 17 tasks done, and one is finished-but-unverified. One further task was cancelled — its work shipped inside another, and the
 remaining part stopped being possible when a different change removed what it applied to.
 
 **The whole of what was asked for is built and in use.** The rule is in the template every new
@@ -34,16 +42,17 @@ project receives, this project follows it, an automated check keeps the two copi
 from drifting apart, and the command exists, runs over either a change or the whole codebase, and
 is invoked automatically whenever work is closed.
 
-The five open items are all follow-ups that the feature's own testing produced — none is part of
-the original request, and none blocks anyone:
+The six open items are all follow-ups that the feature's own testing produced — none is part of the
+original request, and none blocks anyone:
 
 | Item | What it is |
 |---|---|
+| TASK-159 | Add the sixth answer to the test, in both copies of the rule (today's decision) |
 | TASK-148 | Two installer scripts explain a choice that is already written down elsewhere |
 | TASK-153 | A measurement is repeated in a fifth place |
-| TASK-154 | Two notes in the check script argue a case the rulebook already settles |
 | TASK-155 | Six independent testers read one case and one of them graded it differently |
 | TASK-156 | A report line still varies slightly between testers; one rule was written but never tested |
+| TASK-158 | Four more repeats in the check script, and one place where a note is missing and should be written |
 
 ## What can be tested now
 
