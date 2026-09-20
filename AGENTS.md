@@ -424,8 +424,10 @@ same pattern. The counts are context for where to look; they are **not** the ver
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits
 while its verdict still read as current — which is the second reason a count cannot carry one.
 
-**Nothing here passes on brevity, and `skills-lint.sh` is the case that shows it.** Its two largest
-blocks survive and two of its shortest do not. The block at `:124-133` argues what an
+**Nothing here passes or fails on length, and `skills-lint.sh` is the case that shows it.** Its longest
+block survives at 31 lines; the two handed to TASK-154 are 4 and 7; and one-line comments survive
+throughout. Length predicts nothing in either direction — which is the point, and is why the verdict
+column exists and the count columns are context. The block at `:124-133` argues what an
 argument may look like and why widening the match would reopen a false positive; the `##`-not-`#`
 note at `:256-259` explains that shortest-prefix removal takes the *first* occurrence of the repo
 name, so a `<repo>/wt/<repo>` layout yields the wrong tree. **Those mechanics live nowhere else, and

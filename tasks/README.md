@@ -9,14 +9,14 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 59    |
+| todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 94    |
+| done         | 0     | 5       | 95    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 14× P3.
+`todo` by priority: 1× P1 · 43× P2 · 16× P3.
 
 ## In progress now
 
@@ -227,5 +227,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
 - **STORY-019** — `review-comments`, the command `planned`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
-  - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `todo` P2 — the invocation block promises a `PATH` argument it never defines
+  - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `done` P2 — `PATH …` defined as a whole-file sweep; 8 cold runners, 4 rounds
   - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `done` P2 — wired into `close` step 5b as its own axis; no flag passed
+  - [TASK-155](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-155.md) `todo` P3 — one reader in six renders ⚠ where the severity table says 🛑
+  - [TASK-156](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-156.md) `todo` P3 — a header that varies between readers, and a refusal nobody ran

@@ -1,6 +1,6 @@
 ---
 name: review-comments
-description: Find comments whose content already lives somewhere else, and report each with the destination that caught it — so the verdict is checkable rather than asserted. Runs over the current diff by default and over the whole repository with `--all`. Use when the user says "/review-comments", "review comments", "check the comments", "are these comments necessary", "clean up the comments", "comment discipline", "find stale comments", "this comment is out of date", "skontroluj komentáre", "prekontroluj komentare", "vyčisti komentáre", "sú tie komentáre potrebné", "zbytočné komentáre", "komentár už neplatí", or before marking a task done. Tech-agnostic — it reads the comment rule **this project** recorded in its own agent guide and never carries a copy, so a project that tightens the rule tightens this check. Never reports a comment for being long; length is a reason to look, never a finding. Never destroys the only record of something. Distinct from [[verify-conventions]], which lints a diff against the whole rulebook and by construction cannot see code nobody is changing, and from [[code-review]], which judges correctness.
+description: Find comments whose content already lives somewhere else, and report each with the destination that caught it — so the verdict is checkable rather than asserted. Runs over the current diff by default, over named paths in full when you give it any, and over the whole repository with `--all`. Use when the user says "/review-comments", "review comments", "check the comments", "are these comments necessary", "clean up the comments", "comment discipline", "find stale comments", "this comment is out of date", "skontroluj komentáre", "prekontroluj komentare", "vyčisti komentáre", "sú tie komentáre potrebné", "zbytočné komentáre", "komentár už neplatí", or before marking a task done. Tech-agnostic — it reads the comment rule **this project** recorded in its own agent guide and never carries a copy, so a project that tightens the rule tightens this check. Never reports a comment for being long; length is a reason to look, never a finding. Never destroys the only record of something. Distinct from [[verify-conventions]], which lints a diff against the whole rulebook and by construction cannot see code nobody is changing, and from [[code-review]], which judges correctness.
 ---
 
 One axis, one question: **does any comment here carry content that already lives somewhere else?**
@@ -22,17 +22,23 @@ re-derive a cap, which is the one failure this whole check was built to avoid.
 ## Invocation
 
 ```
-/review-comments [PATH …]        the current diff (default)
+/review-comments                 the current diff (default)
+/review-comments PATH …          those paths in full, ignoring the diff
 /review-comments --all           the whole repository
 /review-comments --all --batch N print batch N of the same ordering
 ```
 
+- `PATH …` — sweep the named files **in full**, whatever the diff says. Step 2 owns the scope.
 - `--all` — widen from the diff to every tracked file.
 - `--batch` — which page of an `--all` run to print. Defaults to 1.
-- **`--batch` without `--all` is refused by name**: a diff-scoped run is not paged, so honouring the flag
-  would be pretending. Say *"`--batch` applies to `--all` only; a diff-scoped run prints in full"* rather
-  than ignoring it — a flag silently dropped by one path is worse than one that never existed, because the
-  caller reads the promise and not the scope.
+- **`--batch` without `--all` is refused by name**: neither a diff-scoped nor a path-scoped run is paged,
+  so honouring the flag would be pretending. Say *"`--batch` applies to `--all` only; any other scope
+  prints in full"* rather than ignoring it — a flag silently dropped by one path is worse than one that
+  never existed, because the caller reads the promise and not the scope.
+
+- **`PATH` with `--all` is refused by name**, for the reason `--batch` is: they are two scopes and
+  honouring both is impossible, so one would be silently dropped and the caller would not know which.
+  Say *"`--all` is the whole repository; drop the paths, or drop `--all`"* and do neither.
 
 ## Step 1 — Find the rule, and say which rung found it
 
@@ -89,6 +95,31 @@ A diff gives you changed *lines*; this check needs whole *blocks*. Two rules fol
   most valuable finding a diff-scoped run can produce, and it is why the default is worth running at all.
   **Bounded on purpose:** immediately attached, not "same function", not "same file". A stale block ten
   lines away is what `--all` exists for.
+
+**`PATH …`** sweeps the named paths **in full, and does not consult the diff at all.** This is the scope
+for *"check the comments in the file I am about to work in"* — the question neither other scope answers,
+since the diff sees only what changed and `--all` drowns one file in a census. Four rules, and each one
+is a question a reader would otherwise have to improvise:
+
+- **Membership is `git ls-files`, exactly as `--all` does it and for the identical reason.** A path
+  naming an untracked file is **reported, not swept** — `not tracked, not swept: <path>`. Saying which is
+  the whole difference between a scope and a silent no-op.
+- **A directory expands to the tracked files under it**, and the expansion is what decides the two rules
+  below. `PATH …` takes more than one argument, so the plural and the directory both need an answer
+  rather than an assumption.
+- **"Named explicitly" means a file path, never a directory that happens to contain it.** The
+  generated/vendored exclusion below applies, with one exception: a file the caller **named by its own
+  path** is swept even when it looks generated, and the header says so — naming a file is the strongest
+  available signal they meant it. A file reached by **expanding a directory** was not named, so the
+  exclusion applies to it normally, and the header lists what it dropped. Both halves are stated because
+  `/review-comments src/` over a `src/` holding `schema.gen.ts` satisfies "explicit" under one reading
+  and not the other, and one sentence admitting both readings is the defect this scope was written to
+  remove.
+- **An untracked file under an expanded directory is skipped silently; an untracked path named
+  directly is reported.** Expansion reads tracked files only, so there is nothing to report — whereas a
+  caller who typed the path is owed an answer. The asymmetry is the same one: what the caller named.
+- **The only-copy question is asked here.** It is not inferable from either neighbouring rule — see
+  § *The only copy*, which owns it.
 
 **`--all`** widens to every tracked file. Enumerate with `git ls-files`, never a filesystem walk: an
 untracked scratch file on one machine must not produce a finding nobody else can reproduce.
@@ -172,6 +203,22 @@ Scope:        staged — 3 files, 1 carrying comments in range.
 ✅ No comment carries content that lives somewhere else.
 ```
 
+**The `Scope:` line names which of the three scopes ran, and a path run must not render like an empty
+diff run.** Those two are the pair a reader cannot otherwise tell apart — both print a small number and a
+clean verdict — and the whole-file sweep is exactly the case someone runs *because* the tree is clean.
+
+**A path run's line carries `N of M tracked` always, even when N equals M.** It is not optional and not
+dropped when nothing was skipped: the fragment is what tells a reader the membership test ran at all,
+and a line without it cannot be told from one where the question never came up. Measured — two runners
+on one tree emitted the line with and without it, which is the divergence this whole scope exists to
+prevent. Anything actually skipped is then named after it.
+
+```
+Scope:        paths (diff not consulted) — src/mill.ts, src/rate.ts swept in full; 2 of 2 tracked.
+Scope:        paths (diff not consulted) — src/mill.ts swept in full; 1 of 2 tracked.
+              not tracked, not swept: notes.txt.
+```
+
 ## `--all` — census first, then pages
 
 1. **A census before any finding**: total findings, files affected, and the split between always-violations
@@ -253,9 +300,16 @@ hundred times is not a usable flow, and batching the questions would make the an
 from the code that prompted them. The `--all` report therefore names each only copy and stops:
 `held — only copy, relocation not proposed (run scoped to act on it)`.
 
+**A path-scoped run is that scoped run, and it asks.** Stated here rather than left to be worked out,
+because it follows from neither neighbour: `--all` suppresses the question on grounds of volume, the diff
+scope asks because a person is present, and a path run shares the *person* with one and the *whole-file
+reach* with the other. A reader reaching for the nearest rule can land either way, and the two answers
+differ by whether anything gets relocated at all. **`PATH …` is the scope this section was written for**
+— "a person looking at one file" is its literal description — so it asks, exactly as the diff scope does.
+
 ## Where this runs
 
-- **Standalone, any time** — before a commit, or pointed at an area you are about to work in.
+- **Standalone, any time** — before a commit (the default diff), or pointed at an area you are about to work in (`PATH …`, which is what that phrase means mechanically).
 - **At a review gate, as its own axis** — reported beside standards, fidelity and correctness, with its own
   severity ordering and nothing sorted across them. A comment finding and a correctness blocker are not the
   same quantity, and one ranked list makes them look like it.
