@@ -225,3 +225,18 @@ caught by no row.
 **That directly contradicts a finding this feature already acted on.** TASK-157's reader I reported
 `:10` as a violation citing § Commands, and TASK-158 now carries it. One of the two readings is wrong,
 and the rule does not say which.
+
+### Correction — the destination this task recorded does not exist
+
+Filed after close, against work already committed in `1932557`, because it is a defect in the
+**record** rather than the change: site 1's destination was written up as **"a decision record"**,
+pointing at `AGENTS.md` § Testing. `### Testing` sits under `## Conventions` — by this repo's own
+five-records table it is a **rulebook entry**, a record *distinct* from `docs/adr/` and
+`decisions.md`, and § Conventions says such entries mostly have no decision record at all.
+
+**The relocation stands; the row it was filed under is not in the table.** The pointer is correct and
+both script-alone readers confirmed the verdict survived it. What is wrong is the classification, and
+it is wrong because the table has no row that fits — which is now **FEATURE-002 D15** (`proposed`) and
+**TASK-159**, blocked on it. Corrected there rather than silently here, since the same gap produced a
+finding on TASK-158 and a declined finding in this task's own verification run.
+

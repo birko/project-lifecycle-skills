@@ -12,7 +12,7 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
-| blocked      | —     | —       | 0     |
+| blocked      | —     | —       | 1     |
 | done         | 0     | 5       | 96    |
 | cancelled    | 0     | 0       | 1     |
 
@@ -226,6 +226,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
   - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `todo` P3 — four restatements, and one comment that should exist and doesn't
+  - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `blocked` P2 — the destination table has no row for the project's own guide (FEATURE-002 D15, undecided)
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `done` P3 — both headers now fact-then-pointer; verdict proven to read off the script
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`

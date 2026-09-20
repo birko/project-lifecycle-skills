@@ -7,7 +7,7 @@ status: todo
 priority: P3
 assignee: unassigned
 created: 2026-09-20
-depends-on: []
+depends-on: [TASK-159]
 blocks: []
 findings: [DRILL-157-1]
 pr: null
@@ -50,12 +50,13 @@ and why they have no folder — `init` and `update-config` are runtime-provided 
 | Site | Finding | Found by |
 |---|---|---|
 | `:166` | `# $1 = file` restates the signature; `[ -f "$1" ]` on the next line already says it. Not a doc comment, so the published-output carve-out does not apply. **The second sentence — that empty output means "no delimited block here" — is real content and stays** | I |
-| `:10` | `# Run locally: bash .github/workflows/skills-lint.sh` — recoverable from the shebang plus the file's own path, and stated in `AGENTS.md` § Commands. No options or env hints, so it adds nothing | I |
+| `:10` | `# Run locally: bash .github/workflows/skills-lint.sh` — recoverable from the shebang plus the file's own path. **⚠ Blocked on D15**: its other half (*also in `AGENTS.md` § Commands*) presumes the guide is a destination, which the table does not say — see TASK-159. The code-restatement half stands on its own either way | I |
 | `:149` | first clause restates `:117-121`, which **explicitly claims ownership** of that mechanic. Only the first clause duplicates — the `well--known` false positive is new and must stay | I |
 | `:295-296` | the closing sentence restates the branch below it | J |
 
 ## Acceptance criteria
 
+- [ ] **`:10` is judged only after D15 is stamped** (TASK-159). Its *restates the code* half stands regardless; its *restates the guide* half is exactly the question D15 asks, and ticking it now would settle a decision by implementation.
 - [ ] `:22` gains a comment stating why those three names resolve without a skill folder, **verified against what actually links to them** — not inferred from this task's own parenthetical.
 - [ ] Each of the four restatements is acted on or dismissed **with a reason recorded**; "left as is" alone does not close this.
 - [ ] `:166` keeps its second sentence, `:149` keeps the `well--known` case. A fix that deletes the whole comment at either site has removed content that lives nowhere.
