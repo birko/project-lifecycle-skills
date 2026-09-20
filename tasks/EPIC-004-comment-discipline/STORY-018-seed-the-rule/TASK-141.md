@@ -205,3 +205,113 @@ this feature that **was** executed is indistinguishable from the five that were 
 skills themselves rather than worked around here — it governs how every consumer records
 verification, so a local fix would leave the ambiguity in every repo that installs these skills.
 
+
+## Re-run — 2026-09-20, after the blockers cleared
+
+TASK-157, TASK-158, TASK-160 and TASK-148 are all `done`, which is the condition this task recorded
+for its own closure. Re-running the plan against the current tree.
+
+### Step 1 — settled as **structurally vacuous**, not re-run
+
+The first run recorded that *"raises **no** comment finding against `skills-lint.sh` or `install.sh`"*
+names two files absent from the diff, checked by a diff-scoped tool. **That is a property of the
+step, not of the tree**, so re-running it would produce the same non-answer. It is answered instead
+by widening step 2 below, which is what the clause was reaching for.
+
+The other half — *"reports the new convention as registered"* — passed on the first run and the
+convention has been in `AGENTS.md § Comments` under the markers ever since; lint check 5 asserts it
+byte-for-byte on every run since TASK-146.
+
+### Step 2 — widened to the scope step 1 named, and then some
+
+**Fixture** `t141re-t` / `-u`: the whole `AGENTS.md` **minus lines 403-447 only** (the measurement
+table), plus **all six scripts** — `skills-lint.sh`, `skills-lint-test.sh` and the four installers.
+
+**Two reasons for the wider scope.** Step 1 named `install.sh` and no cold reader has ever been shown
+the installers — TASK-148 changed all four headers on my reading of two ADRs, with no independent
+check. And TASK-141's own measurement table covered six scripts, so a re-run scoped to one would
+re-commit the original error of asserting more than was examined.
+
+**What the first run's expectation was, and why it is not restated here.** It said *"Expected: none."*
+That was false then — nine findings — and predicting *none* now would repeat the mistake, not correct
+it. The honest expectation is: **the sites those four tasks fixed do not come back, and anything new
+is new.** Four readers have swept `skills-lint.sh` since; the last pair still found three things, all
+since fixed but never re-verified together.
+
+**Step 3 remains the thing to watch**, and the fixture is built for it: with the measurement table
+removed, a reader cannot pass the file by citing a verdict someone else recorded.
+
+### Re-run, reader U — three findings, two verified, one a question about work committed an hour ago
+
+**The `ARG_RE` deadlock is broken, and not by argument.** Five readers had split **4:3** on whether
+`skills-lint.sh:123-131` is *"a rationale essay above a declaration"* — a judgement neither side could
+settle. U found something checkable instead: **the block duplicates the test file.**
+
+| U's claim | Verified |
+|---|---|
+| the fixture pins the very sentence the comment quotes | ✅ `skills-lint-test.sh:175` is `The /beta go step runs before the --nosuch cleanup in your log.`; `skills-lint.sh:127` quotes it |
+| the test's own comment carries the same reasoning | ✅ `skills-lint-test.sh:169-170` — *"This check is fatal, and prose is not a diff anyone can fix, so a false positive here is worse than the gap being closed"* — which is `skills-lint.sh:123-124` almost word for word |
+
+So the destination is **the code itself**: the rejected alternative, its failing sentence, and the
+reason it fails all live in `m_flagprose` and its comment. That is a row-1 finding, and it makes the
+essay question moot rather than resolving it.
+
+**A QA log nobody had reported, in the file TASK-141's own measurement blessed.**
+`skills-lint-test.sh:6`: *"A review of the first version found eight defects; every one has a case
+here."* A past review event and its count — the QA-log row exactly. Six readers have looked at these
+scripts and none flagged it, because none had been asked to read `skills-lint-test.sh`. **That is the
+cost of the original scope error**, and the reason this re-run was widened.
+
+**And U challenges TASK-148, committed an hour ago.** It reports `pi-install.sh:3-4` /
+`pi-install.ps1:2-3` as *"content restated above its own pointer"* — the `must NEVER be linked into
+~/.claude/skills` sentence sitting directly above `Why that tree is pi-only and frozen: ADR 0010`.
+
+**U put it as a question rather than a verdict**, which is the right shape: *"cut it to the pointer,
+or keep it as a deliberate exception because it sits where the mistake would be made?"* TASK-148's
+criterion 2 asserted the constraint *"must survive in full"* — **U is challenging that criterion's
+premise, not just my edit.** Held for reader T rather than answered alone.
+
+**One non-finding, correctly caught by U as a fixture artifact:** 29 `AGENTS.md §` pointers with no
+`AGENTS.md` in the tree. It exists in the real repo; U flagged it as needing confirmation rather than
+reporting it, which is the right call on a partial checkout.
+
+### Re-run, reader T — confirms U, and finds five more nobody had looked for
+
+**2 of 2 on the `pi-install` header**, which reverses a criterion I wrote. T: *"restates ADR 0010 one
+line above the pointer to it … by the guide's test it is a copy with the pointer already present."*
+
+**TASK-148's criterion 2 said the constraint "must survive in full". It was wrong**, and I was the
+one who wrote it. The *fact* survives — `skills-pi/` is never linked into `~/.claude/skills` — but
+*"where the real built-ins live"* is § Architecture's and ADR 0010's, sitting directly above the
+pointer to both. Reduced in both files. Reversing my own criterion on two independent readers is the
+correct weight; reversing it on one would not have been.
+
+**T confirms the QA log and catches that it has rotted**, which U did not: *"the first version"*
+against `:271`'s **"Regressions from the second review pass"**, and *"eight defects"* against a suite
+that now runs **56** cases. Verified both.
+
+**Five more, all in `skills-lint-test.sh`** — `:4-5`, `:41-42`, the negative-assertion rationale at
+three sites, `:284-286`, `:50-52` — plus two comments naming things that do not exist
+(`check_silent` for `case_silent`; "check 4" where `case_silent` greps check 6). All verified. Filed
+as **TASK-162**.
+
+### Verdict — this task does not close
+
+Its own condition was *"a re-run finds the file clean"*. It does not. **Nine findings survived six
+previous readers**, and the reason is the one thing this re-run changed: every earlier sweep was
+scoped to `skills-lint.sh`, while TASK-141's measurement claimed **six scripts examined**.
+
+**That is the defect this task has been carrying all along**, and it is larger than any comment in
+it: the measurement asserted more than was examined, and no gate could see the difference. The
+original run found the *table* answered the wrong question; this run finds it also answered it over
+the wrong scope.
+
+`blocks: TASK-141` is recorded on TASK-162. This task re-closes when that drains and a third re-run
+finds all six scripts clean — **not when the count reaches zero on one of them.**
+
+### The `ARG_RE` block — settled by evidence, for whoever takes it
+
+Five readers split 4:3 on *"is it a rationale essay"*. U found the checkable answer instead: the
+block duplicates `skills-lint-test.sh`'s own comment at `:169-170` and quotes the fixture sentence at
+`:175`. Destination **the code itself**. The judgement question is moot, and the evidence is in this
+record rather than in anyone's opinion.

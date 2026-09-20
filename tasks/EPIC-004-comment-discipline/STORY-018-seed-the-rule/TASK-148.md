@@ -98,3 +98,32 @@ both `.ps1` files, and lint check 6 still reporting both roots *in sync*.
   the four installer rows drop from 12/6/11/5 comment lines to **7/5/6/4**, and their verdict changes
   from *"why-clause overlaps ADR 0009/0010 → TASK-148"* to mechanism-only. Shebang-excluded figures
   recomputed to 124 / 80 / 6 / 4.
+
+### Criterion 2 was reversed the same day, by two independent readers
+
+Filed against this task after it closed, because it is a defect in **the criterion I wrote**, not in
+the execution of it.
+
+Criterion 2 required that *"the mechanism … and the never-link-`skills-pi`-into-Claude constraint
+survives in full"*. TASK-141's re-run put all four installers in front of two cold readers — the
+first time any reader had seen them — and **both reported the surviving sentence as a copy sitting
+one line above the pointer to its own source**:
+
+> `# skills-pi/ holds fallbacks for the review passes pi lacks, and must NEVER be linked into`
+> `# ~/.claude/skills, where the real built-ins live.`
+> `# … Why that tree is pi-only and frozen: ADR 0010.`
+
+Reader U put it as a question rather than a verdict — *"cut it to the pointer, or keep it as a
+deliberate exception because it sits where the mistake would be made?"* — which is the right shape
+for challenging a stated criterion. Reader T answered it independently: *"by the guide's test it is a
+copy with the pointer already present."*
+
+**The split that survives the reversal:** the *fact* stays (`skills-pi/` is never linked into
+`~/.claude/skills`) because it is an instruction at the point of danger; *"where the real built-ins
+live"* is § Architecture's and ADR 0010's reasoning and goes. Both headers reduced accordingly.
+
+**Why this is recorded rather than quietly amended.** I wrote the criterion, executed it, and judged
+it met — three roles, one opinion. Two readers with no stake reversed it within the hour. The
+measurement in `AGENTS.md` claimed these four files were examined; until this re-run, the only person
+who had examined them was the one asserting they passed.
+

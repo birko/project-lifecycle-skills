@@ -9,14 +9,14 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 59    |
+| todo         | —     | —       | 60    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 100   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 14× P3.
+`todo` by priority: 1× P1 · 45× P2 · 14× P3.
 
 ## In progress now
 
@@ -225,6 +225,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
   - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
   - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
+  - [TASK-162](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-162.md) `todo` P2 — skills-lint-test.sh was never swept; nine findings ⚠ blocks TASK-141
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
   - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `done` P3 — 2 comments written, 5 cuts, 4 readers
   - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `done` P2 — sixth destination row shipped in both copies; 8 sites became reportable

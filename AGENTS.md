@@ -413,13 +413,13 @@ of them length findings. A table is evidence for the question it answered and fo
 |---|---|---|---|---|
 | `.github/workflows/skills-lint.sh` | **passes** — every remaining block is a mechanic or a pointer. Four readers over TASK-158 and TASK-160 split 4:3 on the `ARG_RE` block's rejected-attempt narrative; recorded, not resolved | 320 | 125 (39%) | 26 |
 | `.github/workflows/skills-lint-test.sh` | one block reproduces a measurement held on TASK-108 → **TASK-153** | 399 | 81 (20%) | 7 |
-| `pi-install.sh` | mechanism only; the ADR-backed *why* is a pointer (TASK-148) | 43 | 7 (16%) | 7 |
-| `pi-install.ps1` | same shape, same change | 38 | 6 (15%) | 6 |
+| `pi-install.sh` | mechanism only (TASK-148); the restated half reversed by TASK-141's re-run | 42 | 6 (14%) | 6 |
+| `pi-install.ps1` | same shape, same change | 37 | 5 (13%) | 5 |
 | `install.sh` | same shape, same change | 38 | 5 (13%) | 5 |
 | `install.ps1` | same shape, same change | 30 | 4 (13%) | 4 |
 
-Counts re-measured 2026-09-20 (seventh time — after TASK-148) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 124 / 80 / 6 / 4 for the four shell scripts and will look
+Counts re-measured 2026-09-20 (eighth time — after TASK-141's re-run) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 124 / 80 / 5 / 4 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits
