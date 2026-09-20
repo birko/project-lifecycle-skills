@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
-# Installs the lifecycle skills into ~/.pi/agent/skills as symlinks pointing
-# back into this repo — the repo stays the single source of truth, so
-# `git pull` updates the live skills with no re-install.
-#
-# Links BOTH skills/ (the shared set, same as install.sh) AND skills-pi/ —
-# pi-only stubs of the Claude Code built-ins (code-review, review,
-# security-review) so pi resolves those references instead of skipping the
-# review gates. skills-pi/ must NEVER be linked into ~/.claude/skills: there
-# the real built-ins exist and the stubs would shadow them.
+# Links BOTH skills/ and skills-pi/ into ~/.pi/agent/skills as symlinks, one per skill folder.
+# skills-pi/ holds fallbacks for the review passes pi lacks, and must NEVER be linked into
+# ~/.claude/skills, where the real built-ins live.
+# Why links rather than copies: ADR 0009. Why that tree is pi-only and frozen: ADR 0010.
 #
 # Usage:  ./pi-install.sh      (idempotent; safe to re-run)
 

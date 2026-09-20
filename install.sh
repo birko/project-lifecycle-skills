@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Installs the lifecycle skills into ~/.claude/skills as symlinks pointing
-# back into this repo — the repo stays the single source of truth, so
-# `git pull` updates the live skills with no re-install.
+# Links skills/ into ~/.claude/skills as symlinks, one per skill folder.
+# Why links rather than copies: ADR 0009.
 #
 # Usage:  ./install.sh          (idempotent; safe to re-run)
 

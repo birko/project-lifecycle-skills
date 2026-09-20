@@ -1,6 +1,5 @@
-# Installs the lifecycle skills into ~/.claude/skills as directory junctions
-# pointing back into this repo — the repo stays the single source of truth,
-# so `git pull` updates the live skills with no re-install.
+# Links skills/ into ~/.claude/skills as directory junctions, one per skill folder.
+# Why links rather than copies: ADR 0009.
 #
 # Usage:  ./install.ps1          (idempotent; safe to re-run)
 

@@ -1,12 +1,7 @@
-# Installs the lifecycle skills into ~/.pi/agent/skills as directory junctions
-# pointing back into this repo — the repo stays the single source of truth,
-# so `git pull` updates the live skills with no re-install.
-#
-# Links BOTH skills/ (the shared set, same as install.ps1) AND skills-pi/ —
-# pi-only stubs of the Claude Code built-ins (code-review, review,
-# security-review) so pi resolves those references instead of skipping the
-# review gates. skills-pi/ must NEVER be linked into ~/.claude/skills: there
-# the real built-ins exist and the stubs would shadow them.
+# Links BOTH skills/ and skills-pi/ into ~/.pi/agent/skills as directory junctions, one per skill folder.
+# skills-pi/ holds fallbacks for the review passes pi lacks, and must NEVER be linked into
+# ~/.claude/skills, where the real built-ins live.
+# Why links rather than copies: ADR 0009. Why that tree is pi-only and frozen: ADR 0010.
 #
 # Usage:  ./pi-install.ps1      (idempotent; safe to re-run)
 
