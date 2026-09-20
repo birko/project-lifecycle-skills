@@ -410,15 +410,15 @@ of them length findings. A table is evidence for the question it answered and fo
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | two check headers restate reasoning held in § Testing and FEATURE-002 D13 → **TASK-154**; every other block is a mechanic that lives nowhere else | 323 | 128 (39%) | 31 |
+| `.github/workflows/skills-lint.sh` | two check headers restate reasoning held in § Testing and FEATURE-002 D13 → **TASK-154**; six further sites cut by TASK-157; every remaining block is a mechanic that lives nowhere else | 321 | 126 (39%) | 30 |
 | `.github/workflows/skills-lint-test.sh` | one block reproduces a measurement held on TASK-108 → **TASK-153** | 399 | 81 (20%) | 7 |
 | `pi-install.sh` | why-clause overlaps ADR 0009/0010 → **TASK-148** | 48 | 12 (25%) | 12 |
 | `pi-install.ps1` | same clause, same task | 43 | 11 (25%) | 11 |
 | `install.sh` | same single-source-of-truth why-clause → noted on **TASK-148** | 39 | 6 (15%) | 6 |
 | `install.ps1` | same clause, same task | 31 | 5 (16%) | 5 |
 
-Counts re-measured 2026-09-20 with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 127 / 80 / 11 / 5 for the four shell scripts and will look
+Counts re-measured 2026-09-20 (again, after TASK-157's cuts) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 125 / 80 / 11 / 5 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits
@@ -427,9 +427,9 @@ while its verdict still read as current — which is the second reason a count c
 **Nothing here passes or fails on length, and `skills-lint.sh` is the case that shows it.** Its longest
 block survives at 31 lines; the two handed to TASK-154 are 4 and 7; and one-line comments survive
 throughout. Length predicts nothing in either direction — which is the point, and is why the verdict
-column exists and the count columns are context. The block at `:124-133` argues what an
+column exists and the count columns are context. The block at `:123-132` argues what an
 argument may look like and why widening the match would reopen a false positive; the `##`-not-`#`
-note at `:256-259` explains that shortest-prefix removal takes the *first* occurrence of the repo
+note at `:254-257` explains that shortest-prefix removal takes the *first* occurrence of the repo
 name, so a `<repo>/wt/<repo>` layout yields the wrong tree. **Those mechanics live nowhere else, and
 the distinction matters:** FEATURE-001's worktree-location *decision* is recorded in its own ledger
 (D5/D5a), so claiming the comment is the only copy of *that* reasoning would argue against the very

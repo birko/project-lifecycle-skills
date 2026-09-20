@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # skills-lint — the repo's only automated gate.
 #
-# Each check announces itself below as `== N. name ==`; those banners are the inventory. A copy
-# of them here went stale twice as checks were inserted — most recently listing four of six.
+# Each check announces itself below as `== N. name ==`; those banners are the inventory — do not
+# restate them here, because a copy goes stale the next time a check is inserted.
 #
-# Checks 2 and 3 ignore fenced blocks and inline code spans: this repo teaches its own
-# conventions by example, so illustrative links in samples are content, not defects.
+# The wikilink and file-reference checks ignore fenced blocks and inline code spans: this repo
+# teaches its own conventions by example, so illustrative links in samples are content, not defects.
+# Named, not numbered, for the reason two lines above.
 #
 # Run locally: bash .github/workflows/skills-lint.sh
 set -uo pipefail
@@ -102,11 +103,10 @@ done
 printf '== 4. cross-skill flags ==\n'
 # A skill that tells you to run another skill's verb WITH a flag is asserting that flag exists.
 # Nothing enforced that: rename or typo the flag on either side and the caller keeps passing an
-# argument the receiver silently ignores. When it was added there were 0 mismatches to clear, so
-# this check is preventive rather than remedial — it exists to keep a clean state clean.
+# argument the receiver silently ignores. This check is preventive rather than remedial — an empty
+# finding list is the expected state here, not a broken check (measurement: TASK-045).
 #
-# Existence only, never semantics: whether the receiver does the right thing with the flag is not
-# checkable here. The receiving side is read WHOLE rather than from an "## Args" block, because two
+# The receiving side is read WHOLE rather than from an "## Args" block, because two
 # declaration styles are in use — bullets in most verbs, and an invocation table in
 # tasks/verbs/import.md. Keying on bullets alone reported import's real flags as missing.
 #
@@ -209,10 +209,9 @@ repo_name=$(basename "$(pwd -P)")
 
 advise() { printf '  ~ %s\n' "$1"; }
 
-# `skills/` is linked into BOTH roots; `skills-pi/` into the pi root ONLY — the real built-ins live
-# in the Claude root and the stubs would shadow them. That asymmetry is handled by which trees each
-# call passes, so skills-pi/ is never compared against the Claude root and can never be reported
-# missing from it.
+# `skills/` is linked into BOTH roots; `skills-pi/` into the pi root ONLY (ADR 0010). That asymmetry
+# is handled by which trees each call passes, so skills-pi/ is never compared against the Claude root
+# and can never be reported missing from it.
 check_root() {
   root=$1; shift
   if [ ! -d "$root" ]; then
@@ -256,7 +255,7 @@ check_root() {
       # `##` not `#`: shortest-prefix removal takes the FIRST occurrence of the repo name, so a
       # layout that repeats it as an ancestor (a worktree at <repo>/wt/<repo>, a clone at
       # ~/src/<repo>/<repo>) would yield the wrong tree and report every in-repo junction as a shadow.
-      # Longest-prefix matches the tail, which is what the comment above has always claimed.
+      # Longest-prefix matches the tail, which is what this case needs.
       */"$repo_name"/*) tree_of=${t##*/"$repo_name"/}; tree_of=${tree_of%%/*} ;;
       *) continue ;;
     esac
@@ -287,13 +286,13 @@ check_root() {
   # installer there adds the missing links and leaves the shadow in place. The two advisories would
   # contradict each other.
   #
-  # "Nothing is linked" is ONE condition, not N findings. Naming all 16 skills for a root the
+  # "Nothing is linked" is ONE condition, not N findings. Naming every skill for a root the
   # installer has simply never been run against buries the case that matters — a single skill that
-  # drifted — under a wall of text. Measured in the drill: 30+ lines for two empty roots.
+  # drifted — under a wall of text (TASK-016).
   if [ "$missing" -gt 0 ] && [ "$missing" -eq "$total" ]; then
     # Kept as a collapse even when a shadow is present: gating it on `shadow -eq 0` sent an otherwise
-    # unlinked root down the per-skill branch and printed one line per skill — the 30+ line wall this
-    # collapse was measured to remove, and reachable exactly in the TASK-037 case (a stale skills-pi
+    # unlinked root down the per-skill branch and printed one line per skill — the wall this
+    # collapse exists to remove, and reachable exactly in the TASK-037 case (a stale skills-pi
     # junction in a root where skills/ was never linked). The contradiction the gate was meant to fix
     # was the WORDING, so fix the wording: say what is not linked rather than that nothing is.
     if [ "$shadow" -gt 0 ]; then

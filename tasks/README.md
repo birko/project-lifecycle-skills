@@ -13,10 +13,10 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 94    |
+| done         | 0     | 5       | 95    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 16× P3.
+`todo` by priority: 1× P1 · 43× P2 · 17× P3.
 
 ## In progress now
 
@@ -224,7 +224,8 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
   - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
   - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
-  - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `todo` P2 — six more comment findings, one introduced by the task that was fixing them
+  - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
+  - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `todo` P3 — four restatements, and one comment that should exist and doesn't
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `todo` P3 — two check headers restate reasoning held in § Testing and D13
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`
