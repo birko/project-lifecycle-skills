@@ -191,3 +191,17 @@ guide **minus the measurement table only**, which is the isolation this run did 
 - `:222`'s backwards run-order premise — **TASK-081**, criterion amended rather than re-filed.
 - The comment rule's wording — FEATURE-002 D1/D2, settled.
 
+### Why the three boxes above stay unticked — TASK-161
+
+The plan **was run**, in full, and step 2 **failed**: it expected *"none"* and two readers found nine
+things. The boxes stay `[ ]` because ticking them is what lets `close` flip `review → done`, and a
+ticked box on a failed step would have closed this task today on a test that found nine defects.
+
+Leaving them unticked is also wrong, and knowingly so: `/feature review` Gate B now reports this task
+as *"3 unrun steps"*, beside five tasks whose plans genuinely have never been run. The one plan in
+this feature that **was** executed is indistinguishable from the five that were not.
+
+**The convention has two writable states and three real ones.** Filed as **TASK-161** against the
+skills themselves rather than worked around here — it governs how every consumer records
+verification, so a local fix would leave the ambiguity in every repo that installs these skills.
+

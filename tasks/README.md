@@ -9,14 +9,14 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 61    |
+| todo         | —     | —       | 62    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 5       | 97    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 16× P3.
+`todo` by priority: 1× P1 · 45× P2 · 16× P3.
 
 ## In progress now
 
@@ -149,6 +149,7 @@ _None_
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
 - **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (2/5 tasks done)
+  - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [ ] [TASK-139](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-139.md) `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
