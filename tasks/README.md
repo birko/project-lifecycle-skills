@@ -9,20 +9,22 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 60    |
+| todo         | —     | —       | 61    |
 | in-progress  | 4     | 9       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 95    |
+| done         | 0     | 5       | 94    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 43× P2 · 16× P3.
+`todo` by priority: 1× P1 · 44× P2 · 16× P3.
 
 ## In progress now
 
 _None_
 
-No verification debt — no task is at `review`.
+## In review (awaiting sign-off)
+
+- [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) — Adopt the comment rule in this repo, with the lint-script measurement that protects it (P1, unassigned) · FEATURE-002
 
 ## Tree
 
@@ -216,12 +218,13 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `in-progress`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
-  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `done` P1 — adopted in `AGENTS.md`, six scripts measured and passing
+  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `review` P1 — reopened; test plan run, the file it was to exonerate is not clean
   - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `todo` P3 — `pi-install.sh` header reproduces two ADRs instead of pointing at them
   - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
   - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
   - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
+  - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `todo` P2 — six more comment findings, one introduced by the task that was fixing them
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `todo` P3 — two check headers restate reasoning held in § Testing and D13
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`
