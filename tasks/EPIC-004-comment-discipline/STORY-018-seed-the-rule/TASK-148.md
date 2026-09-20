@@ -42,6 +42,14 @@ is that an untracked paragraph describing work is a spawn that was skipped.
 The same question applies to `pi-install.ps1:2-12`, which carries the parallel header. Fix both or
 neither; a half-fix leaves the two installers disagreeing about how much they explain.
 
+**Scope correction, added 2026-09-20 from TASK-151's block walk: the clause is in four files, not
+two.** `install.sh:3` and `install.ps1:2` carry the same *why* — *"the repo stays the single source of
+truth, so `git pull` updates the live skills with no re-install"* — which is ADR 0009's reasoning
+verbatim in substance. They lack only the `skills-pi/` shadowing half, because they do not link that
+tree. So the "fix both or neither" argument above applies across all four: whatever is decided for
+the `pi-install` pair must be decided for the plain pair in the same change, or the four installers
+end up disagreeing about how much they explain.
+
 ## Acceptance criteria
 
 - [ ] A judgement is recorded either way, with its reason — compliant as written, or reproduced content that becomes a pointer. "Left as is" without a reason does not close this.

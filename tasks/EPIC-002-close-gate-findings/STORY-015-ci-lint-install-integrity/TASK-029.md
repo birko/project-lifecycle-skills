@@ -31,9 +31,16 @@ what a reviewer uses to check that rule was honoured. A count that lags turns th
 formality — and nobody can now say from the records whether the nine new cases arrived with the lint
 changes that needed them.
 
+**Data point added 2026-09-20 from TASK-151.** The count has now moved a **seventh** time: the suite
+runs **56** cases, while `AGENTS.md:366` still says 47 and lists the drift as `16 → 25 → 36 → 40 → 43
+→ 47`. So the number went stale again between TASK-146 landing and the next read of that line — which
+is the concrete evidence for criterion 3 below, not merely an argument for it. TASK-151 deliberately
+did not patch 47 → 56: a hand-synced number fixed by hand is the same defect re-armed, and deciding
+whether the guide should carry a raw count at all is this task's job.
+
 ## Acceptance criteria
 
-- [ ] Each of the 25 cases maps to the lint behaviour it pins, and the nine added since the count was written are identified
+- [ ] Each of the 25 cases maps to the lint behaviour it pins, and the **thirty-one** added since the count was written are identified (the criterion originally said nine; the suite has grown twice more since)
 - [ ] Any lint behaviour with **no** case is either given one or recorded as deliberately unpinned, with the reason
 - [ ] Whether the guide should carry a raw count at all is decided explicitly — a number that must be hand-synced drifts again next week, so prefer a pointer or have the count come from the script
 - [ ] `skills-lint-test.sh` still passes and still runs before the lint in CI

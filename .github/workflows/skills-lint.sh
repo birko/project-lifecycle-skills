@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # skills-lint — the repo's only automated gate.
 #
-#   1. every SKILL.md has frontmatter, and its `name` matches its folder
-#   2. every [[wikilink]] resolves to a real skill (or a known runtime-provided reference)
-#   3. every relative file link points at a file that exists
-#   5. AGENTS.md and templates/CONVENTIONS-universal.md carry the same comment-rule block
+# Each check announces itself below as `== N. name ==`; those banners are the inventory. A copy
+# of them here went stale twice as checks were inserted — most recently listing four of six.
 #
 # Checks 2 and 3 ignore fenced blocks and inline code spans: this repo teaches its own
 # conventions by example, so illustrative links in samples are content, not defects.
@@ -104,11 +102,8 @@ done
 printf '== 4. cross-skill flags ==\n'
 # A skill that tells you to run another skill's verb WITH a flag is asserting that flag exists.
 # Nothing enforced that: rename or typo the flag on either side and the caller keeps passing an
-# argument the receiver silently ignores. Measured when this was written: 30 such invocations, all
-# of the form `/skill verb --flag`, and 0 mismatches — so this check exists to keep it that way
-# rather than to clear a backlog. THAT COUNT AND SHAPE ARE SUPERSEDED: see the paragraph below,
-# which measured 39 invocations of which 8 are NOT of that form. Kept because it records why the
-# check was added, not what it now matches.
+# argument the receiver silently ignores. When it was added there were 0 mismatches to clear, so
+# this check is preventive rather than remedial — it exists to keep a clean state clean.
 #
 # Existence only, never semantics: whether the receiver does the right thing with the flag is not
 # checkable here. The receiving side is read WHOLE rather than from an "## Args" block, because two
@@ -121,11 +116,10 @@ printf '== 4. cross-skill flags ==\n'
 # the existence of `skills/<word>/` decide whether it is one of ours; a stray `/usr/bin/x y --z` in
 # prose resolves to no skill folder and is skipped.
 # An argument may sit BETWEEN the verb and its flag, and an invocation may carry MORE THAN ONE
-# flag. Matching only `/skill verb --flag` missed both: measured 8 of 39 real invocations (~20%)
-# -- `/specs regen <areas> --story`, `/tasks move <ids> --to`, `/tasks plan {{ID}} --replan`,
-# `/tasks block <origin> --on`, `/tasks export <ID> --to`, `/tasks new task --from-feature` --
-# and `--no-plan` in `/tasks new task --from-feature FEATURE-NNN --no-plan` was invisible even
-# when the first flag matched, because `grep -o` ends the match at it.
+# flag. Matching only `/skill verb --flag` missed both — TASK-108 carries the measurement and the
+# invocations it names. The mechanic behind the second half stays here because it lives nowhere
+# else: `grep -o` ends its match at the first flag, so a later flag on the same invocation is
+# invisible even when the first one matched.
 #
 # WHAT AN ARGUMENT MAY LOOK LIKE IS THE WHOLE DESIGN, because this check is fatal and prose is
 # not a diff anyone can fix. A first attempt allowed any bare word between verb and flag; that

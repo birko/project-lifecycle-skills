@@ -399,39 +399,44 @@ Only *nowhere* survives, and it survives at **any** length. *Nowhere* means the 
 **Never report a comment for being long.** A thirty-line block explaining a non-obvious algorithm, a protocol quirk, or why the obvious implementation is wrong is compliant — every line carries something the code cannot. Comments that pass this test usually come out short, because most content has somewhere better to live; that is an outcome of the test, never a limit on it. Length is a reason to look, never a finding by itself.
 <!-- comment-rule:end -->
 
-**This repo's own scripts were measured against the rule before it was adopted here, and they pass.**
-Not an exemption — a measurement anyone can re-run, and the reason it is recorded is that
-`skills-lint.sh` looks like a flagrant violation by line count while being compliant by the test:
+**This repo's own scripts have been walked block by block against the rule, and the surviving
+findings are named below.** Not an exemption — a measurement anyone can re-run.
 
-| File | Lines | Comment lines | Longest run |
-|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | 288 | 123 (42%) | 35 |
-| `.github/workflows/skills-lint-test.sh` | 332 | 68 (20%) | 7 |
-| `pi-install.sh` | 48 | 12 (25%) | 12 |
-| `install.sh` | 39 | 6 (15%) | 6 |
-| `pi-install.ps1` | 43 | 11 (25%) | 11 |
-| `install.ps1` | 31 | 5 (16%) | 5 |
+**The question this answers is the rule's own: delete the line, then search for where its content
+already lives.** Saying so is load-bearing, because the first attempt (2026-09-19) answered a
+*different* question — it counted lines and read the two largest blocks for rationale — and passed
+everything. The destination search then found four real findings inside `skills-lint.sh` alone, none
+of them length findings. A table is evidence for the question it answered and for no other.
 
-Measured 2026-09-19 with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the shebang**, so a
-re-run excluding `#!` gets 122 / 11 / 5 and will look stale unless it uses the same command. Longest
-run measured as the longest unbroken sequence of lines matching that same pattern.
+| File | Verdict under the destination search | Lines | Comment lines | Longest run |
+|---|---|---|---|---|
+| `.github/workflows/skills-lint.sh` | two check headers restate reasoning held in § Testing and FEATURE-002 D13 → **TASK-154**; every other block is a mechanic that lives nowhere else | 323 | 128 (39%) | 31 |
+| `.github/workflows/skills-lint-test.sh` | one block reproduces a measurement held on TASK-108 → **TASK-153** | 399 | 81 (20%) | 7 |
+| `pi-install.sh` | why-clause overlaps ADR 0009/0010 → **TASK-148** | 48 | 12 (25%) | 12 |
+| `pi-install.ps1` | same clause, same task | 43 | 11 (25%) | 11 |
+| `install.sh` | same single-source-of-truth why-clause → noted on **TASK-148** | 39 | 6 (15%) | 6 |
+| `install.ps1` | same clause, same task | 31 | 5 (16%) | 5 |
 
-Every one passes because its content lives **nowhere else**. The two worth naming: the 35-line block
-at `skills-lint.sh:104-138` carries check 4's rationale and the measurement behind it (30 flag
-invocations, none enforced), and the `##`-not-`#` note at `:221-224` explains a shell mechanic —
-shortest-prefix removal takes the *first* occurrence of the repo name, so a `<repo>/wt/<repo>` layout
-yields the wrong tree. **That mechanic is what lives nowhere else, and the distinction matters:**
-FEATURE-001's worktree-location *decision* is recorded in its own ledger (D5/D5a), so claiming the
-comment is the only copy of that reasoning would argue against the very row of the table — decision
-records — that this rule uses to justify deleting such comments.
+Counts re-measured 2026-09-20 with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 127 / 80 / 11 / 5 for the four shell scripts and will look
+stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
+same pattern. The counts are context for where to look; they are **not** the verdict, and the
+2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits
+while its verdict still read as current — which is the second reason a count cannot carry one.
 
-**A change to the rule's wording invalidates this table — re-run the measurement, do not re-quote it.**
-The numbers are evidence for a verdict under a specific test; a reworded test makes them evidence for
-nothing. The one borderline case, recorded rather than resolved: `pi-install.sh:2-12` states the
-mechanism (which trees link where) *and* summarises why, and the why overlaps
-[ADR 0009](docs/adr/0009-installers-link-rather-than-copy.md) and
-[ADR 0010](docs/adr/0010-skills-pi-is-frozen-and-pi-only.md) — the decision-record row says leave a
-pointer rather than reproduce. Filed as TASK-148 rather than settled in passing.
+**Nothing here passes on brevity, and `skills-lint.sh` is the case that shows it.** Its two largest
+blocks survive and two of its shortest do not. The block at `:124-133` argues what an
+argument may look like and why widening the match would reopen a false positive; the `##`-not-`#`
+note at `:256-259` explains that shortest-prefix removal takes the *first* occurrence of the repo
+name, so a `<repo>/wt/<repo>` layout yields the wrong tree. **Those mechanics live nowhere else, and
+the distinction matters:** FEATURE-001's worktree-location *decision* is recorded in its own ledger
+(D5/D5a), so claiming the comment is the only copy of *that* reasoning would argue against the very
+row of the table — decision records — this rule uses to justify deleting such comments.
+
+**A change to the rule's wording — or to its method — invalidates this table. Re-run it, do not
+re-quote it.** The numbers and verdicts are evidence under one specific question; changing the
+question makes them evidence for nothing. That is not hypothetical here: it is exactly what happened
+between the two runs above.
 
 *Record: FEATURE-002 (D1, D2, D3, D10, D11, D12, D13). The block above is copied verbatim from
 `skills/new-project/templates/CONVENTIONS-universal.md` — that file is the source, and the two must

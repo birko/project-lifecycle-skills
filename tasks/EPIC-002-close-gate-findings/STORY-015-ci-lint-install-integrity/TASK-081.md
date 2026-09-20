@@ -52,11 +52,16 @@ check — the same misdirection as the stale numbers, which is why it is grouped
 
 ## Acceptance criteria
 
-- [ ] `AGENTS.md:214` and `:265` name the check that actually reports install-root drift
-- [ ] No single check number in `AGENTS.md` refers to two different checks
-- [ ] `skills-lint.sh:159`'s comment states a run-order relationship that is true, or stops relying on one
-- [ ] `skills-lint-test.sh:70`'s prose and its `'== 5. install roots'` assertion agree
-- [ ] The `Check 4 — cross-skill flags` header sits above the check-4 cases only; the check 1–3 cases print under a check 1–3 heading
+> **Repointed 2026-09-20 from TASK-151.** TASK-146 inserted a new check 5 and pushed install-root
+> drift to **check 6**, so every line number and ordinal below was one renumbering behind. They are
+> restated against the working tree at that date. Criterion 4 is the only one TASK-146 happened to
+> clear; the other four are still open, so this task is **not** closable as already-resolved.
+
+- [ ] The § *A repo-level check* bullet names the check that actually reports install-root drift — it says **check 5**, which is the universal-conventions copies check. (The § Commands block, `# The lint's check 6 reports install-root drift`, is already correct.) **Cited by section and quoted text, not by line number**: the first repoint said `:182`/`:477` and `:477` went stale inside the same commit, because that commit also rewrote § Comments five lines further up. A task about stale citations must not ship one.
+- [ ] No single check number in `AGENTS.md` refers to two different checks — today **`check 5`** names install-root drift in § *A repo-level check is answered by what the repo tracks* and the conventions-copy check in § *Where the same prose must exist in two files*
+- [ ] `skills-lint.sh:222-223`'s comment states a run-order relationship that is true, or stops relying on one — it says *"localize them so check 4 cannot clobber them. It runs last today"*, and `check_root` is now check **6**, with check 4 running before it
+- [x] `skills-lint-test.sh:70`'s prose and its install-roots assertion agree — both now read check 6 (`'== 6. install roots'`); cleared incidentally by TASK-146
+- [ ] The `Check 4 — cross-skill flags` header at `skills-lint-test.sh:237` sits above the check-4 cases only; `:250-252` (`skill folder with no SKILL.md`, `broken link in a companion doc`, `a whole skill tree is missing`) are check 1–3 cases still printing under it
 - [ ] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass
 
 ## Out of scope

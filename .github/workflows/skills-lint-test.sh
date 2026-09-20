@@ -47,7 +47,7 @@ mk_link() { # $1 = link, $2 = existing target dir. A symlink on POSIX; a junctio
   [ -L "$1" ]
 }
 
-# Check 5 is advisory and never touches the exit code, so `case_is` cannot see it at all. These
+# Check 6 is advisory and never touches the exit code, so `case_is` cannot see it at all. These
 # assert on OUTPUT and still require exit 0 — an advisory that began failing the build would itself
 # be a regression.
 roots_run() { # $1 = fixture dir; echoes the lint's combined output

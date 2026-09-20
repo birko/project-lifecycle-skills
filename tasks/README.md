@@ -2,29 +2,27 @@
 
 > ⚠ **Feature drift (1):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link. `docs/features/` now holds FEATURE-001 and FEATURE-002 (EPIC-004 is linked to the latter) — run `/roadmap --check`.
 
-_Generated 2026-09-18. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 58    |
+| todo         | —     | —       | 59    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 93    |
+| done         | 0     | 5       | 94    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 45× P2 · 12× P3.
+`todo` by priority: 1× P1 · 44× P2 · 14× P3.
 
 ## In progress now
 
-_None_ — and **no verification debt**. **EPIC-004's build is complete** — the rule ships, this repo follows it, a lint check keeps the two
-copies identical, and the command exists, relocates safely and runs at the close gate. What remains are
-four follow-ups its own drills found. Next unblocked work is
-[TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md), which opens
-STORY-019 — the `review-comments` command.
+_None_
+
+No verification debt — no task is at `review`.
 
 ## Tree
 
@@ -78,7 +76,7 @@ STORY-019 — the `review-comments` command.
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
     - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
     - [ ] [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) `pick`'s handoff branches on an `assignee:` value no task in the tree has
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (4/10)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
     - [ ] [TASK-028](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-028.md) The inference skip rule counts five subsections when one of them is conditional
@@ -88,7 +86,9 @@ STORY-019 — the `review-comments` command.
     - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
     - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced
     - [ ] [TASK-136](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-136.md) Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently
-    - [~] [TASK-138](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-138.md) A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports — **review**
+    - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
+    - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
+    - [ ] [TASK-150](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-150.md) The `docs/architecture.md` row names a state but no fill action, and the two doors disagree
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
@@ -220,7 +220,9 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `todo` P3 — `pi-install.sh` header reproduces two ADRs instead of pointing at them
   - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
-  - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `todo` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
+  - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
+  - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
+  - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `todo` P3 — two check headers restate reasoning held in § Testing and D13
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
