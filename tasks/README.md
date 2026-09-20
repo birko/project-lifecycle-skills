@@ -9,14 +9,14 @@ _Generated 2026-09-20. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 62    |
+| todo         | —     | —       | 61    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 97    |
+| done         | 0     | 5       | 98    |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 45× P2 · 16× P3.
+`todo` by priority: 1× P1 · 44× P2 · 16× P3.
 
 ## In progress now
 
@@ -228,7 +228,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
   - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `todo` P3 — four restatements, and one comment that should exist and doesn't
   - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `done` P2 — sixth destination row shipped in both copies; 8 sites became reportable
-  - [TASK-160](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-160.md) `todo` P2 — the eight sites D15 made reportable
+  - [TASK-160](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-160.md) `done` P2 — eight guide-restatements cut; 4 readers confirmed
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `done` P3 — both headers now fact-then-pointer; verdict proven to read off the script
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
 - **STORY-019** — `review-comments`, the command `planned`

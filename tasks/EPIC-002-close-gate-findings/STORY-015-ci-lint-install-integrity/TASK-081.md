@@ -50,6 +50,14 @@ check — the same misdirection as the stale numbers, which is why it is grouped
 
 - **Confirmed by a [[code-review]] pass 2026-09-08 (CR-2), which found the contradiction still live and named both sites:** `AGENTS.md:267` (the normative advisory rule) and `AGENTS.md:319` (the Commands block) still say *"check 4, install-root drift"*, while `:158` says check 5 for drift and `:216` says check 4 for flags. The consequence is sharper than a stale number: a reader following `:267` concludes the **flag** check must never fail the build.
 
+**Confirmed again 2026-09-20 by two more independent readers** (TASK-160's verification), neither
+holding this task in context. Reader Q states the direction explicitly: *"the hazard runs the other
+way: `check_root` assigns both in its own loops, so without `local` it is the function that clobbers
+the outer ones."* Reader P adds the sharpest evidence for the fix's shape: **this is now the only
+numbered cross-reference left in the file, and it is the only wrong one** — every other has been
+converted to a name (`:156` *"unlike the advisory install-roots check below"*, `:195` *"ADVISORY —
+never touches `fail`"*). Four readers total have now reached this independently.
+
 ## Acceptance criteria
 
 > **Repointed 2026-09-20 from TASK-151.** TASK-146 inserted a new check 5 and pushed install-root

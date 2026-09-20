@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
-# skills-lint — the repo's only automated gate.
+# skills-lint — the repo's automated gate (AGENTS.md § Testing).
 #
 # Each check announces itself below as `== N. name ==`; those banners are the inventory — do not
-# restate them here, because a copy goes stale the next time a check is inserted.
+# restate them here (AGENTS.md § Defer to a shared inventory).
 #
 # The wikilink and file-reference checks ignore fenced blocks and inline code spans: this repo
 # teaches its own conventions by example, so illustrative links in samples are content, not defects.
-# Named, not numbered, for the reason two lines above.
+# Named, not numbered, for the same reason the banners are not restated above.
 #
-# Run locally: bash .github/workflows/skills-lint.sh
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 
@@ -102,25 +101,23 @@ find skills skills-pi -name '*.md' ! -path '*/templates/*' | sort | while read -
 done
 
 printf '== 4. cross-skill flags ==\n'
-# A skill that tells you to run another skill's verb WITH a flag is asserting that flag exists.
-# Nothing enforced that: rename or typo the flag on either side and the caller keeps passing an
-# argument the receiver silently ignores. This check is preventive rather than remedial — an empty
-# finding list is the expected state here, not a broken check (measurement: TASK-045).
+# What this enforces, and why it is a contract: AGENTS.md § "A format one skill reads is a contract".
+# Preventive rather than remedial — an empty finding list is the expected state here, not a broken
+# check (measurement: TASK-045).
 #
 # The receiving side is read WHOLE rather than from an "## Args" block, because two
 # declaration styles are in use — bullets in most verbs, and an invocation table in
 # tasks/verbs/import.md. Keying on bullets alone reported import's real flags as missing.
 #
-# The skill name is NOT a hard-coded list. An alternation of today's skills would go quietly stale
-# the day a skill is added — the restated-list defect this repo lints for elsewhere — and could not be
-# exercised on a fixture whose skills are named something else. Match any `/word verb --flag` and let
+# The skill name is NOT a hard-coded list (AGENTS.md § Defer to a shared inventory). The local
+# consequence is the reason it matters here: an alternation could not be exercised on a fixture
+# whose skills are named something else. Match any `/word verb --flag` and let
 # the existence of `skills/<word>/` decide whether it is one of ours; a stray `/usr/bin/x y --z` in
 # prose resolves to no skill folder and is skipped.
-# An argument may sit BETWEEN the verb and its flag, and an invocation may carry MORE THAN ONE
-# flag. Matching only `/skill verb --flag` missed both — TASK-108 carries the measurement and the
-# invocations it names. The mechanic behind the second half stays here because it lives nowhere
-# else: `grep -o` ends its match at the first flag, so a later flag on the same invocation is
-# invisible even when the first one matched.
+# An earlier, narrower pattern required the flag to follow the verb immediately and stopped at the
+# first one, missing both cases — TASK-108 carries the measurement. The mechanic stays here because
+# it lives nowhere else: `grep -o` ends its match at the first flag, so a later flag on the same
+# invocation is invisible even when the first one matched.
 #
 # WHAT AN ARGUMENT MAY LOOK LIKE IS THE WHOLE DESIGN, because this check is fatal and prose is
 # not a diff anyone can fix. A first attempt allowed any bare word between verb and flag; that
@@ -142,11 +139,10 @@ grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^
   recv="skills/$skill/verbs/$verb.md"
   [ -e "$recv" ] || recv="skills/$skill/SKILL.md"
   [ -e "$recv" ] || continue
-  # ANCHORED, not a bare substring test. `grep -qF -- "$flag"` matched --unattend inside
-  # --unattended and --dry inside --dry-run, so a truncated or prefix-colliding flag shipped green
-  # on the repo's only gate. Bound both sides by the flag's own character class. Still existence
-  # only, never semantics: a receiver naming a flag in prose to say it is UNSUPPORTED still
-  # satisfies this, which AGENTS.md scopes the check out of deliberately.
+  # ANCHORED, because `grep -qF -- "$flag"` prefix-matches: a shorter flag is found inside a longer
+  # one and ships green. Bound both sides by the flag's own character class. The rule and its worked
+  # example are in AGENTS.md § "A format one skill reads is a contract", which also scopes out the
+  # receiver that names a flag only to say it is UNSUPPORTED.
   #
   # EVERY flag on the invocation, not just the first -- and each must be SPACE-ANCHORED. Grepping
   # `--[a-z-]+` over the whole match reported `--known` out of an argument like `well--known`.
@@ -246,8 +242,8 @@ check_root() {
     # that is worth surfacing anyway — the installers already warn "links elsewhere" for it.)
     #
     # Which of this repo's trees does the link point into? Derived from the path, never from a list
-    # of tree names — a hard-coded `skills|skills-pi` alternation goes wrong silently the day a third
-    # tree is added, and this check would keep passing while missing it.
+    # of tree names (AGENTS.md § Defer to a shared inventory). The local consequence is the reason
+    # it matters here: a hard-coded alternation leaves this check passing while missing a new tree.
     case "$t" in
       # `##` not `#`: shortest-prefix removal takes the FIRST occurrence of the repo name, so a
       # layout that repeats it as an ancestor (a worktree at <repo>/wt/<repo>, a clone at
