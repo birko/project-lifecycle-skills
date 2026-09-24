@@ -10,10 +10,10 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
 | todo         | —     | —       | 55    |
-| in-progress  | 4     | 9       | 0     |
+| in-progress  | 3     | 8       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 7       | 115   |
+| done         | 1     | 8       | 115   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 11× P3.
@@ -212,7 +212,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 </details>
 
-### EPIC-004 — Comment discipline in agent-written code `in-progress`
+### EPIC-004 — Comment discipline in agent-written code `done`
 
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `done`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
@@ -240,7 +240,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `done` P2 — wired into `close` step 5b as its own axis; no flag passed
   - [TASK-155](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-155.md) `done` P3 — 🛑 outranks ⚠ when both match; 2 of 2 runners agree
   - [TASK-156](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-156.md) `done` P3 — path header prescribed (2 of 2 identical); path + `--all` refusal run 2 of 2
-- **STORY-020** — What FEATURE-002's review gate found unfinished `in-progress`
+- **STORY-020** — What FEATURE-002's review gate found unfinished `done`
   - [TASK-167](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-167.md) `done` P2 — the close gate's text still counts three axes; `VI-*` prefix
   - [TASK-168](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-168.md) `done` P2 — `review-comments` absent from every skill overview
   - [TASK-169](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-169.md) `done` P2 — the measurement table cannot be re-run from AGENTS.md
