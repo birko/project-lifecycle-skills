@@ -11,9 +11,9 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 5       | —     |
 | todo         | —     | —       | 57    |
 | in-progress  | 4     | 9       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 107   |
+| done         | 0     | 5       | 108   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 13× P3.
@@ -21,10 +21,6 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_
-
-## In review (awaiting sign-off)
-
-- [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) — Adopt the comment rule in this repo, with the lint-script measurement that protects it (P1, unassigned) · FEATURE-002
 
 ## Tree
 
@@ -219,7 +215,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `in-progress`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
-  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `review` P1 — reopened; test plan run, the file it was to exonerate is not clean
+  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `done` P1 — third re-run clean (no finding two cold readers share); signed off
   - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `done` P3 — all four installer headers: mechanism kept, ADR why pointered
   - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks

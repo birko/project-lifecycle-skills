@@ -3,7 +3,7 @@ id: TASK-141
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: unassigned
 created: 2026-09-18
@@ -57,9 +57,9 @@ cross-cutting pattern introduced by a change gets recorded in § Conventions in 
 
 ## Human test plan
 
-- [ ] Run `/verify-conventions` over this diff. Expected: it reports the new convention as registered, and raises **no** comment finding against `skills-lint.sh` or `install.sh`.
-- [ ] Ask a cold runner (same acquisition rules as TASK-140) to apply this repo's `AGENTS.md` § Conventions to `.github/workflows/skills-lint.sh` and report violations. Expected: none, and the reasoning cites that nothing else records what those comments say — not the recorded measurement, which the runner should not need in order to reach the same verdict.
-- [ ] Expected failure mode to watch for: the runner passes the file only because it read the measurement. That means the rule alone does not actually exonerate the file, and the rule — not the record — is what needs fixing.
+- [x] Run `/verify-conventions` over this diff. Expected: it reports the new convention as registered, and raises **no** comment finding against `skills-lint.sh` or `install.sh`.
+- [x] Ask a cold runner (same acquisition rules as TASK-140) to apply this repo's `AGENTS.md` § Conventions to `.github/workflows/skills-lint.sh` and report violations. Expected: none, and the reasoning cites that nothing else records what those comments say — not the recorded measurement, which the runner should not need in order to reach the same verdict.
+- [x] Expected failure mode to watch for: the runner passes the file only because it read the measurement. That means the rule alone does not actually exonerate the file, and the rule — not the record — is what needs fixing.
 
 ## Implementation plan
 
@@ -324,3 +324,39 @@ Five readers split 4:3 on *"is it a rationale essay"*. U found the checkable ans
 block duplicates `skills-lint-test.sh`'s own comment at `:169-170` and quotes the fixture sentence at
 `:175`. Destination **the code itself**. The judgement question is moot, and the evidence is in this
 record rather than in anyone's opinion.
+
+## Third re-run — 2026-09-24, after TASK-162/153/163/164/165/166 and TASK-081
+
+**Bar:** *no finding raised by both of two cold readers* (defined 2026-09-24, § Verdict above).
+**Runner:** `cd <scratchpad>/t141-{k,l} && claude -p --disable-slash-commands --permission-mode plan < t162-brief.txt`
+— TASK-162's brief, verbatim and unchanged. Fixture: `AGENTS.md` **minus the measurement table only**
+(lines 403-448) plus all six scripts, outside any git repo, so neither reader can pass a file by citing a
+recorded verdict. **Coldness:** both listed no skills.
+
+**Result: passes. No finding is shared.**
+
+| Site | K | L |
+|---|---|---|
+| `skills-lint.sh:195-196` roots-overridable clause vs § Testing | borderline | **passed** (lists 193-196) |
+| `skills-lint.sh:110-112` last sentence (history) | passed | raised, low confidence |
+| `skills-lint.sh:140-141` unsupported clause vs *"existence only"* | passed | raised |
+| `skills-lint.sh:152` *"FATAL, unlike…"* vs § Testing | passed | raised, "optional" |
+| `skills-lint.sh:284-286` *"stale"* for a shadow; test name cited by prefix | passed | raised |
+| `skills-lint-test.sh:124` `grep -qF` story; `:299` *"One word."* | **no findings in the file** | raised |
+| the four installer headers vs § Commands | **no findings** | raised, low confidence |
+
+Both noted `AGENTS.md` § Testing's **47** against the suite's **56** — a guide line, not a script
+comment, and **TASK-029**'s. The three findings every earlier pair agreed on (TASK-166) were raised by
+neither. The single-reader rows above are recorded here and not filed, per the bar.
+
+**Human test plan, answered:**
+1. *`/verify-conventions` … no comment finding against `skills-lint.sh` or `install.sh`* — the "registered"
+   half passed on the first run; the comment half is answered by this re-run: no finding two readers agree
+   on, in either file.
+2. *A cold runner applies § Conventions to `skills-lint.sh`: expected none* — two runners, all six scripts;
+   nothing both raise.
+3. *Watch for: passes only because it read the measurement* — did not occur: the table was withheld, and
+   neither reader cites a recorded verdict. On the first run both readers indicted the file on the rule
+   alone; on this one they clear it on the rule alone.
+
+**Signed off 2026-09-24 by František Bereň; closed `done`.**
