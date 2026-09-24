@@ -3,7 +3,7 @@ id: TASK-169
 parent: STORY-020
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-09-24
@@ -31,11 +31,11 @@ The table covers all six scripts and every count matches a re-measurement, but:
 
 ## Acceptance criteria
 
-- [ ] The pass bar is stated where the table is, in a form a re-runner can apply: two cold readers, the guide minus the table, all six scripts, *passes = no finding both raise* — pointing at `skills/populate-tests/SKILL.md` § *The cold drill* for method rather than restating it.
-- [ ] Every verdict cell says **passes** or names what is open — one vocabulary.
-- [ ] The prose's figures agree with the table, or stop quoting figures the table already carries.
-- [ ] The record line names D15.
-- [ ] Nothing inside the `comment-rule` markers changes (the table is outside them); `bash .github/workflows/skills-lint.sh` passes with check 5 agreeing.
+- [x] The pass bar is stated where the table is, in a form a re-runner can apply: two cold readers, the guide minus the table, all six scripts, *passes = no finding both raise* — pointing at `skills/populate-tests/SKILL.md` § *The cold drill* for method rather than restating it.
+- [x] Every verdict cell says **passes** or names what is open — one vocabulary.
+- [x] The prose's figures agree with the table, or stop quoting figures the table already carries.
+- [x] The record line names D15.
+- [x] Nothing inside the `comment-rule` markers changes (the table is outside them); `bash .github/workflows/skills-lint.sh` passes with check 5 agreeing.
 
 ## Out of scope
 
@@ -43,8 +43,26 @@ The table covers all six scripts and every count matches a re-measurement, but:
 
 ## Human test plan
 
-- [ ] A cold reader given only the `AGENTS.md` § Comments section (table included) is asked: "how would you re-run this table's verdicts, and what counts as a pass?" Expected: two cold readers and the pass bar as stated — without needing any task file.
+- [x] A cold reader given only the `AGENTS.md` § Comments section (table included) is asked: "how would you re-run this table's verdicts, and what counts as a pass?" Expected: two cold readers and the pass bar as stated — without needing any task file.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-169` — leave empty until then._
+State the bar beside the table with a pointer for method; one verdict word; drop the stale figure; name D15.
+
+**Outcome (2026-09-24).** `AGENTS.md` § Comments now states the pass bar beside the table — two cold
+readers, the guide minus the **whole measurement block**, the six scripts and nothing else, *passes = no
+finding both raise*, single-reader findings recorded on the drill's task — and points at `populate-tests`
+§ *The cold drill* for obtaining a cold reader. Every verdict cell reads **passes** with its evidence. The
+stale *"survives at 30 lines"* now defers to the *Longest run* column. The record line names D15.
+
+**Human test, run:** a cold reader given only the § Comments section (86 lines, table included; listed no
+skills) reconstructed the procedure and the pass bar with no task file — criterion met. It raised two
+ambiguities in the new paragraph, both fixed in-task because both are reproducibility: *"minus this table"*
+did not say the surrounding prose goes too (every drill withheld the whole block, since the prose argues
+verdicts), and nothing said what readers may access (only the guide and scripts — a destination outside
+them is *could not find*, never assumed). Its other points — how two findings count as "the same", PowerShell
+block comments in the count — are recorded here, not acted on: the first is the reader's judgement by design,
+and the `.ps1` files carry no `<# #>` blocks today.
+
+**Gate, inline:** standards ✅ pointer for method, no restated list · fidelity ✅ criteria 1-5 · correctness ✅
+lint OK, check 5 agrees (all edits outside the markers). Security: n/a.

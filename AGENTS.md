@@ -409,14 +409,25 @@ already lives.** Saying so is load-bearing, because the first attempt (2026-09-1
 everything. The destination search then found four real findings inside `skills-lint.sh` alone, none
 of them length findings. A table is evidence for the question it answered and for no other.
 
+**A file passes when no finding is raised by both of two cold readers.** Each reader gets this guide
+*minus this whole measurement block* — from *"This repo's own scripts have been walked"* to the record
+line below, since the prose
+argues particular verdicts as much as the table does — plus all six scripts and nothing else, and applies
+§ Comments above. A destination outside what the reader was given is reported *could not find*, never
+assumed. A finding one reader raises and the other passes is recorded on the task that
+ran the drill, not held against the file. Why agreement and not zero: every drill surfaces something
+smaller at the margin, so "no finding from anyone" never terminates, and two independent readers agreeing
+is what separates a finding from a taste (FEATURE-002 D10). Obtaining a reader that is actually cold:
+`skills/populate-tests/SKILL.md` § *The cold drill*.
+
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | **no finding two readers agree on is open** — the `ARG_RE` block reduced by TASK-166; TASK-141's re-run is the check | 311 | 116 (37%) | 22 |
-| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162, TASK-153, TASK-163, TASK-164 and TASK-165; EVIDENCE/PIN lines state what each case detects (TASK-166) | 392 | 73 (18%) | 7 |
-| `pi-install.sh` | mechanism and pointers only — the restated line removed by TASK-166 | 41 | 5 (12%) | 5 |
-| `pi-install.ps1` | same shape, same change | 36 | 4 (11%) | 4 |
-| `install.sh` | mechanism and pointer only (TASK-148) | 38 | 5 (13%) | 5 |
-| `install.ps1` | same shape as `install.sh` | 30 | 4 (13%) | 4 |
+| `.github/workflows/skills-lint.sh` | **passes** — TASK-141's third re-run; the `ARG_RE` block reduced by TASK-166 | 311 | 116 (37%) | 22 |
+| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162 through TASK-165; EVIDENCE/PIN lines state what each case detects (TASK-166) | 392 | 73 (18%) | 7 |
+| `pi-install.sh` | **passes** — mechanism and pointers only; the restated line removed by TASK-166 | 41 | 5 (12%) | 5 |
+| `pi-install.ps1` | **passes** — same shape as `pi-install.sh` | 36 | 4 (11%) | 4 |
+| `install.sh` | **passes** — mechanism and pointer only (TASK-148) | 38 | 5 (13%) | 5 |
+| `install.ps1` | **passes** — same shape as `install.sh` | 30 | 4 (13%) | 4 |
 
 Counts re-measured 2026-09-24 (thirteenth time — after TASK-166) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
 shebang**, so a re-run excluding `#!` gets 115 / 72 / 4 / 4 for the four shell scripts and will look
@@ -426,7 +437,7 @@ same pattern. The counts are context for where to look; they are **not** the ver
 while its verdict still read as current — which is the second reason a count cannot carry one.
 
 **Nothing here passes or fails on length, and `skills-lint.sh` is the case that shows it.** Its longest
-block survives at 30 lines; the two cut by TASK-154 were 5 and 4; and one-line comments survive
+block survives at whatever the *Longest run* column says; the two cut by TASK-154 were 5 and 4; and one-line comments survive
 throughout. Length predicts nothing in either direction — which is the point, and is why the verdict
 column exists and the count columns are context. The block above `ARG_RE` argues what an argument may
 look like and why widening the match would reopen a false positive; the `##`-not-`#` note in
@@ -443,7 +454,7 @@ re-quote it.** The numbers and verdicts are evidence under one specific question
 question makes them evidence for nothing. That is not hypothetical here: it is exactly what happened
 between the two runs above.
 
-*Record: FEATURE-002 (D1, D2, D3, D10, D11, D12, D13). The block above is copied verbatim from
+*Record: FEATURE-002 (D1, D2, D3, D10, D11, D12, D13, D15). The block above is copied verbatim from
 `skills/new-project/templates/CONVENTIONS-universal.md` — that file is the source, and the two must
 stay byte-identical; TASK-146 makes the lint enforce it.*
 
