@@ -8,12 +8,12 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 5       | —     |
+| planned      | 0     | 4       | —     |
 | todo         | —     | —       | 57    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 108   |
+| done         | 0     | 6       | 108   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 13× P3.
@@ -213,7 +213,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 ### EPIC-004 — Comment discipline in agent-written code `in-progress`
 
-- **STORY-018** — Seed the comment-discipline rule into both rulebooks `in-progress`
+- **STORY-018** — Seed the comment-discipline rule into both rulebooks `done`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
   - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `done` P1 — third re-run clean (no finding two cold readers share); signed off
   - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `done` P3 — all four installer headers: mechanism kept, ADR why pointered
@@ -232,7 +232,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-160](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-160.md) `done` P2 — eight guide-restatements cut; 4 readers confirmed
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `done` P3 — both headers now fact-then-pointer; verdict proven to read off the script
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
-- **STORY-019** — `review-comments`, the command `planned`
+- **STORY-019** — `review-comments`, the command `in-progress`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
   - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `done` P2 — `PATH …` defined as a whole-file sweep; 8 cold runners, 4 rounds
