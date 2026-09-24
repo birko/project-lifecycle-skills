@@ -1,5 +1,4 @@
 # Links BOTH skills/ and skills-pi/ into ~/.pi/agent/skills as directory junctions, one per skill folder.
-# skills-pi/ is never linked into ~/.claude/skills.
 # Why links rather than copies: ADR 0009. Why that tree is pi-only and frozen: ADR 0010.
 #
 # Usage:  ./pi-install.ps1      (idempotent; safe to re-run)

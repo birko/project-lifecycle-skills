@@ -120,15 +120,11 @@ printf '== 4. cross-skill flags ==\n'
 # lives nowhere else: `grep -o` ends its match at the first flag, so a later flag on the same
 # invocation is invisible even when the first one matched.
 #
-# WHAT AN ARGUMENT MAY LOOK LIKE IS THE WHOLE DESIGN, because this check is fatal and prose is
-# not a diff anyone can fix. A first attempt allowed any bare word between verb and flag; that
-# reads ordinary prose as an invocation -- `The /beta go step runs before the --nosuch cleanup.`
-# errored -- and `skills/` already carries unbackticked `/skill verb <word>` sentences that would
-# trip it the day one gained a flag. ARG_RE below is what replaced it, plus AT MOST ONE lowercase
-# word in the subcommand slot (`/tasks new task ...`). Prose runs several lowercase words together
-# and therefore cannot match; an invocation does not.
-# That one-lowercase-word ceiling is deliberate, not an oversight: `/beta go a b c d e f --x`
-# is prose by construction, and widening it to reach such a line would reopen the false positive.
+# WHAT AN ARGUMENT MAY LOOK LIKE IS THE WHOLE DESIGN. ARG_RE admits a <placeholder>, a {{TOKEN}},
+# a capitalised id or `...` — never a bare lowercase word — and the match allows AT MOST ONE
+# lowercase word in the subcommand slot (`/tasks new task ...`). Prose runs several lowercase words
+# together, so it cannot match (pinned: skills-lint-test.sh `m_flagprose`); raising that ceiling
+# would reopen the false positive.
 ARG_RE='(<[^<>]*>|\{\{[^{}]*\}\}|[A-Z0-9][A-Za-z0-9_-]*|\.\.\.)'
 grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^ ]*)?( $ARG_RE)*)+" skills/ 2>/dev/null \
 | while IFS= read -r hit; do

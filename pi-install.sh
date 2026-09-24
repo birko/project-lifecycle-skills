@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Links BOTH skills/ and skills-pi/ into ~/.pi/agent/skills as symlinks, one per skill folder.
-# skills-pi/ is never linked into ~/.claude/skills.
 # Why links rather than copies: ADR 0009. Why that tree is pi-only and frozen: ADR 0010.
 #
 # Usage:  ./pi-install.sh      (idempotent; safe to re-run)

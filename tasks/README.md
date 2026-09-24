@@ -13,7 +13,7 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 106   |
+| done         | 0     | 5       | 107   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 13× P3.
@@ -229,6 +229,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-163](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-163.md) `done` P3 — eight sites acted on; the UNSUPPORTED pointer repointed at TASK-082
   - [TASK-164](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-164.md) `done` P3 — duplicate collapsed to one side; one comment deleted
   - [TASK-165](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-165.md) `done` P3 — three restating comments deleted
+  - [TASK-166](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-166.md) `done` P2 — three pair-agreed findings cleared before TASK-141's re-run
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
   - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `done` P3 — 2 comments written, 5 cuts, 4 readers
   - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `done` P2 — sixth destination row shipped in both copies; 8 sites became reportable

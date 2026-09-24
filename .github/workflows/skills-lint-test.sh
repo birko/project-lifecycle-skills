@@ -132,7 +132,7 @@ Run `/beta go --unattend` when done.
 ' > "$1/skills/beta/verbs/go.md"; }
 # The two below — an ARGUMENT between the verb and its flag: an id, a placeholder or a subcommand
 # before the flag hides the whole invocation from a check matching only `/skill verb --flag`
-# (TASK-108). EVIDENCE: the first passes against the old lint.
+# (TASK-108). EVIDENCE: the first fails only while the pattern admits an argument before the flag.
 m_flagargbad(){ printf -- '
 Run `/beta go <target> --nosuch` when done.
 ' >> "$1/skills/alpha/SKILL.md"
@@ -150,8 +150,9 @@ Run `/beta go <target> --real` when done.
 - `--real` does a thing.
 ' > "$1/skills/beta/verbs/go.md"; }
 # A SECOND flag on the same invocation: `grep -o` ends the match at the first flag, so the second
-# goes unchecked. EVIDENCE: passes against the old lint. The first flag must be a DECLARED one — only
-# then does the old lint find the receiver, check `--real`, pass, and never reach `--nosuch`.
+# goes unchecked. EVIDENCE: fails only while every flag on the match is checked. The first flag must
+# be a DECLARED one — only then does a first-flag-only match find the receiver, check `--real`, pass,
+# and never reach `--nosuch`.
 m_flagsecond(){ printf -- '
 Run `/beta go --real VALUE --nosuch` when done.
 ' >> "$1/skills/alpha/SKILL.md"
@@ -161,8 +162,7 @@ Run `/beta go --real VALUE --nosuch` when done.
 - `--real` does a thing.
 ' > "$1/skills/beta/verbs/go.md"; }
 # PROSE read as an invocation — the false positive the widening must not introduce (why it outweighs
-# the gap: TASK-108). EVIDENCE: errors against a bare-word ARG_RE, the over-wide pattern it guards
-# against. UNBACKTICKED and several lowercase words, both deliberate — backticks make the argument
+# the gap: TASK-108). EVIDENCE: passes only while ARG_RE rejects a bare lowercase word. UNBACKTICKED and several lowercase words, both deliberate — backticks make the argument
 # repetition unreachable, and the case could then not fail under ANY widening.
 m_flagprose() { printf -- '
 The /beta go step runs before the --nosuch cleanup in your log.
@@ -173,8 +173,8 @@ The /beta go step runs before the --nosuch cleanup in your log.
 - `--real` does a thing.
 ' > "$1/skills/beta/verbs/go.md"; }
 # The two below — COVERAGE this check already has, against the two easy ways to lose it: skipping
-# templates/ (as check 3 does) and filtering to *.md. PIN, not evidence: neither fails against the
-# old lint. Both guard something real:
+# templates/ (as check 3 does) and filtering to *.md. PIN, not evidence: no defect added them; each
+# fails only if one of those two is done. Both guard something real:
 # new-project/templates/CLAUDE.seed.md carries `/tasks pick --feature` and SHIPS to consumers, and
 # skills/ holds README.md.tmpl files a *.md filter would silently drop.
 m_flagtemplatereal(){ mkdir -p "$1/skills/alpha/templates"
