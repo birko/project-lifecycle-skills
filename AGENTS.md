@@ -179,7 +179,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   the one where a local convenience hides it. The corollary is that the obvious probe is usually the wrong
   one: `git check-ignore <path>` answers *"ignored on this machine"*, and only `git check-ignore -v`'s
   **source** answers the question actually asked. **The apparent counter-example confirms the rule:**
-  `skills-lint.sh` check 5 *does* read machine state (install-root drift) and is for that exact reason
+  `skills-lint.sh`'s install-roots check *does* read machine state and is for that exact reason
   **advisory** — machine state may be reported, never converted into a verdict about the repo. Owner of the
   detail and the measured instance: `skills/new-project/LAYER.md` § *Covered means covered in the repo*;
   this entry is the pointer.
@@ -411,14 +411,14 @@ of them length findings. A table is evidence for the question it answered and fo
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | **open findings** → **TASK-081**, **TASK-165** (minor); the `ARG_RE` block → **TASK-141** | 317 | 122 (38%) | 26 |
-| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162, TASK-153, TASK-163 and TASK-164; one minor restatement → **TASK-165** | 392 | 74 (18%) | 7 |
+| `.github/workflows/skills-lint.sh` | **open findings** → **TASK-165** (minor); the `ARG_RE` block → **TASK-141** | 317 | 122 (38%) | 26 |
+| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162, TASK-153, TASK-163 and TASK-164; one minor restatement → **TASK-165** | 393 | 74 (18%) | 7 |
 | `pi-install.sh` | mechanism only (TASK-148); the restated half reversed by TASK-141's re-run | 42 | 6 (14%) | 6 |
 | `pi-install.ps1` | same shape, same change | 37 | 5 (13%) | 5 |
 | `install.sh` | same shape, same change | 38 | 5 (13%) | 5 |
 | `install.ps1` | same shape, same change | 30 | 4 (13%) | 4 |
 
-Counts re-measured 2026-09-24 (tenth time — after TASK-163) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+Counts re-measured 2026-09-24 (eleventh time — after TASK-081) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
 shebang**, so a re-run excluding `#!` gets 121 / 73 / 5 / 4 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the

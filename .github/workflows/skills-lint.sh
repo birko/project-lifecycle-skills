@@ -215,8 +215,8 @@ check_root() {
     advise "skipped $root — not present on this machine (a runtime you have not installed is not drift)"
     return
   fi
-  # `tree` and `d` are also loop variables earlier in this script; localize them so check 4 cannot
-  # clobber them. It runs last today, so nothing breaks — but that is position, not safety.
+  # `tree` and `d` are also the loop variables of the tree-existence loop and check 1; `local` stops
+  # this function clobbering them. Nothing reads them after it today — but that is position, not safety.
   local missing=0 stale=0 shadow=0 total=0 name t tree_of allowed names="" tree d l
   for tree in "$@"; do
     for d in "$tree"/*/; do

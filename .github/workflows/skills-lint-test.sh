@@ -226,6 +226,9 @@ case_is "unknown wikilink"                 1 m_bogus
 case_is "name does not match folder"       1 m_mismatch
 case_is "name only inside a fenced block"  1 m_fencename
 case_is "missing description"              1 m_nodesc
+case_is "skill folder with no SKILL.md"    1 m_noskill
+case_is "broken link in a companion doc"   1 m_badlink
+case_is "a whole skill tree is missing"    1 m_notree
 
 printf 'Check 4 — cross-skill flags
 '
@@ -240,9 +243,7 @@ case_is   "second flag on one invocation"         1 m_flagsecond
 case_is   "prose between verb and distant flag"   0 m_flagprose
 case_is   "template naming a real skill is checked" 1 m_flagtemplatereal
 case_is   "invocation in a non-.md template file"  1 m_flagtmplext
-case_is "skill folder with no SKILL.md"    1 m_noskill
-case_is "broken link in a companion doc"   1 m_badlink
-case_is "a whole skill tree is missing"    1 m_notree
+
 printf 'Legitimate content must not false-positive\n'
 case_is "link with a title"                0 m_titled
 case_is "link with an anchor"              0 m_anchor
