@@ -3,7 +3,7 @@ id: TASK-164
 parent: STORY-018
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: unassigned
 created: 2026-09-24
@@ -35,10 +35,10 @@ decided those headers keep their one-line mechanism.
 
 ## Acceptance criteria
 
-- [ ] Each row is acted on or dismissed with a reason recorded.
-- [ ] If `:112-114` / `:111-112` changes, exactly one side keeps the content and the other points at it — never both cut.
-- [ ] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass, case count unchanged.
-- [ ] `AGENTS.md` § Comments table re-measured if either script's counts move.
+- [x] Each row is acted on or dismissed with a reason recorded.
+- [x] If `:112-114` / `:111-112` changes, exactly one side keeps the content and the other points at it — never both cut.
+- [x] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass, case count unchanged.
+- [x] `AGENTS.md` § Comments table re-measured if either script's counts move.
 
 ## Out of scope
 
@@ -47,8 +47,21 @@ decided those headers keep their one-line mechanism.
 
 ## Human test plan
 
-- [ ] Two cold readers, same fixture shape as TASK-163's. Expected: neither row reported, or reported and the recorded reason explains why it stands.
+- [x] Two cold readers, same fixture shape as TASK-163's. Expected: neither row reported, or reported and the recorded reason explains why it stands. — **ran 2026-09-24 (G, H, TASK-162's brief unchanged, both cold): neither row reported; H followed the new `:111-112` pointer to the check-4 header and found it. Three new minor restatements → TASK-165.**
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-164` — leave empty until then._
+Line numbers as of `640014b`.
+
+| Site | Action | Why this side |
+|---|---|---|
+| `skills-lint.sh:112-114` ↔ `skills-lint-test.sh:111-112` | the lint keeps the content; the test keeps what it pins and points at the lint's check-4 header | the lint's copy explains why the *code* reads the whole receiver — that is where a maintainer changing it looks; the test only needs to say which behaviour it holds in place |
+| `skills-lint-test.sh:346` | delete | `r_stale` names the state, and `rm -rf` on the line it sits on, right after `mk_link`, is the dangling link; the comment carries nothing the two do not |
+
+Then both suites, AGENTS.md table if counts move, two cold readers.
+
+**Outcome:** row 1 acted on — the lint keeps the content, the test keeps its pin and points at it; row 2
+acted on — deleted, `r_stale` and the `rm` carry it. Counts unchanged (392 / 74), so the table's numbers
+stand. **Gate, inline** — three comment lines, which `close` step 5b lets skip the full passes; verdicts
+recorded anyway: standards ✅ · fidelity ✅ all four criteria · correctness ✅ the one line with code on it
+lost only its trailing comment, 56/56, lint exit 0 · comments ✅ both rows cleared by the drill.

@@ -108,8 +108,8 @@ Run `/beta go --real` when done.
 
 - `--real` does a thing.
 ' > "$1/skills/beta/verbs/go.md"; }
-# The receiving side may declare its flags in a TABLE rather than bullets — tasks/verbs/import.md does.
-# Keying on an "## Args" bullet list reported import's real flags as missing, so this pins the whole-file read.
+# A receiver declaring its flags in a TABLE, not bullets: pins check 4's whole-file read (why: the
+# check-4 header in skills-lint.sh).
 m_flagtable() { printf -- '
 Run `/beta go --tabled` when done.
 ' >> "$1/skills/alpha/SKILL.md"
@@ -343,7 +343,7 @@ r_linked()  { mkdir -p "$1/roots/claude" "$1/roots/pi"
 r_stale()   { mkdir -p "$1/roots/claude" "$1/roots/pi" "$1/skills/ghost"
               printf -- '---\nname: ghost\ndescription: d\n---\n\nGhost.\n' > "$1/skills/ghost/SKILL.md"
               mk_link "$1/roots/claude/ghost" "$1/skills/ghost"
-              rm -rf "$1/skills/ghost"; }              # link now dangles; source gone
+              rm -rf "$1/skills/ghost"; }
 r_shadow()  { mkdir -p "$1/roots/claude" "$1/roots/pi"
               # The defect TASK-037 names: a skills-pi/ stub junctioned into the CLAUDE root. Its
               # source exists, so the staleness half passes it; it is missing from nowhere, so the
