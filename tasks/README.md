@@ -10,10 +10,10 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
 | todo         | —     | —       | 55    |
-| in-progress  | 4     | 8       | 0     |
+| in-progress  | 3     | 8       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 7       | 110   |
+| done         | 1     | 7       | 110   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 11× P3.
@@ -211,7 +211,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 </details>
 
-### EPIC-004 — Comment discipline in agent-written code `in-progress`
+### EPIC-004 — Comment discipline in agent-written code `done`
 
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `done`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
