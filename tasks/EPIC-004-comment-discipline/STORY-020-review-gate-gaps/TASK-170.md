@@ -3,7 +3,7 @@ id: TASK-170
 parent: STORY-020
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: agent
 created: 2026-09-24
@@ -29,9 +29,9 @@ short of the move.
 
 ## Acceptance criteria
 
-- [ ] § *The only copy*'s relocation list offers the project's guide for content that is a standing rule, with the same ask-first discipline as the other targets.
-- [ ] It says how a standing rule differs from a decision record's content (*what we do now* vs. *why we chose it*), so a reader can route between the two — pointing at the project's own records table rather than restating it.
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] § *The only copy*'s relocation list offers the project's guide for content that is a standing rule, with the same ask-first discipline as the other targets.
+- [x] It says how a standing rule differs from a decision record's content (*what we do now* vs. *why we chose it*), so a reader can route between the two — pointing at the project's own records table rather than restating it.
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 ## Out of scope
 
@@ -39,8 +39,25 @@ short of the move.
 
 ## Human test plan
 
-- [ ] A cold runner on a fixture whose only-copy comment states a standing rule (no guide section holds it) runs `/review-comments <file>`. Expected: it proposes the guide as the relocation target and asks before writing.
+- [x] A cold runner on a fixture whose only-copy comment states a standing rule (no guide section holds it) runs `/review-comments <file>`. Expected: it proposes the guide as the relocation target and asks before writing.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-170` — leave empty until then._
+One more route in the relocation list, one more option in the verbatim question.
+
+**Outcome (2026-09-24).** § *The only copy*'s relocation list gains **a standing rule → the project's own
+guide**, in the section that covers it (the file Step 1 found the comment rule in), with the line against a
+rationale stated once — *what we do* against *why we chose it* — and deference to the guide's own routing
+table where it has one. The verbatim question's options now read `task | decision record | guide rule | docs page`.
+
+**Drill:** `scratchpad/drill-170` (copies `a`, `b`) — TASK-155's rebuilt repo plus a committed
+`src/money.ts` whose only comment is a repo-wide house rule (integer cents in every public signature) that
+no guide section, ADR, task or commit carries. TASK-152's acquisition; brief *"Use the review-comments
+skill on `src/money.ts` in this repo and give me its report."* Both runners: **held — only copy**,
+destination *the project's own guide* (row 5), every other destination checked and empty, the question put
+with the guide as the proposed target, and `unresolved` stated as the no-answer outcome. Runner b classified
+it in the new sentence's own terms: *"a standing rule ('what we do'), not a rationale. It should go in the
+guide, not an ADR."* Nothing edited in either copy.
+
+**Gate, inline:** standards ✅ points at the guide's routing table rather than restating it · fidelity ✅
+criteria 1-3 · correctness ✅ lint OK. Security: n/a.

@@ -292,6 +292,10 @@ collapses them has no point at which a human could have said no.
   places it under the right parent and inherits the feature link.
 - **A rationale** — why a choice was made, what was rejected → a **decision record** under `docs/adr/`, or
   the owning feature's decision ledger if one exists.
+- **A standing rule** — what the project does now, stated so it governs more than this one line → the
+  **project's own guide**, in the section that covers it: the same file Step 1 found the comment rule in.
+  The line between this and a rationale is *what we do* against *why we chose it*; where the guide carries
+  its own table for routing between its records, route by that table instead of this sentence.
 - **Anything else that is genuinely reference material** → a `docs/` page.
 - **Cannot tell?** Do not guess a destination. Report it held, say the kind is unclear, and let the answer
   come from the person who knows.
@@ -301,7 +305,7 @@ collapses them has no point at which a human could have said no.
 > **`<path>:<lines>` — this content exists nowhere else.**
 > *"<the comment's first line, quoted>"*
 > Its destination is **<the row the test named>**, and nothing there carries it yet.
-> **File it as a <task | decision record | docs page> and leave a pointer, or keep the comment as it is?**
+> **File it as a <task | decision record | guide rule | docs page> and leave a pointer, or keep the comment as it is?**
 
 **When no answer comes: the comment stays exactly as it is, nothing is created, and the finding is
 reported `unresolved` with the question that went unanswered.** Not a silent delete, and — the half that

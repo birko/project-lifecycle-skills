@@ -9,14 +9,14 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 56    |
+| todo         | —     | —       | 55    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 7       | 114   |
+| done         | 0     | 7       | 115   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 43× P2 · 12× P3.
+`todo` by priority: 1× P1 · 43× P2 · 11× P3.
 
 ## In progress now
 
@@ -244,4 +244,4 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-167](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-167.md) `done` P2 — the close gate's text still counts three axes; `VI-*` prefix
   - [TASK-168](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-168.md) `done` P2 — `review-comments` absent from every skill overview
   - [TASK-169](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-169.md) `done` P2 — the measurement table cannot be re-run from AGENTS.md
-  - [TASK-170](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-170.md) `todo` P3 — an only-copy guide rule has no relocation target
+  - [TASK-170](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-170.md) `done` P3 — an only-copy guide rule has no relocation target
