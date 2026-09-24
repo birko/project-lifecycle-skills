@@ -346,7 +346,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 
 ### Naming
 - Skill folders are **kebab-case** and match their frontmatter `name`.
-- **Verb-noun for action skills** (`verify-conventions`, `verify-intent`, `populate-tests`, `roll-changelog`, `fix-next`, `new-project`, `adopt-project`, `improve-architecture`); **bare noun for disciplines and trees** (`tasks`, `feature`, `specs`, `roadmap`, `tdd`, `domain`).
+- **Verb-noun for action skills** (`verify-conventions`, `verify-intent`, `review-comments`, `populate-tests`, `roll-changelog`, `fix-next`, `new-project`, `adopt-project`, `improve-architecture`); **bare noun for disciplines and trees** (`tasks`, `feature`, `specs`, `roadmap`, `tdd`, `domain`).
 - Verb files are named for the verb (`verbs/close.md` corresponds to `/tasks close`).
 - Artifacts use `EPIC-NNN` / `STORY-NNN` / `TASK-NNN` / `FEATURE-NNN`, zero-padded to three digits.
 

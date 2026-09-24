@@ -3,7 +3,7 @@ id: TASK-168
 parent: STORY-020
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-09-24
@@ -33,11 +33,11 @@ a reader looking for it in any overview finds nothing:
 
 ## Acceptance criteria
 
-- [ ] `AGENTS.md`'s verb-noun list includes `review-comments`.
-- [ ] `README.md`'s close-gate diagram carries a `review-comments` branch, marked conditional (the diff carries a comment), and the questions line names what it asks — with no hard count that rots on the next axis.
-- [ ] `docs/architecture.md`'s skill map shows the merge gate's axes, including `review-comments`.
-- [ ] The README title line is reconciled — either lists it, or is not presented as the skill list (its current set is already partial).
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] `AGENTS.md`'s verb-noun list includes `review-comments`.
+- [x] `README.md`'s close-gate diagram carries a `review-comments` branch, marked conditional (the diff carries a comment), and the questions line names what it asks — with no hard count that rots on the next axis.
+- [x] `docs/architecture.md`'s skill map shows the merge gate's axes, including `review-comments`.
+- [x] The README title line is reconciled — either lists it, or is not presented as the skill list (its current set is already partial).
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 ## Out of scope
 
@@ -50,4 +50,14 @@ N/A — registration in overview documents: each criterion is a presence check a
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-168` — leave empty until then._
+Add where missing; no hard count in any line that names the axes.
+
+**Outcome (2026-09-24).** `AGENTS.md`'s verb-noun list includes `review-comments`. The README's close-gate
+diagram (§ 5) gains a conditional `review-comments` branch, and the questions line (§ 6) names its question
+and reads *"one question per pass, one answer each"* instead of *"three questions, three answers"*.
+`docs/architecture.md`'s skill map names the merge gate's axes, conditional ones marked.
+**Criterion 4, decided rather than edited:** the README title line names the **core pipeline skills** — the
+same set as its § 1 table — not every skill; satellites are catalogued in § 5, where `review-comments` now is.
+Adding one satellite to the title would make it neither list. (`adopt-project`'s absence from the title is a
+separate, pre-existing question and not this task's.)
+**Gate, inline:** standards ✅ · fidelity ✅ criteria 1-5 · correctness ✅ lint OK. Security: n/a.

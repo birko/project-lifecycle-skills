@@ -84,7 +84,8 @@ feature ──rides on──▶ tasks ──tracked by──▶ roadmap (+ diver
    │                    │
    │                    ├──▶ populate-tests   (the PROVE leg)
    │                    ├──▶ specs regen      (behavioural map, at story close)
-   │                    └──▶ verify-conventions + code-review  (the merge gate)
+   │                    └──▶ the merge gate — verify-conventions · verify-intent · code-review,
+   │                         + security-review / review-comments when the diff reaches them
    │
    └──uses──▶ grill-me (interrogation) · prototype (stakeholder artifact)
 
