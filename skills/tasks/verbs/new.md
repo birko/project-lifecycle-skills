@@ -26,8 +26,9 @@ Interactive scaffold of a new task tree node.
    - `--from-field [--source <ref>]` — this task records a defect found by **using** the product, with no
      review pass behind it. Where `--from-review` receives ids a pass already minted, this one **mints**
      the id, because no pass ran to do it. When present:
-     - Mint the next `FIELD-NNN` — grep every `findings:` list in the whole task tree for the current max
-       `FIELD-NNN`, increment, zero-pad to three digits — and set `{{FINDINGS}}` to `[FIELD-NNN]`. The
+     - Mint the next `FIELD-NNN` — take the current max `FIELD-NNN` over every `findings:` list in **every copy
+       of the task tree** ([SKILL.md § ID generation](../SKILL.md#id-generation) names the copies), increment,
+       zero-pad to three digits — and set `{{FINDINGS}}` to `[FIELD-NNN]`. The
        counter is **tree-wide, not per-epic**; [intake.md](intake.md)'s prefix table owns the prefix and
        the reason the scope differs from every other one.
      - Write the **field evidence** into `## Context`: what was being done, what happened instead, and the
@@ -69,8 +70,9 @@ Interactive scaffold of a new task tree node.
    - Assignee: human / **ai** (default) / `<specific-agent-name>`
 
 6. **Generate ID**:
-   - Grep `^id: (EPIC|STORY|TASK)-(\d+)$` recursively in `tasks/`.
-   - For the requested type, take max, increment, zero-pad to 3 digits.
+   - Take the max for the requested type over **every copy of the tree** — this one, every local branch,
+     and every other registered worktree — exactly as [SKILL.md § ID generation](../SKILL.md#id-generation)
+     states; then increment and zero-pad to 3 digits.
    - First of a type: `EPIC-001` / `STORY-001` / `TASK-001`.
 
 7. **Compute file path**:
@@ -123,6 +125,8 @@ Interactive scaffold of a new task tree node.
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"
       - task → "Start work with `/tasks pick`" (or "Plan was skipped — run `/tasks plan {{ID}}` later" if `--no-plan`)
+    - **Any copy of the task tree the id scan could not read** (step 6 — [SKILL.md § ID generation](../SKILL.md#id-generation)),
+      by path: the id may still collide there, and nobody else will say so.
     - **The minted `FIELD-NNN`, when `--from-field` was passed**, and what it bought: *"minted FIELD-003 — this
       task is now in `/fix-next`'s pool."* Say the consequence, not just the id. A task that entered the pool
       and one that merely reads like a defect are indistinguishable from the outside, and that ambiguity is the

@@ -249,7 +249,30 @@ External mode (API-only, no local files) is **deferred to v2** — don't offer i
 
 Global counters per type — `EPIC-001`, `STORY-001`, `TASK-001` are each unique project-wide.
 
-To find next ID, Grep across `tasks/` with pattern `^id: (EPIC|STORY|TASK)-(\d+)$`, take max per type, increment, zero-pad to 3 digits.
+To find next ID, take the max per type of `^id: (EPIC|STORY|TASK)-(\d+)$`, increment, zero-pad to 3 digits.
+**Take the max over every copy of the tree that can mint an id, not only the one you stand in.** Task branches
+and worktrees are separate copies of `tasks/`, and each can create a task. With a max read from one copy,
+two tasks worked in parallel each give their follow-up the same next id, and the second merge becomes an
+add/add conflict or two files with one id. Collect ids from:
+1. **this tree's `tasks/`**, including files not yet committed. **Without a git repo, this is the whole scan.**
+2. **every local branch.** List them with plain `git branch --list`. Strip each line's leading `* ` (the
+   current branch) or `+ ` (checked out in another worktree, the case this rule exists for), and skip a
+   `(HEAD detached …)` line. Then run **one**
+   `git grep -h -E "^id: (EPIC|STORY|TASK)-[0-9]+$" refs/heads/<a> refs/heads/<b> … -- tasks/` over all of
+   them. Branches are shared by every tree, so this reaches other tasks' committed ids from anywhere.
+3. **every other registered worktree's `tasks/`**, read by path from `git worktree list --porcelain`, which
+   catches ids created there and not committed yet.
+
+Use these plain forms and no command substitution or `--format=%(refname)` listing. A runtime that isolates a
+session in its worktree refuses those as unverifiable, and accepts the plain ones. Recompute the scan on
+every mint and never cache a counter, since the answer changes whenever any tree creates a task. **Write the
+new file straight after the scan**, which keeps the window for two simultaneous mints as short as it can be.
+**Say what the scan could not see.** A copy it could not read (a prunable worktree, or one the runtime
+refuses) and branches that exist only on a remote are unseen, so an id minted there may still collide. The
+verb's confirmation names the unreadable copies. A skipped number is harmless. A duplicated one is the
+defect.
+`FIELD-NNN` findings ids are minted the same way, over every copy's `findings:` lists (see
+[verbs/intake.md](verbs/intake.md)).
 
 ## Lifecycle
 

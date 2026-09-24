@@ -21,7 +21,7 @@ generated: 2026-09-24
 
 ## Build progress
 
-7 / 10 tasks done · 1 awaiting sign-off.
+8 / 11 tasks done · 1 awaiting sign-off.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
@@ -32,7 +32,8 @@ generated: 2026-09-24
 - TASK-179 — try the whole thing end to end on a real project (done)
 - TASK-181 — carry on with a task in a new session, back inside its own folder (done)
 - TASK-183 — support projects that merge through a shared online copy (to do)
-- TASK-184 — stop two parallel tasks from giving new work the same number (to do)
+- TASK-184 — stop two parallel tasks from giving new work the same number (done)
+- TASK-185 — the same for new feature numbers (to do)
 
 ## What can be tested now
 
@@ -54,7 +55,7 @@ question this feature asks a person is written out word for word in the task-pic
 
 Two pieces remain:
 - supporting projects that merge online (TASK-183);
-- stopping parallel tasks from giving new work the same number (TASK-184).
+- the same numbering fix for new features (TASK-185).
 
 The check on the second assistant tool (TASK-175) waits until that tool works. When all of this is done,
 the feature goes to its final review.
