@@ -6,5 +6,5 @@ _Generated 2026-09-18 by `/feature status` (all-features mode). **Do not hand-ed
 
 | Feature | Title | Phase | Decisions (a/c/d/r/p) | Tasks | Prototype |
 |---------|-------|-------|-----------------------|-------|-----------|
-| [FEATURE-001](FEATURE-001-task-worktrees/) | Task worktrees — run a task in its own checkout | building | 12/0/0/1/0 | 1/7 | skipped |
+| [FEATURE-001](FEATURE-001-task-worktrees/) | Task worktrees — run a task in its own checkout | building | 23/0/0/1/0 | 1/10 (3 in review) | skipped |
 | [FEATURE-002](FEATURE-002-comment-discipline/) | Comment discipline — keep the source free of everything that belongs elsewhere | review — signed off; spec landing waits on TASK-080 | 14/2/0/1/0 | 28/29 | skipped |

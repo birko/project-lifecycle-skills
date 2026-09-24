@@ -7,7 +7,7 @@ status: todo
 priority: P1
 assignee: human
 created: 2026-09-24
-depends-on: [TASK-175, TASK-176, TASK-177]
+depends-on: [TASK-175, TASK-176, TASK-177, TASK-181]
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake

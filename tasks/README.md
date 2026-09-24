@@ -9,18 +9,26 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 62    |
+| todo         | —     | —       | 63    |
 | in-progress  | 4     | 9       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 3     |
 | blocked      | —     | —       | 0     |
 | done         | 1     | 8       | 117   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 6× P1 · 44× P2 · 12× P3.
+`todo` by priority: 4× P1 · 47× P2 · 12× P3.
 
 ## In progress now
 
 _None_
+
+## In review
+
+_Code complete, sign-off pending — verification debt; close these before new scope._
+
+- [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) `/tasks pick` creates the task worktree, asking for the root when undeclared (P1) — interactive in-worktree pick unrun
+- [TASK-175](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-175.md) `/tasks pick` proves the move into the worktree, and falls back when it cannot (P1) — interactive + pi steps unrun
+- [TASK-176](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-176.md) `/tasks close` merges from the worktree and removes it in a fixed order (P1) — interactive full tail unrun
 
 ## Tree
 
@@ -56,9 +64,9 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (47/81 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (49/83 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/16)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/17)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
     - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
     - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
@@ -75,6 +83,7 @@ _None_
     - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
     - [ ] [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) `pick`'s handoff branches on an `assignee:` value no task in the tree has
     - [ ] [TASK-180](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-180.md) `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes
+    - [ ] [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) `/tasks pick` step 7's two questions carry no wording and no answer-less path
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -154,15 +163,18 @@ _None_
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
-- **EPIC-005** Task worktrees — in-progress (1/7 tasks done)
-  - STORY-021 Run a task in its own checkout — in-progress (1/7)
+- **EPIC-005** Task worktrees — in-progress (1/10 tasks done)
+  - STORY-021 Run a task in its own checkout — in-progress (1/10)
     - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config
-    - [ ] [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) `/tasks pick` creates the task worktree, asking for the root when undeclared
-    - [ ] [TASK-175](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-175.md) `/tasks pick` proves the move into the worktree, and falls back when it cannot
-    - [ ] [TASK-176](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-176.md) `/tasks close` merges from the worktree and removes it in a fixed order
+    - [ ] [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) *(review)* `/tasks pick` creates the task worktree, asking for the root when undeclared
+    - [ ] [TASK-175](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-175.md) *(review)* `/tasks pick` proves the move into the worktree, and falls back when it cannot
+    - [ ] [TASK-176](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-176.md) *(review)* `/tasks close` merges from the worktree and removes it in a fixed order
     - [ ] [TASK-177](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-177.md) Ship `workspace:` / `worktree-root:` through both front doors
     - [ ] [TASK-178](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-178.md) Give drill checkouts a declared home and a cleanup rule
     - [ ] [TASK-179](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-179.md) End-to-end drill: pick → work → close in a worktree on a real consumer
+    - [ ] [TASK-181](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-181.md) Resuming a task re-enters the worktree that holds its branch
+    - [ ] [TASK-183](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-183.md) Worktree mode for projects whose default branch tracks a remote
+    - [ ] [TASK-184](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-184.md) Tasks created in parallel worktrees can mint the same id
 
 ## Loose tasks
 

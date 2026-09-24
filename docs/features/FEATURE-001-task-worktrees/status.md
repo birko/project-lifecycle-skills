@@ -13,7 +13,7 @@ generated: 2026-09-24
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 12 |
+| ✅ approved | 23 |
 | ✏️ changed | 0 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
@@ -21,34 +21,38 @@ generated: 2026-09-24
 
 ## Build progress
 
-1 / 7 tasks done.
+1 / 10 tasks done · 3 awaiting sign-off.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
-- TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (to do)
-- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (to do)
-- TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (to do)
+- TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (**awaiting sign-off**)
+- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (**awaiting sign-off**)
+- TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (**awaiting sign-off**)
 - TASK-177 — teach both project-setup tools about the new setting (to do)
 - TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (to do)
 - TASK-179 — try the whole thing end to end on a real project (to do)
-
-Two of the three smaller choices are now decided: a project that asks for task folders but commits
-everything straight to the main line simply keeps working in one place and is told why; and the two
-new settings sit as two plain lines in the project's task settings. Still open: how the folders are
-named, and whether a project that has said nothing should be asked about this at all.
+- TASK-181 — carry on with a task in a new session, back inside its own folder (to do)
+- TASK-183 — support projects that merge through a shared online copy (to do)
+- TASK-184 — stop two parallel tasks from giving new work the same number (to do)
 
 ## What can be tested now
 
-The first piece is done and was tried out: a project's task settings now gain the two new settings,
-switched off, without anyone being asked, and running the set-up a second time changes nothing. The
-remaining six tasks cannot be tried in this project, which commits everything straight to the main
-line and so never takes this path; they need a project that uses a branch and a merge request per task.
+The core is built. Picking a task can now give it its own folder, and finishing it folds the work back
+in and removes the folder. Every safety fallback was tried on test projects and behaved correctly: an
+unset or unsafe location, a project that merges online, untidy starting states, a failed hand-back and
+a retry. What is left for a person to try, in an interactive session on a real project, is the path
+where the tool actually moves into the new folder and later cleans it up. Automated test runs cannot
+make that move.
+
+For now this only works for projects that combine work on the same computer. Projects that merge through
+a shared online copy keep working as before, and are told why. Supporting them is TASK-183.
 
 ## Prototype
 
 Skipped — there is nothing visual here. The end-to-end trial (TASK-179) is the proof, and the one
-question this feature asks a person is written out word for word in TASK-174.
+question this feature asks a person is written out word for word in the task-picking step.
 
 ## Next step
 
-TASK-174 — creating the folder when a task is picked (`/tasks pick TASK-174`). It must land together
-with TASK-175, which checks the move actually happened; TASK-177 and TASK-178 are also unblocked.
+**Sign-off comes first.** Run the remaining checks for TASK-174, TASK-175 and TASK-176 in an interactive
+session on a real project. The natural place is TASK-179's end-to-end trial. Meanwhile TASK-177
+(teaching the project-setup tools) and TASK-178 (test-run copies) are ready to start.

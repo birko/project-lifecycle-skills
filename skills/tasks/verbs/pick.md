@@ -68,7 +68,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    prompt with the **default set to yes**:
    > "TASK-NNN has no implementation plan. Draft one with `/tasks plan {{ID}}` first? [Y/n]"
    - `Y` → hand off to [verbs/plan.md](plan.md) for this TASK ID (which itself offers the
-     `grill-me` pass), then resume `pick` from step 7 once it's done.
+     `grill-me` pass), then resume `pick` from step 6b once it's done.
    - `n` → proceed unplanned. Legitimate for genuine one-liners; don't block, and don't nag twice.
    - **Recommend planning** whenever the task touches more than one file, has ≥3 acceptance
      criteria, carries a `feature:` link, or its Context names unknowns. Say which of those
@@ -79,13 +79,126 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - A plan whose steps turn out to be separately-completable units of work is a **split signal**,
      not a bigger task — see step 9's spawn rule.
 
+6b. **Decide where the work happens** (git repos with a born HEAD; anything else goes straight to step 7
+   and nothing here changes). Read `integration:`, `workspace:` and `worktree-root:` from `.config.yml` —
+   **never decide from `git worktree list`**, where a worktree that exists may be anyone's checkout.
+   Recompute this every run; cache nothing.
+
+   | Declared | Do |
+   |---|---|
+   | `workspace:` absent or `in-place` | step 7, print nothing |
+   | any other value but `worktree` | print the **invalid-value** line; step 7 as in-place |
+   | `worktree` + `integration: single-branch` | print the **no-effect** line, every run; step 7 |
+   | `worktree` + `worktree-root:` absent | ask the question below |
+   | `worktree` + root declared | check, commit the pick, create, enter, prove — below |
+
+   From here on `workspace: worktree` has asked for isolation, so **whenever this step falls back, step 7
+   cuts `task/TASK-NNN` in place without offering** — the declaration already answered that offer.
+
+   **The root question.** Put exactly this:
+
+   > **Where should task worktrees live?** Each task gets its own folder there, outside this repository.
+   > Suggested: `../wt` (next to this repository). Your answer is saved as `worktree-root:` in
+   > `tasks/.config.yml` and committed on `<default-branch>`. Give a path, or leave it blank to work in
+   > place this time.
+
+   - **An answer is held, not written, until every check below has passed.** It is then the declared
+     root those checks test — so a root inside the repository is refused before it is ever written, and a
+     refused answer cannot be committed and then refused by every later pick. Only once all checks pass is
+     it written as a live `worktree-root: <answer>` — replacing the commented `# worktree-root:` line when
+     there is one (its comment block stays), appended otherwise — and it rides in the pick commit below.
+     No second confirmation: the question already said where the answer goes.
+   - **Blank, or nobody to ask** — the answer-less path, and also the unattended outcome, since no flag
+     reaches this verb: write nothing, print the **fell-back** line with `worktree-root undeclared`, and
+     continue at step 7. The suggestion never becomes the declaration.
+
+   **Check — every condition before anything is written or created.** Each failure prints its line and
+   **stops** unless it says otherwise. None is worked around, and nothing is ever pruned, forced or
+   deleted that this run did not just create.
+   - **Run from the main copy.** `git rev-parse --git-dir` differing from `--git-common-dir` means this
+     session is inside a linked worktree — perhaps another task's. Stop with the **wrong-tree** line:
+     every path below would be computed from the wrong tree, and the pick would land on another task's
+     branch.
+   - **The default branch tracks no remote.** `git rev-parse --abbrev-ref <default-branch>@{upstream}`
+     failing is the evidence; recompute it every run, never remember it. When it tracks one, the pick
+     commit below and `close`'s refresh commit would land on a local default branch nobody pushes, which
+     then diverges from the remote the moment a PR merges there — and on a protected branch can never be
+     pushed at all. Worktree mode covers local merges only, for now: print the **unsupported** line and
+     continue at step 7.
+   - **The main copy is on the default branch** (the one step 7 branches from), and **clean apart from
+     the task tree's own files for this task** — its task file (modified or not yet tracked), its parent
+     STORY/EPIC files, and `tasks/README.md`: exactly what `/tasks new` leaves behind. Otherwise fall back
+     with that reason — and when the main copy is **not on the default branch**, step 7 cuts nothing,
+     since a branch cut there would silently stack this task on whatever is checked out. The pick commit
+     below must hold only this task's pick.
+   - **The root lies outside the repository.** Resolve it — absolute as written, relative against the
+     repo root (the parent of `tasks/`), exactly as `siblings.root` resolves. Equal to
+     `git rev-parse --show-toplevel` or beneath it → the **refusal** line, and continue at step 7.
+   - **Nothing is left from an earlier pick.** The path is `<root>/<repo-name>-TASK-NNN`, `<repo-name>`
+     being the basename of the main copy's top-level folder. If `task/TASK-NNN` already exists, or the
+     path already exists, or `git worktree list` registers that path (a folder deleted by hand shows as
+     *prunable*) → the **leftover** line naming what was found, and stop. Resuming such a task is a
+     separate path; this step never guesses whose it is.
+
+   **Commit the pick on the default branch — before the worktree exists.** The status flip happens here,
+   not in the worktree, and that is the point: written only on the task branch, the task would still read
+   `todo` from the main copy — `/tasks`, `/fix-next` and a second `pick` would all see it as free — and a
+   task file never committed would not exist in the worktree at all.
+   - Flip `status:` to `in-progress` (step 7's edit, done here), regenerate the dashboard (step 8), and
+     commit exactly those files and nothing else from the index:
+     `git add -- <task file> <its changed parent files> tasks/README.md [tasks/.config.yml]`, then
+     `git commit --only -m "TASK-NNN: pick" -- <the same paths>`. `.config.yml` is included only when this
+     run wrote the answered root. **A caller that writes more of the task file at pick time** — [[fix-next]]'s
+     `picked-by:` and first `## Progress log` line — writes it **before** this commit, so it rides here
+     rather than landing on the task branch only, invisible from the main copy. A plan step 6 wrote is in the task file and rides along. The subject
+     leads with the id on purpose, so [[specs]] attributes the commit to this task; that is harmless,
+     since it touches only the task tree, which no spec area maps.
+   - **The commit fails** → stop, and report which files are changed but uncommitted; committing them and
+     re-running continues from here. Going on would build the worktree without the pick in it, or leave
+     the main copy dirty for `close`.
+
+   **Create.** `git worktree add "<path>" -b task/TASK-NNN <default-branch>` — quote the path. It fails →
+   the **fell-back** line quoting git's message, and step 7, which now only cuts the branch in place (the
+   pick is already committed).
+
+   **Enter, then prove — before anything is written in the worktree.** A worktree nobody enters is a
+   trap, not a spare folder: its branch cannot be checked out in the main copy, so the work would land on
+   the default branch under a policy promising isolation.
+   - **Enter** with the runtime's own worktree-entry tool when it has one (Claude Code: `EnterWorktree`
+     with `path` — it accepts a worktree `git worktree list` shows for this repository); otherwise change
+     directory. Never ask the agent whether it *can* move; try, and let the proof decide.
+   - **Prove** with `git rev-parse --show-toplevel` run as a **separate, later command** — never chained
+     after the move on one line, where it passes whatever happened. Compare it with
+     `git -C "<path>" rev-parse --show-toplevel`, so git renders both, after normalising each: `/c/` →
+     `C:/`, `\` → `/`, no trailing separator — and on Windows, whose paths are case-insensitive, compare
+     without regard to case.
+   - **Mismatch** → `git worktree remove "<path>"` and `git branch -d task/TASK-NNN` (the branch holds
+     nothing beyond the pick it shares with the default branch, so never force), print the **fell-back**
+     line naming both paths, and continue at step 7, which cuts the branch in place. A removal that fails
+     → report what is left and stop. Expect a mismatch from an agent whose working directory was pinned
+     at launch (a subagent): falling back there is correct.
+   - **Match** → print the **in-a-worktree** line and go to step 9. Steps 7 and 8 already ran inside the
+     pick commit; running them again in the worktree would only dirty it.
+
+   **Report lines** — fixed, one per outcome, never a shared line for two:
+   - in a worktree: `workspace: in a worktree at <path> on task/TASK-NNN — proved: git rev-parse --show-toplevel = <path>`
+   - fell back: `workspace: fell back to in-place — <reason>; continuing in the main copy at step 7`, the reason being `worktree-root undeclared`, `the main copy is not clean on <default-branch>`, `the move did not stick: expected <path>, got <toplevel>; worktree and branch removed`, or `git worktree add failed: <git message>`
+   - no effect: `workspace: worktree has no effect under integration: single-branch — there is no task branch to put in a worktree; working in place. Neither setting was changed.`
+   - invalid value: `workspace: '<value>' is neither in-place nor worktree — treated as in-place for this run; correct it in tasks/.config.yml.`
+   - refusal: `worktree-root '<value>' resolves inside this repository (<absolute path>) — refused; worktrees live outside the repository. Working in place.`
+   - unsupported: `workspace: worktree mode does not yet support a default branch that tracks a remote (<default-branch> → <upstream>) — pick and close would commit on it locally and diverge; working in place.`
+   - wrong tree: `workspace: this session is inside a linked worktree (<toplevel>) — pick from the main copy (<main copy>); nothing was changed.`
+   - leftover: `workspace: TASK-NNN already has <what was found> from an earlier pick — nothing was changed; resume it rather than pick it again.`
+
 7. **Flip status to in-progress**:
    - Use Edit to change `status: todo` (or whatever current) → `status: in-progress`.
    - **Cut the task branch (git/PR projects).** The default integration model is PR-per-task —
      `pick` cuts the branch, `close` is the merge gate. If the project is
      a git repo on its default branch, offer to cut `task/TASK-NNN` so the work is isolated and
      `/tasks close` can open one PR for it. Skip silently for non-git/local-only projects, or if
-     the user is already on a suitable branch.
+     the user is already on a suitable branch. **Under `workspace: worktree` the declaration has answered
+     this offer**: a step 6b that fell back reaches here and **cuts the branch in place without
+     asking**, and a step 6b that entered its worktree never reaches here at all.
      - **`integration: single-branch` in `.config.yml` → don't offer a branch at all.** Some repos
        commit straight to the default branch; asking every time is noise, and inferring the policy
        from `git log` guesses wrong on a squash-merge history (which looks identical to

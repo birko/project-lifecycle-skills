@@ -167,10 +167,14 @@ top two are genuinely inseparable on every key above.
 
 **Write the pick to disk immediately, before any code is read:**
 
-- `status: todo` → `in-progress` (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project)
 - add `picked-by: fix-next` to frontmatter
 - append a `## Progress log` section whose first line is
   `- step 2 — picked; ranked above <runner-up> because <reason>`
+- `status: todo` → `in-progress` (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project —
+  including its step 6b when the project declares `workspace: worktree`. This skill never answers
+  6b's root question: it takes the blank-answer branch every time). **Write the two lines above
+  first**: 6b commits the pick on the default branch, and step 0 resumes by reading them *there* — written
+  after, they would sit only on the task branch, and a reset session would take this task for a human's)
 
 Every step below appends one line. The log is how step 0 resumes; a step that ran without a line is a
 step the next session will redo.

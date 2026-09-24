@@ -286,7 +286,13 @@ runs in the one working copy or in its own git worktree; `worktree-root:` says w
 live, outside the repo, a relative path resolving against the repo root. Absent `workspace:` means
 `in-place`; absent `worktree-root:` means undeclared, and nothing may guess it. Never infer either
 from `git worktree list` — a worktree that exists may be anyone's checkout. Under `single-branch`
-there is no task branch to put in a worktree, so `worktree` has no effect there.
+there is no task branch to put in a worktree, so `worktree` has no effect there — `pick` says so on
+every run. Worktree mode also covers **local merges only**: a default branch that tracks a remote is
+refused, because the commits `pick` and `close` make on it would diverge from that remote
+([verbs/pick.md](verbs/pick.md) step 6b). **No verb regenerates `tasks/README.md` inside a task's
+worktree**; `close` regenerates it on the default branch ([verbs/triage.md](verbs/triage.md)). Detail:
+[verbs/pick.md](verbs/pick.md) step 6b owns creating, entering and proving a worktree;
+[verbs/close.md](verbs/close.md) steps 4b and 8 own merging from one and removing it.
 
 Code is reviewed **once per task, here, at the right altitude**;
 [[feature]]'s `review` gate is then a *completeness* check, not a wholesale code re-review.
