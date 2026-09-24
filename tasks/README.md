@@ -1,6 +1,6 @@
 # Tasks — The Project Lifecycle Skills
 
-> ⚠ **Feature drift (1):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link. `docs/features/` now holds FEATURE-001 and FEATURE-002 (EPIC-004 is linked to the latter) — run `/roadmap --check`.
+> ⚠ **Feature drift (1):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link. `docs/features/` holds FEATURE-001 (linked to EPIC-005) and FEATURE-002 (linked to EPIC-004) — run `/roadmap --check`.
 
 _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
@@ -8,15 +8,15 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 4       | —     |
-| todo         | —     | —       | 55    |
+| planned      | 1     | 5       | —     |
+| todo         | —     | —       | 62    |
 | in-progress  | 3     | 8       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
 | done         | 1     | 8       | 116   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 43× P2 · 11× P3.
+`todo` by priority: 7× P1 · 44× P2 · 11× P3.
 
 ## In progress now
 
@@ -153,6 +153,15 @@ _None_
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
+- **EPIC-005** Task worktrees — planned (0/7 tasks done)
+  - STORY-021 Run a task in its own checkout — planned (0/7)
+    - [ ] [TASK-173](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-173.md) Declare `workspace:` and `worktree-root:` in the tasks config
+    - [ ] [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) `/tasks pick` creates the task worktree, asking for the root when undeclared
+    - [ ] [TASK-175](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-175.md) `/tasks pick` proves the move into the worktree, and falls back when it cannot
+    - [ ] [TASK-176](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-176.md) `/tasks close` merges from the worktree and removes it in a fixed order
+    - [ ] [TASK-177](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-177.md) Ship `workspace:` / `worktree-root:` through both front doors
+    - [ ] [TASK-178](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-178.md) Give drill checkouts a declared home and a cleanup rule
+    - [ ] [TASK-179](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-179.md) End-to-end drill: pick → work → close in a worktree on a real consumer
 
 ## Loose tasks
 

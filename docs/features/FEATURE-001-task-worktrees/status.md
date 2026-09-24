@@ -1,6 +1,6 @@
 ---
 id: FEATURE-001
-generated: 2026-09-18
+generated: 2026-09-24
 ---
 
 # Task worktrees — run a task in its own checkout — Status
@@ -21,24 +21,31 @@ generated: 2026-09-18
 
 ## Build progress
 
-0 / 0 tasks done.
+0 / 7 tasks done.
 
-No tasks exist yet — the decisions were stamped today and have not been broken down into work.
-This is the normal state immediately after a decision round, not a stall.
+- TASK-173 — record, per project, whether tasks get their own folder and where those folders live (to do)
+- TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (to do)
+- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (to do)
+- TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (to do)
+- TASK-177 — teach both project-setup tools about the new setting (to do)
+- TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (to do)
+- TASK-179 — try the whole thing end to end on a real project (to do)
+
+Three smaller choices will come back as decisions while the work is done: what happens when a project
+asks for task folders but commits everything straight to the main line, how the folders are named, and
+whether a project that has said nothing should be asked about this at all.
 
 ## What can be tested now
 
-Nothing yet. When the work is broken down, note that the test cannot be run in this project: it
-declares that everything is committed straight to the main line, so the feature's whole path is
-unreachable here. It needs a project that uses a branch and a merge request per task.
+Nothing yet — all seven tasks are still to do. Every task has its test steps written. They cannot be
+run in this project, which commits everything straight to the main line and so never takes this path;
+they need a project that uses a branch and a merge request per task.
 
 ## Prototype
 
-None yet — pending a decision. The leaning is to skip it: there is nothing visual here, and the
-proof is installing the change and watching a working folder appear and disappear on a real
-project. The one part that might earn a mock-up is the wording of the question asked when no
-location has been set, since that is the only place this speaks to a person.
+Skipped — there is nothing visual here. The end-to-end trial (TASK-179) is the proof, and the one
+question this feature asks a person is written out word for word in TASK-174.
 
 ## Next step
 
-Break the ten approved decisions into tasks — `/feature decompose FEATURE-001`.
+Start with TASK-173 — `/tasks pick TASK-173`. It unblocks TASK-174, TASK-177 and TASK-178.

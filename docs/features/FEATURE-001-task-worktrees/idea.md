@@ -93,10 +93,10 @@ _Filled from the [[grill-me]] interview at `/feature new`. Each resolved branch 
 
 _Record the prototype decision explicitly — never leave it blank (see SKILL.md)._
 
-**Pending** — to be settled at `/feature prototype`. Leaning **Skipped**: there is no visual or UX
-surface here, and the proof is a drill (install the changed skills, run `pick` → `close` on a real
-project and watch the folder appear and disappear). One thing a prototype *could* earn its keep on
-is the wording of the undeclared-path question (D6), which is the only place a person is spoken to.
+**Skipped** (2026-09-24) — there is no visual or UX surface here, and the proof is a drill (install
+the changed skills, run `pick` → `close` on a real project and watch the folder appear and
+disappear — TASK-179). The one place a person is spoken to, the undeclared-path question (D6), has
+its wording pinned verbatim in TASK-174 instead of a mock-up.
 
 **Note for whoever writes that drill:** it cannot run in this repository. This repo declares
 `integration: single-branch`, so `/tasks pick` never offers a branch here and the whole worktree
