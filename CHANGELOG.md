@@ -11,7 +11,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 ## [Unreleased]
 
 _No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
-36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, and 2026-08-21 across the 16 after that._
+36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, and 2026-09-24 across the 155 after that._
 
 ### Added
 
@@ -30,6 +30,15 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **Defects found during adoption become tracked work.** A dead path or broken script turned up while surveying is filed as a task whatever you decide about fixing it — "fixed, mentioned in the report, untracked" is now explicitly the outcome the skill refuses.
 - **Adoption regenerates what it invalidated.** Creating an input to a generated file re-runs that file's owning verb, so you do not end up with a dashboard that went stale during the very run that reshaped the repo — and it stops rather than overwrite content a generator cannot reproduce.
 - **The lint detects install drift.** `skills-lint` now reports a skill folder with no junction in either install root, and a junction whose source folder is gone. Advisory only: the fix is re-running an installer, which no code change can do for you.
+- **`review-comments`: a new skill that finds comments whose content already lives somewhere else.** It reports each one with where that content already lives (the code, git history, the tracker, a decision record, the project's guide), so you can check the verdict yourself. Scopes: the current diff by default, named paths swept in full, or the whole repo with `--all`. It reads the comment rule from your own guide and keeps no copy of it. It never reports a comment for being long, and never deletes the only copy of something: that gets moved to a task, a decision record, a docs page or a guide rule first. It also runs at `/tasks close` as its own review axis whenever the diff contains a comment.
+- **Every scaffolded project gets a comment rule in its guide.** The test is "delete the line, then ask where its content already lives", not a line count.
+- **`/tasks move`** re-homes a task: it changes the file's location and its `parent:` together and rolls up the parents on both sides. This is how a loose backlog gets into a pool `fix-next` can rank.
+- **`/tasks --across`**: an opt-in, read-only view across a polyrepo's sibling projects. You declare where to look (`siblings.root`), membership is recomputed every run, and ids print as `<repo>/TASK-NNN`. Verbs that write refuse the flag by name.
+- **`/tasks new --from-field`** files a defect found in real use under a minted `FIELD-*` id, so `fix-next` can rank it. Before this, a field report had no way into the pool.
+- **Layer artifacts that only some projects take.** `LICENSE`, `.env.example` and `Dockerfile` are now inventory rows marked `(conditional)`. Each asks its own question about the repo (licensing posture, required env vars, running service) rather than checking the project's kind, and an unclear answer yields `unknown` plus a question, never `not applicable`. `adopt-project` can now notice a repo with no licence.
+- **Layer artifacts that would lie when empty are `(lazy)`.** `docs/glossary.md` and `docs/adr/` are in the inventory but neither front door creates them. `adopt-project` reports them `not applicable yet` and doesn't offer to create them.
+- **`populate-tests` documents the cold drill**: how to test a skill's prose with a runner that hasn't seen the expected answer, and how to get a runner that is actually cold. Drill findings get their own `DRILL-*` prefix.
+- **`skills-lint` checks two new contracts.** Every flag passed to a skill verb must exist on the receiving verb (every flag on the invocation, matched exactly). The two copies of the comment rule must stay byte-identical, and the check names which side is missing.
 
 ### Changed
 
@@ -53,6 +62,15 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **Declared policy is read, never guessed.** `tasks/.config.yml`'s `integration:` field decides whether work goes through a branch per task or straight to the default branch; nothing infers it from `git log`, which cannot tell a squash-merge history from a commit-to-main one. `tasks init` also reconciles a config written by an older version instead of assuming a present file is a current one.
 - **`/specs regen` attributes a feature to code it actually authored**, not code that merely mentions its task id — a commit whose subject leads with the id counts, an id further along or in the body is a cross-reference. Measured on a real project: two known false attributions removed.
 - **Generated files carry only what their verb can derive.** Dashboards and rollups no longer host hand-written commentary; per-task notes live on the task, cross-cutting judgement in the epic, and tree provenance in `tasks/.config.yml`. A partly-hand-owned generated file makes every regeneration a judgement call.
+- **The scaffolder copies the universal rules verbatim.** They now live in a token-free template that is spliced into the guide byte for byte, instead of being reworded on every scaffold run. A skipped splice now stops the run instead of producing a plausible-looking substitute.
+- **Every ask-step states its exact question and what happens when nobody answers.** An unanswered ask leaves the field unresolved and says so. It no longer turns a suggestion into a written decision. Covers `tasks` and `specs`.
+- **Templates no longer ship values nobody chose.** `tasks/.config.yml` ships `integration:` commented out, and the spec map ships `coverage: unverified` with no pre-filled areas or ignore globs. `new-project` now asks for the integration model, and `adopt-project` notices when that declaration is missing.
+- **`domain`'s ADR bar applies to project decisions only.** That means a stack choice, a repo layout, a schema or a policy. A rulebook entry keeps its reasoning inline.
+- **`/tasks pick` shows verification debt** (tasks sitting in `review`) before offering new work. It's a nudge you can decline, not a gate.
+- **A task outside a pool is filed but unranked**, and `spawn`/`move` now warn when a review finding would land in `_loose/`.
+- **The close gate names its review axes instead of counting them**, and the fidelity axis gets its own `VI-*` findings prefix. When security-review doesn't run, the gate prints an explicit not-applicable line.
+- **The seeded guide sends new terms and decisions to `/domain`.** `docs/BRIEF.md` is now always created, and the project's one-line purpose is asked for at intake and never invented.
+- **`adopt-project` reports more precisely.** It reports `present, uncommitted` as an itemised offer to land, and doesn't claim whose work it is. It suppresses an action the repo has already done. It separates an `unknown` caused by missing evidence from one where the rule itself runs out (that one is reported as a defect in the layer). It names which axis a `present, elsewhere` differs on. It says outright that it checks a guide's shape, not whether its prose is current.
 
 ### Fixed
 
@@ -71,5 +89,15 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **The survey looked for the shape the scaffolder would have made, instead of the shape you have.** A project with 54 test files across sibling `*.Tests` projects was reported as having no test harness; a guide with `## Key Conventions` as having no rulebook. Detection is by evidence per artifact now, and when in doubt the answer is "unknown", never "missing" — a false "missing" invites writing over a working setup.
 - **`skills-lint` had sixteen defects of its own**, found across two review passes, including a scan that could pass having checked nothing. It now ships a regression suite that runs before it in CI, so a silent regression in the only gate cannot go unnoticed.
 - **`/tasks close` sweeps `## Out of scope` for work nobody owns.** A bullet describing something someone should later do, with no task id, is a skipped `spawn` wearing a documentation heading — it is now caught at the close rather than discovered by whoever reopens the task.
+- **`verify-conventions` never ran a project's own convention checks.** A project-local skill with the same name loses to the user-level copy, so the advice to "shadow" it was wrong. It now finds `.claude/skills/verify-*conventions*/` by path, runs it, and says on every report whether it did.
+- **`/specs init` could report full coverage without checking anything.** On an empty scan it now writes an explicit `verified` / `not-applicable` / `unverified` verdict and lists which files drifted by path.
+- **Re-running `/specs init` wiped hand-written comments in `.map.yml`.** An existing map is now edited in place, never re-rendered.
+- **The `adopt-project` survey had several blind spots.** It missed files that were staged but not committed. It never said which guide sections to expect (now read off the seed). It accepted a machine-global ignore as proof that `.env` is covered (now only the repo's own `.gitignore` counts). It reported `missing` for a test harness that CI actually runs.
+- **Adoption could regenerate a file before landing it**, which destroys uncommitted work. It now always lands first, then regenerates.
+- **`roadmap`'s missing-spec check (DV10) never fired on repos without `src/` or a build manifest.** It now asks the repo what counts as its source.
+- **Task status could be read from, or written to, the enum comment above the field.** The template comment was reworded so it can't be mistaken for a value, and `/specs regen` spells out the anchored read.
+- **On a single-branch project, `close` asked for a `pr:` SHA that can't exist.** It now leaves `pr:` null and relies on the commit subject for attribution.
+- **The dashboard's todo-by-priority line dropped priorities outside P0–P2.** It now renders one bucket per priority that actually exists.
+- **`.env.*` in the seeded `.gitignore` also ignored `.env.example`**, so the template was created and then never committed.
 
 [Unreleased]: https://github.com/birko/project-lifecycle-skills/commits/main
