@@ -21,11 +21,11 @@ generated: 2026-09-24
 
 ## Build progress
 
-9 / 11 tasks done · 2 awaiting sign-off.
+10 / 11 tasks done · 1 awaiting sign-off.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
-- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (**awaiting sign-off** — one check on a second tool)
+- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (done — also checked on the second assistant tool)
 - TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (done)
 - TASK-177 — teach both project-setup tools about the new setting (done)
 - TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (done)
@@ -43,8 +43,9 @@ Everything built so far has been tried on a copy of a real project:
 - A folder deleted by hand, which is reported rather than guessed around.
 - Both project-setup tools now asking whether tasks should get their own folders.
 
-Still to check: the same thing with the second assistant tool, which is not set up correctly on this
-machine. For now this works only for projects that combine work on the same computer (TASK-183).
+The second assistant tool was checked too: it cannot move into the folder, so it safely works in place
+instead, exactly as designed. Projects that merge online are built and tried against a stand-in; the
+real GitHub check is what remains (TASK-183).
 
 ## Prototype
 
@@ -53,8 +54,5 @@ question this feature asks a person is written out word for word in the task-pic
 
 ## Next step
 
-Everything is built. Two checks remain, and both need something this machine does not have:
-- a real GitHub project with required checks, to try the online-merge path end to end (TASK-183);
-- a working second assistant tool (TASK-175).
-
-After both pass, the feature goes to its final review.
+Everything is built. One check remains: trying the online-merge path end to end on a real GitHub project
+with required checks (TASK-183). After that, the feature goes to its final review.

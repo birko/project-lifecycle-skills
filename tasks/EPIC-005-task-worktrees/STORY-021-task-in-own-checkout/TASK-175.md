@@ -3,7 +3,7 @@ id: TASK-175
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: ai
 created: 2026-09-24
@@ -52,7 +52,7 @@ caught and undone.
 On a `pr-per-task` consumer, `workspace: worktree`, root declared.
 
 - [x] Claude Code: `/tasks pick`. Expected: the session reports the worktree path, and `git rev-parse --show-toplevel` / `git branch --show-current` run from the session show the worktree and `task/TASK-NNN`; the main copy stays on the default branch.
-- [ ] pi runtime: same. Expected: either the same outcome, or an explicit fallback report with no worktree left behind (`git worktree list` shows only the main copy).
+- [x] pi runtime: same. Expected: either the same outcome, or an explicit fallback report with no worktree left behind (`git worktree list` shows only the main copy).
 - [x] Force a mismatch (temporarily point the proof at a wrong path). Expected: worktree and branch removed, in-place branch cut, report names both paths.
 
 ## Implementation plan
@@ -74,3 +74,10 @@ Lands in **one change with TASK-174**. Decision: D14 (attempt, then prove, for e
 **Claude Code step run** in TASK-179's trial (steps 2 and 4): entered and proved in both shells, twice. The pi step is being run separately.
 
 **Stays `review`:** only the pi-runtime step is unrun. pi's model provider returns 404 on this machine (see TASK-179). Tick it once pi works, or cancel the step with a reason if pi support is dropped.
+
+**pi step run (2026-09-24).** Earlier it was wrongly recorded as blocked by a broken pi. **pi works; only its default provider (`google`) is unset on this machine.** `pi --list-models` lists configured providers, and `finstat/finstat`, `finstat/gemma4` and `pi-zai/glm-4.6` each answered a probe.
+- **Runner:** `pi -p --provider finstat --model finstat "<brief>"`, cwd a scratch local-mode repo (`workspace: worktree`, `worktree-root: ../wt`, `pr-per-task`, TASK-001 `todo`). The brief pointed at `~/.pi/agent/skills/tasks/verbs/pick.md` and withheld the expected outcome.
+- **Outcome (read from git):** pi committed `TASK-001: pick` on `main` (status `in-progress`, local mode), created the worktree, `cd`'d in, then proved it with a separate command. That returned the main copy, because pi's working directory does not persist a `cd`. pi caught the mismatch, removed the worktree and deleted the branch (not forced), cut `task/TASK-001` in place, and printed the fell-back line verbatim, naming both paths.
+- `git worktree list` shows the main copy only; the leftover `wt/` is an empty parent folder. This is the step's expected outcome: *an explicit fallback report with no worktree left behind*. The fallback, not a move, is pi's normal path, so it is D14 working as designed.
+
+**Closed `done` 2026-09-24:** every human-test step has now been run.
