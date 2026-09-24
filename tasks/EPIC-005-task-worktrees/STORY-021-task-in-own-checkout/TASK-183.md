@@ -3,7 +3,7 @@ id: TASK-183
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: ai
 created: 2026-09-24
@@ -43,7 +43,7 @@ It needs a grill and a decision round before any code.
 
 ## Human test plan
 
-- [ ] On a consumer with a GitHub remote and a protected default branch: pick two tasks, merge both PRs on GitHub in either order, and close both. Expected: no divergence, no failed pull, and both worktrees removed.
+- [x] On a consumer with a GitHub remote and a protected default branch: pick two tasks, merge both PRs on GitHub in either order, and close both. Expected: no divergence, no failed pull, and both worktrees removed.
 
 ## Implementation plan
 
@@ -94,3 +94,18 @@ Decisions: D25 (in progress = the pushed task branch), D26 (no generated-file co
 A fourth review pass was not run; the round-3 fixes were verified by the round-3 drill above.
 
 **Parked at `review`, not `done`:** the human-test step needs a real GitHub remote with a protected default branch and required checks. That is where D28's auto-merge queue and the host's own merge run, and no drill here can stand in for the host. Every other path was drilled against a bare remote.
+
+**Human-test step run on real GitHub (2026-09-24).** This was the main interactive Claude Code session, not a cold runner. A throwaway repo `birko/wt-trial-183` was created with the stakeholder's approval and deleted afterwards. It was made public only because free-plan private repos refuse branch protection, and it held drill files only. Its `main` required a PR and a `ci` check (`sleep 60`), enforced for admins, with auto-merge allowed. The clone was nested in `scratch/`, and `main` tracked `origin/main`.
+- **`pick TASK-001`**: remote mode was detected; fetch, and 0 commits ahead; the worktree was cut from `origin/main`. `EnterWorktree` and the proof passed in both shells. `TASK-001: pick` was pushed on `task/TASK-001`, and local `main` was untouched.
+- **`close TASK-001`** (first run): the work and `done` were committed and pushed, **PR #1** was opened, and `pr: 1` was committed on the branch and pushed. GitHub reported `mergeStateStatus: BLOCKED` with `ci` `IN_PROGRESS`. **Auto-merge was queued (D28)**, and the worktree was kept.
+- **GitHub merged PR #1 by itself** once `ci` passed (18:06:57Z, merge `bcfd2e6`), with nobody present.
+- **`close TASK-001`** (again): the task branch read `done`. After `fetch --prune`, `origin/main` read `done` with `pr: 1`, and the branch was an ancestor, so **only the tail ran**: leave (proved in both shells), main clean, `pull --ff-only` to `bcfd2e6`, remote branch deleted, worktree removed, branch deleted. No push, PR or merge was repeated.
+- **Two tasks merged in reverse order:** TASK-002 was picked first, then TASK-003 (created uncommitted and **carried**; `main` stayed clean). PRs #2 and #3 were opened. GitHub merged **#3 first (18:09:58Z), then #2 (18:11:00Z)**, each via auto-merge after its own `ci`. Both closes found the merge landed and ran only the tail. `main` fast-forwarded through both merges, with `origin/main..main` = 0 throughout.
+
+**Deviations, both setup, not skill:**
+1. GitHub first refused auto-merge. My `--enable-auto-merge` had run while the repo was private (not allowed on the free plan), and was re-applied after it went public.
+2. One cleanup command's `cd` did not take effect, so its git commands ran in project-lifecycle-skills instead. The `push --delete` of two `task/*` branches failed there (no such refs), and nothing in that repo changed. It was redone with `git -C <trial repo>`.
+
+**Rounds 2 and 3** ran the git steps directly: entry was already proved in round 1.
+
+**Closed `done` 2026-09-24:** every human-test step has now been run.
