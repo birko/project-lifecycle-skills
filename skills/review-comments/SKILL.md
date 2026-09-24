@@ -167,6 +167,14 @@ checkable rather than asserted.
 | `universal:` (⚠ cap) | the project recorded no rule and the floor supplied it |
 | **held** | the content exists **nowhere else**. Never deleted first — see § *The only copy* |
 
+**A finding that matches both 🛑 and ⚠ is 🛑.** An always-violation whose content also sits at a destination
+is the common case, not an edge — a rationale essay above a declaration usually *has* its decision record —
+and finding that record does not lower the severity. The destination tells you the fix is safe (delete, or
+leave a pointer); the severity says how plainly the rule condemns the comment. Those are separate questions,
+and *"the deletion is safe only because the record exists"* answers the first while trying to settle the
+second. **held** is not decided by this ordering: it follows from § *The only copy*'s search, whatever the
+row.
+
 **Never a finding:** a comment's length; a **pointer** — one line naming where the rest lives, which is
 what makes a destination reachable; a structurally required documentation tag that adds nothing, which the
 rule says to **fill** rather than delete.

@@ -9,14 +9,14 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 57    |
+| todo         | —     | —       | 56    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 6       | 108   |
+| done         | 0     | 6       | 109   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 43× P2 · 13× P3.
+`todo` by priority: 1× P1 · 43× P2 · 12× P3.
 
 ## In progress now
 
@@ -237,5 +237,5 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
   - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `done` P2 — `PATH …` defined as a whole-file sweep; 8 cold runners, 4 rounds
   - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `done` P2 — wired into `close` step 5b as its own axis; no flag passed
-  - [TASK-155](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-155.md) `todo` P3 — one reader in six renders ⚠ where the severity table says 🛑
+  - [TASK-155](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-155.md) `done` P3 — 🛑 outranks ⚠ when both match; 2 of 2 runners agree
   - [TASK-156](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-156.md) `todo` P3 — a header that varies between readers, and a refusal nobody ran

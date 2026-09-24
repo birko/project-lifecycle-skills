@@ -3,7 +3,7 @@ id: TASK-155
 parent: STORY-019
 feature: FEATURE-002
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: unassigned
 created: 2026-09-20
@@ -57,10 +57,10 @@ the whole premise being *"a check two reviewers answer identically"*.
 
 ## Acceptance criteria
 
-- [ ] § Step 4's severity table says what happens when a finding satisfies more than one row — the always-violation row outranks the destination row, or it does not, stated once.
-- [ ] The rule is written so a reader who has already found the destination cannot conclude the severity drops because the content was safely relocatable. Runner 4's sentence is the shape to defeat.
-- [ ] Re-run at least two cold runners on TASK-152's fixture (`scratchpad/drill-152`, rebuildable from this task's sibling record). Expected: both render the ADR case at the same severity.
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] § Step 4's severity table says what happens when a finding satisfies more than one row — the always-violation row outranks the destination row, or it does not, stated once.
+- [x] The rule is written so a reader who has already found the destination cannot conclude the severity drops because the content was safely relocatable. Runner 4's sentence is the shape to defeat.
+- [x] Re-run at least two cold runners on TASK-152's fixture (`scratchpad/drill-152`, rebuildable from this task's sibling record). Expected: both render the ADR case at the same severity.
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 ## Out of scope
 
@@ -70,9 +70,42 @@ the whole premise being *"a check two reviewers answer identically"*.
 
 ## Human test plan
 
-- [ ] Two cold runners on the rebuilt fixture, brief withholding the expected severity. Expected: same severity for the ADR case from both.
-- [ ] Expected failure to watch for: the fix makes *everything* 🛑. A table where one severity swallows the others is not more reproducible, it is less informative — the ⚠ row exists because most findings genuinely do need a human to confirm.
+- [x] Two cold runners on the rebuilt fixture, brief withholding the expected severity. Expected: same severity for the ADR case from both.
+- [x] Expected failure to watch for: the fix makes *everything* 🛑. A table where one severity swallows the others is not more reproducible, it is less informative — the ⚠ row exists because most findings genuinely do need a human to confirm.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-155` — leave empty until then._
+One precedence sentence under § Step 4's severity table, worded against runner 4's reasoning rather than
+restating the rows: an always-violation stays 🛑 when its content also has a destination, because the
+destination answers *is the fix safe*, not *how plainly the rule condemns it*. **held** is explicitly left
+to § *The only copy* — the only other row that could compete, and outside this task.
+
+### Drill record — 2026-09-24
+
+**Fixture** `scratchpad/drill-155` (copies `-155a`, `-155b`), rebuilt from TASK-152's round-1 record: a
+TypeScript repo with the rule spliced verbatim from `templates/CONVENTIONS-universal.md` at rung 0, an open
+`TASK-007`, `docs/adr/0003-single-writer.md`, and `src/ledger.ts` carrying the three blocks — the
+ADR-backed rationale above a declaration (the case), the ticket-backed defect note, and a
+destination-*nowhere* block — all committed, so the diff is empty.
+**Runner:** `echo <brief> | claude -p --permission-mode acceptEdits --add-dir ~/.claude/skills
+C:/Source/project-lifecycle-skills`, two processes on independent copies, concurrently — TASK-152's
+acquisition. **Brief, verbatim:** *"Use the review-comments skill on `src/ledger.ts` in this repo and give
+me its report."* It withholds every severity. The runners hold the installed skill — the thing under test —
+and nothing about this task.
+
+| | Runner a | Runner b |
+|---|---|---|
+| ADR-backed rationale (the case) | **🛑**, ADR 0003 named | **🛑**, ADR 0003 named |
+| ticket-backed defect note | ⚠, TASK-007 | ⚠, TASK-007 |
+| destination-*nowhere* block | kept, not reported for length | kept, same |
+| files edited | none | none |
+
+**Same severity from both — criterion 3 met.** Runner b restated the new sentence's reasoning unprompted:
+*"Having the decision record makes the fix safe; it doesn't make the finding less severe"* — the inverse of
+runner 4's. **The watched failure did not occur:** the ticket-backed note stayed ⚠ in both, so the rule did
+not collapse the table into 🛑. Two runners is weaker evidence than TASK-152's six; it is what the criterion
+asked for, and the reasoning is quoted rather than inferred.
+
+**Gate, inline** — one paragraph of skill prose: standards ✅ imperative, rationale inline, no restated
+list · fidelity ✅ criteria 1-4 · correctness ✅ lint exit 0 · comments: not applicable, no code comment in
+range. Security: not applicable.
