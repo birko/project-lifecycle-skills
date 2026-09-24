@@ -71,7 +71,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    | a linked worktree on `task/TASK-NNN` | the **worktree close**: check the main copy now (the part the runtime allows — below), then steps 5–7 here, and step 8's worktree branch |
    | a linked worktree on any other branch | the **wrong-tree** line; stop, nothing written |
    | main copy, a linked worktree holds `task/TASK-NNN`, **and** step 4 found an unmerged close | resume at step 8's step 2 (check the main copy, merge, remove, delete), from here |
-   | main copy, while a `git worktree list --porcelain` entry **other than the first** shows `branch refs/heads/task/TASK-NNN`, and no unmerged close | the **held-elsewhere** line; stop, nothing written. Closing from a new session means re-entering that worktree, which is the resume path's business, not something to improvise here |
+   | main copy, while a `git worktree list --porcelain` entry **other than the first** shows `branch refs/heads/task/TASK-NNN`, and no unmerged close | **resume into it** through [[tasks]] `pick` step 6b's resume (locate, enter, prove, or its prunable/not-resumed stop), then run this close as the worktree close above. A close from a new session lands here. When that resume stops, print **its** line (prunable or not-resumed) and nothing else, and write nothing |
 
    **Worktree close — check the main copy before writing.** Three conditions, and two of them are
    readable from any tree:

@@ -42,7 +42,11 @@ in flight: leave it alone, don't count it, don't report it as blocking you.
 
 If you find a skill-owned in-progress task:
 
-1. Read its `## Progress log` — the last line says which step below was completed.
+1. **Under `workspace: worktree`, resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
+   resume (locate, enter, prove). Only the first log line rode in the pick commit, and every later line is on
+   the task branch. **Any stop in that resume stops this run too**: report its line, and do not pick a
+   second task. Run step 2's reconciliation below in the tree you are now in, not the main copy.
+   Then read its `## Progress log` — the last line says which step below was completed.
 2. Reconcile with git: `git status --short` and `git log --oneline -3` in each repo the log names.
 3. If the log and git disagree, **git wins.** The log may have been written just before an
    interruption, or the step may have half-landed. Correct the log to match reality, then continue

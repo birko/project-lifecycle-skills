@@ -89,8 +89,32 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | `workspace:` absent or `in-place` | step 7, print nothing |
    | any other value but `worktree` | print the **invalid-value** line; step 7 as in-place |
    | `worktree` + `integration: single-branch` | print the **no-effect** line, every run; step 7 |
+   | `worktree`, the task already `in-progress`, and `task/TASK-NNN` exists | **resume** — below; no question, no pick commit. Run the **wrong-tree** check (below) first |
    | `worktree` + `worktree-root:` absent | ask the question below |
    | `worktree` + root declared | check, commit the pick, create, enter, prove — below |
+
+   **Resume — re-enter the worktree that already holds the branch.** A new session always starts in the
+   main copy, and a branch a worktree holds cannot be checked out there, so an in-progress task's work can
+   only continue where it already is. Locate it from evidence, recomputed every run:
+   `git worktree list --porcelain`, any entry but the first whose `branch` line is
+   `refs/heads/task/TASK-NNN`. That is not the inference this step forbids above. `workspace:` is still
+   read from the config; this only finds a branch the verbs themselves made.
+   - **The entry is `prunable`** (its folder is gone) → print the **prunable** line and **stop**. Git
+     refuses to check the branch out anywhere while that registration holds it, so there is no in-place
+     fallback, and pruning is the person's call, never this verb's.
+   - **Otherwise enter and prove it** exactly as **Enter, then prove** below describes. Then the caller
+     continues at its own next step; `pick` continues at step 9, because steps 7–8 already ran at the
+     original pick. **Never create a second worktree** for a task
+     that has one. A mismatch here removes nothing, because this worktree holds real work: print the
+     **not-resumed** line and stop.
+   - **No worktree holds the branch** (a person pruned it, or it was never made) → nothing to resume into.
+     Print the **no-worktree** line and continue in place: switch the main copy to `task/TASK-NNN` if the
+     main copy is clean, then go to step 9 (the status already reads `in-progress`). A dirty main copy →
+     report that and stop. Never re-create the worktree unasked. The branch may carry work a person moved
+     on purpose.
+
+   **This step is the one owner of entering and proving a worktree.** Other verbs resume through it
+   rather than restating it.
 
    From here on `workspace: worktree` has asked for isolation, so **whenever this step falls back, step 7
    cuts `task/TASK-NNN` in place without offering** — the declaration already answered that offer.
@@ -169,7 +193,9 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      directory. Never ask the agent whether it *can* move; try, and let the proof decide.
    - **Prove** with `git rev-parse --show-toplevel` run as a **separate, later command** — never chained
      after the move on one line, where it passes whatever happened. Compare it with
-     `git -C "<path>" rev-parse --show-toplevel`, so git renders both, after normalising each: `/c/` →
+     `git -C "<path>" rev-parse --show-toplevel`, so git renders both, **in every shell the session has**
+     (Claude Code's Bash and PowerShell tools each keep their own working directory), after normalising
+     each: `/c/` →
      `C:/`, `\` → `/`, no trailing separator — and on Windows, whose paths are case-insensitive, compare
      without regard to case.
    - **Mismatch** → `git worktree remove "<path>"` and `git branch -d task/TASK-NNN` (the branch holds
@@ -188,6 +214,10 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - refusal: `worktree-root '<value>' resolves inside this repository (<absolute path>) — refused; worktrees live outside the repository. Working in place.`
    - unsupported: `workspace: worktree mode does not yet support a default branch that tracks a remote (<default-branch> → <upstream>) — pick and close would commit on it locally and diverge; working in place.`
    - wrong tree: `workspace: this session is inside a linked worktree (<toplevel>) — pick from the main copy (<main copy>); nothing was changed.`
+   - resumed: `workspace: resumed in the worktree at <path> on task/TASK-NNN — proved: git rev-parse --show-toplevel = <path>`
+   - prunable: `workspace: task/TASK-NNN is held by a worktree whose folder is gone (<path>) — not pruned; run git worktree prune if that folder is truly gone, then pick again.`
+   - not resumed: `workspace: could not enter the worktree at <path> (got <toplevel>) — nothing was removed; enter it yourself, or run this from a session that can.`
+   - no worktree: `workspace: no worktree holds task/TASK-NNN — continuing in place.`
    - leftover: `workspace: TASK-NNN already has <what was found> from an earlier pick — nothing was changed; resume it rather than pick it again.`
 
 7. **Flip status to in-progress**:
