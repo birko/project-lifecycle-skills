@@ -3,7 +3,7 @@ id: FEATURE-002
 created: 2026-09-18
 owner: František Bereň
 # status — one of: idea, review (built, sign-off pending), done, dropped, superseded
-status: idea
+status: review
 ---
 
 # Comment discipline — keep the source free of everything that belongs elsewhere
