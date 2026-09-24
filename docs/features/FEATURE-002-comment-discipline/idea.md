@@ -96,8 +96,9 @@ _Filled from the [[grill-me]] interview at `/feature new`. Each resolved branch 
 
 _Record the prototype decision explicitly — never leave it blank (see SKILL.md)._
 
-**Pending** — to be settled at `/feature prototype`. Leaning **Built, as a markdown wireframe**:
-the command's report is the whole user surface, and what makes it usable or not is whether a
-finding shows you *which row of the test caught it* and *what it would do about it* before you say
-yes. That is cheap to mock and expensive to get wrong. The rule half needs no prototype — it is
-prose in a template.
+**Skipped** — settled 2026-09-24 at `/feature review` by František Bereň. The leaning had been a markdown
+wireframe of the command's report, the only user surface. It was not built because the report itself was
+tested directly instead: cold runners on real fixtures produced it, and each drill checked the two things a
+wireframe would have predicted — that a finding names *which row of the test caught it* and *what it would
+do*, before anything is changed (TASK-142, TASK-152, TASK-155, TASK-156). The rule half needs no prototype —
+it is prose in a template.

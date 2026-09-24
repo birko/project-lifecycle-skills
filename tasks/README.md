@@ -9,14 +9,14 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 55    |
-| in-progress  | 3     | 8       | 0     |
+| todo         | —     | —       | 60    |
+| in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 1     | 7       | 110   |
+| done         | 0     | 7       | 110   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 43× P2 · 11× P3.
+`todo` by priority: 1× P1 · 46× P2 · 13× P3.
 
 ## In progress now
 
@@ -56,7 +56,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (46/79 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (46/80 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/15)
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -100,7 +100,7 @@ _None_
     - [ ] [TASK-129](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-129.md) A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding
     - [ ] [TASK-134](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-134.md) `/specs init` step 1's meta-root ask has no question text and no unattended path
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (8/11)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (8/12)
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -111,6 +111,7 @@ _None_
     - [x] TASK-081 One number now names two different lint checks
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
     - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
+    - [ ] [TASK-171](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-171.md) `docs/architecture.md` still calls install-root drift "check 4"
     - [x] [TASK-108](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-108.md) Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
@@ -211,7 +212,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
 
 </details>
 
-### EPIC-004 — Comment discipline in agent-written code `done`
+### EPIC-004 — Comment discipline in agent-written code `in-progress`
 
 - **STORY-018** — Seed the comment-discipline rule into both rulebooks `done`
   - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
@@ -239,3 +240,8 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `done` P2 — wired into `close` step 5b as its own axis; no flag passed
   - [TASK-155](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-155.md) `done` P3 — 🛑 outranks ⚠ when both match; 2 of 2 runners agree
   - [TASK-156](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-156.md) `done` P3 — path header prescribed (2 of 2 identical); path + `--all` refusal run 2 of 2
+- **STORY-020** — What FEATURE-002's review gate found unfinished `in-progress`
+  - [TASK-167](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-167.md) `todo` P2 — the close gate's text still counts three axes; `VI-*` prefix
+  - [TASK-168](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-168.md) `todo` P2 — `review-comments` absent from every skill overview
+  - [TASK-169](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-169.md) `todo` P2 — the measurement table cannot be re-run from AGENTS.md
+  - [TASK-170](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-170.md) `todo` P3 — an only-copy guide rule has no relocation target
