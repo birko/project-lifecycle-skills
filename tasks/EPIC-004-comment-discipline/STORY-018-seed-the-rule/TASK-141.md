@@ -309,6 +309,15 @@ the wrong scope.
 `blocks: TASK-141` is recorded on TASK-162. This task re-closes when that drains and a third re-run
 finds all six scripts clean — **not when the count reaches zero on one of them.**
 
+**"Clean" defined, 2026-09-24, by František Bereň:** *no finding raised by both of the two cold
+readers.* A finding one reader raises and the other passes is recorded here, not filed as a blocker.
+Why the definition was needed: four drills in one day (TASK-162, -163, -164) each surfaced new items,
+each round smaller than the last — the last round's were comments restating the line beside them. Read
+as "zero findings from anyone", the condition measures how much a reader can find to say at the
+margin, and never terminates. Agreement between two independent readers is what separates a finding
+from a taste. Status of the dependencies at the time: TASK-162, TASK-153, TASK-163, TASK-164 and
+TASK-081 done; TASK-165 open.
+
 ### The `ARG_RE` block — settled by evidence, for whoever takes it
 
 Five readers split 4:3 on *"is it a rationale essay"*. U found the checkable answer instead: the
