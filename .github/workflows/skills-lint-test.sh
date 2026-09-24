@@ -307,7 +307,7 @@ case_is   "identical rule blocks pass"              0 u_pair
 case_is   "one word of drift fails"                 1 u_drifted
 case_is   "template has the block, AGENTS.md does not" 1 u_no_agents
 case_is   "AGENTS.md has the block, template does not" 1 u_no_template
-# Naming the side is the point: "they differ" sends a reader to diff two files, one of which is empty.
+# Naming the missing side is the point (AGENTS.md § "Where the same prose must exist in two files").
 case_fails_saying "missing AGENTS.md side is named"    u_no_agents   "AGENTS.md does not"
 case_fails_saying "missing template side is named"     u_no_template "consumers would receive nothing"
 case_fails_saying "drift names both files"             u_drifted     "differs between AGENTS.md"
@@ -316,7 +316,7 @@ case_fails_saying "drift names both files"             u_drifted     "differs be
 case_says "no pair present says so rather than passing in silence" m_noop "nothing to compare"
 # A file that DOCUMENTS the convention mentions the marker in prose above the block it describes.
 # Matching the marker as a substring starts the capture there and reports two identical copies as
-# differing — which is what happened the moment this convention was written into AGENTS.md.
+# differing.
 u_prose_mention() { u_pair "$1"
                     printf -- 'Prose about `%s` and `%s` markers, above the block.
 

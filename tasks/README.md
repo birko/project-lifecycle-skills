@@ -13,7 +13,7 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 102   |
+| done         | 0     | 5       | 103   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 44× P2 · 14× P3.
@@ -226,7 +226,8 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
   - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `done` P3 — four evidence/pin blocks made one shape; the measurement now lives only at TASK-108
   - [TASK-162](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-162.md) `done` P2 — nine findings acted on; 4 cold readers over 2 rounds; suite 56/56
-  - [TASK-163](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-163.md) `todo` P3 — comment findings TASK-162's drill surfaced outside its nine
+  - [TASK-163](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-163.md) `done` P3 — eight sites acted on; the UNSUPPORTED pointer repointed at TASK-082
+  - [TASK-164](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-164.md) `todo` P3 — two single-reader borderline comment findings from TASK-163's drill
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
   - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `done` P3 — 2 comments written, 5 cuts, 4 readers
   - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `done` P2 — sixth destination row shipped in both copies; 8 sites became reportable

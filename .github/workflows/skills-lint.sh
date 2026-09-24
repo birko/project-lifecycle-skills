@@ -115,7 +115,7 @@ printf '== 4. cross-skill flags ==\n'
 #
 # The skill name is NOT a hard-coded list (AGENTS.md § Defer to a shared inventory). The local
 # consequence is the reason it matters here: an alternation could not be exercised on a fixture
-# whose skills are named something else. Match any `/word verb --flag` and let
+# whose skills are named something else. Match any `/word verb [args] --flag` and let
 # the existence of `skills/<word>/` decide whether it is one of ours; a stray `/usr/bin/x y --z` in
 # prose resolves to no skill folder and is skipped.
 # Why the pattern is this shape and not a simpler one: TASK-108. The mechanic stays here because it
@@ -143,8 +143,8 @@ grep -rnoE "/[a-z][a-z-]* [a-z][a-z-]*( [a-z][a-z-]*)?( $ARG_RE)*( --[a-z-]+(=[^
   [ -e "$recv" ] || continue
   # ANCHORED, because `grep -qF -- "$flag"` prefix-matches: a shorter flag is found inside a longer
   # one and ships green. Bound both sides by the flag's own character class. The rule and its worked
-  # example are in AGENTS.md § "A format one skill reads is a contract", which also scopes out the
-  # receiver that names a flag only to say it is UNSUPPORTED.
+  # example: AGENTS.md § "A format one skill reads is a contract". A receiver naming a flag only to
+  # call it unsupported still satisfies this (TASK-082).
   #
   # Each flag must be SPACE-ANCHORED: grepping `--[a-z-]+` over the whole match reported `--known`
   # out of an argument like `well--known`.
@@ -165,9 +165,8 @@ RULE_END='<!-- comment-rule:end -->'
 rule_block() { # Empty output means "no delimited block here".
   [ -f "$1" ] || return 0
   # The marker must be ALONE on its line. A substring match instead captures from the first place the
-  # file merely *mentions* the marker — and AGENTS.md documents this very convention in prose a few
-  # hundred lines above the block it describes, so the substring version reported the two copies as
-  # differing the moment the convention was written down.
+  # file merely *mentions* the marker — and AGENTS.md documents this very convention in prose above
+  # the block it describes.
   awk -v s="$RULE_START" -v e="$RULE_END" '
     # The CR in the trailing class guards an awk that does NOT strip CR, reading a CRLF file.
     # Kept rather than deleted as dead: the platform it guards is the one nobody tests on. Which
@@ -200,7 +199,7 @@ printf '== 6. install roots (advisory) ==\n'
 # ADVISORY — never touches `fail`, so it cannot change the exit code, and must not be made to.
 # Why it has to stay that way: AGENTS.md § Testing.
 # Roots are overridable because the regression suite has to fabricate them — CI has none to find,
-# which would otherwise make every case below unwritable.
+# which would otherwise make every install-root case in skills-lint-test.sh unwritable.
 CLAUDE_SKILLS_ROOT="${CLAUDE_SKILLS_ROOT:-$HOME/.claude/skills}"
 PI_SKILLS_ROOT="${PI_SKILLS_ROOT:-$HOME/.pi/agent/skills}"
 repo_name=$(basename "$(pwd -P)")
@@ -288,11 +287,9 @@ check_root() {
   # installer has simply never been run against buries the case that matters — a single skill that
   # drifted — under a wall of text (TASK-016).
   if [ "$missing" -gt 0 ] && [ "$missing" -eq "$total" ]; then
-    # Kept as a collapse even when a shadow is present: gating it on `shadow -eq 0` sent an otherwise
-    # unlinked root down the per-skill branch and printed one line per skill — the wall this
-    # collapse exists to remove, and reachable exactly in the TASK-037 case (a stale skills-pi
-    # junction in a root where skills/ was never linked). The contradiction the gate was meant to
-    # fix is in the WORDING, and that is where it is fixed instead.
+    # A collapse even when a shadow is present (a stale skills-pi junction in a root where skills/ was
+    # never linked, TASK-037): the contradiction with the shadow advisory is fixed in the WORDING
+    # below, not by gating. Pinned: skills-lint-test.sh "shadow-only root collapses".
     if [ "$shadow" -gt 0 ]; then
       advise "$root has none of the $total expected skills linked (only shadow junctions) — run the installer, and remove the shadows reported above"
     else
