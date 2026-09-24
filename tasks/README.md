@@ -10,10 +10,10 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
 | todo         | —     | —       | 55    |
-| in-progress  | 4     | 9       | 0     |
+| in-progress  | 4     | 8       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 6       | 110   |
+| done         | 0     | 7       | 110   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 11× P3.
@@ -232,7 +232,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-160](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-160.md) `done` P2 — eight guide-restatements cut; 4 readers confirmed
   - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `done` P3 — both headers now fact-then-pointer; verdict proven to read off the script
   - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
-- **STORY-019** — `review-comments`, the command `in-progress`
+- **STORY-019** — `review-comments`, the command `done`
   - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
   - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
   - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `done` P2 — `PATH …` defined as a whole-file sweep; 8 cold runners, 4 rounds
