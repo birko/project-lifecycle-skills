@@ -9,14 +9,14 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 5       | —     |
-| todo         | —     | —       | 60    |
+| todo         | —     | —       | 59    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 5       | 101   |
+| done         | 0     | 5       | 102   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 15× P3.
+`todo` by priority: 1× P1 · 44× P2 · 14× P3.
 
 ## In progress now
 
@@ -224,7 +224,7 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
   - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
   - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
-  - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `todo` P3 — a fifth copy of the 8-of-39 measurement, in the test that pins it
+  - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `done` P3 — four evidence/pin blocks made one shape; the measurement now lives only at TASK-108
   - [TASK-162](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-162.md) `done` P2 — nine findings acted on; 4 cold readers over 2 rounds; suite 56/56
   - [TASK-163](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-163.md) `todo` P3 — comment findings TASK-162's drill surfaced outside its nine
   - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
