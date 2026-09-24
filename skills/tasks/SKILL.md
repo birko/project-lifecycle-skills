@@ -281,6 +281,13 @@ state, not "reviewed somewhere."
 commit-to-main repo from a squash-merge one. On `single-branch`, `pick` offers no branch and `close`
 skips step 8 — `done` still means *on the default branch*, only the mechanism changes.
 
+**Where the work happens is declared too.** `workspace:` (`in-place` | `worktree`) says whether a task
+runs in the one working copy or in its own git worktree; `worktree-root:` says where those worktrees
+live, outside the repo, a relative path resolving against the repo root. Absent `workspace:` means
+`in-place`; absent `worktree-root:` means undeclared, and nothing may guess it. Never infer either
+from `git worktree list` — a worktree that exists may be anyone's checkout. Under `single-branch`
+there is no task branch to put in a worktree, so `worktree` has no effect there.
+
 Code is reviewed **once per task, here, at the right altitude**;
 [[feature]]'s `review` gate is then a *completeness* check, not a wholesale code re-review.
 (Non-git or local-only projects keep `close`'s flexible commit/reference step — see

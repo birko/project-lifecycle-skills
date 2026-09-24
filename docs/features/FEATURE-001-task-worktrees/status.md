@@ -13,7 +13,7 @@ generated: 2026-09-24
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 10 |
+| ✅ approved | 12 |
 | ✏️ changed | 0 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
@@ -21,9 +21,9 @@ generated: 2026-09-24
 
 ## Build progress
 
-0 / 7 tasks done.
+1 / 7 tasks done.
 
-- TASK-173 — record, per project, whether tasks get their own folder and where those folders live (to do)
+- TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (to do)
 - TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (to do)
 - TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (to do)
@@ -31,15 +31,17 @@ generated: 2026-09-24
 - TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (to do)
 - TASK-179 — try the whole thing end to end on a real project (to do)
 
-Three smaller choices will come back as decisions while the work is done: what happens when a project
-asks for task folders but commits everything straight to the main line, how the folders are named, and
-whether a project that has said nothing should be asked about this at all.
+Two of the three smaller choices are now decided: a project that asks for task folders but commits
+everything straight to the main line simply keeps working in one place and is told why; and the two
+new settings sit as two plain lines in the project's task settings. Still open: how the folders are
+named, and whether a project that has said nothing should be asked about this at all.
 
 ## What can be tested now
 
-Nothing yet — all seven tasks are still to do. Every task has its test steps written. They cannot be
-run in this project, which commits everything straight to the main line and so never takes this path;
-they need a project that uses a branch and a merge request per task.
+The first piece is done and was tried out: a project's task settings now gain the two new settings,
+switched off, without anyone being asked, and running the set-up a second time changes nothing. The
+remaining six tasks cannot be tried in this project, which commits everything straight to the main
+line and so never takes this path; they need a project that uses a branch and a merge request per task.
 
 ## Prototype
 
@@ -48,4 +50,5 @@ question this feature asks a person is written out word for word in TASK-174.
 
 ## Next step
 
-Start with TASK-173 — `/tasks pick TASK-173`. It unblocks TASK-174, TASK-177 and TASK-178.
+TASK-174 — creating the folder when a task is picked (`/tasks pick TASK-174`). It must land together
+with TASK-175, which checks the move actually happened; TASK-177 and TASK-178 are also unblocked.

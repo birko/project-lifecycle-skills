@@ -170,6 +170,10 @@ The skills *are* the product, so their prose is the user interface. This subsect
     defaulting read *"into an existing repo"*, so the field this repo forbids inferring was itself created
     by inference. Which declaration a row needs is read **off the row** (`skills/new-project/LAYER.md`),
     never off a list in a consumer.
+  - **`workspace:` and `worktree-root:` are declarations of the same kind** — where a task's work
+    happens and where worktrees live. Nothing in a repo determines either, and `git worktree list` is
+    evidence consistent with several answers. Detail: [[tasks]] § *Where the work happens is declared
+    too*; record: FEATURE-001 D2, D5, D11, D12.
 - **A repo-level check is answered by what the repo tracks, never by the machine it runs on.** Where a
   skill asks whether a repository *has* something — today [[adopt-project]]'s survey asking whether `.env`
   and agent-tool local state are covered — the evidence must be the repository's own file rather than the machine's (whether that file is *committed* yet is a separate, composing question). A

@@ -50,6 +50,8 @@ stripping once.
 - [ ] The undeclared-root question is quoted verbatim in `pick.md` with both paths; the answer-less path writes nothing and reports `worktree-root undeclared`.
 - [ ] Any no-user flag that reaches `pick` lists this ask-step in its definition (AGENTS.md § *A flag that declares an absent capability*).
 - [ ] Layout decision recorded on FEATURE-001.
+- [ ] `integration: single-branch` + `workspace: worktree` → works in place and prints the fixed report line FEATURE-001 D11 records, on every run that reaches the branch step (added 2026-09-24 from TASK-173's plan: `pick`'s single-branch branch returns before `workspace:` is read, so without this nothing carries D11 out). The line lives in `pick.md`; `skills/tasks/SKILL.md` § *Where the work happens is declared too* deliberately states only that `worktree` has no effect there, and gains a one-clause pointer to `pick` once this lands.
+- [ ] A `workspace:` value that is neither `in-place` nor `worktree` (a typo such as `worktrees`) is reported by name and treated as in-place for the run — never silently (added 2026-09-24 from TASK-173's correctness review: only the absent case was defined).
 
 ## Out of scope
 

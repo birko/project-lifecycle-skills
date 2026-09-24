@@ -12,6 +12,22 @@ mode: local                    # local | hybrid
 # Fill the line below in only with a real answer — an arg the caller passed, or one a user gave.
 # integration: <pr-per-task|single-branch>
 
+# Workspace — WHERE a task's work happens, separate from integration (HOW it lands).
+# `worktree` gives each task its own git worktree outside this repository, so the main copy stays
+# on the default branch; `in-place` is the single working copy. The line ABSENT (this comment left
+# in place) means in-place, which is a defined state, not a gap. Read it; never infer it from
+# `git worktree list`, where an existing worktree may be anybody's checkout.
+# Under `integration: single-branch` there is no task branch to put in a worktree, so `worktree`
+# has no effect there.
+# workspace: <in-place|worktree>
+
+# Worktree root — the directory task worktrees (and drill checkouts) are created under. Must be
+# outside this repository. A relative path resolves against the repo root (the parent of tasks/),
+# never against tasks/. The line ABSENT (this comment left in place) means undeclared: a verb
+# that needs it asks, and never guesses. Nothing in a repo determines where worktrees belong,
+# which is why it is declared here.
+# worktree-root: <path outside this repository>
+
 # When mode: hybrid, fill in the external section:
 # external:
 #   provider: github             # github | jira
