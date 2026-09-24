@@ -3,7 +3,7 @@ id: TASK-185
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: ai
 created: 2026-09-24
@@ -30,8 +30,8 @@ because features are usually born on the default branch, but the mechanism is id
 
 ## Acceptance criteria
 
-- [ ] `FEATURE-NNN` allocation takes its max over the same copies as [[tasks]] § ID generation, by pointing at that rule rather than restating it (the id pattern differs: a folder name, not an `id:` line).
-- [ ] Two features started in parallel worktrees get distinct numbers, drilled.
+- [x] `FEATURE-NNN` allocation takes its max over the same copies as [[tasks]] § ID generation, by pointing at that rule rather than restating it (the id pattern differs: a folder name, not an `id:` line).
+- [x] Two features started in parallel worktrees get distinct numbers, drilled.
 
 ## Out of scope
 
@@ -39,8 +39,16 @@ because features are usually born on the default branch, but the mechanism is id
 
 ## Human test plan
 
-- [ ] Two parallel worktrees each run `/feature new`. Expected: distinct `FEATURE-NNN`, and the second run's report names the first's uncommitted folder as a place it looked.
+- [x] Two parallel worktrees each run `/feature new`. Expected: distinct `FEATURE-NNN`, and the second run's report names the first's uncommitted folder as a place it looked.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-185` — leave empty until then._
+1. `feature/SKILL.md` § ID generation: take the max over the copies [[tasks]] § ID generation names, pointing at it for the forms. The branch scan reads the `id: FEATURE-NNN` line.
+2. `feature/verbs/new.md` step 2: point at it, and name any unreadable copy in the confirmation.
+3. Drill: two parallel worktrees each mint a feature id.
+
+**Drill (2026-09-24).** The same shape as TASK-184's: a scratch repo with FEATURE-001 and two task worktrees. Two `claude -p` runners, one after the other, each ran `/feature new` steps 1–2 for "Export to CSV" inside its worktree. **Not cold on names**; this drills behaviour.
+- **A** → FEATURE-002, uncommitted.
+- **B** → **FEATURE-003**, having read A's uncommitted folder by path. Its report listed each copy with its highest id, and it flagged the likely duplicate on its own. The old glob-this-tree rule would have given both FEATURE-002.
+
+**Close gate:** a two-line pointer change onto TASK-184's reviewed rule. Conventions checked inline: it points at [[tasks]] § ID generation and restates nothing, and the lint is OK. The drill is the fidelity check.

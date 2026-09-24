@@ -8,7 +8,7 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
 
 2. **Adopt a seeded stub, or generate a fresh ID:**
    - **Adopt-first check.** [[new-project]] seeds `idea.md` stubs (`status: idea`, near-empty sections) for every planned requirement at scaffold time. If the idea being captured matches an existing stub — the user passed `FEATURE-NNN` explicitly, or the title/slug clearly matches a stub folder — **adopt it in place**: keep its ID and folder, grill + fill its `idea.md`, seed its `decisions.md`. Never mint a second ID for a requirement that already has a tracked home (that splits one requirement across two folders and orphans the EPIC matrix's reference). When the match is plausible but not certain, ask.
-   - **Otherwise generate** — `FEATURE-NNN` is its own global counter (parallel to EPIC/STORY/TASK): Glob `docs/features/FEATURE-*/`, take the max, increment, zero-pad to 3. Ask for a short title; slug it (lowercase, hyphens, ASCII, max 50).
+   - **Otherwise generate** — `FEATURE-NNN` is its own global counter (parallel to EPIC/STORY/TASK): take the max over every copy of the tree as [SKILL.md § ID generation](../SKILL.md#id-generation) states, increment, zero-pad to 3, and name in this verb's confirmation any copy the scan could not read. Ask for a short title; slug it (lowercase, hyphens, ASCII, max 50).
 
 3. **Grill the idea** (default ON — the heart of this verb):
    - Invoke the [[grill-me]] skill on the raw idea. Its whole job is to drag the implicit assumptions, edge cases, and "what happens when…" branches into the open until each branch of the decision tree is resolved.
