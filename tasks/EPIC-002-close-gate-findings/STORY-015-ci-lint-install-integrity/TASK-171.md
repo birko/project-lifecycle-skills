@@ -3,7 +3,7 @@ id: TASK-171
 parent: STORY-015
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: agent
 created: 2026-09-24
@@ -27,8 +27,8 @@ TASK-081 fixed `AGENTS.md` for the same renumbering — by naming the check — 
 
 ## Acceptance criteria
 
-- [ ] `docs/architecture.md` refers to the install-roots check by **name**, as TASK-081 did in `AGENTS.md` — a number is what went stale twice.
-- [ ] No other ordinal reference to a lint check in `docs/` is wrong (`grep -n "check [0-9]" docs/`).
+- [x] `docs/architecture.md` refers to the install-roots check by **name**, as TASK-081 did in `AGENTS.md` — a number is what went stale twice.
+- [x] No other ordinal reference to a lint check in `docs/` is wrong (`grep -n "check [0-9]" docs/`).
 
 ## Out of scope
 
@@ -40,4 +40,10 @@ N/A — a wording fix; criterion 2's grep is the check, and there is no behaviou
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-171` — leave empty until then._
+Name the check, as TASK-081 did.
+
+**Outcome (2026-09-24).** `docs/architecture.md` now says *"`skills-lint.sh`'s install-roots check"*. The
+only other ordinal in `docs/` — *"`skills-lint` (check 3)"* — was correct (check 3 is file references) and
+was converted to *"the file-references check"* anyway, for the reason this task exists. `grep -n "check
+[0-9]" docs/` (ledgers aside, which record history) now returns nothing. **Gate, inline:** two words of
+prose; lint unaffected.

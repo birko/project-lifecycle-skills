@@ -12,7 +12,7 @@ more than it would in a library you version and release. They link one junction 
 though, so a **newly added skill** is live only after the installers are re-run; until then its
 folder exists in this repo and resolves nowhere.
 
-That drift is now **detected rather than merely documented**: `skills-lint.sh`'s check 4 compares both
+That drift is now **detected rather than merely documented**: `skills-lint.sh`'s install-roots check compares both
 install roots back against the trees and reports a folder with no junction, a junction whose source
 folder has gone (a rename or delete — the installers only ever add, so nothing prunes), or a junction
 pointing into a tree that root was never meant to hold. That last one is why the asymmetry is
@@ -55,7 +55,7 @@ read by `adopt-project` as `../new-project/LAYER.md` — the first structural ca
 being consumed by another rather than duplicated into it. That is deliberate: the alternative is two
 copies of the same inventory drifting apart, which is exactly the failure the layer-parity rule exists
 to prevent. Two consequences worth knowing before adding another: the path is checked by
-`skills-lint` (check 3), so a rename breaks the build rather than rotting quietly; and the owning
+`skills-lint`'s file-references check, so a rename breaks the build rather than rotting quietly; and the owning
 skill's folder becomes load-bearing for a skill that does not live in it, so it cannot be moved
 casually.
 
