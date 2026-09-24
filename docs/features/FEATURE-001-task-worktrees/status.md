@@ -13,7 +13,7 @@ generated: 2026-09-24
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 20 |
+| ✅ approved | 21 |
 | ✏️ changed | 3 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
@@ -21,30 +21,29 @@ generated: 2026-09-24
 
 ## Build progress
 
-3 / 10 tasks done · 1 awaiting sign-off · 1 in progress.
+6 / 10 tasks done · 1 awaiting sign-off.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
 - TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (**awaiting sign-off** — one check on a second tool)
 - TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (done)
-- TASK-177 — teach both project-setup tools about the new setting (to do)
+- TASK-177 — teach both project-setup tools about the new setting (done)
 - TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (to do)
-- TASK-179 — try the whole thing end to end on a real project (in progress — the main trial is done)
-- TASK-181 — carry on with a task in a new session, back inside its own folder (to do)
+- TASK-179 — try the whole thing end to end on a real project (done)
+- TASK-181 — carry on with a task in a new session, back inside its own folder (done)
 - TASK-183 — support projects that merge through a shared online copy (to do)
 - TASK-184 — stop two parallel tasks from giving new work the same number (to do)
 
 ## What can be tested now
 
-The feature was tried out for real, on a copy of a real project. Two tasks ran side by side, each in its
-own folder. Each was folded back in and its folder removed, and the main copy stayed tidy throughout. The
-trial caught one real problem, now fixed. The way the work was handed back did not work inside the tool's
-own folder mode, so three decisions changed: the tool now steps out of the folder first, then hands the
-work back.
+Everything built so far has been tried on a copy of a real project:
+- Two tasks side by side, each in its own folder, each handed back and cleaned up.
+- A task carried on in a fresh session, which went back into its own folder.
+- A folder deleted by hand, which is reported rather than guessed around.
+- Both project-setup tools now asking whether tasks should get their own folders.
 
-Still to check: the same thing using a second assistant tool, which is not set up correctly on this
-machine. For now this works only for projects that combine work on the same computer (TASK-183 covers
-the rest).
+Still to check: the same thing with the second assistant tool, which is not set up correctly on this
+machine. For now this works only for projects that combine work on the same computer (TASK-183).
 
 ## Prototype
 
@@ -53,6 +52,10 @@ question this feature asks a person is written out word for word in the task-pic
 
 ## Next step
 
-Teach the project-setup tools about the new setting (TASK-177), and make "carry on in a new session" go
-back into the task's own folder (TASK-181). Then the end-to-end trial (TASK-179) can be finished. The
-check on the second assistant tool (TASK-175) waits until that tool is working.
+Three pieces remain:
+- giving test runs a known place for their throwaway copies (TASK-178);
+- supporting projects that merge online (TASK-183);
+- stopping parallel tasks from giving new work the same number (TASK-184).
+
+The check on the second assistant tool (TASK-175) waits until that tool works. When all of this is done,
+the feature goes to its final review.

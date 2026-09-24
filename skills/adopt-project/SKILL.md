@@ -151,18 +151,22 @@ rubber-stamp.
 
 Alongside the inferences, a few facts are choices rather than observations — **this is the declaration
 list the table above points at**: task-tracking mode (local / hybrid), the integration model
-(`pr-per-task` / `single-branch`), whether the canonical guide is `CLAUDE.md` or `AGENTS.md` + bridge,
+(`pr-per-task` / `single-branch`), the task workspace ([[tasks]] `init`'s workspace question, put verbatim with its skip rule; **not** its
+root question, on this pass or any re-run — a follow-up would break the one-round rule, and `pick` asks
+the root when the first task needs it, so a `workspace: worktree` with no root is a settled state here,
+never an outstanding one),
+whether the canonical guide is `CLAUDE.md` or `AGENTS.md` + bridge,
 and the license posture. Which of them are outstanding is **step 1's answer, not a fresh judgement
 here**: for a choice about an artifact the survey found missing, the missing row is the whole trigger;
-for one that lives *inside* a present artifact — `integration:` is today's only such case, and its row
-in [LAYER.md](../new-project/LAYER.md) is what names it — the declaration probe is.
+for one that lives *inside* a present artifact — today `integration:` and `workspace:`, and their row
+in [LAYER.md](../new-project/LAYER.md) is what names them — the declaration probe is.
 
 Ask about an artifact the survey found **missing**, or about **a declaration step 1 reported
 outstanding** — a repo that already has a guide is not asked which guide it wants, but a repo whose
 `tasks/.config.yml` predates the `integration:` field *is* asked for it, because nothing in the repo
 answers and the alternative is guessing from `git log`. **Step 1 is what establishes which of the two
 that repo is**, so this step never asks blindly and never re-asks a declaration the file already
-carries. Pass the answers to the owning verb (`/tasks init` takes `mode=` and `integration=`) so
+carries. Pass the answers to the owning verb (`/tasks init` takes `mode=`, `integration=`, `workspace=` and `worktree-root=`) so
 nobody is asked twice — and pass them **from here**, so the question stays in this round instead of
 surfacing inside step 3's delegation, which is the one-round rule below breaking by another route.
 

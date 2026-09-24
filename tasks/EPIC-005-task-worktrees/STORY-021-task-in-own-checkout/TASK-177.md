@@ -3,7 +3,7 @@ id: TASK-177
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P1
 assignee: ai
 created: 2026-09-24
@@ -37,11 +37,11 @@ The answer decides whether the adopter reports it as a gap. Record it with `/fea
 
 ## Acceptance criteria
 
-- [ ] `LAYER.md`'s `tasks/` row names the new declaration(s) and what absence means.
-- [ ] `new-project` passes the answer(s) to `/tasks init` (`workspace=`, `worktree-root=`), and `init.md` declares those args.
-- [ ] `adopt-project`'s survey reads the declarations off the row, never off a list kept in the adopter, and reports them per the decided absence semantics.
-- [ ] The absence-semantics decision is recorded on FEATURE-001.
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] `LAYER.md`'s `tasks/` row names the new declaration(s) and what absence means.
+- [x] `new-project` passes the answer(s) to `/tasks init` (`workspace=`, `worktree-root=`), and `init.md` declares those args.
+- [x] `adopt-project`'s survey reads the declarations off the row, never off a list kept in the adopter, and reports them per the decided absence semantics.
+- [x] The absence-semantics decision is recorded on FEATURE-001.
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 ## Out of scope
 
@@ -49,9 +49,32 @@ The answer decides whether the adopter reports it as a gap. Record it with `/fea
 
 ## Human test plan
 
-- [ ] Cold-run `/new-project` into a scratch folder choosing `workspace: worktree` with a root. Expected: `tasks/.config.yml` carries both as live keys.
-- [ ] Cold-run `/adopt-project` on a consumer whose config lacks the fields. Expected: the survey reports them according to the recorded absence semantics, and a re-run after answering reports them settled.
+- [x] Cold-run `/new-project` into a scratch folder choosing `workspace: worktree` with a root. Expected: `tasks/.config.yml` carries both as live keys.
+- [x] Cold-run `/adopt-project` on a consumer whose config lacks the fields. Expected: the survey reports them according to the recorded absence semantics, and a re-run after answering reports them settled.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-177` — leave empty until then._
+Decision first: D24 (approved 2026-09-24) — both front doors **ask**, with one wording owned by `/tasks init`.
+1. `init.md`: add the `workspace=` / `worktree-root=` args (live keys, like `integration=`). Replace "not asked here" with "asked by the front doors, never by init itself", and hold the **workspace question** verbatim with its answer-less path (absent = `in-place`, reported undeclared).
+2. `LAYER.md` `tasks/` row: name `workspace:` (plus `worktree-root:` once chosen) as declarations the survey probes.
+3. `new-project`: intake item 7b puts the question and passes the args to `/tasks init`.
+4. `adopt-project`: the declaration list and the probe name `workspace:`; the answers pass to `/tasks init`.
+5. Drill: `/new-project` choosing worktrees into a scratch folder, and `/adopt-project` unattended on a Presenter copy lacking the fields.
+
+**Drill round 1 (2026-09-24).** Two `claude -p` runners (`--permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(mkdir:*)" "Bash(ls:*)" --add-dir <skills> <repo> <scratch>`). **Not cold on names**, since the skills are installed. This drills behaviour, and each brief held only the person's answers.
+- **`/new-project`** into an empty scratch folder, the person answering *its own worktree* and `../wt`. The workspace question was put **verbatim**, then the root question, and `tasks/.config.yml` ended up with live `workspace: worktree` and `worktree-root: ../wt`. **Flaw it exposed:** the root question was `pick`'s wording, which promises a commit on the default branch. Nothing is committed at intake, and the review found the same thing (M1). Fixed: `init` now owns a front-door root question and checks the answer.
+- **`/adopt-project`** on a Presenter clone whose config predates the fields, nobody answering. The survey read `^integration:` as settled and `^workspace:` as outstanding, and put the question in the single frontier round. With no answer, nothing was passed or written; `init` added the commented blocks and the report said *workspace undeclared — tasks work in place*. The root was left to `pick`.
+
+**Review (three passes)** — correctness: 2 medium, 3 low, all fixed:
+- the borrowed root wording (M1);
+- an unchecked root written at setup (M2);
+- the question is now skipped under `single-branch`;
+- a remote caveat is said at intake;
+- the adopter defers the root rather than breaking its one-round rule.
+
+Intent: 4 of 5 met, the fifth being this drill. Conventions: a repo-internal decision id was removed from a shipped skill, and the root question's words now live in `init`.
+
+**Drill round 2, on the fixed text (2026-09-24).** Same runner command.
+- **`/new-project`**: again ended with live `workspace: worktree` and `worktree-root: ../wt`, and `../wt` passed the new outside-the-repo check. The runner summarised rather than quoting the root question, so the new wording is confirmed by the review, not by this run.
+- **`/adopt-project`, person answers *its own worktree*, then a second pass**. Pass 1: `workspace:` was found outstanding, the question was put verbatim, the answer became a live `workspace: worktree` via `/tasks init workspace=worktree`, and the root was left commented with *worktree-root undeclared — pick will ask*. **Pass 2: `workspace:` was reported settled and not asked again, and `init` reported *already current* and wrote nothing.** Both halves of the human-test step pass.
+- The runner raised whether a re-run should ask the root, since the one-round reason no longer applies. Fixed: adoption never asks the root, on any pass, and `workspace: worktree` with no root is a settled state there.

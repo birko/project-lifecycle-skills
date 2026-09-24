@@ -17,6 +17,10 @@ current template first (step 3), because a file that merely exists cannot be rep
 - `integration=<pr-per-task|single-branch>` — skip the integration question the same way `mode=`
   skips the mode one. [[adopt-project]] asks it inside its single frontier round and passes the
   answer here; **never re-ask what the caller resolved**.
+- `workspace=<in-place|worktree>` and `worktree-root=<path>` — the answers to the **workspace question**
+  below, which the front doors ([[new-project]] at intake, [[adopt-project]] in its frontier round) put
+  and pass here. Each writes a live key, in the Absent and the Present branch alike, exactly as
+  `integration=` does. `worktree-root=` comes only with `workspace=worktree`.
 
 ## Steps
 
@@ -38,7 +42,36 @@ current template first (step 3), because a file that merely exists cannot be rep
      > · **single-branch** — commits go straight to the default branch; `close` skips its merge step.
 
      Unattended, with no user to ask and no arg, leave the field absent and **report it unresolved** — consumers have a documented default, and a value written into the file looks *decided*, which is worse than an absent one.
-   - **`workspace:` and `worktree-root:` are not asked here.** Absent `workspace:` already means `in-place`, a defined state rather than an open question, and `worktree-root:` is the business of whichever verb actually needs a worktree, at that moment. Init only carries their comment blocks forward. Asking them because `integration:` is asked would invent a question nobody needs answered yet.
+   - **`workspace:` and `worktree-root:` are asked by the front doors, never by init itself.** Init writes
+     what `workspace=` / `worktree-root=` carry, and otherwise only carries the comment blocks forward.
+     Run on its own, it asks nothing about them. **The workspace question** — the one wording both front
+     doors put, kept here beside the fields it fills. Put exactly this:
+
+     > **Where should each task's work happen?**
+     > · **in place** — in this one copy of the repository, as today.
+     > · **its own worktree** — each task gets its own folder outside the repository, so several tasks can
+     >   run at once and this copy stays on the main line. Only for projects whose main branch does not
+     >   track a remote yet.
+
+     **Skip it when the integration model is already `single-branch`.** There is no task branch to put in a
+     worktree, so one option would do nothing. Say it was skipped and why. When the project is about to
+     get a remote its main branch will track (hybrid-GitHub, or a remote the scaffold is creating), say
+     that `pick` would refuse worktree mode there, before taking the answer.
+
+     If the answer is **its own worktree**, a front door may follow with the **root question**, worded here
+     rather than borrowed from `pick`, because nothing is committed at this point. Put exactly this:
+
+     > **Where should task worktrees live?** Each task gets its own folder there, outside this repository.
+     > Suggested: `../wt` (next to this repository). Give a path, or leave it blank to decide later —
+     > `pick` asks when the first task needs one.
+
+     **Check an answer before passing it**, exactly as `pick` step 6b checks a root: resolve it against the
+     repo root, and refuse it if it equals the repo's top level or lies beneath it. Refused or blank → pass
+     no `worktree-root=`, and report *worktree-root undeclared — pick will ask*, adding the reason for a
+     refusal. A refused root written here would be refused again by every later pick.
+     **No answer to the workspace question, or nobody to ask:** pass nothing and write nothing. Absent
+     `workspace:` already means `in-place`, a defined state. Report it as *workspace undeclared — tasks work
+     in place*, which is true and names the gap, never as a choice somebody made.
    - **Mode conflict** — an existing config whose mode differs from the arg: surface it and let the user decide (`/tasks migrate` is the mode-change path, not init). Put this question:
 
      > **This project's `tasks/.config.yml` says `mode: <existing>`, but this run was passed `mode=<arg>`. Which is right?**
@@ -50,7 +83,7 @@ current template first (step 3), because a file that merely exists cannot be rep
 
 4. **Generate the initial dashboard** — run the [triage](triage.md) logic over whatever tree exists (an empty tree renders zero counts; scaffold-seeded epics/stories render their `planned` rows). Write `tasks/README.md`.
 
-5. **Confirm** — print both file paths, and the config outcome as one of three: **created**, **already current** (nothing to add), or **brought up to date** (naming each field added and each answer asked for). A comment block added for a field this verb does not ask about is named as *added commented, undeclared — nothing asked*, and is **not** listed as unresolved: its absence is a defined state. **Name any field left unresolved**, whichever outcome it was — a caller composing a report cannot invent that line, and `integration:` left out silently is the whole defect this verb was handed. Then the next step: "Create work with `/tasks new` (or `/feature new` for stakeholder-facing features)."
+5. **Confirm** — print both file paths, and the config outcome as one of three: **created**, **already current** (nothing to add), or **brought up to date** (naming each field added and each answer asked for). A comment block added for a field nobody answered is named as *added commented, undeclared — nothing asked*, and is **not** listed as unresolved: its absence is a defined state. For `workspace:` and `worktree-root:` that one line is the whole report, printed with the front door's wording above (*workspace undeclared — tasks work in place*, *worktree-root undeclared — pick will ask*) when a front door put the question. **Name any field left unresolved**, whichever outcome it was — a caller composing a report cannot invent that line, and `integration:` left out silently is the whole defect this verb was handed. Then the next step: "Create work with `/tasks new` (or `/feature new` for stakeholder-facing features)."
    - The three are distinct on purpose. A caller cannot distinguish "your config is current" from "I declined to look" if both print the same line, and [[adopt-project]] has to.
 
 ## Edge cases

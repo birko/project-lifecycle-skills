@@ -3,7 +3,7 @@ id: TASK-179
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: in-progress
+status: done
 priority: P1
 assignee: human
 created: 2026-09-24
@@ -31,9 +31,9 @@ working directory and coldness check (AGENTS.md § Testing).
 
 ## Acceptance criteria
 
-- [ ] Drill run and recorded on this task: runner, cwd, coldness check, brief, outcome.
-- [ ] One run covers: undeclared root → question asked; worktree created outside the repo; move proved; a second task picked while the first is open (the parallelism D1 claims); close merges, removes, deletes; main copy on the default branch throughout.
-- [ ] Every defect found is filed as its own task (`/tasks spawn`), not fixed inside this one.
+- [x] Drill run and recorded on this task: runner, cwd, coldness check, brief, outcome.
+- [x] One run covers: undeclared root → question asked; worktree created outside the repo; move proved; a second task picked while the first is open (the parallelism D1 claims); close merges, removes, deletes; main copy on the default branch throughout.
+- [x] Every defect found is filed as its own task (`/tasks spawn`), not fixed inside this one.
 
 ## Out of scope
 
@@ -41,7 +41,7 @@ working directory and coldness check (AGENTS.md § Testing).
 
 ## Human test plan
 
-- [ ] Brief (withholding expected outcomes): "On <consumer>, declare `workspace: worktree`, pick task A, make a small change and commit it, pick task B, close task A." Expected, kept here and not in the brief: A gets its own folder outside the repo; B gets another; closing A merges it into the default branch in the main copy and removes A's folder and branch; B's worktree is untouched.
+- [x] Brief (withholding expected outcomes): "On <consumer>, declare `workspace: worktree`, pick task A, make a small change and commit it, pick task B, close task A." Expected, kept here and not in the brief: A gets its own folder outside the repo; B gets another; closing A merges it into the default branch in the main copy and removes A's folder and branch; B's worktree is untouched.
 
 ## Implementation plan
 
@@ -82,3 +82,10 @@ All five were fixed, and D18 became `changed` too, because only the **clean** ch
 **pi runtime:** not run. `pi -p` ran 10 minutes silent on the pick brief, and answers even a one-word prompt with `404 {"detail":"Not Found"}` from its model provider. It is misconfigured on this machine, outside this repo.
 
 **Status: stays `in-progress`.** Every acceptance criterion above is met by the trial. But this task also depends on TASK-177 (the setup tools) and TASK-181 (resuming a task in a new session). Its end-to-end run should cover both once they land, and neither exists yet.
+
+**Closed `done` 2026-09-24.** The end-to-end run now has all three legs:
+- **The trial** (above): two parallel tasks created, entered, proved, merged, removed and deleted. The stakeholder answered the question.
+- **Resume across sessions** (TASK-181's live drill, same clone): re-pick re-entered the worktree, close from the main copy resumed into it and merged, and the prunable and pruned cases were covered.
+- **The front doors** (TASK-177's drills): `/new-project` wrote both keys, and `/adopt-project` asked once and reported the setting settled on re-run.
+
+The defects the trial found went to the tasks that owned the behaviour, all still open at the time (D7/D8/D18 into TASK-176, the resume gaps into TASK-181), rather than being fixed here. The only step not run is the pi runtime, which is TASK-175's and is blocked by pi's provider.
