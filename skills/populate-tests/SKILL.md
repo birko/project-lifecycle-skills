@@ -252,17 +252,33 @@ worktree**, and a drill that only needs to *read* is told read-only in the brief
 edits anything. A clone with real history is still a real target; the git state the drill sets up is its
 **input**, not a fabricated repo.
 
-**But a clone drops every uncommitted and untracked file, which is exactly what some drills are about.**
-`git clone` copies history, not a working tree — so the state you deliberately construct arrives and *all
-other* in-flight state silently does not. A runner reasoning from that absence reports a defect that does
+**Where that checkout goes, and who removes it.** Read the target's `tasks/.config.yml`:
+- **`worktree-root:` declared** → make the checkout a worktree under it:
+  `git worktree add "<worktree-root>/<repo-name>-drill-<label>" <commit>`, a relative root resolving against
+  the repository root (the parent of `tasks/`), never against `tasks/`. The root the project already
+  chose for its task worktrees is outside the repository by its own rule. The `-drill-` infix keeps the
+  folder apart from task worktrees (`<repo-name>-TASK-NNN`), so nothing mistakes one for the other.
+- **Not declared** → put the clone or worktree **outside the target**, in the runner's scratch directory.
+  Never put it inside the target: a checkout inside the repository pollutes the very tree the drill is
+  testing, which is why task worktrees are refused there too.
+- **The drill that made it removes it, at its end**: `git worktree remove "<path>"` for a worktree,
+  deleting the folder for a clone. First make sure nothing still stands in it. A runner launched there,
+  or any shell left inside, holds the folder on Windows, and git then removes the files but not the
+  folder. **A dirty checkout is reported by path and never removed with `--force`**: what is in it may be
+  the drill's evidence. Record the path, and whether it was removed, in the drill record.
+
+**But a clone — or a worktree — drops every uncommitted and untracked file, which is exactly what some
+drills are about.** `git clone` copies history, and `git worktree add` checks out a commit. Neither copies
+the source's working tree — so the state you deliberately construct arrives and *all other* in-flight
+state silently does not. A runner reasoning from that absence reports a defect that does
 not exist. Measured: a drill on a cloned consumer reported that a filed task *"describes a repo state that
 does not exist"* — the `.claude/` directory it cited was untracked and the `.gitignore` block it quoted was
 uncommitted, so both were real in the source repo and neither survived the clone. What saved it was that the
 runner had flagged its own reasoning as an inference.
 
 **So when a drill's subject is uncommitted state, say in the brief what the checkout is** — that it is a
-clone, and that the absence of any *other* in-flight work is an artefact of cloning rather than evidence
-about the repo. Without that line the fixture manufactures findings, and they look exactly like real ones.
+clone or a worktree, and that the absence of any *other* in-flight work is an artefact of how it was made
+rather than evidence about the repo. Without that line the fixture manufactures findings, and they look exactly like real ones.
 
 ### When it is warranted, and when it is over-ceremony
 

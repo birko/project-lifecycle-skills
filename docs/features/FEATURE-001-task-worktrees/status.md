@@ -21,14 +21,14 @@ generated: 2026-09-24
 
 ## Build progress
 
-6 / 10 tasks done · 1 awaiting sign-off.
+7 / 10 tasks done · 1 awaiting sign-off.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
 - TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (**awaiting sign-off** — one check on a second tool)
 - TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (done)
 - TASK-177 — teach both project-setup tools about the new setting (done)
-- TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (to do)
+- TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (done)
 - TASK-179 — try the whole thing end to end on a real project (done)
 - TASK-181 — carry on with a task in a new session, back inside its own folder (done)
 - TASK-183 — support projects that merge through a shared online copy (to do)
@@ -52,8 +52,7 @@ question this feature asks a person is written out word for word in the task-pic
 
 ## Next step
 
-Three pieces remain:
-- giving test runs a known place for their throwaway copies (TASK-178);
+Two pieces remain:
 - supporting projects that merge online (TASK-183);
 - stopping parallel tasks from giving new work the same number (TASK-184).
 

@@ -9,14 +9,14 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 60    |
+| todo         | —     | —       | 59    |
 | in-progress  | 4     | 9       | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 1     | 8       | 122   |
+| done         | 1     | 8       | 123   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 47× P2 · 12× P3.
+`todo` by priority: 47× P2 · 12× P3.
 
 ## In progress now
 
@@ -161,14 +161,14 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
-- **EPIC-005** Task worktrees — in-progress (6/10 tasks done)
-  - STORY-021 Run a task in its own checkout — in-progress (6/10)
+- **EPIC-005** Task worktrees — in-progress (7/10 tasks done)
+  - STORY-021 Run a task in its own checkout — in-progress (7/10)
     - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config
     - [ ] [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) *(review)* `/tasks pick` creates the task worktree, asking for the root when undeclared
     - [ ] [TASK-175](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-175.md) *(review)* `/tasks pick` proves the move into the worktree, and falls back when it cannot
     - [ ] [TASK-176](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-176.md) *(review)* `/tasks close` merges from the worktree and removes it in a fixed order
     - [x] TASK-177 Ship `workspace:` / `worktree-root:` through both front doors
-    - [ ] [TASK-178](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-178.md) Give drill checkouts a declared home and a cleanup rule
+    - [x] TASK-178 Give drill checkouts a declared home and a cleanup rule
     - [x] TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer
     - [x] TASK-181 Resuming a task re-enters the worktree that holds its branch
     - [ ] [TASK-183](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-183.md) Worktree mode for projects whose default branch tracks a remote
