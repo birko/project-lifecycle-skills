@@ -411,15 +411,15 @@ of them length findings. A table is evidence for the question it answered and fo
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | **open findings** → **TASK-165** (minor); the `ARG_RE` block → **TASK-141** | 317 | 122 (38%) | 26 |
-| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162, TASK-153, TASK-163 and TASK-164; one minor restatement → **TASK-165** | 393 | 74 (18%) | 7 |
+| `.github/workflows/skills-lint.sh` | **open finding** — the `ARG_RE` block → **TASK-141** | 315 | 120 (38%) | 26 |
+| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162, TASK-153, TASK-163, TASK-164 and TASK-165 | 392 | 73 (18%) | 7 |
 | `pi-install.sh` | mechanism only (TASK-148); the restated half reversed by TASK-141's re-run | 42 | 6 (14%) | 6 |
 | `pi-install.ps1` | same shape, same change | 37 | 5 (13%) | 5 |
 | `install.sh` | same shape, same change | 38 | 5 (13%) | 5 |
 | `install.ps1` | same shape, same change | 30 | 4 (13%) | 4 |
 
-Counts re-measured 2026-09-24 (eleventh time — after TASK-081) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 121 / 73 / 5 / 4 for the four shell scripts and will look
+Counts re-measured 2026-09-24 (twelfth time — after TASK-165) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 119 / 72 / 5 / 4 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits

@@ -197,7 +197,6 @@ Run `/beta go --nosuch` here.
 
 - `--real` does a thing.
 ' > "$1/skills/beta/verbs/go.md"; }
-# A flag aimed at something that is not a skill must be ignored, not reported.
 m_flagforeign() { printf -- '
 Run `/usr/bin/thing go --whatever` first.
 ' >> "$1/skills/alpha/SKILL.md"; }

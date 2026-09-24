@@ -78,7 +78,6 @@ find skills skills-pi -name '*.md' | sort | while read -r f; do
   body=$(strip_noise "$f")
   # An unclosed fence would swallow the rest of the file and the gate would pass vacuously.
   case "$body" in *SKILLS_LINT_UNBALANCED_FENCE*) suberr "$f has an unbalanced code fence — the rest of the file cannot be checked" ;; esac
-  # Aliased links ([[name|text]]) are never skipped.
   printf '%s\n' "$body" | grep -ohE '\[\[[^]]+\]\]' | tr -d '[]' | cut -d'|' -f1 | sort -u | while read -r link; do
     [ -n "$link" ] || continue
     printf '%s\n' "$skill_names" | grep -qxF -- "$link" && continue
@@ -97,7 +96,6 @@ find skills skills-pi -name '*.md' ! -path '*/templates/*' | sort | while read -
     target=$(printf '%s' "$target" | sed 's/[[:space:]]*"[^"]*"$//; s/[[:space:]]*'"'"'[^'"'"']*'"'"'$//')
     path="${target%%#*}"
     [ -n "$path" ] || continue
-    # A leading / is repo-root-relative, not a child of this file's directory.
     case "$path" in /*) full=".${path}" ;; *) full="$dir/$path" ;; esac
     exists_exact "$full" && continue
     suberr "$f links to $path — not found (case-sensitively) from $dir"
