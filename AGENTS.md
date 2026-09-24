@@ -221,8 +221,8 @@ The skills *are* the product, so their prose is the user interface. This subsect
   gap. *No record: this is a rulebook entry whose footprint is the prose it shapes — reversing it is editing
   the two template lines back, so the ADR bar's hard-to-reverse arm fails.*
 - **Independent review axes are reported side by side and never merged or reranked.** Where a gate runs
-  more than one pass answering a *different* question — today `close` step 5b's standards
-  ([[verify-conventions]]), fidelity ([[verify-intent]]) and correctness ([[code-review]]) — each keeps its
+  more than one pass answering a *different* question — today the passes `close` step 5b runs, whose own
+  text is the list (it has gained axes twice; a copy here went stale both times) — each keeps its
   own verdict and its own severity ordering, and nothing sorts across them. Merging is tempting because one
   ranked list is easier to read, and that ease is exactly the harm: a convention warning placed above an
   unbuilt requirement reads as the larger problem, and "blocker" from a lint is not the same quantity as
@@ -457,7 +457,7 @@ stay byte-identical; TASK-146 makes the lint enforce it.*
 - **Plan before implementing.** A non-trivial task gets its `## Implementation plan` before work starts.
 - **New scope discovered mid-work gets its own task** — offer `/tasks spawn` unprompted. Never widen the task in hand.
 - **A task outside a pool is filed but unranked.** A review finding belongs in a `kind: review-intake` epic or carries its `findings:` id; anything else and only `priority:` ranks it, which sinks a P2/P3 defect permanently. Measured here: 17 correct defect tasks sat in `tasks/_loose/` and `/fix-next` saw 2. **The second arm is not a loophole** — tree hygiene and meta-work about the tree *should* stay loose, because filing them into an intake epic makes that pool misreport how much of a review is left. Rule and both arms live in [[tasks]] § *A task outside a pool*; this is the pointer.
-- Before flipping a non-trivial task to `done`, run `/verify-conventions` (adherence) **and** `/code-review` (correctness) on the diff, then address or record the findings. This `/tasks close` step **is** the merge gate; `done` means merged.
+- Before flipping a non-trivial task to `done`, run the review passes `/tasks close` step 5b lists — adherence, fidelity and correctness always, and the conditional ones when the diff reaches them — then address or record the findings. This `/tasks close` step **is** the merge gate; `done` means merged.
 - **Nothing goes in a generated file that its verb cannot derive.** The rule above says who *owns* a
   generated file; this says what may go *in* one. If a sentence cannot be recomputed from the inputs, it
   does not belong in the output — it belongs in one of three hand-owned homes: commentary about **one

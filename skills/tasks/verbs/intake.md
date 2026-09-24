@@ -53,14 +53,15 @@ different source of work.
    | `SEC-*` | [[security-review]] |
    | `SH-*` | [[specs]] harvest — an unexplained behavioral change in a regen diff |
    | `VC-*` | [[verify-conventions]] — adherence |
+   | `VI-*` | [[verify-intent]] — fidelity: a requirement missing, partly built, or built wrong |
    | `DRILL-*` | a **cold drill** — the prose executed by a reader denied the expected answer ([[populate-tests]] § *The cold drill*) |
    | `FIELD-*` | **no pass at all** — the product failing in ordinary use. Minted by [`new`](new.md)'s `--from-field`, not by this verb |
 
    **This table is the only list of prefixes.** A prefix names the *pass* that produced the finding, so a
    new source gets a row here and nothing else changes — `templates/TASK.md` and [SKILL.md](../SKILL.md)
    point at this table rather than repeating it. `DRILL-*` was added 2026-09-01 after nine drills had
-   already minted such ids: a drill produces findings by **execution**, which none of the four review
-   passes above describes, so remapping them would have filed them under a pass that never ran.
+   already minted such ids: a drill produces findings by **execution**, which none of the review passes
+   above describes, so remapping them would have filed them under a pass that never ran.
 
    **`FIELD-*` is the row that breaks the "names a pass" shape, deliberately.** A defect found by *using*
    the product has no sweep behind it — no reviewer, no harvest, no drill brief — so before this row every

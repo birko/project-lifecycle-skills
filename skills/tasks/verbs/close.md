@@ -97,7 +97,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      - Then **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `review`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `review` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `review → done`, re-run `close` once the human step is checked off.)
 
-5b. **Standards + fidelity + correctness — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
+5b. **The review axes — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
    - Run [[verify-conventions]] on the task's diff — does it follow the project's documented rules in `CLAUDE.md § Conventions` (framework/stack, UI/UX, structure, naming, testing)? Address 🛑 blockers before `done`, or note in the task why any are deferred.
    - If the work **introduced a new cross-cutting pattern** (new framework/dependency, UI pattern, layer, naming/testing convention), the register-on-introduce rule applies: confirm `CLAUDE.md § Conventions` (and `## Architecture` if structure changed) was updated in the same change — closing without recording it leaves the rulebook lying. `verify-conventions` flags this.
    - Run [[verify-intent]] on the diff against this task's `## Acceptance criteria` — did it build what
@@ -114,9 +114,9 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      while breaking the rulebook. One ordered list lets a convention warning sit above an unbuilt
      requirement and read as the larger problem — so: **one verdict per pass that ran**, each with its own
      findings and its own severity ordering, and nothing sorted across them.
-     - **Count the verdicts off the passes that ran, never off a number written here.** Three run
-       unconditionally — standards, fidelity, correctness — and [[security-review]] makes a **fourth when
-       the diff touches a security surface**. A conditional pass still gets its own verdict when it runs,
+     - **Count the verdicts off the passes that ran, never off a number written here.** Standards,
+       fidelity and correctness run unconditionally; [[security-review]] runs **when the diff touches a
+       security surface**, and [[review-comments]] **when the diff carries a comment**. A conditional pass still gets its own verdict when it runs,
        and when it does not, the report says *not applicable* and why in one line: silence cannot be told
        apart from a pass that was skipped.
      - Why this is phrased as a rule rather than a count: an earlier version of this step hard-coded the
