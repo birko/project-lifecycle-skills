@@ -11,7 +11,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 ## [Unreleased]
 
 _No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
-36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, and 2026-09-24 across the 155 after that._
+36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, and later on 2026-09-24 across the 10 after that._
 
 ### Added
 
@@ -40,8 +40,16 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **`populate-tests` documents the cold drill**: how to test a skill's prose with a runner that hasn't seen the expected answer, and how to get a runner that is actually cold. Drill findings get their own `DRILL-*` prefix.
 - **`skills-lint` checks two new contracts.** Every flag passed to a skill verb must exist on the receiving verb (every flag on the invocation, matched exactly). The two copies of the comment rule must stay byte-identical, and the check names which side is missing.
 
+- **Task worktrees (opt-in).** Declare `workspace: worktree` in `tasks/.config.yml`. `/tasks pick` then gives each task its own git worktree outside the repository (under `worktree-root:`, asked for once and never guessed), moves the session into it, and proves the move from a separate command before going on. Several tasks can run at once, and the main copy stays on the main line. When the move can't be made, or can't be proved, it falls back to working in place and says why. `/tasks close` leaves the worktree, merges, and removes only the worktree `pick` made, never forced. A new session picking or closing an in-progress task goes back into its worktree. Not declared, everything works exactly as before.
+- **Worktrees on projects that merge through a remote.** When the main branch tracks a remote, nothing is committed on your local main. `pick` pushes the task branch, and that pushed branch tells every clone the task is taken. `close` merges through the host, queuing auto-merge when checks are still pending, then fast-forwards local main. A plain git remote with no pull requests merges by pushing main.
+- **`new-project` and `adopt-project` ask where task work should happen** (in place, or a worktree per task). `/tasks init` holds the one wording. No answer leaves it unset, which means in place, and the report says so.
+- **Drill checkouts have a home and a cleanup rule.** `populate-tests` § *The cold drill* now says where a drill's throwaway checkout goes (under `worktree-root:`, else the runner's scratch folder, never inside the target) and that the drill removes it at the end, never force-removing a dirty one.
+
 ### Changed
 
+- **New ids can't collide across parallel work.** A new task, `FIELD-*` finding or feature number takes the highest id across this tree, every local branch and every other worktree, including files not yet committed there. Before, two tasks worked in parallel could give their follow-ups the same id.
+- **A task with a live task branch counts as taken.** `/tasks`, `pick` and `fix-next` skip a `todo` task whose `task/TASK-NNN` branch exists locally or on a remote, and `pick` lists the ones it hid, so a stale branch can't hide a task silently.
+- **The dashboard is never regenerated inside a task's worktree**, which would conflict whenever tasks run in parallel. `close` refreshes it on the main copy instead.
 - **The skill set is now stack-agnostic.** Framework-specific references were removed and the stack-scaffolder dependency inverted: the generic front door knows only the *hook*, never a specific framework, so a team's wiring skill plugs in without either side hard-coding the other.
 - **Verbs are standalone.** Rule sections moved out of router `SKILL.md` files and into the verb that owns them, so a verb file reads correctly on its own and the routers stay small.
 - **Generated files are owned by their verbs** — dashboards, status rollups and specs must be regenerated, never hand-edited; a hand edit is a lie with a countdown.
