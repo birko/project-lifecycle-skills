@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# skills-lint-test — regression tests for skills-lint.sh.
+# skills-lint-test — regression tests for skills-lint.sh, the repo's only gate (AGENTS.md § Testing).
 #
-# The lint is the repo's only automated gate, so a silent regression in it disables the gate
-# without any signal. Each case below builds a throwaway fixture, mutates one thing, and asserts
-# the lint's exit code. A review of the first version found eight defects; every one has a case here.
+# Each case below builds a throwaway fixture, mutates one thing, and asserts the lint's exit code,
+# its output, or both.
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 LINT="$(pwd)/.github/workflows/skills-lint.sh"
@@ -39,17 +38,16 @@ case_is() { # name, expected(0|1), mutation function name
 mk_link() { # $1 = link, $2 = existing target dir. A symlink on POSIX; a junction on Windows.
   ln -s "$2" "$1" 2>/dev/null
   [ -L "$1" ] && return 0
-  # MSYS `ln -s` silently COPIES unless winsymlinks is set, and the repo's Windows installer creates
-  # junctions anyway — so fall back to exactly what install.ps1 makes.
+  # `ln -s` copied instead of linking: fall back to install.ps1's junction (why, and the order: AGENTS.md § Testing).
   rm -rf "$1"
   command -v cygpath >/dev/null 2>&1 || return 1
   powershell -NoProfile -Command "New-Item -ItemType Junction -Path '$(cygpath -w "$1")' -Target '$(cygpath -w "$2")' | Out-Null" >/dev/null 2>&1
   [ -L "$1" ]
 }
 
-# Check 6 is advisory and never touches the exit code, so `case_is` cannot see it at all. These
-# assert on OUTPUT and still require exit 0 — an advisory that began failing the build would itself
-# be a regression.
+# `case_is` sees only the exit code, which check 6 never touches (advisory — AGENTS.md § Testing).
+# These assert on OUTPUT and still require exit 0 — an advisory that began failing the build would
+# itself be a regression.
 roots_run() { # $1 = fixture dir; echoes the lint's combined output
   ( cd "$1" && CLAUDE_SKILLS_ROOT="$1/roots/claude" PI_SKILLS_ROOT="$1/roots/pi" bash .github/workflows/skills-lint.sh 2>&1 )
 }
@@ -67,9 +65,7 @@ case_silent() { # name, mutation, substring that must NOT appear
   local name="$1" mut="$2" pat="$3" d="$WORK/case" out rc
   build "$d"; "$mut" "$d"
   out=$(roots_run "$d"); rc=$?
-  # Require the check to have RUN. A bare "must not contain" passes trivially when check 4 is absent
-  # altogether, which is the vacuous pass this repo has already been bitten by once (check 6 here) — so these guards
-  # would have had power only against a buggy check, never against a deleted one.
+  # Require check 6 to have RUN before trusting the absence (why: AGENTS.md § Testing).
   if [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qF -- '== 6. install roots' && ! printf '%s' "$out" | grep -qF -- "$pat"; then
     printf '  ok    %s\n' "$name"; pass=$((pass+1))
   else
@@ -281,9 +277,9 @@ case_is "stale .lint-fail in the repo"     0 m_sentinel
 
 
 # --- check 5: universal-conventions copies ---
-# The rule exists in AGENTS.md and in templates/CONVENTIONS-universal.md, and neither can point at
-# the other, so only this check keeps them identical. These cases pin the four states it must tell
-# apart. The bare fixture has neither file, which is itself one of the four.
+# Why two copies: AGENTS.md § "Where the same prose must exist in two files". These cases pin the
+# five states the check must tell apart. The bare fixture has neither file, which is itself one of
+# the five.
 UNIV_REL=skills/new-project/templates/CONVENTIONS-universal.md
 mk_rule_block() { # $1 = file, $2 = body line
   printf -- '<!-- comment-rule:start -->\n### Comments\n\n%s\n<!-- comment-rule:end -->\n' "$2" >> "$1"
@@ -318,8 +314,8 @@ case_is   "AGENTS.md has the block, template does not" 1 u_no_template
 case_fails_saying "missing AGENTS.md side is named"    u_no_agents   "AGENTS.md does not"
 case_fails_saying "missing template side is named"     u_no_template "consumers would receive nothing"
 case_fails_saying "drift names both files"             u_drifted     "differs between AGENTS.md"
-# A repo with neither file must pass — but VISIBLY. Asserting the exit code alone would also pass if
-# the whole check were deleted, which is the vacuous pass the check_silent guard above exists for.
+# A repo with neither file must pass — but VISIBLY, so assert the message, not only the exit code
+# (the vacuous pass `case_silent` guards against).
 case_says "no pair present says so rather than passing in silence" m_noop "nothing to compare"
 # A file that DOCUMENTS the convention mentions the marker in prose above the block it describes.
 # Matching the marker as a substring starts the capture there and reports two identical copies as
@@ -383,9 +379,9 @@ case_says   "junction whose source is gone"       r_stale   "stale junction"
 case_silent "a link into another repo is ignored" r_foreign "stale junction"
 case_silent "skills-pi absent from claude root"   r_linked  "gamma is not linked into"
 case_says   "skills-pi shadowing the claude root" r_shadow  "never linked into this root"
-# The false-positive direction, and it must be a POSITIVE assertion: a bare "must not appear" check
-# passes trivially when the section is deleted. `roots/pi is in sync` can only print if the loop ran
-# AND cleared every legitimate skills-pi link in the pi root — which is the whole real-world install.
+# The false-positive direction, as a POSITIVE assertion (see `case_silent`): `roots/pi is in sync`
+# can only print if the loop ran AND cleared every legitimate skills-pi link in the pi root — which
+# is the whole real-world install.
 case_says   "legit skills-pi link in the pi root"  r_linked  "roots/pi is in sync"
 # A root holding only a shadow is not an empty root; the two advisories must not contradict.
 case_silent "shadow root is not called empty"      r_shadow  "nothing is linked into it"
