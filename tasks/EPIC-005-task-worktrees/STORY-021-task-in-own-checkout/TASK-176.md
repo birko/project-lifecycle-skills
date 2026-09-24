@@ -3,7 +3,7 @@ id: TASK-176
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: ai
 created: 2026-09-24
@@ -58,9 +58,9 @@ the session is in the main copy on the default branch.
 
 On a `pr-per-task` consumer, after TASK-174/175 created a worktree for a throwaway task.
 
-- [ ] Commit a trivial change in the worktree, `/tasks close`. Expected: merge commit on the default branch in the main copy, worktree folder gone, `git worktree list` shows only the main copy, `task/TASK-NNN` deleted, session in the main copy.
+- [x] Commit a trivial change in the worktree, `/tasks close`. Expected: merge commit on the default branch in the main copy, worktree folder gone, `git worktree list` shows only the main copy, `task/TASK-NNN` deleted, session in the main copy.
 - [x] Repeat with an uncommitted edit in the main copy. Expected: failed close, task still `in-progress`, worktree intact.
-- [ ] Repeat with an untracked file left in the worktree. Expected: merge done, removal reported and skipped, branch kept, path printed.
+- [x] Repeat with an untracked file left in the worktree. Expected: merge done, removal reported and skipped, branch kept, path printed.
 
 ## Implementation plan
 
@@ -101,3 +101,7 @@ Decisions: D18–D22 (approved 2026-09-24). Lands with TASK-174/175 (D17 landing
 Not reachable by a `-p` runner, so left for the interactive session: the full tail with removal (human-test step 1), and a dirty worktree at removal (step 3).
 
 **Close gate and re-drill:** recorded once, on TASK-174 (joint landing).
+
+**Interactive steps run** in TASK-179's trial (steps 7 and 8), **after D7/D8 changed** because the trial found the reach-in merge refused under worktree isolation (step 6).
+
+**Closed `done` 2026-09-24:** every human-test step has now been run (TASK-179's trial). Landed with TASK-175/176 in `b9e9161`, with the trial's D7/D8/D18 fixes on top.

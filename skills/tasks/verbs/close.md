@@ -45,10 +45,13 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 3. **Locate the file** — Grep `^id: TASK-NNN$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
 
 4. **Read current status**:
-   - **Except: `done` read in the task's own worktree while the default branch's copy of the file still
-     reads otherwise** is an unmerged close — an earlier run committed `done` on the task branch and then
-     failed at the merge. It is not a closed record: go straight to step 8's worktree merge, asking
-     nothing, under `--unattended` too.
+   - **Except an unmerged close**: the task branch's copy reads `done` (`git show task/TASK-NNN:<task file>`)
+     while the default branch's copy still reads otherwise (`git show <default>:<task file>`). Read both with
+     `git show`, never by path: branches are shared by every tree, so it works from the worktree and from
+     the main copy alike, and it never reaches into another tree. An earlier run committed `done` on the
+     task branch and then failed at the merge. This is not a closed record, so go straight to step 8's
+     worktree merge, asking nothing, under `--unattended` too. From the task's worktree, begin at its step 1
+     (leave). From the main copy, begin at its step 2.
    - Already `done` → warn, ask "reopen and re-close?" or abort.
    - `cancelled` → warn similarly.
    - **`--unattended` → refuse and report; do not reopen.** Reaching here means something upstream is
@@ -65,19 +68,30 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    | Where | Do |
    |---|---|
    | main copy, and no **linked** worktree holds `task/TASK-NNN` (the main copy's own entry in the list does not count — on an in-place close it is the one on that branch) | today's flow — nothing below applies |
-   | a linked worktree on `task/TASK-NNN` | the **worktree close**: check the main copy now, then steps 5–7 here, and step 8's worktree branch |
+   | a linked worktree on `task/TASK-NNN` | the **worktree close**: check the main copy now (the part the runtime allows — below), then steps 5–7 here, and step 8's worktree branch |
    | a linked worktree on any other branch | the **wrong-tree** line; stop, nothing written |
-   | main copy, while a `git worktree list --porcelain` entry **other than the first** shows `branch refs/heads/task/TASK-NNN` | the **held-elsewhere** line; stop, nothing written. Closing from a new session means re-entering that worktree, which is the resume path's business, not something to improvise here |
+   | main copy, a linked worktree holds `task/TASK-NNN`, **and** step 4 found an unmerged close | resume at step 8's step 2 (check the main copy, merge, remove, delete), from here |
+   | main copy, while a `git worktree list --porcelain` entry **other than the first** shows `branch refs/heads/task/TASK-NNN`, and no unmerged close | the **held-elsewhere** line; stop, nothing written. Closing from a new session means re-entering that worktree, which is the resume path's business, not something to improvise here |
 
-   **Worktree close — check the main copy before writing.** `git -C "<main>" status --porcelain` must be
-   empty, `git -C "<main>" symbolic-ref --short HEAD` must be the default branch, and that branch must
-   track **no remote** — the rule and reason `pick` step 6b gives; a tracked default branch gets the
-   **unsupported** line and a stop, nothing written. The merge happens there. Either fails → the **failed-close** line: nothing written, status unchanged, worktree and
-   branch untouched. Steps 5–7 then edit and commit **in the worktree, on the task branch**, and the
-   merge carries `done` to the default branch — the branch forks from `pick`'s own commit, and the
-   default branch never touches this task file after it, so the status line merges cleanly. **Never
-   regenerate `tasks/README.md` in the worktree**: every task branch rewriting one generated file is a
-   conflict per parallel task. Steps 10–11 regenerate it on the default branch after the merge instead.
+   **Worktree close — check the main copy before writing.** Three conditions, and two of them are
+   readable from any tree:
+   - **The default branch tracks no remote** — `git rev-parse --abbrev-ref <default>@{upstream}` must
+     fail, which is shared config and needs no reach into the main copy. The rule and reason are
+     `pick` step 6b's. It tracks one → the **unsupported** line and a stop, nothing written.
+   - **The main copy is on the default branch** — read it from the first entry of
+     `git worktree list --porcelain`, which also works from any tree. Otherwise → the **failed-close**
+     line: nothing written, status unchanged, worktree and branch untouched.
+   - **The main copy is clean** — `git -C "<main>" status --porcelain` must be empty; otherwise the
+     **failed-close** line. **This one needs the main copy itself, and a runtime that isolates the
+     session in its worktree refuses it.** Measured: Claude Code, after `EnterWorktree`, refuses every
+     `git -C <main copy>`, reads included. It is a safety guard, never to be worked around. There,
+     skip only this check. Step 8 runs it right after leaving, where a failure is the **merge-failed**
+     case, which re-closing resumes.
+   Steps 5–7 then edit and commit **in the worktree, on the task branch**, and the merge carries `done`
+   to the default branch. The branch forks from `pick`'s own commit, and the default branch never touches
+   this task file after it, so the status line merges cleanly. **Never regenerate `tasks/README.md` in
+   the worktree**: every task branch rewriting one generated file is a conflict per parallel task.
+   Steps 10–11 regenerate it on the default branch after the merge instead.
 
 5. **Verify the Human test plan** (tasks only):
    - Read the `## Human test plan` section. If it still holds the template placeholder text (un-filled), warn: "Human test plan was never filled — confirm it's genuinely `N/A` or fill it before closing." Let the user proceed or pause.
@@ -123,7 +137,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (review — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `review` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
      - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `review` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `review` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
-     - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it. Then **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `review`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `review` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
+     - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `review`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `review` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `review → done`, re-run `close` once the human step is checked off.)
 
 5b. **The review axes — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
@@ -295,47 +309,58 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **5c said defer:** don't merge. The task is already `blocked` (step 6) with the reason recorded, so no state here claims otherwise. Push the branch and open/update the PR if the project uses one — parked work belongs on the remote, not only on a local branch. Then note the resume path: `/tasks unblock {{ID}}` + re-run `close` once the blocker clears; it re-enters here and merges.
    - **A worktree close (step 4b)** replaces the "check out the default branch" mechanics above — that
      branch is checked out in the main copy and cannot be checked out twice. Print the **closing-from**
-     line, then:
-     - **Re-check the main copy** exactly as step 4b did; a parallel session may have dirtied it since.
-       Failing now is still a failed close — but step 7 has already committed `done` on the task branch,
-       so print the **merge-failed** line, not the failed-close one, and say which commit is left there.
-     - **Merge now, locally:** `git -C "<main>" merge --no-ff --no-commit task/TASK-NNN`. While that merge
-       is pending, write the `pr:` backfill (step 7's SHA of the work commit) into the **main copy's**
-       task file, stage it there, and `git -C "<main>" commit --no-edit` — so the backfill still rides in
-       the merge commit. The in-place trick of carrying a staged edit into the merge cannot work here:
-       that index belongs to the worktree. A conflict → `git -C "<main>" merge --abort` and the
-       **merge-failed** line. **Re-closing resumes here**: step 4 finding `done` on the task branch in the
-       task's own worktree while the default branch still reads otherwise is an unmerged close, not a
-       closed record — it neither asks to reopen nor refuses under `--unattended`, and goes straight to
-       this merge.
-     - **Then the tail, in this order, stopping at the first step that fails.** Each failure prints its
-       line with the **exact outstanding commands**, and nothing is ever forced. The task is `done`
-       either way: `done` means merged, and it is — the rest is housekeeping.
-       1. **Leave** — `ExitWorktree` with `action: keep` when the session entered by `EnterWorktree`,
-          otherwise change directory to the main copy. Prove it as `pick` step 6b does: a **separate,
-          later** `git rev-parse --show-toplevel`, normalised, must equal the main copy. You cannot remove
-          the folder you are standing in. **Leave and prove in every shell the session has** — Claude
-          Code's Bash and PowerShell tools each keep their own working directory, and one left behind
-          still holds the folder: measured, a close that left and proved in one shell had its removal
-          refused by Windows because the other was still inside, and git then deleted the files and the
-          registration but not the locked folder.
-       2. **Remove** — only a worktree this skill made: `workspace: worktree` declared, and the path
-          exactly `<worktree-root>/<repo-name>-TASK-NNN`. Anything else holding the branch is merged,
-          left in place and named, never deleted. Name any dirty paths first
-          (`git -C "<path>" status --porcelain`), then `git -C "<main>" worktree remove "<path>"` —
-          **never `--force`**: forcing here destroys uncommitted work at the one step meant to be safe.
-          **A refused removal can still be a partial one**, so re-read `git worktree list` before
-          printing the outstanding commands: registration gone but the folder left → the outstanding
-          step is deleting that (now empty) folder by hand once nothing holds it, then the branch
-          delete, not a `git worktree remove` that would now fail.
-       3. **Delete the branch** — `git -C "<main>" branch -d task/TASK-NNN`, **never `-D`**. It refuses
-          after a squash merge; report it and stop.
+     line, then run these **in order, stopping at the first that fails**. Each failure prints its line
+     with the **exact outstanding commands**, and nothing is ever forced.
+     1. **Leave the worktree first** — you cannot merge from a session the runtime has isolated there,
+        and you cannot remove the folder you are standing in. Use `ExitWorktree` with `action: keep`
+        when the session entered by `EnterWorktree`, otherwise change directory to the main copy. Prove
+        it as `pick` step 6b does: a **separate, later** `git rev-parse --show-toplevel`, normalised, must
+        equal the main copy. **Leave and prove in every shell the session has.** Claude Code's Bash and
+        PowerShell tools each keep their own working directory, and one left behind still holds the
+        folder. Measured: a close that left and proved in one shell had its removal refused by Windows
+        because the other was still inside, and git then deleted the files and the registration but not
+        the locked folder.
+        - **The session cannot leave, and it never entered by `EnterWorktree`** (its directory was pinned at
+          launch) → it is not isolated either. Merge from where it stands, reaching the main copy with
+          `git -C "<main>"` in the two steps below, then print the **could-not-leave** line. Its
+          outstanding commands carry the removal and branch delete. Measured: such a session merged
+          cleanly this way.
+        - **The session entered by `EnterWorktree` and a proof still fails** (for example `ExitWorktree`
+          succeeded but another shell is still inside) → **do not merge**. Every `git -C` into the main copy
+          is refused while any part of the session is isolated. Print the **not-left** line naming the
+          shell still inside. Nothing is merged, and the task reads `done` only on its branch, so
+          re-closing after leaving that shell is an unmerged close and resumes at step 2.
+     2. **Check the main copy** — clean, on the default branch, tracking no remote, exactly as step 4b
+        states — now, even if 4b already ran it, since a parallel session may have dirtied it. A failure
+        here comes after step 7 committed `done` on the task branch, so print the **merge-failed** line,
+        not the failed-close one, and name the commit left there.
+     3. **Merge, in the main copy:** `git merge --no-ff --no-commit task/TASK-NNN`. While that merge is
+        pending, write the `pr:` backfill (step 7's SHA of the work commit) into the main copy's task
+        file, stage it, and `git commit --no-edit`, so the backfill still rides in the merge commit.
+        The in-place trick of carrying a staged edit from the task branch cannot work here, because that
+        index belongs to the worktree. A conflict → `git merge --abort` and the **merge-failed** line.
+        **Re-closing resumes at this merge.** Step 4 finding `done` on the task branch while the default
+        branch still reads otherwise means an unmerged close, not a closed record. It neither asks to
+        reopen nor refuses under `--unattended`. It re-enters here, from the worktree (step 1 first) or
+        from the main copy directly (step 4b's resume row). From here on the task is `done`: `done` means merged, and it is.
+        What follows is housekeeping.
+     4. **Remove** — only a worktree this skill made: `workspace: worktree` declared, and the path
+        exactly `<worktree-root>/<repo-name>-TASK-NNN`. Anything else holding the branch is merged,
+        left in place and named, never deleted. Name any dirty paths first
+        (`git -C "<path>" status --porcelain`), then `git worktree remove "<path>"`. **Never use
+        `--force`**: forcing here destroys uncommitted work at the one step meant to be safe.
+        **A refused removal can still be a partial one**, so re-read `git worktree list` before printing
+        the outstanding commands. If the registration is gone but the folder is left, the outstanding step
+        is deleting that (now empty) folder by hand once nothing holds it, then the branch delete. Do not
+        print a `git worktree remove` that would now fail.
+     5. **Delete the branch** — `git branch -d task/TASK-NNN`, **never `-D`**. It refuses after a squash
+        merge; report it and stop.
      - **5c said defer, or step 5 parked the task at `review`** (a park reaches this bullet from step 5,
        which skips steps 6–9 but not this): commit in the worktree, run **no tail**, and print the
        **kept** line naming the path — the re-close starts from there, and so does `/tasks unblock`, since
        the parked status exists only on the task branch. The default branch still reads `in-progress` for such a task, because the parked status
        lives on the task branch; that is not free work, so nothing misreads it as available.
-   - **Skip silently when:** `--no-pr` was passed, the repo isn't a git repo, the project sets `integration: single-branch` in `.config.yml` (or otherwise has no PR-per-task flow), or the current branch isn't `task/TASK-NNN`. In all these cases, "merge" has no meaningful action, 5c never ran, and step 8 is a no-op. On a `single-branch` project `done` means **committed to the default branch** — the invariant is unchanged, only the mechanism is.
+   - **Skip silently when** — never for an unmerged close resumed from the main copy (step 4b), which runs step 8's worktree merge even though the current branch is the default branch — `--no-pr` was passed, the repo isn't a git repo, the project sets `integration: single-branch` in `.config.yml` (or otherwise has no PR-per-task flow), or the current branch isn't `task/TASK-NNN`. In all these cases, "merge" has no meaningful action, 5c never ran, and step 8 is a no-op. On a `single-branch` project `done` means **committed to the default branch** — the invariant is unchanged, only the mechanism is.
 
 9. **Hybrid mode remote close** — **only when the task actually reached `done`.** Skip for a task
    parked at `review` (step 5) or `blocked` (step 6, merge deferred): the remote tracker must not
@@ -356,13 +381,14 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
     **Report lines for a worktree close** — fixed, one per outcome:
     - closing from: `workspace: closing from the worktree at <path> on task/TASK-NNN — merging in the main copy at <main>`
-    - merge failed: `close failed at the merge: <reason> — task/TASK-NNN carries the close commit <sha> (status done) but <default> does not; worktree kept; fix it and re-close from <path>.`
+    - merge failed: `close failed at the merge: <reason> — task/TASK-NNN carries the close commit <sha> (status done) but <default> does not; worktree kept; fix it and re-close — from the main copy or from <path>.`
+    - not left: `workspace: could not leave the worktree in every shell (<shell> still in <path>) — nothing was merged; TASK-NNN reads done only on task/TASK-NNN; leave that shell, then re-close.`
     - unsupported: `workspace: worktree close does not yet support a default branch that tracks a remote (<default> → <upstream>) — nothing was changed.`
     - failed close: `close failed: the main copy at <main> is <not clean (<n> paths) | on <branch>, not <default>> — nothing was written; TASK-NNN stays <status>; worktree and branch untouched.`
     - wrong tree: `close: this session is in the worktree for <branch> (<toplevel>), not task/TASK-NNN — nothing was changed.`
     - held elsewhere: `close: task/TASK-NNN is checked out in the worktree at <path> — close it from there; nothing was changed.`
-    - clean tail: `workspace: merged task/TASK-NNN into <default>; left the worktree — proved: git rev-parse --show-toplevel = <main>; removed <path>; deleted task/TASK-NNN`
-    - could not leave: `workspace: merged; could not leave the worktree (expected <main>, got <toplevel>) — outstanding: cd "<main>" && git worktree remove "<path>" && git branch -d task/TASK-NNN`
+    - clean tail: `workspace: left the worktree — proved: git rev-parse --show-toplevel = <main>; merged task/TASK-NNN into <default>; removed <path>; deleted task/TASK-NNN`
+    - could not leave: `workspace: could not leave the worktree (expected <main>, got <toplevel>); merged from it via git -C — outstanding: cd "<main>" && git worktree remove "<path>" && git branch -d task/TASK-NNN`
     - not removed: `workspace: merged; <path> not removed — <git message | uncommitted: <paths> | not a worktree this skill made>; task/TASK-NNN kept — outstanding: git worktree remove "<path>" && git branch -d task/TASK-NNN`
     - branch kept: `workspace: merged; removed <path>; task/TASK-NNN not deleted — <git message>; never forced`
     - kept: `workspace: worktree kept at <path> on task/TASK-NNN — <review | blocked>; re-close from there`

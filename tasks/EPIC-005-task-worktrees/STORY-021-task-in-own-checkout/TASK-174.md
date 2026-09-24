@@ -3,7 +3,7 @@ id: TASK-174
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P1
 assignee: ai
 created: 2026-09-24
@@ -62,7 +62,7 @@ stripping once.
 
 Runs on a `pr-per-task` consumer project — **not this repo**, which declares `single-branch`.
 
-- [ ] `workspace: worktree`, no `worktree-root:`; answer the question with a path outside the repo. Expected: the path is written to `.config.yml`, the worktree exists there on `task/TASK-NNN`, the main copy is still on the default branch.
+- [x] `workspace: worktree`, no `worktree-root:`; answer the question with a path outside the repo. Expected: the path is written to `.config.yml`, the worktree exists there on `task/TASK-NNN`, the main copy is still on the default branch.
 - [x] Same, but leave the answer blank. Expected: no `worktree-root:` written, branch cut in place, report says `worktree-root undeclared`.
 - [x] Answer with a path inside the repo. Expected: refused with a reason, in-place fallback.
 
@@ -142,3 +142,7 @@ Every code-review finding this addressed is closed by a fixture above: planning 
 - **c2:** a clean close leaves no staged edit in the worktree (the backfill carve-out holds). It then exposed the **two-shell** case: the Bash and PowerShell tools each keep a working directory, so leaving in one left the other holding the folder, and removal was only partial. Both rules are now in `close` step 8.
 
 **Parked at `review`, not `done`.** One human-test step each needs an interactive Claude Code session on a consumer, because a `-p` runner can neither approve `EnterWorktree` nor move: `pick` ending up *inside* the worktree, the pi runtime, and `close`'s full tail with removal. TASK-179's end-to-end drill is where they are run.
+
+**Interactive step run** in TASK-179's trial (step 1): the question was answered by the stakeholder, the root was committed in the pick commit, and the worktree was created.
+
+**Closed `done` 2026-09-24:** every human-test step has now been run (TASK-179's trial). Landed with TASK-175/176 in `b9e9161`, with the trial's D7/D8/D18 fixes on top.

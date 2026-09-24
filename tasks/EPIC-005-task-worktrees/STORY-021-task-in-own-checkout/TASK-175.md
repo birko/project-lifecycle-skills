@@ -51,7 +51,7 @@ caught and undone.
 
 On a `pr-per-task` consumer, `workspace: worktree`, root declared.
 
-- [ ] Claude Code: `/tasks pick`. Expected: the session reports the worktree path, and `git rev-parse --show-toplevel` / `git branch --show-current` run from the session show the worktree and `task/TASK-NNN`; the main copy stays on the default branch.
+- [x] Claude Code: `/tasks pick`. Expected: the session reports the worktree path, and `git rev-parse --show-toplevel` / `git branch --show-current` run from the session show the worktree and `task/TASK-NNN`; the main copy stays on the default branch.
 - [ ] pi runtime: same. Expected: either the same outcome, or an explicit fallback report with no worktree left behind (`git worktree list` shows only the main copy).
 - [x] Force a mismatch (temporarily point the proof at a wrong path). Expected: worktree and branch removed, in-place branch cut, report names both paths.
 
@@ -70,3 +70,7 @@ Lands in **one change with TASK-174**. Decision: D14 (attempt, then prove, for e
 **Drill (2026-09-24):** recorded once, on TASK-174 — the two tasks were drilled together on the same fixtures. This task's forced-mismatch step passed there.
 
 **Close gate:** recorded once, on TASK-174 (joint landing).
+
+**Claude Code step run** in TASK-179's trial (steps 2 and 4): entered and proved in both shells, twice. The pi step is being run separately.
+
+**Stays `review`:** only the pi-runtime step is unrun. pi's model provider returns 404 on this machine (see TASK-179). Tick it once pi works, or cancel the step with a reason if pi support is dropped.

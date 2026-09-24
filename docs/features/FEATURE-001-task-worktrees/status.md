@@ -13,38 +13,38 @@ generated: 2026-09-24
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 23 |
-| ✏️ changed | 0 |
+| ✅ approved | 20 |
+| ✏️ changed | 3 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
 | 💭 proposed (undecided) | 0 |
 
 ## Build progress
 
-1 / 10 tasks done · 3 awaiting sign-off.
+3 / 10 tasks done · 1 awaiting sign-off · 1 in progress.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
-- TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (**awaiting sign-off**)
-- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (**awaiting sign-off**)
-- TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (**awaiting sign-off**)
+- TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
+- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (**awaiting sign-off** — one check on a second tool)
+- TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (done)
 - TASK-177 — teach both project-setup tools about the new setting (to do)
 - TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (to do)
-- TASK-179 — try the whole thing end to end on a real project (to do)
+- TASK-179 — try the whole thing end to end on a real project (in progress — the main trial is done)
 - TASK-181 — carry on with a task in a new session, back inside its own folder (to do)
 - TASK-183 — support projects that merge through a shared online copy (to do)
 - TASK-184 — stop two parallel tasks from giving new work the same number (to do)
 
 ## What can be tested now
 
-The core is built. Picking a task can now give it its own folder, and finishing it folds the work back
-in and removes the folder. Every safety fallback was tried on test projects and behaved correctly: an
-unset or unsafe location, a project that merges online, untidy starting states, a failed hand-back and
-a retry. What is left for a person to try, in an interactive session on a real project, is the path
-where the tool actually moves into the new folder and later cleans it up. Automated test runs cannot
-make that move.
+The feature was tried out for real, on a copy of a real project. Two tasks ran side by side, each in its
+own folder. Each was folded back in and its folder removed, and the main copy stayed tidy throughout. The
+trial caught one real problem, now fixed. The way the work was handed back did not work inside the tool's
+own folder mode, so three decisions changed: the tool now steps out of the folder first, then hands the
+work back.
 
-For now this only works for projects that combine work on the same computer. Projects that merge through
-a shared online copy keep working as before, and are told why. Supporting them is TASK-183.
+Still to check: the same thing using a second assistant tool, which is not set up correctly on this
+machine. For now this works only for projects that combine work on the same computer (TASK-183 covers
+the rest).
 
 ## Prototype
 
@@ -53,6 +53,6 @@ question this feature asks a person is written out word for word in the task-pic
 
 ## Next step
 
-**Sign-off comes first.** Run the remaining checks for TASK-174, TASK-175 and TASK-176 in an interactive
-session on a real project. The natural place is TASK-179's end-to-end trial. Meanwhile TASK-177
-(teaching the project-setup tools) and TASK-178 (test-run copies) are ready to start.
+Teach the project-setup tools about the new setting (TASK-177), and make "carry on in a new session" go
+back into the task's own folder (TASK-181). Then the end-to-end trial (TASK-179) can be finished. The
+check on the second assistant tool (TASK-175) waits until that tool is working.
