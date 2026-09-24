@@ -9,14 +9,14 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 58    |
+| todo         | —     | —       | 57    |
 | in-progress  | 4     | 9       | 0     |
-| review       | —     | —       | 1     |
+| review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 1     | 8       | 125   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 45× P2 · 12× P3.
+`todo` by priority: 1× P1 · 44× P2 · 12× P3.
 
 ## In progress now
 
@@ -27,6 +27,7 @@ _None_
 _Code complete, sign-off pending — verification debt; close these before new scope._
 
 - [TASK-175](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-175.md) `/tasks pick` proves the move into the worktree, and falls back when it cannot (P1) — only the pi-runtime step unrun (pi misconfigured here)
+- [TASK-183](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-183.md) Worktree mode for projects whose default branch tracks a remote (P2) — needs a real GitHub remote with required checks (auto-merge path)
 
 ## Tree
 
@@ -171,7 +172,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-178 Give drill checkouts a declared home and a cleanup rule
     - [x] TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer
     - [x] TASK-181 Resuming a task re-enters the worktree that holds its branch
-    - [ ] [TASK-183](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-183.md) Worktree mode for projects whose default branch tracks a remote
+    - [ ] [TASK-183](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-183.md) Worktree mode for projects whose default branch tracks a remote *(review)*
     - [x] TASK-184 Tasks created in parallel worktrees can mint the same id
     - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too
 

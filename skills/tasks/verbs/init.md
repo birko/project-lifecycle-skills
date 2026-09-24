@@ -50,13 +50,10 @@ current template first (step 3), because a file that merely exists cannot be rep
      > **Where should each task's work happen?**
      > · **in place** — in this one copy of the repository, as today.
      > · **its own worktree** — each task gets its own folder outside the repository, so several tasks can
-     >   run at once and this copy stays on the main line. Only for projects whose main branch does not
-     >   track a remote yet.
+     >   run at once and this copy stays on the main line.
 
      **Skip it when the integration model is already `single-branch`.** There is no task branch to put in a
-     worktree, so one option would do nothing. Say it was skipped and why. When the project is about to
-     get a remote its main branch will track (hybrid-GitHub, or a remote the scaffold is creating), say
-     that `pick` would refuse worktree mode there, before taking the answer.
+     worktree, so one option would do nothing. Say it was skipped and why.
 
      If the answer is **its own worktree**, a front door may follow with the **root question**, worded here
      rather than borrowed from `pick`, because nothing is committed at this point. Put exactly this:

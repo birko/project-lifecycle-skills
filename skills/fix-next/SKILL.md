@@ -42,7 +42,11 @@ in flight: leave it alone, don't count it, don't report it as blocking you.
 
 If you find a skill-owned in-progress task:
 
-1. **Under `workspace: worktree`, resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
+1. **Under `workspace: worktree`, also look on the task branches.** In remote mode, the default branch's
+   copy of an in-progress task still reads `todo`, so the grep above misses it. List local `task/*`
+   branches (`git branch --list "task/*"`) and read each one's task file with
+   `git show task/TASK-NNN:<task file>`. A copy carrying `picked-by: fix-next` is this skill's run.
+   **Resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
    resume (locate, enter, prove). Only the first log line rode in the pick commit, and every later line is on
    the task branch. **Any stop in that resume stops this run too**: report its line, and do not pick a
    second task. Run step 2's reconciliation below in the tree you are now in, not the main copy.
@@ -63,7 +67,9 @@ A `status: todo` TASK is in the pool when **either** holds:
 - it sits under an EPIC stamped `kind: review-intake`.
 
 Both are written by [`/tasks intake`](../tasks/verbs/intake.md). Nothing here infers a defect from an
-epic's title or a task's prose — **the pool is explicit or it doesn't exist.**
+epic's title or a task's prose — **the pool is explicit or it doesn't exist.** A task the [[tasks]]
+Collection pass counts as **taken** — its `task/TASK-NNN` branch already exists, locally or on a remote,
+because another session or clone picked it — is out of the pool whatever its file says.
 
 **A defect found by using the product, with no review pass behind it, gets in through
 `/tasks new task --from-field`**, which mints a `FIELD-NNN` into `findings:`. Naming the verb matters more
@@ -176,9 +182,10 @@ top two are genuinely inseparable on every key above.
   `- step 2 — picked; ranked above <runner-up> because <reason>`
 - `status: todo` → `in-progress` (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project —
   including its step 6b when the project declares `workspace: worktree`. This skill never answers
-  6b's root question: it takes the blank-answer branch every time). **Write the two lines above
-  first**: 6b commits the pick on the default branch, and step 0 resumes by reading them *there* — written
-  after, they would sit only on the task branch, and a reset session would take this task for a human's)
+  6b's root question: it takes the blank-answer branch every time). **Write the two lines above so they
+  ride in 6b's pick commit**: in local mode write them first, in the main copy, since 6b commits the pick
+  on the default branch; in remote mode write them in the worktree, where 6b commits the pick on the task
+  branch. Written anywhere else, a reset session would take this task for a human's)
 
 Every step below appends one line. The log is how step 0 resumes; a step that ran without a line is a
 step the next session will redo.

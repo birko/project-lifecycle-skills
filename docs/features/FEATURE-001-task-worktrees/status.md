@@ -13,15 +13,15 @@ generated: 2026-09-24
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 21 |
-| ✏️ changed | 3 |
+| ✅ approved | 25 |
+| ✏️ changed | 4 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
 | 💭 proposed (undecided) | 0 |
 
 ## Build progress
 
-9 / 11 tasks done · 1 awaiting sign-off.
+9 / 11 tasks done · 2 awaiting sign-off.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
@@ -53,7 +53,8 @@ question this feature asks a person is written out word for word in the task-pic
 
 ## Next step
 
-One piece remains: supporting projects that merge online (TASK-183).
+Everything is built. Two checks remain, and both need something this machine does not have:
+- a real GitHub project with required checks, to try the online-merge path end to end (TASK-183);
+- a working second assistant tool (TASK-175).
 
-The check on the second assistant tool (TASK-175) waits until that tool works. When all of this is done,
-the feature goes to its final review.
+After both pass, the feature goes to its final review.

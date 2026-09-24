@@ -52,6 +52,14 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      task branch and then failed at the merge. This is not a closed record, so go straight to step 8's
      worktree merge, asking nothing, under `--unattended` too. From the task's worktree, begin at its step 1
      (leave). From the main copy, begin at its step 2.
+     **In remote mode this exception fires on the task branch's copy reading `done`, whatever the default
+     branch says** — a squash merge leaves the upstream reading `done` with no ancestry to test. Then
+     `git fetch --prune` and decide which half is left. If `git show <upstream>:<task file>` reads `done`,
+     or `git merge-base --is-ancestor task/TASK-NNN <upstream>` holds, the merge **landed**: run only step
+     8's tail (from leaving, or from the main copy), with the pull, and **never push the task branch, open
+     a PR or merge again**, which would recreate a deleted remote branch (the "taken" signal) and retry a
+     merge that already happened. Otherwise the merge has not happened yet: go to step 8's remote merge.
+     `done` is already committed, so nothing new is pushed and no check restarts.
    - Already `done` → warn, ask "reopen and re-close?" or abort.
    - `cancelled` → warn similarly.
    - **`--unattended` → refuse and report; do not reopen.** Reaching here means something upstream is
@@ -75,9 +83,10 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
    **Worktree close — check the main copy before writing.** Three conditions, and two of them are
    readable from any tree:
-   - **The default branch tracks no remote** — `git rev-parse --abbrev-ref <default>@{upstream}` must
-     fail, which is shared config and needs no reach into the main copy. The rule and reason are
-     `pick` step 6b's. It tracks one → the **unsupported** line and a stop, nothing written.
+   - **Local or remote mode** — `git rev-parse --abbrev-ref <default>@{upstream}`, which is shared config and
+     needs no reach into the main copy. It fails → local mode, as written. It names an upstream → **remote
+     mode**, the rule and reason `pick` step 6b gives: nothing is committed on the local default branch, so
+     step 8 merges through the remote and steps 10–11 commit nothing (below).
    - **The main copy is on the default branch** — read it from the first entry of
      `git worktree list --porcelain`, which also works from any tree. Otherwise → the **failed-close**
      line: nothing written, status unchanged, worktree and branch untouched.
@@ -88,7 +97,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      skip only this check. Step 8 runs it right after leaving, where a failure is the **merge-failed**
      case, which re-closing resumes.
    Steps 5–7 then edit and commit **in the worktree, on the task branch**, and the merge carries `done`
-   to the default branch. The branch forks from `pick`'s own commit, and the default branch never touches
+   to the default branch. The branch forks from `pick`'s own commit (the upstream tip in remote mode), and the default branch never touches
    this task file after it, so the status line merges cleanly. **Never regenerate `tasks/README.md` in
    the worktree**: every task branch rewriting one generated file is a conflict per parallel task.
    Steps 10–11 regenerate it on the default branch after the merge instead.
@@ -330,11 +339,40 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
           is refused while any part of the session is isolated. Print the **not-left** line naming the
           shell still inside. Nothing is merged, and the task reads `done` only on its branch, so
           re-closing after leaving that shell is an unmerged close and resumes at step 2.
-     2. **Check the main copy** — clean, on the default branch, tracking no remote, exactly as step 4b
+     2. **Check the main copy** — clean and on the default branch, exactly as step 4b
         states — now, even if 4b already ran it, since a parallel session may have dirtied it. A failure
         here comes after step 7 committed `done` on the task branch, so print the **merge-failed** line,
         not the failed-close one, and name the commit left there.
-     3. **Merge, in the main copy:** `git merge --no-ff --no-commit task/TASK-NNN`. While that merge is
+     **Remote mode** (step 4b) merges **through the remote**, before the tail, from the worktree. Push
+     the task branch, and open the PR as the PR path above does. Write the PR number into the task file's
+     `pr:` **on the task branch**, commit it, and push, so it rides into the merge. Then merge the PR with
+     the host's own mechanism (`gh pr merge` where available, **without** `--delete-branch`, which tries
+     to check out the default branch):
+     - **Mergeable now** → merge it.
+     - **Not mergeable yet** (checks pending, a review outstanding) → **queue it** with the host's
+       auto-merge (`gh pr merge --auto`) and print the **merge-queued** line. The worktree is kept and the
+       tail waits. The next close of this task sees the merge landed (step 4) and runs only the tail.
+       `done` rides into the merge. A host that cannot auto-merge → print the
+       **merge-failed** line naming what is outstanding. Re-closing once it clears pushes nothing new, so
+       no check restarts.
+     - **The remote has no PR mechanism at all** (a bare or self-hosted plain git server, never a PR host
+       merely lacking a client here) → merge **in the main copy** after leaving, as local mode's step 3
+       does, then `git push <remote> <default-branch>`. A refused push (a protected branch) → the
+       **merge-failed** line, and the local merge is undone (`git reset --merge`, back to `<upstream>`), so
+       nothing unpushed stays on the local default branch. When it is unclear which kind of remote this
+       is, treat it as a PR host without a client: stop with the reason, and never push the default
+       branch past a review.
+     After a merge that landed, run
+     the tail with step 3 replaced by `git pull --ff-only`. The local default branch carries no local
+     commits in remote mode, so this cannot diverge. A failed pull still leaves the task `done`, because
+     the merge landed: print the **pull-failed** line and stop the tail. **Before step 5**, delete the
+     remote task branch (`git push <remote> --delete task/TASK-NNN`) unless the host already did. That
+     branch is what tells every clone the task is taken. Say which happened on the remote-merged line.
+     **A host that refuses the merge here** — step 5c judged it mergeable, and something changed since —
+     is the **merge-failed** case, not a defer: `done` is already on the branch. In remote mode, **every unmerged-close resume**
+     (step 4's exception, 4b's resume row, step 3's re-entry) **goes to this paragraph's remote merge,
+     never to the local `git merge`**, which would diverge from the remote.
+     3. **Merge, in the main copy** (local mode): `git merge --no-ff --no-commit task/TASK-NNN`. While that merge is
         pending, write the `pr:` backfill (step 7's SHA of the work commit) into the main copy's task
         file, stage it, and `git commit --no-edit`, so the backfill still rides in the merge commit.
         The in-place trick of carrying a staged edit from the task branch cannot work here, because that
@@ -358,7 +396,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      - **5c said defer, or step 5 parked the task at `review`** (a park reaches this bullet from step 5,
        which skips steps 6–9 but not this): commit in the worktree, run **no tail**, and print the
        **kept** line naming the path — the re-close starts from there, and so does `/tasks unblock`, since
-       the parked status exists only on the task branch. The default branch still reads `in-progress` for such a task, because the parked status
+       the parked status exists only on the task branch. The default branch still reads `in-progress` for such a task (`todo` in remote mode, where the pushed branch marks it taken), because the parked status
        lives on the task branch; that is not free work, so nothing misreads it as available.
    - **Skip silently when** — never for an unmerged close resumed from the main copy (step 4b), which runs step 8's worktree merge even though the current branch is the default branch — `--no-pr` was passed, the repo isn't a git repo, the project sets `integration: single-branch` in `.config.yml` (or otherwise has no PR-per-task flow), or the current branch isn't `task/TASK-NNN`. In all these cases, "merge" has no meaningful action, 5c never ran, and step 8 is a no-op. On a `single-branch` project `done` means **committed to the default branch** — the invariant is unchanged, only the mechanism is.
 
@@ -370,9 +408,12 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - `jira-key: <KEY>` set → use the Atlassian MCP to transition the issue to Done (search for the transition tool via ToolSearch first; if MCP isn't authenticated, prompt user). Alternatively, if a `jira-task` skill is installed (an optional, environment-specific skill), hand off to it for that environment's full closure workflow.
 
 10. **Regenerate dashboard**. After a worktree close, regenerate it in the **main copy** — by absolute
-    path, if the tail could not leave the worktree.
+    path, if the tail could not leave the worktree. **Remote mode writes nothing on the default branch**,
+    neither this nor step 11's rollups. A write would dirty a copy that must stay a pure mirror of the
+    remote. Print the task's new status instead, and name the owning verbs (`/tasks triage`,
+    `/feature status`) for a person to refresh the shared copies through an ordinary PR.
 
-10b. **Commit what steps 10–11 regenerated — worktree closes only; run it after step 11.** The dashboard and the feature
+10b. **Commit what steps 10–11 regenerated — local-mode worktree closes only (remote mode wrote nothing); run it after step 11.** The dashboard and the feature
     rollups are written into the main copy after the merge; left uncommitted, they dirty it, and the next
     `pick` falls back while the next `close` fails its clean check. Commit exactly those files and nothing
     else from the index — `git -C "<main>" commit --only -m "chore: dashboard and rollups after TASK-NNN" --
@@ -381,9 +422,11 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
     **Report lines for a worktree close** — fixed, one per outcome:
     - closing from: `workspace: closing from the worktree at <path> on task/TASK-NNN — merging in the main copy at <main>`
-    - merge failed: `close failed at the merge: <reason> — task/TASK-NNN carries the close commit <sha> (status done) but <default> does not; worktree kept; fix it and re-close — from the main copy or from <path>.`
+    - merge failed: `close failed at the merge: <reason> — task/TASK-NNN carries the close commit <sha> (status done) but <default> (<upstream> in remote mode) does not; worktree kept; fix it and re-close — from the main copy or from <path>.`
     - not left: `workspace: could not leave the worktree in every shell (<shell> still in <path>) — nothing was merged; TASK-NNN reads done only on task/TASK-NNN; leave that shell, then re-close.`
-    - unsupported: `workspace: worktree close does not yet support a default branch that tracks a remote (<default> → <upstream>) — nothing was changed.`
+    - remote merged: `workspace: remote mode — merged task/TASK-NNN through <remote> (PR <n>); pulled <default> fast-forward; remote branch <deleted | already deleted by the host>; shared dashboard and rollups not refreshed — run /tasks triage and /feature status through a PR`
+    - merge queued: `workspace: remote mode — PR <n> for task/TASK-NNN queued to auto-merge on <remote> (<what is pending>); worktree kept at <path>; close again after it merges to finish.`
+    - pull failed: `workspace: remote mode — task/TASK-NNN merged on <remote>, but git pull --ff-only failed (<git message>); TASK-NNN is done; the worktree and branches are kept — fix the main copy, then re-close: it sees the merge landed and runs only the tail.`
     - failed close: `close failed: the main copy at <main> is <not clean (<n> paths) | on <branch>, not <default>> — nothing was written; TASK-NNN stays <status>; worktree and branch untouched.`
     - wrong tree: `close: this session is in the worktree for <branch> (<toplevel>), not task/TASK-NNN — nothing was changed.`
     - held elsewhere: `close: task/TASK-NNN is checked out in the worktree at <path> — close it from there; nothing was changed.`
@@ -402,7 +445,8 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - If this task was the last open task in its STORY → suggest `/tasks close <STORY-ID>`.
     - If closing a STORY leaves an EPIC with no open stories → suggest `/tasks close <EPIC-ID>`.
     - But default behaviour for STORY/EPIC is to stay open — areas of concern keep gaining work.
-    - **After a worktree close, every file this step writes goes into the main copy** — change directory
+    - **Remote mode: this step writes nothing on the default branch** (step 10). It still prints its hints.
+    - **After a local-mode worktree close, every file this step writes goes into the main copy** — change directory
       there, or address it by absolute path when the tail could not leave — so step 10b finds it there
       to commit. Written in the worktree, it would be left behind on a branch about to be deleted.
     - **Feature rollup** — any task with `feature: FEATURE-NNN` that changed status here (`done`, parked at `review`, *or* `blocked` on a deferred merge) → chain `/feature status FEATURE-NNN` (single-feature mode) so `status.md` and the index row reflect the new task state; the rollup must never lag a close. If it was the last open task for that feature, also suggest `/feature review FEATURE-NNN`.

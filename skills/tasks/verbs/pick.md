@@ -48,7 +48,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    overridden gets worked around, which costs more than the reminder is worth. ([[fix-next]] already does
    its own version of this at step 1, so a defect drain needs nothing added here.)
 
-3. **Collect candidates** — every TASK file whose frontmatter matches the filters. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
+3. **Collect candidates** — every TASK file whose frontmatter matches the filters, **less any task the
+   [Collection pass](../SKILL.md#collection-pass) counts as taken** (its branch exists locally or on a
+   remote — another session or clone has it). Print them under the list —
+   `taken (hidden): TASK-NNN (<local | remote/<name>>), …` — because a stale branch hides a task silently
+   otherwise. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
    ```
@@ -89,7 +93,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | `workspace:` absent or `in-place` | step 7, print nothing |
    | any other value but `worktree` | print the **invalid-value** line; step 7 as in-place |
    | `worktree` + `integration: single-branch` | print the **no-effect** line, every run; step 7 |
-   | `worktree`, the task already `in-progress`, and `task/TASK-NNN` exists | **resume** — below; no question, no pick commit. Run the **wrong-tree** check (below) first |
+   | `worktree`, and a local `task/TASK-NNN` exists whose own copy of the task file reads `in-progress` (`git show task/TASK-NNN:<task file>`) — or the default branch's copy does | **resume** — below; no question, no pick commit. Run the **wrong-tree** check (below) first. Read the status off the **task branch**: in remote mode the default branch's copy still reads `todo` while the task is in progress |
    | `worktree` + `worktree-root:` absent | ask the question below |
    | `worktree` + root declared | check, commit the pick, create, enter, prove — below |
 
@@ -109,7 +113,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      **not-resumed** line and stop.
    - **No worktree holds the branch** (a person pruned it, or it was never made) → nothing to resume into.
      Print the **no-worktree** line and continue in place: switch the main copy to `task/TASK-NNN` if the
-     main copy is clean, then go to step 9 (the status already reads `in-progress`). A dirty main copy →
+     main copy is clean, then go to step 9 (the task branch's copy already reads `in-progress`). A dirty main copy →
      report that and stop. Never re-create the worktree unasked. The branch may carry work a person moved
      on purpose.
 
@@ -123,14 +127,16 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
    > **Where should task worktrees live?** Each task gets its own folder there, outside this repository.
    > Suggested: `../wt` (next to this repository). Your answer is saved as `worktree-root:` in
-   > `tasks/.config.yml` and committed on `<default-branch>`. Give a path, or leave it blank to work in
+   > `tasks/.config.yml` and committed with this task's pick. Give a path, or leave it blank to work in
    > place this time.
 
    - **An answer is held, not written, until every check below has passed.** It is then the declared
      root those checks test — so a root inside the repository is refused before it is ever written, and a
      refused answer cannot be committed and then refused by every later pick. Only once all checks pass is
      it written as a live `worktree-root: <answer>` — replacing the commented `# worktree-root:` line when
-     there is one (its comment block stays), appended otherwise — and it rides in the pick commit below.
+     there is one (its comment block stays), appended otherwise — and it rides in the pick commit below:
+     on the default branch in local mode, on the task branch in remote mode (it then reaches the default
+     branch with the task's PR, and a pick made before that merge asks again).
      No second confirmation: the question already said where the answer goes.
    - **Blank, or nobody to ask** — the answer-less path, and also the unattended outcome, since no flag
      reaches this verb: write nothing, print the **fell-back** line with `worktree-root undeclared`, and
@@ -143,28 +149,51 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      session is inside a linked worktree — perhaps another task's. Stop with the **wrong-tree** line:
      every path below would be computed from the wrong tree, and the pick would land on another task's
      branch.
-   - **The default branch tracks no remote.** `git rev-parse --abbrev-ref <default-branch>@{upstream}`
-     failing is the evidence; recompute it every run, never remember it. When it tracks one, the pick
-     commit below and `close`'s refresh commit would land on a local default branch nobody pushes, which
-     then diverges from the remote the moment a PR merges there — and on a protected branch can never be
-     pushed at all. Worktree mode covers local merges only, for now: print the **unsupported** line and
-     continue at step 7.
+   - **Local or remote mode.** `git rev-parse --abbrev-ref <default-branch>@{upstream}` decides; recompute
+     it every run, never remember it. It fails → **local mode**, everything below as written. It names an
+     upstream → **remote mode**. Nothing may be committed on the local default branch there, because nobody
+     pushes it, and a local commit there diverges from the remote the moment a PR merges, and a protected
+     branch refuses it anyway. So remote mode changes the steps below that are marked **remote mode**.
+     Begin it with `git fetch --prune <remote>`. That shows other clones' task branches, and drops the
+     refs of branches deleted there, which would otherwise hide a task forever. A failed fetch (offline)
+     prints the **fetch-failed** line, and the run continues on what is known locally.
+     **Remote mode also needs a local default branch with nothing the remote lacks.**
+     `git rev-list --count <upstream>..<default-branch>` above 0 means local commits nobody pushed →
+     print the **local-ahead** line and stop, since those commits must reach the remote through a PR
+     first. A branch that is only **behind** is brought level at the end of these checks (below).
    - **The main copy is on the default branch** (the one step 7 branches from), and **clean apart from
      the task tree's own files for this task** — its task file (modified or not yet tracked), its parent
-     STORY/EPIC files, and `tasks/README.md`: exactly what `/tasks new` leaves behind. Otherwise fall back
+     STORY/EPIC files, and `tasks/README.md`: exactly what `/tasks new` leaves behind. **In remote mode they
+     are carried, not committed here.** After the proof below, the task file and its parent files are
+     copied into the worktree and ride in the task-branch pick commit, so a new task reaches the default
+     branch with its PR. The main copy's copies are then restored to the upstream state
+     (`git restore -- <tracked>`, delete untracked), and `tasks/README.md` is restored too: it is
+     generated, so nothing is lost. That keeps the main copy a clean mirror. Otherwise fall back
      with that reason — and when the main copy is **not on the default branch**, step 7 cuts nothing,
      since a branch cut there would silently stack this task on whatever is checked out. The pick commit
      below must hold only this task's pick.
    - **The root lies outside the repository.** Resolve it — absolute as written, relative against the
      repo root (the parent of `tasks/`), exactly as `siblings.root` resolves. Equal to
      `git rev-parse --show-toplevel` or beneath it → the **refusal** line, and continue at step 7.
+   - **Not taken elsewhere (remote mode).** `task/TASK-NNN` present on the remote
+     (`git branch -r --list "*/task/TASK-NNN"`) with **no local `task/TASK-NNN`** means another clone has
+     the task → the **taken-elsewhere** line, and stop. A local branch means this clone's own pick, which
+     the resume row above already took.
    - **Nothing is left from an earlier pick.** The path is `<root>/<repo-name>-TASK-NNN`, `<repo-name>`
-     being the basename of the main copy's top-level folder. If `task/TASK-NNN` already exists, or the
-     path already exists, or `git worktree list` registers that path (a folder deleted by hand shows as
+     being the basename of the main copy's top-level folder. If a local `task/TASK-NNN` already exists, or
+     the path already exists, or `git worktree list` registers that path (a folder deleted by hand shows as
      *prunable*) → the **leftover** line naming what was found, and stop. Resuming such a task is a
      separate path; this step never guesses whose it is.
+   - **Remote mode: bring the default branch level — last, once everything above has passed.** The
+     main copy is now known to be on the default branch. If it is behind `<upstream>`, fast-forward it:
+     `git merge --ff-only <upstream>`. Local and upstream are then the same commit, which makes the carry
+     safe. A stale local parent file carried over a newer upstream one would silently drop another task's
+     entry. It also lets a fallback's `git branch -d` pass. A fast-forward git refuses (this task's
+     uncommitted edits collide with incoming ones) prints the **ff-refused** line and stops: merge them by
+     hand, then pick again.
 
-   **Commit the pick on the default branch — before the worktree exists.** The status flip happens here,
+   **Commit the pick on the default branch — before the worktree exists** (local mode; **remote mode**
+   skips this, and commits the pick on the task branch after the proof below). The status flip happens here,
    not in the worktree, and that is the point: written only on the task branch, the task would still read
    `todo` from the main copy — `/tasks`, `/fix-next` and a second `pick` would all see it as free — and a
    task file never committed would not exist in the worktree at all.
@@ -181,9 +210,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      re-running continues from here. Going on would build the worktree without the pick in it, or leave
      the main copy dirty for `close`.
 
-   **Create.** `git worktree add "<path>" -b task/TASK-NNN <default-branch>` — quote the path. It fails →
-   the **fell-back** line quoting git's message, and step 7, which now only cuts the branch in place (the
-   pick is already committed).
+   **Create.** `git worktree add "<path>" -b task/TASK-NNN <default-branch>` — quote the path; **in
+   remote mode cut it from `<upstream>` instead**, the remote's tip, so a stale local default branch
+   cannot put an old base under the task. It fails → the **fell-back** line quoting git's message, and
+   step 7, which now only cuts the branch in place (the pick is already committed in local mode).
+   **A remote-mode fallback** follows the in-place pick in step 7 (status flip, branch cut) and then runs
+   `git push -u <remote> task/TASK-NNN`, so other clones see the task as taken even though it is worked
+   in place. A failed push prints the **not-pushed** line.
 
    **Enter, then prove — before anything is written in the worktree.** A worktree nobody enters is a
    trap, not a spare folder: its branch cannot be checked out in the main copy, so the work would land on
@@ -205,6 +238,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      at launch (a subagent): falling back there is correct.
    - **Match** → print the **in-a-worktree** line and go to step 9. Steps 7 and 8 already ran inside the
      pick commit; running them again in the worktree would only dirty it.
+     **Remote mode** instead does the pick here, in the worktree. Bring in the carried files (above) and
+     an answered root. Flip `status:` to `in-progress`, together with any caller's pick-time lines such as
+     [[fix-next]]'s. Commit exactly those files as `TASK-NNN: pick` on the task branch, then run
+     `git push -u <remote> task/TASK-NNN`. **The pushed branch is how every other session
+     and clone knows the task is taken** — the default branch's copy still reads `todo` until the merge —
+     so a failed push is reported by name: *in progress here, unseen elsewhere until pushed*. The
+     dashboard is not regenerated in the worktree.
 
    **Report lines** — fixed, one per outcome, never a shared line for two:
    - in a worktree: `workspace: in a worktree at <path> on task/TASK-NNN — proved: git rev-parse --show-toplevel = <path>`
@@ -212,7 +252,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - no effect: `workspace: worktree has no effect under integration: single-branch — there is no task branch to put in a worktree; working in place. Neither setting was changed.`
    - invalid value: `workspace: '<value>' is neither in-place nor worktree — treated as in-place for this run; correct it in tasks/.config.yml.`
    - refusal: `worktree-root '<value>' resolves inside this repository (<absolute path>) — refused; worktrees live outside the repository. Working in place.`
-   - unsupported: `workspace: worktree mode does not yet support a default branch that tracks a remote (<default-branch> → <upstream>) — pick and close would commit on it locally and diverge; working in place.`
+   - remote mode: `workspace: remote mode (<default-branch> → <upstream>) — task/TASK-NNN pushed to <remote>; the default branch is left untouched`
+   - ff refused: `workspace: remote mode — git merge --ff-only <upstream> refused (<git message>); merge the incoming changes by hand, then pick again. Nothing else was changed.`
+   - fetch failed: `workspace: remote mode — git fetch <remote> failed (<git message>); tasks other clones have taken may not be visible.`
+   - local ahead: `workspace: remote mode — <default-branch> has <n> commits <upstream> lacks; get them onto <upstream> through a PR, then pick again. Nothing was changed.`
+   - not pushed: `workspace: remote mode — task/TASK-NNN could not be pushed (<git message>); in progress here, unseen elsewhere until it is.`
+   - taken elsewhere: `workspace: task/TASK-NNN already exists on <remote> — another clone has this task; nothing was changed.`
    - wrong tree: `workspace: this session is inside a linked worktree (<toplevel>) — pick from the main copy (<main copy>); nothing was changed.`
    - resumed: `workspace: resumed in the worktree at <path> on task/TASK-NNN — proved: git rev-parse --show-toplevel = <path>`
    - prunable: `workspace: task/TASK-NNN is held by a worktree whose folder is gone (<path>) — not pruned; run git worktree prune if that folder is truly gone, then pick again.`

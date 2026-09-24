@@ -173,7 +173,13 @@ from every project at once to answer a question only occasionally asked.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
    - `inReviewTasks[]` — TASKs with `status: review` (code done, awaiting sign-off)
-   - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked), sorted P0→P1→P2 then created asc
+   - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked, NOT taken — below), sorted P0→P1→P2 then created asc
+   - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
+     remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,
+     another clone's pick shows only as that pushed branch: the default branch's file still reads `todo`
+     until the merge. So count it and show it as in progress, and never offer it as next work. This is
+     derived from branches the repo holds, so it is recomputed every run, never written into the file.
+     Without git there is nothing to derive, and the step is skipped.
    - `byParent` map — for building tree views
 6. **Read `.config.yml`** if present, expose `mode` + provider details so the snapshot header can render `(local)` / `(hybrid: github owner/name)` / `(hybrid: jira PROJ)`.
 
@@ -310,9 +316,9 @@ live, outside the repo, a relative path resolving against the repo root. Absent 
 `in-place`; absent `worktree-root:` means undeclared, and nothing may guess it. Never infer either
 from `git worktree list` — a worktree that exists may be anyone's checkout. Under `single-branch`
 there is no task branch to put in a worktree, so `worktree` has no effect there — `pick` says so on
-every run. Worktree mode also covers **local merges only**: a default branch that tracks a remote is
-refused, because the commits `pick` and `close` make on it would diverge from that remote
-([verbs/pick.md](verbs/pick.md) step 6b). **No verb regenerates `tasks/README.md` inside a task's
+every run. When the default branch tracks a remote, worktree mode runs in **remote mode**: nothing is
+committed on the local default branch, a task is marked taken by its **pushed task branch**, and `close`
+merges through the remote ([verbs/pick.md](verbs/pick.md) step 6b). **No verb regenerates `tasks/README.md` inside a task's
 worktree**; `close` regenerates it on the default branch ([verbs/triage.md](verbs/triage.md)). Detail:
 [verbs/pick.md](verbs/pick.md) step 6b owns creating, entering and proving a worktree;
 [verbs/close.md](verbs/close.md) steps 4b and 8 own merging from one and removing it.
