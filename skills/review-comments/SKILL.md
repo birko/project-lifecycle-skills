@@ -221,10 +221,25 @@ and a line without it cannot be told from one where the question never came up. 
 on one tree emitted the line with and without it, which is the divergence this whole scope exists to
 prevent. Anything actually skipped is then named after it.
 
+**Print the path line in exactly this shape** — the paths as the caller gave them, then two counts:
+
+`Scope:        paths (diff not consulted) — <paths as given>: N of M tracked, S swept in full.`
+
+- **M** is every file the paths name or expand to; **N** of them are tracked; **S** of those were swept —
+  N minus anything the generated/vendored exclusion dropped.
+- **Tracked and swept are separate counts, and "swept in full" attaches only to S.** Measured: one reader
+  wrote *"src/ swept in full"* and then excluded a member of `src/` on the next line, so its header
+  contradicted itself; another kept the two apart. Prescribed rather than left free-form because the
+  scope exists so that two readers produce the same thing, and a header two readers word differently is
+  that failure one line up.
+- **Then one line per file not swept**, each saying why — the only two reasons this scope has:
+
 ```
-Scope:        paths (diff not consulted) — src/mill.ts, src/rate.ts swept in full; 2 of 2 tracked.
-Scope:        paths (diff not consulted) — src/mill.ts swept in full; 1 of 2 tracked.
+Scope:        paths (diff not consulted) — src/mill.ts, src/rate.ts: 2 of 2 tracked, 2 swept in full.
+Scope:        paths (diff not consulted) — src/mill.ts, notes.txt: 1 of 2 tracked, 1 swept in full.
               not tracked, not swept: notes.txt.
+Scope:        paths (diff not consulted) — src/: 2 of 2 tracked, 1 swept in full.
+              excluded as generated: src/schema.gen.ts — declared in .gitattributes.
 ```
 
 ## `--all` — census first, then pages
