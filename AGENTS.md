@@ -222,7 +222,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   the two template lines back, so the ADR bar's hard-to-reverse arm fails.*
 - **Independent review axes are reported side by side and never merged or reranked.** Where a gate runs
   more than one pass answering a *different* question — today the passes `close` step 5b runs, whose own
-  text is the list (it has gained axes twice; a copy here went stale both times) — each keeps its
+  text is the list, because a copy here goes stale the day an axis is added — each keeps its
   own verdict and its own severity ordering, and nothing sorts across them. Merging is tempting because one
   ranked list is easier to read, and that ease is exactly the harm: a convention warning placed above an
   unbuilt requirement reads as the larger problem, and "blocker" from a lint is not the same quantity as

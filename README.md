@@ -741,7 +741,7 @@ quoting the rule it came from, so findings are traceable, never invented. It als
 diff that introduced a new pattern **without** recording it (the register-on-introduce
 catch). It runs at `/tasks close` — the per-task merge gate — **alongside `code-review`**, so
 both fire once per task at the right altitude (not re-run wholesale at `/feature review`, which
-only *confirms* a new pattern got recorded). The two answer different questions:
+only *confirms* a new pattern got recorded). Each pass at that gate answers a different question:
 
 > **`code-review` asks "is this correct?" · `verify-conventions` asks "does this match how we build?" · `verify-intent` asks "did this build what was asked?" · `review-comments` asks "does this comment belong somewhere else?"** — one question per pass, one answer each, never merged into one ranked list.
 

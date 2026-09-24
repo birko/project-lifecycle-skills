@@ -293,8 +293,9 @@ collapses them has no point at which a human could have said no.
 - **A rationale** — why a choice was made, what was rejected → a **decision record** under `docs/adr/`, or
   the owning feature's decision ledger if one exists.
 - **A standing rule** — what the project does now, stated so it governs more than this one line → the
-  **project's own guide**, in the section that covers it: the same file Step 1 found the comment rule in.
-  The line between this and a rationale is *what we do* against *why we chose it*; where the guide carries
+  **project's own guide**, in the section that covers it — the project's `CLAUDE.md` or agent guide. On the
+  universal floor (rung 3) that is still the project's guide, **never** the shipped template the floor was
+  read from: installs are links, so a write there edits the skill for every consumer. The line between this and a rationale is *what we do* against *why we chose it*; where the guide carries
   its own table for routing between its records, route by that table instead of this sentence.
 - **Anything else that is genuinely reference material** → a `docs/` page.
 - **Cannot tell?** Do not guess a destination. Report it held, say the kind is unclear, and let the answer

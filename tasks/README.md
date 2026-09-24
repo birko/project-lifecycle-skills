@@ -13,7 +13,7 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 3     | 8       | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 1     | 8       | 115   |
+| done         | 1     | 8       | 116   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 43× P2 · 11× P3.
@@ -245,3 +245,4 @@ _The other 7 loose tasks are `done` — listed under Completed._
   - [TASK-168](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-168.md) `done` P2 — `review-comments` absent from every skill overview
   - [TASK-169](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-169.md) `done` P2 — the measurement table cannot be re-run from AGENTS.md
   - [TASK-170](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-170.md) `done` P3 — an only-copy guide rule has no relocation target
+  - [TASK-172](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-172.md) `done` P2 — three residues from Gate A's re-run: rung-3 relocation target, two counts
