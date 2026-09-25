@@ -34,19 +34,22 @@ half guesses: intake stamps the epic `kind: review-intake`, and this skill reads
 
 Never select new work before establishing that no run is already in flight. A reset session is
 indistinguishable from a fresh one except by what's on disk, so look there: find the task root
-([[tasks]] § Shape detection), then grep `tasks/` for `^status: in-progress` in `TASK-*.md`.
+([[tasks]] § Shape detection), then look in **two places, independently**:
+- grep `tasks/` for `^status: in-progress` in `TASK-*.md`;
+- **under `workspace: worktree`, the task branches too.** List local `task/*` branches
+  (`git branch --list "task/*"`) and read each one's task file with `git show task/TASK-NNN:<task file>`.
+  In remote mode the default branch's copy of an in-progress task still reads `todo`, so the grep alone
+  never finds it. Worse, the pool rule below hides it as taken, and a reset drain would start a second
+  task and abandon the first. A branch copy counts only when it reads **`in-progress`**. A copy parked
+  at `review` or `blocked`, or one reading `done` after a failed merge, is not an active run.
 
-For each hit, read the file. **Only resume tasks this skill owns** — they carry `picked-by: fix-next`
+For each hit, read the file — **the branch copy (`git show task/TASK-NNN:<task file>`) for a hit found on a branch**, since in remote mode the default branch's copy carries none of this. **Only resume tasks this skill owns** — they carry `picked-by: fix-next`
 in frontmatter and a `## Progress log` section. Anything else that is `in-progress` is a human's work
 in flight: leave it alone, don't count it, don't report it as blocking you.
 
 If you find a skill-owned in-progress task:
 
-1. **Under `workspace: worktree`, also look on the task branches.** In remote mode, the default branch's
-   copy of an in-progress task still reads `todo`, so the grep above misses it. List local `task/*`
-   branches (`git branch --list "task/*"`) and read each one's task file with
-   `git show task/TASK-NNN:<task file>`. A copy carrying `picked-by: fix-next` is this skill's run.
-   **Resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
+1. **Under `workspace: worktree`, resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
    resume (locate, enter, prove). Only the first log line rode in the pick commit, and every later line is on
    the task branch. **Any stop in that resume stops this run too**: report its line, and do not pick a
    second task. Run step 2's reconciliation below in the tree you are now in, not the main copy.

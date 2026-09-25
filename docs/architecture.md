@@ -98,12 +98,17 @@ handoff ──compacts──▶ a conversation into a brief another agent can pi
 Two structural rules hold this together:
 
 - **One engine per question.** `roadmap` owns the cross-tree collection + divergence rules; `feature` and `tasks` render slices of it rather than reimplementing it. `specs verify` owns the staleness definition that `roadmap` calls.
+- **One owner for moving into a worktree.** Under `workspace: worktree`, a task runs in its own git worktree
+  outside the repository, under the declared `worktree-root:`. `tasks` `pick` step 6b is the single owner
+  of creating, entering and proving a worktree, and of resuming into one. `close`, `fix-next` and drill
+  cleanup (`populate-tests`) go through it rather than restating it. `close` owns merging from a worktree
+  and removing it, in local mode or in remote mode, where the default branch tracks a remote and nothing is
+  committed on it.
 - **Layer parity.** `new-project` and `adopt-project` must be extended together — one creates the universal layer, the other reconciles it into an existing repo. Extending only the scaffolder strands every project already using the skills.
 
 ## This repo's own lifecycle artifacts
 
-`docs/BRIEF.md` (verbatim ground truth) · `docs/features/` (empty by design — current work is
-task-only) · `docs/specs/` (seeded empty; filled at EPIC-001 / STORY-008) · `docs/glossary.md`
+`docs/BRIEF.md` (verbatim ground truth) · `docs/features/` (stakeholder-facing features, from FEATURE-001 on) · `docs/specs/` (seeded empty; filled at EPIC-001 / STORY-008) · `docs/glossary.md`
 and `docs/adr/` (both arrived with [[domain]] at STORY-003; the layer's two **lazy** rows, written on first
 real content rather than scaffolded) · `tasks/` (EPIC-001 and its stories) · `CHANGELOG.md`.
 

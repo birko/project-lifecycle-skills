@@ -76,8 +76,7 @@ different source of work.
 
    **`FIELD-*` numbers tree-wide instead, because it has no pass to number within.** Field reports arrive
    one at a time over months, not as a batch, so there is no epic or pass to scope a counter to — take the
-   current max `FIELD-NNN` over the `findings:` lists of every copy of the task tree (this one, every local
-   branch, every other worktree — [SKILL.md § ID generation](../SKILL.md#id-generation)) and increment,
+   current max `FIELD-NNN` over the `findings:` lists of every copy of the task tree, as [SKILL.md § ID generation](../SKILL.md#id-generation) names them) and increment,
    zero-padded to three digits. Scoping it to an epic would restart the count in each one and collide the moment two field
    defects landed under different parents.
 

@@ -70,9 +70,8 @@ Interactive scaffold of a new task tree node.
    - Assignee: human / **ai** (default) / `<specific-agent-name>`
 
 6. **Generate ID**:
-   - Take the max for the requested type over **every copy of the tree** — this one, every local branch,
-     and every other registered worktree — exactly as [SKILL.md § ID generation](../SKILL.md#id-generation)
-     states; then increment and zero-pad to 3 digits.
+   - Take the max for the requested type over **every copy of the tree**, as
+     [SKILL.md § ID generation](../SKILL.md#id-generation) names them; then increment and zero-pad to 3 digits.
    - First of a type: `EPIC-001` / `STORY-001` / `TASK-001`.
 
 7. **Compute file path**:

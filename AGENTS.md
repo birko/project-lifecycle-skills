@@ -286,7 +286,22 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **A pushed `task/TASK-NNN` branch means the task is taken, in every clone.** `pick` writes the signal in
   remote mode, and [[tasks]]' Collection pass, `pick` and [[fix-next]] read it, recomputed from the branches,
   never stored. Detail: [[tasks]] § *Collection pass*. Record: FEATURE-001 D25.
-- **A format one skill reads is a contract the writing skill must state too**, and where the contract is a **flag**, the lint enforces it (check 4: every flag passed to a skill verb in `skills/` must name a flag the receiving verb declares — **every** flag on the invocation, and arguments may sit between the verb and the flag, so `/tasks move <ids> --to` and the `--no-plan` in `/tasks new task --from-feature FEATURE-NNN --no-plan` are both checked. Existence only, never semantics, and matched **anchored**, so `--unattend` does not satisfy a receiver declaring `--unattended`. The narrower `/skill verb --flag` form this sentence used to describe left 8 of 39 real invocations unchecked while still claiming enforcement). When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
+- **Remote mode is derived, not declared — and that passes the determined/consistent test.** Under
+  `workspace: worktree`, whether the default branch tracks a remote (`<default>@{upstream}`) decides whether
+  `pick` and `close` may commit on it, and it is recomputed every run. The upstream **determines** the one fact
+  the behaviour turns on: a local commit on a tracked default branch diverges from the remote the moment a PR
+  merges there. It does not have to determine the merge policy. Whether a remote has pull requests at all is
+  settled by attempting, never by inference, and an unclear case stops. Detail: `skills/tasks/verbs/pick.md`
+  step 6b and `close.md` step 8. Record: FEATURE-001 D23, D25–D29.
+- **Never force, prune or delete what this run did not create.** Worktree and branch removal in `pick`, `close`
+  and drill cleanup uses `git worktree remove` and `git branch -d`, never `--force` or `-D`, and never
+  `git worktree prune`. A refusal is reported with the path and the outstanding commands, because what a
+  refusal protects (uncommitted work, a hand-made checkout, drill evidence) is exactly what forcing destroys.
+  Each site restates it as a one-line invariant, which is allowed. Record: FEATURE-001 D8, D21.
+- **A format one skill reads is a contract the writing skill must state too**, and where the contract is a **flag**, the lint enforces it (check 4: every flag passed to a skill verb in `skills/` must name a flag the receiving verb declares — **every** flag on the invocation, and arguments may sit between the verb and the flag, so `/tasks move <ids> --to` and the `--no-plan` in `/tasks new task --from-feature FEATURE-NNN --no-plan` are both checked. Existence only, never semantics, and matched **anchored**, so `--unattend` does not satisfy a receiver declaring `--unattended`. The narrower `/skill verb --flag` form this sentence used to describe left 8 of 39 real invocations unchecked while still claiming enforcement). When a skill parses another's output, both sides record the shape — today `/specs regen` attributes a commit to the task whose id **leads the commit subject** (an id further along the subject, or anywhere in the body, is a cross-reference), so `/tasks close` says that where it composes the message. Two further commits follow from it under
+  `workspace: worktree`: `pick`'s **`TASK-NNN: pick`**, which leads with the id on purpose because it touches
+  only the task tree, and `close`'s **`chore: dashboard and rollups after TASK-NNN`**, which deliberately does
+  not lead with it, so no behaviour is attributed to a refresh. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing.
 - **A layer artifact that would lie when empty is declared `(lazy)`, and nothing creates it.** Most of the
   universal layer is created on sight, so the exception needs saying: where an empty instance would make a
   **claim** rather than hold a place — an empty `docs/glossary.md` asserts the vocabulary was examined and
@@ -492,6 +507,12 @@ stay byte-identical; TASK-146 makes the lint enforce it.*
     TASK-018 that were *lossy summaries* of fuller records already on those task files, plus a
     verification-debt count that said "9" while `EPIC.md` said "seven". Two hand-written copies of one
     non-derivable fact, disagreeing. Deleting the copies lost nothing.
+  - **Two exceptions to "run the owning verb", both from FEATURE-001.** `/tasks triage` never writes
+    `tasks/README.md` inside a task's linked worktree, whichever verb chained it, because every task branch
+    committing its own timestamped dashboard is a conflict per parallel task. And in remote mode `close`
+    commits **no** generated file on the default branch (D26), so the shared dashboard and rollups stay stale
+    until a person runs the owning verbs and lands the result through an ordinary PR. Both are the owning
+    verbs' own rules, stated in `triage.md` and `close.md` step 10.
 - **Generated files are owned by their verbs — never hand-edit them.** `docs/features/*/status.md` and `docs/features/README.md` are owned by `/feature status`; `tasks/README.md` by `/tasks triage`; `docs/specs/*.md` by `/specs regen` (only `.map.yml` is hand-edited). "Keep it current" means *run the owning verb*.
 - **Status changes go through their verbs, never hand-edits.** Hand-flipping `status: done` skips the gates that make the status trustworthy. **Placement is the same, as of `/tasks move`:** a task's location and its `parent:` field are two records of one fact, so they change together or they disagree — and a move has to roll up the parents on *both* sides, which a hand-edit never does. Moving a file and editing `parent:` by hand is the placement equivalent of hand-flipping a status.
 - To see where things stand: `/tasks` (feature-aware snapshot) or `/roadmap` (full epic to feature to task view plus a divergence audit).

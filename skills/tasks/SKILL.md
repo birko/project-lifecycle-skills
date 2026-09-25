@@ -172,7 +172,7 @@ from every project at once to answer a question only occasionally asked.
      this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
-   - `inReviewTasks[]` — TASKs with `status: review` (code done, awaiting sign-off)
+   - `inReviewTasks[]` — TASKs with `status: review` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `review` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` in remote mode), and the debt would otherwise be invisible.
    - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked, NOT taken — below), sorted P0→P1→P2 then created asc
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,

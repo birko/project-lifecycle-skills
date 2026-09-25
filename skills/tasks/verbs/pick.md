@@ -23,7 +23,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      [[feature]]'s `/feature pick` hands off once a feature is decomposed)
    - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5
 
-2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` — code
+2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `review` lives on its task branch) — code
    complete, sign-off pending — and report them **before** the candidate list. They are deliberately
    **not** candidates (the `--status todo` default is right: a task awaiting sign-off is not work to
    start), so the job here is to *surface* the debt, never to offer unfinished work as new work.
@@ -52,7 +52,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    [Collection pass](../SKILL.md#collection-pass) counts as taken** (its branch exists locally or on a
    remote — another session or clone has it). Print them under the list —
    `taken (hidden): TASK-NNN (<local | remote/<name>>), …` — because a stale branch hides a task silently
-   otherwise. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
+   otherwise. **A local branch that a worktree here holds, and whose own copy reads `in-progress`**
+   (`git show task/TASK-NNN:<task file>`), is work in progress on this machine, not another clone's. Print
+   it apart: `in progress on this machine: TASK-NNN at <worktree path> — resume with /tasks pick TASK-NNN
+   (check no other session is working in it)`. Picking it by id takes step 6b's resume row. A worktree here
+   may belong to another session, so the line invites a resume and never assumes one. A branch copy reading
+   `review` belongs to 2b's verification debt, not to this line. In remote mode this matters most: the
+   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
    ```
@@ -145,10 +151,14 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    **Check — every condition before anything is written or created.** Each failure prints its line and
    **stops** unless it says otherwise. None is worked around, and nothing is ever pruned, forced or
    deleted that this run did not just create.
-   - **Run from the main copy.** `git rev-parse --git-dir` differing from `--git-common-dir` means this
+   - **Run from the main copy.** `git rev-parse --path-format=absolute --git-dir` differing from
+     `git rev-parse --path-format=absolute --git-common-dir` means this
      session is inside a linked worktree — perhaps another task's. Stop with the **wrong-tree** line:
      every path below would be computed from the wrong tree, and the pick would land on another task's
      branch.
+     **Both sides absolute, always.** Without `--path-format=absolute`, git prints one path absolute and
+     the other relative when run from a subfolder (`C:/…/.git` against `../.git`), so the plain comparison
+     reports a linked worktree in the main copy.
    - **Local or remote mode.** `git rev-parse --abbrev-ref <default-branch>@{upstream}` decides; recompute
      it every run, never remember it. It fails → **local mode**, everything below as written. It names an
      upstream → **remote mode**. Nothing may be committed on the local default branch there, because nobody

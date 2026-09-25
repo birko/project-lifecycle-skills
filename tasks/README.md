@@ -11,9 +11,9 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | planned      | 0     | 4       | —     |
 | todo         | —     | —       | 57    |
 | in-progress  | 4     | 9       | 0     |
-| review       | —     | —       | 0     |
+| review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
-| done         | 1     | 8       | 127   |
+| done         | 1     | 8       | 129   |
 | cancelled    | 0     | 0       | 1     |
 
 `todo` by priority: 1× P1 · 44× P2 · 12× P3.
@@ -21,6 +21,13 @@ _Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 ## In progress now
 
 _None_
+
+## In review
+
+_Code complete, sign-off pending — verification debt; close these before new scope._
+
+- [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list (P1) — manual step unrun
+- [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing (P2) — manual step unrun
 
 ## Tree
 
@@ -155,8 +162,8 @@ _None_
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
-- **EPIC-005** Task worktrees — in-progress (11/11 tasks done)
-  - STORY-021 Run a task in its own checkout — in-progress (11/11)
+- **EPIC-005** Task worktrees — in-progress (13/15 tasks done)
+  - STORY-021 Run a task in its own checkout — in-progress (13/15)
     - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config
     - [ ] [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) *(review)* `/tasks pick` creates the task worktree, asking for the root when undeclared
     - [x] TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot
@@ -168,6 +175,10 @@ _None_
     - [x] TASK-183 Worktree mode for projects whose default branch tracks a remote
     - [x] TASK-184 Tasks created in parallel worktrees can mint the same id
     - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too
+    - [ ] [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list *(review)*
+    - [x] TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder
+    - [ ] [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing *(review)*
+    - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner
 
 ## Loose tasks
 

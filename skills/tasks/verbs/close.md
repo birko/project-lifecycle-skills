@@ -70,7 +70,8 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    5–7 commit on the task branch, and a close that fails must leave that branch untouched. Work from
    evidence, recomputed every run — never from memory of where `pick` put things:
    - **In a linked worktree** means `git rev-parse --path-format=absolute --git-dir` differs from
-     `--git-common-dir`. **The main copy** is the first `worktree` entry of `git worktree list --porcelain` —
+     `git rev-parse --path-format=absolute --git-common-dir`. Both sides must be absolute: from a subfolder, the
+     plain forms print one path absolute and the other relative. **The main copy** is the first `worktree` entry of `git worktree list --porcelain` —
      git always lists it first, whereas the parent of the common dir is wrong under `--separate-git-dir`.
 
    | Where | Do |
@@ -313,7 +314,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
 
 8. **Merge gate — the integration moment** (executes the step 5c decision; runs only when the close commit landed on a `task/TASK-NNN` branch and `--no-pr` not passed):
    - **STOP HERE.** Do not silently advance to step 9 — the close commit is on the task branch, the work is not yet on the default branch, and continuing on the task branch bakes a stale branch-state into the chore refreshes that follow. This step is what makes `done` mean *merged* (a precise state, not "committed somewhere").
-   - **5c said merge now:** push if needed, open the PR if one doesn't exist, merge with the project's preferred strategy (default: `--no-ff` so the branch identity is preserved in history; check the project's commit log to confirm), and `git branch -d task/TASK-NNN`. Check out the default branch. Subsequent steps (hybrid remote close, dashboard regen, rollup hints) now run on the default branch — chore refreshes land on `main`, not on a task branch.
+   - **5c said merge now:** push if needed, open the PR if one doesn't exist, merge with the project's preferred strategy (default: `--no-ff` so the branch identity is preserved in history; check the project's commit log to confirm), and `git branch -d task/TASK-NNN`. **If `task/TASK-NNN` also exists on the remote** (a remote-mode pick that fell back to in place pushed it, as the taken signal), delete it there too (`git push <remote> --delete task/TASK-NNN`) unless the host already did, and say which. Left behind, it builds up on the remote. Check out the default branch. Subsequent steps (hybrid remote close, dashboard regen, rollup hints) now run on the default branch — chore refreshes land on `main`, not on a task branch.
      - **The merge failing is a failed close**, not a footnote: on conflict or a rejected push, stop, report it, and leave the task at its pre-close status — don't leave a file reading `done` over a merge that never landed.
    - **5c said defer:** don't merge. The task is already `blocked` (step 6) with the reason recorded, so no state here claims otherwise. Push the branch and open/update the PR if the project uses one — parked work belongs on the remote, not only on a local branch. Then note the resume path: `/tasks unblock {{ID}}` + re-run `close` once the blocker clears; it re-enters here and merges.
    - **A worktree close (step 4b)** replaces the "check out the default branch" mechanics above — that
@@ -429,7 +430,6 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - pull failed: `workspace: remote mode — task/TASK-NNN merged on <remote>, but git pull --ff-only failed (<git message>); TASK-NNN is done; the worktree and branches are kept — fix the main copy, then re-close: it sees the merge landed and runs only the tail.`
     - failed close: `close failed: the main copy at <main> is <not clean (<n> paths) | on <branch>, not <default>> — nothing was written; TASK-NNN stays <status>; worktree and branch untouched.`
     - wrong tree: `close: this session is in the worktree for <branch> (<toplevel>), not task/TASK-NNN — nothing was changed.`
-    - held elsewhere: `close: task/TASK-NNN is checked out in the worktree at <path> — close it from there; nothing was changed.`
     - clean tail: `workspace: left the worktree — proved: git rev-parse --show-toplevel = <main>; merged task/TASK-NNN into <default>; removed <path>; deleted task/TASK-NNN`
     - could not leave: `workspace: could not leave the worktree (expected <main>, got <toplevel>); merged from it via git -C — outstanding: cd "<main>" && git worktree remove "<path>" && git branch -d task/TASK-NNN`
     - not removed: `workspace: merged; <path> not removed — <git message | uncommitted: <paths> | not a worktree this skill made>; task/TASK-NNN kept — outstanding: git worktree remove "<path>" && git branch -d task/TASK-NNN`
