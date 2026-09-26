@@ -106,6 +106,26 @@ defect two of those bullets exist to prevent.
 ### Framework / stack
 - **Markdown + YAML frontmatter only.** A skill is prose an agent reads; it has no runtime, no build step, and no dependencies. Don't introduce a language, package manager, or generator without an ADR.
 - **Frontmatter is mandatory** on every `SKILL.md`: `name` (matching the folder) and `description` (carrying the trigger phrases users actually type, including the Slovak ones this team uses).
+- **Frontmatter must load in pi, which is stricter than Claude Code.** pi parses it with a real YAML
+  parser and validates the fields (`@earendil-works/pi-coding-agent`, `dist/core/skills.js`). Claude Code
+  accepts all of the cases below, so a skill that works here can quietly go missing in pi. Measured on
+  TASK-190: seven skills broke these rules and all of them passed CI, because the lint only checked that
+  the lines existed.
+
+  | Rule | What pi does if it is broken | Lint |
+  |---|---|---|
+  | An unquoted `description:` contains no `: ` — reword it (` — ` works), or quote the whole value | YAML parse error, and the skill is **not loaded** | check 1 |
+  | An unquoted `description:` contains no ` #` | nothing visible: YAML reads a comment, and the description is **silently cut off** there | check 1 |
+  | `description` is present and not empty | skill not loaded | check 1 |
+  | `description` is at most **1024 characters** | warning under `[Skill conflicts]` on every start | check 1 |
+  | `name` matches the folder, is at most **64 characters**, uses only `a-z`, `0-9` and `-`, with no leading, trailing or doubled hyphen | warning | check 1 |
+  | A skill name exists in only one of `skills/` and `skills-pi/` | both trees link into pi's single root, so the second can't be linked; pi drops the second of two skills with the same name | check 1 |
+
+  **Keep the description on a budget, not at the limit.** Include: what the skill does, when to use it
+  (the trigger phrases), and which skill it should not be confused with. Anything the body already says
+  (behaviour, guarantees, edge cases) does not belong in the description, because the body is loaded
+  anyway once the skill is chosen. Prefer ` — ` to `:` inside the description, and keep it on one line
+  so the lint can read it.
 - **Cross-skill references use `[[skill-name]]`**, never a bare path — the link is the contract. **CI resolves it inside `skills/` and `skills-pi/`, and nowhere else.** That scope is deliberate, not an oversight:
   - **Elsewhere the form is documentation, not a contract.** `tasks/`, `docs/` and this file all use it for readability, and a broken one there costs a reader one lookup rather than breaking a skill at runtime. Write it freely; do not rely on it being checked.
   - **Widening the check was measured and rejected.** Outside the two trees: **170 wikilinks, 24 unresolved, and every one of the 24 is a syntax placeholder** — `[[wikilink]]`, `[[link]]`, `[[skill-name]]`, `[[name]]`, `[[not-a-skill]]` — written by prose that has to name the syntax to discuss it. Zero are genuine broken references. A check at 24:0 gets muted, and a muted check is worth what an unrun one is. (First measured at 19:1 when `[[domain]]` was still a forward reference; that one resolved when the skill shipped, taking the ratio to 24:0.)
@@ -388,7 +408,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   copy — MSYS `ln -s` copies unless `winsymlinks` is set, and the repo's Windows installer creates
   junctions anyway, so the fallback tests the real artifact rather than a POSIX stand-in. Keep the
   POSIX path first so CI exercises it, and keep the fallback guarded on `cygpath` being present.
-- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, **47** cases over a throwaway fixture, run by CI *before* the lint. (The count has moved six times — 16 → 25 → 36 → 40 → 43 → 47 — which is TASK-029's whole argument: nothing records what any of them pin, so a case deleted in a refactor is indistinguishable from one that never existed.) It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, **63** cases over a throwaway fixture, run by CI *before* the lint. (The count has moved seven times — 16 → 25 → 36 → 40 → 43 → 47 → 63 — which is TASK-029's whole argument: nothing records what any of them pin, so a case deleted in a refactor is indistinguishable from one that never existed.) It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`. **What a drill is, and when it is worth its cost, is `skills/populate-tests/SKILL.md` § *The cold drill*** — this repo's product is prose an agent reads, so the reader must be **cold** and the brief must withhold the plan's expected answer, or the test degrades into a confirmation. That section also owns the fixture rule that bites here constantly: **a change justified by naming a repo cannot be drilled on that repo**, and this repo's habit of measured justification disqualifies fixtures faster than any other. Pointer, not a second copy.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 - **A drill record names how its runner was obtained** — the command, the working directory, and the result of the coldness check. *Cold* is two conditions, not one: the brief withholds the change, **and** the runner's context does not already hold the subject. The second is not controlled by the brief and is not closed by changing repository — this repo's own skills are installed at user level, so every agent on the machine holds them. `skills/populate-tests/SKILL.md` § *Acquiring a cold runner* owns the channels, the confirmation signals and the measured instance; this is the pointer. Recording only the brief is what made TASK-079's first two readers permanently unclassifiable.

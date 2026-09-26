@@ -89,6 +89,15 @@ case_fails_saying() { # name, mutation, substring that MUST appear on a FAILING 
 }
 
 m_noop()      { :; }
+# check 1 — description as YAML (TASK-190). Each fails a real YAML parser; the quoted one must not.
+desc_is()     { printf -- '---\nname: beta\ndescription: %s\n---\n\nBeta.\n' "$2" > "$1/skills/beta/SKILL.md"; }
+m_desccolon() { desc_is "$1" 'Do a thing: then another'; }
+m_deschash()  { desc_is "$1" 'Review PR #N'; }
+m_desclong()  { desc_is "$1" "$(printf '%01025d' 0)"; }
+m_nameshape() { mv "$1/skills/beta" "$1/skills/Beta_2"; sed -i 's/^name: beta/name: Beta_2/' "$1/skills/Beta_2/SKILL.md"; sed -i 's/\[\[beta\]\]/[[Beta_2]]/' "$1/skills/alpha/SKILL.md"; }
+m_namedash()  { mv "$1/skills/beta" "$1/skills/be--ta"; sed -i 's/^name: beta/name: be--ta/' "$1/skills/be--ta/SKILL.md"; sed -i 's/\[\[beta\]\]/[[be--ta]]/' "$1/skills/alpha/SKILL.md"; }
+m_nametwice() { mkdir -p "$1/skills-pi/beta"; cp "$1/skills/beta/SKILL.md" "$1/skills-pi/beta/"; }
+m_descquote() { desc_is "$1" '"Do a thing: then #N"'; }
 # check 4 — cross-skill flags. alpha's router tells you to run beta's verb with a flag; the pair of
 # mutations is the point: the first must fail, the second must not, or the check is either blind or
 # indiscriminate.
@@ -225,6 +234,13 @@ case_is "unknown wikilink"                 1 m_bogus
 case_is "name does not match folder"       1 m_mismatch
 case_is "name only inside a fenced block"  1 m_fencename
 case_is "missing description"              1 m_nodesc
+case_is "unquoted description with ': '"   1 m_desccolon
+case_is "unquoted description with ' #'"   1 m_deschash
+case_is "description over 1024 chars"      1 m_desclong
+case_is "quoted description with ': ' #"   0 m_descquote
+case_is "name with uppercase/underscore"   1 m_nameshape
+case_is "name with a doubled hyphen"       1 m_namedash
+case_is "same name in both trees"          1 m_nametwice
 case_is "skill folder with no SKILL.md"    1 m_noskill
 case_is "broken link in a companion doc"   1 m_badlink
 case_is "a whole skill tree is missing"    1 m_notree

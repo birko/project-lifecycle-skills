@@ -62,6 +62,10 @@ n_skills=$(printf '%s' "$skill_dirs" | grep -c .)
 skill_names=$(printf '%s\n' "$skill_dirs" | sed 's|.*/||' | sort -u)
 
 printf '== 1. frontmatter ==\n'
+# The rules below, and what pi does when each is broken: AGENTS.md § Framework / stack.
+for dup in $(printf '%s\n' "$skill_dirs" | sed 's|.*/||' | sort | uniq -d); do
+  err "skill '$dup' exists in both skills/ and skills-pi/ — names must be unique across trees"
+done
 for d in $skill_dirs; do
   f="$d/SKILL.md"; base=$(basename "$d")
   [ -f "$f" ] || { err "$d has no SKILL.md"; continue; }
@@ -69,6 +73,16 @@ for d in $skill_dirs; do
   [ -n "$fm" ] || { err "$f does not start with frontmatter"; continue; }
   name=$(printf '%s\n' "$fm" | grep -m1 '^name:' | sed 's/^name:[[:space:]]*//')
   printf '%s\n' "$fm" | grep -q '^description:' || err "$f has no description:"
+  desc=$(printf '%s\n' "$fm" | grep -m1 '^description:' | sed 's/^description:[[:space:]]*//')
+  case "$desc" in
+    \"*|\'*|'|'*|'>'*) ;;
+    *': '*) err "$f description is unquoted and contains ': ' — invalid YAML" ;;
+    *' #'*) err "$f description is unquoted and contains ' #' — YAML truncates it there" ;;
+  esac
+  # Under a C locale ${#desc} counts bytes, never fewer than pi's characters: stricter, never looser.
+  [ "${#desc}" -le 1024 ] || err "$f description is ${#desc} characters — the limit is 1024"
+  case "$name" in *[!a-z0-9-]*|-*|*-|*--*) err "$f name '$name' must be a-z, 0-9 and single inner hyphens" ;; esac
+  [ "${#name}" -le 64 ] || err "$f name is ${#name} characters — the limit is 64"
   if [ -z "$name" ]; then err "$f has no name:"
   elif [ "$name" != "$base" ]; then err "$f name '$name' does not match folder '$base'"; fi
 done

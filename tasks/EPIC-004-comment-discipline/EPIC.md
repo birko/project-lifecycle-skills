@@ -1,7 +1,7 @@
 ---
 id: EPIC-004
 # status — one of: planned, in-progress, done, cancelled
-status: done
+status: in-progress
 created: 2026-09-18
 owner: František Bereň
 affects: skills/, docs/, AGENTS.md

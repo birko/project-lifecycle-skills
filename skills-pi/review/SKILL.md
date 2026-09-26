@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a pull request's cumulative diff at the merge gate. Use when the user says "/review", "review the PR", "review PR #N", or when [[tasks]] close (the PR-per-task merge gate) calls for the PR-level pass after the working-tree [[code-review]] + [[verify-conventions]] have run. Complements the working-tree reviews rather than re-running them.
+description: Review a pull request's cumulative diff at the merge gate. Use when the user says "/review", "review the PR", "review PR 123", or when [[tasks]] close (the PR-per-task merge gate) calls for the PR-level pass after the working-tree [[code-review]] + [[verify-conventions]] have run. Complements the working-tree reviews rather than re-running them.
 ---
 
 # review
