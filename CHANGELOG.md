@@ -11,7 +11,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 ## [Unreleased]
 
 _No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
-36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, and later on 2026-09-24 across the 10 after that._
+36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, and 2026-09-26 across the 6 after that._
 
 ### Added
 
@@ -106,5 +106,9 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **On a single-branch project, `close` asked for a `pr:` SHA that can't exist.** It now leaves `pr:` null and relies on the commit subject for attribution.
 - **The dashboard's todo-by-priority line dropped priorities outside P0–P2.** It now renders one bucket per priority that actually exists.
 - **`.env.*` in the seeded `.gitignore` also ignored `.env.example`**, so the template was created and then never committed.
+- **pi skipped three skills and warned about three more on every start.** `adopt-project`, `fix-next` and `verify-intent` had a `: ` in their description, which pi's YAML parser rejects, so pi never loaded them. `new-project`, `review-comments` and `verify-conventions` were over pi's 1024-character description limit. The `review` stub for pi had a ` #` that silently cut its description short. All seven are fixed, and the repo's CI lint now enforces pi's frontmatter rules so this can't come back.
+- **On a project that merges through a remote, a task running in a worktree looked unowned.** `fix-next` couldn't find its own interrupted run to resume, and `pick` didn't offer to resume the task. Both now read the task branch.
+- **A task parked at `review` inside its worktree didn't show up as awaiting sign-off.** The dashboard and `/tasks` now read its status from the task branch.
+- **Closing a task in place left its pushed task branch on the remote**, where every other clone kept reading the task as taken. `close` now deletes it.
 
 [Unreleased]: https://github.com/birko/project-lifecycle-skills/commits/main
