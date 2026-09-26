@@ -3,7 +3,7 @@ id: TASK-118
 parent: STORY-004
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-08
@@ -56,3 +56,5 @@ Two consequences, and the second is the one that is easy to miss:
 - [ ] Grill a plan containing at least one question answerable only by looking at the environment.
       Expected: it is not asked of you, its answer lands in the table, and the rest of the round proceeds
       without waiting for it.
+
+> Merged into TASK-117 on 2026-09-26 — a research question not blocking its round is part of designing the frontier rounds. Acceptance criteria, findings and test plan copied into TASK-117.

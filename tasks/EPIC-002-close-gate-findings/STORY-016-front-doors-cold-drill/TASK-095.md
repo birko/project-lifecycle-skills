@@ -3,7 +3,7 @@ id: TASK-095
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-01
@@ -102,3 +102,5 @@ ambiguity but not for a **shallow** answer, which is a different thing from an a
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-095` — leave empty until then._
+
+> Merged into TASK-028 on 2026-09-26 — both are INFER.md's covered / thin / skip arithmetic. Acceptance criteria, findings and test plan copied into TASK-028.

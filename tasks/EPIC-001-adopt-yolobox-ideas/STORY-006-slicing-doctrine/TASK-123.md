@@ -3,7 +3,7 @@ id: TASK-123
 parent: STORY-006
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-09
@@ -73,3 +73,5 @@ an assumption.
 - [ ] Take a real wide change — a shared rename in this repo's own skills would do — and sequence it by
       the rule without executing it. Expected: the emitted task set has an expand nothing depends on,
       batches that each depend only on the expand, and a contract depending on all of them.
+
+> Merged into TASK-122 on 2026-09-26 — wide refactors are the doctrine's own named exception; the doctrine is incomplete without it. Acceptance criteria, findings and test plan copied into TASK-122.

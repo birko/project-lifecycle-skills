@@ -3,7 +3,7 @@ id: TASK-150
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: unassigned
 created: 2026-09-19
@@ -66,3 +66,5 @@ be part of why it reads as under-specified. Check whether that is deliberate bef
 
 - [ ] Re-run the adopter on the `drill-138` fixture (resettable with `git reset --hard && git clean -fd`). Expected: it takes the row's single reading, and if it creates or offers the file, the content asserts nothing about `feedsync`'s run mode, which is `unknown`.
 - [ ] Run it twice and compare. Expected: the same decision both times. The defect this task exists to fix is precisely two runs differing, so one run proves nothing.
+
+> Merged into TASK-099 on 2026-09-26 — all three are LAYER.md row-wording fixes with the same new-project/adopt-project parity edit. Acceptance criteria, findings and test plan copied into TASK-099.

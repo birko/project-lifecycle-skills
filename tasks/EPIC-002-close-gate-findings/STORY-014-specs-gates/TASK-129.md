@@ -3,7 +3,7 @@ id: TASK-129
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: agent
 created: 2026-09-16
@@ -76,3 +76,5 @@ thirty capabilities genuinely should reconsider its granularity, and nothing her
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-129` — leave empty until then._
+
+> Merged into TASK-128 on 2026-09-26 — all three are /specs init step 4 remedies and area-granularity rules for unmapped or oddly-sized sources. Acceptance criteria, findings and test plan copied into TASK-128.

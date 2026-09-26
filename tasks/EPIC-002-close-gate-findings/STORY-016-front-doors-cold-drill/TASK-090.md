@@ -3,7 +3,7 @@ id: TASK-090
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-01
@@ -63,3 +63,5 @@ inventing a nineteenth row for something that belongs in the report's header.
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-090` — leave empty until then._
+
+> Merged into TASK-065 on 2026-09-26 — both are the adopt-project survey not knowing whether a run is a first adoption or a re-run. Acceptance criteria, findings and test plan copied into TASK-065.

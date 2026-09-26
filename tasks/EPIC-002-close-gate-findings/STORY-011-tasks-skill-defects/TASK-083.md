@@ -3,7 +3,7 @@ id: TASK-083
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: agent
 created: 2026-08-31
@@ -62,3 +62,5 @@ structure. A drill would add nothing a careful read does not.
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-083` — leave empty until then._
+
+> Merged into TASK-135 on 2026-09-26 — both edit skills/fix-next/SKILL.md. Acceptance criteria, findings and test plan copied into TASK-135.

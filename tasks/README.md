@@ -9,14 +9,14 @@ _Generated 2026-09-26. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 58    |
+| todo         | —     | —       | 39    |
 | in-progress  | 5     | 9       | 0     |
 | review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 8       | 130   |
-| cancelled    | 0     | 0       | 1     |
+| cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 44× P2 · 13× P3.
+`todo` by priority: 1× P1 · 33× P2 · 5× P3.
 
 ## In progress now
 
@@ -38,14 +38,14 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/6)
     - [ ] [TASK-114](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-114.md) The question table — the shape every other task in this story reads
     - [ ] [TASK-115](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-115.md) `/feature new` writes the frontier it could not reach, instead of losing it
-    - [ ] [TASK-116](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-116.md) `/feature pick` gains one branch: open questions outstanding, resume at the frontier
+    - ~~TASK-116 `/feature pick` gains one branch: open questions outstanding, resume at the frontier~~ → merged into TASK-115
     - [ ] [TASK-117](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-117.md) `grill-me` switches from one question at a time to frontier rounds
-    - [ ] [TASK-118](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-118.md) `research` becomes a question type that dispatches a sub-agent, not a skill of its own
-    - [ ] [TASK-119](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-119.md) `feature` reconciles an `idea.md` written before the question table existed
+    - ~~TASK-118 `research` becomes a question type that dispatches a sub-agent, not a skill of its own~~ → merged into TASK-117
+    - ~~TASK-119 `feature` reconciles an `idea.md` written before the question table existed~~ → merged into TASK-114
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
   - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/4)
     - [ ] [TASK-122](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-122.md) The slicing doctrine — what "atomic and independently completable" actually means
-    - [ ] [TASK-123](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-123.md) Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract
+    - ~~TASK-123 Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract~~ → merged into TASK-122
     - [ ] [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?"
     - [ ] [TASK-125](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-125.md) A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/4)
@@ -59,7 +59,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-103 Four capability areas are named for the product's shape rather than a consumer's need
     - [x] TASK-104 Merge the three diff-review areas into one, because that is how they are used
     - [ ] [TASK-105](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-105.md) `change-review` and `work-tracking` describe the same gate in near-identical words
-    - [ ] [TASK-113](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-113.md) Five capabilities a consumer would expect have no area, and one of them is writing the code
+    - ~~TASK-113 Five capabilities a consumer would expect have no area, and one of them is writing the code~~ → merged into TASK-105
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
@@ -77,11 +77,11 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
     - [x] TASK-057 Four summaries that contradict the body they summarise
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
-    - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
+    - ~~TASK-083 `fix-next` step 8 states two different counts of the same event, one sentence apart~~ → merged into TASK-135
     - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
     - [ ] [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) `pick`'s handoff branches on an `assignee:` value no task in the tree has
     - [ ] [TASK-135](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-135.md) `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
-    - [ ] [TASK-180](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-180.md) `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes
+    - ~~TASK-180 `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes~~ → merged into TASK-092
     - [ ] [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) `/tasks pick` step 7's two questions carry no wording and no answer-less path
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
@@ -92,10 +92,10 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-086 Adoption cannot tell its own unlanded writes from the user's work in progress
     - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
     - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced with a question
-    - [ ] [TASK-136](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-136.md) Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently
+    - ~~TASK-136 Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently~~ → merged into TASK-099
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
     - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
-    - [ ] [TASK-150](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-150.md) The `docs/architecture.md` row names a state but no fill action, and the two doors disagree
+    - ~~TASK-150 The `docs/architecture.md` row names a state but no fill action, and the two doors disagree~~ → merged into TASK-099
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
@@ -103,12 +103,12 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
     - [x] TASK-087 A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
-    - [ ] [TASK-088](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-088.md) Nothing says whether one source file may belong to two capability areas
+    - ~~TASK-088 Nothing says whether one source file may belong to two capability areas~~ → merged into TASK-128
     - [ ] [TASK-089](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-089.md) `coverage: unverified` has never once been produced, across three drills
-    - [ ] [TASK-111](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-111.md) regen.md quotes a status-comment format the task template no longer emits
+    - ~~TASK-111 regen.md quotes a status-comment format the task template no longer emits~~ → merged into TASK-105
     - [ ] [TASK-128](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-128.md) Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
-    - [ ] [TASK-129](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-129.md) A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding
-    - [ ] [TASK-134](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-134.md) `/specs init` step 1's meta-root ask has no question text and no unattended path
+    - ~~TASK-129 A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding~~ → merged into TASK-128
+    - ~~TASK-134 `/specs init` step 1's meta-root ask has no question text and no unattended path~~ → merged into TASK-182
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (9/12)
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
@@ -132,19 +132,19 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
     - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
     - [ ] [TASK-072](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-072.md) `populate-tests adopt` cannot wire a harness for a project with no package manager
-    - [ ] [TASK-090](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-090.md) The survey cannot say whether this is a first adoption or a re-run
+    - ~~TASK-090 The survey cannot say whether this is a first adoption or a re-run~~ → merged into TASK-065
     - [x] TASK-091 Two artifact shapes the row definitions do not cover
     - [x] TASK-093 The guide row demands a diff against a section list no surveyed file carries
     - [x] TASK-094 Two survey instructions whose literal reading diverges from their intent
-    - [ ] [TASK-095](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-095.md) "Thinly answered" has one calibration point, and two drills split on it
+    - ~~TASK-095 "Thinly answered" has one calibration point, and two drills split on it~~ → merged into TASK-028
     - [x] TASK-096 A conditional row cannot say what "here" means, or which kind of env var counts
     - [x] TASK-097 `unknown` is the only container for two different situations, and one of them is not ignorance
     - [x] TASK-098 A row prescribes an action and is silent on the case where it is already done
     - [ ] [TASK-099](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-099.md) A row that names two artifacts never says whether the second carries its own state
     - [ ] [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating
-    - [ ] [TASK-101](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-101.md) Two rows read one fact in opposite directions, because "a working runner" names no bar
+    - ~~TASK-101 Two rows read one fact in opposite directions, because "a working runner" names no bar~~ → merged into TASK-072
     - [ ] [TASK-102](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-102.md) Nothing says whether a step-3 fill offer joins step 2's round or comes after it
-    - [ ] [TASK-112](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-112.md) The adopter's report list gained no entry for the `not applicable` state
+    - ~~TASK-112 The adopter's report list gained no entry for the `not applicable` state~~ → merged into TASK-085
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
@@ -159,7 +159,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
-    - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
+    - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~ → merged into TASK-133
     - [ ] [TASK-139](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-139.md) `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
   - **(epic level)**
     - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
@@ -192,7 +192,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
 
 ## Loose tasks
 
-- [ ] [TASK-121](_loose/TASK-121.md) `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice (P2, agent)
+- ~~TASK-121 `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice~~ → merged into TASK-120
 
 _The other 7 loose tasks are `done` — listed under Completed._
 

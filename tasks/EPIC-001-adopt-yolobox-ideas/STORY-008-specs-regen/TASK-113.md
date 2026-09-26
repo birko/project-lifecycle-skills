@@ -3,7 +3,7 @@ id: TASK-113
 parent: STORY-008
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-08
@@ -83,3 +83,5 @@ likely deliberate framing choice on its list**, which is why this task decides r
 - [ ] Give a cold runner the revised area list — acquired by [[populate-tests]] § *Acquiring a cold runner*,
       titles generated from `.map.yml` rather than retyped — and ask only what appears missing. Expected: the
       implementation gap is either covered or its absence is legible from the list without asking anyone.
+
+> Merged into TASK-105 on 2026-09-26 — one specs map / regen.md cleanup pass right before TASK-080. Acceptance criteria, findings and test plan copied into TASK-105.

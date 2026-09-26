@@ -3,7 +3,7 @@ id: TASK-137
 parent: STORY-017
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: agent
 created: 2026-09-17
@@ -76,3 +76,5 @@ filed task. Three defensible readings, no rule.
 - [ ] Re-run TASK-131's drill recipe on a tree with **no** `FIELD-*` id anywhere and a hand-filed defect
       task, with a cold runner, and confirm the report cites a rule for the first id rather than deriving
       one. Then re-run it on a tree that already has `FIELD-001` and confirm the increment still holds.
+
+> Merged into TASK-133 on 2026-09-26 — both are --from-field follow-ups from TASK-131. Acceptance criteria, findings and test plan copied into TASK-133.

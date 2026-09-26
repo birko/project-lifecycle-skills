@@ -3,7 +3,7 @@ id: TASK-134
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: unassigned
 created: 2026-09-17
@@ -65,3 +65,5 @@ with one, per `AGENTS.md` § Testing.
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-134` — leave empty until then._
+
+> Merged into TASK-182 on 2026-09-26 — same defect shape (ask-step with no question text and no answer-less path) under one AGENTS.md rule. Acceptance criteria, findings and test plan copied into TASK-182.

@@ -3,7 +3,7 @@ id: TASK-136
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-17
@@ -73,3 +73,5 @@ the count from 2-vs-1 to 3-vs-2. That is a reason to fix it, not a reason to hav
 - [ ] Grep the five sites and confirm one wording. Then re-walk `LAYER.md:206`'s measured repo shape (a web
       app whose three env vars all have committed defaults) against the adopter's detection list and
       confirm it now reaches `not applicable` rather than reporting a missing template.
+
+> Merged into TASK-099 on 2026-09-26 — all three are LAYER.md row-wording fixes with the same new-project/adopt-project parity edit. Acceptance criteria, findings and test plan copied into TASK-099.

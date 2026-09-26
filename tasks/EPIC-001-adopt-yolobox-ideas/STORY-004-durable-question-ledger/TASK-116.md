@@ -3,7 +3,7 @@ id: TASK-116
 parent: STORY-004
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-08
@@ -49,3 +49,5 @@ second front door is how two doors drift apart.
 
 - [ ] Take the part-way feature TASK-115's test leaves behind, in a fresh session with no memory of it,
       and run `/feature pick`. Expected: it resumes at a question you did not have to find yourself.
+
+> Merged into TASK-115 on 2026-09-26 — new writes the open-question frontier and pick reads it back; writer and reader of one state. Acceptance criteria, findings and test plan copied into TASK-115.

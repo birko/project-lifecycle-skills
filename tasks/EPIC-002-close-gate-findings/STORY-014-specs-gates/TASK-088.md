@@ -3,7 +3,7 @@ id: TASK-088
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: agent
 created: 2026-09-01
@@ -63,3 +63,5 @@ map is where it gets used in anger.
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-088` — leave empty until then._
+
+> Merged into TASK-128 on 2026-09-26 — all three are /specs init step 4 remedies and area-granularity rules for unmapped or oddly-sized sources. Acceptance criteria, findings and test plan copied into TASK-128.

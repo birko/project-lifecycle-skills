@@ -3,7 +3,7 @@ id: TASK-121
 parent: null
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-09
@@ -95,3 +95,5 @@ much of a review is left. It is also not tree hygiene — it is a real capabilit
 unranked**, and `/fix-next` will not see it. That is a known cost, accepted here because the requester
 knows it exists. If more user-requested capabilities arrive, they want an epic of their own rather than
 accumulating loose, which is the failure TASK-040 measured at 17 tasks.
+
+> Merged into TASK-120 on 2026-09-26 — both change pick.md step 9's handoff and 121 depended on 120. Acceptance criteria, findings and test plan copied into TASK-120.

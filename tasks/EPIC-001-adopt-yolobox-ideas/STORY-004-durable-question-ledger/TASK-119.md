@@ -3,7 +3,7 @@ id: TASK-119
 parent: STORY-004
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-08
@@ -71,3 +71,5 @@ rows in `LAYER.md`, and this changes a file's interior, not the inventory.
       Expected: existing prose questions survive, the report distinguishes *already current* from
       *brought up to date*, and a second run reports the first. Withhold all three expectations from any
       cold runner's brief.
+
+> Merged into TASK-114 on 2026-09-26 — the table and the reconcile of older idea.md files ship together; the table alone makes /feature pick report "no open questions" on every existing feature. Acceptance criteria, findings and test plan copied into TASK-114.

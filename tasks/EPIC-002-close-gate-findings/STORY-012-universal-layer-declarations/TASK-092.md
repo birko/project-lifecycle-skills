@@ -10,7 +10,7 @@ created: 2026-09-01
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [CR-035-1, CR-035-2]
+findings: [CR-035-1, CR-035-2, DRILL-173-1, DRILL-173-2]
 pr: null
 github-issue: null
 jira-key: null
@@ -89,6 +89,21 @@ choosing the representation for *declined vs never asked* is this task's call, n
 answer here is a schema-level marker, `mode:` needs it too; if it is a comment convention, the line
 TASK-127 wrote is already that convention and should be named as such rather than left as a one-off.
 
+### Merged in 2026-09-26: TASK-180 — `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes
+
+_Merged because both are tasks/verbs/init.md unattended/re-run paths contradicting a sibling verb. The original file stays, cancelled, at `tasks/EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-180.md`._
+
+Found by TASK-173's re-drill (2026-09-24): a `claude -p` runner executed `skills/tasks/verbs/init.md`
+twice, unattended, on a scratch fixture whose `tasks/.config.yml` already existed with `mode: local`.
+Both findings predate TASK-173 and are unrelated to its change. They are grouped because both are
+`init.md` contradicting a verb it delegates to, and both were resolved by the runner by *choosing*
+which text to obey, which is the defect.
+
+| Id | Where | Contradiction |
+|---|---|---|
+| DRILL-173-1 | `init.md` step 2 vs `new.md` § *Mode detection flow* | Step 2 says: `mode=` absent → run the mode detection flow. `new.md` says that flow *"runs once per project, when `.config.yml` is missing"*. On an existing config with no `mode=` arg, one text says ask and the other says don't. The runner followed `new.md`. A different runner could ask a question whose answer the file already holds |
+| DRILL-173-2 | `init.md` intro (*"a second run on an up-to-date tree writes nothing"*) vs step 4 / `triage.md` (always regenerate `tasks/README.md`) | The dashboard carries a generation timestamp, so step 4 rewrites it on every run, and "writes nothing" is false by construction. Two runners split: one rewrote `README.md` and reported the contradiction, the other skipped the regen to honour the idempotency claim |
+
 ## Acceptance criteria
 
 - [ ] `/tasks init`'s unattended branch is reachable — either a declared way to tell it so, or a rewrite that does not depend on attendance — and no branch of step 3 describes a state no caller can put it in
@@ -98,17 +113,31 @@ TASK-127 wrote is already that convention and should be named as such rather tha
 - [ ] Layer parity: if `LAYER.md` changes, both front doors read the outcome from it
 - [ ] `skills-lint` and `skills-lint-test` stay green
 
+*From TASK-180:*
+
+- [ ] `init.md` step 2 states that mode detection runs only when `.config.yml` is absent. An existing config's `mode:` is read, and the mode-conflict branch covers the arg-vs-file case. The wording agrees with `new.md`.
+- [ ] `init.md`'s idempotency claim and step 4 agree. Either the claim is scoped to the config ("the config is not rewritten"), or step 4 skips a regen whose only change would be the timestamp. Pick one and say why.
+- [ ] A cold drill on an existing up-to-date config, run twice, reports the same file changes from two independent runners.
+
 ## Out of scope
 
 - Who owns *discovering* an outstanding declaration — **TASK-035** settled that (the survey owns a named declaration, the owner verb owns the version).
 - TASK-086's `present, uncommitted` conflation. Same defect shape, different artifact and different candidate fixes; read it, don't merge it.
 - Whether `integration:` should have a default at all. It has one, it is documented, and consumers rely on it.
 
+*From TASK-180:*
+
+- Everything worktree-related — EPIC-005.
+
 ## Human test plan
 
 - [ ] On a repo whose config lacks `integration:`, run the adoption survey and confirm it asks once; answer "no opinion", then re-run and confirm it does not ask again
 - [ ] On a repo that was never asked, confirm the re-run still asks
 - [ ] Scaffold a project declining the integration question and confirm the resulting config states the declination rather than looking un-asked
+
+*From TASK-180:*
+
+- [ ] Two cold runners each run `/tasks init` twice on a scratch copy of a consumer tree that already has `mode:` and `integration:` declared. Expected: neither asks the mode question, and both report the same set of written files on the second run. The brief withholds the expected answer (populate-tests § *The cold drill*).
 
 ## Implementation plan
 

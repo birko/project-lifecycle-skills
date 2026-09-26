@@ -3,7 +3,7 @@ id: TASK-111
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: agent
 created: 2026-09-08
@@ -55,3 +55,5 @@ skill that reads its shape was not updated in the same change.
 
 - [ ] N/A — fully covered by a grep: the quoted literal must not appear in `skills/` except where it
       genuinely matches what a template emits. A human adds nothing to a string comparison.
+
+> Merged into TASK-105 on 2026-09-26 — one specs map / regen.md cleanup pass right before TASK-080. Acceptance criteria, findings and test plan copied into TASK-105.

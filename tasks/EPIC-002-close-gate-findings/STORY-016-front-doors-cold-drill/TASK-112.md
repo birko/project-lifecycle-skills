@@ -3,7 +3,7 @@ id: TASK-112
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P3
 assignee: agent
 created: 2026-09-08
@@ -67,3 +67,5 @@ a single line, or the two front doors will describe one state in two different s
 - [ ] Run the adopter's survey over a library with no `Dockerfile` and read the report. Expected: the
       row reports `not applicable`, and the report's own legend explains it without sending the reader
       elsewhere.
+
+> Merged into TASK-085 on 2026-09-26 — restructuring LAYER.md's survey states fixes the report list's missing `not applicable` entry in the same edit. Acceptance criteria, findings and test plan copied into TASK-085.

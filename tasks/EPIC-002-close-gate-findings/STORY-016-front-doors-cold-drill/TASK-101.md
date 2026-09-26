@@ -3,7 +3,7 @@ id: TASK-101
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: cancelled
 priority: P2
 assignee: agent
 created: 2026-09-01
@@ -93,3 +93,5 @@ existing evidence ladder is deliberately a ladder of observable artefacts; the b
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-101` — leave empty until then._
+
+> Merged into TASK-072 on 2026-09-26 — both are the test-harness row: what a working runner is, and wiring one without a package manager. Acceptance criteria, findings and test plan copied into TASK-072.
