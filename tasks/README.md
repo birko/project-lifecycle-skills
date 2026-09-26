@@ -1,22 +1,22 @@
 # Tasks — The Project Lifecycle Skills
 
-> ⚠ **Feature drift (1):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link. `docs/features/` holds FEATURE-001 (linked to EPIC-005) and FEATURE-002 (linked to EPIC-004) — run `/roadmap --check`.
+> ⚠ **Feature drift (3):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; docs/specs DV7 — all 14 mapped areas never generated (no `docs/specs/<area>.md` exists) — run `/roadmap --check`.
 
-_Generated 2026-09-24. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-26. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 57    |
-| in-progress  | 4     | 9       | 0     |
+| todo         | —     | —       | 58    |
+| in-progress  | 5     | 9       | 0     |
 | review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
-| done         | 1     | 8       | 129   |
+| done         | 0     | 8       | 130   |
 | cancelled    | 0     | 0       | 1     |
 
-`todo` by priority: 1× P1 · 44× P2 · 12× P3.
+`todo` by priority: 1× P1 · 44× P2 · 13× P3.
 
 ## In progress now
 
@@ -27,7 +27,7 @@ _None_
 _Code complete, sign-off pending — verification debt; close these before new scope._
 
 - [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list (P1) — manual step unrun
-- [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing (P2) — manual step unrun
+- [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch (P2) — manual step unrun
 
 ## Tree
 
@@ -66,21 +66,21 @@ _Code complete, sign-off pending — verification debt; close these before new s
 - **EPIC-002** Close-gate findings on the skill set — in-progress (49/83 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/17)
-    - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
-    - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
-    - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
-    - [ ] [TASK-135](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-135.md) `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
+    - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
     - [x] TASK-030 `close`'s single-branch SHA backfill instructs an impossible amend
     - [x] TASK-039 The dashboard template has no slot for the todo-by-priority breakdown
     - [x] TASK-041 `intake --adopt` cannot adopt a loose backlog — it assumes the epic already owns its tasks
     - [x] TASK-042 Nothing says where a new task is filed, so findings land where nothing can rank them
+    - [x] TASK-044 EPIC-002 groups by subject, so `fix-next`'s theme tie-breaker has nothing to read
+    - [x] TASK-050 `--unattended` promises what it does not deliver — `close` still stops to ask in three other places
     - [x] TASK-057 Four summaries that contradict the body they summarise
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
     - [ ] [TASK-083](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-083.md) `fix-next` step 8 states two different counts of the same event, one sentence apart
     - [ ] [TASK-107](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-107.md) The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
     - [ ] [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) `pick`'s handoff branches on an `assignee:` value no task in the tree has
+    - [ ] [TASK-135](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-135.md) `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
     - [ ] [TASK-180](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-180.md) `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes
     - [ ] [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) `/tasks pick` step 7's two questions carry no wording and no answer-less path
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12)
@@ -91,7 +91,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-085](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-085.md) `LAYER.md`'s survey-state list has outgrown the shape it is written in
     - [x] TASK-086 Adoption cannot tell its own unlanded writes from the user's work in progress
     - [ ] [TASK-092](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-092.md) `/tasks init` cannot reach its own unresolved path, and cannot record a declination
-    - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced
+    - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced with a question
     - [ ] [TASK-136](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-136.md) Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
     - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
@@ -101,31 +101,37 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
   - STORY-014 `specs` — two gates that pass without checking — in-progress (3/9)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
+    - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
     - [x] TASK-087 A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
     - [ ] [TASK-088](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-088.md) Nothing says whether one source file may belong to two capability areas
     - [ ] [TASK-089](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-089.md) `coverage: unverified` has never once been produced, across three drills
-    - [ ] [TASK-111](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-111.md) `regen.md` quotes a status-comment format the task template no longer emits
+    - [ ] [TASK-111](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-111.md) regen.md quotes a status-comment format the task template no longer emits
     - [ ] [TASK-128](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-128.md) Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - [ ] [TASK-129](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-129.md) A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding
     - [ ] [TASK-134](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-134.md) `/specs init` step 1's meta-root ask has no question text and no unattended path
-    - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (9/12)
-    - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [ ] [TASK-029](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-029.md) The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
+    - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
     - [x] TASK-045 A flag one skill passes is never checked to exist in the receiving verb
     - [x] TASK-058 STORY-015's theme ranks the repo's only gate last
-    - [x] TASK-071 The wikilink contract says "CI resolves it", and in `docs/` that is false — folded into TASK-043
+    - [x] TASK-071 The wikilink contract says "CI resolves it", and in `docs/` that is false
     - [ ] [TASK-074](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-074.md) A skill cannot reference a skill that does not exist yet
     - [x] TASK-081 One number now names two different lint checks
     - [x] TASK-082 Check 4 enforces something weaker than the contract it states
-    - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it
+    - [ ] [TASK-084](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-084.md) A documented probe-and-read rule has nothing that can pin it, and this one has been wrong twice
+    - [x] TASK-108 Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
     - [x] TASK-171 `docs/architecture.md` still calls install-root drift "check 4"
-    - [x] [TASK-108](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-108.md) Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
+    - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
+    - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
+    - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
+    - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
+    - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
+    - [ ] [TASK-072](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-072.md) `populate-tests adopt` cannot wire a harness for a project with no package manager
     - [ ] [TASK-090](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-090.md) The survey cannot say whether this is a first adoption or a re-run
     - [x] TASK-091 Two artifact shapes the row definitions do not cover
     - [x] TASK-093 The guide row demands a diff against a section list no surveyed file carries
@@ -135,50 +141,54 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-097 `unknown` is the only container for two different situations, and one of them is not ignorance
     - [x] TASK-098 A row prescribes an action and is silent on the case where it is already done
     - [ ] [TASK-099](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-099.md) A row that names two artifacts never says whether the second carries its own state
-    - [ ] [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) Step 3c derives its set from what a run *created*, and landing invalidates without creating
+    - [ ] [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating
     - [ ] [TASK-101](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-101.md) Two rows read one fact in opposite directions, because "a working runner" names no bar
     - [ ] [TASK-102](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-102.md) Nothing says whether a step-3 fill offer joins step 2's round or comes after it
     - [ ] [TASK-112](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-112.md) The adopter's report list gained no entry for the `not applicable` state
-    - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
-    - [ ] [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) `adopt-project` assumes every run is a full run
-    - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
-    - [ ] [TASK-067](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-067.md) Nobody says what the empty case looks like, so every agent invents one
-    - [ ] [TASK-072](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-072.md) `populate-tests adopt` cannot wire a harness for a project with no package manager
-    - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
   - **(epic level)**
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
-    - [x] [TASK-109](EPIC-002-close-gate-findings/TASK-109.md) Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
-    - [x] [TASK-126](EPIC-002-close-gate-findings/TASK-126.md) Sweep every template for a shipped value its own skill says must be declared or derived
+    - [x] TASK-109 Two templates ship a live value their own rules say must be chosen, so a faithful render mints it
+    - [x] TASK-126 Sweep every template for a shipped value its own skill says must be declared or derived
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (2/5 tasks done)
-  - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (3/7 tasks done) · `kind: review-intake`
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
-    - [ ] [TASK-139](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-139.md) `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
-    - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
     - [ ] [TASK-133](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-133.md) `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
+    - [ ] [TASK-137](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-137.md) The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference
+    - [ ] [TASK-139](EPIC-003-field-found-defects/STORY-017-reachability-across-repos/TASK-139.md) `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
+  - **(epic level)**
+    - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
+    - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
+
+- **EPIC-004** Comment discipline in agent-written code — in-progress (28/30 tasks done)
+  - STORY-018 Seed the comment-discipline rule into both rulebooks — (done) (17/18)
+  - STORY-019 `review-comments` — find comments that belong elsewhere, and move them there — (done) (6/6)
+  - STORY-020 What FEATURE-002's review gate found unfinished — (done) (5/5)
+  - **(epic level)**
+    - [ ] [TASK-191](EPIC-004-comment-discipline/TASK-191.md) Re-measure the § Comments table for the two lint scripts TASK-190 changed
+
 - **EPIC-005** Task worktrees — in-progress (13/15 tasks done)
   - STORY-021 Run a task in its own checkout — in-progress (13/15)
-    - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config
-    - [ ] [TASK-174](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-174.md) *(review)* `/tasks pick` creates the task worktree, asking for the root when undeclared
-    - [x] TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot
-    - [ ] [TASK-176](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-176.md) *(review)* `/tasks close` merges from the worktree and removes it in a fixed order
-    - [x] TASK-177 Ship `workspace:` / `worktree-root:` through both front doors
-    - [x] TASK-178 Give drill checkouts a declared home and a cleanup rule
-    - [x] TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer
-    - [x] TASK-181 Resuming a task re-enters the worktree that holds its branch
-    - [x] TASK-183 Worktree mode for projects whose default branch tracks a remote
-    - [x] TASK-184 Tasks created in parallel worktrees can mint the same id
-    - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too
-    - [ ] [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list *(review)*
-    - [x] TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder
-    - [ ] [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing *(review)*
-    - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner
+    - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config · FEATURE-001
+    - [x] TASK-174 `/tasks pick` creates the task worktree, asking for the root when undeclared · FEATURE-001
+    - [x] TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot · FEATURE-001
+    - [x] TASK-176 `/tasks close` merges from the worktree and removes it in a fixed order · FEATURE-001
+    - [x] TASK-177 Ship `workspace:` / `worktree-root:` through both front doors · FEATURE-001
+    - [x] TASK-178 Give drill checkouts a declared home and a cleanup rule · FEATURE-001
+    - [x] TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer · FEATURE-001
+    - [x] TASK-181 Resuming a task re-enters the worktree that holds its branch · FEATURE-001
+    - [x] TASK-183 Worktree mode for projects whose default branch tracks a remote · FEATURE-001
+    - [x] TASK-184 Tasks created in parallel worktrees can mint the same id · FEATURE-001
+    - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too · FEATURE-001
+    - [ ] [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list 🔍 review · FEATURE-001
+    - [x] TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder; one report line is orphaned · FEATURE-001
+    - [ ] [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch 🔍 review · FEATURE-001
+    - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner · FEATURE-001
 
 ## Loose tasks
 
@@ -187,7 +197,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
 _The other 7 loose tasks are `done` — listed under Completed._
 
 <details>
-<summary><strong>Completed</strong> — 5 done stories, 7 done loose tasks</summary>
+<summary><strong>Completed</strong> — 8 done stories, 7 done loose tasks</summary>
 
 **Done stories in active epics** (kept in the tree above, task lists collapsed here):
 
@@ -225,6 +235,38 @@ _The other 7 loose tasks are `done` — listed under Completed._
 - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2
   - [x] TASK-009 verify-conventions has no rule about generated and vendored files
   - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
+- STORY-018 Seed the comment-discipline rule into both rulebooks — 17/18
+  - [x] TASK-140 Add the comment-discipline rule to the seeded project rulebook · FEATURE-002
+  - [x] TASK-141 Adopt the comment rule in this repo, with the lint-script measurement that protects it · FEATURE-002
+  - ~~TASK-145 Stop the scaffolder's "leave as-is" list going one short~~ · FEATURE-002
+  - [x] TASK-146 Lint check: the rule's two copies must match · FEATURE-002
+  - [x] TASK-147 The scaffolder paraphrases the seed's universal rules instead of copying them · FEATURE-002
+  - [x] TASK-148 `pi-install.sh`'s header reproduces two ADRs instead of pointing at them · FEATURE-002
+  - [x] TASK-151 The `AGENTS.md` comment measurement was under-evidenced, and this repo has real findings · FEATURE-002
+  - [x] TASK-153 The 8-of-39 measurement has a fifth copy, in the test that pins it · FEATURE-002
+  - [x] TASK-154 Two check headers in `skills-lint.sh` argue a case the rulebook already settled · FEATURE-002
+  - [x] TASK-157 Six more comment findings in `skills-lint.sh`, one of them introduced by the task that was fixing them · FEATURE-002
+  - [x] TASK-158 Four more restatements in `skills-lint.sh`, and two comments that should exist and don't · FEATURE-002
+  - [x] TASK-159 The destination table has no row for the project's own guide · FEATURE-002
+  - [x] TASK-160 The eight sites D15 made reportable · FEATURE-002
+  - [x] TASK-162 `skills-lint-test.sh` was never swept, and it holds nine findings · FEATURE-002
+  - [x] TASK-163 Comment findings the TASK-162 drill surfaced outside its nine · FEATURE-002
+  - [x] TASK-164 Two single-reader comment findings from TASK-163's drill — borderline, grouped · FEATURE-002
+  - [x] TASK-165 Three comments that restate the line beside them · FEATURE-002
+  - [x] TASK-166 Clear the three findings every reader pair agrees on, before TASK-141's re-run · FEATURE-002
+- STORY-019 `review-comments` — find comments that belong elsewhere, and move them there — 6/6
+  - [x] TASK-142 Create the `review-comments` skill — the check and its two scopes · FEATURE-002
+  - [x] TASK-143 The only-copy rule — relocate before deleting, never destroy the last record · FEATURE-002
+  - [x] TASK-144 Wire `review-comments` into `/tasks close` as its own reported axis · FEATURE-002
+  - [x] TASK-152 `review-comments` promises a `PATH` argument and never defines it · FEATURE-002
+  - [x] TASK-155 One reader in six renders ⚠ where the severity table says 🛑 · FEATURE-002
+  - [x] TASK-156 Two loose ends on the path scope: a header that varies, and a refusal nobody ran · FEATURE-002
+- STORY-020 What FEATURE-002's review gate found unfinished — 5/5
+  - [x] TASK-167 The close gate's own text still counts three axes after the fourth shipped · FEATURE-002
+  - [x] TASK-168 `review-comments` shipped, and nothing that lists the skills mentions it · FEATURE-002
+  - [x] TASK-169 The measurement table cannot be re-run from what AGENTS.md says · FEATURE-002
+  - [x] TASK-170 An only-copy that belongs in the project's guide has no relocation target · FEATURE-002
+  - [x] TASK-172 Three things Gate A's second run found in this story's own fixes · FEATURE-002
 
 **Loose tasks** (`_loose/`, no parent epic):
 
@@ -237,38 +279,3 @@ _The other 7 loose tasks are `done` — listed under Completed._
 - [x] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks
 
 </details>
-
-### EPIC-004 — Comment discipline in agent-written code `done`
-
-- **STORY-018** — Seed the comment-discipline rule into both rulebooks `done`
-  - [TASK-140](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-140.md) `done` — the rule into `CLAUDE.seed.md` (cold drill 4/4)
-  - [TASK-141](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-141.md) `done` P1 — third re-run clean (no finding two cold readers share); signed off
-  - [TASK-148](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-148.md) `done` P3 — all four installer headers: mechanism kept, ADR why pointered
-  - [TASK-145](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-145.md) `cancelled` — work shipped in 5b8c216; remaining criterion became unmeetable when TASK-147 emptied the seed of static subsections
-  - [TASK-147](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-147.md) `done` P1 — universal rules now spliced verbatim, both stacks
-  - [TASK-151](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-151.md) `done` P2 — the AGENTS.md measurement was under-evidenced; 4 real findings in `skills-lint.sh`
-  - [TASK-153](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-153.md) `done` P3 — four evidence/pin blocks made one shape; the measurement now lives only at TASK-108
-  - [TASK-162](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-162.md) `done` P2 — nine findings acted on; 4 cold readers over 2 rounds; suite 56/56
-  - [TASK-163](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-163.md) `done` P3 — eight sites acted on; the UNSUPPORTED pointer repointed at TASK-082
-  - [TASK-164](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-164.md) `done` P3 — duplicate collapsed to one side; one comment deleted
-  - [TASK-165](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-165.md) `done` P3 — three restating comments deleted
-  - [TASK-166](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-166.md) `done` P2 — three pair-agreed findings cleared before TASK-141's re-run
-  - [TASK-157](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-157.md) `done` P2 — six sites cut, destinations verified; two were mis-filed
-  - [TASK-158](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-158.md) `done` P3 — 2 comments written, 5 cuts, 4 readers
-  - [TASK-159](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-159.md) `done` P2 — sixth destination row shipped in both copies; 8 sites became reportable
-  - [TASK-160](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-160.md) `done` P2 — eight guide-restatements cut; 4 readers confirmed
-  - [TASK-154](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-154.md) `done` P3 — both headers now fact-then-pointer; verdict proven to read off the script
-  - [TASK-146](EPIC-004-comment-discipline/STORY-018-seed-the-rule/TASK-146.md) `done` P2 — lint check 5 + 9 cases; suite 47 → 56
-- **STORY-019** — `review-comments`, the command `done`
-  - [TASK-142](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-142.md) `done` P1 — the skill, both scopes; drill 4/4 + D14 + `--all`
-  - [TASK-143](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-143.md) `done` P1 — only-copy relocation; drill filed a task and left pointers by id
-  - [TASK-152](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-152.md) `done` P2 — `PATH …` defined as a whole-file sweep; 8 cold runners, 4 rounds
-  - [TASK-144](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-144.md) `done` P2 — wired into `close` step 5b as its own axis; no flag passed
-  - [TASK-155](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-155.md) `done` P3 — 🛑 outranks ⚠ when both match; 2 of 2 runners agree
-  - [TASK-156](EPIC-004-comment-discipline/STORY-019-review-comments-skill/TASK-156.md) `done` P3 — path header prescribed (2 of 2 identical); path + `--all` refusal run 2 of 2
-- **STORY-020** — What FEATURE-002's review gate found unfinished `done`
-  - [TASK-167](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-167.md) `done` P2 — the close gate's text still counts three axes; `VI-*` prefix
-  - [TASK-168](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-168.md) `done` P2 — `review-comments` absent from every skill overview
-  - [TASK-169](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-169.md) `done` P2 — the measurement table cannot be re-run from AGENTS.md
-  - [TASK-170](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-170.md) `done` P3 — an only-copy guide rule has no relocation target
-  - [TASK-172](EPIC-004-comment-discipline/STORY-020-review-gate-gaps/TASK-172.md) `done` P2 — three residues from Gate A's re-run: rung-3 relocation target, two counts
