@@ -182,7 +182,7 @@ feature-centric slices of the model.
 - PowerShell-compatible (no `2>/dev/null`, no inline `VAR=x cmd`).
 - A decision row is never deleted — `removed` is a state, not a deletion. The ledger must stay auditable for stakeholders.
 - Don't invent decisions the user/stakeholder never made. `proposed` rows come only from the grill or explicit user input.
-- Stakeholder-facing files (`idea.md`, `status.md`, `decisions.md`) avoid code jargon — a PM or other non-technical stakeholder reads them.
+- Stakeholder-facing files (`idea.md`, `status.md`, `decisions.md`) avoid code jargon — a PM or other non-technical stakeholder reads them. Decisions carry no file paths and no code; the one exception, a trimmed and marked prototype-derived snippet, and its four-part test live in [decide.md](verbs/decide.md) § *Deciding rules*.
 - **Never silently displace planned scope.** When a new feature reuses a planned slot (an epic's story line, a roadmap entry, an ID) or a feature is renamed/re-scoped, the *original* scope must be **re-homed into its own tracked feature/story**, not overwritten. A requirement that was once on the roadmap and is no longer tracked anywhere is a regression in the plan. (Failure mode this guards against: a planned story's slot is renamed or reused for new scope, and the original requirement silently disappears until someone notices it's gone.) When in doubt, keep a requirement→feature traceability table in the owning EPIC and reconcile it whenever the roadmap shifts.
 
 ## Related skills

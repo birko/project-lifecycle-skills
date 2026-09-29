@@ -43,6 +43,24 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
   treat it as a decision.
 - **Reconcile at checkpoints** — row text + one summarizing History line before committing and
   before `/feature review`, so stored state never lags the working tree at a durable boundary.
+- **Decisions carry no file paths and no code — with one exception.** Paths and code go stale as
+  the product changes, and a decision record that has quietly gone stale is worse than none, because
+  it is still believed. So a row states *what was agreed* in plain words.
+  **The exception is a prototype-derived snippet.** A snippet from a prototype this feature built may
+  be attached to a decision **only when all four hold**:
+
+  | Test | Admits | Rejects |
+  |---|---|---|
+  | **It came from a prototype** | a state table, reducer, schema or type shape written while building any of the forms in [prototype.md](prototype.md) step 2 | anything written for the ledger, or copied from the product's code |
+  | **It encodes the decision itself** | the agreed states and transitions, the cases a reducer handles, the fields and constraints of a shape | how the product will implement it: handlers, styling, wiring, imports |
+  | **Prose would lose precision** | the row's own one-sentence statement of the decision drops a case, an edge or a constraint the snippet carries | that sentence says everything the snippet does. That is *more convenient*, not *more precise*, and the prose wins. (Any table can be spelled out in enough sentences; the comparison is with the row, not with a transcript.) |
+  | **It is trimmed and marked** | cut to the decision-rich lines (keep what tells one case from another; drop rationale, elisions and presentation), headed `Prototype-derived (<form>, <date the prototype was built>) — not the shipped code, and not expected to match it` | a snippet missing either the trim or the marker |
+
+  Put it under `## Prototype-derived snippets` below the table, one `### D<n>` block each. The row still
+  states what was agreed in one sentence and adds `see snippet`, so a reader who never opens it is not
+  misled. **A later reader treats it as the agreed model, never as the code.** Nobody
+  diffs it against the repo; where the product and the snippet disagree, that is a question for
+  `/feature decide` about whether the agreement changed, not a bug against either.
 
 ## Changing a closed (`done`) feature — surface-dependent revert
 

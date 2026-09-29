@@ -67,7 +67,8 @@ and it goes on answering a question that has since been decided differently.
 - **When:** once `/feature decide` has stamped every row the prototype was built to test. Delete it in
   that change: remove `prototype.html` / `prototype.md` / `prototype-states.html`, and delete the spike
   branch (`git branch -d`, and the remote copy if one was pushed).
-- **What remains:** the reactions in `decisions.md` (step 4) and the recorded line in `idea.md`,
+- **What remains:** the reactions in `decisions.md` (step 4), any snippet admitted under
+  [decide.md](decide.md)'s prototype-derived exception, and the recorded line in `idea.md`,
   rewritten to `**Built, then deleted** — answered D<n>, D<m>; last version at <commit>`. Git history
   still holds the file for anyone who needs it; nothing in the repo links to it.
 - **A copy shared with a stakeholder cannot be recalled.** A sent file or a published page is dead from

@@ -3,7 +3,7 @@ id: TASK-125
 parent: STORY-006
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: agent
 created: 2026-09-09
@@ -43,17 +43,17 @@ prose" does not become the general case.
 
 ## Acceptance criteria
 
-- [ ] The exception is written **into the rule it modifies**, not stated separately where a reader of
+- [x] The exception is written **into the rule it modifies**, not stated separately where a reader of
       the original rule would miss it
-- [ ] A sharp test says what qualifies — the snippet encodes the decision *more precisely than prose
+- [x] A sharp test says what qualifies — the snippet encodes the decision *more precisely than prose
       can*, not merely *more conveniently*
-- [ ] Both qualifiers are mandatory and stated as such: trimmed to the decision-rich part, and marked
+- [x] Both qualifiers are mandatory and stated as such: trimmed to the decision-rich part, and marked
       prototype-derived
-- [ ] What a later reader does with such a snippet is stated — it is not the shipped code and is not
+- [x] What a later reader does with such a snippet is stated — it is not the shipped code and is not
       expected to match it
-- [ ] The base rule still reads correctly on its own: a reader who never hits the exception is not
+- [x] The base rule still reads correctly on its own: a reader who never hits the exception is not
       misled about paths and code in decisions
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -65,3 +65,15 @@ prose" does not become the general case.
 - [ ] Take a real prototype-derived state machine and a real snippet that is merely convenient, and
       apply the test to both. Expected: it admits the first and rejects the second. If it admits both,
       the test is not sharp enough and has not been built.
+  - **Run 2026-09-29, passed.** Cold runner: `cd C:/Source/WebChecker && claude -p --disable-slash-commands < brief.txt`. It reported no skills loaded. The brief held the rule text and two candidates, **both prototype-derived**, so only the precision test could separate them. A was the state-model playground's move table plus its `apply()` handler. B was an HTML mockup's `LOCKOUT = { maxFailedAttempts: 5, lockMinutes: 15 }` plus a banner call, for the decision "Lock the account for 15 minutes after five failed password tries". The brief did not say which should pass. Result: **A admitted**, with `apply()` cut as wiring, the rationale fields dropped, and the marker added. The runner listed six edges a sentence would drop. **B rejected on the precision test** ("rewrite the remaining line in words and you get the decision's own title"). Four wording gaps it raised were fixed in place: the precision test compares with the row's own sentence, not with a lossless transcript; the row keeps its one-line summary; the marker's date is the prototype's build date; trimming keeps what tells cases apart and drops rationale. **Bonus evidence for the rule:** from the table, the runner noticed that `review` could not be blocked. `/tasks block` refuses only `done`/`cancelled`, so the playground was wrong. The table exposed an edge that prose had hidden, and the playground was fixed (version 2).
+
+## Implementation plan
+
+Planned inline at pick (2026-09-29). The base rule was thinner than this task's Context assumed. `feature/SKILL.md` said only that stakeholder files "avoid code jargon"; "no file paths and no code" existed only in STORY-006. So the rule and its exception are written together in the verb that owns what a row may carry (`decide.md` § *Deciding rules*). The router line states both in one sentence and points there.
+
+## Progress log
+
+- 2026-09-29 — Picked; planned inline.
+- 2026-09-29 — `decide.md` § *Deciding rules*: "Decisions carry no file paths and no code — with one exception". A four-test table (from a prototype; encodes the decision itself; prose would lose precision; trimmed and marked), where the snippet goes, and how a later reader treats it. `feature/SKILL.md` convention line states both halves and points there. `prototype.md`'s *What remains* names admitted snippets. Lint OK.
+- 2026-09-29 — Drill passed; four wording gaps fixed in place (record above).
+- 2026-09-29 — Close review. **Standards:** pass. The exception sits inside the rule it modifies, as a table, with its rationale inline. **Intent:** pass, all 6 criteria met. The base rule reads correctly on its own, since its first sentence and rationale come before the exception. **Correctness:** pass. The links to `prototype.md` and `decide.md` resolve (lint check 3), and the rule does not conflict with *Track by impact* (implementation detail still stays out). **Security:** not applicable. **Comments:** not applicable.
