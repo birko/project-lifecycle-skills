@@ -21,7 +21,7 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 
 4. **Render** [templates/status.md](../templates/status.md) — fill decision counts by state, build progress, and:
    - `{{TESTABLE_SUMMARY}}` — the tasks whose Human test plan is filled and ready to run.
-   - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / the spike branch, or "none yet".
+   - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / `prototype-states.html` / the spike branch, or "none yet". A prototype already deleted renders as the `idea.md` line says (`built, then deleted — answered D<n>`), never as a link to a file that is gone.
    - `{{NEXT_STEP}}` — one concrete action, e.g. "PM to review 2 proposed decisions", "3 tasks in progress", "ready for /feature review".
    (The template is stakeholder-facing and carries no author comments — these hints live here.)
 

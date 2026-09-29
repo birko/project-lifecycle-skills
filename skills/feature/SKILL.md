@@ -86,7 +86,7 @@ docs/features/
   FEATURE-NNN-slug/
     idea.md            ← the problem statement + grill-me transcript distilled (stakeholder readable)
     decisions.md       ← the decision tree with states: approved/deferred/changed/removed (+ history log)
-    prototype.html     ← OR prototype.md OR a link to a code-spike branch (form decided per-feature)
+    prototype.html     ← OR prototype.md / prototype-states.html OR a link to a code-spike branch (form decided per-feature; deleted once it has answered its question)
     status.md          ← auto-generated rollup for PMs / non-technical stakeholders (owned by /feature status — never hand-edit; re-run the verb)
 ```
 

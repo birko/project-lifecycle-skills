@@ -33,7 +33,7 @@ lifecycle stall.
    |---|---|---|
    | **A · Decisions exist** | `decisions.md` has no rows, or only placeholder template rows | `/feature new` (re-grill) — there's nothing to build yet |
    | **B · Decisions decided** | any `proposed` rows remain | `/feature decide FEATURE-NNN` — "N decision(s) still awaiting a verdict. Decide them now? [Y/n]" |
-   | **C · Prototype (soft)** | the feature is UI/UX-shaped, has approved rows, and no prototype artifact | `/feature prototype FEATURE-NNN` — suggest once, `[y/N]`, never block. Some approved decisions genuinely need no mockup |
+   | **C · Prototype (soft)** | the feature is UI/UX-shaped or adds states, has approved rows, and `idea.md`'s `## Prototype` line records no prototype. Read the line, not the folder: a prototype is deleted once it has answered its question, so a missing file does not mean one was never built | `/feature prototype FEATURE-NNN` — suggest once, `[y/N]`, never block. Some approved decisions genuinely need no mockup |
    | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN` — "N approved decision(s) have no tasks. Decompose now? [Y/n]"** |
    | **E · Signed off** | phase is `review` (all tasks done/`review`, sign-off not recorded) | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this |
 

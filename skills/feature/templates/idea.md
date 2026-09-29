@@ -32,6 +32,6 @@ _Filled from the [[grill-me]] interview at `/feature new`. Each resolved branch 
 ## Prototype
 
 _Record the prototype decision explicitly — never leave it blank (see SKILL.md)._
-- **Built** → link the `prototype.html` / `.md` / spike. **Skipped** → give the reason
+- **Built** → link the `prototype.html` / `.md` / `prototype-states.html` / spike. **Built, then deleted** → which decisions it answered and the last commit that held it. **Skipped** → give the reason
   (e.g. "headless logic — the test suite is the proof"). **Pending/N/A** for stubs or superseded.
-- Lean toward actually building one for pure look/UX features; lean toward skipping for headless logic.
+- Lean toward actually building one for pure look/UX features, and a state-model playground when the feature adds or changes states; lean toward skipping for other headless logic.

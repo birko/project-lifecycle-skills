@@ -3,7 +3,7 @@ id: TASK-124
 parent: STORY-006
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: review
 priority: P2
 assignee: agent
 created: 2026-09-09
@@ -46,22 +46,22 @@ the repo. A prototype that survives becomes a second implementation nobody maint
 
 ## Acceptance criteria
 
-- [ ] The fourth form is documented beside the existing three, with the question it answers stated in
+- [x] The fourth form is documented beside the existing three, with the question it answers stated in
       the same terms — so a reader picking a form can tell them apart
-- [ ] **Both** free-play controls and tabbed guided walkthroughs are required, with the reason each
+- [x] **Both** free-play controls and tabbed guided walkthroughs are required, with the reason each
       exists, so neither is dropped as optional polish
-- [ ] The single-file, no-toolchain constraint is stated as a constraint, with why
-- [ ] Guidance exists on choosing the walkthrough cases — the ones hard to reason about on paper, not a
+- [x] The single-file, no-toolchain constraint is stated as a constraint, with why
+- [x] Guidance exists on choosing the walkthrough cases — the ones hard to reason about on paper, not a
       demo of the happy path
-- [ ] **Throwaway discipline** is stated for all four forms, including what "deleted" means for one that
+- [x] **Throwaway discipline** is stated for all four forms, including what "deleted" means for one that
       was shared with a stakeholder
-- [ ] The form says what its *output* is — a reaction, recorded where decisions go — not the file
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The form says what its *output* is — a reaction, recorded where decisions go — not the file
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
 - **Inlining a prototype-derived snippet into a decision** — TASK-125.
-- **The slicing doctrine** — TASK-122 and TASK-123, the story's other half.
+- **The slicing doctrine** — TASK-122 (TASK-123 merged into it), the story's other half.
 - Building a prototype for any real feature. This task documents the form.
 
 ## Human test plan
@@ -69,3 +69,21 @@ the repo. A prototype that survives becomes a second implementation nobody maint
 - [ ] Build one for a real state model — [[tasks]]'s own status vocabulary would do — and give it to
       someone who does not read this codebase. Expected: they drive it unaided and produce at least one
       reaction about the state model, not about the visuals. Withhold that expectation from them.
+  - **Ready, not yet run (2026-09-29).** Built by following the new `prototype.md` text literally: a single self-contained page, published privately at https://claude.ai/artifact/GHk9TKVgAHws8snCjj2KaY (source: this session's scratchpad `prototype-states.html`; the scratchpad is not kept). It has free play over a three-task story, with unavailable moves shown disabled and their reason, plus five walkthrough tabs: finished-but-not-merged, built-not-checked, reopening shipped work, cancelling done work, the last task closing. Each ends with a question. **To run:** share it from the page's Share menu with someone who does not read this codebase, give them only the link, and record what they say. Then follow the form's own throwaway rule: unpublish the page once the reaction is recorded.
+
+## Implementation plan
+
+Planned inline at pick (2026-09-29). One verb (`feature/verbs/prototype.md`) plus the readers that break when a prototype is deleted.
+
+1. Add the fourth form's row to step 2's table, and give every form a "question it answers" column, so a reader can tell the forms apart.
+2. Build instructions for the form: the single-file constraint and why; free play and walkthroughs, both required, with the job of each; a table of hard cases for choosing walkthroughs.
+3. Step 4: the output of every form is the reaction, recorded as a History line.
+4. A § *Throwaway discipline* covering all four forms: when to delete, what remains, a shared copy that cannot be recalled, and re-prototyping.
+5. Readers that must not break on deletion: `pick` gate C reads the `## Prototype` line, not the folder; `status` renders a deleted prototype from the line; the `idea.md` template and the router layout learn the new form and the `Built, then deleted` value. [[roadmap]] reads `Built / Skipped / N/A / Pending`, and `Built, then deleted` still leads with `Built`, so it needs no change.
+
+## Progress log
+
+- 2026-09-29 — Picked; planned inline (one verb plus its readers).
+- 2026-09-29 — `prototype.md`: the fourth form "State-model playground" (`prototype-states.html`); a question-it-answers column for all four forms; build instructions (single file with nothing installed, free play plus walkthroughs, a walkthrough-case table); step 4's output rule; § *Throwaway discipline*. `pick.md` gate C now reads the recorded line. `status.md` renders a deleted prototype from the line. `idea.md` template and `feature/SKILL.md` layout updated. Lint OK.
+- 2026-09-29 — Close review. **Standards:** pass. Tables for branching, the rationale inline, the verb standalone. The deletion rule was checked against every reader of prototype state (`pick` gate C, `status`, [[roadmap]]); the two that would have broken are fixed in the same change. **Intent:** pass, all 7 criteria met. "Deleted" for a shared copy is answered: it cannot be recalled, so it is declared dead and unpublished where possible. **Correctness:** pass. `Built, then deleted` keeps [[roadmap]]'s `Built` prefix; a deleted spike uses `git branch -d`, consistent with the never-force rule. **Security:** not applicable. **Comments:** not applicable.
+- 2026-09-29 — Closed to `review`. The human test needs a real person who does not read this codebase; the prototype is built and published, and the run is pending.
