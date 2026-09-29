@@ -3,7 +3,7 @@ id: TASK-188
 parent: STORY-021
 feature: FEATURE-001
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: done
 priority: P2
 assignee: ai
 created: 2026-09-24
@@ -37,10 +37,15 @@ Found by `/feature review FEATURE-001` Gate A (2026-09-24). The finding was rais
 
 ## Human test plan
 
-- [ ] Park a worktree close at `review`, then run `/tasks pick` from the main copy. Expected: the verification-debt line names it.
+- [x] Park a worktree close at `review`, then run `/tasks pick` from the main copy. Expected: the verification-debt line names it.
+  - **Run 2026-09-29, passed.** With TASK-012 parked at `review` on its task branch only (`master` read `todo`), a cold bare `/tasks pick` runner opened its output with `⚠ 1 in review awaiting sign-off: TASK-012`, reading the status with `git show task/TASK-012:<file>`. The fixture and runner are recorded on TASK-186, which shared them. CR-F001-6 (remote-branch delete on an in-place close) has no manual step; the text was confirmed at the 2026-09-24 gate.
 
 ## Implementation plan
 
 Written at the FEATURE-001 review gate; the fix follows the acceptance criteria one to one.
 
 **Close gate (2026-09-24).** The confirmation pass found both fixes holding. **Parked at `review`:** the human-test step (park a worktree close at `review`, then check that `pick`'s debt line names it) has not been run.
+
+## Progress log
+
+- 2026-09-29 — Human test step run on the TASK-186 fixture; passed. Closed `review → done`.

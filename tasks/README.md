@@ -9,25 +9,18 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 4       | —     |
-| todo         | —     | —       | 39    |
+| todo         | —     | —       | 41    |
 | in-progress  | 5     | 9       | 0     |
-| review       | —     | —       | 2     |
+| review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 131   |
+| done         | 0     | 8       | 133   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 33× P2 · 5× P3.
+`todo` by priority: 1× P1 · 34× P2 · 6× P3.
 
 ## In progress now
 
 _None_
-
-## In review
-
-_Code complete, sign-off pending — verification debt; close these before new scope._
-
-- [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list (P1) — manual step unrun
-- [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch (P2) — manual step unrun
 
 ## Tree
 
@@ -173,8 +166,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - **(epic level)**
     - [ ] [TASK-191](EPIC-004-comment-discipline/TASK-191.md) Re-measure the § Comments table for the two lint scripts TASK-190 changed
 
-- **EPIC-005** Task worktrees — in-progress (13/15 tasks done)
-  - STORY-021 Run a task in its own checkout — in-progress (13/15)
+- **EPIC-005** Task worktrees — in-progress (15/17 tasks done)
+  - STORY-021 Run a task in its own checkout — in-progress (15/17)
     - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config · FEATURE-001
     - [x] TASK-174 `/tasks pick` creates the task worktree, asking for the root when undeclared · FEATURE-001
     - [x] TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot · FEATURE-001
@@ -186,10 +179,12 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-183 Worktree mode for projects whose default branch tracks a remote · FEATURE-001
     - [x] TASK-184 Tasks created in parallel worktrees can mint the same id · FEATURE-001
     - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too · FEATURE-001
-    - [ ] [TASK-186](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-186.md) Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list 🔍 review · FEATURE-001
+    - [x] TASK-186 Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list · FEATURE-001
     - [x] TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder; one report line is orphaned · FEATURE-001
-    - [ ] [TASK-188](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-188.md) A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch 🔍 review · FEATURE-001
+    - [x] TASK-188 A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch · FEATURE-001
     - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner · FEATURE-001
+    - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
+    - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
 ## Loose tasks
 
