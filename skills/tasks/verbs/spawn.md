@@ -37,7 +37,8 @@ happened. Spawn instead of widening.
      rename the compiler forces)? → do it; no task.
    - Otherwise → **spawn**. Positive signals: it needs its own acceptance criteria; it's
      independently completable and mergeable; it changes observable behaviour the origin task
-     doesn't claim; a reviewer would judge it separately.
+     doesn't claim; a reviewer would judge it separately. These are [slicing.md](../slicing.md)'s
+     size signals, which own the full test.
    - **Genuinely torn → spawn.** A spare task is cheap noise you can `cancel`; untracked scope is
      work that silently disappears.
 

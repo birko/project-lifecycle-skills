@@ -442,7 +442,7 @@ non-obvious rules travel with this:
   interrupted run resumes from disk rather than from conversation memory; on a disagreement with git,
   git wins).
 
-**No archiving.** Status-only. Epics and stories are often open-ended areas of concern that gain new work over time; only TASKs are atomic completable units. The dashboard hides done items by default and shows them in a collapsed "Completed" section.
+**No archiving.** Status-only. Epics and stories are often open-ended areas of concern that gain new work over time; only TASKs are atomic completable units — [slicing.md](slicing.md) owns how work is cut into them. The dashboard hides done items by default and shows them in a collapsed "Completed" section.
 
 **Roll status up to parents — don't leave them stale.** A child changing status is not done until its parents reflect reality:
 - `close` (and any status change): after updating a TASK, re-evaluate its parent STORY, then that STORY's EPIC. A STORY whose every TASK is done should not still read `in-progress`; an EPIC's body/status and any requirement→feature table it carries must match its children. Update the parent files, not just the leaf + the dashboard. (Real failure this guards: leaves and the dashboard were kept current but `EPIC.md` sat at `in-progress` with a stale prose story list and an obsolete roadmap line.)

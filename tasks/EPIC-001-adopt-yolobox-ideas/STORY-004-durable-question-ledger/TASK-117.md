@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-09-08
-depends-on: [TASK-114]
+depends-on: [TASK-114, TASK-195]
 blocks: []
 findings: []
 pr: null

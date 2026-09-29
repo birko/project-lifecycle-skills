@@ -7,7 +7,7 @@ status: todo
 priority: P1
 assignee: agent
 created: 2026-09-08
-depends-on: []
+depends-on: [TASK-195]
 blocks: [TASK-115, TASK-117]
 # findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
 findings: []

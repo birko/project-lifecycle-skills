@@ -34,7 +34,10 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
    criteria, that's a **split signal**. Offer [`/tasks spawn`](spawn.md) for each such step rather
    than letting the plan quietly grow the task past its criteria. Spawned steps stay in the plan as
    `→ deferred to TASK-NNN` lines. If the plan's *core* is bigger than one task, say so plainly —
-   the right fix may be promoting this task to a STORY with tasks under it.
+   the right fix may be promoting this task to a STORY with tasks under it. Judge the signal against
+   [slicing.md](../slicing.md) § *One fresh context window*: a failed hard check is a split, and a
+   tripped signal kept as one task needs its one-line reason in the task's Context. A plan that turns out
+   to be a wide refactor is re-sequenced per that file's § *Wide refactors*.
 
 6. **Write the draft** into the TASK file:
    - Replace the `## Implementation plan` section body with the agent's output. If the section doesn't exist (older TASK file pre-dating the template change), append it after `## Out of scope`.

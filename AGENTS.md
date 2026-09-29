@@ -263,7 +263,10 @@ The skills *are* the product, so their prose is the user interface. This subsect
   It is not: the *list* is one inventory, and the job-specific part is the handful of rules around it, which is
   what each consumer adds locally. **Expand the existing owner rather than starting a neutral one**; moving a
   list to a "better" home breaks its current readers for no gain, and a partial copy is worse than either —
-  it diverges like a full copy while also being silently narrower. *No record: this is a rulebook entry, not a
+  it diverges like a full copy while also being silently narrower. **The second instance is
+  `skills/tasks/slicing.md`**, the slicing doctrine: where nothing owned a vocabulary yet, the owner is the
+  skill an existing pointer already named (`decompose` cited a "[[tasks]] granularity rule" that did not
+  exist), not a neutral new home. *No record: this is a rulebook entry, not a
   project decision — its footprint is a file that did not move, so there is no artifact outside the rulebook
   for a record to explain.*
 - **A flag that declares an absent capability must define behaviour at every point that needs it.**

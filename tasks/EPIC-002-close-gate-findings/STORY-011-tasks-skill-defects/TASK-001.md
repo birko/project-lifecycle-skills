@@ -32,6 +32,10 @@ exists but is invisible to every consumer of it.
 Filed rather than fixed inline because this is a defect in the `tasks` skill itself, not part of
 EPIC-001's scope — hence `_loose`, not a story under that epic.
 
+**A reader that must change with this task:** `skills/tasks/slicing.md` § *Where the edges live*
+(TASK-122) states that `STORY.md` has no edge fields and puts a wide refactor's order on task
+frontmatter. When STORY.md gains edges, update that section in the same change.
+
 ## Acceptance criteria
 
 - [ ] `templates/STORY.md` carries `depends-on: []` and `blocks: []`, matching `TASK.md`'s shape and field names exactly — no new vocabulary for the same concept

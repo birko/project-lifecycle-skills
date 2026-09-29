@@ -21,7 +21,7 @@ uncovered.
    - If creating, chain `/tasks new epic` / `/tasks new story` first so the tasks have a parent.
 
 3. **Decompose each approved/changed decision into one or more small tasks:**
-   - Keep tasks atomic and independently completable (the [[tasks]] granularity rule). A decision may yield several tasks.
+   - Keep tasks atomic and independently completable — cut them by [[tasks]]' [slicing doctrine](../../tasks/slicing.md), which owns the method. A decision may yield several tasks.
    - For each task, call `/tasks new task --from-feature FEATURE-NNN --no-plan` (batch mode), passing the parent chosen in step 2. The `--from-feature` flag makes `/tasks new`:
      - stamp `feature: FEATURE-NNN` in the task frontmatter,
      - pull Context from the decision row + `idea.md` (no re-asking),
@@ -39,5 +39,5 @@ uncovered.
 
 - **`changed` decision** — decompose the *changed* shape (per the delta in the row), not the original idea.
 - **Decision already has tasks** (re-decompose) — only create tasks for the unaddressed part; don't duplicate. Reconcile against the `→ Tasks` column.
-- **Decision too big to be one task** — that's expected; split into several. If it's really story-sized, make it a STORY and put its tasks under it.
+- **Decision too big to be one task** — that's expected; split into several. If it's really story-sized, make it a STORY and put its tasks under it. Run the slicing doctrine's *Before slicing* test first: a change whose readers fan across the codebase is sequenced expand → migrate → contract, with the order written as `depends-on`/`blocks` on the created tasks.
 - **No approved/changed decisions** — nothing to do; point the user at `/feature decide`.

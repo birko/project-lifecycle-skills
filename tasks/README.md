@@ -8,12 +8,12 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 4       | —     |
+| planned      | 0     | 3       | —     |
 | todo         | —     | —       | 41    |
-| in-progress  | 5     | 9       | 0     |
+| in-progress  | 5     | 10      | 0     |
 | review       | —     | —       | 0     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 133   |
+| done         | 0     | 8       | 134   |
 | cancelled    | 0     | 0       | 20    |
 
 `todo` by priority: 1× P1 · 34× P2 · 6× P3.
@@ -24,20 +24,21 @@ _None_
 
 ## Tree
 
-- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (30/48 tasks done)
+- **EPIC-001** Adopt the yolobox skill ideas into the lifecycle set — in-progress (31/49 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — (done) (1/1)
   - STORY-002 `adopt-project` — the brownfield front door — (done) (15/15)
   - STORY-003 `domain` — glossary and decision records — (done) (7/7)
-  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/6)
+  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/7)
     - [ ] [TASK-114](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-114.md) The question table — the shape every other task in this story reads
     - [ ] [TASK-115](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-115.md) `/feature new` writes the frontier it could not reach, instead of losing it
     - ~~TASK-116 `/feature pick` gains one branch: open questions outstanding, resume at the frontier~~ → merged into TASK-115
     - [ ] [TASK-117](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-117.md) `grill-me` switches from one question at a time to frontier rounds
     - ~~TASK-118 `research` becomes a question type that dispatches a sub-agent, not a skill of its own~~ → merged into TASK-117
     - ~~TASK-119 `feature` reconciles an `idea.md` written before the question table existed~~ → merged into TASK-114
+    - [ ] [TASK-195](EPIC-001-adopt-yolobox-ideas/STORY-004-durable-question-ledger/TASK-195.md) Re-slice STORY-004 by the slicing doctrine before any of its tasks is picked
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — (done) (4/4)
-  - STORY-006 Slicing doctrine and the state-model prototype branch — planned (0/4)
-    - [ ] [TASK-122](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-122.md) The slicing doctrine — what "atomic and independently completable" actually means
+  - STORY-006 Slicing doctrine and the state-model prototype branch — in-progress (1/4)
+    - [x] TASK-122 The slicing doctrine — what "atomic and independently completable" actually means
     - ~~TASK-123 Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract~~ → merged into TASK-122
     - [ ] [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?"
     - [ ] [TASK-125](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-125.md) A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
