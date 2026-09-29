@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (3):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; docs/specs DV7 — all 14 mapped areas never generated (no `docs/specs/<area>.md` exists) — run `/roadmap --check`.
 
-_Generated 2026-09-26. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,7 +13,7 @@ _Generated 2026-09-26. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 5     | 9       | 0     |
 | review       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 130   |
+| done         | 0     | 8       | 131   |
 | cancelled    | 0     | 0       | 20    |
 
 `todo` by priority: 1× P1 · 33× P2 · 5× P3.
@@ -154,7 +154,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (3/7 tasks done) · `kind: review-intake`
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (4/8 tasks done) · `kind: review-intake`
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -164,6 +164,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - **(epic level)**
     - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
+    - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
 
 - **EPIC-004** Comment discipline in agent-written code — in-progress (28/30 tasks done)
   - STORY-018 Seed the comment-discipline rule into both rulebooks — (done) (17/18)

@@ -18,7 +18,11 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
    - Same for Jira.
 
 5. **Build the remote payload**:
-   - **Title** — TASK title (from first `# Heading`)
+   - **Title** — TASK title: the first `# Heading` **after the closing `---` of the frontmatter**. The template's
+     frontmatter carries `# status — …`, `# findings: …` and `# labels: …` comment lines, and a first-`#`-line
+     match takes one of those instead — measured: 14 issues exported as `status — one of: todo, …`
+     (FlowerFurStudio #67–#82, 2026-09-26). Check the title before `gh issue create`; one starting with
+     `status`, `findings` or `labels` is the comment, not the heading.
    - **Body** — full Context / Acceptance criteria / Out of scope sections. Append a footer linking back to the local file path:
      ```
      ---

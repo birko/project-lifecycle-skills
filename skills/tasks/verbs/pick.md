@@ -58,7 +58,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    (check no other session is working in it)`. Picking it by id takes step 6b's resume row. A worktree here
    may belong to another session, so the line invites a resume and never assumes one. A branch copy reading
    `review` belongs to 2b's verification debt, not to this line. In remote mode this matters most: the
-   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (from first `# Heading`), parent IDs (story + epic), priority, assignee, file path.
+   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), parent IDs (story + epic), priority, assignee, file path.
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
    ```
