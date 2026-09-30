@@ -40,12 +40,19 @@ indistinguishable from a fresh one except by what's on disk, so look there: find
   (`git branch --list "task/*"`) and read each one's task file with `git show task/TASK-NNN:<task file>`.
   In remote mode the default branch's copy of an in-progress task still reads `todo`, so the grep alone
   never finds it. Worse, the pool rule below hides it as taken, and a reset drain would start a second
-  task and abandon the first. A branch copy counts only when it reads **`in-progress`**. A copy parked
-  at `review` or `blocked`, or one reading `done` after a failed merge, is not an active run.
+  task and abandon the first. A branch copy counts only when it reads **`in-progress`** and is **not
+  blocked**. Read the status in both forms ([[tasks]] § *Lifecycle* → *Reading a task's status*). A copy
+  parked at `review` or `verify`, one blocked by either form, or one reading `done` after a failed merge is
+  not an active run.
 
 For each hit, read the file — **the branch copy (`git show task/TASK-NNN:<task file>`) for a hit found on a branch**, since in remote mode the default branch's copy carries none of this. **Only resume tasks this skill owns** — they carry `picked-by: fix-next`
 in frontmatter and a `## Progress log` section. Anything else that is `in-progress` is a human's work
 in flight: leave it alone, don't count it, don't report it as blocking you.
+
+**A run of this skill's own that someone has since blocked is not resumed.** Report it as
+`not resumed: TASK-NNN (this skill's run) is blocked: <reason>`, leave its log and branch untouched, and
+go on to step 1. Unblocking is a person's decision, and resuming work somebody deliberately stopped would
+override it.
 
 If you find a skill-owned in-progress task:
 
@@ -64,7 +71,8 @@ Only when nothing is in flight do you proceed.
 
 ## Step 1 — Build the pool
 
-A `status: todo` TASK is in the pool when **either** holds:
+A `status: todo` TASK, or an old-form `status: blocked` one (see the blocked paragraph below), is in the
+pool when **either** holds:
 
 - its frontmatter carries a non-empty `findings:` list; **or**
 - it sits under an EPIC stamped `kind: review-intake`.
@@ -82,8 +90,13 @@ named a **pass**, and a field report has none. So the opt-in named a door with n
 was silent in the worst way: a real defect sat unranked while `--loop` reported the pool empty, *truthfully*.
 An already-filed task joins the same way — mint the id by that route and write it in.
 
-Exclude: unmet `depends-on`, `status: blocked`, and anything whose acceptance is *"decide X"* — a
-decision task needs the user and can't run unattended. Surface those in the closing report instead.
+A **blocked** task stays in the pool, in either form: a `todo` task carrying a `blocked:` field, or an
+old-form `status: blocked` task (see [[tasks]] § *Lifecycle*). It is ranked with the rest so its place in the
+order stays visible, but this skill **never starts one**: step 2 skips it. It never unblocks one either,
+because that is a decision about someone else's reason.
+
+Exclude: unmet `depends-on`, and anything whose acceptance is *"decide X"*. A decision task needs the user
+and can't run unattended. Surface those in the closing report instead.
 
 **Check the pool is complete before ranking it — findings can be filed and never scheduled.** You are
 already walking every `kind: review-intake` epic to build the pool, so evaluate [[roadmap]]'s **DV12** over
@@ -173,6 +186,14 @@ declares a theme, every candidate declares the *same* one, or the pool separated
 reaching it. A degenerate ladder is normal on a repo whose defects cluster in one theme — a codebase
 whose product is prose rules yields almost only correctness defects — so a run that never mentions key
 6 is indistinguishable from one where the key did the work.
+
+**Skip a blocked task that ranks first.** Walk down the ranking to the first task that is not blocked,
+and write one line per task skipped on the way: `skipped: TASK-NNN — blocked: <reason>` (`reason unknown`
+for an old-form `status: blocked` with no note). Those lines go into the ranking paragraph below. Step 9's
+report lists **every** blocked task in the pool, above or below the pick, so none of them drops out of sight.
+The **runner-up** named in the pick's log line is the next task that could have been started, never a
+blocked one; when there is none, the line says `ranked above none — every other pool task is blocked`. When every task in the pool is blocked, that is an empty pool for step 1's purposes:
+report the blocked tasks and stop.
 
 State the ranking in one short paragraph — the top pick and *why it beat the runner-up* — then start.
 **Don't ask which to take;** that's the decision this skill exists to make. Do stop and ask only if the
@@ -316,7 +337,8 @@ Final report, short:
 
 1. What was broken, in one sentence a reader with no context understands.
 2. The step-6 split, as numbers.
-3. Anything flagged and not fixed, and **every task id `close` spawned from the out-of-scope sweep** —
+3. Anything flagged and not fixed, including every blocked task in the pool with its reason, and
+   **every task id `close` spawned from the out-of-scope sweep** —
    by id and one-line subject. Nobody watched the run; if the report doesn't name them, the only trace
    is a file in the tree nobody knows to look for.
 4. **The next pick**, named.
