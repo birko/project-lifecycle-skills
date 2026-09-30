@@ -13,10 +13,10 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 6     | 11      | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 137   |
+| done         | 0     | 8       | 138   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 39× P2 · 7× P3.
+`todo` by priority: 2× P1 · 38× P2 · 7× P3.
 
 ## In progress now
 
@@ -154,7 +154,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (4/8 tasks done) · `kind: review-intake`
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (4/9 tasks done) · `kind: review-intake`
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -165,6 +165,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
+    - [ ] [TASK-206](EPIC-003-field-found-defects/TASK-206.md) The id scan misses task files with Windows line endings, so a new task can reuse a number
 
 - **EPIC-004** Comment discipline in agent-written code — in-progress (28/30 tasks done)
   - STORY-018 Seed the comment-discipline rule into both rulebooks — (done) (17/18)
@@ -193,8 +194,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (2/10 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (2/10)
+- **EPIC-006** Task states follow common practice — in-progress (3/10 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (3/10)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [ ] [TASK-197](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-197.md) Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [ ] [TASK-198](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-198.md) Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -202,7 +203,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-200](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-200.md) Migrate: `specs regen`'s state gate reads `verify` · FEATURE-003
     - [ ] [TASK-201](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-201.md) Migrate: both front doors ship the new status vocabulary · FEATURE-003
     - [ ] [TASK-202](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-202.md) Migrate: tracker sync maps the blocked flag to a GitHub label and Jira's Flagged field · FEATURE-003
-    - [ ] [TASK-203](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-203.md) Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
+    - [x] TASK-203 Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
     - [ ] [TASK-204](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-204.md) Contract: every writer switches to the new form · FEATURE-003
     - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo · FEATURE-003
 

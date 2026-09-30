@@ -78,9 +78,41 @@ current template first (step 3), because a file that merely exists cannot be rep
      **No answer, or nobody to ask:** keep the **existing** value, ignore the arg, and **report the conflict unresolved**, naming both values. Init reconciles and never re-decides, so the file on disk wins by default; and a mode change carries a migration this verb does not perform, which is why an unanswered conflict must not be resolved in the argument's favour.
    - Why this is not "leave it alone": the field list grows, so a config written before a field existed reports complete from the outside. That is the case [[adopt-project]] delegates here to settle, and step 5's three outcomes are what let it report the truth — `already current` and `brought up to date` are both real answers it can pass on, where silence would have forced it to report `unknown`.
 
+3b. **Reconcile task files written in the old status vocabulary** ([SKILL.md](../SKILL.md) § *Lifecycle* →
+   *Reading a task's status*). Every reader accepts both forms, so nothing is broken before this runs; it
+   exists so a tree stops carrying a form whose meaning has to be guessed. Walk every `TASK-*.md` in this
+   tree, and in this tree only: a task branch's copy is read in both forms, and its own close brings it in.
+   - **`status: review`** → `status: verify`. Nothing else changes.
+   - **`status: blocked`** → the task's **prior state** plus a `blocked:` field, written on the line after
+     `status:`:
+     - **Prior state is read from the file's history, never guessed.** It is the most recent `status:`
+       value other than `blocked` among the file's earlier versions. List them newest first with
+       `git log --follow --format=%H --name-only -- <file>`, and read each with `git show <sha>:<path at that sha>`.
+       Where a per-file loop is not available, one `git log -p -- tasks/` read once gives the same answer for
+       files never renamed; name in the report which read was used. History determines this, so it is read,
+       not asked.
+     - **Reason**, from the first of these the file holds: the text of its newest
+       `> Blocked <date> — <reason>` note, which [`block`](block.md) writes; else its `depends-on` tasks that
+       are not `done`, as `waiting on TASK-X, TASK-Y` (measured on a real tree: all 24 of its blocked tasks
+       carried the reason only this way); else `reason unknown`.
+     - **History cannot tell** (no git, the file was created blocked, or every earlier version reads
+       `blocked`) → ask once per task:
+       > **TASK-NNN was blocked before its history begins: "<reason>". Had work on it started?**
+       > · **No** — it goes back to `todo`. · **Yes** — it goes back to `in-progress`.
+
+       **No answer, or nobody to ask:** write `status: todo`, and add the body note
+       `> Migrated <date> — state before blocking not found in history; set to todo, nobody chose it.`
+       List it in the report as *fallback, unchosen*. `todo` is the safe side, because it claims no work
+       was done, and the note keeps the guess from reading as a decision.
+   - **Idempotent.** A task already in the new form is left byte-for-byte alone. A second run over a
+     migrated tree reports *already current*.
+   - Report per file, in step 5: **brought up to date** (`review → verify`, or `blocked → <prior> + blocked`,
+     naming where the prior state came from: history or answer), **fallback, unchosen**, or, for the whole
+     tree, **already current**.
+
 4. **Generate the initial dashboard** — run the [triage](triage.md) logic over whatever tree exists (an empty tree renders zero counts; scaffold-seeded epics/stories render their `planned` rows). Write `tasks/README.md`.
 
-5. **Confirm** — print both file paths, and the config outcome as one of three: **created**, **already current** (nothing to add), or **brought up to date** (naming each field added and each answer asked for). A comment block added for a field nobody answered is named as *added commented, undeclared — nothing asked*, and is **not** listed as unresolved: its absence is a defined state. For `workspace:` and `worktree-root:` that one line is the whole report, printed with the front door's wording above (*workspace undeclared — tasks work in place*, *worktree-root undeclared — pick will ask*) when a front door put the question. **Name any field left unresolved**, whichever outcome it was — a caller composing a report cannot invent that line, and `integration:` left out silently is the whole defect this verb was handed. Then the next step: "Create work with `/tasks new` (or `/feature new` for stakeholder-facing features)."
+5. **Confirm** — print both file paths, step 3b's task-file outcome (its own report lines), and the config outcome as one of three: **created**, **already current** (nothing to add), or **brought up to date** (naming each field added and each answer asked for). A comment block added for a field nobody answered is named as *added commented, undeclared — nothing asked*, and is **not** listed as unresolved: its absence is a defined state. For `workspace:` and `worktree-root:` that one line is the whole report, printed with the front door's wording above (*workspace undeclared — tasks work in place*, *worktree-root undeclared — pick will ask*) when a front door put the question. **Name any field left unresolved**, whichever outcome it was — a caller composing a report cannot invent that line, and `integration:` left out silently is the whole defect this verb was handed. Then the next step: "Create work with `/tasks new` (or `/feature new` for stakeholder-facing features)."
    - The three are distinct on purpose. A caller cannot distinguish "your config is current" from "I declined to look" if both print the same line, and [[adopt-project]] has to.
 
 ## Edge cases
