@@ -49,3 +49,13 @@ ask survives, and begin the append-only log from the first request made after ad
 > sometimes a coomet can be longer but only if  it has some necessary ingo and not unceccesry things
 
 > woudl liek to be able to scan the whole repo but also just the files it ctoudhed by wopork in the diff
+
+### 2026-09-30 — became FEATURE-003 (task states follow common practice: `blocked` becomes a flag)
+
+Asked while trying the state-model playground built for TASK-124.
+
+> dal by sa tento workfow nejak zredujovat podla standardov na internete projekt management ma urcite na to uz nejake postupy
+
+> islo my hlavne toto v ihrysku
+
+> 1 urcote druhy stav rozpracovana, 6 takisto rozpracovana  kedze nieoc na nej uz bolo spravene spravne to chapem?
