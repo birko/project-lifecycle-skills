@@ -22,9 +22,9 @@ dashboard is regenerated on the default branch when `close` merges.
 
 1. **Run the [Collection pass](../SKILL.md#collection-pass)** — gives you the file list, parsed frontmatter, status buckets, `inProgressTasks[]`, `byParent` map, and mode/provider info. Don't duplicate the enumeration here. **Always single-repo** — see § Args.
 
-2. **Build the counts table** from the buckets — epics × statuses, stories × statuses, tasks × statuses. Use `—` for status/level pairs that don't apply (e.g. epics have no `todo` or `blocked`).
+2. **Build the counts table** from the buckets (the `blocked` row counts blocked tasks across states, as the Collection pass buckets them) — epics × statuses, stories × statuses, tasks × statuses. Use `—` for status/level pairs that don't apply (e.g. epics have no `todo` or `blocked`).
 
-3. **Build "In progress now"** from `inProgressTasks[]`. One bullet per task:
+3. **Build "In progress now"** from `inProgressTasks[]`. One bullet per task; a blocked one ends with `⚠ blocked: <reason>`, so stalled work does not read as active:
    ```
    - [TASK-014](EPIC-001-auth/STORY-001-login/TASK-014-jwt.md) — JWT issuance on login (P1, ai)
    ```
@@ -46,8 +46,10 @@ dashboard is regenerated on the default branch when `close` merges.
    Markers:
    - Task status `done` → `[x]`
    - Task status `in-progress` → `[ ] ... ← in-progress`
-   - Task status `review` → `[ ] ... 🔍 review` (code done, sign-off pending — verification debt)
-   - Task status `blocked` → `[ ] ... ⚠ blocked`
+   - Task status `review` or `verify` → `[ ] ... 🔍 review` (code done, sign-off pending — verification debt)
+   - Task blocked by either form ([SKILL.md](../SKILL.md) § *Lifecycle*) → `[ ] ... ⚠ blocked: <reason>` after
+     its own state's marker; an old-form `status: blocked` has no other state to show, so it renders
+     `[ ] ... ⚠ blocked`
    - Task status `cancelled` → render struck-through `~~TASK-NNN ...~~`
    - Otherwise → `[ ]`
    - **Feature link** — if a task has `feature: FEATURE-NNN`, append a trailing tag `· FEATURE-NNN` so devs can jump to its stakeholder context in `docs/features/`.

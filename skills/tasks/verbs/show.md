@@ -19,7 +19,7 @@ Read-only inspection. Does **not** change status, does **not** regenerate the da
 
    **TASK** — print:
    - Header: `TASK-NNN — <title>` and the parent chain (`EPIC-NNN <epic title> → STORY-NNN <story title>` or `[loose]`)
-   - One-line metadata row: status · priority · assignee · created · `pr:` / `github-issue:` / `jira-key:` if set · `depends-on:` / `blocks:` if non-empty
+   - One-line metadata row: status (with `blocked: <reason>` beside it when the field is set) · priority · assignee · created · `pr:` / `github-issue:` / `jira-key:` if set · `depends-on:` / `blocks:` if non-empty
    - `## Context`, `## Acceptance criteria`, `## Out of scope`, `## Implementation plan` (verbatim from the file)
    - If `## Implementation plan` is empty/placeholder → footer hint: "No plan yet — run `/tasks plan TASK-NNN`."
 

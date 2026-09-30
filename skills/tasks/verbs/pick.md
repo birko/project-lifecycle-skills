@@ -14,7 +14,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      remedy: *"`--across` is read-only; run `/tasks --across` to see every project, then pick from inside
      the repo that owns the task."* Ids there are printed `<repo>/TASK-NNN`, so the owning repo is
      already named.
-   - `--status` — default `todo` (don't include blocked unless asked)
+   - `--status` — default `todo` (don't include blocked unless asked; a task is blocked by either form — [SKILL.md](../SKILL.md) § *Lifecycle*)
    - `--priority` — filter (default: all)
    - `--assignee` — filter (default: all)
    - `--epic <ID>` — limit to tasks under one epic
@@ -23,7 +23,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      [[feature]]'s `/feature pick` hands off once a feature is decomposed)
    - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5
 
-2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `review` lives on its task branch) — code
+2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` or `status: verify`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `review` lives on its task branch) — code
    complete, sign-off pending — and report them **before** the candidate list. They are deliberately
    **not** candidates (the `--status todo` default is right: a task awaiting sign-off is not work to
    start), so the job here is to *surface* the debt, never to offer unfinished work as new work.
@@ -57,7 +57,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    it apart: `in progress on this machine: TASK-NNN at <worktree path> — resume with /tasks pick TASK-NNN
    (check no other session is working in it)`. Picking it by id takes step 6b's resume row. A worktree here
    may belong to another session, so the line invites a resume and never assumes one. A branch copy reading
-   `review` belongs to 2b's verification debt, not to this line. In remote mode this matters most: the
+   `review` (or `verify`) belongs to 2b's verification debt, not to this line. In remote mode this matters most: the
    default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), parent IDs (story + epic), priority, assignee, file path.
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
@@ -314,6 +314,6 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 - **No candidates match filters** — print empty result, suggest broadening (`--status todo,blocked` or drop filters).
 - **Multiple in-progress by same assignee** — warn ("you already have N tasks in-progress; consider closing one first") but don't block.
-- **Task is `blocked`** — confirm intent before flipping to `in-progress` (was it unblocked?).
+- **Task is blocked** (either form) — confirm intent before flipping to `in-progress` (was it unblocked?).
 - **Task is `done` or `cancelled`** — error; suggest `/tasks new` if user wants to redo work.
 - **Dependencies not met** — if `depends-on:` lists tasks that aren't `done`, warn but don't block. Print which dependencies are still open.

@@ -72,7 +72,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
      ├─ blocked:     <n>
      └─ done:        <n>
 
-   In progress: <list or "(none)">
+   In progress: <list or "(none)">          ← a blocked one carries "⚠ blocked: <reason>"
    In review:   <list or "(none)">
 
    Next up (top 3 by priority, blocked excluded):
@@ -166,14 +166,19 @@ from every project at once to answer a question only occasionally asked.
 3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `theme` (stories, optional), `created`,
    `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
 4. **Bucket** by level + status:
-   - Counts: `{epics: {planned, in-progress, done, cancelled}, stories: {...}, tasks: {todo, in-progress, review, blocked, done, cancelled}}`
+   - Counts: `{epics: {planned, in-progress, done, cancelled}, stories: {...}, tasks: {todo, in-progress, review, blocked, done, cancelled}}`.
+     Read each status per § *Lifecycle* → *Reading a task's status*: `verify` counts in the `review` bucket,
+     a task carrying the `blocked:` field counts in its own state **and** in `blocked`, which is therefore a
+     count of blocked tasks rather than a state, and an old-form `status: blocked` counts in `blocked` only.
+     So the rows need not sum to the task total; wherever counts are shown, say so when `blocked` overlaps
+     another row (`blocked: 3 (2 also counted in their own state)`), or the table reads as an error.
    - Priority sub-breakdown for `tasks.todo`: **one bucket per priority actually present**, ordered P0→P1→P2→P3→…
      Do **not** hard-code the set. A fixed `{P0, P1, P2}` silently drops any other value in use — measured on
      this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
-   - `inReviewTasks[]` — TASKs with `status: review` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `review` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` in remote mode), and the debt would otherwise be invisible.
-   - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked, NOT taken — below), sorted P0→P1→P2 then created asc
+   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `review` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` in remote mode), and the debt would otherwise be invisible.
+   - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted P0→P1→P2 then created asc
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,
      another clone's pick shows only as that pushed branch: the default branch's file still reads `todo`
@@ -288,6 +293,23 @@ Every status has a verb that sets it — none requires hand-editing frontmatter:
 `block`/`unblock`→`blocked`↔`todo`,
 `cancel`→`cancelled`. (`cancel` and `block` mirror the [[feature]] ledger's `removed`/`deferred`
 states — a deliberate, recorded non-completion, never a deletion.)
+
+**Reading a task's status — two forms, both read everywhere, permanently.** The vocabulary is moving to
+five statuses (`todo` · `in-progress` · `verify` · `done` · `cancelled`) plus a **`blocked:` frontmatter
+field** holding the reason, absent when the task is not blocked (FEATURE-003). Every reader accepts both
+forms, and keeps accepting the old one after the writers have moved, because task files in repos nobody
+migrates are out of reach:
+
+| In the file | Read as |
+|---|---|
+| `status: verify`, or `status: review` | awaiting verification: code complete, the manual step unrun |
+| a `blocked: <reason>` field | blocked, **in the state its `status:` names** |
+| `status: blocked` (old form) | blocked, **prior state unknown**: counted as blocked only, never guessed into a state, until a migration reads its history |
+| a `blocked:` field on a `done` or `cancelled` task | a contradiction; `audit` reports it |
+
+A task is **blocked** when either the field or the old status says so. Blocked tasks stay out of the ready
+pool, as they always have. For now `block`, `unblock` and `close` still write the old form; reading both
+is what lets them move later without a flag day.
 
 **Integration model — the task is the unit of work, the PR, *and* the merge gate.** For
 git/PR projects the default is **PR-per-task**: `pick` cuts `task/TASK-NNN` from the default
