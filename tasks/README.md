@@ -8,15 +8,15 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 3       | —     |
-| todo         | —     | —       | 39    |
+| planned      | 1     | 4       | —     |
+| todo         | —     | —       | 49    |
 | in-progress  | 5     | 10      | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 8       | 135   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 33× P2 · 5× P3.
+`todo` by priority: 1× P1 · 41× P2 · 7× P3.
 
 ## In progress now
 
@@ -192,6 +192,19 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner · FEATURE-001
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
+
+- **EPIC-006** Task states follow common practice — planned (0/10 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — planned (0/10)
+    - [ ] [TASK-196](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-196.md) Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
+    - [ ] [TASK-197](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-197.md) Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
+    - [ ] [TASK-198](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-198.md) Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
+    - [ ] [TASK-199](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-199.md) Migrate: `fix-next` reads the new form and skips a blocked task it ranks first · FEATURE-003
+    - [ ] [TASK-200](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-200.md) Migrate: `specs regen`'s state gate reads `verify` · FEATURE-003
+    - [ ] [TASK-201](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-201.md) Migrate: both front doors ship the new status vocabulary · FEATURE-003
+    - [ ] [TASK-202](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-202.md) Migrate: tracker sync maps the blocked flag to a GitHub label and Jira's Flagged field · FEATURE-003
+    - [ ] [TASK-203](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-203.md) Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
+    - [ ] [TASK-204](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-204.md) Contract: every writer switches to the new form · FEATURE-003
+    - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo · FEATURE-003
 
 ## Loose tasks
 
