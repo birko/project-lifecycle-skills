@@ -36,6 +36,10 @@ Produce something a project manager or end user can look at and react to, so dec
      Draw them from the decisions being tested: each walkthrough names the decision row it exercises. Label the page "PROTOTYPE — a model of the proposed states, not the product."
 
 4. **Tie prototype choices back to decisions** — if building the prototype surfaced a new branch or made one obviously wrong, add/flag it in `decisions.md` (state stays `proposed`; note it in the History log). The prototype is itself a decision-discovery tool.
+   **Every form a stakeholder drives opens by saying what is asked of them**, before any content: what it
+   models, what to do with it (a few numbered steps), and what answer is wanted, including what is *not*
+   being judged (looks, wording). A prototype without that is explored and not answered. Measured on the
+   first state-model playground: a reader who opened it asked what they were supposed to do with it.
    **The output of every form is the stakeholder's reaction, not the file.** Record each reaction where
    decisions go: a History line in `decisions.md` naming the row it bears on, quoting the reaction, and
    saying which form produced it. A reaction left in a chat or on the prototype is lost when the prototype
