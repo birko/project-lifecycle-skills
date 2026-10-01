@@ -234,6 +234,7 @@ m_idok()    { printf '\nLocate it: Grep %s^id: TASK-NNN[[:space:]]*$%s.\n' "$bt"
 case_fails_saying "bare \$ id pattern in backticks"  m_idbare  "ends in a bare"
 case_fails_saying "bare \$ id pattern in quotes"     m_idquote "ends in a bare"
 case_is "CRLF-tolerant id pattern"            0 m_idok
+case_fails_saying "bare \$ id pattern ends the run FAILED" m_idbare "skills-lint: FAILED"
 printf 'Broken input must fail\n'
 case_is "mis-cased wikilink"               1 m_miscased
 case_is "underscore wikilink"              1 m_underscore

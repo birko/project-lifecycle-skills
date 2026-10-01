@@ -316,12 +316,6 @@ check_root() {
 check_root "$CLAUDE_SKILLS_ROOT" skills
 check_root "$PI_SKILLS_ROOT" skills skills-pi
 
-[ -s "$FAILFILE" ] && fail=1
-if [ "$fail" -eq 0 ]; then
-  printf '\nskills-lint: OK (%s skills)\n' "$n_skills"
-else
-  printf '\nskills-lint: FAILED\n'
-fi
 printf '== 7. id patterns survive CRLF ==\n'
 # A bare `$` misses the `\r` of a CRLF task file in ripgrep and in `git grep`; the measured cost and
 # the reason for `[[:space:]]*$` rather than `\r?$` live in skills/tasks/SKILL.md § ID generation.
@@ -330,6 +324,13 @@ if [ -n "$id_hits" ]; then
   while IFS= read -r h; do err "$h — an ^id: pattern ends in a bare \$; end it [[:space:]]*\$"; done <<< "$id_hits"
 else
   printf '  every ^id: pattern tolerates CRLF\n'
+fi
+
+[ -s "$FAILFILE" ] && fail=1
+if [ "$fail" -eq 0 ]; then
+  printf '\nskills-lint: OK (%s skills)\n' "$n_skills"
+else
+  printf '\nskills-lint: FAILED\n'
 fi
 
 exit "$fail"
