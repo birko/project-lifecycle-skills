@@ -3,7 +3,7 @@ id: TASK-206
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P1
 assignee: unassigned
 created: 2026-09-30
@@ -31,10 +31,10 @@ next task reuses its number. This is the exact defect the section exists to prev
 
 ## Acceptance criteria
 
-- [ ] Every id pattern the id-generation rule states tolerates a trailing `\r` (for example `\r?$`), or the rule says to read ids in a way that is line-ending independent
-- [ ] `feature/SKILL.md` § *ID generation* and `intake.md`'s `FIELD-NNN` rule are checked and fixed the same way
-- [ ] A lint test, or a scripted check recorded here, shows the corrected pattern finding every id in a fixture with mixed line endings, where the old pattern misses the CRLF ones
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Every id pattern the id-generation rule states tolerates a trailing `\r` (for example `\r?$`), or the rule says to read ids in a way that is line-ending independent
+- [x] `feature/SKILL.md` § *ID generation* and `intake.md`'s `FIELD-NNN` rule are checked and fixed the same way
+- [x] A lint test, or a scripted check recorded here, shows the corrected pattern finding every id in a fixture with mixed line endings, where the old pattern misses the CRLF ones
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -42,4 +42,16 @@ next task reuses its number. This is the exact defect the section exists to prev
 
 ## Human test plan
 
-- [ ] N/A — a scripted check proves it: run the corrected and the old pattern over a fixture with mixed line endings with ripgrep, and record both counts.
+- [x] N/A — a scripted check proves it: run the corrected and the old pattern over a fixture with mixed line endings with ripgrep, and record both counts.
+  - **Run 2026-10-01.** Three tools against a two-file fixture (one LF file, one CRLF file stored with `core.autocrlf false`): the old pattern found 2 with GNU grep, **1** with `git grep` on the blob and **1** with ripgrep (the Grep tool); `[[:space:]]*$` found 2 in all three. On DraCode's real mixed-ending tree, the Grep tool found **35 of 75** with the old pattern and **75 of 75** with the new one.
+
+## Implementation plan
+
+Planned inline at pick (2026-10-01). The defect was wider than filed: besides the id scan, every by-id lookup in `block`, `cancel`, `close`, `move`, `plan` and `show` used `^id: TASK-NNN$`, so on a CRLF file they report "not found". `\r?$` was rejected because POSIX ERE (GNU grep, `git grep -E`) has no `\r` escape; `[[:space:]]*$` works in all three tools. The rule and its measurement are stated once, in `tasks/SKILL.md` § *ID generation*; every site carries the corrected pattern; lint check 7 makes a regression fail CI.
+
+## Progress log
+
+- 2026-10-01 — Picked; the scope measured: 9 patterns in 8 files.
+- 2026-10-01 — All 9 patterns end `[[:space:]]*$`, and the rule is stated in § *ID generation*. `skills-lint.sh` gains fatal check 7 (`^id:` pattern ending in a bare `$` in `skills/` or `skills-pi/`), with 3 new suite cases: bare in backticks, bare in quotes, the tolerant form. Suite 66/66; lint OK. Against the pre-change lint the two bare cases **fail** and the other 64 pass, so check 7 is what catches them. A first attempt at that proof was invalid (the old lint was copied under the wrong file name, so every case failed with exit 127) and was re-run correctly. `AGENTS.md` § *Testing* count updated to 66.
+- 2026-10-01 — Close review. **Standards:** pass. The rule is stated once with its measurement, the sites carry the pattern, and the lint enforces it, as AGENTS.md § *Testing* asks for a lint change. **Intent:** pass, all 4 criteria met; `feature/SKILL.md` is fixed, and `intake.md`'s `FIELD-NNN` rule uses no anchored pattern, so it needed none. **Correctness:** pass. The regex was proved in three tools and on a real tree. **Security:** not applicable. **Comments:** pass. Check 7's header comment is the mechanism plus a pointer to § *ID generation*, not a copy of it.
+- 2026-10-01 — Out of scope, boundary: the AGENTS.md § *Comments* measurement table now understates `skills-lint.sh` and `skills-lint-test.sh`; re-measuring it is TASK-191's job.

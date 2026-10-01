@@ -96,7 +96,7 @@ See [templates/](templates/) for exact file shapes.
 
 ## ID generation
 
-`FEATURE-NNN` is its own global counter, parallel to (not the same as) EPIC/STORY/TASK. A feature is stakeholder-facing and time-boxed; an epic is an open-ended dev area of concern. To find the next ID, take the max `FEATURE-NNN`, increment, zero-pad to 3 — **over every copy of the tree that can mint one**, as [[tasks]] § *ID generation* names the copies, with its plain command forms and its "say what was unseen" rule. The only differences here are the path (`docs/features/`) and the pattern (`^id: FEATURE-[0-9]+$`, the line every `idea.md`/`decisions.md` carries). A max read from one copy gives two features started in parallel the same number.
+`FEATURE-NNN` is its own global counter, parallel to (not the same as) EPIC/STORY/TASK. A feature is stakeholder-facing and time-boxed; an epic is an open-ended dev area of concern. To find the next ID, take the max `FEATURE-NNN`, increment, zero-pad to 3 — **over every copy of the tree that can mint one**, as [[tasks]] § *ID generation* names the copies, with its plain command forms and its "say what was unseen" rule. The only differences here are the path (`docs/features/`) and the pattern (`^id: FEATURE-[0-9]+[[:space:]]*$`, the line every `idea.md`/`decisions.md` carries). A max read from one copy gives two features started in parallel the same number.
 
 ## Where `docs/features/` lives
 

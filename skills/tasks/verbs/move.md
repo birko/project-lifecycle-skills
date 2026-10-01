@@ -25,7 +25,7 @@ defect tasks, pool = 2.** They were re-homed by hand because no verb could.
 
 1. **Find task root** (SKILL.md § Shape detection).
 
-2. **Resolve each ID and the destination.** Grep `^id: <ID>$` across the task root; grep the
+2. **Resolve each ID and the destination.** Grep `^id: <ID>[[:space:]]*$` across the task root; grep the
    destination the same way unless it is `_loose`. Refuse, with the reason, when:
    - an ID resolves to nothing, or to an `EPIC-*` (epics are roots — say so rather than failing obscurely);
    - the destination does not exist. **Never create it** — a typo would otherwise silently mint a container;

@@ -17,7 +17,7 @@ deletion. The file stays for the audit trail.
    - `<ID>` — required. `TASK-001` or just `001` if unambiguous. Also accepts STORY/EPIC IDs.
    - `--reason "<text>"` — recommended. The why; captured in the body + History so the choice is auditable.
 
-3. **Locate the file** — Grep `^id: (TASK|STORY|EPIC)-NNN$`. If not found, suggest `/tasks triage`.
+3. **Locate the file** — Grep `^id: (TASK|STORY|EPIC)-NNN[[:space:]]*$`. If not found, suggest `/tasks triage`.
 
 4. **Read current status**:
    - Already `cancelled` → warn; nothing to do.

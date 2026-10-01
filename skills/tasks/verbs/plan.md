@@ -14,7 +14,7 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
 
 1. **Find task root** using shape detection.
 
-2. **Locate the TASK file** — grep for `^id: TASK-NNN$` in the task root. Error if missing or if the ID resolves to an EPIC/STORY.
+2. **Locate the TASK file** — grep for `^id: TASK-NNN[[:space:]]*$` in the task root. Error if missing or if the ID resolves to an EPIC/STORY.
 
 3. **Read the TASK file** in full. Capture: title, `## Context`, `## Acceptance criteria`, `## Out of scope`, and any existing `## Implementation plan` content.
 

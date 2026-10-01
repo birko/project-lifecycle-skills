@@ -9,14 +9,14 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 3       | —     |
-| todo         | —     | —       | 47    |
+| todo         | —     | —       | 46    |
 | in-progress  | 6     | 11      | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 138   |
+| done         | 0     | 8       | 139   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 2× P1 · 38× P2 · 7× P3.
+`todo` by priority: 1× P1 · 38× P2 · 7× P3.
 
 ## In progress now
 
@@ -154,7 +154,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
 
-- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (4/9 tasks done) · `kind: review-intake`
+- **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (5/9 tasks done) · `kind: review-intake`
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -165,7 +165,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-161](EPIC-003-field-found-defects/TASK-161.md) A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
-    - [ ] [TASK-206](EPIC-003-field-found-defects/TASK-206.md) The id scan misses task files with Windows line endings, so a new task can reuse a number
+    - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
 - **EPIC-004** Comment discipline in agent-written code — in-progress (28/30 tasks done)
   - STORY-018 Seed the comment-discipline rule into both rulebooks — (done) (17/18)

@@ -11,7 +11,7 @@ Read-only inspection. Does **not** change status, does **not** regenerate the da
 
 1. **Find task root**.
 
-2. **Resolve the ID** — grep for `^id: <ID>$` in the task root. Error if not found, printing the resolved task root so the user can verify they're in the right place.
+2. **Resolve the ID** — grep for `^id: <ID>[[:space:]]*$` in the task root. Error if not found, printing the resolved task root so the user can verify they're in the right place.
 
 3. **Read the file** in full.
 

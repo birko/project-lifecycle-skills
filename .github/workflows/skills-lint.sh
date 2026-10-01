@@ -322,4 +322,14 @@ if [ "$fail" -eq 0 ]; then
 else
   printf '\nskills-lint: FAILED\n'
 fi
+printf '== 7. id patterns survive CRLF ==\n'
+# A bare `$` misses the `\r` of a CRLF task file in ripgrep and in `git grep`; the measured cost and
+# the reason for `[[:space:]]*$` rather than `\r?$` live in skills/tasks/SKILL.md § ID generation.
+id_hits=$(grep -rnE '\^id: [^`"]*[^*`"]\$' skills skills-pi 2>/dev/null || true)
+if [ -n "$id_hits" ]; then
+  while IFS= read -r h; do err "$h — an ^id: pattern ends in a bare \$; end it [[:space:]]*\$"; done <<< "$id_hits"
+else
+  printf '  every ^id: pattern tolerates CRLF\n'
+fi
+
 exit "$fail"

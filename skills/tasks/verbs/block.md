@@ -9,7 +9,7 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 
 ## block — `/tasks block <ID>`
 
-1. **Find task root**; locate the TASK file by ID (Grep `^id: TASK-NNN$`).
+1. **Find task root**; locate the TASK file by ID (Grep `^id: TASK-NNN[[:space:]]*$`).
 2. **Parse args**:
    - `<ID>` — required (tasks only — EPIC/STORY don't carry `blocked`).
    - `--reason "<text>"` — recommended (why it's blocked).

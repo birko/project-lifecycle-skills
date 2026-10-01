@@ -42,7 +42,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      fires is worse than no flag. **An ask reachable under `--unattended` and absent from this table is a
      defect in the table, not a judgement call to improvise at runtime.**
 
-3. **Locate the file** — Grep `^id: TASK-NNN$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
+3. **Locate the file** — Grep `^id: TASK-NNN[[:space:]]*$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
 
 4. **Read current status**:
    - **Except an unmerged close**: the task branch's copy reads `done` (`git show task/TASK-NNN:<task file>`)

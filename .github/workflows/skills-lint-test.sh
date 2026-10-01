@@ -227,6 +227,13 @@ m_template()  { mkdir -p "$1/skills/alpha/templates"; printf '# seed\n\nSee [t](
 
 printf 'A clean fixture must pass\n'
 case_is "clean fixture"                    0 m_noop
+# --- check 7: id patterns survive CRLF (TASK-206: a bare `$` found 35 of 75 ids on a mixed-ending tree) ---
+m_idbare()  { printf '\nLocate it: Grep %s^id: TASK-NNN$%s.\n' "$bt" "$bt" >> "$1/skills/alpha/SKILL.md"; }
+m_idquote() { printf '\nRun git grep -E "^id: (EPIC|TASK)-[0-9]+$" over the branches.\n' >> "$1/skills/alpha/SKILL.md"; }
+m_idok()    { printf '\nLocate it: Grep %s^id: TASK-NNN[[:space:]]*$%s.\n' "$bt" "$bt" >> "$1/skills/alpha/SKILL.md"; }
+case_fails_saying "bare \$ id pattern in backticks"  m_idbare  "ends in a bare"
+case_fails_saying "bare \$ id pattern in quotes"     m_idquote "ends in a bare"
+case_is "CRLF-tolerant id pattern"            0 m_idok
 printf 'Broken input must fail\n'
 case_is "mis-cased wikilink"               1 m_miscased
 case_is "underscore wikilink"              1 m_underscore
