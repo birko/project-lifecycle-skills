@@ -51,7 +51,10 @@ enumerate-read-join-diff pass; batch the Reads.
 ### 1. Collect tasks
 Run the [[tasks]] skill's [Collection pass](../tasks/SKILL.md#collection-pass) — gives
 counts/buckets, `byParent`, and each task's `parent`, `status`, `findings:`, and `feature:` link,
-plus each epic's optional `kind:`.
+plus each epic's optional `kind:`. Every rule below reads a task's status **in both forms**, as [[tasks]]
+§ *Lifecycle* → *Reading a task's status* defines them: `verify` reads as `review`, and a `blocked:` field
+leaves the task in the state its `status:` names. **The flag alone is never a divergence**: a blocked task
+is judged by its state, like any other.
 **Only for STORYs under an epic with `kind: review-intake`**, also count unticked `- [ ]` lines in
 the STORY body — DV12 needs them, and no other rule does, so don't scan bodies anywhere else.
 

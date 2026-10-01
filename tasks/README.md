@@ -13,7 +13,7 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 6     | 11      | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 140   |
+| done         | 0     | 8       | 141   |
 | cancelled    | 0     | 0       | 20    |
 
 `todo` by priority: 1× P1 · 37× P2 · 7× P3.
@@ -63,7 +63,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (49/83 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (49/84 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/17)
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
@@ -96,9 +96,10 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
     - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
     - ~~TASK-150 The `docs/architecture.md` row names a state but no fill action, and the two doors disagree~~ → merged into TASK-099
-  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/2)
+  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (1/3)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] [TASK-032](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-032.md) A divergence cannot be recorded as accepted, so triage nags about a decision already made
+    - [ ] [TASK-207](EPIC-002-close-gate-findings/STORY-013-roadmap-drift-audit/TASK-207.md) DV1 cannot fire on a feature with no `status.md`, and its condition reads two ways
   - STORY-014 `specs` — two gates that pass without checking — in-progress (3/9)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
@@ -194,11 +195,11 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (4/10 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (4/10)
+- **EPIC-006** Task states follow common practice — in-progress (5/10 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (5/10)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
-    - [ ] [TASK-198](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-198.md) Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
+    - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-199 Migrate: `fix-next` reads the new form and skips a blocked task it ranks first · FEATURE-003
     - [ ] [TASK-200](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-200.md) Migrate: `specs regen`'s state gate reads `verify` · FEATURE-003
     - [ ] [TASK-201](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-201.md) Migrate: both front doors ship the new status vocabulary · FEATURE-003
