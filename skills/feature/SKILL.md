@@ -168,7 +168,10 @@ reads each feature's decision counts by state, coarse `status`, phase, title, an
 line; step 3 joins tasks via `feature: FEATURE-NNN` back-links. Two feature-side notes:
 
 - Bucket each feature's tasks by status (todo/in-progress/review/blocked/done/cancelled) from the
-  model's task collection — `review` matters: phase derivation and verification-debt ordering both
+  model's task collection, reading each task's status in both forms as [[tasks]] § *Lifecycle* defines
+  them: `verify` buckets as `review`, and a blocked task keeps its own state. This is the **task** status,
+  not this feature's own `review` marker in `idea.md`, which is a separate vocabulary and does not
+  change. The `review` bucket matters: phase derivation and verification-debt ordering both
   need it.
 - The model's `divergences` come along for free — the bare-`/feature` listing may surface them
   (one `⚠ DV<n>` mark per affected feature), same rules as `/roadmap --check`.

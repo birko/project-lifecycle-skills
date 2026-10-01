@@ -27,6 +27,11 @@ The behaviour decisions land here, because they live in the writers: D2 (unblock
 D3 (a deferred merge is `in-progress` + `blocked: merge deferred`), D6 and D7 (`pick` offers a flagged
 task with a warning and asks *"Unblock and start?"* when it is chosen).
 
+**Writers outside `tasks` found by the migrate batches** (so this task reaches them too):
+`feature/verbs/decide.md` (a change landing on a closed feature reopens its task `done → review`) and
+`feature/verbs/pick.md` (the same revert, named in an edge case). Both must write `verify`. Found by
+TASK-197.
+
 ## Acceptance criteria
 
 - [ ] `block` writes the `blocked:` field and leaves `status:` alone; `unblock` removes the field and leaves `status:` alone (D2)

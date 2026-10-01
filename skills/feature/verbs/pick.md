@@ -57,7 +57,7 @@ lifecycle stall.
 5. **Hand off to work** (all gates clear, tasks exist):
    - Chain `/tasks pick --feature FEATURE-NNN` — the task tree owns the work loop from here
      (branch, plan, implement, close). Don't re-implement the picker.
-   - Surface this feature's tasks already `in-progress` or `review` **first** — an in-review task
+   - Surface this feature's tasks already `in-progress` or awaiting verification (`review`/`verify`) **first** — an in-review task
      is finished code awaiting a human step; closing it out beats starting a new one.
    - If every task is `done` but sign-off isn't recorded, that's gate E — route to
      `/feature review`, not to more work.
