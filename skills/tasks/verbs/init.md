@@ -82,17 +82,23 @@ current template first (step 3), because a file that merely exists cannot be rep
    *Reading a task's status*). Every reader accepts both forms, so nothing is broken before this runs; it
    exists so a tree stops carrying a form whose meaning has to be guessed. Walk every `TASK-*.md` in this
    tree, and in this tree only: a task branch's copy is read in both forms, and its own close brings it in.
+   **Read the field anchored, `^status:`, and take the value before any `#`.** Real files carry a trailing
+   comment on that line (`status: review  # todo | in-progress | review (…) | blocked …`). A whole-line match
+   skips every such file; measured on one consumer tree, that was 6 of 6. Rewrite only the value, and keep
+   the rest of the line as it was.
    - **`status: review`** → `status: verify`. Nothing else changes.
    - **`status: blocked`** → the task's **prior state** plus a `blocked:` field, written on the line after
      `status:`:
      - **Prior state is read from the file's history, never guessed.** It is the most recent `status:`
        value other than `blocked` among the file's earlier versions. List them newest first with
        `git log --follow --format=%H --name-only -- <file>`, and read each with `git show <sha>:<path at that sha>`.
-       Where a per-file loop is not available, one `git log -p -- tasks/` read once gives the same answer for
+       A prior state found as `review` is written `verify`, because the old value must not be re-minted
+       (measured: 3 of one tree's 12 blocked tasks had been at `review`). Where a per-file loop is not available, one `git log -p -- tasks/` read once gives the same answer for
        files never renamed; name in the report which read was used. History determines this, so it is read,
        not asked.
      - **Reason**, from the first of these the file holds: the text of its newest
-       `> Blocked <date> — <reason>` note, which [`block`](block.md) writes; else its `depends-on` tasks that
+       `> Blocked <date> — <reason>` note, which [`block`](block.md) writes, read through any Markdown
+       emphasis (a real tree writes it `> **Blocked <date> — <reason>.**`); else its `depends-on` tasks that
        are not `done`, as `waiting on TASK-X, TASK-Y` (measured on a real tree: all 24 of its blocked tasks
        carried the reason only this way); else `reason unknown`.
      - **History cannot tell** (no git, the file was created blocked, or every earlier version reads
