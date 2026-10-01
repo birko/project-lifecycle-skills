@@ -29,18 +29,31 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      Tracked locally: `tasks/EPIC-001-auth/STORY-001-login/TASK-014-jwt.md` (ID: TASK-014)
      ```
    - **Labels** —
-     - `priority/{P0|P1|P2}`
+     - `priority/<the task's priority value>`, whatever value it is; never a fixed set of priorities
      - `assignee/{human|ai}` or `agent/{AgentName}`
      - `epic/{epic-slug}` (the parent epic's slug)
      - `story/{story-slug}` (the parent story's slug, if any)
      - All `default-labels` from `.config.yml`
+     - **Blocked** (either form, [SKILL.md](../SKILL.md) § *Lifecycle*) → the tracker's own marker: the label `blocked` on GitHub, the **Flagged** field on Jira. The issue's open/closed state is **never** changed because of it, since a blocked task is still open work. After the
+       issue exists, add one comment `Blocked: <reason>`, because a label carries no reason. The reason is the
+       `blocked:` field, else the text of the task's newest `> Blocked <date> — <reason>` note, else
+       `reason unknown`. On Jira, set Flagged instead of a label.
    - **Assignee** (GH only) — if `assignee:` is `human` and a GH username is known, set it; otherwise skip.
 
 6. **Push**:
-   - **GitHub**:
+   - **GitHub**: the repo is `external.repo` from `.config.yml`. Pass it as `--repo` every time, because a clone
+     need not have a remote that names it.
+     - **Make sure every label exists first.** `gh issue create` refuses the whole issue when any one label is
+       missing, and a repo has none of this skill's labels until something creates them. Measured: on a repo
+       with only GitHub's default labels, the create failed on `priority/P3` and no issue was made. So list the
+       repo's labels (`gh label list --repo <repo> --limit 1000`), create each missing one
+       (`gh label create <name> --repo <repo>`), and name every label created in step 9's confirmation, since
+       it is a change to someone's repo.
      ```powershell
-     gh issue create --title "<title>" --body "<body>" --label "<labels-csv>" [--assignee <user>]
+     gh issue create --repo <repo> --title "<title>" --body-file <file> --label "<labels-csv>" [--assignee <user>]
      ```
+     Write the body to a temporary file and pass `--body-file`; a multi-line `--body` does not survive every
+     shell. Delete the file afterwards.
      Capture the returned issue URL/number (parse with `--json` or stdout).
    - **Jira**: use the Atlassian MCP `createIssue` (or equivalent) — search via ToolSearch first. Authenticate if needed. Capture the returned key.
 
@@ -53,7 +66,7 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
 9. **Confirm** — print:
    - Local path
    - Remote URL
-   - Labels applied
+   - Labels applied, and any label this run created
 
 ## Exporting STORY or EPIC
 

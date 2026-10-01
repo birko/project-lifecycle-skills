@@ -26,8 +26,12 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
    - `status: … → status: blocked`.
    - If `--on` given, merge the IDs into `depends-on: [...]` (validate each exists; warn on a missing/cancelled target).
 5. **Record the reason** — append a body note: `> Blocked {{today}} — <reason>` (runtime date). Ask for one line if `--reason` omitted.
+5b. **Hybrid mode, linked task** (`github-issue:` or `jira-key:` set) → ensure the `blocked` label exists, as
+   [export.md](export.md) step 6 does, then add the tracker's own marker: the label `blocked` on GitHub, the **Flagged** field on Jira. The issue's open/closed state is **never** changed because of it, since a blocked task is still open work, and a
+   comment `Blocked: <reason>`. A failed remote call is reported by name and does not undo the local
+   block, because the file is the record and the tracker mirrors it.
 6. **Regenerate dashboard** ([triage](triage.md)) — blocked tasks render `⚠ blocked` and drop out of "Next up".
-7. **Confirm** — print `status: … → blocked`, any `depends-on` added, the reason.
+7. **Confirm** — print `status: … → blocked`, any `depends-on` added, the reason, and the remote outcome when step 5b ran.
 
 ## unblock — `/tasks unblock <ID>`
 
@@ -36,6 +40,10 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 3. **Clear depends-on (optional)** — if `--clear-deps` is passed, drop now-satisfied (`done`) IDs from `depends-on`; otherwise leave `depends-on` as the historical record and only change status.
 4. **Edit frontmatter** — `status: blocked → status: todo` (back into the ready pool). If the user says work resumes immediately, allow `→ in-progress` instead (or just run `/tasks pick <ID>` next).
 5. **Append a body note** — `> Unblocked {{today}} — <reason / what resolved it>`.
+5b. **Hybrid mode, linked task** → remove the `blocked` label (Jira: clear Flagged) and add a comment
+   `Unblocked: <what resolved it>`. Never reopen or close the issue. A failed call is reported by name.
+   **Hybrid mode, no link** → say `no remote issue linked — nothing synced`, so a local unblock is never
+   mistaken for a synced one. The same line applies to `block`'s step 5b.
 6. **Regenerate dashboard**.
 7. **Confirm** — print `status: blocked → todo` (or `in-progress`) and the note.
 

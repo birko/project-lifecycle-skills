@@ -46,6 +46,8 @@ Three modes:
    - Body → attempt to split into Context / Acceptance / Out-of-scope. If the body has no recognizable structure, place it all under Context with a TODO marker for the user.
    - Labels → derive priority (label `priority/P0` → P0), assignee (label `agent/CSharpCodingAgent` → assignee), and parent guess (label `epic/<slug>` → look up local EPIC with that slug; if not found, ask user).
    - State `closed` → `status: done`; `open` → `status: todo`.
+   - Label `blocked` → a `blocked:` field, never a status. Its reason is the text of the newest comment
+     starting `Blocked:`, or `reason unknown`. The status comes from the state line above, as for any issue.
    - Milestone → can map to EPIC if migration used milestones.
    - Write `github-issue: <num>` in frontmatter.
 
@@ -65,6 +67,7 @@ Three modes:
    - Priority field → P0/P1/P2
    - Assignee → human if a real account, ai if it's a bot
    - Status → todo/in-progress/done mapping
+   - Flagged → a `blocked:` field with the reason from the newest `Blocked:` comment, or `reason unknown`; never a status
    - Issue type Epic → create local EPIC instead of TASK
    - Issue type Story → create local STORY
    - Issue type Task/Sub-task → create local TASK
