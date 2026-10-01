@@ -206,3 +206,7 @@ skill that reads its shape was not updated in the same change.
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-105` — leave empty until then._
+
+## Progress log
+
+- 2026-10-01 — Note from TASK-200: `regen.md` no longer quotes the template's status comment verbatim. It now describes it as a comment listing every legal value, matched by being a comment and not by its wording, because template versions differ. The merged-in TASK-111 criterion (a quoted format the template no longer emits) is met by that change; check it off when this task closes.
