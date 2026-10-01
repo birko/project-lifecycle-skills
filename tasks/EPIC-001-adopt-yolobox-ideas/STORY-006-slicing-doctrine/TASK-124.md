@@ -3,7 +3,7 @@ id: TASK-124
 parent: STORY-006
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: review
+status: verify
 priority: P2
 assignee: agent
 created: 2026-09-09

@@ -3,7 +3,7 @@ id: TASK-205
 parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: in-progress
 priority: P2
 assignee: unassigned
 created: 2026-09-30
