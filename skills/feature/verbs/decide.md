@@ -75,7 +75,7 @@ never a silent edit:
 3. **Trace the ripple** — fix downstream constants, comments, and other features' decision text
    so no artifact lies about the new value.
 4. **Status rule:** a change with a human-verifiable surface reverts the owning feature **and**
-   its implementing task(s) `done → review` (re-run their Human test plans before re-closing);
+   its implementing task(s) `done → verify` (re-run their Human test plans before re-closing);
    a change fully covered by automated tests stays `done`. Then re-run `/feature status` so
    `status.md` and the index recompute — the revert touches four surfaces (`idea.md`, task
    file(s), `status.md`, index) and isn't done until all four agree.

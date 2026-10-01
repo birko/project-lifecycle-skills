@@ -13,13 +13,15 @@ defect.**
 
 | Sense | Means | Say |
 |---|---|---|
-| a task **state** | code complete, human sign-off pending — verification debt, and *not* done | `status: review` |
+| a task **state** (until FEATURE-003) | code complete, human sign-off pending — verification debt, and *not* done | now `status: verify`; older files still say `status: review`, read the same |
 | a **gate verb** | the feature-level completeness + sign-off gate | `/feature review` |
 | a **pass** | one automated review of a diff. Which passes exist is owned by `close` step 5b — read it there rather than listing them here | the pass's own name, never bare `review` |
 | an epic **kind** | the stamp marking a backlog filed from a review pass, which `fix-next` drains | `kind: review-intake` |
 
 The trap: *"the task is in review"* and *"the task passed review"* describe opposite situations — the
-first is unfinished, the second is finished. Both are said, and neither is wrong.
+first is unfinished, the second is finished. Both are said, and neither is wrong. FEATURE-003 renamed the
+task state to `verify` partly for this reason, so in new text the first sense is *"the task awaits
+verification"*.
 
 ## decision — two records, one word
 

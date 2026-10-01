@@ -46,7 +46,7 @@ dashboard is regenerated on the default branch when `close` merges.
    Markers:
    - Task status `done` → `[x]`
    - Task status `in-progress` → `[ ] ... ← in-progress`
-   - Task status `review` or `verify` → `[ ] ... 🔍 review` (code done, sign-off pending — verification debt)
+   - Task status `verify` or `review` → `[ ] ... 🔍 verify` (code done, sign-off pending — verification debt)
    - Task blocked by either form ([SKILL.md](../SKILL.md) § *Lifecycle*) → `[ ] ... ⚠ blocked: <reason>` after
      its own state's marker; an old-form `status: blocked` has no other state to show, so it renders
      `[ ] ... ⚠ blocked`
@@ -71,7 +71,7 @@ dashboard is regenerated on the default branch when `close` merges.
      **Suppress zeros** — a priority with no tasks is omitted, not shown as `0×`, matching the stdout snapshot.
      **Omit the whole line** when there are no `todo` tasks, rather than rendering an empty tail.
    - `{{INPROGRESS_LIST}}` (or "_None_" if empty)
-   - `{{INREVIEW_SECTION}}` (entire section omitted if no `review` tasks)
+   - `{{INREVIEW_SECTION}}` (entire section omitted if no `verify` tasks, old-form `review` included)
    - `{{TREE_VIEW}}`
    - `{{LOOSE_SECTION}}` (entire section omitted if no loose tasks)
    - `{{COMPLETED_SECTION}}` (omitted if no completed epics)

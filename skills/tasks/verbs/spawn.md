@@ -166,7 +166,7 @@ defect.
   rule). Add the new context to the existing task and reference it from the origin.
 - **Origin's feature is already `done` / `review`** — new work on a signed-off feature reopens it:
   record the `changed`/new decision, and if the change touches a human-verifiable surface, the
-  implementing task goes back to `review` per SKILL.md. Don't attach silent work to a shipped
+  implementing task goes back to `verify` per SKILL.md. Don't attach silent work to a shipped
   feature.
 - **The "task" is really an epic's worth of work** — spawn a STORY (or EPIC) instead and put the
   first task under it; `/tasks new`'s decision test applies unchanged.

@@ -14,7 +14,9 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      remedy: *"`--across` is read-only; run `/tasks --across` to see every project, then pick from inside
      the repo that owns the task."* Ids there are printed `<repo>/TASK-NNN`, so the owning repo is
      already named.
-   - `--status` — default `todo` (don't include blocked unless asked; a task is blocked by either form — [SKILL.md](../SKILL.md) § *Lifecycle*)
+   - `--status` — default `todo`. A **blocked** `todo` task is listed too, marked `⚠ blocked: <reason>`, so it
+     is never forgotten (FEATURE-003 D6); an old-form `status: blocked` task is listed the same way, with
+     `prior state unknown`. Either form is defined in [SKILL.md](../SKILL.md) § *Lifecycle*.
    - `--priority` — filter (default: all)
    - `--assignee` — filter (default: all)
    - `--epic <ID>` — limit to tasks under one epic
@@ -35,7 +37,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | 3 or more | the same line, then **ask**: *"Clear verification debt first?"* Default **yes**. The user may decline and pick anyway |
 
    Count plus ids, not a full listing — the bare `/tasks` snapshot owns the readable version, and this
-   is a nudge, not a second dashboard. Use its words: a `review` task is **verification debt**, and it
+   is a nudge, not a second dashboard. Use its words: a `verify` task is **verification debt**, and it
    *"should be closed (run the test → `done`) before new scope"* (SKILL.md § Lifecycle).
 
    **Why this is here and not left to the snapshot.** `pick` is the natural way to resume a session, and
@@ -314,6 +316,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 - **No candidates match filters** — print empty result, suggest broadening (`--status todo,blocked` or drop filters).
 - **Multiple in-progress by same assignee** — warn ("you already have N tasks in-progress; consider closing one first") but don't block.
-- **Task is blocked** (either form) — confirm intent before flipping to `in-progress` (was it unblocked?).
+- **Task is blocked** (either form) — a blocked task cannot be started (FEATURE-003 D7). Put this question:
+  > **TASK-NNN is blocked: "<reason>". Unblock it and start?**
+  > · **Yes** — run [`unblock`](block.md), then continue this pick. · **No** — leave it blocked; pick something else.
+
+  **No answer, or nobody to ask:** do not start it and do not unblock it; report `not started: TASK-NNN is
+  blocked: <reason>` and stop. Starting blocked work, or clearing someone's block unasked, overrides a
+  decision a person made.
 - **Task is `done` or `cancelled`** — error; suggest `/tasks new` if user wants to redo work.
 - **Dependencies not met** — if `depends-on:` lists tasks that aren't `done`, warn but don't block. Print which dependencies are still open.

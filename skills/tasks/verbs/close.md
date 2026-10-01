@@ -1,6 +1,6 @@
-# /tasks close — the merge gate (→ `done`, or `review`)
+# /tasks close — the merge gate (→ `done`, or `verify`)
 
-Flip a TASK to `done` — or to `review` when its Human test plan hasn't been run yet (step 5). In hybrid mode, also close the linked remote issue.
+Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been run yet (step 5). In hybrid mode, also close the linked remote issue.
 
 ## Steps
 
@@ -24,7 +24,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      |---|---|---|
      | 4 | already `done`/`cancelled` → ask "reopen and re-close?" | **refuse and report.** Never silently reopen a closed record |
      | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `review`, never `done` |
-     | 5 (`review` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
+     | 5 (`verify` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
      | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
      | 5d | work bullet → offer `spawn` | **spawn** it; *decided not to do* is unavailable |
      | 7 (dirty tree) | ask commit / reference / skip | **commit**, with step 7's explicit staging — never blanket `git add -A` |
@@ -108,14 +108,14 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      - **`--unattended` → resolve it rather than proceeding past it**, exactly as the absent-section rule
        below requires: write the manual steps the task actually needs, or write `N/A` with the reason a
        human adds nothing. If real manual steps exist and have not been run, the close lands at
-       `review`. "Proceed anyway" is not an unattended option — it is how a task reaches `done` with its
+       `verify`. "Proceed anyway" is not an unattended option — it is how a task reaches `done` with its
        verification neither run nor recorded.
    - **A section that is ABSENT is not the same as one that says `N/A`, and must never default to
-     `review`.** When the task has no `## Human test plan` heading at all, stop and resolve it: either
+     `verify`.** When the task has no `## Human test plan` heading at all, stop and resolve it: either
      write the manual steps, or write `N/A — fully covered by automated tests` **with the reason a human
-     adds nothing**. Only then decide `done` vs `review`.
+     adds nothing**. Only then decide `done` vs `verify`.
      - Rationale, from a real occurrence: three tasks with every acceptance criterion ticked and full
-       automated evidence were closed to `review` because the closer found no plan and treated the
+       automated evidence were closed to `verify` because the closer found no plan and treated the
        absence as "sign-off pending". They sat for weeks on a step that did not exist. An explicit `N/A`
        closes straight to `done`; a missing section is indistinguishable from an unrun one to the next
        reader *and* to this gate, so it silently becomes debt.
@@ -125,7 +125,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **Automate before you accept a manual step.** Before *any* step is treated as human-only, prove a
      tool can't assert it — ask of each remaining step: *"can a machine check this instead of a
      person?"* Most can, and parking a mechanically-verifiable step as `[manual]` is how a task closes
-     to `review` and then sits there. Pick the right instrument:
+     to `verify` and then sits there. Pick the right instrument:
      - **Protocol / API / service-layer behaviour** (a handshake, request binding, a round-trip) → a
        script or integration test against the project's test environment.
      - **Anything that only manifests in a rendered UI** (a duplicated event handler firing N times, a
@@ -142,12 +142,12 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      get round to automating it" is not.
      - Wrote the check, ran it green, and **proved it can fail** ([[populate-tests]] § *Prove the guard
        can fail*) → tick the box; it counts toward `done`.
-     - Genuine human-judgement / hardware step still unrun → the task closes to `review`, below.
-   - If it has real steps with unchecked `[ ]` boxes, **don't close to `done`** — the manual/visual sign-off hasn't happened. Either (a) the user confirms they just ran it → check the boxes and proceed to `done`, or (b) it's not verified yet → set **`status: review`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
-     - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (review — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `review` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching.
+     - Genuine human-judgement / hardware step still unrun → the task closes to `verify`, below.
+   - If it has real steps with unchecked `[ ]` boxes, **don't close to `done`** — the manual/visual sign-off hasn't happened. Either (a) the user confirms they just ran it → check the boxes and proceed to `done`, or (b) it's not verified yet → set **`status: verify`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
+     - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (verify — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `verify` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
-     - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `review` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `review` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
-     - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `review`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `review` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
+     - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `verify` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `verify` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
+     - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `verify`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `verify` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `review → done`, re-run `close` once the human step is checked off.)
 
 5b. **The review axes — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
@@ -230,7 +230,8 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
      accurate either way.
    - **Deferring is a `blocked` task, not a `done` one.** On *no*, the work is finished but held out
      of the ready pool until the merge can happen — exactly what `blocked` means. Capture the reason
-     and, for a stacked PR, the task it waits on; step 6 writes `blocked` instead of `done`.
+     and, for a stacked PR, the task it waits on; step 6 leaves `status: in-progress` and adds the `blocked:`
+     field instead of writing `done` (FEATURE-003 D3).
 
 5d. **Out-of-scope sweep — classify every bullet as a boundary or as work** (tasks only, before the
    status flip). Read the closing task's `## Out of scope` (and any `## Notes`-style aside it grew during
@@ -275,8 +276,8 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **Merging now (or no merge step applies)** → `status: ... → status: done` (and check any
      acceptance boxes the user just confirmed).
    - **Merge deferred at 5c** → run [`/tasks block`](block.md) instead of flipping to `done`:
-     `status: → blocked`, with the reason note (`> Blocked {{today}} — merge deferred: <reason>;
-     code complete on task/TASK-NNN`) and `--on <TASK-NNN>` when it's waiting on another task's
+     `status:` stays `in-progress`, and the task gains `blocked: merge deferred: <reason>; code complete on
+     task/TASK-NNN` plus the reason note (`> Blocked {{today}} — merge deferred: <reason>`) and `--on <TASK-NNN>` when it's waiting on another task's
      merge. Check the acceptance boxes that are genuinely met — the work *is* done; only the
      integration isn't. Blocking from `in-progress` is why 5c runs before this step: `block`
      refuses to act on a task already flipped to `done`.
@@ -300,7 +301,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **Anything to commit?** Run `git status --porcelain`. If the tree is clean, don't offer a commit — just optionally ask for an existing PR number / commit SHA (accept empty as skip) and continue. **`--unattended` → skip that prompt** and continue with `pr:` as-is.
    - **`--unattended` → commit, without asking.** Take the "commit the progress now" branch below with its staging discipline intact: stage the task file plus the change set explicitly, never blanket `git add -A`, and sanity-check `git diff --cached --name-only` first. Step 6 has already written the frontmatter, so this is *always* the branch taken — the tree cannot be clean here.
    - **If there are uncommitted changes, ask the user** (AskUserQuestion) what to do:
-     - **Commit the progress now** → stage the work plus the updated task file (already flipped in step 6 — to `done`, or to `blocked` when the merge was deferred at 5c) and create one commit.
+     - **Commit the progress now** → stage the work plus the updated task file (already flipped in step 6 — to `done`, or left `in-progress` with the `blocked:` field when the merge was deferred at 5c) and create one commit.
        - Message: `{{ID}}: {{task title}}`, mirroring the repo's existing style if there is one (e.g. a `@ <area>:` prefix — check `git log --oneline -5`). **Keep the id in the *subject*, ahead of any other task id it mentions** — a prefix before it is fine. [[specs]] provenance attributes a commit to the task whose id leads its subject and treats an id in the body as a cross-reference, so a subject that buries the id makes this task's work invisible to `shaped-by`. Show the message and the file list before committing.
        - **No `Co-Authored-By:` trailer** (skill convention — see SKILL.md › Conventions).
        - Stage explicitly (the task file + the change set the user confirms) — never blanket `git add -A`, so ignored/stray files don't slip in. Sanity-check `git diff --cached --name-only` before committing.
@@ -316,7 +317,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **STOP HERE.** Do not silently advance to step 9 — the close commit is on the task branch, the work is not yet on the default branch, and continuing on the task branch bakes a stale branch-state into the chore refreshes that follow. This step is what makes `done` mean *merged* (a precise state, not "committed somewhere").
    - **5c said merge now:** push if needed, open the PR if one doesn't exist, merge with the project's preferred strategy (default: `--no-ff` so the branch identity is preserved in history; check the project's commit log to confirm), and `git branch -d task/TASK-NNN`. **If `task/TASK-NNN` also exists on the remote** (a remote-mode pick that fell back to in place pushed it, as the taken signal), delete it there too (`git push <remote> --delete task/TASK-NNN`) unless the host already did, and say which. Left behind, it builds up on the remote. Check out the default branch. Subsequent steps (hybrid remote close, dashboard regen, rollup hints) now run on the default branch — chore refreshes land on `main`, not on a task branch.
      - **The merge failing is a failed close**, not a footnote: on conflict or a rejected push, stop, report it, and leave the task at its pre-close status — don't leave a file reading `done` over a merge that never landed.
-   - **5c said defer:** don't merge. The task is already `blocked` (step 6) with the reason recorded, so no state here claims otherwise. Push the branch and open/update the PR if the project uses one — parked work belongs on the remote, not only on a local branch. Then note the resume path: `/tasks unblock {{ID}}` + re-run `close` once the blocker clears; it re-enters here and merges.
+   - **5c said defer:** don't merge. The task already carries `blocked: merge deferred` (step 6) with the reason recorded, so no state here claims otherwise. Push the branch and open/update the PR if the project uses one — parked work belongs on the remote, not only on a local branch. Then note the resume path: `/tasks unblock {{ID}}` + re-run `close` once the blocker clears; it re-enters here and merges.
    - **A worktree close (step 4b)** replaces the "check out the default branch" mechanics above — that
      branch is checked out in the main copy and cannot be checked out twice. Print the **closing-from**
      line, then run these **in order, stopping at the first that fails**. Each failure prints its line
@@ -394,7 +395,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
         print a `git worktree remove` that would now fail.
      5. **Delete the branch** — `git branch -d task/TASK-NNN`, **never `-D`**. It refuses after a squash
         merge; report it and stop.
-     - **5c said defer, or step 5 parked the task at `review`** (a park reaches this bullet from step 5,
+     - **5c said defer, or step 5 parked the task at `verify`** (a park reaches this bullet from step 5,
        which skips steps 6–9 but not this): commit in the worktree, run **no tail**, and print the
        **kept** line naming the path — the re-close starts from there, and so does `/tasks unblock`, since
        the parked status exists only on the task branch. The default branch still reads `in-progress` for such a task (`todo` in remote mode, where the pushed branch marks it taken), because the parked status
@@ -402,7 +403,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
    - **Skip silently when** — never for an unmerged close resumed from the main copy (step 4b), which runs step 8's worktree merge even though the current branch is the default branch — `--no-pr` was passed, the repo isn't a git repo, the project sets `integration: single-branch` in `.config.yml` (or otherwise has no PR-per-task flow), or the current branch isn't `task/TASK-NNN`. In all these cases, "merge" has no meaningful action, 5c never ran, and step 8 is a no-op. On a `single-branch` project `done` means **committed to the default branch** — the invariant is unchanged, only the mechanism is.
 
 9. **Hybrid mode remote close** — **only when the task actually reached `done`.** Skip for a task
-   parked at `review` (step 5) or `blocked` (step 6, merge deferred): the remote tracker must not
+   parked at `verify` (step 5) or blocked on a deferred merge (step 6): the remote tracker must not
    read "closed" for work that isn't signed off or isn't merged. Then check `mode: hybrid` in
    `.config.yml`:
    - `github-issue: <N>` set → run `gh issue close <N> --comment "Closed by {{ID}}"`.
@@ -434,10 +435,10 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - could not leave: `workspace: could not leave the worktree (expected <main>, got <toplevel>); merged from it via git -C — outstanding: cd "<main>" && git worktree remove "<path>" && git branch -d task/TASK-NNN`
     - not removed: `workspace: merged; <path> not removed — <git message | uncommitted: <paths> | not a worktree this skill made>; task/TASK-NNN kept — outstanding: git worktree remove "<path>" && git branch -d task/TASK-NNN`
     - branch kept: `workspace: merged; removed <path>; task/TASK-NNN not deleted — <git message>; never forced`
-    - kept: `workspace: worktree kept at <path> on task/TASK-NNN — <review | blocked>; re-close from there`
+    - kept: `workspace: worktree kept at <path> on task/TASK-NNN — <verify | blocked: merge deferred>; re-close from there`
 
 11. **Rollup hint** (informational; never auto-close parents):
-    - **Ship-moment hints fire on `done` only.** A task parked at `review` or `blocked` (merge
+    - **Ship-moment hints fire on `done` only.** A task parked at `verify` or blocked (merge
       deferred) still gets the dashboard regen (step 10) and the feature-status refresh below —
       the trees must show its real state — but the *last-open-task* suggestions, the
       `/feature review` prompt, and the changelog nudge stay silent. Nothing has shipped yet;
@@ -449,7 +450,7 @@ Flip a TASK to `done` — or to `review` when its Human test plan hasn't been ru
     - **After a local-mode worktree close, every file this step writes goes into the main copy** — change directory
       there, or address it by absolute path when the tail could not leave — so step 10b finds it there
       to commit. Written in the worktree, it would be left behind on a branch about to be deleted.
-    - **Feature rollup** — any task with `feature: FEATURE-NNN` that changed status here (`done`, parked at `review`, *or* `blocked` on a deferred merge) → chain `/feature status FEATURE-NNN` (single-feature mode) so `status.md` and the index row reflect the new task state; the rollup must never lag a close. If it was the last open task for that feature, also suggest `/feature review FEATURE-NNN`.
+    - **Feature rollup** — any task with `feature: FEATURE-NNN` that changed status here (`done`, parked at `verify`, *or* blocked on a deferred merge) → chain `/feature status FEATURE-NNN` (single-feature mode) so `status.md` and the index row reflect the new task state; the rollup must never lag a close. If it was the last open task for that feature, also suggest `/feature review FEATURE-NNN`.
     - **Spec regen offer** (STORY close only; when the project has real code but no `docs/specs/.map.yml` **or the map's `areas:` list is empty** — the [[new-project]] scaffold seeds exactly such an empty anchor — print one line — *"no usable spec map — run `/specs init` to bootstrap the spec layer"* — instead of skipping silently): map the story's merged work to spec areas — resolve its tasks' `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`) and match them against the `.map.yml` globs; if references are missing, ask which areas — **`--unattended` → skip the regen and report that references were missing**, because guessing an area writes a spec diff nobody asked for. Then **offer** — don't auto-run — `/specs regen <areas> --story STORY-NNN`. The regen's diff review is the "was this behavioral change intended?" check (the [[specs]] skill); an unexpected spec diff at story close is a finding, not churn.
     - **Changelog nudge** (don't auto-run; avoid double-nudging) — only for **task-only work that `/feature review` won't cover**: if the closed item has **no `feature:` link** (a `_loose` task or a feature-less EPIC/STORY) and represents a user-facing change, and the project has a `CHANGELOG.md`, print one line — *"consider `/roll-changelog` to record this for users."* Skip when the task has a `feature:` link (the feature's `/feature review` carries the nudge) or there's no `CHANGELOG.md`. The changelog is human-curated, so suggest, never auto-run.
 
@@ -477,6 +478,6 @@ Container closes are simpler than task closes — no human-test plan, no merge g
 - **GH issue close fails** (e.g. already closed remotely) — log warning, still mark local done.
 - **Jira MCP not authenticated** — prompt user to run authentication; pause the verb until they confirm. **`--unattended` → skip the remote step and report it**; an unattended run cannot authenticate, and pausing forever is the failure the flag exists to prevent.
 - **Closing EPIC with open children** — block by default ("EPIC-001 has 3 open tasks; close them first or pass `--force`").
-- **Merge deferred at 5c** — the task ends the close at `blocked`, not `done`, with the reason recorded. It stays out of "Next up", the remote issue stays open, and the ship-moment hints don't fire. Resume with `/tasks unblock {{ID}}` then re-run `close` — it re-enters at step 8 and merges. This is the merge-side mirror of parking at `review` for an unrun Human test plan: both are honest non-completion, neither is `done`.
+- **Merge deferred at 5c** — the task ends the close `in-progress` with `blocked: merge deferred`, not `done`, with the reason recorded. It stays out of "Next up", the remote issue stays open, and the ship-moment hints don't fire. Resume with `/tasks unblock {{ID}}` then re-run `close` — it re-enters at step 8 and merges. This is the merge-side mirror of parking at `verify` for an unrun Human test plan: both are honest non-completion, neither is `done`.
 - **Worktree close, merge landed, tail stopped** — could not leave, removal refused (a dirty worktree, or on Windows another process whose working directory is that folder), or the branch would not delete: the task is `done`. Print the outstanding commands verbatim and **never** `--force`, `-D` or `git worktree prune`; a half-deleted folder is reported by path, not cleaned up by guesswork.
 - **Merge conflict / rejected push at step 8** — the close failed. Report it, leave the task at its pre-close status, and don't let the frontmatter claim `done` over work that never landed on the default branch.

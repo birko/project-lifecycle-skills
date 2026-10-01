@@ -9,14 +9,14 @@ _Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 3       | —     |
-| todo         | —     | —       | 42    |
+| todo         | —     | —       | 41    |
 | in-progress  | 6     | 11      | 0     |
 | review       | —     | —       | 1     |
 | blocked      | —     | —       | 0     |
-| done         | 0     | 8       | 144   |
+| done         | 0     | 8       | 145   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 36× P2 · 5× P3.
+`todo` by priority: 1× P1 · 35× P2 · 5× P3.
 
 ## In progress now
 
@@ -195,8 +195,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (8/10 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (8/10)
+- **EPIC-006** Task states follow common practice — in-progress (9/10 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (9/10)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -205,7 +205,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-201 Migrate: both front doors ship the new status vocabulary · FEATURE-003
     - [x] TASK-202 Migrate: tracker sync maps the blocked flag to a GitHub label and Jira's Flagged field · FEATURE-003
     - [x] TASK-203 Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
-    - [ ] [TASK-204](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-204.md) Contract: every writer switches to the new form · FEATURE-003
+    - [x] TASK-204 Contract: every writer switches to the new form · FEATURE-003
     - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo · FEATURE-003
 
 ## Loose tasks

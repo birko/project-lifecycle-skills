@@ -102,7 +102,7 @@ so keep the whole sequence under one parent (give the same story at `new`'s pare
 task) and let the task files carry the order.
 
 - Create each task with `/tasks new task --no-plan` (add `--from-feature FEATURE-NNN` from `decompose`), then write the edges in the same change.
-- **Do not use `/tasks block --on`** to record order: it also sets `status: blocked` on a task that is
+- **Do not use `/tasks block --on`** to record order: it also marks blocked (the `blocked:` field) a task that is
   merely waiting its turn.
 - `/tasks audit` then checks the edges for broken links and cycles, and `pick` warns on an unmet
   `depends-on`.

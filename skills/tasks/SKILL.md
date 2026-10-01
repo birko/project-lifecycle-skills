@@ -22,7 +22,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `pick` | Pick task, offer to plan it first, mark in-progress, start work | [verbs/pick.md](verbs/pick.md) |
 | `spawn` | Work discovered mid-flight → its own task, placed under the right parent, wired into the origin's plan, reconciled with the feature ledger | [verbs/spawn.md](verbs/spawn.md) |
 | `intake` | A review/audit/spec-harvest **pass** → a drainable backlog: one EPIC (`kind: review-intake`), STORYs by subject theme, one TASK per fix group | [verbs/intake.md](verbs/intake.md) |
-| `close` | Merge gate — task → `done`, or `review` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
+| `close` | Merge gate — task → `done`, or `verify` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
 | `move` | Re-home a task/story under a different parent — file **and** `parent:` together, with both sides' parents rolled up | [verbs/move.md](verbs/move.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
 | `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
@@ -68,7 +68,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
    <E> epics · <S> stories · <T> tasks
      ├─ todo:        <n>   (<n>× P1, <n>× P2, …)      ← one term per priority present, in order
      ├─ in-progress: <n>
-     ├─ review:      <n>
+     ├─ verify:      <n>
      ├─ blocked:     <n>
      └─ done:        <n>
 
@@ -292,10 +292,10 @@ defect.
 
 ## Lifecycle
 
-**Status vocabularies (normative):** TASKs use `todo` · `in-progress` · `review` · `blocked` · `done` · `cancelled`; STORYs and EPICs use `planned` · `in-progress` · `done` · `cancelled` (containers have no `todo`/`review`/`blocked` — those are leaf-task states).
+**Status vocabularies (normative):** TASKs use `todo` · `in-progress` · `verify` · `done` · `cancelled`, plus the `blocked:` field any open task may carry; STORYs and EPICs use `planned` · `in-progress` · `done` · `cancelled` (containers have no `todo`/`verify` and are never blocked — those belong to leaf tasks). Older files may say `review` or `status: blocked`; how to read them is the table below.
 Every status has a verb that sets it — none requires hand-editing frontmatter: `new`→`todo`,
-`pick`→`in-progress`, `close`→`review`/`done`/`blocked` (the last when its merge is deferred),
-`block`/`unblock`→`blocked`↔`todo`,
+`pick`→`in-progress`, `close`→`verify`/`done` (a deferred merge stays `in-progress` and gains the
+`blocked:` field), `block`/`unblock` add or remove the `blocked:` field and never change `status:`,
 `cancel`→`cancelled`. (`cancel` and `block` mirror the [[feature]] ledger's `removed`/`deferred`
 states — a deliberate, recorded non-completion, never a deletion.)
 
@@ -313,8 +313,8 @@ migrates are out of reach:
 | a `blocked:` field on a `done` or `cancelled` task | a contradiction; `audit` reports it |
 
 A task is **blocked** when either the field or the old status says so. Blocked tasks stay out of the ready
-pool, as they always have. For now `block`, `unblock` and `close` still write the old form; reading both
-is what lets them move later without a flag day.
+pool, as they always have. **Every writer now writes the new form**; nothing writes `review` or
+`status: blocked` any more, and readers keep accepting both for files nobody has migrated.
 
 **Integration model — the task is the unit of work, the PR, *and* the merge gate.** For
 git/PR projects the default is **PR-per-task**: `pick` cuts `task/TASK-NNN` from the default
@@ -327,7 +327,7 @@ state, not "reviewed somewhere."
   same commit as the work, or merged history says `in-progress` forever. That's only sound
   because the merge is decided first — `close` asks "merge now?" ahead of the frontmatter write
   (its step 5c), so the committed status is already true.
-- **Declining the merge means the task isn't `done`** — it ends at `blocked`, with the reason and
+- **Declining the merge means the task isn't `done`** — it stays `in-progress` with a `blocked:` field, with the reason and
   any `depends-on` recorded, and re-closes after `/tasks unblock` once the blocker clears. A
   finished-but-unmerged task is real work in a real holding state, not a `done` with an asterisk;
   keeping it out of `done` is what stops the invariant above from decaying into a slogan.
@@ -359,30 +359,30 @@ defer the single merge to `/feature review`. PR-per-task is the default.)
 **Create the task before implementing.** For non-trivial work, write the TASK
 (`status: todo`) with its acceptance criteria *first*, then implement, then tick boxes /
 advance status as criteria are genuinely met. Don't author a task after the code is done
-and drop it straight into `review` with pre-checked boxes — that turns the acceptance list
+and drop it straight into `verify` with pre-checked boxes — that turns the acceptance list
 into a transcript of what you already did instead of an independent target to verify
 against, and skips the `todo → in-progress → review` lifecycle entirely. Small
 conversational fixes can skip the per-change task and track at the parent EPIC level.
 
-**`review` = code complete, awaiting human/visual sign-off — NOT done.** When a task's
+**`verify` = code complete, awaiting human/visual sign-off — NOT done.** (Older files call it `review`; it reads the same.) When a task's
 code is finished and its automated tests pass but it has a `## Human test plan` with a
-real (non-`N/A`) manual/visual step that hasn't been run yet, set `status: review`, not
+real (non-`N/A`) manual/visual step that hasn't been run yet, set `status: verify`, not
 `done`. This is the task-level mirror of the [[feature]] skill's `review` phase and its
 hard rule: **never mark something `done` with the sign-off still pending, and never write
-the hybrid "done (pending)".** A `review` task is *verification debt* — the snapshot lists
+the hybrid "done (pending)".** A `verify` task is *verification debt* — the snapshot lists
 it under "In review" and it should be closed (run the test → `done`) before new scope.
 - A task whose `## Human test plan` is genuinely `N/A — covered by automated tests` skips
-  `review` and goes straight to `done` when the code + tests land (nothing for a human to verify).
+  `verify` and goes straight to `done` when the code + tests land (nothing for a human to verify).
   **An absent section is not an `N/A` one** — resolve it (write the steps, or write `N/A` with the
-  reason a human adds nothing) *before* choosing the status. Defaulting a missing plan to `review`
+  reason a human adds nothing) *before* choosing the status. Defaulting a missing plan to `verify`
   parks the task on a step that may not exist, and it is indistinguishable from an unrun one
   afterwards, so it becomes debt nobody can clear. `close` step 5 enforces this.
-- `review` → `done` only after the human step is checked off (the `close` verb enforces this).
+- `verify` → `done` only after the human step is checked off (the `close` verb enforces this).
 - **A change landing on a closed feature reopens the implementing task.** This is the
   *down-the-tree* counterpart to the roll-up rule below: when a post-sign-off change
   with a human-verifiable surface lands on a `done` feature (the [[feature]] skill's
   surface-dependent-revert rule), the TASK(s) that implement the changed surface go
-  `done → review` and their `## Human test plan` is re-run before re-closing. A
+  `done → verify` and their `## Human test plan` is re-run before re-closing. A
   tests-only change (nothing for a human to check) stays `done`. Don't reopen a task
   without also recording the matching `changed` decision in its feature's ledger —
   the two move together.

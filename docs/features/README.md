@@ -8,4 +8,4 @@ _Generated 2026-09-18 by `/feature status` (all-features mode). **Do not hand-ed
 |---------|-------|-------|-----------------------|-------|-----------|
 | [FEATURE-001](FEATURE-001-task-worktrees/) | Task worktrees — run a task in its own checkout | review — signed off; waits on TASK-080 | 25/5/0/1/0 | 15/17 | skipped |
 | [FEATURE-002](FEATURE-002-comment-discipline/) | Comment discipline — keep the source free of everything that belongs elsewhere | review — signed off; spec landing waits on TASK-080 | 14/2/0/1/0 | 28/29 | skipped |
-| [FEATURE-003](FEATURE-003-blocked-becomes-a-flag/) | Task states follow common practice — "blocked" becomes a flag | building — 8 of 10 tasks done | 8/1/0/0/0 | 8/10 | built (playground) |
+| [FEATURE-003](FEATURE-003-blocked-becomes-a-flag/) | Task states follow common practice — "blocked" becomes a flag | building — 9 of 10 tasks done | 8/1/0/0/0 | 9/10 | built (playground) |

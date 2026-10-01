@@ -121,7 +121,7 @@ Every ranking drew from the other epics and never noticed. The check belongs her
 that runs most often **and** the one that would act on the answer; leaving it to a human remembering to
 run `/roadmap` is what let that epic sit for three weeks.
 
-**Verification debt comes first.** Tasks at `status: review` are not in the pool — they're not `todo` —
+**Verification debt comes first.** Tasks at `status: verify` (or the older `review`) are not in the pool — they're not `todo` —
 but they are debt, and the house rule is that debt surfaces before new scope. Offer to clear them first
 by running their `## Human test plan` and closing `review → done`.
 
