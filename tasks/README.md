@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (3):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; docs/specs DV7 — all 14 mapped areas never generated (no `docs/specs/<area>.md` exists) — run `/roadmap --check`.
 
-_Generated 2026-09-29. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-02. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 3       | —     |
-| todo         | —     | —       | 40    |
+| todo         | —     | —       | 41    |
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 2     |
-| blocked      | —     | —       | 0     |
+| blocked      | —     | —       | 1 (also counted in its own state) |
 | done         | 0     | 8       | 145   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 34× P2 · 5× P3.
+`todo` by priority: 1× P1 · 35× P2 · 5× P3.
 
 ## In progress now
 
@@ -27,7 +27,7 @@ _None_
 _Code complete, sign-off pending — verification debt; close these before new scope._
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?" (P2) — manual step unrun
-- [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo (P2) — the owner checks `/tasks` in two migrated repos
+- [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo (P2) — ⚠ blocked: waiting on TASK-208 (the check failed on Symbio)
 
 ## Tree
 
@@ -196,8 +196,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (9/10 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (9/10)
+- **EPIC-006** Task states follow common practice — in-progress (9/11 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (9/11)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -207,7 +207,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-202 Migrate: tracker sync maps the blocked flag to a GitHub label and Jira's Flagged field · FEATURE-003
     - [x] TASK-203 Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
     - [x] TASK-204 Contract: every writer switches to the new form · FEATURE-003
-    - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo 🔍 verify · FEATURE-003
+    - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo 🔍 verify ⚠ blocked: waiting on TASK-208 · FEATURE-003
+    - [ ] [TASK-208](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-208.md) The migration writes "reason unknown" over a block reason the file already states · FEATURE-003
 
 ## Loose tasks
 

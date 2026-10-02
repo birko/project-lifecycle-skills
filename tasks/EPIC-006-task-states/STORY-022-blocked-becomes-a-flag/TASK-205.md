@@ -4,10 +4,11 @@ parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
 status: verify
+blocked: waiting on TASK-208 — Symbio's migration wrote "reason unknown" for 4 tasks that state a reason
 priority: P2
 assignee: unassigned
 created: 2026-09-30
-depends-on: [TASK-203, TASK-204]
+depends-on: [TASK-203, TASK-204, TASK-208]
 blocks: []
 findings: []
 pr: null
@@ -33,7 +34,7 @@ Each repo is migrated with TASK-203's tool and the change lands through that rep
 ## Out of scope
 
 - Repos that do not use these skills
-
+- Deferred to TASK-208 — step 3b's reason ladder misses reasons stated in four real shapes, and Symbio's branch is re-run with the fix
 
 ## Migration record (2026-10-01)
 
@@ -62,9 +63,13 @@ DraCode's, WorkoutTracker's and the others' dashboards (`tasks/README.md`) are r
 ## Human test plan
 
 - [ ] The owner opens `/tasks` in two migrated consumer repos and confirms the blocked tasks show their real state and reason.
+  - **Run 2026-10-02 by the agent at the owner's request, reading what `/tasks` reads; not yet the owner's sign-off.** DraCode (`main` at `35f9e5c`): passes. 24 tasks carry `blocked:`, all `todo`, every reason from unmet `depends-on`, and no old-form status is left. Symbio (`tasks/status-migration` at `888af6dc`): the states are correct (13 blocked, of which 12 are from the migration and TASK-777 already had the new form: 8 todo, 3 verify, 2 in-progress), but **TASK-358, TASK-068, TASK-305 and TASK-273 read `reason unknown` although their old files state a reason**. Fails; filed as TASK-208.
 
 ## Progress log
 
 - 2026-10-01 — Picked. Migrated this repo, then the others one by one with the owner's agreement per repo (record above). Four 3b defects were found on real data and fixed in `init.md`. One commit failed silently on Birko.Framework (paths relative to the repo's real top level) and was redone from the top level.
 - 2026-10-01 — Close review. **Standards:** pass. Every ask-step was put with its question, and the answers are recorded as answers; evidence the owner asked for is recorded as evidence, not as a choice. **Intent:** pass, all 4 criteria met; Presenter's skip is recorded with its reason and its pending answer. **Correctness:** pass. Every repo's old-form count after migration is 0 (leon included), and every diff was limited to the status lines. **Security:** pass. The only push was the Symbio branch the owner approved, and no unpushed work belonging to anyone else was pushed. **Comments:** not applicable.
 - 2026-10-01 — Closed to `verify`: the owner's `/tasks` check in two consumer repos is pending.
+- 2026-10-02 — Human test plan run against DraCode and Symbio (record under the step): Symbio fails. TASK-208 spawned; this task blocked on it.
+
+> Blocked 2026-10-02 — waiting on TASK-208 — Symbio's migration wrote "reason unknown" for 4 tasks that state a reason
