@@ -2,25 +2,25 @@
 
 > ⚠ **Feature drift (3):** EPIC-001, EPIC-002, EPIC-003 DV5 — tasks tracked in one tree only, with no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; docs/specs DV7 — all 14 mapped areas never generated (no `docs/specs/<area>.md` exists) — run `/roadmap --check`.
 
-_Generated 2026-10-02. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 3       | —     |
-| todo         | —     | —       | 40    |
-| in-progress  | 6     | 11      | 1     |
+| todo         | —     | —       | 41    |
+| in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 2     |
 | blocked      | —     | —       | 1 (also counted in its own state) |
-| done         | 0     | 8       | 145   |
+| done         | 0     | 8       | 146   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 34× P2 · 5× P3.
+`todo` by priority: 1× P1 · 35× P2 · 5× P3.
 
 ## In progress now
 
-- [TASK-208](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-208.md) — The migration writes "reason unknown" over a block reason the file already states (P2, unassigned)
+_None_
 
 ## In review
 
@@ -196,8 +196,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (9/11 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (9/11)
+- **EPIC-006** Task states follow common practice — in-progress (10/12 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (10/12)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -208,7 +208,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-203 Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
     - [x] TASK-204 Contract: every writer switches to the new form · FEATURE-003
     - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo 🔍 verify ⚠ blocked: waiting on TASK-208 · FEATURE-003
-    - [ ] [TASK-208](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-208.md) The migration writes "reason unknown" over a block reason the file already states ← in-progress · FEATURE-003
+    - [x] TASK-208 The migration writes "reason unknown" over a block reason the file already states · FEATURE-003
+    - [ ] [TASK-209](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-209.md) Edge cases in the blocked-field writers that predate the reason ladder · FEATURE-003
 
 ## Loose tasks
 

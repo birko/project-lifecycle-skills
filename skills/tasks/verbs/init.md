@@ -103,47 +103,67 @@ current template first (step 3), because a file that merely exists cannot be rep
        | # | Source | Written as |
        |---|---|---|
        | 1 | the newest `>` note whose text, read through any Markdown emphasis and in any letter case, opens `Blocked <date> —` — the note [`block`](block.md) writes, so it wins | the note's own words after its label, as below |
-       | 2 | its `depends-on` tasks that are not `done` | `waiting on TASK-X, TASK-Y` |
+       | 2 | its `depends-on` tasks that are not `done` | `waiting on TASK-X, TASK-Y`, in `depends-on` order |
        | 3 | **the sentence that says why this task is held**, wherever the file states it: a body line, a heading, or the comment on the `status:` line with its indented `#` continuation lines | its own words after any label, as below |
        | 4 | nothing above answered | `reason unknown` |
 
-       Rungs 1 and 2 are mechanical and come first; rung 3 is judgement, so it runs only where nothing
-       mechanical answered. Real trees state a block in shapes no list keeps up with — a status-line comment,
-       an upper-case heading, a bold line outside any note — which is why rung 3 reads for meaning rather than
+       Run rungs 1 and 2 first: they are mechanical. Run rung 3 only where neither answered, because it is
+       judgement. Real trees state a block in shapes no list keeps up with — a status-line comment, an
+       upper-case heading, a bold line outside any note — which is why rung 3 reads for meaning rather than
        matching a shape. Every one of those was measured on a real tree, and each read `reason unknown`.
-       **Rung 3 takes a sentence only when it says what this task is waiting for, or why it cannot proceed
-       now.** A sentence describing the task is not that, however it is formatted: the file's title, a change
-       of priority or classification, a verdict about the defect itself, or the condition for unblocking it
-       (*"resume when X"* says when, not why). Nor is a negation (`not blocked by TASK-X`), another task being
-       blocked, a block the file says is resolved, a remark that only part of the work is held, text inside a
-       code fence, a legend listing status values, or a comment on any field but `status:`. When no sentence
-       passes, rung 4 answers: `reason unknown` is a correct outcome, and a near-reason written in its place
-       is the defect this rung exists to avoid. Several candidates → the one whose **own text** carries the
-       newest date (a sentence does not inherit a date from its heading or note), else the first in the file.
-       **The field gets the source's own words, never a summary** — a summary is the migration inventing a
-       reason. Shape them in this order, for rungs 1 and 3 alike:
+
+       **At rung 3, take a sentence only when it says what this task is waiting for, or why it cannot
+       proceed now.** What the task waits for, written after a block word (*"paused until the vendor
+       signs"*), **is** that. Never take:
+       - a sentence describing the task, however it is formatted — the file's title, a change of priority or
+         classification, a verdict about the defect itself;
+       - an unblock condition standing on its own (*"resume when X"*, *"un-defer when X"*) — it says when,
+         not why;
+       - a negation (`not blocked by TASK-X`), another task being blocked, a block the file says is resolved,
+         or a remark that only part of the work is held;
+       - text inside a code fence, a legend listing status values, or a comment on any field but `status:`.
+
+       When no sentence passes, rung 4 answers: `reason unknown` is a correct outcome, and a near-reason
+       written in its place is the defect this rung exists to avoid. Several candidates → the one whose
+       **own text** carries the newest date (a sentence does not inherit a date from its heading or note),
+       else the first in the file.
+
+       **Write the source's own words, never a summary** — a summary is the migration inventing a reason.
+       Shape them in this order, for rungs 1 and 3 alike:
        1. **Drop the label.** A source opening with a block word, an optional date and ` — ` (`Blocked —`,
           `HELD 2031-01-04 —`) puts the reason *after* the dash; the label itself is never the reason. A block
           word is any word saying the task is held — *blocked*, *deferred*, *held*, *paused*, *on hold*, in any
-          case — not a closed list. Read through Markdown emphasis, and drop a leading symbol or emoji; the
-          label sits inside the bold span as often as before it.
+          case — not a closed list. Without the dash, a block word and its date are part of the sentence and
+          stay. Read through Markdown emphasis, and drop a symbol or emoji standing before the label or the
+          first word — never a `#NNN` or `@name`, which is content; the label sits inside the bold span as
+          often as before it. A status comment and its continuation lines are one text: strip each `#` and its
+          indentation, and join the lines with a space.
        2. **Take one unit.** A source whose reason opens in bold → the rest of that bold span, and the text
           after the span is commentary, not part of the reason. Otherwise → up to the first ` — `, `;` or
-          sentence end.
+          sentence end — a `.` followed by a space and a capital letter, or the end of the text; a `.` inside a
+          version number or an abbreviation is not one.
        3. **Finish.** Drop a trailing full stop; cut to at most 120 characters at a word boundary.
-       Append where the rest is **only when step 2 or 3 dropped part of the reason itself** — never for the
-       text after a bold span, which is commentary. A cut at ` — `, `;` or a sentence end in a plain source
-       *does* drop part of the reason, so it always gets the pointer. Name the place, never a line number:
-       ` (full text in the status comment)`, ` (full text in § <heading>)`, ` (full text in the note of <date>)`.
-       Quote the value when it contains `: ` or ` #` or opens with a YAML indicator, so the frontmatter still
-       parses.
+       4. **Point to the rest** — by place, never by line number: ` (full text in the status comment)`,
+          ` (full text in § <heading>)`, ` (full text in the note of <date>)`.
+          - a plain source cut at ` — `, `;`, a sentence end or 120 characters → append the pointer, since
+            part of the reason was dropped;
+          - the text after a bold span → no pointer, since it is commentary, not reason.
+
+       **Nothing left is no answer.** A source whose remainder is empty, only its label, or only a
+       cross-reference (`see below`, `see § Plan`) has not stated a reason: go to the next rung.
+       **Quote last**, on the final value with its pointer, so the frontmatter still parses and still reads
+       as a string: wrap it in single quotes, doubling any `'` inside, when it contains `: ` or ` #`, ends
+       with `:`, opens with a YAML indicator, or would read as something other than text (`no`, `off`,
+       `null`, `~`, `true`, a number, a bare date). pi parses frontmatter strictly, and `blocked: no` would
+       read as *false* on a field whose presence means *blocked*.
        Invented examples, no note and no open `depends-on` in either:
        - status line `status: blocked  # PAUSED 2031-01-04 until the vendor signs; see § Contract` →
-         `blocked: PAUSED 2031-01-04 until the vendor signs (full text in the status comment)`
+         `blocked: PAUSED 2031-01-04 until the vendor signs (full text in the status comment)` — no ` — `
+         follows the date, so the label stays; the `;` cut gets the pointer
        - body line `⛔ **Held — the staging host has no TLS certificate.** Raised with ops twice.` →
          `blocked: the staging host has no TLS certificate`
      - **History cannot tell** (no git, the file was created blocked, or every earlier version reads
-       `blocked`) → ask once per task, `<reason>` being what the ladder above produced:
+       `blocked`) → ask once per task, `<reason>` being what the ladder above produced, unquoted:
        > **TASK-NNN was blocked before its history begins: "<reason>". Had work on it started?**
        > · **No** — it goes back to `todo`. · **Yes** — it goes back to `in-progress`.
 

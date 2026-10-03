@@ -3,13 +3,13 @@ id: TASK-208
 parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: in-progress
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: unassigned
 created: 2026-10-02
 depends-on: []
-blocks: [TASK-205]
+blocks: [TASK-205, TASK-209]
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
 findings: [FIELD-007]
@@ -64,13 +64,14 @@ blocked, all reasons from `depends-on`) is unaffected, which is why one repo of 
 - Re-migrating the other repos — DraCode, WorkoutTracker and Birko.Framework reasons were checked or
   came from `depends-on`; only re-run one if a check shows the same defect there
 - Presenter, still skipped for the reason recorded on TASK-205
+- Deferred to TASK-209 — seven older edge cases in the blocked-field writers raised by this close's correctness pass (resolved notes, cancelled dependencies, a `done` prior state, `block.md`'s placement, mixed-form files, the fallback's field, tie-breaks)
 
 ## Human test plan
 
 - [x] On Symbio's `tasks/status-migration` branch after the re-run, `/tasks show` TASK-358, TASK-068,
       TASK-305 and TASK-273: each `blocked:` reason says what the old file said, in one line
-- [ ] This is TASK-205's check too: once it passes, the owner's `/tasks` check in DraCode and Symbio can
-      be signed off there
+- Not a step of this task (rewritten from a checkbox at close, 2026-10-03): the owner's `/tasks` check in DraCode and Symbio
+  is TASK-205's own human test plan, and is signed off there once TASK-205 is unblocked.
 
 ### Drill fixture (the expected answers — never give these to a runner)
 
@@ -215,3 +216,6 @@ order, field content and evidence settled. Resolved decisions are the four bulle
 - 2026-10-02 — Round 2 runner A (re-run, cold: no skills listed, no prior exposure): **all 14 lines match the oracle and agree with B** on every line B wrote. Both readers flagged the same two gaps (pointer after a plain ` — ` cut; which words are block words), each resolved the same, correct way — written into `init.md` as stated rules, plus `<reason>` in the history question defined; no third round, since the sentences codify what both runs did. Compared with the PR branch ignoring CRLF (sandbox `core.autocrlf=true`): 8 files identical, 4 change only their `blocked:` line, TASK-068's moves below its comment. Committed on `tasks/status-migration` in a separate worktree (`%TEMP%\d208pr`) as `9c0eb879`, 4 files, 4+/4−. **Not pushed — waiting on the owner.** Criterion 6 took its prose-only arm: no lint case (nothing in the repo executes the ladder); the fixture is the drill record above.
 - 2026-10-02 — Owner approved the push: `888af6dc..9c0eb879` to `origin tasks/status-migration` (fast-forward), PR #1 commented. Read back from the pushed branch: the four tasks carry the expected reasons, TASK-068's line sits after its comment, 13 blocked (8 todo, 3 verify, 2 in-progress), no old form, 0 `reason unknown`. Human test plan step 1 run by the agent on the pushed branch. Temporary worktrees removed with `git worktree remove`; drill reports kept at `%TEMP%\d208round1` and `%TEMP%\d208round2`. PR #1 is mergeable (CLEAN) and not merged — merging is Symbio's own step.
 - 2026-10-03 — On the owner's instruction, PR BirkoWorks/Symbio#1 merged (merge commit `c9531dfa`, guarded by `--match-head-commit 9c0eb879`) after checking: only the 12 task files, no CI configured, `origin/main` unmoved since the merge-base, no overlap with the 18 unpushed commits on Symbio's local `main`. Branch deleted locally (`git branch -d`) and on origin. Symbio's main copy was not touched; its local `main` (another session's, 18 ahead) now also needs the merge from `origin/main`.
+- 2026-10-03 — Close, step 5b. **Intent:** pass — 7/7 criteria met; two unrequested additions, both explained (the alternative history read, from round 1's permissions; the rung named in the report, from the grill) — recorded here rather than as criteria added after the fact. **Correctness:** 10 findings. Fixed here, being about the text this task wrote: the example vs the unblock-condition exclusion (CR #1), the quoting rule (single quotes, trailing `:`, non-string scalars, quote last; #6), label-only and cross-reference sources fall through, continuation lines joined, sentence end defined, symbol drop never eats `#NNN`/`@name` (#8 part), `<reason>` unquoted (#9). Spawned as TASK-209 (CR-132–CR-138): seven older edge cases in the blocked-field writers. **Standards:** pass with warnings — both applied (rung 3 rules as a list, the pointer rule as step 4) plus the imperative wording and the example's half-sentence; the `block.md` format-contract note went to TASK-209. **Security:** not applicable — skill prose only, no auth, data, input or secrets surface. **Comments:** not applicable — no code comments in range. Because the close changed the drilled prose, round 3: two fresh cold runs (sandboxes `d208c`, `d208d`) on the shipped text.
+- 2026-10-03 — Round 3, on the text as shipped (runners C and D, cold: no skills listed, no prior exposure): **both match the oracle on all 14 lines and agree with each other.** Both raised the unstated order of ids in rung 2 → stated (`in depends-on order`, which both used). Raised by one reader only, recorded and not acted on (FEATURE-002 D10): rung 1 has no content filter (TASK-450's note reads as a status summary); legend lines carrying the old vocabulary are not rewritten; a `depends-on` line's own trailing comment; whether `Deferral` is a block word. Reports at `%TEMP%\d208round3`; sandboxes removed.
+- 2026-10-03 — Out-of-scope sweep: 3 boundaries (other repos, Presenter, TASK-209), 0 spawned here beyond TASK-209, 0 declined. Closed `done` (single-branch: done = on main).
