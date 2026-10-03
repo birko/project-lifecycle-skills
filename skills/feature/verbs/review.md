@@ -35,7 +35,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
 5. **Set the coarse status honestly:**
    - **All three gates pass** → `idea.md` frontmatter `status: done`; run `/feature status` so the phase shows `done`; suggest closing any still-open tasks via `/tasks close`.
    - **Changelog nudge** (don't auto-run): a feature reaching `done` is a genuine ship event, so if the project has a `CHANGELOG.md`, print one line — *"FEATURE-NNN shipped — consider `/roll-changelog` to record what changed for users."* The changelog is a human-curated summary, so leave the call to the user; just make sure they don't forget. Skip the nudge if there's no `CHANGELOG.md`.
-   - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks at `status: review` too. Never write "done (pending)".
+   - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. Never write "done (pending)".
 
 6. **Confirm** — print the gate results (✅/❌ per gate) and the final state.
 

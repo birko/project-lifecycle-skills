@@ -25,7 +25,7 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `close` | Merge gate — task → `done`, or `verify` if sign-off pending (+ close remote in hybrid) | [verbs/close.md](verbs/close.md) |
 | `move` | Re-home a task/story under a different parent — file **and** `parent:` together, with both sides' parents rolled up | [verbs/move.md](verbs/move.md) |
 | `cancel` | Mark task/story/epic cancelled (won't-do; never deletes — mirrors a `removed` decision) | [verbs/cancel.md](verbs/cancel.md) |
-| `block` / `unblock` | Hold a task out of the ready pool (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
+| `block` / `unblock` | Hold a task — it keeps its state and stays on offer, marked, but cannot be started or finished (or release it); optionally wires `depends-on` | [verbs/block.md](verbs/block.md) |
 | `import` | Import from file / GH issue / Jira ticket | [verbs/import.md](verbs/import.md) |
 | `export` | Push local task to GH/Jira (hybrid only) | [verbs/export.md](verbs/export.md) |
 | `migrate` | Bulk export + switch to hybrid mode | [verbs/migrate.md](verbs/migrate.md) |
@@ -178,7 +178,7 @@ from every project at once to answer a question only occasionally asked.
      this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
-   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `review` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` in remote mode), and the debt would otherwise be invisible.
+   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` in remote mode), and the debt would otherwise be invisible.
    - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted P0→P1→P2 then created asc
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,
@@ -313,8 +313,9 @@ migrates are out of reach:
 | `status: blocked` (old form) | blocked, **prior state unknown**: counted as blocked only, never guessed into a state, until a migration reads its history |
 | a `blocked:` field on a `done` or `cancelled` task | a contradiction; `audit` reports it |
 
-A task is **blocked** when either the field or the old status says so. Blocked tasks stay out of the ready
-pool, as they always have. **Every writer now writes the new form**; nothing writes `review` or
+A task is **blocked** when either the field or the old status says so. A blocked task drops out of the
+snapshot's "Next up", but stays on offer, marked with its reason, in `pick` and [[fix-next]]; neither will
+start it, and `close` will not finish it, until it is unblocked. **Every writer now writes the new form**; nothing writes `review` or
 `status: blocked` any more, and readers keep accepting both for files nobody has migrated.
 
 **Writing a `blocked:` value — one rule for every writer** (`block`, `close`'s deferred merge, `import`,
@@ -383,7 +384,7 @@ defer the single merge to `/feature review`. PR-per-task is the default.)
 advance status as criteria are genuinely met. Don't author a task after the code is done
 and drop it straight into `verify` with pre-checked boxes — that turns the acceptance list
 into a transcript of what you already did instead of an independent target to verify
-against, and skips the `todo → in-progress → review` lifecycle entirely. Small
+against, and skips the `todo → in-progress → verify` lifecycle entirely. Small
 conversational fixes can skip the per-change task and track at the parent EPIC level.
 
 **`verify` = code complete, awaiting human/visual sign-off — NOT done.** (Older files call it `review`; it reads the same.) When a task's
@@ -434,7 +435,7 @@ was wrong → reopen it via `/feature decide`. Two standing rules:
 - **A fix for shipped behavior isn't `done` until it carries a regression test** — the same
   "quarantine becomes a permanent spec" discipline [[populate-tests]] applies to test-found
   bugs, applied to field-found ones, so the defect can't recur.
-- Route a field-found bug through the normal `todo → in-progress → review/done` lifecycle; don't
+- Route a field-found bug through the normal `todo → in-progress → verify/done` lifecycle; don't
   hot-patch and backfill the task — the acceptance list must stay an independent target.
 
 **Findings become tasks, or they evaporate.** [[code-review]], [[security-review]] and

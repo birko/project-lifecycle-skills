@@ -24,7 +24,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      |---|---|---|
      | 4 | already `done`/`cancelled` → ask "reopen and re-close?" | **refuse and report.** Never silently reopen a closed record |
      | 4 (blocked) | ask "Unblock it and close?" | **refuse and report** (`not closed: … is blocked`), write nothing. Never clear a block nobody asked to clear |
-     | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `review`, never `done` |
+     | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `verify`, never `done` |
      | 5 (`verify` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
      | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
      | 5d | work bullet → offer `spawn` | **spawn** it; *decided not to do* is unavailable |
@@ -160,7 +160,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
      - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `verify` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `verify` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
      - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `verify`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `verify` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
-   - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `review → done`, re-run `close` once the human step is checked off.)
+   - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `verify → done`, re-run `close` once the human step is checked off.)
 
 5b. **The review axes — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
    - Run [[verify-conventions]] on the task's diff — does it follow the project's documented rules in `CLAUDE.md § Conventions` (framework/stack, UI/UX, structure, naming, testing)? Address 🛑 blockers before `done`, or note in the task why any are deferred.
@@ -230,18 +230,19 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      so that step 6 knows which status is true.
    - **`--unattended` → merge, without asking.** Every gate has already run and passed by this point,
      `done` already means *merged* in this skill set, and [[fix-next]] states that `close` "settles the
-     merge decision … and merges". **Rejected: ending at `blocked` instead.** It is the safer-looking
-     option and it makes the drain pointless — every run would leave a finished-but-unmerged task for
-     someone to sweep, and `blocked` would come to mean both "waiting on a dependency" and "waiting on
-     a human", which is the kind of overloaded state this vocabulary exists to avoid. **Also rejected:
+     merge decision … and merges". **Rejected: deferring instead — leaving the task `in-progress` with a
+     `blocked:` field.** It is the safer-looking option and it makes the drain pointless — every run would
+     leave a finished-but-unmerged task for someone to sweep, and the flag would come to mean both
+     "waiting on a dependency" and "waiting on a human", which is the kind of overloaded marker this
+     vocabulary exists to avoid. **Also rejected:
      a per-repo `unattended-merge:` field** — it needs a default anyway, and the default would be this.
    - **Why here and not at step 8:** `done` means *merged*. If the frontmatter flips to `done` and
      the merge is then declined, the file claims a state the repo doesn't have, and the commit made
      in step 7 bakes that claim into history. Deferral is known at close time (a stacked PR, an
      external reviewer, a batch-merge policy) — so ask before the write, and the committed status is
      accurate either way.
-   - **Deferring is a `blocked` task, not a `done` one.** On *no*, the work is finished but held out
-     of the ready pool until the merge can happen — exactly what `blocked` means. Capture the reason
+   - **Deferring is a `blocked` task, not a `done` one.** On *no*, the work is finished but held — shown as
+     blocked under "In progress", and not closable until it is unblocked — exactly what `blocked` means. Capture the reason
      and, for a stacked PR, the task it waits on; step 6 leaves `status: in-progress` and adds the `blocked:`
      field instead of writing `done` (FEATURE-003 D3).
 

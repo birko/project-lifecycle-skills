@@ -35,7 +35,7 @@ lifecycle stall.
    | **B · Decisions decided** | any `proposed` rows remain | `/feature decide FEATURE-NNN` — "N decision(s) still awaiting a verdict. Decide them now? [Y/n]" |
    | **C · Prototype (soft)** | the feature is UI/UX-shaped or adds states, has approved rows, and `idea.md`'s `## Prototype` line records no prototype. Read the line, not the folder: a prototype is deleted once it has answered its question, so a missing file does not mean one was never built | `/feature prototype FEATURE-NNN` — suggest once, `[y/N]`, never block. Some approved decisions genuinely need no mockup |
    | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN` — "N approved decision(s) have no tasks. Decompose now? [Y/n]"** |
-   | **E · Signed off** | phase is `review` (all tasks done/`review`, sign-off not recorded) | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this |
+   | **E · Signed off** | phase is `review` (all tasks `done` or `verify`, sign-off not recorded) | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this |
 
 4. **Gate D is the important one — default yes, and say why on a refusal.** List exactly which
    rows are uncovered before asking, so the offer is concrete:

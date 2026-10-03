@@ -314,7 +314,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 ## Edge cases
 
-- **No candidates match filters** — print empty result, suggest broadening (`--status todo,blocked` or drop filters).
+- **No candidates match filters** — print empty result, suggest broadening (`--status todo,in-progress` or drop filters). Blocked tasks are already listed, marked, so there is no `blocked` status to add.
 - **Multiple in-progress by same assignee** — warn ("you already have N tasks in-progress; consider closing one first") but don't block.
 - **Task is blocked** (either form) — a blocked task cannot be started (FEATURE-003 D7). Put this question:
   > **TASK-NNN is blocked: "<reason>". Unblock it and start?**

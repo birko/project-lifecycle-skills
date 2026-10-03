@@ -140,7 +140,7 @@ verb that owns stamping.
 A feature whose code/tasks are complete but whose human/visual sign-off hasn't
 happened carries **`status: review`** — *not* `idea` (it's built, not unstarted) and
 *not* `done` (it's not signed off). This is the first-class coarse marker behind the
-no-"done-pending" rule below, and it mirrors the [[tasks]] skill's `review` task status.
+no-"done-pending" rule below, and it mirrors the [[tasks]] skill's `verify` task status.
 
 `status.md` shows a richer **phase** (`idea · prototyping · deciding · building · review · done`) that `status` does **not** duplicate — phase is *derived* by the `status` verb from the data (decisions + task progress) and the coarse marker. For a killed or re-homed feature the phase simply **mirrors the coarse marker** (`dropped` / `superseded`) — those two are terminal mirrors, not derivable phases, so the full rendered set is the six derived values plus the two mirrors. Stored marker = `status`; computed display = phase. Don't hand-maintain phase.
 

@@ -11,7 +11,7 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    - `prototyping` — a prototype artifact exists, decisions still mostly `proposed`.
    - `deciding` — prototype done, `proposed` rows still outnumber decided ones.
    - `building` — has `approved`/`changed` decisions and work still ahead: **tasks may not exist yet** (freshly decided, decompose is the next step — render `0/0 tasks` and point the next-step line at `/feature decompose`) or exist but aren't all done. (`decide` chains this verb immediately after stamping, so the decided-but-not-yet-decomposed state is the *normal* case, not a corner.)
-   - `review` — `idea.md` status `review`, OR all feature tasks `done` or awaiting verification (`review`/`verify`, read per [[tasks]] § *Lifecycle*) **with ≥1 task existing** but not yet signed off. (Client tasks awaiting sign-off carry `status: review` too.)
+   - `review` — `idea.md` status `review`, OR all feature tasks `done` or awaiting verification (`review`/`verify`, read per [[tasks]] § *Lifecycle*) **with ≥1 task existing** but not yet signed off. (Client tasks awaiting sign-off carry `status: verify` — the task status, which older files write `review`.)
    - `done` — reviewed + signed off (`idea.md` status `done`).
    - `dropped` — `idea.md` status `dropped` (every decision was `removed`); show the rollup but mark it killed.
    - `superseded` — `idea.md` status `superseded` (scope re-homed into another feature); show the rollup with the `superseded-by:` pointer.

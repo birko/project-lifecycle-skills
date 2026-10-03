@@ -3,9 +3,11 @@
 Set or clear the `blocked:` field — work that *can't proceed* until something else happens. One file,
 two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 
-> **`blocked` ≠ `todo`.** A `todo` task is pick-able now; a `blocked` task is deliberately held
-> and is **excluded from "Next up"** in the snapshot and from `/tasks pick` defaults. Blocking is
-> how you take something out of the ready pool without cancelling it.
+> **Blocked is a flag, not a state.** A blocked task keeps the state its work is in — `todo`,
+> `in-progress` or `verify` — and carries the reason beside it. It drops out of the snapshot's
+> "Next up", but stays **on offer**, marked with its reason, in `/tasks pick` and [[fix-next]],
+> so it is never forgotten; it cannot be started or finished until it is unblocked. Blocking is
+> how you hold work without cancelling it.
 
 ## block — `/tasks block <ID>`
 

@@ -190,7 +190,7 @@ current template first (step 3), because a file that merely exists cannot be rep
          > `blocked:` field, and append to the end of the body `> Migrated <date> — block removed; the task is still <done | cancelled>, as answered.`
 
        **No answer, or nobody to ask:** write `status: todo` **and the `blocked:` field as above** — the
-       task is still blocked, and leaving the field out would put it in the ready pool with nobody choosing
+       task is still blocked, and leaving the field out would put it in "Next up" as startable work with nobody choosing
        that — and append to the end of the body, `<date>` being today's, the note for its case:
        `> Migrated <date> — state before blocking not found in history; set to todo, nobody chose it.`, or
        `> Migrated <date> — the task was <done | cancelled> before it was blocked; set to todo, nobody chose it.`

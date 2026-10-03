@@ -13,7 +13,7 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 1     |
 | blocked      | —     | —       | 1 (also counted in its own state) |
-| done         | 0     | 8       | 151   |
+| done         | 0     | 8       | 152   |
 | cancelled    | 0     | 0       | 20    |
 
 `todo` by priority: 1× P1 · 37× P2 · 6× P3.
@@ -198,8 +198,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (15/16 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (15/16)
+- **EPIC-006** Task states follow common practice — in-progress (16/17 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (16/17)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -213,9 +213,10 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-208 The migration writes "reason unknown" over a block reason the file already states · FEATURE-003
     - [x] TASK-209 Edge cases in the blocked-field writers that predate the reason ladder · FEATURE-003
     - [x] TASK-211 Migrate Presenter's task tree once its local work reaches origin · FEATURE-003
-    - [ ] [TASK-213](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-213.md) The old `review` and `blocked` wording still ships in writers, front doors and the `block` intro · FEATURE-003
+    - [x] TASK-213 The old `review` and `blocked` wording still ships in writers, front doors and the `block` intro · FEATURE-003
     - [x] TASK-214 `/tasks close` finishes a blocked task, against FEATURE-003 D7 · FEATURE-003
     - [x] TASK-215 The `blocked:` writers do not quote their value, and two readers of the block note are undeclared · FEATURE-003
+    - [ ] [TASK-217](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-217.md) `/tasks migrate` never exports a task awaiting verification · FEATURE-003
 
 ## Loose tasks
 

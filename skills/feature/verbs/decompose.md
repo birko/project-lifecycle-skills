@@ -4,7 +4,7 @@ Bridge from the stakeholder ledger to the dev tracker. Only `approved` and `chan
 
 ## Hard rule: task-first gate
 
-**Implementation code must never precede task creation.** Decompose runs — and the tasks exist (`status: todo`, with acceptance criteria) — before any code is written for a feature. If code was already written before decomposing: **stop implementing**, backfill the task(s) via step 3 with honest status (`in-progress`, never straight into `review`/`done`), note the backfill in the decision's History line, then continue. Backfilling is the recovery path, not an alternative to the gate.
+**Implementation code must never precede task creation.** Decompose runs — and the tasks exist (`status: todo`, with acceptance criteria) — before any code is written for a feature. If code was already written before decomposing: **stop implementing**, backfill the task(s) via step 3 with honest status (`in-progress`, never straight into `verify`/`done`), note the backfill in the decision's History line, then continue. Backfilling is the recovery path, not an alternative to the gate.
 
 Usually entered from [pick.md](pick.md)'s gate D ("N approved decisions have no tasks — decompose
 now?"), which passes the specific uncovered rows; running it directly decomposes everything still

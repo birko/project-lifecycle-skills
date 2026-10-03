@@ -123,7 +123,7 @@ run `/roadmap` is what let that epic sit for three weeks.
 
 **Verification debt comes first.** Tasks at `status: verify` (or the older `review`) are not in the pool — they're not `todo` —
 but they are debt, and the house rule is that debt surfaces before new scope. Offer to clear them first
-by running their `## Human test plan` and closing `review → done`.
+by running their `## Human test plan` and closing `verify → done`.
 
 **Empty pool → say so and stop. Don't invent scope.** Inventing defects to look busy is the failure
 mode this branch exists to prevent. Two causes, two different offers:
