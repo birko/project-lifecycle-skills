@@ -12,7 +12,7 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | todo         | —     | —       | 41    |
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 2     |
-| blocked      | —     | —       | 1 (also counted in its own state) |
+| blocked      | —     | —       | 0     |
 | done         | 0     | 8       | 146   |
 | cancelled    | 0     | 0       | 20    |
 
@@ -27,7 +27,7 @@ _None_
 _Code complete, sign-off pending — verification debt; close these before new scope._
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?" (P2) — manual step unrun
-- [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo (P2) — ⚠ blocked: waiting on TASK-208 (the check failed on Symbio)
+- [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo (P2) — the owner checks `/tasks` in two migrated repos
 
 ## Tree
 
@@ -207,7 +207,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-202 Migrate: tracker sync maps the blocked flag to a GitHub label and Jira's Flagged field · FEATURE-003
     - [x] TASK-203 Migrate: a one-time migration that rewrites old-form task files · FEATURE-003
     - [x] TASK-204 Contract: every writer switches to the new form · FEATURE-003
-    - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo 🔍 verify ⚠ blocked: waiting on TASK-208 · FEATURE-003
+    - [ ] [TASK-205](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-205.md) Run the migration on this repo and every consumer repo 🔍 verify · FEATURE-003
     - [x] TASK-208 The migration writes "reason unknown" over a block reason the file already states · FEATURE-003
     - [ ] [TASK-209](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-209.md) Edge cases in the blocked-field writers that predate the reason ladder · FEATURE-003
 

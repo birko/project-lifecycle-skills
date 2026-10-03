@@ -4,7 +4,6 @@ parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
 status: verify
-blocked: waiting on TASK-208 — Symbio's migration wrote "reason unknown" for 4 tasks that state a reason
 priority: P2
 assignee: unassigned
 created: 2026-09-30
@@ -73,3 +72,5 @@ DraCode's, WorkoutTracker's and the others' dashboards (`tasks/README.md`) are r
 - 2026-10-02 — Human test plan run against DraCode and Symbio (record under the step): Symbio fails. TASK-208 spawned; this task blocked on it.
 
 > Blocked 2026-10-02 — waiting on TASK-208 — Symbio's migration wrote "reason unknown" for 4 tasks that state a reason
+
+> Unblocked 2026-10-03 — TASK-208 done: the reason ladder is fixed, Symbio's four tasks carry their real reasons, and PR #1 is merged (`c9531dfa`).
