@@ -23,6 +23,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      | Step | Interactive | `--unattended` |
      |---|---|---|
      | 4 | already `done`/`cancelled` → ask "reopen and re-close?" | **refuse and report.** Never silently reopen a closed record |
+     | 4 (blocked) | ask "Unblock it and close?" | **refuse and report** (`not closed: … is blocked`), write nothing. Never clear a block nobody asked to clear |
      | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `review`, never `done` |
      | 5 (`verify` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
      | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
@@ -60,6 +61,17 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      a PR or merge again**, which would recreate a deleted remote branch (the "taken" signal) and retry a
      merge that already happened. Otherwise the merge has not happened yet: go to step 8's remote merge.
      `done` is already committed, so nothing new is pushed and no check restarts.
+   - **Blocked**, in either form ([SKILL.md](../SKILL.md) § *Reading a task's status*) → a blocked task
+     cannot be finished while it carries the flag; closing it anyway writes `done` beside a
+     `blocked:` field, the contradiction `audit` reports. Put this question:
+     > **TASK-NNN is blocked: "<reason>". Unblock it and close?**
+     > · **Yes** — run [`unblock`](block.md), then continue this close. · **No** — leave it blocked; nothing is written.
+
+     An old-form `status: blocked` shows `prior state unknown` as its reason. **No answer, nobody to ask, or
+     `--unattended`:** refuse — print `not closed: TASK-NNN is blocked: <reason>` and write nothing. Clearing
+     a block nobody asked to clear overrides a decision a person made.
+     A deferred merge is not caught here: it resumes with `/tasks unblock` first (§ Edge cases), so the
+     re-close arrives unblocked.
    - Already `done` → warn, ask "reopen and re-close?" or abort.
    - `cancelled` → warn similarly.
    - **`--unattended` → refuse and report; do not reopen.** Reaching here means something upstream is
