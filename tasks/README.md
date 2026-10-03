@@ -8,15 +8,15 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
-| planned      | 0     | 3       | —     |
-| todo         | —     | —       | 44    |
+| planned      | 1     | 5       | —     |
+| todo         | —     | —       | 51    |
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 1     |
 | blocked      | —     | —       | 1 (also counted in its own state) |
 | done         | 0     | 8       | 154   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 37× P2 · 6× P3.
+`todo` by priority: 1× P1 · 44× P2 · 6× P3.
 
 ## In progress now
 
@@ -219,6 +219,17 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-215 The `blocked:` writers do not quote their value, and two readers of the block note are undeclared · FEATURE-003
     - [x] TASK-217 `/tasks migrate` never exports a task awaiting verification · FEATURE-003
     - [x] TASK-219 A task blocked on another task drops out of `fix-next`, and a few labels still say `review` · FEATURE-003
+
+- **EPIC-007** work-tracking spec harvest review 2026-10 — planned (0/7 tasks done) · `kind: review-intake`
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — planned (0/4)
+    - [ ] [TASK-220](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-220.md) Two verbs leave a `blocked:` field behind that `audit` then reports
+    - [ ] [TASK-221](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-221.md) `cancel` and container close disagree about cancelled work
+    - [ ] [TASK-222](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-222.md) `new` and Jira import offer only P0–P2
+    - [ ] [TASK-223](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-223.md) A taken task is "shown as in progress", but no index says where it is counted
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/3)
+    - [ ] [TASK-224](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-224.md) Two restated lists of verbs have drifted from the verbs
+    - [ ] [TASK-225](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-225.md) Two sentences still describe the task states before FEATURE-003
+    - [ ] [TASK-226](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-226.md) Three references point at things that do not exist
 
 ## Loose tasks
 
