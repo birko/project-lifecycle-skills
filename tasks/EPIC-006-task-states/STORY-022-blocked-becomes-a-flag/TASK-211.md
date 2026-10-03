@@ -4,7 +4,6 @@ parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
 status: todo
-blocked: waiting on Presenter's unpushed local main — its only old-form task exists nowhere else
 priority: P3
 assignee: unassigned
 created: 2026-10-03
@@ -56,3 +55,5 @@ Run `/tasks init` with the fixed step 3b (TASK-208), so its reason is read by th
 _Populated by `/tasks plan TASK-211` — leave empty until then._
 
 > Blocked 2026-10-03 — waiting on Presenter's unpushed local main — its only old-form task exists nowhere else
+
+> Unblocked 2026-10-03 — Presenter's local `main` was pushed (0 commits ahead of `origin/main`); TASK-012 is now on `origin/main`, still `status: blocked`.

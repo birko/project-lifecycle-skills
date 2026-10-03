@@ -26,7 +26,7 @@ _None_
 
 _Code complete, sign-off pending — verification debt; close these before new scope._
 
-- [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?" (P2) — manual step unrun
+- [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?" (P2) — ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
 ## Tree
 
@@ -46,7 +46,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - STORY-006 Slicing doctrine and the state-model prototype branch — in-progress (2/4)
     - [x] TASK-122 The slicing doctrine — what "atomic and independently completable" actually means
     - ~~TASK-123 Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract~~ → merged into TASK-122
-    - [ ] [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?" 🔍 verify
+    - [ ] [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) `/feature prototype` gains a fourth form — "does this state model feel right?" 🔍 verify ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
     - [x] TASK-125 A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
   - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/4)
     - [ ] [TASK-075](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-075.md) Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
@@ -210,7 +210,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-205 Run the migration on this repo and every consumer repo · FEATURE-003
     - [x] TASK-208 The migration writes "reason unknown" over a block reason the file already states · FEATURE-003
     - [ ] [TASK-209](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-209.md) Edge cases in the blocked-field writers that predate the reason ladder · FEATURE-003
-    - [ ] [TASK-211](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-211.md) Migrate Presenter's task tree once its local work reaches origin ⚠ blocked: waiting on Presenter's unpushed local main · FEATURE-003
+    - [ ] [TASK-211](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-211.md) Migrate Presenter's task tree once its local work reaches origin · FEATURE-003
 
 ## Loose tasks
 
