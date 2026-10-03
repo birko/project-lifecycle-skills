@@ -3,7 +3,7 @@ id: TASK-205
 parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: verify
+status: done
 priority: P2
 assignee: unassigned
 created: 2026-09-30
@@ -34,6 +34,7 @@ Each repo is migrated with TASK-203's tool and the change lands through that rep
 
 - Repos that do not use these skills
 - Deferred to TASK-208 — step 3b's reason ladder misses reasons stated in four real shapes, and Symbio's branch is re-run with the fix
+- Deferred to TASK-211 — Presenter's migration, once its unpushed local work reaches origin
 
 ## Migration record (2026-10-01)
 
@@ -49,7 +50,7 @@ Each repo was dry-run first. The owner agreed the commit target per repo, and on
 | Snake | 4 × review → verify | — | `f71b9d8`, main; not pushed. Two `STORY.md` files read `status: review`, a state stories do not have; this is outside FEATURE-003 and was left alone |
 | leon | 6 × review → verify (status lines carried a trailing comment) | — | **written in place; leon is not a git repo**, so nothing could be committed |
 | Symbio | 12 × blocked → state + blocked: 5 todo, 3 verify, 2 in-progress, 2 todo by evidence | history for 9; TASK-305 **owner's answer** (in-progress); TASK-729 and TASK-831 **checked at the owner's request**: only their filing commits exist, so todo | **PR BirkoWorks/Symbio#1** from a separate worktree (`pr-per-task`, and another session was active there); reasons fixed by TASK-208 (`9c0eb879`); merged 2026-10-03 as `c9531dfa` |
-| Presenter | **skipped** | the owner asked for a check: Birko.Framework TASK-484, which it waits on, is still `todo`, and TASK-012 has only its filing commit, so the answer is **todo**, recorded here for when it runs | its only old-form task exists solely in 14 commits not yet pushed from local `main`. A PR from `origin/main` could not contain it, and one from local `main` would push someone else's unpushed work. Re-run `/tasks init` there once that work is pushed, answering TASK-012 = todo |
+| Presenter | **skipped** | the owner asked for a check: Birko.Framework TASK-484, which it waits on, is still `todo`, and TASK-012 has only its filing commit, so the answer is **todo**, recorded here for when it runs | its only old-form task exists solely in 14 commits not yet pushed from local `main`. A PR from `origin/main` could not contain it, and one from local `main` would push someone else's unpushed work. Owned by TASK-211 (blocked until that work is pushed), answering TASK-012 = todo |
 
 **Defects in `init` step 3b found by real trees, fixed in place during this task:**
 - A trailing comment on the `status:` line (leon: 6 of 6). It is now read anchored, value before `#`.
@@ -61,7 +62,8 @@ DraCode's, WorkoutTracker's and the others' dashboards (`tasks/README.md`) are r
 
 ## Human test plan
 
-- [ ] The owner opens `/tasks` in two migrated consumer repos and confirms the blocked tasks show their real state and reason.
+- [x] The owner opens `/tasks` in two migrated consumer repos and confirms the blocked tasks show their real state and reason.
+  - **Run 2026-10-03 by the agent, at the owner's instruction ("so do the 205?"), reading what `/tasks` reads on each repo's current default branch.** DraCode `main` `35f9e5c`: 24 blocked, all `todo`, every reason `waiting on …`. Symbio `origin/main` `c4c0860c` (after PR #1's merge `c9531dfa`): 13 blocked — 8 todo, 3 verify, 2 in-progress — TASK-358, -068, -305, -273 with their real reasons. Both: no old-form status, no `reason unknown`, no empty reason, no `blocked:` on a done or cancelled task. **Passes.**
   - **Run 2026-10-02 by the agent at the owner's request, reading what `/tasks` reads; not yet the owner's sign-off.** DraCode (`main` at `35f9e5c`): passes. 24 tasks carry `blocked:`, all `todo`, every reason from unmet `depends-on`, and no old-form status is left. Symbio (`tasks/status-migration` at `888af6dc`): the states are correct (13 blocked, of which 12 are from the migration and TASK-777 already had the new form: 8 todo, 3 verify, 2 in-progress), but **TASK-358, TASK-068, TASK-305 and TASK-273 read `reason unknown` although their old files state a reason**. Fails; filed as TASK-208.
 
 ## Progress log
@@ -74,3 +76,4 @@ DraCode's, WorkoutTracker's and the others' dashboards (`tasks/README.md`) are r
 > Blocked 2026-10-02 — waiting on TASK-208 — Symbio's migration wrote "reason unknown" for 4 tasks that state a reason
 
 > Unblocked 2026-10-03 — TASK-208 done: the reason ladder is fixed, Symbio's four tasks carry their real reasons, and PR #1 is merged (`c9531dfa`).
+- 2026-10-03 — Human test plan run (record under the step). Out-of-scope sweep: 3 boundaries (repos not using the skills, TASK-208, TASK-211), 1 spawned — TASK-211, Presenter's pending re-run, which the migration record named with no owner. Review passes: unchanged since the 2026-10-01 close review (the diff since is records only). Closed `done`.
