@@ -11,5 +11,5 @@ created: 2026-10-03
 
 # Behaviour that leaves the task tree contradicting itself
 
-Findings from the work-tracking harvest where following the skill as written produces a state another part of
+Findings from the first spec harvests (EPIC-007) where following the skill as written produces a state another part of
 the same skill calls a contradiction, or drops information.

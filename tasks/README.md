@@ -9,14 +9,14 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 1     | 5       | —     |
-| todo         | —     | —       | 51    |
+| todo         | —     | —       | 66    |
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 1     |
 | blocked      | —     | —       | 1 (also counted in its own state) |
 | done         | 0     | 8       | 154   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 44× P2 · 6× P3.
+`todo` by priority: 1× P1 · 58× P2 · 7× P3.
 
 ## In progress now
 
@@ -220,16 +220,31 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-217 `/tasks migrate` never exports a task awaiting verification · FEATURE-003
     - [x] TASK-219 A task blocked on another task drops out of `fix-next`, and a few labels still say `review` · FEATURE-003
 
-- **EPIC-007** work-tracking spec harvest review 2026-10 — planned (0/7 tasks done) · `kind: review-intake`
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — planned (0/4)
+- **EPIC-007** First spec harvest review 2026-10 — planned (0/22 tasks done) · `kind: review-intake`
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — planned (0/13)
     - [ ] [TASK-220](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-220.md) Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] [TASK-221](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-221.md) `cancel` and container close disagree about cancelled work
     - [ ] [TASK-222](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-222.md) `new` and Jira import offer only P0–P2
     - [ ] [TASK-223](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-223.md) A taken task is "shown as in progress", but no index says where it is counted
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/3)
+    - [ ] [TASK-227](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-227.md) `fix-next` step 8 writes a log line after `close` has committed, so the run never ends clean
+    - [ ] [TASK-228](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-228.md) `fix-next` does not say where a run goes after an outcome that is not a fix
+    - [ ] [TASK-229](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-229.md) `fix-next`'s ask-steps carry no question and no answer-less path, in a skill built to run unattended
+    - [ ] [TASK-230](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-230.md) `/specs regen`'s two ask-steps carry no question and no answer-less path
+    - [ ] [TASK-231](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-231.md) `roadmap` states DV10's trigger twice, and the two statements contradict
+    - [ ] [TASK-232](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-232.md) DV5 flags every story that has no feature behind it, including the ones that should not have one
+    - [ ] [TASK-233](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-233.md) `/roadmap --across` does not say how it combines with an epic scope, or what it prints when nothing is found
+    - [ ] [TASK-234](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-234.md) `/feature status` re-collects what it was told to consume, and its phase rules leave ledgers with no phase
+    - [ ] [TASK-235](EPIC-007-work-tracking-spec-harvest/STORY-023-correctness-invariants/TASK-235.md) `/feature review` closes open tasks after a gate that stops on open tasks
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/9)
     - [ ] [TASK-224](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-224.md) Two restated lists of verbs have drifted from the verbs
     - [ ] [TASK-225](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-225.md) Two sentences still describe the task states before FEATURE-003
     - [ ] [TASK-226](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-226.md) Three references point at things that do not exist
+    - [ ] [TASK-236](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-236.md) `roadmap`'s renders and output model have drifted from the collection they describe
+    - [ ] [TASK-237](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-237.md) Three skills still advise a project-local skill that shadows them, which does not work
+    - [ ] [TASK-238](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-238.md) `/specs verify` and `show` restate the router's and `regen`'s rules, and the copies have drifted
+    - [ ] [TASK-239](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-239.md) The spec template emits a key `regen` says to omit, and `regen`'s steps run out of order
+    - [ ] [TASK-240](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-240.md) Three `feature` records name no writer, or several: the prototype line, `superseded`, and the index row
+    - [ ] [TASK-241](EPIC-007-work-tracking-spec-harvest/STORY-024-contract-drift/TASK-241.md) Three stale words in `feature`: a count, a citation and a list of forms
 
 ## Loose tasks
 

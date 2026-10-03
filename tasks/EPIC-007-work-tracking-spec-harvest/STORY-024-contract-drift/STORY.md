@@ -11,5 +11,5 @@ created: 2026-10-03
 
 # Lists, labels and references that no longer match what they describe
 
-Findings from the work-tracking harvest where a restated list, a label, or a pointer has drifted from the thing
+Findings from the first spec harvests (EPIC-007) where a restated list, a label, or a pointer has drifted from the thing
 it names.
