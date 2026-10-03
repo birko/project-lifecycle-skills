@@ -1,7 +1,7 @@
 ---
 id: EPIC-006
 # status — one of: planned, in-progress, done, cancelled
-status: in-progress
+status: done
 created: 2026-09-30
 owner: František Bereň
 affects: []
@@ -28,4 +28,8 @@ Out of scope here: the states of stories and epics, and the rest of the feature 
 
 | Req | Brief quote (abridged, from docs/BRIEF.md) | Feature | Story |
 |-----|--------------------------------------------|---------|-------|
-| R1  | _"dal by sa tento workfow nejak zredujovat podla standardov…"_ (2026-09-30) | FEATURE-003 | STORY-022 |
+| R1  | _"dal by sa tento workfow nejak zredujovat podla standardov…"_ (2026-09-30) | FEATURE-003 (done, signed off 2026-10-03) | STORY-022 (done) |
+
+## State as of 2026-10-03
+
+Done. All three success criteria hold: every skill reads both forms and writes only the new one; all eight consumer repos were migrated (Presenter last, through TASK-211), each prior state from history or a recorded answer; a blocked task keeps its state. FEATURE-003 was signed off the same day.

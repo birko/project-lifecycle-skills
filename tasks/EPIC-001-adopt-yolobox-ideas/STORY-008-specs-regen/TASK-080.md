@@ -88,3 +88,7 @@ Two of those fixes are now testable here for the first time, and both were touch
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-080` — leave empty until then._
+
+## Progress log
+
+- 2026-10-03 — **Partial work done outside this task, recorded here so the task reflects it.** At the owner's request, to unblock FEATURE-003's sign-off, `/specs regen` ran as first harvests for 5 of the 14 areas: `work-tracking` (`0c84b8a`), `feature-lifecycle`, `project-roadmap`, `defect-draining`, `specs-from-code` (`b24eb8b`). Each has `shaped-by-derived: true`, `shaped-by-unresolved: 7`. The task was not picked first, and the run came ahead of the EPIC-001 sequence (after STORY-004/006/007) — a lapse against the task-first gate, noted rather than hidden. The map gained `skills/review-comments/**` under `change-review` (0 unmapped). The 51 suspected bugs those harvests raised are filed as EPIC-007. Still to do: the other 9 areas, then this task's own criteria — including the deliberate-change re-run.

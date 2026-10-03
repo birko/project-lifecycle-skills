@@ -11,7 +11,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 ## [Unreleased]
 
 _No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
-36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, and 2026-09-26 across the 6 after that._
+36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, 2026-09-26 across the 6 after that, and 2026-10-03 across the 48 after that — FEATURE-003 and its follow-ups._
 
 ### Added
 
@@ -43,6 +43,9 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **Worktrees on projects that merge through a remote.** When the main branch tracks a remote, nothing is committed on your local main. `pick` pushes the task branch, and that pushed branch tells every clone the task is taken. `close` merges through the host, queuing auto-merge when checks are still pending, then fast-forwards local main. A plain git remote with no pull requests merges by pushing main.
 - **`new-project` and `adopt-project` ask where task work should happen** (in place, or a worktree per task). `/tasks init` holds the one wording. No answer leaves it unset, which means in place, and the report says so.
 - **Drill checkouts have a home and a cleanup rule.** `populate-tests` § *The cold drill* now says where a drill's throwaway checkout goes (under `worktree-root:`, else the runner's scratch folder, never inside the target) and that the drill removes it at the end, never force-removing a dirty one.
+- **A slicing doctrine for how work is cut into tasks.** `skills/tasks/slicing.md` owns the rule: a task fits one fresh context window, a wide refactor runs as expand → migrate → contract, and `plan`, `spawn` and `decompose` point at it instead of each guessing.
+- **`/feature prototype` has a fourth form: a state-model playground.** A small interactive page where a stakeholder drives a model (states and the moves between them) and reacts to the rules, not the visuals. Every prototype now opens by saying what it asks of the reader, and is thrown away once it has answered its question.
+- **A prototype-derived snippet may enter a decision**, as the one exception to "decisions carry no code" — trimmed, marked, and only when the snippet is the thing decided.
 
 ### Changed
 
@@ -78,6 +81,12 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **The close gate names its review axes instead of counting them**, and the fidelity axis gets its own `VI-*` findings prefix. When security-review doesn't run, the gate prints an explicit not-applicable line.
 - **The seeded guide sends new terms and decisions to `/domain`.** `docs/BRIEF.md` is now always created, and the project's one-line purpose is asked for at intake and never invented.
 - **`adopt-project` reports more precisely.** It reports `present, uncommitted` as an itemised offer to land, and doesn't claim whose work it is. It suppresses an action the repo has already done. It separates an `unknown` caused by missing evidence from one where the rule itself runs out (that one is reported as a defect in the layer). It names which axis a `present, elsewhere` differs on. It says outright that it checks a guide's shape, not whether its prose is current.
+- **"Blocked" is now a flag, not a status.** A task has five states — `todo`, `in-progress`, `verify`, `done`, `cancelled` — and a blocked one keeps the state its work is in, with a `blocked: <reason>` field beside it. Unblocking removes the field and leaves the state alone, so unblocking in-progress work no longer sends it back to `todo`. A merge that has to wait is `in-progress` with a `merge deferred` reason, and `done` still means merged.
+- **The task status `review` is renamed `verify`** ("awaiting verification"), including the value stored in the file, because "review" means code review everywhere else. Every reader still accepts `review` and the old `status: blocked`, permanently, so task files in repos nobody migrates stay correct. A feature's own `review` phase and gate are unchanged.
+- **A blocked task can't be started or finished.** `/tasks pick` asks "Unblock it and start?" and `/tasks close` asks "Unblock it and close?"; with no answer — or under `--unattended` — neither starts, finishes or unblocks anything. Blocked tasks stay on offer, marked with their reason, in `pick` and `fix-next`; `fix-next` ranks them but skips them, prints a `skipped:` line, and takes the next unblocked task — a task blocked on another task included.
+- **`/tasks init` migrates old task files once.** A `status: review` becomes `verify`; a `status: blocked` gets back the state it had before blocking, read from the file's git history, plus a `blocked:` field whose reason comes from the file's own words — its block note, its open dependencies, or the sentence that says why it is held (quoted in the report, so a wrong pick is visible). Where history can't tell, it asks, and with no answer falls back to `todo` with a note saying nobody chose it.
+- **GitHub and Jira show the flag in their own way**: the `blocked` label on GitHub, the Flagged field on Jira, with the reason as a comment. The issue's open/closed state never changes because of a block.
+- **A `blocked:` value is always written so it reads back exactly.** One quoting rule for every writer; readers use the parsed value, never the raw line.
 
 ### Fixed
 
@@ -110,5 +119,9 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **On a project that merges through a remote, a task running in a worktree looked unowned.** `fix-next` couldn't find its own interrupted run to resume, and `pick` didn't offer to resume the task. Both now read the task branch.
 - **A task parked at `review` inside its worktree didn't show up as awaiting sign-off.** The dashboard and `/tasks` now read its status from the task branch.
 - **Closing a task in place left its pushed task branch on the remote**, where every other clone kept reading the task as taken. `close` now deletes it.
+- **New ids could reuse a number on task files with Windows line endings.** The id scan's pattern missed lines ending in `\r` (measured: 35 of 75 ids found). Every `^id:` pattern now tolerates them, and `skills-lint` check 7 enforces it.
+- **`export` and `pick` could take a `# …` comment inside the frontmatter as the task's title.** They now read the first heading after the frontmatter.
+- **`/tasks migrate` never exported a task awaiting verification.** It now exports every task that is not done or cancelled.
+- **A deferred merge wrote a `blocked:` value that strict YAML parsers reject** (`merge deferred: …` contains `: `), and an export/import round trip added a layer of quotes each time. Both are fixed by the shared writing rule above.
 
 [Unreleased]: https://github.com/birko/project-lifecycle-skills/commits/main
