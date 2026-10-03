@@ -95,7 +95,9 @@ old-form `status: blocked` task (see [[tasks]] § *Lifecycle*). It is ranked wit
 order stays visible, but this skill **never starts one**: step 2 skips it. It never unblocks one either,
 because that is a decision about someone else's reason.
 
-Exclude: unmet `depends-on`, and anything whose acceptance is *"decide X"*. A decision task needs the user
+Exclude: unmet `depends-on` — **except a blocked task**, which stays in the pool as above even when its block
+is one of those dependencies (`/tasks block --on` writes it there), since excluding it would hide exactly the
+task the rule above keeps visible — and anything whose acceptance is *"decide X"*. A decision task needs the user
 and can't run unattended. Surface those in the closing report instead.
 
 **Check the pool is complete before ranking it — findings can be filed and never scheduled.** You are

@@ -29,7 +29,7 @@ dashboard is regenerated on the default branch when `close` merges.
    - [TASK-014](EPIC-001-auth/STORY-001-login/TASK-014-jwt.md) — JWT issuance on login (P1, ai)
    ```
 
-3b. **Build "In review (awaiting sign-off)"** from `inReviewTasks[]`, same bullet shape. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task is in `review`.
+3b. **Build "Awaiting verification"** from `inReviewTasks[]`, same bullet shape. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task is in `review`.
 
 4. **Build the tree view** — group tasks under their parent story under their parent epic (use the `byParent` map from the collection pass). Skip epics that are `done` or `cancelled` (those go in the Completed section). For each story, show `done/total` task counts.
 

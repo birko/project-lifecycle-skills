@@ -102,8 +102,8 @@ happened. Spawn instead of widening.
      `/feature decide`, with the delta recorded. Never quietly widen an approved row by hanging a
      bigger task off it — the stakeholder approved the old shape.
    - **No decision covers it** → append a **new `proposed` row** to `decisions.md` (+ History
-     line) and tell the user it needs `/feature decide`. Leave the task `todo` (or `blocked` on
-     the decision) — implementing an undecided row is the same violation as coding without a task.
+     line) and tell the user it needs `/feature decide`. Leave the task `todo` (with a `blocked:`
+     field naming the decision, if you block it) — implementing an undecided row is the same violation as coding without a task.
    - Chain `/feature status FEATURE-NNN` (single-feature mode) so the rollup and index row don't
      lag.
    - **No `feature:` link, but the item is stakeholder-visible** (new behaviour a PM or user would

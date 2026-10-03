@@ -25,7 +25,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      [[feature]]'s `/feature pick` hands off once a feature is decomposed)
    - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5
 
-2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` or `status: verify`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `review` lives on its task branch) — code
+2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` or `status: verify`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `verify` lives on its task branch) — code
    complete, sign-off pending — and report them **before** the candidate list. They are deliberately
    **not** candidates (the `--status todo` default is right: a task awaiting sign-off is not work to
    start), so the job here is to *surface* the debt, never to offer unfinished work as new work.

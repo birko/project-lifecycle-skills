@@ -45,7 +45,7 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
    from the newest comment starting with it. A failed remote call is reported by name and does not undo the
    local block, because the file is the record and the tracker mirrors it.
 6. **Regenerate dashboard** ([triage](triage.md)) — blocked tasks render `⚠ blocked` and drop out of "Next up".
-7. **Confirm** — print `status: … → blocked`, any `depends-on` added, the reason, and the remote outcome when step 5b ran.
+7. **Confirm** — print `blocked: <reason> added — status stays <state>`, any `depends-on` added, and the remote outcome when step 5b ran.
 
 ## unblock — `/tasks unblock <ID>`
 

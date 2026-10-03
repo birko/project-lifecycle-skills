@@ -3,7 +3,7 @@ id: TASK-219
 parent: STORY-022
 feature: FEATURE-003
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: unassigned
@@ -34,12 +34,12 @@ interaction with an older rule plus display leftovers.
 
 ## Acceptance criteria
 
-- [ ] A task blocked with `--on` stays in `fix-next`'s pool, marked and never started, like any other blocked task;
+- [x] A task blocked with `--on` stays in `fix-next`'s pool, marked and never started, like any other blocked task;
       a task whose unmet `depends-on` came from anywhere else is handled as the decision owner intends — state which
-- [ ] `block`'s confirmation says the status stays, matching `unblock`'s
-- [ ] The listed labels say `verify` (or "awaiting verification") for the task status; `spawn.md`'s sentence says
+- [x] `block`'s confirmation says the status stays, matching `unblock`'s
+- [x] The listed labels say `verify` (or "awaiting verification") for the task status; `spawn.md`'s sentence says
       `todo` with a `blocked:` field
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -47,9 +47,14 @@ interaction with an older rule plus display leftovers.
 
 ## Human test plan
 
-- [ ] A cold `/fix-next` ranking on an invented pool with one task blocked `--on` another and one blocked for a
+- [x] A cold `/fix-next` ranking on an invented pool with one task blocked `--on` another and one blocked for a
       stated reason: both are listed as skipped-blocked, neither is started
 
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-219` — leave empty until then._
+
+## Progress log
+
+- 2026-10-03 — Picked (in place; single-branch). `fix-next`'s exclusion of unmet `depends-on` now carves out a blocked task, which stays in the pool, marked and never started — even when its block is one of those dependencies (`/tasks block --on` writes it there). A task whose unmet dependency is not a block is still excluded: that is the decision this criterion asked to state, and the carve-out states it. `block`'s confirmation says the status stays; the snapshot's and dashboard's "In review" becomes "Awaiting verification" (`tasks/SKILL.md`, `triage.md`), and its `review:` line the `verify:` it already prints; `pick` 2b says a worktree park's `verify`; `spawn` says `todo` with a `blocked:` field. Lint OK; no "In review" label left in `skills/`.
+- 2026-10-03 — Drill: invented review-intake pool `%TEMP%\d219base` (TASK-001 blocked `--on` TASK-003, TASK-002 blocked for a reason, TASK-003 plain, TASK-004 with an unmet dependency, not blocked), oracle first; two cold runners of `fix-next` up to its pick. **Both match the oracle and agree** (cold: no skills listed): pool 001, 002, 003; 004 excluded by its unmet dependency; 003 chosen; `skipped: TASK-002 — blocked: …` printed; 001 below the pick, listed for the closing report; nothing changed. Review (inline, one rule plus labels): **standards** — the carve-out states its reason inline; labels only; **intent** — 4/4 criteria; **correctness** — the carve-out cannot start a blocked task, since step 2 skips every blocked one; **security / comments** — not applicable. Note for the next dashboard regeneration: this repo's `tasks/README.md` still says "In review" until `/tasks triage` runs. Closed `done`.

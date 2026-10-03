@@ -21,7 +21,7 @@ generated: 2026-10-03
 
 ## Build progress
 
-17 / 18 tasks done · 1 small follow-up to do.
+18 / 18 tasks done.
 
 - TASK-196 — teach the task tracker to read both the old and the new way of writing states (done)
 - TASK-197 — the feature overview reads the new states (done)
@@ -40,7 +40,7 @@ generated: 2026-10-03
 - TASK-214 — a blocked task can still be marked finished; make finishing refuse it, as decided (done — finishing now refuses a blocked task and changes nothing)
 - TASK-215 — a blocked reason containing a colon can break the task file; write it safely everywhere (done — every reason is now written so it reads back exactly, checked on the parser the other tool uses)
 - TASK-217 — moving a project to GitHub or Jira skips tasks that are waiting for a check; include them (done — every open task is now included, checked twice)
-- TASK-219 — a task held up by another task drops out of the automatic bug-fixing run's list, and a few labels still use the old wording (to do — found by the second review; agreed as a follow-up)
+- TASK-219 — a task held up by another task drops out of the automatic bug-fixing run's list, and a few labels still use the old wording (done — such a task now stays on the list, marked, and is never started)
 
 ## What can be tested now
 
@@ -52,4 +52,4 @@ Built — the state-model playground, https://claude.ai/artifact/GHk9TKVgAHws8sn
 
 ## Next step
 
-The second review passed every check it could run: everything decided is built and every manual check was done. Sign-off waits on one thing — the generated specifications have to exist, so the review can confirm the new behaviour landed in them. TASK-219, a small follow-up the review found, can be done before or after.
+The second review passed every check it could run: everything decided is built and every manual check was done. Sign-off waits on one thing — the generated specifications have to exist, so the review can confirm the new behaviour landed in them. The small follow-up the review found, TASK-219, is done.

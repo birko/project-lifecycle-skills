@@ -73,7 +73,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
      └─ done:        <n>
 
    In progress: <list or "(none)">          ← a blocked one carries "⚠ blocked: <reason>"
-   In review:   <list or "(none)">
+   Awaiting verification: <list or "(none)">
 
    Next up (top 3 by priority, blocked excluded):
      TASK-NNN  <title>  <priority>  <assignee>
@@ -95,7 +95,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
    declaration produces. It is tempting to add one helpful line, and that line is a change to the default
    view of every project in the family; the promise that the default is untouched is the whole thing
    protecting projects that are already correct. Someone who wants the wider view asks for it.
-3. Append the `features/` slice — its shape and divergence rules are owned by [[roadmap]] (§ *Render — compact slice*); render that slice, don't re-derive the join here. In-review tasks are verification debt — surface them, don't bury them. Omit the `review:` line and "In review" section when no task is in review; omit the whole `features/` block when `docs/features/` doesn't exist. Suppress trailing zeros in the priority breakdown.
+3. Append the `features/` slice — its shape and divergence rules are owned by [[roadmap]] (§ *Render — compact slice*); render that slice, don't re-derive the join here. Tasks awaiting verification are verification debt — surface them, don't bury them. Omit the `verify:` line and the "Awaiting verification" section when no task awaits verification; omit the whole `features/` block when `docs/features/` doesn't exist. Suppress trailing zeros in the priority breakdown.
 
 ## Collection pass
 
@@ -393,7 +393,7 @@ real (non-`N/A`) manual/visual step that hasn't been run yet, set `status: verif
 `done`. This is the task-level mirror of the [[feature]] skill's `review` phase and its
 hard rule: **never mark something `done` with the sign-off still pending, and never write
 the hybrid "done (pending)".** A `verify` task is *verification debt* — the snapshot lists
-it under "In review" and it should be closed (run the test → `done`) before new scope.
+it under "Awaiting verification" and it should be closed (run the test → `done`) before new scope.
 - A task whose `## Human test plan` is genuinely `N/A — covered by automated tests` skips
   `verify` and goes straight to `done` when the code + tests land (nothing for a human to verify).
   **An absent section is not an `N/A` one** — resolve it (write the steps, or write `N/A` with the
