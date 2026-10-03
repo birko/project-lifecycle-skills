@@ -8,7 +8,7 @@ affects: skills/, .github/
 # kind: omit for a normal epic; `review-intake` marks the epic a review pass was filed into
 kind: review-intake
 # source: review-intake epics only — where the findings came from (report path, PR, or "security-review <date>")
-source: close-gate passes at /tasks close, 2026-08-18 → 2026-08-20 — /verify-conventions, /code-review, and the step 5d out-of-scope sweep. Filed as loose tasks at the time; adopted into this epic by TASK-040. Second pass 2026-09-08: /code-review medium over origin/main...HEAD during TASK-106's close gate, 8 findings CR-1…CR-8, filed by /tasks intake --epic EPIC-002. Third pass 2026-09-16: cold drill of /tasks init and /specs init (two runners, --disable-slash-commands, guide-free scratch roots, both confirmed cold), run as TASK-109's human test plan, 4 findings DRILL-109-1 to DRILL-109-4, filed by /tasks intake --epic EPIC-002.
+source: close-gate passes at /tasks close, 2026-08-18 → 2026-08-20 — /verify-conventions, /code-review, and the step 5d out-of-scope sweep. Filed as loose tasks at the time; adopted into this epic by TASK-040. Second pass 2026-09-08: /code-review medium over origin/main...HEAD during TASK-106's close gate, 8 findings CR-1…CR-8, filed by /tasks intake --epic EPIC-002. Third pass 2026-09-16: cold drill of /tasks init and /specs init (two runners, --disable-slash-commands, guide-free scratch roots, both confirmed cold), run as TASK-109's human test plan, 4 findings DRILL-109-1 to DRILL-109-4, filed by /tasks intake --epic EPIC-002. Fourth pass 2026-10-03: /verify-conventions at TASK-208's close gate, one register-on-introduce note VC-054, filed as TASK-210.
 ---
 
 # Close-gate findings on the skill set

@@ -9,14 +9,14 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | Status       | Epics | Stories | Tasks |
 |--------------|-------|---------|-------|
 | planned      | 0     | 3       | —     |
-| todo         | —     | —       | 41    |
+| todo         | —     | —       | 42    |
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 2     |
 | blocked      | —     | —       | 0     |
 | done         | 0     | 8       | 146   |
 | cancelled    | 0     | 0       | 20    |
 
-`todo` by priority: 1× P1 · 35× P2 · 5× P3.
+`todo` by priority: 1× P1 · 36× P2 · 5× P3.
 
 ## In progress now
 
@@ -64,7 +64,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (49/84 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (49/85 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
   - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/17)
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
@@ -155,6 +155,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-126 Sweep every template for a shipped value its own skill says must be declared or derived
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] [TASK-132](EPIC-002-close-gate-findings/TASK-132.md) Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
+  - [ ] [TASK-210](EPIC-002-close-gate-findings/TASK-210.md) Examples in skill text are invented, never lifted from a repo the skill is drilled on
 
 - **EPIC-003** Defects found by using the skills, not by reviewing them — in-progress (5/9 tasks done) · `kind: review-intake`
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5)
