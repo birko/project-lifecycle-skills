@@ -87,22 +87,63 @@ current template first (step 3), because a file that merely exists cannot be rep
    skips every such file; measured on one consumer tree, that was 6 of 6. Rewrite only the value, and keep
    the rest of the line as it was.
    - **`status: review`** → `status: verify`. Nothing else changes.
-   - **`status: blocked`** → the task's **prior state** plus a `blocked:` field, written on the line after
-     `status:`:
+   - **`status: blocked`** → the task's **prior state** plus a `blocked:` field, written after the `status:`
+     line **and every indented `#` line continuing its comment** — never between them, which splits one
+     comment in two:
      - **Prior state is read from the file's history, never guessed.** It is the most recent `status:`
        value other than `blocked` among the file's earlier versions. List them newest first with
-       `git log --follow --format=%H --name-only -- <file>`, and read each with `git show <sha>:<path at that sha>`.
+       `git log --follow --format=%H --name-only -- <file>`, and read each with `git show <sha>:<path at that sha>`,
+       or use any read that yields the same versions (`git log --follow -p -- <file>` does).
        A prior state found as `review` is written `verify`, because the old value must not be re-minted
        (measured: 3 of one tree's 12 blocked tasks had been at `review`). Where a per-file loop is not available, one `git log -p -- tasks/` read once gives the same answer for
        files never renamed; name in the report which read was used. History determines this, so it is read,
        not asked.
-     - **Reason**, from the first of these the file holds: the text of its newest
-       `> Blocked <date> — <reason>` note, which [`block`](block.md) writes, read through any Markdown
-       emphasis (a real tree writes it `> **Blocked <date> — <reason>.**`); else its `depends-on` tasks that
-       are not `done`, as `waiting on TASK-X, TASK-Y` (measured on a real tree: all 24 of its blocked tasks
-       carried the reason only this way); else `reason unknown`.
+     - **Reason** — take the first rung that answers:
+
+       | # | Source | Written as |
+       |---|---|---|
+       | 1 | the newest `>` note whose text, read through any Markdown emphasis and in any letter case, opens `Blocked <date> —` — the note [`block`](block.md) writes, so it wins | the note's own words after its label, as below |
+       | 2 | its `depends-on` tasks that are not `done` | `waiting on TASK-X, TASK-Y` |
+       | 3 | **the sentence that says why this task is held**, wherever the file states it: a body line, a heading, or the comment on the `status:` line with its indented `#` continuation lines | its own words after any label, as below |
+       | 4 | nothing above answered | `reason unknown` |
+
+       Rungs 1 and 2 are mechanical and come first; rung 3 is judgement, so it runs only where nothing
+       mechanical answered. Real trees state a block in shapes no list keeps up with — a status-line comment,
+       an upper-case heading, a bold line outside any note — which is why rung 3 reads for meaning rather than
+       matching a shape. Every one of those was measured on a real tree, and each read `reason unknown`.
+       **Rung 3 takes a sentence only when it says what this task is waiting for, or why it cannot proceed
+       now.** A sentence describing the task is not that, however it is formatted: the file's title, a change
+       of priority or classification, a verdict about the defect itself, or the condition for unblocking it
+       (*"resume when X"* says when, not why). Nor is a negation (`not blocked by TASK-X`), another task being
+       blocked, a block the file says is resolved, a remark that only part of the work is held, text inside a
+       code fence, a legend listing status values, or a comment on any field but `status:`. When no sentence
+       passes, rung 4 answers: `reason unknown` is a correct outcome, and a near-reason written in its place
+       is the defect this rung exists to avoid. Several candidates → the one whose **own text** carries the
+       newest date (a sentence does not inherit a date from its heading or note), else the first in the file.
+       **The field gets the source's own words, never a summary** — a summary is the migration inventing a
+       reason. Shape them in this order, for rungs 1 and 3 alike:
+       1. **Drop the label.** A source opening with a block word, an optional date and ` — ` (`Blocked —`,
+          `HELD 2031-01-04 —`) puts the reason *after* the dash; the label itself is never the reason. A block
+          word is any word saying the task is held — *blocked*, *deferred*, *held*, *paused*, *on hold*, in any
+          case — not a closed list. Read through Markdown emphasis, and drop a leading symbol or emoji; the
+          label sits inside the bold span as often as before it.
+       2. **Take one unit.** A source whose reason opens in bold → the rest of that bold span, and the text
+          after the span is commentary, not part of the reason. Otherwise → up to the first ` — `, `;` or
+          sentence end.
+       3. **Finish.** Drop a trailing full stop; cut to at most 120 characters at a word boundary.
+       Append where the rest is **only when step 2 or 3 dropped part of the reason itself** — never for the
+       text after a bold span, which is commentary. A cut at ` — `, `;` or a sentence end in a plain source
+       *does* drop part of the reason, so it always gets the pointer. Name the place, never a line number:
+       ` (full text in the status comment)`, ` (full text in § <heading>)`, ` (full text in the note of <date>)`.
+       Quote the value when it contains `: ` or ` #` or opens with a YAML indicator, so the frontmatter still
+       parses.
+       Invented examples, no note and no open `depends-on` in either:
+       - status line `status: blocked  # PAUSED 2031-01-04 until the vendor signs; see § Contract` →
+         `blocked: PAUSED 2031-01-04 until the vendor signs (full text in the status comment)`
+       - body line `⛔ **Held — the staging host has no TLS certificate.** Raised with ops twice.` →
+         `blocked: the staging host has no TLS certificate`
      - **History cannot tell** (no git, the file was created blocked, or every earlier version reads
-       `blocked`) → ask once per task:
+       `blocked`) → ask once per task, `<reason>` being what the ladder above produced:
        > **TASK-NNN was blocked before its history begins: "<reason>". Had work on it started?**
        > · **No** — it goes back to `todo`. · **Yes** — it goes back to `in-progress`.
 
@@ -113,8 +154,10 @@ current template first (step 3), because a file that merely exists cannot be rep
    - **Idempotent.** A task already in the new form is left byte-for-byte alone. A second run over a
      migrated tree reports *already current*.
    - Report per file, in step 5: **brought up to date** (`review → verify`, or `blocked → <prior> + blocked`,
-     naming where the prior state came from: history or answer), **fallback, unchosen**, or, for the whole
-     tree, **already current**.
+     naming where the prior state came from: history or answer, and which reason rung answered: `note`,
+     `depends-on`, `judgement` or `none`), **fallback, unchosen**, or, for the whole tree, **already current**.
+     **A `judgement` reason is reported with the source line quoted verbatim and its line number**, so a
+     wrong pick is visible in the report rather than hidden in the field.
 
 4. **Generate the initial dashboard** — run the [triage](triage.md) logic over whatever tree exists (an empty tree renders zero counts; scaffold-seeded epics/stories render their `planned` rows). Write `tasks/README.md`.
 
