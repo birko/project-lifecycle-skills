@@ -35,8 +35,10 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      - `story/{story-slug}` (the parent story's slug, if any)
      - All `default-labels` from `.config.yml`
      - **Blocked** (either form, [SKILL.md](../SKILL.md) § *Lifecycle*) → the tracker's own marker: the label `blocked` on GitHub, the **Flagged** field on Jira. The issue's open/closed state is **never** changed because of it, since a blocked task is still open work. After the
-       issue exists, add one comment `Blocked: <reason>`, because a label carries no reason. The reason is the
-       `blocked:` field, else the text of the task's newest `> Blocked <date> — <reason>` note, else
+       issue exists, add one comment `Blocked: <reason>`, because a label carries no reason — keep the
+       `Blocked:` prefix, since [import.md](import.md) reads the reason back from it. The reason is the
+       `blocked:` field's parsed value — without its YAML quotes ([SKILL.md](../SKILL.md) § *Writing a
+       `blocked:` value*) — else the text of the task's newest `> Blocked <date> — <reason>` note, else
        `reason unknown`. On Jira, set Flagged instead of a label.
    - **Assignee** (GH only) — if `assignee:` is `human` and a GH username is known, set it; otherwise skip.
 

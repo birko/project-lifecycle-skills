@@ -288,8 +288,9 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
    - **Merging now (or no merge step applies)** → `status: ... → status: done` (and check any
      acceptance boxes the user just confirmed).
    - **Merge deferred at 5c** → run [`/tasks block`](block.md) instead of flipping to `done`:
-     `status:` stays `in-progress`, and the task gains `blocked: merge deferred: <reason>; code complete on
-     task/TASK-NNN` plus the reason note (`> Blocked {{today}} — merge deferred: <reason>`) and `--on <TASK-NNN>` when it's waiting on another task's
+     `status:` stays `in-progress`, and the task gains `blocked: 'merge deferred: <reason>; code complete on
+     task/TASK-NNN'` — quoted, because the value contains `: ` ([SKILL.md](../SKILL.md) § *Writing a
+     `blocked:` value*) — plus the reason note `block` writes from it (`> Blocked {{today}} — merge deferred: <reason>; code complete on task/TASK-NNN`) and `--on <TASK-NNN>` when it's waiting on another task's
      merge. Check the acceptance boxes that are genuinely met — the work *is* done; only the
      integration isn't. Blocking from `in-progress` is why 5c runs before this step: `block`
      refuses to act on a task already flipped to `done`.

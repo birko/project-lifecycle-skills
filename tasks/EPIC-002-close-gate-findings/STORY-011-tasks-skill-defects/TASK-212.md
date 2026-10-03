@@ -12,13 +12,13 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
-findings: [VC-055, CR-139, VC-056, CR-140, DRILL-214-1]
+findings: [VC-055, CR-139, VC-056, CR-140, DRILL-214-1, VC-061]
 pr: null
 github-issue: null
 jira-key: null
 ---
 
-# Five older gaps in `block`, `close` and `init` 3b, found at the TASK-209 and TASK-214 closes
+# Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes
 
 ## Context
 
@@ -33,6 +33,7 @@ or `init.md` step 3b.
 | VC-056 | `block.md` steps 4 and unblock 4, "(FEATURE-003 D1)" / "(D2)" | Point at this repo's `docs/features/` records, which do not exist in a consumer's install — a reference a reader there cannot follow |
 | CR-140 | `init.md` 3b, rung 3's pointer table | When the source is itself a heading (a `## DEFERRED <date> — …` line), "under a heading" is ambiguous: point at that heading, or at the one above it |
 | DRILL-214-1 | `close.md` step 1, "**Find task root**." | Gives no method and no pointer. Both cold runners of TASK-214's drill flagged it (2026-10-03); the method is [[tasks]] § *Shape detection*, which `close` never names. Added before this task started |
+| VC-061 | `skills/tasks/templates/TASK.md`, the `# blocked: <reason> — add this line while the task is blocked` comment | Tells a reader to hand-add the field, which skips `/tasks block` (its placement, quoting and note) and contradicts *status changes go through their verbs*. Raised by TASK-215's conventions pass (2026-10-03); added before this task started |
 
 ## Acceptance criteria
 
@@ -43,6 +44,7 @@ or `init.md` step 3b.
       on its own or the reference is removed
 - [ ] `init.md` 3b's pointer table says which heading a source that is itself a heading points to
 - [ ] `close.md` step 1 points at [[tasks]] § *Shape detection* for finding the task root
+- [ ] The `TASK.md` template's `blocked:` comment points at `/tasks block` instead of inviting a hand edit
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope

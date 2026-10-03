@@ -167,11 +167,8 @@ current template first (step 3), because a file that merely exists cannot be rep
 
        **Nothing left is no answer.** A source whose remainder is empty, only its label, or only a
        cross-reference (`see below`, `see § Plan`) has not stated a reason: go to the next rung.
-       **Quote last**, on the final value with its pointer, so the frontmatter still parses and still reads
-       as a string: wrap it in single quotes, doubling any `'` inside, when it contains `: ` or ` #`, ends
-       with `:`, opens with a YAML indicator, or would read as something other than text (`no`, `off`,
-       `null`, `~`, `true`, a number, a bare date). pi parses frontmatter strictly, and `blocked: no` would
-       read as *false* on a field whose presence means *blocked*.
+       **Quote last**, on the final value with its pointer, as [SKILL.md](../SKILL.md) § *Writing a
+       `blocked:` value* says for every writer.
        Invented examples, no note and no open `depends-on` in either:
        - status line `status: blocked  # PAUSED 2031-01-04 until the vendor signs; see § Contract` →
          `blocked: PAUSED 2031-01-04 until the vendor signs (full text in the status comment)` — no ` — `

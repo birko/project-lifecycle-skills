@@ -26,19 +26,22 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
        is the one path where `blocked` means *finished but not integrated* rather than *not
        proceeding*; the reason note is what tells a reader which it is, so never write it bare.
 4. **Edit frontmatter**:
-   - Add `blocked: <reason>` after the `status:` line **and every indented `#` line continuing its comment** —
+   - Add `blocked: <reason>`, written as [SKILL.md](../SKILL.md) § *Writing a `blocked:` value* says, after the `status:` line **and every indented `#` line continuing its comment** —
      never between them, which splits one comment in two — and **leave `status:` as it is**, so the task keeps
      the state its work is in (FEATURE-003 D1). Already blocked by either form → warn ("already blocked: <reason>")
      and stop.
    - If `--on` given, merge the IDs into `depends-on: [...]` (validate each exists; warn on a missing/cancelled target).
-5. **Record the reason** — append a body note: `> Blocked {{today}} — <reason>` (runtime date). Ask for one line if `--reason` omitted.
-   **Keep that shape.** [init.md](init.md) step 3b reads this note as its first reason rung — matching
-   `Blocked <date> —`, through emphasis and in any case — so a changed wording here silently drops every
-   later migration to a weaker rung.
+5. **Record the reason** — append a body note: `> Blocked {{today}} — <reason>` (runtime date), the reason as given, never in its YAML quotes — quoting belongs to the frontmatter value alone. Ask for one line if `--reason` omitted.
+   **Keep that shape — other verbs read it:** [init.md](init.md) step 3b takes it as its first reason rung,
+   matching `Blocked <date> —` through emphasis and in any case; [export.md](export.md) takes the reason from
+   it when the `blocked:` field is missing; [[fix-next]] takes it for an old-form `status: blocked` task's
+   reason. A changed wording here silently drops every later migration to a weaker rung and every such
+   export or skip line to `reason unknown`.
 5b. **Hybrid mode, linked task** (`github-issue:` or `jira-key:` set) → ensure the `blocked` label exists, as
    [export.md](export.md) step 6 does, then add the tracker's own marker: the label `blocked` on GitHub, the **Flagged** field on Jira. The issue's open/closed state is **never** changed because of it, since a blocked task is still open work, and a
-   comment `Blocked: <reason>`. A failed remote call is reported by name and does not undo the local
-   block, because the file is the record and the tracker mirrors it.
+   comment `Blocked: <reason>`. **Keep the `Blocked:` prefix:** [import.md](import.md) reads the reason back
+   from the newest comment starting with it. A failed remote call is reported by name and does not undo the
+   local block, because the file is the record and the tracker mirrors it.
 6. **Regenerate dashboard** ([triage](triage.md)) — blocked tasks render `⚠ blocked` and drop out of "Next up".
 7. **Confirm** — print `status: … → blocked`, any `depends-on` added, the reason, and the remote outcome when step 5b ran.
 

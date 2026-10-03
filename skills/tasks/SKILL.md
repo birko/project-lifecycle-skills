@@ -164,7 +164,8 @@ from every project at once to answer a question only occasionally asked.
    - `tasks/EPIC-*/TASK-*.md`
    - `tasks/_loose/TASK-*.md`
 3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `theme` (stories, optional), `created`,
-   `depends-on`, `blocks`. Read the first `# Heading` line of the body for the human title.
+   `depends-on`, `blocks`, and `blocked` (tasks, optional — its parsed value, never the raw line, per
+   § *Lifecycle* → *Writing a `blocked:` value*). Read the first `# Heading` line of the body for the human title.
 4. **Bucket** by level + status:
    - Counts: `{epics: {planned, in-progress, done, cancelled}, stories: {...}, tasks: {todo, in-progress, review, blocked, done, cancelled}}`.
      Read each status per § *Lifecycle* → *Reading a task's status*: `verify` counts in the `review` bucket,
@@ -315,6 +316,27 @@ migrates are out of reach:
 A task is **blocked** when either the field or the old status says so. Blocked tasks stay out of the ready
 pool, as they always have. **Every writer now writes the new form**; nothing writes `review` or
 `status: blocked` any more, and readers keep accepting both for files nobody has migrated.
+
+**Writing a `blocked:` value — one rule for every writer** (`block`, `close`'s deferred merge, `import`,
+`init`'s migration). Write the reason as one line, never empty — no reason is `reason unknown`. After any
+shaping a writer does (`init`'s ladder), quote the final value: wrap it in single quotes, doubling any `'`
+inside, when it
+- contains `: ` or ` #`, or ends with `:`;
+- opens with one of `` - ? : , [ ] { } # & * ! | > ' " % @ ` ``;
+- would read as something other than text: `true`, `false`, `null`, `~`, `yes`, `no`, `on`, `off`, a
+  number (`42`, `1.`, `.5`, `+1`, `1e3`, `0x1F`), or a bare date.
+
+**When in doubt, quote** — a quoted plain string reads back unchanged, so quoting is never the mistake.
+Measured on the parser pi uses: unquoted, `blocked: merge deferred: waiting on review` is a parse error
+("nested mappings are not allowed"), and so is a value opening with `@` or `[`; `blocked: waiting #3`
+silently reads as `waiting`, and `&staging down` as `staging down`; an empty value or `~` reads as *null*, a
+field whose presence means *blocked* now saying nothing; `true` or `42` stop being text. A YAML 1.1 parser
+also reads `no` and `off` as *false*. Example:
+`blocked: 'merge deferred: waiting on the vendor''s sign-off; code complete on task/TASK-NNN'`.
+
+**Reading it back: use the parsed value, never the raw line.** A reader that copies the line takes the
+quotes with it, and a value round-tripped that way through `export` and `import` gains a layer of quotes
+each time.
 
 **Integration model — the task is the unit of work, the PR, *and* the merge gate.** For
 git/PR projects the default is **PR-per-task**: `pick` cuts `task/TASK-NNN` from the default
