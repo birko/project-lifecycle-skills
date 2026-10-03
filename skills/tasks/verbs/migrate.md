@@ -15,7 +15,7 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
 3. **Inventory open work**:
    - All EPICs where status ∈ {`planned`, `in-progress`}
    - All STORIES under them with status ∈ {`planned`, `in-progress`}
-   - All TASKS with status ∈ {`todo`, `in-progress`, `blocked`}; a task blocked by either form is exported with its marker (see [export.md](export.md) step 5)
+   - Every TASK that is not `done` or `cancelled`, reading each status in both forms per [SKILL.md](../SKILL.md) § *Reading a task's status* — a task awaiting verification is open work, and a blocked one keeps its state. A task blocked by either form is exported with its marker (see [export.md](export.md) step 5)
    - `_loose/` tasks too.
    - Skip anything `done` / `cancelled` — history stays local.
 

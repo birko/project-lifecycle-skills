@@ -13,7 +13,7 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 1     |
 | blocked      | —     | —       | 1 (also counted in its own state) |
-| done         | 0     | 8       | 152   |
+| done         | 0     | 8       | 153   |
 | cancelled    | 0     | 0       | 20    |
 
 `todo` by priority: 1× P1 · 37× P2 · 6× P3.
@@ -63,9 +63,9 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (49/87 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (49/88 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/18)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/19)
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -84,6 +84,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - ~~TASK-180 `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes~~ → merged into TASK-092
     - [ ] [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) `/tasks pick` step 7's two questions carry no wording and no answer-less path
     - [ ] [TASK-212](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-212.md) Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes
+    - [ ] [TASK-218](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-218.md) `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -198,8 +199,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (16/17 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (16/17)
+- **EPIC-006** Task states follow common practice — in-progress (17/17 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (17/17)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -216,7 +217,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-213 The old `review` and `blocked` wording still ships in writers, front doors and the `block` intro · FEATURE-003
     - [x] TASK-214 `/tasks close` finishes a blocked task, against FEATURE-003 D7 · FEATURE-003
     - [x] TASK-215 The `blocked:` writers do not quote their value, and two readers of the block note are undeclared · FEATURE-003
-    - [ ] [TASK-217](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-217.md) `/tasks migrate` never exports a task awaiting verification · FEATURE-003
+    - [x] TASK-217 `/tasks migrate` never exports a task awaiting verification · FEATURE-003
 
 ## Loose tasks
 
