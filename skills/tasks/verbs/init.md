@@ -87,6 +87,12 @@ current template first (step 3), because a file that merely exists cannot be rep
    skips every such file; measured on one consumer tree, that was 6 of 6. Rewrite only the value, and keep
    the rest of the line as it was.
    - **`status: review`** → `status: verify`. Nothing else changes.
+   - **`status: blocked` with a `blocked:` field already present** (a hand edit, or an interrupted run) →
+     keep that field exactly as it is and rewrite only `status:` to the prior state below; the report says
+     *kept existing reason*. Writing a second `blocked:` would be a duplicate key, which strict YAML rejects.
+     The reason ladder does not run for such a file: wherever a step below says `<reason>`, use the kept
+     field's value without YAML quotes, and where the fallback writes "the `blocked:` field", it is the one
+     already there. A fallback here is reported *fallback, unchosen; kept existing reason*.
    - **`status: blocked`** → the task's **prior state** plus a `blocked:` field, written after the `status:`
      line **and every indented `#` line continuing its comment** — never between them, which splits one
      comment in two:
@@ -102,8 +108,8 @@ current template first (step 3), because a file that merely exists cannot be rep
 
        | # | Source | Written as |
        |---|---|---|
-       | 1 | the newest `>` note whose text, read through any Markdown emphasis and in any letter case, opens `Blocked <date> —` — the note [`block`](block.md) writes, so it wins | the note's own words after its label, as below |
-       | 2 | its `depends-on` tasks that are not `done` | `waiting on TASK-X, TASK-Y`, in `depends-on` order |
+       | 1 | the newest `>` note whose text, read through any Markdown emphasis and in any letter case, opens `Blocked <date> —` — the note [`block`](block.md) writes, so it wins — **unless an `Unblocked <date> —` note, read the same way, is dated after it** (same date: placed after it), which says that block is over | the note's own words after its label, as below |
+       | 2 | its `depends-on` tasks that are neither `done` nor `cancelled` — a cancelled task will never finish, so it is not something to wait on | `waiting on TASK-X, TASK-Y`, in `depends-on` order; an id not found in the tree stays in the list as written, and the report names it unresolved |
        | 3 | **the sentence that says why this task is held**, wherever the file states it: a body line, a heading, or the comment on the `status:` line with its indented `#` continuation lines | its own words after any label, as below |
        | 4 | nothing above answered | `reason unknown` |
 
@@ -125,8 +131,10 @@ current template first (step 3), because a file that merely exists cannot be rep
 
        When no sentence passes, rung 4 answers: `reason unknown` is a correct outcome, and a near-reason
        written in its place is the defect this rung exists to avoid. Several candidates → the one whose
-       **own text** carries the newest date (a sentence does not inherit a date from its heading or note),
-       else the first in the file.
+       **own text** carries the newest date (a sentence does not inherit a date from its heading or note);
+       equal dates, or none, → the first in the file. Rung 1's "newest note" — every note it can match
+       carries a date — is the one with the latest date, and among equally dated ones the **last** in the
+       file, since notes are appended.
 
        **Write the source's own words, never a summary** — a summary is the migration inventing a reason.
        Shape them in this order, for rungs 1 and 3 alike:
@@ -143,8 +151,16 @@ current template first (step 3), because a file that merely exists cannot be rep
           sentence end — a `.` followed by a space and a capital letter, or the end of the text; a `.` inside a
           version number or an abbreviation is not one.
        3. **Finish.** Drop a trailing full stop; cut to at most 120 characters at a word boundary.
-       4. **Point to the rest** — by place, never by line number: ` (full text in the status comment)`,
-          ` (full text in § <heading>)`, ` (full text in the note of <date>)`.
+       4. **Point to the rest** — by place, never by line number. First match wins:
+
+          | The source is… | Pointer |
+          |---|---|
+          | a `>` note — even one under a heading, since the note is the nearer place to look | ` (full text in the note of <date>)`; ` (full text in the last note of <date>)` when several notes share that date; ` (full text in the note)` when it carries no date |
+          | the status comment | ` (full text in the status comment)` |
+          | under a heading | ` (full text in § <heading>)` |
+          | above the first heading | ` (full text in the body)` |
+
+          Append it only when part of the reason was dropped:
           - a plain source cut at ` — `, `;`, a sentence end or 120 characters → append the pointer, since
             part of the reason was dropped;
           - the text after a bold span → no pointer, since it is commentary, not reason.
@@ -162,20 +178,36 @@ current template first (step 3), because a file that merely exists cannot be rep
          follows the date, so the label stays; the `;` cut gets the pointer
        - body line `⛔ **Held — the staging host has no TLS certificate.** Raised with ops twice.` →
          `blocked: the staging host has no TLS certificate`
-     - **History cannot tell** (no git, the file was created blocked, or every earlier version reads
-       `blocked`) → ask once per task, `<reason>` being what the ladder above produced, unquoted:
-       > **TASK-NNN was blocked before its history begins: "<reason>". Had work on it started?**
-       > · **No** — it goes back to `todo`. · **Yes** — it goes back to `in-progress`.
+     - **History cannot tell** — ask once per task, `<reason>` being what the ladder above produced,
+       without its pointer and without YAML quotes. Two cases, each with its own question, because the first one's words are false for the
+       second:
+       - no git, the file was created blocked, or every earlier version reads `blocked`:
+         > **TASK-NNN was blocked before its history begins: "<reason>". Had work on it started?**
+         > · **No** — it goes back to `todo`. · **Yes** — it goes back to `in-progress`.
+       - the prior state found is `done` or `cancelled` — writing it back would put a `blocked:` field on a
+         finished task, the contradiction [SKILL.md](../SKILL.md) § *Reading a task's status* says `audit`
+         reports, and drop the task from every active view:
+         > **TASK-NNN was `<done | cancelled>` before it was blocked: "<reason>". Had work on it started again?**
+         > · **No** — it goes back to `todo`. · **Yes** — it goes back to `in-progress`.
+         > · **It is still `<done | cancelled>`** — the block was set by mistake: keep that state, write no
+         > `blocked:` field, and append to the end of the body `> Migrated <date> — block removed; the task is still <done | cancelled>, as answered.`
 
-       **No answer, or nobody to ask:** write `status: todo`, and add the body note
-       `> Migrated <date> — state before blocking not found in history; set to todo, nobody chose it.`
+       **No answer, or nobody to ask:** write `status: todo` **and the `blocked:` field as above** — the
+       task is still blocked, and leaving the field out would put it in the ready pool with nobody choosing
+       that — and append to the end of the body, `<date>` being today's, the note for its case:
+       `> Migrated <date> — state before blocking not found in history; set to todo, nobody chose it.`, or
+       `> Migrated <date> — the task was <done | cancelled> before it was blocked; set to todo, nobody chose it.`
        List it in the report as *fallback, unchosen*. `todo` is the safe side, because it claims no work
-       was done, and the note keeps the guess from reading as a decision.
+       was done, and the note keeps the guess from reading as a decision. For a task that was `done` or
+       `cancelled` it is still the safer side: writing that state back with a `blocked:` field is the
+       contradiction `audit` reports, while `todo` plus the field keeps the task visible and blocked until a
+       person decides.
    - **Idempotent.** A task already in the new form is left byte-for-byte alone. A second run over a
      migrated tree reports *already current*.
    - Report per file, in step 5: **brought up to date** (`review → verify`, or `blocked → <prior> + blocked`,
      naming where the prior state came from: history or answer, and which reason rung answered: `note`,
-     `depends-on`, `judgement` or `none`), **fallback, unchosen**, or, for the whole tree, **already current**.
+     `depends-on`, `judgement`, `none`, or *kept existing reason* followed by that reason; plus any `depends-on` id not found in the
+     tree), **fallback, unchosen**, or, for the whole tree, **already current**.
      **A `judgement` reason is reported with the source line quoted verbatim and its line number**, so a
      wrong pick is visible in the report rather than hidden in the field.
 

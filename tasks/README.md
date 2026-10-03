@@ -13,7 +13,7 @@ _Generated 2026-10-03. Run `/tasks triage` to refresh. **Do not hand-edit** — 
 | in-progress  | 6     | 11      | 0     |
 | verify       | —     | —       | 1     |
 | blocked      | —     | —       | 1 (also counted in its own state) |
-| done         | 0     | 8       | 148   |
+| done         | 0     | 8       | 149   |
 | cancelled    | 0     | 0       | 20    |
 
 `todo` by priority: 1× P1 · 36× P2 · 5× P3.
@@ -63,9 +63,9 @@ _Code complete, sign-off pending — verification debt; close these before new s
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1)
     - [ ] [TASK-059](EPIC-001-adopt-yolobox-ideas/STORY-009-multi-repo-adoption/TASK-059.md) Reconcile the already-adopted repos against the grown layer
 
-- **EPIC-002** Close-gate findings on the skill set — in-progress (49/85 tasks done) · `kind: review-intake`
+- **EPIC-002** Close-gate findings on the skill set — in-progress (49/86 tasks done) · `kind: review-intake`
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — (done) (2/2)
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/17)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/18)
     - [ ] [TASK-001](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-001.md) STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -83,6 +83,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-135](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-135.md) `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
     - ~~TASK-180 `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes~~ → merged into TASK-092
     - [ ] [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) `/tasks pick` step 7's two questions carry no wording and no answer-less path
+    - [ ] [TASK-212](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-212.md) Four older gaps in `block` and `init` 3b, found at TASK-209's close
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12)
     - [ ] [TASK-024](EPIC-002-close-gate-findings/STORY-012-universal-layer-declarations/TASK-024.md) The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -196,8 +197,8 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [ ] [TASK-193](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-193.md) "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] [TASK-194](EPIC-005-task-worktrees/STORY-021-task-in-own-checkout/TASK-194.md) `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- **EPIC-006** Task states follow common practice — in-progress (12/13 tasks done)
-  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (12/13)
+- **EPIC-006** Task states follow common practice — in-progress (13/13 tasks done)
+  - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — in-progress (13/13)
     - [x] TASK-196 Expand: the `tasks` skill reads both the old and the new status forms · FEATURE-003
     - [x] TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag · FEATURE-003
     - [x] TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag · FEATURE-003
@@ -209,7 +210,7 @@ _Code complete, sign-off pending — verification debt; close these before new s
     - [x] TASK-204 Contract: every writer switches to the new form · FEATURE-003
     - [x] TASK-205 Run the migration on this repo and every consumer repo · FEATURE-003
     - [x] TASK-208 The migration writes "reason unknown" over a block reason the file already states · FEATURE-003
-    - [ ] [TASK-209](EPIC-006-task-states/STORY-022-blocked-becomes-a-flag/TASK-209.md) Edge cases in the blocked-field writers that predate the reason ladder · FEATURE-003
+    - [x] TASK-209 Edge cases in the blocked-field writers that predate the reason ladder · FEATURE-003
     - [x] TASK-211 Migrate Presenter's task tree once its local work reaches origin · FEATURE-003
 
 ## Loose tasks

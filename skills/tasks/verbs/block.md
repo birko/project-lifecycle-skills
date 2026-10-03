@@ -26,11 +26,15 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
        is the one path where `blocked` means *finished but not integrated* rather than *not
        proceeding*; the reason note is what tells a reader which it is, so never write it bare.
 4. **Edit frontmatter**:
-   - Add `blocked: <reason>` on the line after `status:`, and **leave `status:` as it is**, so the task keeps the
-     state its work is in (FEATURE-003 D1). Already blocked by either form → warn ("already blocked: <reason>")
+   - Add `blocked: <reason>` after the `status:` line **and every indented `#` line continuing its comment** —
+     never between them, which splits one comment in two — and **leave `status:` as it is**, so the task keeps
+     the state its work is in (FEATURE-003 D1). Already blocked by either form → warn ("already blocked: <reason>")
      and stop.
    - If `--on` given, merge the IDs into `depends-on: [...]` (validate each exists; warn on a missing/cancelled target).
 5. **Record the reason** — append a body note: `> Blocked {{today}} — <reason>` (runtime date). Ask for one line if `--reason` omitted.
+   **Keep that shape.** [init.md](init.md) step 3b reads this note as its first reason rung — matching
+   `Blocked <date> —`, through emphasis and in any case — so a changed wording here silently drops every
+   later migration to a weaker rung.
 5b. **Hybrid mode, linked task** (`github-issue:` or `jira-key:` set) → ensure the `blocked` label exists, as
    [export.md](export.md) step 6 does, then add the tracker's own marker: the label `blocked` on GitHub, the **Flagged** field on Jira. The issue's open/closed state is **never** changed because of it, since a blocked task is still open work, and a
    comment `Blocked: <reason>`. A failed remote call is reported by name and does not undo the local
@@ -43,14 +47,16 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 1. **Locate** the TASK file.
 2. **Read current status** — if the task is not blocked by either form ([SKILL.md](../SKILL.md) § *Lifecycle*), warn ("not blocked — nothing to clear") and stop.
 3. **Clear depends-on (optional)** — if `--clear-deps` is passed, drop now-satisfied (`done`) IDs from `depends-on`; otherwise leave `depends-on` as the historical record and only change status.
-4. **Edit frontmatter** — remove the `blocked:` field and **leave `status:` alone**: the task goes back to the state it was in (FEATURE-003 D2). An old-form `status: blocked` has no state to return to, so read it from the file's history exactly as [init.md](init.md) step 3b does, and ask its question when history cannot tell. If the user says work resumes immediately, allow `→ in-progress` instead (or just run `/tasks pick <ID>` next).
+4. **Edit frontmatter** — remove the `blocked:` field and **leave `status:` alone**: the task goes back to the state it was in (FEATURE-003 D2). An old-form `status: blocked` has no state to return to, so read it from the file's history exactly as [init.md](init.md) step 3b does, and ask its question when history cannot tell — but **never take init's no-answer fallback here**, which writes a `blocked:` field: an unblock must end unblocked. **No answer, or nobody to ask:** write `status: todo` with no `blocked:` field, add the note `> Unblocked {{today}} — state before blocking unknown; set to todo, nobody chose it.`, and print the fallback form in step 7. If the user says work resumes immediately, allow `→ in-progress` instead (or just run `/tasks pick <ID>` next).
 5. **Append a body note** — `> Unblocked {{today}} — <reason / what resolved it>`.
+   **Keep that shape** too: [init.md](init.md) step 3b reads it to tell that an earlier `Blocked` note is
+   over, so a reworded note would make every resolved block read as current again.
 5b. **Hybrid mode, linked task** → remove the `blocked` label (Jira: clear Flagged) and add a comment
    `Unblocked: <what resolved it>`. Never reopen or close the issue. A failed call is reported by name.
    **Hybrid mode, no link** → say `no remote issue linked — nothing synced`, so a local unblock is never
    mistaken for a synced one. The same line applies to `block`'s step 5b.
 6. **Regenerate dashboard**.
-7. **Confirm** — print `blocked: <reason> removed — status stays <state>` (or, for the old form, `status: blocked → <state> (from history | answered)`) and the note.
+7. **Confirm** — print `blocked: <reason> removed — status stays <state>` (or, for the old form, `status: blocked → <state> (from history | answered | fallback, unchosen)`) and the note.
 
 ## Edge cases
 
