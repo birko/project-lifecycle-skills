@@ -3,7 +3,7 @@ id: FEATURE-003
 created: 2026-09-30
 owner: František Bereň
 # status — one of: idea, review (built, sign-off pending), done, dropped, superseded
-status: review
+status: done
 ---
 
 # Task states follow common practice — "blocked" becomes a flag
