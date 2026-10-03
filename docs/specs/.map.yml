@@ -122,10 +122,15 @@ areas:
     #
     # STANDALONE USE, recorded so this merge does not conceal it: the rules axis is invocable on its own,
     # any time, before a commit — its own skill says so. The others are gate-only in practice.
-    title: The gate on a change — your own rules, the task's criteria, correctness, and security
+    #
+    # review-comments joined 2026-10-03: the comment axis, which `close` step 5b runs whenever the diff
+    # carries a comment. Found unmapped by the work-tracking regen's coverage check — the skill shipped
+    # after this map was last verified.
+    title: The gate on a change — your own rules, the task's criteria, correctness, security, and comments
     sources:
       - "skills/verify-conventions/**"
       - "skills/verify-intent/**"
+      - "skills/review-comments/**"
       - "skills-pi/**"
 
   - name: test-authoring
