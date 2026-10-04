@@ -3,7 +3,7 @@ id: TASK-252
 parent: STORY-015
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: in-progress
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P1
 assignee: unassigned
@@ -45,8 +45,8 @@ Found in passing on 2026-10-04 while working TASK-191 (`gh run list`), not by an
 ## Acceptance criteria
 
 - [x] The root cause is named, with the commit that introduced it
-- [ ] `skills-lint-test.sh` and `skills-lint.sh` pass on `ubuntu-latest` in CI, and still pass locally on Windows
-- [ ] A regression case, or a CI change, makes a Linux-only failure impossible to miss again. For example, the close gate checks the last CI run for the default branch, not only the local result
+- [x] `skills-lint-test.sh` and `skills-lint.sh` pass on `ubuntu-latest` in CI, and still pass locally on Windows
+- [x] A regression case, or a CI change, makes a Linux-only failure impossible to miss again. For example, the close gate checks the last CI run for the default branch, not only the local result — **met by owner decision, 2026-10-04:** check 8 closes this cause, and TASK-253 owns the general case
 - [x] Any task closed `done` since 2026-09-19 whose close relied on the lint is listed, with whether the Linux failure could have hidden a real defect in it
 - [x] `bash .github/workflows/skills-lint.sh` passes
 
@@ -56,7 +56,7 @@ Found in passing on 2026-10-04 while working TASK-191 (`gh run list`), not by an
 
 ## Human test plan
 
-- [ ] Push the fix and confirm the CI run on `main` is green in GitHub Actions
+- [x] Push the fix and confirm the CI run on `main` is green in GitHub Actions
 
 ## Implementation plan
 
@@ -89,3 +89,6 @@ CRLF endings were stored as-is from that commit on.
 - 2026-10-04 — **Audit of the window (criterion 4):** 65 tasks gained `status: done` between 2026-09-19 and today (`git log --since=2026-09-19 -G'^status: done' -- 'tasks/**/TASK-*.md'`): TASK-081, 122, 125, 141, 143, 144, 148, 151–160, 162–179, 181, 183–192, 196–206, 208, 209, 211, 213–215, 217, 219. During the window CI checked nothing (the lint could not parse on Linux), but every check ran at each close under Git Bash, where it passed. So the only defects that could have hidden are ones that behave differently by platform. The fixed lint and suite pass on Linux, under mawk and gawk, against the current tree, so **no closed task's surviving work hides one.**
 - 2026-10-04 — **Comment table (§ Comments) re-measured, fifteenth time**, because the change touched both scripts. Two cold pairs, `claude -p --disable-slash-commands` in `%LOCALAPPDATA%\Temp\d252` and `d252b` (outside every repo, no git; GUIDE.md = AGENTS.md minus the measurement block). Coldness: all four listed no skills. Pair 1 agreed on `skills-lint-test.sh:318` (rationale copied from § Code structure, and "one word" was wrong) and `:354` (restated the `mk_link` calls). Both were cut, and both readers also caught the raw tab left at `skills-lint.sh:182`, which was escaped. Pair 2 agreed only on this task's own new check-8 test comment (it copied the § Testing bullet), now cut to a pointer. Not re-read after that last cut. Single-reader observations recorded, not held: `skills-lint.sh:93`, `:152-155` (the two readers raised different sentences), `:166`, `:193-194`, `:207`; `skills-lint-test.sh:347`, `:387`. Also, outside the rule, three readers noted that `skills-lint-test.sh:87`'s "Each fails a real YAML parser" is not true of the length and name cases below it.
 - 2026-10-04 — **Criterion 3 left open:** check 8 makes *this* cause impossible to miss, but the criterion asks that *a Linux-only failure* be impossible to miss. The general guard is `close` reading CI's last result, which changes `close` for every consumer. Spawned as **TASK-253** (depends on this task) rather than widening this one. Whether that satisfies criterion 3 is the owner's call at close.
+- 2026-10-04 — **Owner decision: TASK-253 covers criterion 3.** Check 8 makes this cause impossible to miss, and the general Linux-only blind spot is TASK-253's to close.
+- 2026-10-04 — **Pushed** `adc4c27..e11c3b2` to `origin/main`. **CI green** for the first time since 2026-09-08: run `37188090654`, `skills-lint-test: 71 passed, 0 failed`, check 8 "every shell script is LF text", `skills-lint: OK (19 skills)`. Human test plan run.
+- 2026-10-04 — Close review. **Intent:** the cause named with its commit; Linux CI green; guard plus TASK-253 for criterion 3 (owner); the window audited; the lint passes. **Correctness:** the only content change to existing code is the escaped awk class, proved on Linux under mawk and gawk and on Git Bash. Check 8 is pinned by three cases that fail without it. **Comments:** the two reader pairs above. **Conventions:** registered in AGENTS.md § Testing in the same change, and the case count updated. **Security:** not applicable. → **done**.

@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-04 10:07. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-04 10:12. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -10,17 +10,16 @@ _Generated 2026-10-04 10:07. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 5                  | —                   |
 | todo         | —                  | —                  | 75                  |
-| in-progress  | 4                  | 10                 | 2                   |
+| in-progress  | 4                  | 10                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 2                  | 9                  | 155                 |
+| done         | 2                  | 9                  | 156                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 3× P1 · 66× P2 · 6× P3.
 
 ## In progress now
 
-- [TASK-252](EPIC-002-close-gate-findings/STORY-015-ci-lint-install-integrity/TASK-252.md) — CI has been red on Linux since 2026-09-19 while the lint suite passes locally (P1, unassigned)
 - [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) — `/specs regen` — generate the specs, and review the diff as the deliverable (P2, agent)
 
 ## Awaiting verification
@@ -89,7 +88,7 @@ _Generated 2026-10-04 10:07. Run `/tasks triage` to refresh. **Do not hand-edit*
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (49/90 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (50/90 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -140,7 +139,7 @@ _Generated 2026-10-04 10:07. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-128 Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - ~~TASK-129 A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding~~
     - ~~TASK-134 `/specs init` step 1's meta-root ask has no question text and no unattended path~~
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (9/14 done)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (10/14 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -153,7 +152,7 @@ _Generated 2026-10-04 10:07. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-084 A documented probe-and-read rule has nothing that can pin it, and this one has been wrong twice
     - [x] TASK-108 Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
     - [x] TASK-171 `docs/architecture.md` still calls install-root drift "check 4"
-    - [ ] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally ← in-progress
+    - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [ ] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
