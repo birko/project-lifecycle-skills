@@ -4,11 +4,11 @@ parent: STORY-004
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
 status: todo
-priority: P1
+priority: P2
 assignee: agent
 created: 2026-09-08
-depends-on: [TASK-195]
-blocks: [TASK-115, TASK-117]
+depends-on: [TASK-115]
+blocks: []
 # findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
 findings: []
 pr: null
@@ -16,40 +16,17 @@ github-issue: null
 jira-key: null
 ---
 
-# The question table — the shape every other task in this story reads
+# `feature` reconciles an `idea.md` written before the question table existed
 
 ## Context
 
-STORY-004's gap is **an asymmetry, not a missing skill**: `decisions.md` is a durable, stateful ledger of
-resolved decisions, while `skills/feature/templates/idea.md:21`'s `## Open questions distilled from the
-grill` is a prose bullet list with no state, no edges and no claim. Reopen a feature tomorrow and the
-answers are on disk while the frontier is gone with the conversation.
-
-This task changes **one thing**: that bullet list becomes a table. Everything else in the story — `new`
-writing the rest down, `pick` resuming, `grill-me`'s rounds, the `research` type, reconciling older files
-— reads this shape, which is why they all depend on it and why it ships alone first.
-
-### The columns, from the story
-
-`id · question · type · blocked-by · state · claimed-by`
-
-Each earns its place: `blocked-by` yields the edges, `state` + `blocked-by` together yield the **frontier
-query** (*state open, and every blocker resolved*), and `claimed-by` stops two parallel sessions
-answering the same question.
-
-### The boundary this task must draw, because everything downstream inherits it
-
-**A row is for a question you can *state* precisely — answerable or not. Fog stays prose.** Anything
-vaguer stays in the section until it sharpens. And `## Out of scope (initial)` keeps its existing
-meaning: **ruled-out scope never graduates into a question.** A table that swallows fog produces rows
-nobody can act on; a table that refuses a precise-but-unanswered question loses exactly what the story
-exists to keep.
-
-### What this task must NOT do
-
-Define the states as a copy anywhere but here. Four skills will read this vocabulary, and this repo's
-own rule — *defer to a shared inventory, never restate its lists* — applies the moment the second reader
-appears. The state list can grow; a copy goes silently wrong when it does.
+**Re-cut 2026-10-04 by TASK-195** under `skills/tasks/slicing.md`. This task used to be "The question table — the
+shape every other task in this story reads", carrying the table *and* (merged 2026-09-26) TASK-119's reconcile.
+The table alone fails H3 (a shape no verb writes or reads), so its shape criteria moved to TASK-115, which lands
+the table with its writer and reader. This task keeps the reconcile half. Its priority moved with the
+foundational work: TASK-115 is now P1, this one P2. **Edge:** TASK-115 defines the shape this task upgrades
+older files to, so TASK-115 `blocks` it. TASK-115 also *recognises* a pre-table file and says so; this task
+upgrades one.
 
 ### Merged in 2026-09-26: TASK-119 — `feature` reconciles an `idea.md` written before the question table existed
 
@@ -62,11 +39,11 @@ does not go looking for the sentence that asked for it.
 *"is this instance current?"*, not only *"does it exist?"* — because **existing is not current**. The
 shape gains fields, and an instance written before one existed looks complete from outside.
 
-TASK-114 gives `idea.md` a field it never had. Every `idea.md` already on disk therefore becomes an
-older instance of a shape whose owner is `[[feature]]`. Without this task, `/feature pick` on such a
-feature finds a prose bullet list, computes an empty frontier, and reports *"no open questions"* — which
-is indistinguishable from a feature whose questions are genuinely all resolved. **That is the exact
-failure mode the convention names: a caller cannot tell "your file is fine" from "I declined to look".**
+TASK-115 gives `idea.md` a field it never had. Every `idea.md` already on disk therefore becomes an
+older instance of a shape whose owner is `[[feature]]`. Without this task, such a feature stays on the
+old shape forever: TASK-115 makes `/feature pick` say so rather than report *"no open questions"*, but
+nothing brings the file up to date. **A caller still cannot get from "this file is old" to "this file is
+current" except by hand.**
 
 #### The population is real, not hypothetical
 
@@ -82,23 +59,8 @@ rows in `LAYER.md`, and this changes a file's interior, not the inventory.
 
 ## Acceptance criteria
 
-- [ ] `skills/feature/templates/idea.md` carries the table with all six columns, replacing the prose
-      bullet list, with a filled example row showing a blocked question
-- [ ] The **state vocabulary** is defined once, in the file that owns it, and every state has a verb or a
-      step that sets it — no state reachable only by hand-editing
-- [ ] The **frontier query** is stated precisely enough that two readers compute the same set from the
-      same table: *state open, and every id in `blocked-by` resolved*
-- [ ] The **fog boundary** is written as a rule an agent can apply — what earns a row, what stays prose,
-      and that `## Out of scope (initial)` is neither
-- [ ] `claimed-by` states what claims it, when a claim is released, and what a reader does with a stale
-      claim — a claim that cannot expire is a deadlock
-- [ ] Nothing else in `skills/` restates the states or the query; the other five tasks point here
-- [ ] `bash .github/workflows/skills-lint.sh` passes
-
 *From TASK-119:*
 
-- [ ] `feature` can tell a pre-table `idea.md` from a current one, and says which — never treating the
-      absence of a table as an empty frontier
 - [ ] An older instance is reconciled **in place**: add what is missing, never re-decide what is there.
       Existing prose questions are carried into rows or left as fog **with the rule applied**, not
       silently dropped
@@ -106,31 +68,26 @@ rows in `LAYER.md`, and this changes a file's interior, not the inventory.
       print the same line
 - [ ] Reconciliation is offered, not imposed: a user who declines gets a recorded declination rather
       than a silent skip that repeats next run
-- [ ] Nothing restates TASK-114's shape or states
+- [ ] Nothing restates TASK-115's shape or states
 - [ ] `bash .github/workflows/skills-lint.sh` passes
+
+(TASK-119's first criterion, telling a pre-table `idea.md` from a current one, moved to TASK-115 at the re-cut,
+because `pick` must not misread an older file the moment the table exists.)
 
 ## Out of scope
 
-- **`/feature new` writing unreached questions down** — TASK-115.
-- **`/feature pick` resuming at the frontier** — TASK-116.
-- **`grill-me` frontier rounds** — TASK-117.
-- **The `research` question type and sub-agent dispatch** — TASK-118.
-- **Reconciling an `idea.md` written before this table existed** — TASK-119.
-- Changing `decisions.md`. It already works; this story fixes the other half of the asymmetry.
+- **The table, `/feature new` writing it and `/feature pick` reading it** — TASK-115.
+- **`claimed-by`** — TASK-257.
+- **`grill-me` frontier rounds and the `research` type** — TASK-117.
 
 *From TASK-119:*
 
 - **Reconciling repos on an older universal layer** — TASK-059 owns that, one level up.
 - Bulk-migrating a consumer's features unattended. Whether a 94-feature repo is done in one pass is a
   decision for whoever runs it, and if it needs machinery that is its own task.
-- Changing `decisions.md`, which is unaffected by TASK-114.
+- Changing `decisions.md`, which is unaffected by the table.
 
 ## Human test plan
-
-- [ ] Hand a cold runner — acquired per [[populate-tests]] § *Acquiring a cold runner* — the revised
-      template plus a half-filled example, and ask it to name which questions it would work next and why.
-      Expected: it computes the frontier from the table without being told the rule, and it does not
-      place a vague worry in a row. Withhold both expectations from its brief.
 
 *From TASK-119:*
 
@@ -139,3 +96,6 @@ rows in `LAYER.md`, and this changes a file's interior, not the inventory.
       *brought up to date*, and a second run reports the first. Withhold all three expectations from any
       cold runner's brief.
 
+## Implementation plan
+
+_Populated by `/tasks plan TASK-114` — leave empty until then._

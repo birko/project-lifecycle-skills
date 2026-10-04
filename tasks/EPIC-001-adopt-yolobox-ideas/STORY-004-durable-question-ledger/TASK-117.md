@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-09-08
-depends-on: [TASK-114, TASK-195]
+depends-on: [TASK-115]
 blocks: []
 findings: []
 pr: null
@@ -18,6 +18,11 @@ jira-key: null
 # `grill-me` switches from one question at a time to frontier rounds
 
 ## Context
+
+**Checked 2026-10-04 by TASK-195** against `skills/tasks/slicing.md`: it passes H1–H3 once TASK-115 lands the
+table and its frontier query, so its edge is now TASK-115 alone. **The size signal trips** (≥6 criteria), and
+it stays one task because the dispatch rule (a dispatched question does not block its round) is part of the
+round design: rounds without it stall on the first lookup, which is the one-at-a-time behaviour this task removes.
 
 `grill-me` today asks strictly one question at a time. The story changes it to **frontier rounds**: ask
 every question whose prerequisites are settled in one numbered round, each with a recommended answer,
@@ -43,7 +48,7 @@ how a grill stalls.
 
 Two consequences, and the second is the one that is easy to miss:
 
-- `research` is a **question type**, a value in TASK-114's `type` column. Not a verb, not a skill. The
+- `research` is a **question type**, a value in TASK-115's `type` column. Not a verb, not a skill. The
   story's argument against a separate map tree applies here too: everything already has a home.
 - **A dispatched question does not block its round.** Only the questions *downstream of it* wait. A round
   that stalls on one lookup has reintroduced the one-at-a-time behaviour TASK-117 just removed.
@@ -57,7 +62,7 @@ Two consequences, and the second is the one that is easy to miss:
 - [ ] A round of one is a normal outcome and reads as a question, not as a form with one field
 - [ ] Round size is addressed: what a runner does when the frontier is very wide, stated as a rule rather
       than left to taste
-- [ ] Nothing restates TASK-114's frontier query
+- [ ] Nothing restates TASK-115's frontier query
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-118:*
@@ -77,7 +82,7 @@ Two consequences, and the second is the one that is easy to miss:
 ## Out of scope
 
 - **The `research` type and sub-agent dispatch** — **TASK-118**, which depends on rounds existing.
-- Where the questions are stored — **TASK-114**.
+- Where the questions are stored — **TASK-115**.
 - `grill-me`'s use outside the feature lifecycle stays working; this task must not narrow it to features.
 
 *From TASK-118:*
