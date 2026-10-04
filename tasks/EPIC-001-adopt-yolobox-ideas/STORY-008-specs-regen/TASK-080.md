@@ -3,7 +3,7 @@ id: TASK-080
 parent: STORY-008
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: in-progress
 priority: P2
 assignee: agent
 created: 2026-08-26
@@ -87,8 +87,19 @@ Two of those fixes are now testable here for the first time, and both were touch
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-080` — leave empty until then._
+Run in two stages, because the gate in criterion 1 holds for some areas and not others.
+
+**Stage 1 — now: `project-baseline` and `change-review`.** These are the only two areas whose spec landing FEATURE-001 and FEATURE-002 still wait on, and neither is touched by the work the gate is about.
+1. Harvest both areas per `/specs regen` (first harvests, so a full spec plus a skim, with no diff).
+2. Derive `shaped-by` under step 5a's rules, using a script, so the count can be reproduced: feature-linked tasks, the state gate, `pr:` null on `single-branch` → subject-first commits reachable from HEAD, intersected with each area's resolved sources. Stamp `shaped-by-derived: true` and `shaped-by-unresolved: N`, and interpret N (criterion 4).
+3. Read each spec against its skills. Where the spec is right and the skill is wrong, or the skill is internally inconsistent, file it as a finding in a pool, not inline (criterion 3).
+4. Unmapped check (reported even at 0), lint, commit the specs.
+5. Hand off to `/feature review` for FEATURE-001 and FEATURE-002. Their Gate A now has an answer.
+
+**Stage 2 — after STORY-004 and STORY-007 are `done`: the remaining 7 areas** (`glossary-and-adrs`, `test-authoring`, `changelog-maintenance`, `idea-interrogation`, `session-handoff`, `installation`, `skill-authoring-rules`, plus the new `improve-architecture` area STORY-007 adds), then the human test plan's idempotence and deliberate-change re-runs over the whole set. Re-harvest `feature-lifecycle` and `idea-interrogation` if STORY-004 changed their sources.
 
 ## Progress log
 
 - 2026-10-03 — **Partial work done outside this task, recorded here so the task reflects it.** At the owner's request, to unblock FEATURE-003's sign-off, `/specs regen` ran as first harvests for 5 of the 14 areas: `work-tracking` (`0c84b8a`), `feature-lifecycle`, `project-roadmap`, `defect-draining`, `specs-from-code` (`b24eb8b`). Each has `shaped-by-derived: true`, `shaped-by-unresolved: 7`. The task was not picked first, and the run came ahead of the EPIC-001 sequence (after STORY-004/006/007) — a lapse against the task-first gate, noted rather than hidden. The map gained `skills/review-comments/**` under `change-review` (0 unmapped). The 51 suspected bugs those harvests raised are filed as EPIC-007. Still to do: the other 9 areas, then this task's own criteria — including the deliberate-change re-run.
+- 2026-10-04 — **Picked, and criterion 1 answered: proceeding before the gate, for two areas only.** STORY-004 (4 tasks todo) and STORY-007 (4 tasks todo) are open; STORY-006 is open only for TASK-124's outside-reader sign-off, which is blocked on a tester. TASK-124's code is merged, so it adds no regen churn. Reason for proceeding: FEATURE-001 and FEATURE-002 are signed off and wait only on spec landing in `project-baseline` and `change-review`. Neither area's sources are touched by STORY-004 (`feature`, `grill-me`) or STORY-007 (`improve-architecture`, `tdd`), so no churn is accepted for them. The other 7 areas stay gated (stage 2 of the plan). Planned inline at pick.
+- 2026-10-04 — **Stage 1 harvested: `project-baseline` (38 requirements) and `change-review` (38), first harvests at `adc4c27`.** Each was harvested by one reader. A second reader then checked every suspected bug against the files and spot-checked 8 requirements per spec: 7 of 8 were accurate in each. The two overstated lines were corrected before commit. `change-review`'s advisory rule had applied the intent axis's limits to all three axes; `project-baseline`'s worktree-root requirement had picked one side of a contradiction, and now states both. **Provenance:** derived with a script implementing regen step 5a, which reproduces the earlier runs exactly (unresolved 7; `defect-draining` = FEATURE-001, FEATURE-003). `project-baseline` is shaped by FEATURE-001, 002 and 003; `change-review` by FEATURE-002. **`shaped-by-unresolved: 7` of 64 feature-linked tasks, interpreted:** TASK-193 and TASK-194 are `todo`, correctly not evidence. TASK-145 is `cancelled` although a commit leads its subject — a trail contradiction, correctly refused by the state gate (its work shipped, then the task was cancelled for an unmeetable criterion). TASK-176, 187, 188 and 189 landed inside commits led by a sibling id (TASK-179, TASK-186) — batched commits, not a failure of the subject rule. Every landed task with a commit of its own resolved, so the count does not contradict TASK-030's fix. **Unmapped: 0** (38 map globs). **Findings:** 30 (SH-53 … SH-82) → EPIC-007's third pass: 10 tasks (TASK-242 … TASK-251), 2 linked to TASK-085, 2 dropped with reasons. 7 of 14 areas are now harvested.
