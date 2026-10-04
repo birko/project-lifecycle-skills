@@ -1,8 +1,8 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (4):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; FEATURE-001 DV9 — TASK-186, TASK-187, TASK-188, TASK-189 carry `feature: FEATURE-001` but no decision row lists them in its `→ Tasks` column; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
+> ⚠ **Feature drift (3):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-04 07:37. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
