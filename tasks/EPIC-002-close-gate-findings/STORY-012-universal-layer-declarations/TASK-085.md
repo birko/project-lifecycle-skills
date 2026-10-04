@@ -10,7 +10,7 @@ created: 2026-08-31
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: [VC-027-1, CR-7]
+findings: [VC-027-1, CR-7, SH-53, SH-55]
 pr: null
 github-issue: null
 jira-key: null
@@ -78,6 +78,18 @@ when this task adds the missing `not applicable` entry, the entry should carry t
 a single line, or the two front doors will describe one state in two different shapes. See
 `skills/new-project/LAYER.md` § *Conditional rows*, the No-direction table.
 
+### Linked 2026-10-04: SH-53 and SH-55, from the project-baseline spec harvest (EPIC-007, TASK-080)
+
+- **SH-53 — the state count is stale.** LAYER.md § *Detect what the repo has* now has **nine** state bullets
+  (present, present uncommitted, present outdated, present elsewhere, unknown, missing, missing not offered, not
+  applicable, not applicable yet). The paragraph under "Two things reach unknown" still says "The list is already
+  eight states" and "not a ninth state", which contradicts the same section's own "the number of them does not
+  [matter]". Whatever shape this task chooses, it should drop the number rather than update it.
+- **SH-55 — the adopter's missing `not applicable` entry is still open, and LAYER.md points at the wrong task.**
+  This is the merged TASK-112 finding, re-confirmed at `adc4c27`: `adopt-project/SKILL.md`'s report list still has no
+  entry for it. LAYER.md § *Conditional rows* still says "see TASK-112", a cancelled task. The pointer should name
+  this one, or nothing once the entry exists.
+
 ## Acceptance criteria
 
 - [ ] An agent can determine which state applies to an artifact without reading a paragraph per state
@@ -94,6 +106,11 @@ a single line, or the two front doors will describe one state in two different s
 - [ ] The list and the paragraph that introduces it agree about which states exist
 - [ ] Nothing restates `LAYER.md`'s state definitions — the list points, it does not copy
 - [ ] `bash .github/workflows/skills-lint.sh` passes
+
+*From SH-53 and SH-55:*
+
+- [ ] LAYER.md states no count of its survey states
+- [ ] LAYER.md § *Conditional rows* no longer points at the cancelled TASK-112
 
 ## Out of scope
 

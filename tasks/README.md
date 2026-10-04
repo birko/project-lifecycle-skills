@@ -1,26 +1,26 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (4):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; FEATURE-001 DV9 — TASK-186, TASK-187, TASK-188, TASK-189 carry `feature: FEATURE-001` but no decision row lists them in its `→ Tasks` column; docs/specs DV7 — 9 of 14 mapped areas never generated (project-baseline, change-review, test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 5 generated areas are fresh) — run `/roadmap --check`.
+> ⚠ **Feature drift (4):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; FEATURE-001 DV9 — TASK-186, TASK-187, TASK-188, TASK-189 carry `feature: FEATURE-001` but no decision row lists them in its `→ Tasks` column; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-03 23:01. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-04 07:37. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 5                  | —                   |
-| todo         | —                  | —                  | 66                  |
-| in-progress  | 5                  | 10                 | 0                   |
+| todo         | —                  | —                  | 75                  |
+| in-progress  | 5                  | 10                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 1                  | 9                  | 154                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 1× P1 · 58× P2 · 7× P3.
+`todo` by priority: 3× P1 · 65× P2 · 7× P3.
 
 ## In progress now
 
-_None_
+- [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) — `/specs regen` — generate the specs, and review the diff as the deliverable (P2, agent)
 
 ## Awaiting verification
 
@@ -80,7 +80,7 @@ _None_
     - [ ] TASK-078 Findings end at `/tasks intake`, and the skill is actually installed
   - STORY-008 Harvest the skill set's own specs — in-progress (3/6 done)
     - [x] TASK-079 `/specs init` — build the area map, and turn the spec layer on
-    - [ ] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable
+    - [ ] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable ← in-progress
     - [x] TASK-103 Four capability areas are named for the product's shape rather than a consumer's need
     - [x] TASK-104 Merge the three diff-review areas into one, because that is how they are used
     - [ ] TASK-105 `change-review` and `work-tracking` describe the same gate in near-identical words
@@ -255,8 +255,8 @@ _None_
     - [ ] TASK-193 "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
     - [ ] TASK-194 `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
-- EPIC-007 First spec harvest review 2026-10 — planned (0/22 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — planned (0/13 done)
+- EPIC-007 First spec harvest review 2026-10 — planned (0/32 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — planned (0/19 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
@@ -270,7 +270,13 @@ _None_
     - [ ] TASK-233 `/roadmap --across` does not say how it combines with an epic scope, or what it prints when nothing is found
     - [ ] TASK-234 `/feature status` re-collects what it was told to consume, and its phase rules leave ledgers with no phase
     - [ ] TASK-235 `/feature review` closes open tasks after a gate that stops on open tasks
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/9 done)
+    - [ ] TASK-242 `new-project`'s fill steps can ship unrendered tokens, and run a remote command before the repo exists
+    - [ ] TASK-243 Two `LAYER.md` rows disagree with the front door that implements them
+    - [ ] TASK-244 The adopter's inference rules leave one case unruled, and write where they say to write nothing
+    - [ ] TASK-245 `verify-conventions` contradicts itself on the empty rulebook, drift severity, and where to register a pattern
+    - [ ] TASK-246 `verify-intent` never maps its classes to severities, and leaves "which task" open
+    - [ ] TASK-247 The review axes ask the user things with no question text and no unanswered path
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/13 done)
     - [ ] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [ ] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [ ] TASK-226 Three references point at things that do not exist
@@ -280,6 +286,10 @@ _None_
     - [ ] TASK-239 The spec template emits a key `regen` says to omit, and `regen`'s steps run out of order
     - [ ] TASK-240 Three `feature` records name no writer, or several: the prototype line, `superseded`, and the index row
     - [ ] TASK-241 Three stale words in `feature`: a count, a citation and a list of forms
+    - [ ] TASK-248 The seed templates describe a project that `new-project` does not build
+    - [ ] TASK-249 The adopter's files cite rules a consumer does not have, and miscount their own buckets
+    - [ ] TASK-250 The pi review fallbacks have drifted from the axes they stand in for
+    - [ ] TASK-251 `review-comments` miscounts its PATH rules and offers a range it has no syntax for
 
 ## Loose tasks
 
