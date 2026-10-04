@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 578f440040b2ba17b0197e1df8cbc38f65df11a0
+generated-at: 18ff18927ce8f17af29c789910fa45d88a6e1b19
 generated-on: 2026-10-04
 sources:
   - skills/adopt-project/INFER.md
@@ -191,13 +191,13 @@ The system SHALL fill only the `## Conventions` subsections that carry a token �
 
 ### Requirement: The remaining always-created scaffold artifacts
 
-The system SHALL scaffold a stack-appropriate `.gitignore` that always includes `.env` and `.env.*` followed by `!.env.example`; a `.gitattributes` with `* text=auto eol=lf`; an `.editorconfig`; a Keep a Changelog `CHANGELOG.md` stub with `## [Unreleased]`; `docs/features/` with a README index rendered from the feature skill's template (one `idea` row per seeded stub, otherwise empty); `docs/specs/.map.yml` from the specs template with `ignore:` globs written for the chosen stack; a short but real `docs/architecture.md` marked living; and, when MIT or Apache-2.0 was chosen, a full `LICENSE` text with the current year and a holder derived from `git config user.name`, asking only if that is empty.
+The system SHALL scaffold a stack-appropriate `.gitignore` that always includes every entry the inventory's `.gitignore` row checks for — `.env` and `.env.*` followed by `!.env.example`, and agent-tool local state — so a fresh scaffold passes its first adoption survey; a `.gitattributes` with `* text=auto eol=lf`; an `.editorconfig`; a Keep a Changelog `CHANGELOG.md` stub with `## [Unreleased]`; `docs/features/` with a README index rendered from the feature skill's template (one `idea` row per seeded stub, otherwise empty); `docs/specs/.map.yml` from the specs template with `ignore:` globs written for the chosen stack; a short but real `docs/architecture.md` marked living; and, when MIT or Apache-2.0 was chosen, a full `LICENSE` text with the current year and a holder derived from `git config user.name`, asking only if that is empty.
 
 #### Scenario: Node project
 
 - **Given** the stack is TypeScript/Node
 - **When** `.gitignore` is written
-- **Then** it contains `node_modules/`, `dist/`, `.env`, `.env.*` and, after them, `!.env.example`
+- **Then** it contains `node_modules/`, `dist/`, `.env`, `.env.*` and, after them, `!.env.example`, and `.claude/settings.local.json`
 
 #### Scenario: Proprietary license
 
@@ -423,7 +423,7 @@ The system SHALL settle each `(conditional)` row by the condition the row names 
 
 ### Requirement: Named declarations are probed by the survey and asked only when absent
 
-The system SHALL, for every present artifact whose row names a declaration (today `integration:` and `workspace:` in `tasks/.config.yml`), grep for a live, anchored, uncommented key (`^integration:`, `^workspace:`), treat a commented line as absent, report an outstanding declaration on the row as `present` with the gap named, carry it into the one round, and never re-ask one the file carries. For `worktree-root:` the two files disagree: the layer inventory lists it as a declaration to probe once `workspace: worktree` is answered, while the adopter treats a worktree with no root as settled and never asks the root question during adoption. The adopter's reading is the one specced in the scenario below.
+The system SHALL, for every present artifact whose row names a declaration (today `integration:` and `workspace:` in `tasks/.config.yml`), grep for a live, anchored, uncommented key (`^integration:`, `^workspace:`), treat a commented line as absent, report an outstanding declaration on the row as `present` with the gap named, carry it into the one round, and never re-ask one the file carries. `worktree-root:` is not a declaration it probes: under `workspace: worktree` an absent root is settled at adoption, because `pick` asks for it when the first task needs it.
 
 #### Scenario: Commented example only
 
