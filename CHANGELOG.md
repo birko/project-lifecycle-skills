@@ -11,7 +11,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 ## [Unreleased]
 
 _No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
-36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, 2026-09-26 across the 6 after that, and 2026-10-03 across the 48 after that — FEATURE-003 and its follow-ups._
+36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, 2026-09-26 across the 6 after that, 2026-10-03 across the 48 after that — FEATURE-003 and its follow-ups — and 2026-10-04 across the 3 after that, none of which changed an installed file (FEATURE-002 closed; its capabilities were already recorded below)._
 
 ### Added
 
