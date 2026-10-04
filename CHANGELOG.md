@@ -10,7 +10,9 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 
 ## [Unreleased]
 
-_No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
+## [0.1.0] - 2026-10-04
+
+_The first release: everything from 2026-07-15 to 2026-10-04, closing FEATURE-001 (task worktrees), FEATURE-002 (comment discipline) and FEATURE-003 (task states). Backfilled 2026-08-18 from the first
 36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, 2026-09-26 across the 6 after that, 2026-10-03 across the 48 after that — FEATURE-003 and its follow-ups — 2026-10-04 across the 3 after that, none of which changed an installed file (FEATURE-002 closed; its capabilities were already recorded below) — and later on 2026-10-04 across the 8 after that, closing FEATURE-001 (task worktrees)._
 
 ### Added
@@ -126,4 +128,5 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 - **`/tasks migrate` never exported a task awaiting verification.** It now exports every task that is not done or cancelled.
 - **A deferred merge wrote a `blocked:` value that strict YAML parsers reject** (`merge deferred: …` contains `: `), and an export/import round trip added a layer of quotes each time. Both are fixed by the shared writing rule above.
 
-[Unreleased]: https://github.com/birko/project-lifecycle-skills/commits/main
+[Unreleased]: https://github.com/birko/project-lifecycle-skills/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/birko/project-lifecycle-skills/commits/v0.1.0
