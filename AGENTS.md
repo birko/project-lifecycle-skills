@@ -306,10 +306,10 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **A move into a worktree is proved, never assumed — and it has one owner.** Any skill that puts a session
   in a worktree (today `pick`, `close`, [[fix-next]]) goes through `skills/tasks/verbs/pick.md` step 6b, which
   owns the enter-then-prove mechanics; the sites point there. Record: FEATURE-001 D4, D14.
-- **A pushed `task/TASK-NNN` branch means the task is taken, in every clone.** `pick` writes the signal in
-  remote mode, and [[tasks]]' Collection pass, `pick` and [[fix-next]] read it, recomputed from the branches,
+- **A pushed `task/TASK-NNN` branch means the task is taken, in every clone.** `pick` writes the signal when
+  the default branch has an upstream, and [[tasks]]' Collection pass, `pick` and [[fix-next]] read it, recomputed from the branches,
   never stored. Detail: [[tasks]] § *Collection pass*. Record: FEATURE-001 D25.
-- **Remote mode is derived, not declared — and that passes the determined/consistent test.** Under
+- **Whether there is an upstream is derived, not declared — and that passes the determined/consistent test.** Under
   `workspace: worktree`, whether the default branch tracks a remote (`<default>@{upstream}`) decides whether
   `pick` and `close` may commit on it, and it is recomputed every run. The upstream **determines** the one fact
   the behaviour turns on: a local commit on a tracked default branch diverges from the remote the moment a PR
@@ -539,7 +539,7 @@ stay byte-identical; TASK-146 makes the lint enforce it.*
     non-derivable fact, disagreeing. Deleting the copies lost nothing.
   - **Two exceptions to "run the owning verb", both from FEATURE-001.** `/tasks triage` never writes
     `tasks/README.md` inside a task's linked worktree, whichever verb chained it, because every task branch
-    committing its own timestamped dashboard is a conflict per parallel task. And in remote mode `close`
+    committing its own timestamped dashboard is a conflict per parallel task. And with an upstream `close`
     commits **no** generated file on the default branch (D26), so the shared dashboard and rollups stay stale
     until a person runs the owning verbs and lands the result through an ordinary PR. Both are the owning
     verbs' own rules, stated in `triage.md` and `close.md` step 10.

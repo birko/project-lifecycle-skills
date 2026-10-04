@@ -38,14 +38,14 @@ indistinguishable from a fresh one except by what's on disk, so look there: find
 - grep `tasks/` for `^status: in-progress` in `TASK-*.md`;
 - **under `workspace: worktree`, the task branches too.** List local `task/*` branches
   (`git branch --list "task/*"`) and read each one's task file with `git show task/TASK-NNN:<task file>`.
-  In remote mode the default branch's copy of an in-progress task still reads `todo`, so the grep alone
+  With an upstream the default branch's copy of an in-progress task still reads `todo`, so the grep alone
   never finds it. Worse, the pool rule below hides it as taken, and a reset drain would start a second
   task and abandon the first. A branch copy counts only when it reads **`in-progress`** and is **not
   blocked**. Read the status in both forms ([[tasks]] § *Lifecycle* → *Reading a task's status*). A copy
   parked at `review` or `verify`, one blocked by either form, or one reading `done` after a failed merge is
   not an active run.
 
-For each hit, read the file — **the branch copy (`git show task/TASK-NNN:<task file>`) for a hit found on a branch**, since in remote mode the default branch's copy carries none of this. **Only resume tasks this skill owns** — they carry `picked-by: fix-next`
+For each hit, read the file — **the branch copy (`git show task/TASK-NNN:<task file>`) for a hit found on a branch**, since with an upstream the default branch's copy carries none of this. **Only resume tasks this skill owns** — they carry `picked-by: fix-next`
 in frontmatter and a `## Progress log` section. Anything else that is `in-progress` is a human's work
 in flight: leave it alone, don't count it, don't report it as blocking you.
 
@@ -209,8 +209,8 @@ top two are genuinely inseparable on every key above.
 - `status: todo` → `in-progress` (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project —
   including its step 6b when the project declares `workspace: worktree`. This skill never answers
   6b's root question: it takes the blank-answer branch every time). **Write the two lines above so they
-  ride in 6b's pick commit**: in local mode write them first, in the main copy, since 6b commits the pick
-  on the default branch; in remote mode write them in the worktree, where 6b commits the pick on the task
+  ride in 6b's pick commit**: with no upstream write them first, in the main copy, since 6b commits the pick
+  on the default branch; with an upstream write them in the worktree, where 6b commits the pick on the task
   branch. Written anywhere else, a reset session would take this task for a human's)
 
 Every step below appends one line. The log is how step 0 resumes; a step that ran without a line is a

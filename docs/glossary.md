@@ -23,6 +23,20 @@ first is unfinished, the second is finished. Both are said, and neither is wrong
 task state to `verify` partly for this reason, so in new text the first sense is *"the task awaits
 verification"*.
 
+## upstream — the worktree sense of "local" and "remote"
+
+Two different facts used to share the words *local mode*, and a cold runner read one as the other
+(TASK-193). They are now named apart:
+
+| Fact | Values | Where it comes from | Say |
+|---|---|---|---|
+| the **tracker** — does `tasks/` sync with GitHub or Jira? | `local` · `hybrid` | **declared**: `mode:` in `tasks/.config.yml` | `mode: local`, `mode: hybrid` |
+| under `workspace: worktree`, does the **default branch track a remote**? | upstream · no upstream | **derived** every run: `git rev-parse --abbrev-ref <default>@{upstream}` resolves or fails | "with an upstream", "with no upstream"; report lines `workspace: upstream (…)` |
+
+The two are independent. The common case is `mode: local` **with an upstream**: tasks live only in files,
+but the code has a remote. **Never write "local mode" or "remote mode" for the second fact.** The word
+*mode* is what made a reader match it against `mode:`.
+
 ## decision — two records, one word
 
 | Sense | Lives in | Answers |

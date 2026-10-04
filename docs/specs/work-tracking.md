@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: b7bd8fce8218450d226b4d8e062eaa64224e5ae9
-generated-on: 2026-10-03
+generated-at: eebeb6e79631d115bc4ae1831c6e92792b594311
+generated-on: 2026-10-04
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -308,7 +308,7 @@ The system SHALL read `integration:` from the configuration and never infer it f
 
 ### Requirement: Worktree workspace
 
-The system SHALL, when `workspace: worktree` is declared under `pr-per-task`, give each picked task its own worktree at `<worktree-root>/<repo-name>-TASK-NNN` outside the repository: asking for the root once when undeclared and writing it only after every check passes; refusing a root inside the repository; requiring the pick to run from the main copy, on the default branch and clean apart from this task's tree files; refusing when a branch, folder or registration is left from an earlier pick; committing the pick as `TASK-NNN: pick` on the default branch before creating the worktree (local mode); then entering the worktree and proving the move with a separate later top-level check in every shell. A failed proof SHALL remove the new worktree and branch without force and continue in place. An in-progress task that already has a worktree SHALL be resumed into it, never given a second one. `workspace:` absent means in place; under `single-branch` the setting has no effect and says so on every run. Every outcome prints its own fixed line.
+The system SHALL, when `workspace: worktree` is declared under `pr-per-task`, give each picked task its own worktree at `<worktree-root>/<repo-name>-TASK-NNN` outside the repository: asking for the root once when undeclared and writing it only after every check passes; refusing a root inside the repository; requiring the pick to run from the main copy, on the default branch and clean apart from this task's tree files; refusing when a branch, folder or registration is left from an earlier pick; committing the pick as `TASK-NNN: pick` on the default branch before creating the worktree (no upstream); then entering the worktree and proving the move with a separate later top-level check in every shell. A failed proof SHALL remove the new worktree and branch without force and continue in place. An in-progress task that already has a worktree SHALL be resumed into it, never given a second one. `workspace:` absent means in place; under `single-branch` the setting has no effect and says so on every run. Every outcome prints its own fixed line.
 
 #### Scenario: Root left blank
 
@@ -334,19 +334,19 @@ The system SHALL, when `workspace: worktree` is declared under `pr-per-task`, gi
 - **When** the task is picked
 - **Then** a prunable line is printed and the run stops without pruning
 
-### Requirement: Remote mode
+### Requirement: Upstream
 
-The system SHALL treat worktree workspace as remote mode whenever the default branch tracks an upstream, recomputed every run: fetch with prune first; refuse when the local default branch has commits the upstream lacks; refuse when the task branch exists on the remote but not locally (another clone has it); fast-forward a behind default branch; cut the task branch from the upstream; commit nothing on the local default branch; carry the new task's files into the worktree and restore the main copy; commit the pick on the task branch and push it, so the pushed branch marks the task taken in every clone.
+The system SHALL treat a worktree workspace as having an upstream whenever the default branch tracks one, recomputed every run: fetch with prune first; refuse when the local default branch has commits the upstream lacks; refuse when the task branch exists on the remote but not locally (another clone has it); fast-forward a behind default branch; cut the task branch from the upstream; commit nothing on the local default branch; carry the new task's files into the worktree and restore the main copy; commit the pick on the task branch and push it, so the pushed branch marks the task taken in every clone.
 
 #### Scenario: Another clone holds the task
 
-- **Given** remote mode and `origin/task/TASK-044` exists with no local branch of that name
+- **Given** an upstream and `origin/task/TASK-044` exists with no local branch of that name
 - **When** `TASK-044` is picked
 - **Then** a taken-elsewhere line is printed and nothing is changed
 
 #### Scenario: Local commits not pushed
 
-- **Given** remote mode and two local commits on the default branch the upstream lacks
+- **Given** an upstream and two local commits on the default branch the upstream lacks
 - **When** a task is picked
 - **Then** the local-ahead line asks for them to reach the upstream through a PR first, and nothing is changed
 
@@ -492,7 +492,7 @@ The system SHALL, in a git repository with uncommitted changes, ask whether to c
 
 ### Requirement: Merge gate
 
-The system SHALL, after a close commit on `task/TASK-NNN` that was decided as merge, push if needed, open the PR if none exists, merge (default `--no-ff`), delete the branch with a safe delete (and its remote copy when present), and return to the default branch before any later step. A conflict or rejected push SHALL be a failed close that leaves the task at its pre-close status. A worktree close SHALL instead check the main copy before writing, edit and commit in the worktree, leave the worktree and prove it in every shell, merge in the main copy, remove only a worktree this skill made, and delete the branch — never forcing, pruning or using a hard delete, and printing the outstanding commands for any step left undone. Under remote mode the merge SHALL go through the remote's PR (queued to auto-merge when not yet mergeable), followed by a fast-forward pull and deletion of the remote task branch.
+The system SHALL, after a close commit on `task/TASK-NNN` that was decided as merge, push if needed, open the PR if none exists, merge (default `--no-ff`), delete the branch with a safe delete (and its remote copy when present), and return to the default branch before any later step. A conflict or rejected push SHALL be a failed close that leaves the task at its pre-close status. A worktree close SHALL instead check the main copy before writing, edit and commit in the worktree, leave the worktree and prove it in every shell, merge in the main copy, remove only a worktree this skill made, and delete the branch — never forcing, pruning or using a hard delete, and printing the outstanding commands for any step left undone. With an upstream the merge SHALL go through the remote's PR (queued to auto-merge when not yet mergeable), followed by a fast-forward pull and deletion of the remote task branch.
 
 #### Scenario: Conflict on merge
 
@@ -508,7 +508,7 @@ The system SHALL, after a close commit on `task/TASK-NNN` that was decided as me
 
 #### Scenario: Checks still pending
 
-- **Given** remote mode and a PR whose checks are pending
+- **Given** an upstream and a PR whose checks are pending
 - **When** the close reaches the merge
 - **Then** the PR is queued to auto-merge, the worktree is kept, and a later close runs only the tail
 
@@ -524,7 +524,7 @@ The system SHALL, under `close --unattended`, ask nothing at any step: refuse a 
 
 ### Requirement: Post-close tracker sync and hints
 
-The system SHALL close the linked GitHub issue or transition the Jira ticket only when the task reached `done`, never for `verify` or a deferred merge. It SHALL regenerate the dashboard and chain the feature status refresh for any feature-linked task whose status changed, but fire last-open-task suggestions, the feature review prompt and the changelog nudge only on `done`. A story close SHALL offer a scoped spec regen (or report that no usable spec map exists). In remote mode nothing is written on the default branch; the new status is printed with the verbs to run through a PR. A local-mode worktree close SHALL commit only the regenerated files with a subject that does not lead with the task id.
+The system SHALL close the linked GitHub issue or transition the Jira ticket only when the task reached `done`, never for `verify` or a deferred merge. It SHALL regenerate the dashboard and chain the feature status refresh for any feature-linked task whose status changed, but fire last-open-task suggestions, the feature review prompt and the changelog nudge only on `done`. A story close SHALL offer a scoped spec regen (or report that no usable spec map exists). With an upstream nothing is written on the default branch; the new status is printed with the verbs to run through a PR. A worktree close with no upstream SHALL commit only the regenerated files with a subject that does not lead with the task id.
 
 #### Scenario: Verify does not close the issue
 
@@ -532,9 +532,9 @@ The system SHALL close the linked GitHub issue or transition the Jira ticket onl
 - **When** the close finishes
 - **Then** the issue stays open, the dashboard is refreshed, and no last-open-task suggestion is printed
 
-#### Scenario: Remote mode tail
+#### Scenario: Upstream tail
 
-- **Given** a remote-mode worktree close that merged
+- **Given** a worktree close with an upstream that merged
 - **When** the tail runs
 - **Then** the dashboard is not written on the default branch and the report names `/tasks triage` and `/feature status` to run through a PR
 

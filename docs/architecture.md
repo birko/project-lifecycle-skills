@@ -102,7 +102,7 @@ Two structural rules hold this together:
   outside the repository, under the declared `worktree-root:`. `tasks` `pick` step 6b is the single owner
   of creating, entering and proving a worktree, and of resuming into one. `close`, `fix-next` and drill
   cleanup (`populate-tests`) go through it rather than restating it. `close` owns merging from a worktree
-  and removing it, in local mode or in remote mode, where the default branch tracks a remote and nothing is
+  and removing it, with no upstream or with one, where the default branch tracks a remote and nothing is
   committed on it.
 - **Layer parity.** `new-project` and `adopt-project` must be extended together — one creates the universal layer, the other reconciles it into an existing repo. Extending only the scaffolder strands every project already using the skills.
 

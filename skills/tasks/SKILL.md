@@ -178,7 +178,7 @@ from every project at once to answer a question only occasionally asked.
      this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
-   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` in remote mode), and the debt would otherwise be invisible.
+   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` with an upstream), and the debt would otherwise be invisible.
    - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted P0→P1→P2 then created asc
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,
@@ -366,7 +366,7 @@ live, outside the repo, a relative path resolving against the repo root. Absent 
 `in-place`; absent `worktree-root:` means undeclared, and nothing may guess it. Never infer either
 from `git worktree list` — a worktree that exists may be anyone's checkout. Under `single-branch`
 there is no task branch to put in a worktree, so `worktree` has no effect there — `pick` says so on
-every run. When the default branch tracks a remote, worktree mode runs in **remote mode**: nothing is
+every run. When the default branch has an **upstream** (`<default>@{upstream}` resolves), nothing is
 committed on the local default branch, a task is marked taken by its **pushed task branch**, and `close`
 merges through the remote ([verbs/pick.md](verbs/pick.md) step 6b). **No verb regenerates `tasks/README.md` inside a task's
 worktree**; `close` regenerates it on the default branch ([verbs/triage.md](verbs/triage.md)). Detail:

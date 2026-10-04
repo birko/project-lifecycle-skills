@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: 1cdf452fbb2594ffe3016cf359b041815fdd8957
-generated-on: 2026-10-03
+generated-at: eebeb6e79631d115bc4ae1831c6e92792b594311
+generated-on: 2026-10-04
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -35,7 +35,7 @@ The system SHALL, before selecting any new work, look for in-flight runs in two 
 
 #### Scenario: The in-progress copy exists only on a task branch
 
-- **Given** the project declares worktree workspaces in remote mode, and the default branch's copy of TASK-903 reads `todo` while branch `task/TASK-903` holds a copy reading `in-progress` with `picked-by: fix-next`
+- **Given** the project declares worktree workspaces with an upstream, and the default branch's copy of TASK-903 reads `todo` while branch `task/TASK-903` holds a copy reading `in-progress` with `picked-by: fix-next`
 - **When** the skill is invoked
 - **Then** it treats TASK-903 as an in-flight run and resumes it from the branch copy rather than picking new work
 
@@ -233,15 +233,15 @@ The system SHALL walk down the ranking to the first unblocked task, writing `ski
 
 ### Requirement: The pick is written to disk before any code is read
 
-The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task's frontmatter, append a progress log whose first line is `- step 2 — picked; ranked above <runner-up> because <reason>`, and move the task from `todo` to `in-progress`, cutting the task branch on a pull-request-per-task project; under worktree workspaces it SHALL always take the pick verb's blank-answer branch for the root question and SHALL write the two lines where they ride in the pick commit — the main copy in local mode, the worktree in remote mode.
+The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task's frontmatter, append a progress log whose first line is `- step 2 — picked; ranked above <runner-up> because <reason>`, and move the task from `todo` to `in-progress`, cutting the task branch on a pull-request-per-task project; under worktree workspaces it SHALL always take the pick verb's blank-answer branch for the root question and SHALL write the two lines where they ride in the pick commit — the main copy with no upstream, the worktree with an upstream.
 
-#### Scenario: Local-mode worktree pick
+#### Scenario: Worktree pick with no upstream
 
 - **Given** a project declaring worktree workspaces whose default branch tracks no remote
 - **When** TASK-1010 is picked
 - **Then** `picked-by` and the first log line are written in the main copy before the pick commit, and the pick commit carries them
 
-#### Scenario: Remote-mode worktree pick
+#### Scenario: Worktree pick with an upstream
 
 - **Given** a project declaring worktree workspaces whose default branch tracks a remote
 - **When** TASK-1011 is picked
