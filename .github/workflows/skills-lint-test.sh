@@ -315,7 +315,7 @@ u_pair()        { mk_new_project "$1"
                   printf -- '# guide\n\n## Conventions\n\n' > "$1/AGENTS.md"
                   mk_rule_block "$1/AGENTS.md" 'Write the comment the code cannot carry.'; }
 u_drifted()     { u_pair "$1"
-                  # One word. The whole point of the check is that this is not a stylistic variance.
+                  # A small wording drift must still fail: AGENTS.md § Code structure & patterns.
                   sed -i 's/cannot carry\./cannot carry, and nothing else./' "$1/AGENTS.md"; }
 u_no_agents()   { mk_new_project "$1"
                   mk_rule_block "$1/$UNIV_REL" 'Write the comment the code cannot carry.'; }
@@ -351,7 +351,6 @@ r_partial() { mkdir -p "$1/roots/claude" "$1/roots/pi"
               # A wholly empty root collapses to one summary line by design (see r_empty).
               mk_link "$1/roots/claude/alpha" "$1/skills/alpha"; }
 r_linked()  { mkdir -p "$1/roots/claude" "$1/roots/pi"
-              # Claude root gets skills/* ONLY; the pi root gets skills/* AND skills-pi/*.
               # Both roots end up genuinely in sync, so ANY complaint about gamma is the
               # asymmetry bug rather than a true finding about the other root.
               mk_link "$1/roots/claude/alpha" "$1/skills/alpha"
@@ -406,6 +405,17 @@ case_silent "shadow root is not called empty"      r_shadow  "nothing is linked 
 case_says   "shadow-only root collapses, precisely"  r_shadow  "only shadow junctions"
 # The repo name repeating as an ancestor component must not turn every in-repo link into a shadow.
 case_says   "repo name repeated in the target path" r_nested  "roots/claude is in sync"
+
+# check 8 — TASK-252 (AGENTS.md § Testing).
+s_lonecr()  { printf 'echo a\rb\n' > "$1/tool.sh"; }
+s_crlf()    { printf 'echo a\r\necho b\r\n' > "$1/tool.sh"; }
+s_git()     { git -C "$1" init -q && git -C "$1" config core.autocrlf false && printf '%s\n' "$2" > "$1/.gitattributes"; }
+s_stored()  { s_git "$1" '*.sh -text'; s_crlf "$1"; git -C "$1" add tool.sh; }
+s_binary()  { s_git "$1" '* text=auto eol=lf'; printf 'echo a\r\n# [ \t\r]\r\n' > "$1/tool.sh"; git -C "$1" add tool.sh; }
+case_fails_saying "CR inside a line of a shell script"  s_lonecr "carriage return inside a line"
+case_is           "CRLF working copy alone is fine"  0  s_crlf
+case_fails_saying "shell script stored as CRLF"         s_stored "stored as crlf"
+case_fails_saying "shell script git classes as binary"  s_binary "stored as -text"
 
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

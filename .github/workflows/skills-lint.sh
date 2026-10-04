@@ -179,7 +179,7 @@ rule_block() { # Empty output means "no delimited block here".
     # The CR in the trailing class guards an awk that does NOT strip CR, reading a CRLF file.
     # Kept rather than deleted as dead: the platform it guards is the one nobody tests on. Which
     # platforms can currently reach it, and how that was measured: TASK-160.
-    function bare(x) { gsub(/^[ 	]+|[ 	]+$/, "", x); return x }
+    function bare(x) { gsub(/^[ \t]+|[ \t\r]+$/, "", x); return x }
     bare($0) == s { inb = 1 }
     inb           { print }
     bare($0) == e { if (inb) exit }
@@ -321,6 +321,23 @@ if [ -n "$id_hits" ]; then
 else
   printf '  every ^id: pattern tolerates CRLF\n'
 fi
+
+printf '== 8. shell scripts are stored as LF text ==\n'
+# Why, and why a CRLF working copy still passes: AGENTS.md § Testing (TASK-252).
+sh_bad=0
+while IFS= read -r s; do
+  if LC_ALL=C grep -aq $'\r.' "$s"; then
+    err "$s — carriage return inside a line; git will treat the file as binary"; sh_bad=1
+  fi
+done < <(find . -name '*.sh' -not -path './.git/*' | sort)
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  while IFS=$'\t' read -r eol s; do
+    read -r idx _ <<< "$eol"
+    [ "$idx" = "i/lf" ] && continue
+    err "$s — stored as ${idx#i/}, not LF; bash on Linux cannot run it"; sh_bad=1
+  done < <(git ls-files --eol -- '*.sh')
+fi
+[ "$sh_bad" -eq 0 ] && printf '  every shell script is LF text\n'
 
 [ -s "$FAILFILE" ] && fail=1
 if [ "$fail" -eq 0 ]; then
