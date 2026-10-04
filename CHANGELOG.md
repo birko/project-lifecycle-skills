@@ -11,7 +11,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 ## [Unreleased]
 
 _No release has been cut yet, so the whole history sits here. Backfilled 2026-08-18 from the first
-36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, 2026-09-26 across the 6 after that, 2026-10-03 across the 48 after that — FEATURE-003 and its follow-ups — and 2026-10-04 across the 3 after that, none of which changed an installed file (FEATURE-002 closed; its capabilities were already recorded below)._
+36 commits (2026-07-15 → 2026-08-18), then rolled 2026-08-20 across the 42 commits since, 2026-08-21 across the 16 after that, 2026-09-24 across the 155 after that, later on 2026-09-24 across the 10 after that, 2026-09-26 across the 6 after that, 2026-10-03 across the 48 after that — FEATURE-003 and its follow-ups — 2026-10-04 across the 3 after that, none of which changed an installed file (FEATURE-002 closed; its capabilities were already recorded below) — and later on 2026-10-04 across the 8 after that, closing FEATURE-001 (task worktrees)._
 
 ### Added
 
@@ -49,6 +49,7 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 
 ### Changed
 
+- **Worktree messages say "upstream", not "remote mode".** Under `workspace: worktree`, whether your default branch tracks a remote used to be called "remote mode" / "local mode", which read as the tracker's unrelated `mode: local`. `pick` and `close` now report `workspace: upstream (main → origin/main) — …`, and the skills say "with an upstream" / "with no upstream". Behaviour is unchanged.
 - **New ids can't collide across parallel work.** A new task, `FIELD-*` finding or feature number takes the highest id across this tree, every local branch and every other worktree, including files not yet committed there. Before, two tasks worked in parallel could give their follow-ups the same id.
 - **A task with a live task branch counts as taken.** `/tasks`, `pick` and `fix-next` skip a `todo` task whose `task/TASK-NNN` branch exists locally or on a remote, and `pick` lists the ones it hid, so a stale branch can't hide a task silently.
 - **The dashboard is never regenerated inside a task's worktree**, which would conflict whenever tasks run in parallel. `close` refreshes it on the main copy instead.
@@ -90,6 +91,7 @@ _No release has been cut yet, so the whole history sits here. Backfilled 2026-08
 
 ### Fixed
 
+- **`/tasks pick` no longer calls GitHub in a repo that doesn't sync with it.** A task's leftover `github-issue:` (from a repo that went from `hybrid` back to `local`) made `pick` run `gh issue view`. It now fetches comments only under `mode: hybrid` with GitHub as the provider, and otherwise prints `github-issue: #N not fetched — mode: local`. `pick` also no longer lists your own in-progress or awaiting-verification worktree task as "taken".
 - **`verify-conventions` stopped linting build output.** Findings against a bundle are noise at best and at worst point at code nobody can act on. It reads your `.gitattributes` and your guide *first*, because heuristics are provably partial: measured on a real diff, a sourcemap with a 4,154,785-character line and a 75,037-line bundle are obvious, while a generated 128-line service worker is indistinguishable from hand-written code. Anything it cannot classify is linted, not guessed away — a false exclusion silently stops checking code you wrote.
 - **A `skills-pi/` stub linked into the Claude skills root would silently replace the runtime's own review pass**, and nothing detected it: the junction's source exists so it was not stale, and it was missing from nowhere. The lint now reports a junction pointing into a tree that root was never meant to hold.
 - **`close`'s out-of-scope sweep had no unattended path**, so an autonomous run met a work bullet with nobody to take the offer — and the reading that keeps a loop moving is to close anyway, which is exactly the evaporation the sweep exists to prevent.

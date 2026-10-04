@@ -3,7 +3,7 @@ id: FEATURE-001
 created: 2026-09-18
 owner: František Bereň
 # status — one of: idea, review (built, sign-off pending), done, dropped, superseded
-status: review
+status: done
 ---
 
 # Task worktrees — run a task in its own checkout
