@@ -205,18 +205,14 @@ fi
 
 printf '== 6. install roots (advisory) ==\n'
 # ADVISORY — never touches `fail`, so it cannot change the exit code, and must not be made to.
-# Why it has to stay that way: AGENTS.md § Testing.
-# Roots are overridable because the regression suite has to fabricate them — CI has none to find,
-# which would otherwise make every install-root case in skills-lint-test.sh unwritable.
+# Why it has to stay that way: AGENTS.md § Testing. Why the roots are overridable: § Commands.
 CLAUDE_SKILLS_ROOT="${CLAUDE_SKILLS_ROOT:-$HOME/.claude/skills}"
 PI_SKILLS_ROOT="${PI_SKILLS_ROOT:-$HOME/.pi/agent/skills}"
 repo_name=$(basename "$(pwd -P)")
 
 advise() { printf '  ~ %s\n' "$1"; }
 
-# `skills/` is linked into BOTH roots; `skills-pi/` into the pi root ONLY (ADR 0010). That asymmetry
-# is handled by which trees each call passes, so skills-pi/ is never compared against the Claude root
-# and can never be reported missing from it.
+# Which trees each root holds: AGENTS.md § Architecture (ADR 0010).
 check_root() {
   root=$1; shift
   if [ ! -d "$root" ]; then

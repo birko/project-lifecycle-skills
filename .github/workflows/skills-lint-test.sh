@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 # skills-lint-test — regression tests for skills-lint.sh, the repo's only gate (AGENTS.md § Testing).
-#
-# Each case below builds a throwaway fixture, mutates one thing, and asserts the lint's exit code,
-# its output, or both.
 set -uo pipefail
 cd "$(dirname "$0")/../.." || exit 1
 LINT="$(pwd)/.github/workflows/skills-lint.sh"
@@ -45,9 +42,7 @@ mk_link() { # $1 = link, $2 = existing target dir. A symlink on POSIX; a junctio
   [ -L "$1" ]
 }
 
-# `case_is` sees only the exit code, which check 6 never touches (advisory — AGENTS.md § Testing).
-# These assert on OUTPUT and still require exit 0 — an advisory that began failing the build would
-# itself be a regression.
+# Check 6 is advisory, so these assert on its output, not the exit code: AGENTS.md § Testing.
 roots_run() { # $1 = fixture dir; echoes the lint's combined output
   ( cd "$1" && CLAUDE_SKILLS_ROOT="$1/roots/claude" PI_SKILLS_ROOT="$1/roots/pi" bash .github/workflows/skills-lint.sh 2>&1 )
 }

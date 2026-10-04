@@ -470,15 +470,15 @@ is what separates a finding from a taste (FEATURE-002 D10). Obtaining a reader t
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | **passes** — TASK-141's third re-run; the `ARG_RE` block reduced by TASK-166 | 311 | 116 (37%) | 22 |
-| `.github/workflows/skills-lint-test.sh` | **passes** — swept in full by TASK-162 through TASK-165; EVIDENCE/PIN lines state what each case detects (TASK-166) | 392 | 73 (18%) | 7 |
+| `.github/workflows/skills-lint.sh` | **passes** — TASK-191's second reader pair, after two agreed findings were cut to pointers | 332 | 116 (34%) | 22 |
+| `.github/workflows/skills-lint-test.sh` | **passes** — TASK-191's second reader pair, after two agreed findings were cut (one deleted, one to a pointer) | 411 | 70 (17%) | 7 |
 | `pi-install.sh` | **passes** — mechanism and pointers only; the restated line removed by TASK-166 | 41 | 5 (12%) | 5 |
 | `pi-install.ps1` | **passes** — same shape as `pi-install.sh` | 36 | 4 (11%) | 4 |
 | `install.sh` | **passes** — mechanism and pointer only (TASK-148) | 38 | 5 (13%) | 5 |
 | `install.ps1` | **passes** — same shape as `install.sh` | 30 | 4 (13%) | 4 |
 
-Counts re-measured 2026-09-24 (thirteenth time — after TASK-166) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 115 / 72 / 4 / 4 for the four shell scripts and will look
+Counts re-measured 2026-10-04 (fourteenth time — after TASK-191) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 115 / 69 / 4 / 4 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits

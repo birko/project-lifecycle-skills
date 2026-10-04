@@ -1,8 +1,8 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (3):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; TASK-191 DV3 — under EPIC-004 (slug-matches FEATURE-002) with `feature: null`; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
+> ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-04 08:23. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -10,13 +10,13 @@ _Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 5                  | —                   |
 | todo         | —                  | —                  | 75                  |
-| in-progress  | 5                  | 10                 | 1                   |
+| in-progress  | 4                  | 10                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 1                  | 9                  | 154                 |
+| done         | 2                  | 9                  | 155                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 3× P1 · 65× P2 · 7× P3.
+`todo` by priority: 4× P1 · 65× P2 · 6× P3.
 
 ## In progress now
 
@@ -88,7 +88,7 @@ _Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit*
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (49/88 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (49/89 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -139,7 +139,7 @@ _Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-128 Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - ~~TASK-129 A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding~~
     - ~~TASK-134 `/specs init` step 1's meta-root ask has no question text and no unattended path~~
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (9/12 done)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (9/13 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -152,6 +152,7 @@ _Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-084 A documented probe-and-read rule has nothing that can pin it, and this one has been wrong twice
     - [x] TASK-108 Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
     - [x] TASK-171 `docs/architecture.md` still calls install-root drift "check 4"
+    - [ ] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
@@ -198,42 +199,6 @@ _Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
-
-- EPIC-004 Comment discipline in agent-written code — in-progress (28/30 tasks done)
-  - STORY-018 Seed the comment-discipline rule into both rulebooks — 17/18 done (done)
-    - [x] TASK-140 Add the comment-discipline rule to the seeded project rulebook · FEATURE-002
-    - [x] TASK-141 Adopt the comment rule in this repo, with the lint-script measurement that protects it · FEATURE-002
-    - ~~TASK-145 Stop the scaffolder's "leave as-is" list going one short~~ · FEATURE-002
-    - [x] TASK-146 Lint check: the rule's two copies must match · FEATURE-002
-    - [x] TASK-147 The scaffolder paraphrases the seed's universal rules instead of copying them · FEATURE-002
-    - [x] TASK-148 `pi-install.sh`'s header reproduces two ADRs instead of pointing at them · FEATURE-002
-    - [x] TASK-151 The `AGENTS.md` comment measurement was under-evidenced, and this repo has real findings · FEATURE-002
-    - [x] TASK-153 The 8-of-39 measurement has a fifth copy, in the test that pins it · FEATURE-002
-    - [x] TASK-154 Two check headers in `skills-lint.sh` argue a case the rulebook already settled · FEATURE-002
-    - [x] TASK-157 Six more comment findings in `skills-lint.sh`, one of them introduced by the task that was fixing them · FEATURE-002
-    - [x] TASK-158 Four more restatements in `skills-lint.sh`, and two comments that should exist and don't · FEATURE-002
-    - [x] TASK-159 The destination table has no row for the project's own guide · FEATURE-002
-    - [x] TASK-160 The eight sites D15 made reportable · FEATURE-002
-    - [x] TASK-162 `skills-lint-test.sh` was never swept, and it holds nine findings · FEATURE-002
-    - [x] TASK-163 Comment findings the TASK-162 drill surfaced outside its nine · FEATURE-002
-    - [x] TASK-164 Two single-reader comment findings from TASK-163's drill — borderline, grouped · FEATURE-002
-    - [x] TASK-165 Three comments that restate the line beside them · FEATURE-002
-    - [x] TASK-166 Clear the three findings every reader pair agrees on, before TASK-141's re-run · FEATURE-002
-  - STORY-019 `review-comments` — find comments that belong elsewhere, and move them there — 6/6 done (done)
-    - [x] TASK-142 Create the `review-comments` skill — the check and its two scopes · FEATURE-002
-    - [x] TASK-143 The only-copy rule — relocate before deleting, never destroy the last record · FEATURE-002
-    - [x] TASK-144 Wire `review-comments` into `/tasks close` as its own reported axis · FEATURE-002
-    - [x] TASK-152 `review-comments` promises a `PATH` argument and never defines it · FEATURE-002
-    - [x] TASK-155 One reader in six renders ⚠ where the severity table says 🛑 · FEATURE-002
-    - [x] TASK-156 Two loose ends on the path scope: a header that varies, and a refusal nobody ran · FEATURE-002
-  - STORY-020 What FEATURE-002's review gate found unfinished — 5/5 done (done)
-    - [x] TASK-167 The close gate's own text still counts three axes after the fourth shipped · FEATURE-002
-    - [x] TASK-168 `review-comments` shipped, and nothing that lists the skills mentions it · FEATURE-002
-    - [x] TASK-169 The measurement table cannot be re-run from what AGENTS.md says · FEATURE-002
-    - [x] TASK-170 An only-copy that belongs in the project's guide has no relocation target · FEATURE-002
-    - [x] TASK-172 Three things Gate A's second run found in this story's own fixes · FEATURE-002
-  - (epic level) — 0/1 done
-    - [ ] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed
 
 - EPIC-005 Task worktrees — in-progress (15/17 tasks done)
   - STORY-021 Run a task in its own checkout — in-progress (15/17 done)
@@ -301,9 +266,44 @@ _Generated 2026-10-04 07:45. Run `/tasks triage` to refresh. **Do not hand-edit*
 - [x] TASK-038 The CI isolation check over-reports on any real .NET repo (P1, agent)
 - [x] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
 - ~~TASK-121 `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice~~ (P2, agent)
+- [x] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed (P3, unassigned)
 
 <details>
-<summary><strong>Completed</strong> — 1 epic</summary>
+<summary><strong>Completed</strong> — 2 epics</summary>
+
+- EPIC-004 Comment discipline in agent-written code — done (28/29 tasks done)
+  - STORY-018 Seed the comment-discipline rule into both rulebooks — 17/18 done (done)
+    - [x] TASK-140 Add the comment-discipline rule to the seeded project rulebook · FEATURE-002
+    - [x] TASK-141 Adopt the comment rule in this repo, with the lint-script measurement that protects it · FEATURE-002
+    - ~~TASK-145 Stop the scaffolder's "leave as-is" list going one short~~ · FEATURE-002
+    - [x] TASK-146 Lint check: the rule's two copies must match · FEATURE-002
+    - [x] TASK-147 The scaffolder paraphrases the seed's universal rules instead of copying them · FEATURE-002
+    - [x] TASK-148 `pi-install.sh`'s header reproduces two ADRs instead of pointing at them · FEATURE-002
+    - [x] TASK-151 The `AGENTS.md` comment measurement was under-evidenced, and this repo has real findings · FEATURE-002
+    - [x] TASK-153 The 8-of-39 measurement has a fifth copy, in the test that pins it · FEATURE-002
+    - [x] TASK-154 Two check headers in `skills-lint.sh` argue a case the rulebook already settled · FEATURE-002
+    - [x] TASK-157 Six more comment findings in `skills-lint.sh`, one of them introduced by the task that was fixing them · FEATURE-002
+    - [x] TASK-158 Four more restatements in `skills-lint.sh`, and two comments that should exist and don't · FEATURE-002
+    - [x] TASK-159 The destination table has no row for the project's own guide · FEATURE-002
+    - [x] TASK-160 The eight sites D15 made reportable · FEATURE-002
+    - [x] TASK-162 `skills-lint-test.sh` was never swept, and it holds nine findings · FEATURE-002
+    - [x] TASK-163 Comment findings the TASK-162 drill surfaced outside its nine · FEATURE-002
+    - [x] TASK-164 Two single-reader comment findings from TASK-163's drill — borderline, grouped · FEATURE-002
+    - [x] TASK-165 Three comments that restate the line beside them · FEATURE-002
+    - [x] TASK-166 Clear the three findings every reader pair agrees on, before TASK-141's re-run · FEATURE-002
+  - STORY-019 `review-comments` — find comments that belong elsewhere, and move them there — 6/6 done (done)
+    - [x] TASK-142 Create the `review-comments` skill — the check and its two scopes · FEATURE-002
+    - [x] TASK-143 The only-copy rule — relocate before deleting, never destroy the last record · FEATURE-002
+    - [x] TASK-144 Wire `review-comments` into `/tasks close` as its own reported axis · FEATURE-002
+    - [x] TASK-152 `review-comments` promises a `PATH` argument and never defines it · FEATURE-002
+    - [x] TASK-155 One reader in six renders ⚠ where the severity table says 🛑 · FEATURE-002
+    - [x] TASK-156 Two loose ends on the path scope: a header that varies, and a refusal nobody ran · FEATURE-002
+  - STORY-020 What FEATURE-002's review gate found unfinished — 5/5 done (done)
+    - [x] TASK-167 The close gate's own text still counts three axes after the fourth shipped · FEATURE-002
+    - [x] TASK-168 `review-comments` shipped, and nothing that lists the skills mentions it · FEATURE-002
+    - [x] TASK-169 The measurement table cannot be re-run from what AGENTS.md says · FEATURE-002
+    - [x] TASK-170 An only-copy that belongs in the project's guide has no relocation target · FEATURE-002
+    - [x] TASK-172 Three things Gate A's second run found in this story's own fixes · FEATURE-002
 
 - EPIC-006 Task states follow common practice — done (18/18 tasks done)
   - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — 18/18 done (done)
