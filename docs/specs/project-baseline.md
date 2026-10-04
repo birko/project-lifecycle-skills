@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: adc4c27f8733e01ca655b4ec26dfe0a68e190b0f
+generated-at: 578f440040b2ba17b0197e1df8cbc38f65df11a0
 generated-on: 2026-10-04
 sources:
   - skills/adopt-project/INFER.md
@@ -12,7 +12,7 @@ sources:
   - skills/new-project/templates/README.seed.md
 shaped-by: [FEATURE-001, FEATURE-002, FEATURE-003]
 shaped-by-derived: true
-shaped-by-unresolved: 7
+shaped-by-unresolved: 5
 ---
 
 # Giving any repo the same baseline of docs and tracking, new or existing
@@ -121,13 +121,19 @@ The system SHALL always create `docs/BRIEF.md` before any paraphrase, capturing 
 
 ### Requirement: Templates are copied and only their tokens change
 
-The system SHALL create the README and agent guide by copying their templates and changing only lines that carry a `{{…}}` token, SHALL set the README's agent-guide link to whichever file is canonical, and SHALL set the stakeholders token from the brief or intake, defaulting to `project managers, end users`; it SHALL write the assembled guide to `CLAUDE.md` by default, or to `AGENTS.md` with `CLAUDE.md` containing exactly the one-line import `@AGENTS.md` when canonical-AGENTS was chosen, never duplicating the content into both and never using a symlink.
+The system SHALL create the README and agent guide by copying their templates and changing only lines that carry a `{{…}}` token (deleting the hint comment beneath a token as it is filled), SHALL fill the four tokens that describe the skeleton — getting-started commands, layout tree, build/run commands, architecture notes — only after the skeleton step, from the skeleton and the scope grill, or with a one-line statement that there is no source, SHALL grep both files for `{{` before the git step and leave none, SHALL set the README's agent-guide link to whichever file is canonical, and SHALL set the stakeholders token from the brief or intake, defaulting to `project managers, end users`; it SHALL write the assembled guide to `CLAUDE.md` by default, or to `AGENTS.md` with `CLAUDE.md` containing exactly the one-line import `@AGENTS.md` when canonical-AGENTS was chosen, never duplicating the content into both and never using a symlink.
 
 #### Scenario: AGENTS.md canonical
 
 - **Given** intake chose AGENTS.md canonical
 - **When** the README and guide are written
 - **Then** the README's "full convention" link points at `AGENTS.md`, `AGENTS.md` holds the content, and `CLAUDE.md` holds only `@AGENTS.md`
+
+#### Scenario: Docs-only project with the grill skipped
+
+- **Given** a docs-only project and no scope grill
+- **When** the README and guide are finished
+- **Then** neither contains `{{`; getting-started says there is no code yet, build/run says none yet, and the architecture notes point at `docs/architecture.md`
 
 #### Scenario: No stakeholders named
 
@@ -211,13 +217,13 @@ The system SHALL, when the brief lists several capabilities, write a requirement
 
 ### Requirement: Task tracking is initialised through its owner
 
-The system SHALL create `tasks/` by chaining `/tasks init` with the resolved mode and, where declared, integration, workspace and worktree root, and SHALL never hand-write those shapes; for hybrid-GitHub it SHALL resolve the `owner/name` slug before writing the config (doing the remote step early), and SHALL fall back to `local` mode with a pointer to `/tasks migrate` when the user defers the remote.
+The system SHALL create `tasks/` by chaining `/tasks init` with the resolved mode and, where declared, integration, workspace and worktree root, and SHALL never hand-write those shapes; for hybrid-GitHub it SHALL ask whether the GitHub repository already exists, initialise `hybrid` with that slug when it does, and otherwise — a new repository, or no answer — initialise `local` and report hybrid as deferred, never creating the remote at this step.
 
-#### Scenario: Hybrid-GitHub with remote deferred
+#### Scenario: Hybrid-GitHub with a repository still to create
 
-- **Given** the user chose hybrid-GitHub but declines to create or name a remote
+- **Given** the user chose hybrid-GitHub and answers that the repository is a new one
 - **When** task tracking is initialised
-- **Then** `/tasks init` runs with `mode=local` and the user is told they can switch with `/tasks migrate`
+- **Then** `/tasks init` runs with `mode=local`, no `gh` command runs, and hybrid is reported as deferred to the end
 
 ### Requirement: Stack wiring, source root, test harness and CI stub
 
@@ -253,7 +259,7 @@ The system SHALL settle the `.env.example` and `Dockerfile` rows after the stack
 
 ### Requirement: Git root confirmed, initial commit offered, remote offered
 
-The system SHALL never silently `git init`: it SHALL resolve `git rev-parse --show-toplevel` and report an existing own repo, ask whether to track an untracked directory (default Yes), and, when an ancestor repo captures the directory, surface the ancestor and offer a nested repo, removal of a verified-empty accidental ancestor `.git`, or leaving it; it SHALL offer one `chore: initial scaffold` commit when the repo has no commits (warning on decline that the first `/tasks pick` will need one), commit nothing else unasked, and offer — never auto-run — remote creation for hybrid-GitHub.
+The system SHALL never silently `git init`: it SHALL resolve `git rev-parse --show-toplevel` and report an existing own repo, ask whether to track an untracked directory (default Yes), and, when an ancestor repo captures the directory, surface the ancestor and offer a nested repo, removal of a verified-empty accidental ancestor `.git`, or leaving it; it SHALL offer one `chore: initial scaffold` commit when the repo has no commits (warning on decline that the first `/tasks pick` will need one), commit nothing else unasked, and, for a hybrid-GitHub repository still to create, offer — never auto-run — its creation only once the directory is git-tracked, then `/tasks migrate`; with git or the creation declined it creates nothing and the tracker stays `local`.
 
 #### Scenario: Ancestor repo captures the project
 

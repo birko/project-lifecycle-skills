@@ -4,7 +4,7 @@ parent: null
 kind: review-intake
 source: specs regen work-tracking, 2026-10-03, harvested at b7bd8fc, spec committed in 0c84b8a — suspected bugs found while reading skills/tasks/**; specs regen feature-lifecycle, project-roadmap, defect-draining, specs-from-code (first harvests), 2026-10-03, specs committed in b24eb8b — suspected bugs found while reading skills/feature/**, skills/roadmap/SKILL.md, skills/fix-next/SKILL.md, skills/specs/**; specs regen project-baseline, change-review (first harvests, TASK-080), 2026-10-04, harvested at adc4c27 — suspected bugs found while reading skills/new-project/**, skills/adopt-project/**, skills/verify-conventions/**, skills/verify-intent/**, skills/review-comments/**, skills-pi/**
 # status — one of: planned, in-progress, done, cancelled
-status: planned
+status: in-progress
 owner: human
 affects: []
 created: 2026-10-03
