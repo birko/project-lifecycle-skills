@@ -20,10 +20,16 @@ The idea in one or two paragraphs — what we'd build, in plain language. Not a 
 
 ## Open questions distilled from the grill
 
-_Filled from the [[grill-me]] interview at `/feature new`. Each resolved branch becomes a row in [decisions.md](decisions.md) with state `proposed`, ready for `/feature decide`._
+_Filled at `/feature new` with every question the [[grill-me]] interview raised. Each one it resolved is a `proposed` row in [decisions.md](decisions.md); each it did not reach stays `open` here, so the next session resumes at the frontier. The columns, states and frontier are defined in the feature skill's `questions.md`. Example rows below — `/feature new` replaces them._
 
-- Question / assumption surfaced → which decision it maps to
-- ...
+| id | question | type | blocked-by | state |
+|----|----------|------|------------|-------|
+| Q1 | Who may edit a count after it is submitted? | decision | — | open |
+| Q2 | Does an edit after submission notify the warehouse lead? | decision | Q1 | open |
+
+**Fog** — concerns not yet precise enough to state as a question:
+
+- …
 
 ## Out of scope (initial)
 

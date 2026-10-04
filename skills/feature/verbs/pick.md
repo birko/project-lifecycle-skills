@@ -21,7 +21,8 @@ lifecycle stall.
      ```
      Ask the user to pick by number or ID.
 
-2. **Read the feature** — `idea.md` (coarse `status`), `decisions.md` (every row + state +
+2. **Read the feature** — `idea.md` (coarse `status`, and its open-questions table per
+   [questions.md](../questions.md), or the note that the section predates it), `decisions.md` (every row + state +
    `→ Tasks`), `status.md` if present, and which prototype artifact exists. Grep `tasks/` for
    `feature: FEATURE-NNN` and bucket the back-links by status.
 
@@ -31,11 +32,31 @@ lifecycle stall.
 
    | Gate | Fails when | Offer |
    |---|---|---|
+   | **Q · Open questions** | the open-questions table has a frontier ([questions.md](../questions.md) § *The frontier*) | resume the grill there — step 3b. **Runs first: unanswered questions are what decisions are made from, so it outranks A–D. Only E outranks it** — when the feature is in `review`, lead with E |
    | **A · Decisions exist** | `decisions.md` has no rows, or only placeholder template rows | `/feature new` (re-grill) — there's nothing to build yet |
    | **B · Decisions decided** | any `proposed` rows remain | `/feature decide FEATURE-NNN` — "N decision(s) still awaiting a verdict. Decide them now? [Y/n]" |
    | **C · Prototype (soft)** | the feature is UI/UX-shaped or adds states, has approved rows, and `idea.md`'s `## Prototype` line records no prototype. Read the line, not the folder: a prototype is deleted once it has answered its question, so a missing file does not mean one was never built | `/feature prototype FEATURE-NNN` — suggest once, `[y/N]`, never block. Some approved decisions genuinely need no mockup |
    | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN` — "N approved decision(s) have no tasks. Decompose now? [Y/n]"** |
    | **E · Signed off** | phase is `review` (all tasks `done` or `verify`, sign-off not recorded) | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this |
+
+3b. **Gate Q — resume at the frontier.** Compute the frontier fresh, then put this question:
+
+   > **FEATURE-NNN has N open question(s) on the frontier: Q4 — <question>, Q6 — <question>. Resume the grill there? [Y/n]**
+
+   - `Y` → put the frontier's `decision` questions to the user (through [[grill-me]] when installed), and look
+     up its `research` questions yourself — a fact is the agent's job, not the user's. For each answer, set the
+     state per [questions.md](../questions.md) § *States* — a `decision` answered writes a `proposed` row to
+     `decisions.md` and `resolved → Dn` here; a question the user rules moot is `dropped — <reason>` and leaves
+     every `blocked-by`. Recompute the frontier and offer the next one, until it is empty or the user stops.
+     Then re-run step 3.
+   - `n`, or **no answer** → change nothing; report `not resumed: N open question(s) on the frontier — <ids>`
+     and continue to gate A. The questions stay on disk; nothing is lost by declining.
+   - **Open rows but no frontier** → do not offer; report it as itself — *"N open questions, none answerable
+     now: Q7 waits on Q8, Q8 waits on Q7"* (or the broken edge, by id) — and continue to gate A.
+   - **No open rows** → the gate passes silently.
+   - **A pre-table section** (a bulleted or prose list, [questions.md](../questions.md) § *Current or
+     pre-table*) → never report *no open questions*. Report `open questions predate the question table —
+     read idea.md § Open questions; no frontier can be computed` and continue to gate A.
 
 4. **Gate D is the important one — default yes, and say why on a refusal.** List exactly which
    rows are uncovered before asking, so the offer is concrete:

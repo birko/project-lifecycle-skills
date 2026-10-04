@@ -10,6 +10,16 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 
 ## [Unreleased]
 
+### Added
+
+- **Open questions survive a session reset.** `/feature new` now writes every question its grill raised but didn't reach into `idea.md` as a table — id, question, type, what it waits on, state — instead of a prose list that was lost with the conversation. `/feature pick` resumes at the *frontier* (the open questions nothing is still waiting on) before anything else, looks up factual questions itself rather than asking you, and never mistakes an older prose list for "no open questions". The rules live in one place, `skills/feature/questions.md`.
+
+### Fixed
+
+- **`new-project` no longer leaves template tokens such as `{{LAYOUT_TREE}}` in a new repo.** The four tokens that describe the code are filled after the code skeleton exists, with an honest one-liner for a docs-only project, and the run checks for any leftover `{{` before finishing.
+- **`new-project` no longer runs `gh repo create` before the git repository exists.** For a GitHub-synced tracker it now asks whether the repository already exists; a new one is created at the end, after the git question, and the tracker starts `local` until then.
+- **A freshly scaffolded repo now passes `adopt-project`'s `.gitignore` check.** Both read the same entry list, including agent-tool local state. And adoption no longer treats a missing worktree root as an open question — `pick` asks for it when the first task needs it.
+
 ## [0.1.0] - 2026-10-04
 
 _The first release: everything from 2026-07-15 to 2026-10-04, closing FEATURE-001 (task worktrees), FEATURE-002 (comment discipline) and FEATURE-003 (task states). Backfilled 2026-08-18 from the first

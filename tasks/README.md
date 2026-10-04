@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-04 11:47. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-04 12:21. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
-| planned      | 0                  | 4                  | —                   |
-| todo         | —                  | —                  | 75                  |
-| in-progress  | 4                  | 10                 | 1                   |
+| planned      | 0                  | 3                  | —                   |
+| todo         | —                  | —                  | 73                  |
+| in-progress  | 4                  | 11                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 10                 | 159                 |
+| done         | 3                  | 10                 | 162                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 2× P1 · 66× P2 · 7× P3.
+`todo` by priority: 66× P2 · 7× P3.
 
 ## In progress now
 
@@ -28,7 +28,7 @@ _Generated 2026-10-04 11:47. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (32/49 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (34/50 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -55,14 +55,15 @@ _Generated 2026-10-04 11:47. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
     - [x] TASK-056 The seeded rulebook never learns where a term or a decision goes
     - [x] TASK-070 The decline clauses the rulebook owes — and one record it actually does
-  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — planned (0/7 done)
-    - [ ] TASK-114 The question table — the shape every other task in this story reads
-    - [ ] TASK-115 `/feature new` writes the frontier it could not reach, instead of losing it
+  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — in-progress (2/8 done)
+    - [ ] TASK-114 `feature` reconciles an `idea.md` written before the question table existed
+    - [x] TASK-115 Open questions survive a session reset — the question table, written by `/feature new`, resumed by `/feature pick`
     - ~~TASK-116 `/feature pick` gains one branch: open questions outstanding, resume at the frontier~~
     - [ ] TASK-117 `grill-me` switches from one question at a time to frontier rounds
     - ~~TASK-118 `research` becomes a question type that dispatches a sub-agent, not a skill of its own~~
     - ~~TASK-119 `feature` reconciles an `idea.md` written before the question table existed~~
-    - [ ] TASK-195 Re-slice STORY-004 by the slicing doctrine before any of its tasks is picked
+    - [x] TASK-195 Re-slice STORY-004 by the slicing doctrine before any of its tasks is picked
+    - [ ] TASK-257 Two sessions never answer the same open question — `claimed-by`
   - STORY-005 The merge gate's third axis — `verify-intent` and the smell baseline — 4/4 done (done)
     - [x] TASK-046 `verify-intent` — the fidelity axis, grounded in the task's acceptance criteria
     - [x] TASK-047 `verify-intent` reads the feature ledger and the specs, not just the task
@@ -203,8 +204,8 @@ _Generated 2026-10-04 11:47. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (1/33 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (1/20 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (2/33 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (2/20 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
@@ -219,7 +220,7 @@ _Generated 2026-10-04 11:47. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-234 `/feature status` re-collects what it was told to consume, and its phase rules leave ledgers with no phase
     - [ ] TASK-235 `/feature review` closes open tasks after a gate that stops on open tasks
     - [x] TASK-242 `new-project`'s fill steps can ship unrendered tokens, and run a remote command before the repo exists
-    - [ ] TASK-243 Two `LAYER.md` rows disagree with the front door that implements them
+    - [x] TASK-243 Two `LAYER.md` rows disagree with the front door that implements them
     - [ ] TASK-244 The adopter's inference rules leave one case unruled, and write where they say to write nothing
     - [ ] TASK-245 `verify-conventions` contradicts itself on the empty rulebook, drift severity, and where to register a pattern
     - [ ] TASK-246 `verify-intent` never maps its classes to severities, and leaves "which task" open

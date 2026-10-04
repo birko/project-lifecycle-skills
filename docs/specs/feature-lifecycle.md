@@ -1,9 +1,10 @@
 ---
 area: feature-lifecycle
-generated-at: 1cdf452fbb2594ffe3016cf359b041815fdd8957
-generated-on: 2026-10-03
+generated-at: cf3fc1d404ec1a69c4a6d9ed36e6966cc4b9c4ba
+generated-on: 2026-10-04
 sources:
   - skills/feature/SKILL.md
+  - skills/feature/questions.md
   - skills/feature/templates/README.md.tmpl
   - skills/feature/templates/decisions.md
   - skills/feature/templates/idea.md
@@ -19,7 +20,7 @@ sources:
   - skills/feature/verbs/status.md
 shaped-by: [FEATURE-001, FEATURE-003]
 shaped-by-derived: true
-shaped-by-unresolved: 7
+shaped-by-unresolved: 5
 ---
 
 # The stakeholder-facing half — an idea to shipped, with every decision recorded
@@ -80,7 +81,7 @@ The system SHALL place features in a `docs/features/` folder under the project r
 
 ### Requirement: New captures an idea and grills it into proposed decisions
 
-The system SHALL, on `/feature new`, interrogate the idea with the grill skill by default (skipping it only on `--no-grill` or when the user calls the feature trivial, falling back to a couple of clarifying questions), then write a stakeholder-readable idea file (problem, proposed shape, open questions from the grill, out of scope) with coarse status `idea`, and a decision ledger with one row per resolved branch — including any non-goal the user already named — every row in state `proposed` with date and decider left blank, plus a dated History seed line.
+The system SHALL, on `/feature new`, interrogate the idea with the grill skill by default (skipping it only on `--no-grill` or when the user calls the feature trivial, falling back to a couple of clarifying questions), then write a stakeholder-readable idea file (problem, proposed shape, the grill's questions as an open-questions table, out of scope) with coarse status `idea`, and a decision ledger with one row per resolved branch — including any non-goal the user already named — every row in state `proposed` with date and decider left blank, plus a dated History seed line.
 
 #### Scenario: Grilled idea seeds proposed rows
 
@@ -99,6 +100,28 @@ The system SHALL, on `/feature new`, interrogate the idea with the grill skill b
 - **Given** a feature just created with five proposed rows
 - **When** `/feature new` confirms
 - **Then** it prints the folder path, offers `/feature prototype` or `/feature decide`, and says five decisions await a verdict
+
+### Requirement: Open questions survive the session as a table with a computed frontier
+
+The system SHALL keep a feature's open questions as a table in its idea file — id, question, type (`decision` or `research`), blocked-by, state — defined in one owner file that every other reader points at. States SHALL be `open`, `resolved → Dn` (or `resolved — <fact>` for research that decides nothing) and `dropped — <reason>`, each set by a named step; dropping a question SHALL remove it from every blocked-by. The frontier SHALL be every open row whose blockers are all resolved, computed fresh and never stored; a blocker id missing from the table is a broken edge. A row SHALL hold only a question stated precisely as one sentence ending in `?`; vaguer concerns stay in a Fog list, and ruled-out scope is neither. On `/feature new` the system SHALL give each question its id and edges when raised, write unreached ones as `open`, write one of two explicit lines when none remain (all resolved, or `--no-grill`), and name the frontier in its closing output.
+
+#### Scenario: A session cut short leaves its frontier on disk
+
+- **Given** a grill that resolves Q1–Q3 and raises Q4 (waiting on Q1), Q5 (waiting on Q4) and Q7 (waiting on nothing) before the user leaves
+- **When** `/feature new` finishes
+- **Then** the table shows Q1–Q3 `resolved → D1`–`D3`, Q4, Q5 and Q7 `open` with those edges, and the closing output names Q4 and Q7 as the frontier
+
+#### Scenario: Nothing left open is still written down
+
+- **Given** a grill that resolved every question it raised
+- **When** the idea file is written
+- **Then** the section says the grill resolved every question it raised, and is never an empty table
+
+#### Scenario: A vague worry is not a row
+
+- **Given** the concern "something about making sure handover happens properly"
+- **When** it is recorded
+- **Then** it goes in the Fog list, not the table
 
 ### Requirement: New adopts a seeded stub instead of minting a duplicate
 
@@ -342,7 +365,7 @@ The system SHALL require that the tasks for a feature exist before any implement
 
 ### Requirement: Pick enters a feature at the stage that unblocks it
 
-The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself.
+The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → say it predates the table, never "no open questions"; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself.
 
 #### Scenario: Most common stall offers decompose
 
@@ -367,6 +390,18 @@ The system SHALL, on `/feature pick`, resolve the feature by id (or short number
 - **Given** a feature with proposed rows and nothing decomposed
 - **When** the user accepts each offer
 - **Then** pick chains decide, then decompose, then hands off to task picking
+
+#### Scenario: Open questions are resumed before decisions
+
+- **Given** a feature at phase `idea` whose table has Q4, Q6, Q7 and Q8 on the frontier and Q5 waiting on Q4
+- **When** `/feature pick` runs
+- **Then** it first offers "FEATURE-NNN has 4 open question(s) on the frontier: … Resume the grill there? [Y/n]", ahead of any decide offer
+
+#### Scenario: A pre-table file is not an empty frontier
+
+- **Given** a feature whose open-questions section is a bulleted list written before the table existed
+- **When** pick reads it
+- **Then** it reports that the questions predate the table and no frontier can be computed, and continues to the next gate
 
 #### Scenario: Prototype gate reads the line, not the folder
 

@@ -3,7 +3,7 @@ id: TASK-115
 parent: STORY-004
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P1
 assignee: agent
 created: 2026-09-08
@@ -73,43 +73,43 @@ questions" on every one of them. So this slice tells the two apart. Reconciling 
 
 *From TASK-114 (the shape):*
 
-- [ ] `skills/feature/templates/idea.md` carries the table with five columns, `id · question · type · blocked-by · state`,
+- [x] `skills/feature/templates/idea.md` carries the table with five columns, `id · question · type · blocked-by · state`,
       replacing the prose bullet list, with a filled example row showing a blocked question. (TASK-114's original
       six-column criterion was split at the re-cut; the sixth column, `claimed-by`, is TASK-257's.)
-- [ ] The **state vocabulary** is defined once, in the file that owns it, and every state has a verb or a
+- [x] The **state vocabulary** is defined once, in the file that owns it, and every state has a verb or a
       step that sets it — no state reachable only by hand-editing
-- [ ] The **frontier query** is stated precisely enough that two readers compute the same set from the
+- [x] The **frontier query** is stated precisely enough that two readers compute the same set from the
       same table: *state open, and every id in `blocked-by` resolved*
-- [ ] The **fog boundary** is written as a rule an agent can apply — what earns a row, what stays prose,
+- [x] The **fog boundary** is written as a rule an agent can apply — what earns a row, what stays prose,
       and that `## Out of scope (initial)` is neither
-- [ ] Nothing else in `skills/` restates the states or the query; the other tasks point here
+- [x] Nothing else in `skills/` restates the states or the query; the other tasks point here
 
 *From TASK-119 (via TASK-114):*
 
-- [ ] `feature` can tell a pre-table `idea.md` from a current one, and says which — never treating the
+- [x] `feature` can tell a pre-table `idea.md` from a current one, and says which — never treating the
       absence of a table as an empty frontier
 
 *From TASK-115 (`new`):*
 
-- [ ] `/feature new` ends by writing every unreached question as a row, with its `blocked-by` edges — not
+- [x] `/feature new` ends by writing every unreached question as a row, with its `blocked-by` edges — not
       a flat list of leftovers
-- [ ] Edges are recorded when the question is *raised*, not reconstructed at the end from memory
-- [ ] A run that reached everything says so explicitly rather than writing an empty table — silence
+- [x] Edges are recorded when the question is *raised*, not reconstructed at the end from memory
+- [x] A run that reached everything says so explicitly rather than writing an empty table — silence
       cannot be told from "the grill never got there"
-- [ ] The verb states what it wrote, in its closing output, so a user can see the frontier they are
+- [x] The verb states what it wrote, in its closing output, so a user can see the frontier they are
       leaving behind
 
 *From TASK-116 (`pick`):*
 
-- [ ] `/feature pick` detects outstanding open questions and offers to resume at the frontier, as one
+- [x] `/feature pick` detects outstanding open questions and offers to resume at the frontier, as one
       branch among its existing routing — no new verb, no new file
-- [ ] The branch's position in the routing is stated: what it outranks and what outranks it, so two
+- [x] The branch's position in the routing is stated: what it outranks and what outranks it, so two
       readers resolve the same feature to the same offer
-- [ ] A feature with a table but an empty frontier — every open question blocked — reports **that**,
+- [x] A feature with a table but an empty frontier — every open question blocked — reports **that**,
       distinctly from having no open questions at all
-- [ ] Nothing restates the frontier query
+- [x] Nothing restates the frontier query
 
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -123,22 +123,40 @@ questions" on every one of them. So this slice tells the two apart. Reconciling 
 
 *From TASK-114:*
 
-- [ ] Hand a cold runner — acquired per [[populate-tests]] § *Acquiring a cold runner* — the revised
+- [x] Hand a cold runner — acquired per [[populate-tests]] § *Acquiring a cold runner* — the revised
       template plus a half-filled example, and ask it to name which questions it would work next and why.
       Expected: it computes the frontier from the table without being told the rule, and it does not
       place a vague worry in a row. Withhold both expectations from its brief.
 
 *From TASK-115:*
 
-- [ ] Run `/feature new` on a real idea and stop it deliberately part-way. Reopen the folder and read
+- [x] Run `/feature new` on a real idea and stop it deliberately part-way. Reopen the folder and read
       only `idea.md`. Expected: a reader who was not present can tell what remains open and what each
       remaining question waits on.
 
 *From TASK-116:*
 
-- [ ] Take that part-way feature, in a fresh session with no memory of it, and run `/feature pick`.
+- [x] Take that part-way feature, in a fresh session with no memory of it, and run `/feature pick`.
       Expected: it resumes at a question you did not have to find yourself.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-115` — leave empty until then._
+Planned inline at pick (2026-10-04).
+
+1. **Owner file `skills/feature/questions.md`**, the one definition, like `tasks/slicing.md` (four skills will read it, so no verb can own it). It defines the five columns; `type` ∈ `decision` · `research` (dispatch is TASK-117's); `state` ∈ `open` · `resolved (→ Dn)` · `dropped (reason)`, with the step that sets each; the frontier query; the fog rule; and how a reader tells a current file from a pre-table one (the header row). `SKILL.md` links it.
+2. **Template:** `idea.md`'s section becomes the table with example rows (one blocked), a fog list, and a pointer to the owner file.
+3. **`new.md`:** ids and `blocked-by` are given when a question is first raised. Unreached questions are written as `open` rows. "The grill reached everything" is an explicit line, distinct from `--no-grill`. The closing output names the frontier.
+4. **`pick.md`:** a gate **Q · Open questions**, outranked only by gate E. It offers to resume when there is a frontier (question text and answer-less path stated), reports a table with no frontier distinctly, and never reads a pre-table file as empty.
+5. Lint; re-harvest `feature-lifecycle` (its sources change); then the three drills from the human test plan.
+
+## Progress log
+
+- 2026-10-04 — Picked; planned inline. **Owner file** `skills/feature/questions.md` (new; linked from `SKILL.md`'s layout): five columns; `type` ∈ `decision` · `research`; states `open` · `resolved → Dn` (or `— <fact>`) · `dropped — <reason>`, each with the step that sets it, and dropping removes the id from every `blocked-by`; the frontier query (open, and every blocker resolved), with broken edges and "open rows, no frontier" defined; the fog rule; and current vs pre-table told apart by the header row. **Template:** the section is the table with two example rows (Q2 blocked by Q1), a Fog list, and a prose pointer to the owner (a link would not resolve in a consumer repo). **`new.md`:** ids and edges are given when a question is raised; unreached questions are written `open`; there are two explicit no-open-rows lines (all resolved / `--no-grill`); the closing output names the frontier. **`pick.md`:** gate **Q** first, outranked only by E; step 3b carries the offer verbatim, the `n`/no-answer path (change nothing, report the frontier), "no frontier", and pre-table handling; `research` rows are looked up, not asked. No other skill restates the states or the query.
+- 2026-10-04 — **Spec:** `feature-lifecycle` re-harvested. `questions.md` added to its sources. A new requirement (the table and frontier, and `new` writing it), three scenarios, `new`'s idea-file clause, and `pick`'s gate list plus two scenarios; everything else word for word. 39 lines added, 4 removed. Re-stamped at `cf3fc1d`; unresolved 7 → 5.
+- 2026-10-04 — **Human test plan — all three steps passed, plus a cold-reader check.** Folder `%LOCALAPPDATA%\Temp\d115`, outside every repo, with a copy of `skills/`; runners `claude -p --disable-slash-commands`. Expected answers were written down before the runs.
+  - **Step 1 (template + half-filled example, without `questions.md`):** the runner gave the frontier as Q2, Q3 (its blocker Q1 resolved) and Q4, with Q4 looked up as research. It said Q5 waits on the open Q2, flagged Q6's blocker Q9 as missing from the table and refused to guess it, put the precise new concern as row Q7, and put the vague one in Fog. Exactly the expected answer. **Cold:** it listed no skills.
+  - **Step 2 (`/feature new`, cut after three answers, in a git fixture):** it wrote Q1–Q3 `resolved → D1–D3`, Q4–Q7 `open` with edges given when raised (Q5 waits on Q1 and Q4), Q8 `research`, and a Fog bullet. Its closing output: "5 open questions, 4 on the frontier: Q4, Q6, Q7, Q8 (Q5 waits on open Q4) — `/feature pick FEATURE-001` resumes there."
+  - **Cold reader of that `idea.md` alone:** correct frontier, and Q5 waiting on Q4. **Cold:** it listed no skills.
+  - **Step 3 (`/feature pick`, fresh session, one "Y" and then silence):** gate Q fired first, with the offer verbatim naming all four frontier questions. It looked up Q8 rather than asking, and found no evidence, so left it `open` without inventing a fact. It put Q4 first because Q5 depends on it, kept Q4 `open` on silence with no decision written, then reported `not resumed: 4 open question(s) on the frontier — Q4, Q6, Q7, Q8` and stopped at gate B without auto-deciding.
+  - The two behaviour runners (steps 2 and 3) were not asked to list skills, so their coldness is unconfirmed. They read the skills as files.
+- 2026-10-04 — Close review. Intent: all 15 criteria and all three test steps met. Correctness: prose only; the frontier was computed identically by four independent readers. Comments: none. Conventions: one owner file and pointers everywhere else (§ *Defer to a shared inventory*); every ask-step carries its question and its answer-less path. → **done**.

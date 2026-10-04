@@ -14,9 +14,20 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
    - Invoke the [[grill-me]] skill on the raw idea. Its whole job is to drag the implicit assumptions, edge cases, and "what happens when…" branches into the open until each branch of the decision tree is resolved.
    - **Skip only if** the user passes `--no-grill` or says the feature is trivial. Tiny features (one obvious change) don't need a relentless interview — fall back to a couple of `AskUserQuestion` clarifications.
    - The grill's resolved branches are the raw material for the decision tree. Capture each as a candidate decision.
+   - **Keep the question list as you go, never at the end.** When the grill raises a question, give it its id
+     (`Q1`, `Q2`, …) and its `blocked-by` edges **at that moment** — the questions it cannot be answered before.
+     Edges reconstructed after the fact are guesses; the table's shape and rules are
+     [questions.md](../questions.md).
 
 4. **Distill into `idea.md`** — render [templates/idea.md](../templates/idea.md):
    - Problem / Proposed shape / Open questions distilled from the grill / Out of scope.
+   - **The open questions are a table, not a list** — replace the template's example rows with every question
+     the grill raised: `resolved → Dn` for each it answered (the decision is step 5's `proposed` row), and
+     `open` with its edges for each it did not reach. Concerns too vague to be a row go in the *Fog* list, per
+     [questions.md](../questions.md) § *What earns a row*.
+   - **No open rows is still written down, in one of two lines** — never as an empty table, which reads the same as
+     a grill that never got there: *"The grill resolved every question it raised — see decisions.md."*, or, under
+     `--no-grill`, *"No grill was run (`--no-grill`) — no open questions recorded."*
    - Set frontmatter `status: idea` — the initial value of the stored **coarse marker** (`idea | review | done | dropped | superseded`); the richer displayed *phase* is derived later by `/feature status`, never stored.
    - Keep it stakeholder-readable (a PM or end user reads this). No code jargon.
 
@@ -49,6 +60,8 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
    - "Build a stakeholder prototype: `/feature prototype FEATURE-NNN`"
    - "Or stamp decisions directly: `/feature decide FEATURE-NNN`"
    - Note how many `proposed` decisions are awaiting a verdict.
+   - **Name the frontier you are leaving behind** — *"3 open questions, 2 on the frontier: Q4, Q6 —
+     `/feature pick FEATURE-NNN` resumes there."*, or which of the two no-open-questions lines step 4 wrote.
 
 ## Edge cases
 
