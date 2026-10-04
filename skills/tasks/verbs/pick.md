@@ -59,7 +59,9 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    it apart: `in progress on this machine: TASK-NNN at <worktree path> — resume with /tasks pick TASK-NNN
    (check no other session is working in it)`. Picking it by id takes step 6b's resume row. A worktree here
    may belong to another session, so the line invites a resume and never assumes one. A branch copy reading
-   `review` (or `verify`) belongs to 2b's verification debt, not to this line. With an upstream this matters most: the
+   `review` (or `verify`) is reported by 2b as verification debt instead, and not on the in-progress line.
+   **Neither is also listed under `taken (hidden)`** — not a task on the in-progress line, and not a task 2b
+   reports as debt. Listed there too, this machine's own work would read as another clone's. With an upstream this matters most: the
    default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), parent IDs (story + epic), priority, assignee, file path.
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
@@ -303,7 +305,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - If `assignee: ai` (generic) → present the task body as the work brief; this conversation can begin work directly.
    - If `assignee: human` → print the task body and wait.
    - **If `jira-key:` is set in frontmatter** → suggest invoking the `jira-task` skill, if one is installed, so the user gets the full ticket workflow (intake → triage → fix → close-out).
-   - **If `github-issue:` is set** → fetch comments via `gh issue view <num> --comments` so the AI agent picks up any clarifications added in GH.
+   - **If `github-issue:` is set and `.config.yml` declares `mode: hybrid` with `external.provider: github`** → fetch comments via `gh issue view <num> --comments` so the AI agent picks up any clarifications added in GH. **Under any other mode the field is a leftover** (a repo that went from `hybrid` back to `local` keeps its `github-issue:` values): fetch nothing and print `github-issue: #<num> not fetched — mode: <mode>`. A repo that declared it does not sync must not be called.
    - **State the boundary before starting.** The task's `## Acceptance criteria` are the target and
      its `## Out of scope` is the fence. Anything surfacing outside them during the work — a
      refactor the change exposes, a bug found in passing, a plan step that's really its own unit —

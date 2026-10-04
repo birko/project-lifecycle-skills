@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-04 10:47. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -10,10 +10,10 @@ _Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 5                  | —                   |
 | todo         | —                  | —                  | 75                  |
-| in-progress  | 4                  | 10                 | 1                   |
+| in-progress  | 3                  | 9                  | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 2                  | 9                  | 157                 |
+| done         | 3                  | 10                 | 158                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 3× P1 · 65× P2 · 7× P3.
@@ -88,11 +88,11 @@ _Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit*
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (50/91 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (50/92 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/20 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/21 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -113,6 +113,7 @@ _Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-212 Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes
     - [ ] TASK-218 `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined
     - [ ] TASK-254 `pick`'s in-place fallback with an upstream never says where the status flip is committed
+    - [ ] TASK-255 `pick`'s list output leaves five rendering details for each reader to settle
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -202,26 +203,6 @@ _Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
-- EPIC-005 Task worktrees — in-progress (16/17 tasks done)
-  - STORY-021 Run a task in its own checkout — in-progress (16/17 done)
-    - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config · FEATURE-001
-    - [x] TASK-174 `/tasks pick` creates the task worktree, asking for the root when undeclared · FEATURE-001
-    - [x] TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot · FEATURE-001
-    - [x] TASK-176 `/tasks close` merges from the worktree and removes it in a fixed order · FEATURE-001
-    - [x] TASK-177 Ship `workspace:` / `worktree-root:` through both front doors · FEATURE-001
-    - [x] TASK-178 Give drill checkouts a declared home and a cleanup rule · FEATURE-001
-    - [x] TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer · FEATURE-001
-    - [x] TASK-181 Resuming a task re-enters the worktree that holds its branch · FEATURE-001
-    - [x] TASK-183 Worktree mode for projects whose default branch tracks a remote · FEATURE-001
-    - [x] TASK-184 Tasks created in parallel worktrees can mint the same id · FEATURE-001
-    - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too · FEATURE-001
-    - [x] TASK-186 Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list · FEATURE-001
-    - [x] TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder; one report line is orphaned · FEATURE-001
-    - [x] TASK-188 A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch · FEATURE-001
-    - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner · FEATURE-001
-    - [x] TASK-193 "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
-    - [ ] TASK-194 `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
-
 - EPIC-007 First spec harvest review 2026-10 — planned (0/32 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — planned (0/19 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
@@ -271,7 +252,7 @@ _Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit*
 - [x] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed (P3, unassigned)
 
 <details>
-<summary><strong>Completed</strong> — 2 epics</summary>
+<summary><strong>Completed</strong> — 3 epics</summary>
 
 - EPIC-004 Comment discipline in agent-written code — done (28/29 tasks done)
   - STORY-018 Seed the comment-discipline rule into both rulebooks — 17/18 done (done)
@@ -306,6 +287,26 @@ _Generated 2026-10-04 10:27. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-169 The measurement table cannot be re-run from what AGENTS.md says · FEATURE-002
     - [x] TASK-170 An only-copy that belongs in the project's guide has no relocation target · FEATURE-002
     - [x] TASK-172 Three things Gate A's second run found in this story's own fixes · FEATURE-002
+
+- EPIC-005 Task worktrees — done (17/17 tasks done)
+  - STORY-021 Run a task in its own checkout — 17/17 done (done)
+    - [x] TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config · FEATURE-001
+    - [x] TASK-174 `/tasks pick` creates the task worktree, asking for the root when undeclared · FEATURE-001
+    - [x] TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot · FEATURE-001
+    - [x] TASK-176 `/tasks close` merges from the worktree and removes it in a fixed order · FEATURE-001
+    - [x] TASK-177 Ship `workspace:` / `worktree-root:` through both front doors · FEATURE-001
+    - [x] TASK-178 Give drill checkouts a declared home and a cleanup rule · FEATURE-001
+    - [x] TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer · FEATURE-001
+    - [x] TASK-181 Resuming a task re-enters the worktree that holds its branch · FEATURE-001
+    - [x] TASK-183 Worktree mode for projects whose default branch tracks a remote · FEATURE-001
+    - [x] TASK-184 Tasks created in parallel worktrees can mint the same id · FEATURE-001
+    - [x] TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too · FEATURE-001
+    - [x] TASK-186 Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list · FEATURE-001
+    - [x] TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder; one report line is orphaned · FEATURE-001
+    - [x] TASK-188 A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch · FEATURE-001
+    - [x] TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner · FEATURE-001
+    - [x] TASK-193 "Local mode" names two unrelated settings, and a cold runner read one as the other · FEATURE-001
+    - [x] TASK-194 `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode · FEATURE-001
 
 - EPIC-006 Task states follow common practice — done (18/18 tasks done)
   - STORY-022 "Blocked" becomes a flag, and "review" becomes "verify" — 18/18 done (done)

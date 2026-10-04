@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: eebeb6e79631d115bc4ae1831c6e92792b594311
+generated-at: 57fedb5b0a4a69b5d8ffb85544dd5b45d1b4a24f
 generated-on: 2026-10-04
 sources:
   - skills/tasks/SKILL.md
@@ -29,7 +29,7 @@ sources:
   - skills/tasks/verbs/triage.md
 shaped-by: [FEATURE-001, FEATURE-002, FEATURE-003]
 shaped-by-derived: true
-shaped-by-unresolved: 7
+shaped-by-unresolved: 6
 ---
 
 # The developer-facing backlog — epics, stories and tasks, with a gate before done
@@ -276,7 +276,7 @@ The system SHALL cut work into vertical tasks that each pass three hard checks �
 
 ### Requirement: Picking a task
 
-The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard and hand off by assignee. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn.
+The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn.
 
 #### Scenario: Debt nudge
 
@@ -295,6 +295,12 @@ The system SHALL list `todo` tasks matching the filters (priority, assignee, epi
 - **Given** a task with four acceptance criteria and an empty plan
 - **When** it is picked
 - **Then** the user is offered `/tasks plan` first, with the number of criteria named as the reason
+
+#### Scenario: Leftover issue link in a local tracker
+
+- **Given** `mode: local` and a task carrying `github-issue: 42` from when the repo was hybrid
+- **When** the task is picked
+- **Then** no `gh` command runs and the hand-off prints `github-issue: #42 not fetched — mode: local`
 
 ### Requirement: Task branch per integration policy
 
