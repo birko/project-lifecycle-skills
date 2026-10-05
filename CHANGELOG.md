@@ -12,7 +12,7 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 
 ### Added
 
-- **Open questions survive a session reset.** `/feature new` now writes every question its grill raised but didn't reach into `idea.md` as a table — id, question, type, what it waits on, state — instead of a prose list that was lost with the conversation. `/feature pick` resumes at the *frontier* (the open questions nothing is still waiting on) before anything else, looks up factual questions itself rather than asking you, and never mistakes an older prose list for "no open questions". The rules live in one place, `skills/feature/questions.md`.
+- **Open questions survive a session reset.** `/feature new` now writes every question its grill raised but didn't reach into `idea.md` as a table — id, question, type, what it waits on, state — instead of a prose list that was lost with the conversation. `/feature pick` resumes at the *frontier* (the open questions nothing is still waiting on) before anything else, looks up factual questions itself rather than asking you, and never mistakes an older prose list for "no open questions" — it offers to bring that list into the table instead, keeping the original text in a collapsed block so nothing is lost, and remembers a "no". The rules live in one place, `skills/feature/questions.md`.
 
 ### Fixed
 

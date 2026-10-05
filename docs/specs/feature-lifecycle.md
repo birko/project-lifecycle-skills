@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: cf3fc1d404ec1a69c4a6d9ed36e6966cc4b9c4ba
+generated-at: 7ed24786acac1c12e1acd2c3f7a3cf699afe0fc8
 generated-on: 2026-10-04
 sources:
   - skills/feature/SKILL.md
@@ -365,7 +365,7 @@ The system SHALL require that the tasks for a feature exist before any implement
 
 ### Requirement: Pick enters a feature at the stage that unblocks it
 
-The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → say it predates the table, never "no open questions"; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself.
+The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself.
 
 #### Scenario: Most common stall offers decompose
 
@@ -401,7 +401,23 @@ The system SHALL, on `/feature pick`, resolve the feature by id (or short number
 
 - **Given** a feature whose open-questions section is a bulleted list written before the table existed
 - **When** pick reads it
-- **Then** it reports that the questions predate the table and no frontier can be computed, and continues to the next gate
+- **Then** it says the questions are in the earlier format and offers to bring them into the table, never reporting no open questions
+
+### Requirement: A pre-table questions section is upgraded in place, on offer
+
+The system SHALL find the section by a heading starting `## Open questions`, and SHALL upgrade it only when the user accepts. It SHALL turn every old item into a row or a Fog bullet and drop none: an item naming a decision becomes `resolved → Dn`; an answer with no decision becomes `resolved — <the answer, as written>`; a precise unanswered question becomes `open`, with no edge it does not name; anything vaguer becomes Fog verbatim; and the template's own placeholder lines are removed and counted. It SHALL keep each question's wording and the heading, SHALL keep the old list itself verbatim in a collapsed block under the table, and SHALL leave the decision ledger untouched. It SHALL report `brought up to date` with its counts, distinct from `current` on a file that already had the table. A refusal SHALL write a dated line under the heading that stops the offer recurring; no answer SHALL write nothing.
+
+#### Scenario: Every old item lands somewhere
+
+- **Given** a section with twelve items, each ending `→ **Dn**`
+- **When** the upgrade runs
+- **Then** the table has twelve rows `resolved → D1`…`D12` with the questions as written, no decision row changes, and the report reads `brought up to date — 12 rows (12 resolved → D, 0 resolved with an answer, 0 open), 0 fog, 0 placeholder line(s) removed`
+
+#### Scenario: The second run reports the first
+
+- **Given** a section upgraded in an earlier run
+- **When** pick reads it again
+- **Then** it reports `open questions: current` and offers nothing
 
 #### Scenario: Prototype gate reads the line, not the folder
 

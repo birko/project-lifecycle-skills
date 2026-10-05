@@ -55,8 +55,18 @@ lifecycle stall.
      now: Q7 waits on Q8, Q8 waits on Q7"* (or the broken edge, by id) — and continue to gate A.
    - **No open rows** → the gate passes silently.
    - **A pre-table section** (a bulleted or prose list, [questions.md](../questions.md) § *Current or
-     pre-table*) → never report *no open questions*. Report `open questions predate the question table —
-     read idea.md § Open questions; no frontier can be computed` and continue to gate A.
+     pre-table*) → never report *no open questions*. Unless it carries the declined line, put this question:
+
+     > **FEATURE-NNN's open questions are in the earlier format (N item(s)), so no frontier can be computed. Bring them into the question table now? [Y/n]**
+
+     - `Y` → upgrade the section in place, exactly as [questions.md](../questions.md) § *Bringing a pre-table
+       section up to date* says, print its report line, then run this gate again on the result.
+     - `n` → write the declined line that section defines, report `open questions: pre-table, kept by choice on
+       <date>`, and continue to gate A.
+     - **No answer** → change nothing, report `open questions: pre-table — N item(s) in the earlier format`, and
+       continue to gate A. Silence is not a no, so the offer comes back next run.
+     - **Declined line present** → do not offer; report `open questions: pre-table, kept by choice on <date>`
+       and continue to gate A.
 
 4. **Gate D is the important one — default yes, and say why on a refusal.** List exactly which
    rows are uncovered before asking, so the offer is concrete:
@@ -83,8 +93,9 @@ lifecycle stall.
    - If every task is `done` but sign-off isn't recorded, that's gate E — route to
      `/feature review`, not to more work.
 
-6. **Confirm** — print the feature title + derived phase, which gate fired, what was chained, and
-   the single concrete next action. Never report a feature as `done` when sign-off is pending
+6. **Confirm** — print the feature title + derived phase, the open-questions line
+   ([questions.md](../questions.md) § *Current or pre-table*: current, brought up to date this run, pre-table, or
+   kept by choice), which gate fired, what was chained, and the single concrete next action. Never report a feature as `done` when sign-off is pending
    (SKILL.md § `done` means signed off).
 
 ## Working inside a picked feature

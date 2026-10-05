@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-04 12:21. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-05 10:55. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 0                  | 3                  | —                   |
-| todo         | —                  | —                  | 73                  |
+| todo         | —                  | —                  | 72                  |
 | in-progress  | 4                  | 11                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 10                 | 162                 |
+| done         | 3                  | 10                 | 163                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 66× P2 · 7× P3.
+`todo` by priority: 65× P2 · 7× P3.
 
 ## In progress now
 
@@ -28,7 +28,7 @@ _Generated 2026-10-04 12:21. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (34/50 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (35/50 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -55,8 +55,8 @@ _Generated 2026-10-04 12:21. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-055 `tdd` still says nothing creates `docs/adr/`
     - [x] TASK-056 The seeded rulebook never learns where a term or a decision goes
     - [x] TASK-070 The decline clauses the rulebook owes — and one record it actually does
-  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — in-progress (2/8 done)
-    - [ ] TASK-114 `feature` reconciles an `idea.md` written before the question table existed
+  - STORY-004 The durable question ledger — make `/feature new` survive a session reset — in-progress (3/8 done)
+    - [x] TASK-114 `feature` reconciles an `idea.md` written before the question table existed
     - [x] TASK-115 Open questions survive a session reset — the question table, written by `/feature new`, resumed by `/feature pick`
     - ~~TASK-116 `/feature pick` gains one branch: open questions outstanding, resume at the frontier~~
     - [ ] TASK-117 `grill-me` switches from one question at a time to frontier rounds

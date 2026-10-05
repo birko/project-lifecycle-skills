@@ -31,7 +31,7 @@ It lives in `idea.md` § *Open questions distilled from the grill*:
 | State | Means | Set by |
 |---|---|---|
 | `open` | Raised and not yet answered. | `/feature new` when the grill raises a question it does not resolve. |
-| `resolved → Dn` | Answered. The answer is decision `Dn` in `decisions.md`, written there as a `proposed` row. A `research` answer that decides nothing is written into the question's row as `resolved — <the fact>` instead. | `/feature new` when the grill resolves a question it raised; `/feature pick`'s resume branch. |
+| `resolved → Dn` | Answered. The answer is decision `Dn` in `decisions.md`, written there as a `proposed` row. An answer with no decision row is written into the question's row as `resolved — <the answer>` instead: a `research` fact that decides nothing, or an answer recorded before this table existed, which the upgrade below carries over without inventing a decision for it. | `/feature new` when the grill resolves a question it raised; `/feature pick`'s resume branch; the upgrade below. |
 | `dropped — <reason>` | No longer worth answering, because another answer made it moot. **Dropping removes its id from every other row's `blocked-by`**, so a dropped question never blocks anything. | `/feature pick`'s resume branch, when the user rules it moot. |
 
 No other value is legal, and no state is set by hand.
@@ -60,7 +60,48 @@ are the questions that can be answered now. Compute it fresh from the table ever
 
 ## Current or pre-table
 
-A feature written before this table existed has a bulleted or prose list in that section. **Tell the two apart by
-the section's table header**: a header row starting `| id | question | type | blocked-by | state |` is a current
-table, and anything else is a pre-table section. Never read a pre-table section as an empty frontier. It holds
-questions in a shape no frontier can be computed from, so say exactly that.
+A feature written before this table existed has a bulleted or prose list in that section. Find the section by its
+heading **starting** `## Open questions` — older files reword the rest (*"Open questions — resolved 2026-07-28"*).
+**Tell the two apart by the section's table header**: a header row starting `| id | question | type | blocked-by |
+state |` is a current table, and anything else is a pre-table section. Never read a pre-table section as an empty
+frontier. It holds questions in a shape no frontier can be computed from, so say exactly that.
+
+The three states a reader reports, each with its own line:
+
+| The section | Report |
+|---|---|
+| has the table | `open questions: current` |
+| is pre-table | `open questions: pre-table — N item(s) in the earlier format` |
+| is pre-table and carries the declined line (below) | `open questions: pre-table, kept by choice on <date>` |
+
+## Bringing a pre-table section up to date
+
+**In place, adding what is missing and re-deciding nothing.** Every item in the old list goes into a row or into the
+Fog list, and `decisions.md` is not touched. **The old list itself is kept, word for word, in a collapsed block under
+the table** — `<details><summary>Before the question table (kept verbatim)</summary>` … `</details>` — because an
+item often carries more than its question: an accepted limitation, a deferral, a note that it reversed something.
+The rows make the frontier computable; the block keeps everything the rows cannot hold. Walk the items in order
+and number the rows in that order:
+
+| The item | Becomes |
+|---|---|
+| names a decision (`→ D3`, `(**D3**)`) | a row `resolved → D3` |
+| gives an answer and names no decision (`→ shows both`, a struck-through question with its answer) | a row `resolved — <the answer, as written>` |
+| a precise question with no answer | a row `open`. Its `blocked-by` is `—` unless the item itself names what it waits on: **never invent an edge** |
+| too vague to be a question (§ *What earns a row*) | a Fog bullet, verbatim |
+| the template's own placeholder lines (`Question / assumption surfaced → …`, a bare `…`) | left out of the rows and the kept block, and counted in the report. They are not content |
+
+**The `question` cell keeps the item's question as written** — the text before its `→`, or the whole item when it
+has none — even when that is not a full sentence. Rewording it would be deciding what the question meant.
+`type` is `research` only when the item plainly asks for a fact, and otherwise `decision`. The heading stays as it is.
+
+**Report which happened, in one of two lines, never the same one:** `open questions: brought up to date — N rows
+(a resolved → D, b resolved with an answer, c open), F fog, P placeholder line(s) removed`, or, on a file that already
+had the table, `open questions: current`.
+
+**Offered, never imposed.** A user who says no gets this line written directly under the section's heading, so
+the next run reads it and does not ask again:
+
+> _Kept in the earlier format by choice on <YYYY-MM-DD> — remove this line to be offered the question table again._
+
+No answer is not a no: write nothing, and offer again next time.
