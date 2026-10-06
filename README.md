@@ -76,7 +76,7 @@ without losing its paper trail** — and that trail serves two audiences at once
                  not "missing"); /roadmap audits specs (DV7 stale / DV8 no landing
                  / DV11 provenance never derived)
 
-   /code-review · /security-review · /specs regen   (a PASS over the project, not one diff)
+   /code-review · /security-review · /specs regen · /improve-architecture   (a PASS over the project, not one diff)
              │  findings are stdout-only — unfiled means lost
              ▼
    /tasks intake ──▶ EPIC (kind: review-intake) → STORY per severity theme → TASK per fix group
@@ -224,7 +224,8 @@ keep the acceptance list an *independent target* rather than a transcript of wha
 planning stops the task drifting outward, spawning stops it swallowing what it drifts into.
 
 A third verb feeds the tree from outside. `/tasks intake` turns a **review pass** — `/code-review`
-or `/security-review` run over a module or the whole codebase, or a `/specs regen` diff review —
+or `/security-review` run over a module or the whole codebase, a `/specs regen` diff review, or an
+`/improve-architecture` pass over the shape of the code itself —
 into tracked work: one EPIC stamped `kind: review-intake`, STORYs by severity theme, one TASK per
 coherent fix group, each carrying the `findings:` ids it remediates. The review skills write no
 files, so without this step their output evaporates. Where `spawn` handles a single finding found
@@ -652,7 +653,7 @@ of satellite skills. Each slots into a named stage.
                  └─ (stakeholder sign-off → idea.md done)   ← no code re-review
 
 review at PROJECT scale (not one task's diff):
-   code-review / security-review / specs regen
+   code-review / security-review / specs regen / improve-architecture
         └─▶ /tasks intake ..... the pass → EPIC(kind: review-intake) → STORY per theme → TASK per fix
               └─▶ /fix-next ... drains it worst-first, one defect per invocation, and hands each
                                 task straight back to /tasks close for the merge gate above

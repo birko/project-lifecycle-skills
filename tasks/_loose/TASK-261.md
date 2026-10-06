@@ -12,7 +12,7 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
-findings: []
+findings: [IA-3, IA-4]
 pr: null
 github-issue: null
 jira-key: null
@@ -39,6 +39,23 @@ verb that has nothing to say. That is a convention question to settle, not a cle
 
 **This is not a defect, so it is deliberately loose.** Nothing is broken; it is a simplification candidate. It is
 the kind of output the planned architecture-review skill (STORY-007) will file through `/tasks intake`.
+
+**Linked 2026-10-06 by `/improve-architecture` (EPIC-008, author run at `30f9716`) as two duplicate findings:**
+
+Candidate key: 2:skills/tasks/verbs/help.md — IA-3
+Candidate key: 2:skills/feature/verbs/help.md — IA-4
+
+For each of the two findings (the same shape, one per router):
+- **Files:** `skills/tasks/verbs/help.md` (IA-3) / `skills/feature/verbs/help.md` (IA-4), each with its only caller, its router (`skills/tasks/SKILL.md` / `skills/feature/SKILL.md`).
+- **Problem:** class 2, shallow interface, raised on the deletion test's signal in a hot spot (`skills/tasks/verbs` 150 touches, `skills/feature/verbs` 57). The file holds one behaviour, printing the verb table, which its router already states.
+- **Solution:** delete it, or merge it into the router. `Deletion test: concentrates — callers checked: skills/tasks/SKILL.md` (IA-4: `skills/feature/SKILL.md`). Inlining removes the file and grows no caller.
+- **Benefits:**
+  - Leverage: 1 router stops pointing at a file that repeats it.
+  - Locality: 2 → 1 files per change to the help verb, with every other caller of the router untouched.
+- **Before/after:** before, `router → help.md` (one arrow, one box that repeats the router). After, `router` alone, the help verb stated in its table row.
+- **Strength:** `moderate`. The signal and the gate hold, with no fix landing in these files.
+
+`specs/verbs/help.md` was outside this run's scope, so it is neither raised nor rejected.
 
 ## Acceptance criteria
 

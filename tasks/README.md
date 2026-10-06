@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 19:02. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-06 19:40. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
-| planned      | 0                  | 2                  | —                   |
-| todo         | —                  | —                  | 72                  |
+| planned      | 1                  | 3                  | —                   |
+| todo         | —                  | —                  | 74                  |
 | in-progress  | 4                  | 11                 | 1                   |
 | verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 11                 | 172                 |
+| done         | 3                  | 11                 | 173                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 63× P2 · 9× P3.
+`todo` by priority: 65× P2 · 9× P3.
 
 ## In progress now
 
@@ -29,7 +29,7 @@ _Generated 2026-10-06 19:02. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (44/55 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (45/56 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -75,16 +75,17 @@ _Generated 2026-10-06 19:02. Run `/tasks triage` to refresh. **Do not hand-edit*
     - ~~TASK-123 Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract~~
     - [ ] TASK-124 `/feature prototype` gains a fourth form — "does this state model feel right?" 🔍 verify ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
     - [x] TASK-125 A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
-  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — in-progress (7/9 done)
+  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — in-progress (8/10 done)
     - [x] TASK-075 Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
     - [x] TASK-076 `improve-architecture` — the skill, its scoping pass, and the candidate filter
     - [x] TASK-077 The report surface — an Artifact, a fallback, and what each candidate must carry
-    - [ ] TASK-078 Findings end at `/tasks intake`, and the skill is actually installed
+    - [x] TASK-078 Findings end at `/tasks intake`, and the skill is actually installed
     - [x] TASK-262 `intake` states the shape of a "Findings dropped at intake" entry, because another skill now reads it
     - [x] TASK-263 `improve-architecture`'s candidate key is unstable, and most rejections can never be re-checked
     - [ ] TASK-265 Rung 2 does not say whether a candidate outside the hot spots is raised, so two runs of one repo differ 🔍 verify
     - [x] TASK-266 Classes 1 and 4 both fire on co-change across modules, so one finding gets two different keys
     - [x] TASK-267 Whether a candidate "concerns one member" is a judgement, so two runs key one finding differently
+    - [ ] TASK-270 `intake` cannot file an epic for a small architecture run, or a new epic for its re-run
   - STORY-008 Harvest the skill set's own specs — in-progress (3/6 done)
     - [x] TASK-079 `/specs init` — build the area map, and turn the spec layer on
     - [ ] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable ← in-progress
@@ -250,6 +251,11 @@ _Generated 2026-10-06 19:02. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-250 The pi review fallbacks have drifted from the axes they stand in for
     - [ ] TASK-251 `review-comments` miscounts its PATH rules and offers a range it has no syntax for
     - [ ] TASK-260 `grill-me`'s description has no Slovak triggers and predates the skill it describes
+
+- EPIC-008 architecture — rung 2 review 2026-10 — planned (0/2 tasks done)
+  - STORY-025 Changes that ripple across skill folders — planned (0/2 done)
+    - [ ] TASK-268 A change to a cross-skill contract ripples through up to 21 files in six skill folders
+    - [ ] TASK-269 `adopt-project` changes with `new-project`'s LAYER.md in 19 commits, and both keep needing fixes
 
 ## Loose tasks
 

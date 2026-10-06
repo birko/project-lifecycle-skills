@@ -33,13 +33,19 @@ Before scanning anything, collect what earlier runs and earlier decisions alread
   `kind: review-intake` whose `source:` names `improve-architecture`. An intake epic whose `source:` names no
   pass at all is listed in the header as `unattributed intake epic: EPIC-NNN — not read`, never skipped
   silently: it may be an earlier run filed without its name.
-- **From each earlier run, read three things:**
-  - its `### Findings dropped at intake` list: the rejections Step 5 re-checks. Match its entries **by key, never
-    by path**: two members of one file are two entries;
-  - its **open** tasks: a candidate whose key (as Step 4 defines it; the handoff writes it on each filed task)
-    matches one is not raised again, and is reported as `already filed: TASK-NNN`;
-  - its **done** tasks: a candidate whose key matches one **is** raised, marked `recurs after TASK-NNN`. The
-    earlier fix did not hold, which is a regression, not a duplicate.
+- **From the latest earlier run** (the highest EPIC id among them; ids only grow within a task tree), read its
+  `### Findings dropped at intake` list: the rejections Step 5 re-checks. It is complete, because Step 7 carries
+  every standing rejection forward into each run's list. Match its entries **by key, never by path**: two members
+  of one file are two entries.
+- **From every task whose `findings:` holds an `IA-*` id** (the prefix is the declaration), read its
+  `Candidate key:` lines, which Step 7 writes:
+  - an **open** task's key (any status but `done` and `cancelled`, so `verify` and blocked tasks count) matching
+    a candidate means the candidate is not raised again; report it as `already filed: TASK-NNN`;
+  - a **cancelled** task's key matching a candidate means someone declined it, with the reason on that task: do
+    not raise it again; report it as `declined: TASK-NNN`. Cancelling is how a candidate is declined (Step 7), and
+    a declined candidate that came back every run would make declining pointless;
+  - a **done** task's key matching a candidate means it **is** raised, marked `recurs after TASK-NNN`. The earlier
+    fix did not hold, which is a regression, not a duplicate.
 - **Decision records.** Read every record in `docs/adr/` except the retirement ledger (`0000-retired.md`) and any
   record that says it is superseded, or that another record says it supersedes. [[domain]] § *Shape* owns what a
   record holds; this pass uses its *Decision* and its *Rejected alternatives*. **Never hard-code how many records
@@ -274,7 +280,7 @@ co-change partner (for a co-change set, every other file of the set), never only
 candidate happened to be raised on. A partial record reads as changed on every later run.
 
 `<commit>` is `git rev-parse --short HEAD` when the test ran. The durable home of the record is the dropped
-findings list of the intake epic this run's findings are filed into. Until a run's findings are filed, the
+findings list of the intake epic this run's findings are filed into. Until Step 7 files them, the
 report is the record's only copy; say so in the report. **Never record it in a code comment**: that is a QA log,
 and the next pass does not read comments.
 
@@ -299,7 +305,9 @@ rewritten), re-run the gate the reason names and record the new result.
 **A move contradicts a record** when it would reinstate one of the record's *Rejected alternatives*, or undo its
 *Decision* in the area the move names. Apply this to every move a record blocks, **including one you set aside
 before it became a candidate because of the record**: the friction check below decides whether it is surfaced,
-not the order you met it in.
+not the order you met it in. **Also apply it to every `held by ADR` entry Step 1 read, whatever this run's scope**:
+a held move outside the scope is still standing, and Step 7 carries it forward only once this step has
+recomputed it.
 
 **It is surfaced only on real friction.** Real friction is Step 2 evidence attributable to that decision: the
 area is a hot spot, or fix landings cluster there. Cite the commits. Under rung 3 there is no hot spot, so only
@@ -315,6 +323,65 @@ recomputes it for each held move, whatever an earlier run recorded. A move held 
 becomes a hot spot.
 
 Never silently propose a change a record rejected. That is how a settled trade-off gets re-argued by accident.
+
+## Step 7 — File the findings
+
+**The deliverable is tracked tasks in a pool, never the report.** A run that ends at the report has failed: an
+unfiled finding is invisible to `/tasks pick`, to the `Next up` snapshot and to [[fix-next]], so every candidate
+nobody acted on that day evaporates. The report is provenance, never the brief. File through
+[`/tasks intake`](../tasks/verbs/intake.md), never a batch of `/tasks new`: intake stamps the epic
+`kind: review-intake`, which is what puts the tasks in fix-next's pool. File before writing the report, so the
+report's records line is true: `<the report's path>` below is the temp path the report will be written to, which
+is known in advance; a published link may be added to the epic afterwards.
+
+Chain intake with the scope `architecture — <rung>` and
+`--source "improve-architecture <short HEAD> <date> — report: <the report's path>"`. **Always a new epic, never
+`--epic`**: each run's dropped list is the whole standing set of rejections, so Step 1 reads only the latest run's
+list, and nothing ever edits an earlier run's epic. This departs on purpose from intake's advice to file a re-run
+into the earlier epic, and it needs intake to file an epic for every run of this pass, even one with one or two
+findings and nothing dropped.
+
+- **Candidates.** Each candidate is one finding; intake mints its `IA-<n>` id and groups findings into tasks by
+  its own rule. Each filed task's `## Context` carries, for every finding it holds:
+  - the line `Candidate key: <key> — IA-<n>`, which a later run's Step 1 reads, exactly as written;
+  - the six parts (§ *Every candidate, one shape*), the before/after in its text form, so the task can be picked
+    without opening the report.
+
+  Its acceptance criteria state what must hold after the move, **checkable when the task is merged**: the
+  structural fact the move produces (the copy is gone and its readers point at the owner, the merged type exists,
+  the callers named in the leverage line no longer carry the workaround). Never a criterion that only a later
+  run's history can answer, such as a lower co-change count, and never an escape clause ("or records why it
+  stays") that lets the criterion pass with no change; a candidate the developer judges not worth doing is
+  cancelled with the reason, which is a recorded outcome.
+- **Linked to an existing task.** When intake links a finding to an open task as its duplicate (intake step 3),
+  that task's Context gets the same `Candidate key:` line and the six parts, exactly as a filed task would, or the
+  next run finds no key there and raises the candidate again.
+- **Special candidates.** A `recurs after TASK-NNN` candidate is filed fresh, and its Context says it is a
+  regression. An `already filed` or `declined` candidate is not filed again. An undecided candidate
+  (`Deletion test: undecided — …`) is filed as a candidate at `tentative`, so a person decides it. A `contradicts ADR NNNN` candidate is filed with
+  "reopen ADR NNNN through [[domain]]; if the record stands, cancel this task citing it" as its first criterion.
+- **Severity and theme.** Every finding goes in as a `suggestion`: strength is confidence, never severity (§
+  *Strength*). Its theme is read off its class, never off a title:
+
+  | Classes | `theme:` |
+  |---|---|
+  | 1, 2 | `reuse-dead-code` |
+  | 3, 4 | `correctness-invariants` |
+  | 5 | `docs-i18n-coverage` |
+
+  A task holding findings of two themes goes under the story of the theme that comes first in intake's ladder
+  (`theme:` is a story's field, so it is set once per story).
+- **The dropped list** is every rejection still standing, each line verbatim: this run's rejections, the
+  `held by ADR` lines from Step 6, and every `previously rejected, unchanged` entry copied from the earlier run's
+  list as it stands. A gone entry (Step 5) is **not** copied; name it in the epic's area of concern as
+  `not carried forward: <key> — rejected file gone (since <commit>)`, or `rejected member gone`. Write the list
+  whatever the run's size, even with no candidate at all: intake files an epic for any pass that dropped a finding,
+  and writes it `done` when it holds no task.
+
+Nothing is asked before filing: filing is the deliverable, and a question would send every unattended run down the
+report-only path. **When no task tree exists**, intake would have to ask where to create one, and nobody may be
+there to answer: create nothing, and set the report's records line to
+`not filed — no task tree; run /tasks init, then /tasks intake --source <the report's path>`.
 
 ## Output — the report
 
@@ -418,7 +485,7 @@ After the candidates, each as a plain table, and every one printed with `(none)`
   it as it stands;
 - **Previously rejected, unchanged**: `<key> — since <commit>`;
 - **Rejections gone**: `<key> — rejected file gone | rejected member gone (since <commit>)`;
-- **Already filed**: `<key> — TASK-NNN`.
+- **Already filed**: `<key> — TASK-NNN`, or `<key> — declined: TASK-NNN` for a cancelled one.
 
 ### Stdout, whichever way the page was delivered
 
@@ -444,7 +511,7 @@ Rejections gone
   - <key> — rejected file gone | rejected member gone (since <commit>)
 
 Already filed
-  - <key> — TASK-NNN
+  - <key> — TASK-NNN | declined: TASK-NNN
 
 report: <link> | <path> (<reason>)
 ```
@@ -458,10 +525,11 @@ holds them: until the run is filed they exist nowhere else, and a temp file can 
 - Lint a change against the rulebook. That is [[verify-conventions]].
 - Reopen a decision record. It recommends it; [[domain]] does it.
 - Change code. Its output is candidates for tracked work.
+- Drain what it files. That is [[fix-next]], in a later session.
 
 ## Related skills
 
 - [[tdd]] — owns the deletion test, the interface rules and the smell inventory this pass applies.
 - [[domain]] — owns decision records: what a record holds, and how one is superseded.
-- [[tasks]] — `intake` is where a run's findings become tracked work, and where its rejections are kept.
+- [[tasks]] — `intake` is where Step 7 files a run's findings as tracked work, and where its rejections are kept.
 - [[fix-next]] — drains the tasks a run files.

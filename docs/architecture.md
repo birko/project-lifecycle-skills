@@ -1,7 +1,7 @@
 # Architecture
 
 > **Living document.** Update it whenever a change alters the structure — a stale architecture doc
-> is a defect, not harmless. Last reviewed 2026-08-18.
+> is a defect, not harmless. Last reviewed 2026-10-06.
 
 ## What this repository is
 
@@ -89,6 +89,7 @@ feature ──rides on──▶ tasks ──tracked by──▶ roadmap (+ diver
    │
    └──uses──▶ grill-me (interrogation) · prototype (stakeholder artifact)
 
+improve-architecture ──files via tasks/intake──▶ refactor candidates that survived its gate, and the rejections it keeps
 fix-next ──drains──▶ what tasks/intake filed from a review pass
 
 roll-changelog ──records──▶ CHANGELOG.md, what shipped for people who install these skills
