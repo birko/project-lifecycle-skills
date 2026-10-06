@@ -189,10 +189,23 @@ to a diff.
 reviewer sees only its late form. Use it when drafting the interface a candidate proposes.
 
 Each candidate records its **key**: `<n>:<path>` (the class number and its main file's path), with `#<member>`
-appended whenever the candidate concerns one member rather than the whole file: a method, event, property,
-injected dependency or nested type, named by its identifier as written in the code (so overloads are one member).
-Whether the suffix applies depends on the candidate alone, never on what else this run found in the file, or a
-later run that finds a second member keys the first one differently and matches nothing. Two candidates of one
+appended whenever the gate judged an element smaller than the whole file. The suffix is that element's **qualified
+name inside the file**, its enclosing types and itself joined by `::` (`#Client::Save`, `#Outer::Inner`,
+`#parse_header` for a top-level function), with generic arguments dropped (`Foo<T>` is `Foo`) and overloads
+counted as one. Qualifying is what keeps `A::Save` and `B::Save` apart, and `::` keeps a `.` out of the suffix.
+
+| The candidate | Key |
+|---|---|
+| a co-change set (classes 1 and 4), or a class 4 candidate raised on reading internals | the main file, no suffix |
+| a deletion-test candidate on a type, a function or a method, even when it is the only type in its file | `#<that element>` |
+| a deletion-test candidate on a whole module that has nothing smaller to name (a file of loose statements) | no suffix |
+| an item 4 candidate | the abstraction's own file and `#<it>`: the interface, the base class, or the event or callback with its owner (`#Client::OnError`), never the consumer's file |
+| a class 3 candidate | `#<the function>` |
+| a class 5 candidate | `#<the element whose behaviour cannot be seen>`, usually a method |
+
+The suffix depends only on the element the gate judged, never on what else the file declares or what else this
+run found in it, so adding an unrelated type to the file changes no key. A type split across files (a C#
+`partial`) takes its first file in the order `git ls-files` prints. Two candidates of one
 class on one file, neither about one member, are one candidate. A renamed member, or a candidate that narrows
 from file to member, gets a new key and reads as new: renames are not followed here, as they are not in Step 2.
 To read a key back, the class runs to the first `:`; the member is what follows the last `#`, but only when that
@@ -295,7 +308,7 @@ the fix landings can show friction.
 | Friction | Do |
 |---|---|
 | present | surface the candidate marked **`contradicts ADR NNNN — <title>`**, citing the evidence, and recommend reopening the record through [[domain]]. Never propose the code change alone, as if the record did not exist |
-| absent | do not propose it. List it among the rejected as **`<key> — held by ADR NNNN — <title> (at <commit>)`**; a move set aside before it became a candidate takes the key it would have had |
+| absent | do not propose it. List it among the rejected as **`<key> — held by ADR NNNN — <title> (at <commit>)`**; a move set aside before it became a candidate is keyed by the element the move would change, by the table in Step 4 |
 
 **"Held by" is derived too, so it is never settled.** Friction is evidence the repo still holds, so every run
 recomputes it for each held move, whatever an earlier run recorded. A move held today is surfaced the run its area
