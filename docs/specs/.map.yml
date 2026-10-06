@@ -103,6 +103,13 @@ areas:
     sources:
       - "skills/fix-next/**"
 
+  - name: code-shape-review
+    # Named by the object it acts on, the shape of the code, per the second pass's rule above. It shares "review"
+    # with change-review, so the title names what each checks: a change against its gates, the code's shape here.
+    title: Reviewing the shape of the code itself, and filing what it finds as tracked refactor work
+    sources:
+      - "skills/improve-architecture/**"
+
   - name: change-review
     # ONE area, not three, because that is how they are used: `tasks/verbs/close.md` step 5b fires
     # verify-conventions, verify-intent and code-review together on the same diff, every time, with

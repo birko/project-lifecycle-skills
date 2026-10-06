@@ -2,25 +2,24 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-06 21:16. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 3                  | —                   |
-| todo         | —                  | —                  | 73                  |
-| in-progress  | 4                  | 10                 | 1                   |
+| todo         | —                  | —                  | 84                  |
+| in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 175                 |
+| done         | 3                  | 12                 | 176                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 64× P2 · 9× P3.
+`todo` by priority: 1× P1 · 73× P2 · 10× P3.
 
 ## In progress now
 
-- [TASK-080](EPIC-001-adopt-yolobox-ideas/STORY-008-specs-regen/TASK-080.md) — `/specs regen` — generate the specs, and review the diff as the deliverable (P2, agent)
 
 ## Awaiting verification
 
@@ -28,7 +27,7 @@ _Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (47/56 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (48/57 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -85,13 +84,14 @@ _Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-266 Classes 1 and 4 both fire on co-change across modules, so one finding gets two different keys
     - [x] TASK-267 Whether a candidate "concerns one member" is a judgement, so two runs key one finding differently
     - [x] TASK-270 `intake` cannot file an epic for a small architecture run, or a new epic for its re-run
-  - STORY-008 Harvest the skill set's own specs — in-progress (3/6 done)
+  - STORY-008 Harvest the skill set's own specs — in-progress (4/7 done)
     - [x] TASK-079 `/specs init` — build the area map, and turn the spec layer on
-    - [ ] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable ← in-progress
+    - [x] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable
     - [x] TASK-103 Four capability areas are named for the product's shape rather than a consumer's need
     - [x] TASK-104 Merge the three diff-review areas into one, because that is how they are used
     - [ ] TASK-105 `change-review` and `work-tracking` describe the same gate in near-identical words
     - ~~TASK-113 Five capabilities a consumer would expect have no area, and one of them is writing the code~~
+    - [ ] TASK-281 Three specs omit behaviour their sources state
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
@@ -211,8 +211,8 @@ _Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (2/36 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (2/22 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (2/46 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (2/28 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
@@ -235,7 +235,13 @@ _Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-256 `adopt-project` adds the seed's missing sections with their tokens unrendered
     - [ ] TASK-258 A question the grill drops or defers during `/feature new` has nowhere to land in the table
     - [ ] TASK-259 `grill-me` has no answer-less path: with nobody to answer, it neither ends nor reports
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/14 done)
+    - [ ] TASK-272 `/populate-tests survey` promises no edits, but chains `adopt`, which writes files
+    - [ ] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
+    - [ ] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
+    - [ ] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4
+    - [ ] TASK-279 `improve-architecture`'s records line cannot say what happened when filing fails or nothing is found
+    - [ ] TASK-280 `improve-architecture`: the item 4 gate maps no result, and a held move whose ADR is gone has no outcome
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/18 done)
     - [ ] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [ ] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [ ] TASK-226 Three references point at things that do not exist
@@ -250,6 +256,10 @@ _Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-250 The pi review fallbacks have drifted from the axes they stand in for
     - [ ] TASK-251 `review-comments` miscounts its PATH rules and offers a range it has no syntax for
     - [ ] TASK-260 `grill-me`'s description has no Slovak triggers and predates the skill it describes
+    - [ ] TASK-271 Three shipped skills point at things a consumer install does not have
+    - [ ] TASK-274 `roll-changelog`: a dangling skeleton link, two definitions of its boundary, an undeclared flag, and an empty release
+    - [ ] TASK-275 `domain` is told it audits ADR drift but has no pass for it, and two of its pointers are wrong
+    - [ ] TASK-276 `handoff` has no trigger phrases, and never says where its document went
 
 - EPIC-008 architecture — rung 2 review 2026-10 — planned (0/2 tasks done)
   - STORY-025 Changes that ripple across skill folders — planned (0/2 done)

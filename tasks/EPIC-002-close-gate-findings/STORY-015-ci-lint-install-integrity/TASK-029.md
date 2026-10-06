@@ -10,7 +10,7 @@ created: 2026-08-19
 depends-on: []
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
-findings: []
+findings: [SH-117]
 pr: null
 github-issue: null
 jira-key: null
@@ -37,6 +37,8 @@ runs **56** cases, while `AGENTS.md:366` still says 47 and lists the drift as `1
 is the concrete evidence for criterion 3 below, not merely an argument for it. TASK-151 deliberately
 did not patch 47 → 56: a hand-synced number fixed by hand is the same defect re-armed, and deciding
 whether the guide should carry a raw count at all is this task's job.
+
+**Linked 2026-10-06 (EPIC-007 fifth pass, SH-117):** the skill-authoring-rules harvest found lint branches with no case: a name over 64 characters, a file not starting with frontmatter, no skill folders found, the quote/`|`/`>` exemptions, and the `RUNTIME_REFS` allowance.
 
 ## Acceptance criteria
 

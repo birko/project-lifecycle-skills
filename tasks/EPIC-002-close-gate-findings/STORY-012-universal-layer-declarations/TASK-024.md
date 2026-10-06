@@ -9,7 +9,7 @@ assignee: agent
 created: 2026-08-18
 depends-on: []
 blocks: []
-findings: []
+findings: [SH-89]
 pr: null
 github-issue: null
 jira-key: null
@@ -77,6 +77,8 @@ check its shape' other than the reader also knowing the rule."* Both repos' `.co
 `mode:` **and** `integration:`, so there was no live gap to find — which is the point: **the format cannot
 rule one out**, and a reader who has not read `SKILL.md`'s caveat reads `present` as *done*. That is three
 separate drills now landing on this cell.
+
+**Linked 2026-10-06 (EPIC-007 fifth pass, SH-89):** the test-authoring harvest found the same gap in `populate-tests`. `skills/populate-tests/REFERENCE.md:363-364` makes `adopt` do nothing when a harness exists, though `:375-376` say the harness MUST honor its invariants, so an existing non-conforming harness is neither reconciled nor reported.
 
 ## Acceptance criteria
 

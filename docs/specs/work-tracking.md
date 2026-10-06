@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: 57fedb5b0a4a69b5d8ffb85544dd5b45d1b4a24f
-generated-on: 2026-10-04
+generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
+generated-on: 2026-10-06
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -29,7 +29,7 @@ sources:
   - skills/tasks/verbs/triage.md
 shaped-by: [FEATURE-001, FEATURE-002, FEATURE-003]
 shaped-by-derived: true
-shaped-by-unresolved: 6
+shaped-by-unresolved: 5
 ---
 
 # The developer-facing backlog — epics, stories and tasks, with a gate before done
@@ -218,7 +218,7 @@ The system SHALL regenerate the dashboard file only through `triage` (chained by
 
 ### Requirement: Creating epics, stories and tasks
 
-The system SHALL create a node by asking its level (with a decision test when unsure), title, parent (an existing epic for a story; a story, an epic or none for a task), and for tasks priority and assignee (defaults P1 and ai); it SHALL mint the id, compute the path from the parent chain, render the level's template with `planned` for containers and `todo` for tasks, offer to draft the task body (writing `N/A — fully covered by automated tests` for a plainly unit-testable task rather than filler steps), regenerate the dashboard, and auto-run `plan` for a task unless `--no-plan` was passed. Template fields with no value for this node (an epic's `kind:`/`source:`, a story's `theme:`) SHALL be omitted rather than rendered empty. Whenever the new task carries a `feature:` link, by any route, it SHALL be written into the owning decision row's task column, and if no approved or changed row covers it a new `proposed` row SHALL be appended instead.
+The system SHALL create a node by asking its level (with a decision test when unsure), title, parent (an existing epic for a story; a story, an epic or none for a task), and for tasks priority and assignee (defaults P1 and ai); it SHALL mint the id, compute the path from the parent chain, render the level's template with `planned` for containers and `todo` for tasks (but `done` for an epic that intake files as the record of a pass that dropped every finding), offer to draft the task body (writing `N/A — fully covered by automated tests` for a plainly unit-testable task rather than filler steps), regenerate the dashboard, and auto-run `plan` for a task unless `--no-plan` was passed. Template fields with no value for this node (an epic's `kind:`/`source:`, a story's `theme:`) SHALL be omitted rather than rendered empty. Whenever the new task carries a `feature:` link, by any route, it SHALL be written into the owning decision row's task column, and if no approved or changed row covers it a new `proposed` row SHALL be appended instead.
 
 #### Scenario: Task inheriting a feature
 
@@ -394,7 +394,7 @@ The system SHALL, when a task's own subject measures larger than filed, sweep wi
 
 ### Requirement: Filing a review pass
 
-The system SHALL turn a review pass's findings into one epic stamped `kind: review-intake` with its `source:`, one story per theme that received findings (each stamped with its ladder slug in `theme:`), and one task per group of findings sharing a root cause, each created through `new --from-review --no-plan` and prioritised by severity. Each finding SHALL get a source-prefixed id (`CR`, `SEC`, `SH`, `VC`, `VI`, `DRILL`; `FIELD` belongs to `new`), numbered within the pass or continuing an existing intake epic's numbering under `--epic`. Not-a-defect findings SHALL be dropped with the reason recorded on the epic; findings needing a decision go to the feature lifecycle; duplicates link to the existing task. A finding SHALL never be filed as a bare checklist line. One or two findings SHALL be redirected to `spawn` or `new`.
+The system SHALL turn a review pass's findings into one epic stamped `kind: review-intake` with its `source:`, one story per theme that received findings (each stamped with its ladder slug in `theme:`), and one task per group of findings sharing a root cause, each created through `new --from-review --no-plan` and prioritised by severity. The epic's `source:` SHALL always name the pass — the skill that ran it, or the words naming it where no skill ran — followed by any report path, PR, commit or date, with each entry naming its own pass when several passes share the epic. Each finding SHALL get a source-prefixed id (`CR`, `SEC`, `SH`, `VC`, `VI`, `IA`, `DRILL`; `FIELD` belongs to `new`), numbered within the pass or continuing an existing intake epic's numbering under `--epic`. Not-a-defect findings SHALL be dropped with the reason recorded on the epic; findings needing a decision go to the feature lifecycle; duplicates link to the existing task. A finding SHALL never be filed as a bare checklist line. One or two findings, none dropped, SHALL be redirected to `spawn` or `new` — except from the `IA` pass, which always gets its epic. A pass that dropped any finding SHALL get its epic whatever its size, even when no task is filed; such an epic is created `done`, and a later pass filed into it with `--epic` that files tasks SHALL set it back to `in-progress` in the same change. The `IA` pass SHALL file each re-run as a new epic rather than into the earlier one, restarting its finding numbers. The report's drain hint SHALL be omitted when no task was filed.
 
 #### Scenario: Pass with a false positive
 
@@ -404,9 +404,25 @@ The system SHALL turn a review pass's findings into one epic stamped `kind: revi
 
 #### Scenario: Tiny pass
 
-- **Given** a pass with one finding
+- **Given** a code-review pass with one finding, which is a real defect
 - **When** intake is invoked
 - **Then** no epic is scaffolded and the user is pointed at `spawn` or `new`
+
+#### Scenario: Every finding dropped
+
+- **Given** a pass with two findings, both of which misread the code
+- **When** the pass is filed
+- **Then** an epic is created at `done` holding the dropped list, no task is filed, and the report has no drain hint
+
+### Requirement: Dropped findings recorded in a re-checkable shape
+
+The system SHALL record a dropped finding under the epic's `### Findings dropped at intake` list in one of two exact shapes, because a later pass reads the list line by line to avoid raising it again. A rejection judged against a candidate's code and the paths its verdict turned on SHALL be written `- <key> — <reason> (callers: <paths>; at <commit>)`, with the key and reason as the pass printed them, the commit as the short HEAD when the verdict was reached, and the paths separated by `, `, ending `, incomplete` when not all were found, or `none`; a move held by a decision record SHALL be written `- <key> — held by ADR NNNN — <title> (at <commit>)`. Any other rejection SHALL be a table row with Finding, Claim and Why dropped columns. Both shapes may sit under one heading.
+
+#### Scenario: Architecture candidate rejected
+
+- **Given** an `IA` candidate `2:src/store.ts` rejected with the printed reason `fails the deletion test`, whose verdict turned on `src/a.ts` and `src/b.ts`, at commit `a1b2c3d`
+- **When** the drop is recorded
+- **Then** the list gains exactly `- 2:src/store.ts — fails the deletion test (callers: src/a.ts, src/b.ts; at a1b2c3d)`, not a prose rewording
 
 ### Requirement: Adopting an existing review backlog
 
