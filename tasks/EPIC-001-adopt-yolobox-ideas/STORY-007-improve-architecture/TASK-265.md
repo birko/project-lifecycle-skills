@@ -3,7 +3,7 @@ id: TASK-265
 parent: STORY-007
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: agent
@@ -49,7 +49,7 @@ code. Step 2 measures co-change pairs and fix landings over the whole repo whate
 
 ## Human test plan
 
-- [ ] Two cold runs on one unchanged scratch clone produce the same candidate keys, including any candidate outside the hot spots — ⚠ NOT MET YET: the scope now matches exactly, but the keys still differ on a class 1 / class 4 overlap (→ TASK-266); re-drill after it
+- [x] Two cold runs on one unchanged scratch clone produce the same candidate keys, including any candidate outside the hot spots — ⚠ NOT MET YET: the scope now matches exactly, but the keys still differ on a class 1 / class 4 overlap (→ TASK-266); re-drill after it — accepted by the owner, 2026-10-06
 
 ## Implementation plan
 
@@ -73,3 +73,4 @@ Drafted inline at pick, 2026-10-06. The choice is settled by the evidence on TAS
     1. **The same file got a different class:** run A said class 4, run B class 1, so the keys are `4:…` versus `1:…`. Classes 1 and 4 both fire on co-change across modules, with no precedence; the TASK-076 and TASK-263 readers hit the same overlap. → TASK-266.
     2. **Reader recall:** run A raised `4:…CommonAbstractClient.cs#ComputeVerificationHash` and run B did not. Candidate recall varies between readers; that is inherent judgement, recorded and not legislated.
   - The test step stays unticked, and the task parks at `verify` until a re-drill after TASK-266.
+- 2026-10-06 — **Signed off by the owner** at the `verify` park: the scope this task fixed now matches across runs, and reader recall is accepted as inherent. Closed `done`.

@@ -3,7 +3,7 @@ id: TASK-270
 parent: STORY-007
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: agent
@@ -50,7 +50,7 @@ is that task.
 
 ## Human test plan
 
-- [ ] A scratch-clone run of `/improve-architecture` that finds one candidate and rejects nothing files it under a new `kind: review-intake` epic with an `IA-*` id, and a second run reports it as `already filed` — ⚠ NOT RUN AS WRITTEN: verified by a cold read of the procedures instead (below); a real two-run needs a task tree and a one-candidate fixture, left for the owner's call
+- [x] A scratch-clone run of `/improve-architecture` that finds one candidate and rejects nothing files it under a new `kind: review-intake` epic with an `IA-*` id, and a second run reports it as `already filed` — ⚠ NOT RUN AS WRITTEN: verified by a cold read of the procedures instead (below); a real two-run needs a task tree and a one-candidate fixture, left for the owner's call — accepted by the owner, 2026-10-06
 
 ## Implementation plan
 
@@ -70,3 +70,4 @@ Step 7 then points at them instead of stating the departure alone.
   - **Q2** (a week later): `already filed: TASK-NNN`, found through the `IA-*` id and the key line, not the epic.
 
   The step as written stays unticked; the task parks at `verify` for the owner to accept the cold read or ask for the full run.
+- 2026-10-06 — **Signed off by the owner** at the `verify` park: the cold read of the procedures is accepted in place of the scratch-clone two-run. Closed `done`.

@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 19:45. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-06 20:46. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -10,10 +10,10 @@ _Generated 2026-10-06 19:45. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 3                  | —                   |
 | todo         | —                  | —                  | 73                  |
-| in-progress  | 4                  | 11                 | 1                   |
-| verify       | —                  | —                  | 3                   |
+| in-progress  | 4                  | 10                 | 1                   |
+| verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 11                 | 173                 |
+| done         | 3                  | 12                 | 175                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 64× P2 · 9× P3.
@@ -24,13 +24,11 @@ _Generated 2026-10-06 19:45. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Awaiting verification
 
-- [TASK-270](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-270.md) — `intake` cannot file an epic for a small architecture run, or a new epic for its re-run (P2, agent)
-- [TASK-265](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-265.md) — Rung 2 does not say whether a candidate outside the hot spots is raised, so two runs of one repo differ (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (45/56 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (47/56 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -76,17 +74,17 @@ _Generated 2026-10-06 19:45. Run `/tasks triage` to refresh. **Do not hand-edit*
     - ~~TASK-123 Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract~~
     - [ ] TASK-124 `/feature prototype` gains a fourth form — "does this state model feel right?" 🔍 verify ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
     - [x] TASK-125 A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
-  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — in-progress (8/10 done)
+  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — 10/10 done (done)
     - [x] TASK-075 Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
     - [x] TASK-076 `improve-architecture` — the skill, its scoping pass, and the candidate filter
     - [x] TASK-077 The report surface — an Artifact, a fallback, and what each candidate must carry
     - [x] TASK-078 Findings end at `/tasks intake`, and the skill is actually installed
     - [x] TASK-262 `intake` states the shape of a "Findings dropped at intake" entry, because another skill now reads it
     - [x] TASK-263 `improve-architecture`'s candidate key is unstable, and most rejections can never be re-checked
-    - [ ] TASK-265 Rung 2 does not say whether a candidate outside the hot spots is raised, so two runs of one repo differ 🔍 verify
+    - [x] TASK-265 Rung 2 does not say whether a candidate outside the hot spots is raised, so two runs of one repo differ
     - [x] TASK-266 Classes 1 and 4 both fire on co-change across modules, so one finding gets two different keys
     - [x] TASK-267 Whether a candidate "concerns one member" is a judgement, so two runs key one finding differently
-    - [ ] TASK-270 `intake` cannot file an epic for a small architecture run, or a new epic for its re-run 🔍 verify
+    - [x] TASK-270 `intake` cannot file an epic for a small architecture run, or a new epic for its re-run
   - STORY-008 Harvest the skill set's own specs — in-progress (3/6 done)
     - [x] TASK-079 `/specs init` — build the area map, and turn the spec layer on
     - [ ] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable ← in-progress
