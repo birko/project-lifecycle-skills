@@ -171,7 +171,9 @@ for the signal (counts, commit hashes, paths), and its gate result from Step 5.
 - **Classes 1, 3, 4 and 5** stand on their own signal, even when their move merges files:
   `Gate: not a shallowness claim — <class>`.
 
-**A rejection is recorded, so the next run does not raise it again.** Record callers as paths:
+**A rejection is recorded, so the next run does not raise it again.** The `callers:` slot holds the paths the
+verdict turned on, as `/tasks intake` step 3 states the entry: the callers for the deletion test, the
+implementations for an item 4 verdict, `none` when there are none:
 
 ```
 - <path> — <reason> (callers: <paths>; at <commit>)
@@ -185,8 +187,8 @@ and the next pass does not read comments.
 **A recorded rejection suppresses the candidate, never the check.** It is a derived verdict: it holds only while
 the code it judged is unchanged. For each deletion-test rejection Step 1 found, re-check it (a `held by ADR`
 entry is not re-checked here: Step 6 recomputes it every run, because it turns on the history, not on the code):
-1. run `git log <commit>..HEAD --format=%h -- <path> <callers>`;
-2. find the module's callers again, as paths.
+1. run `git log <commit>..HEAD --format=%h -- <path> <callers>` (with `callers: none`, the path alone);
+2. find the paths the verdict turned on again (the callers, or the implementations for an item 4 verdict).
 
 If the log printed nothing **and** the caller list is the one recorded, report
 `previously rejected, unchanged since <commit>` and do not re-run the test. If the log printed anything, the

@@ -16,7 +16,8 @@ different source of work.
 ## When this fires
 
 - Right after a review pass at **project or module scale** — `/code-review`, `/security-review`,
-  `/verify-conventions`, or a fan-out sweep — when the output is more than a couple of findings.
+  `/verify-conventions`, or a fan-out sweep — when the output is more than a couple of findings, or any
+  finding is dropped (step 3).
 - After a [[specs]] `regen` whose diff review classified behavioral changes as **unexplained**.
 - On a pasted or committed review report from elsewhere (an external audit, a pentest, a colleague's
   write-up).
@@ -28,7 +29,8 @@ different source of work.
 - `[scope]` — free text naming what was reviewed (`"auth module"`, `"full codebase"`). Used in the
   epic title/slug. Ask if absent.
 - `--source <ref>` — where the findings came from, if there's something durable to point at (a report
-  path, a PR url, a commit). Optional; findings usually arrive in-conversation.
+  path, a PR url, a commit). Optional; findings usually arrive in-conversation. Either way, the epic's
+  `source:` names the pass too (step 5).
 - `--epic <EPIC-NNN>` — file into an existing `kind: review-intake` epic instead of creating one
   (a second pass over the same scope, or a review split across sessions).
 - `--adopt <EPIC-NNN>` — no new findings; stamp an existing hand-built review epic so it becomes
@@ -54,6 +56,7 @@ different source of work.
    | `SH-*` | [[specs]] harvest — an unexplained behavioral change in a regen diff |
    | `VC-*` | [[verify-conventions]] — adherence |
    | `VI-*` | [[verify-intent]] — fidelity: a requirement missing, partly built, or built wrong |
+   | `IA-*` | [[improve-architecture]] — the shape of the code: a deepening candidate, or one the deletion test or a decision record rejected |
    | `DRILL-*` | a **cold drill** — the prose executed by a reader denied the expected answer ([[populate-tests]] § *The cold drill*) |
    | `FIELD-*` | **no pass at all** — the product failing in ordinary use. Minted by [`new`](new.md)'s `--from-field`, not by this verb |
 
@@ -93,6 +96,23 @@ different source of work.
    - **Duplicate of an open task** → link it: append the id to that task's `findings:` and add the new
      evidence to its Context. Don't create a second task ([audit.md](audit.md)'s duplicate rule).
 
+   **A dropped entry's shape is a contract: a later pass reads this list so it does not raise again what
+   was dropped.** Today that pass is [[improve-architecture]], which finds its earlier runs by `source:`
+   (step 5) and re-checks each entry against the code instead of raising it again. Choose the shape by what
+   the rejection was judged against:
+
+   | Judged against | Entry |
+   |---|---|
+   | a code path and its callers, at a commit, so a later run can re-check it | `- <path> — <reason> (callers: <paths>; at <commit>)` |
+   | anything else: a misread finding, intended behaviour | a table row with three columns: Finding, Claim, Why dropped |
+
+   `<commit>` is `git rev-parse --short HEAD` when the verdict was reached. The `callers:` slot holds the paths
+   the verdict turned on: the callers for the deletion test, the implementations for a one-adapter verdict, and
+   `none` when there are none. The one entry without the slot is a move a decision record holds, because that
+   verdict turns on the history rather than on any paths: `- <path> — held by ADR NNNN — <title> (at <commit>)`. Both shapes may sit under one
+   heading when an epic holds several passes. **Write the list entry exactly as shown**: the reader matches it
+   line by line, so an entry reworded into prose cannot be re-checked, and its candidate comes back.
+
 4. **Group findings into tasks — findings travel in packs.** Several findings that share a **root
    cause**, or that live in the same function/module and would be fixed in one edit, are **one task**
    carrying all their ids. Findings that merely share a *category* are not. Getting this right at
@@ -103,9 +123,12 @@ different source of work.
 
 5. **Scaffold the tree.**
    - **EPIC** — chain [new.md](new.md) (`epic`), title `<scope> review <YYYY-MM>`, and pass
-     `{{KIND}}` = **`review-intake`** plus `{{SOURCE}}` = the provenance (report path(s), a PR, or
-     `<pass> <date>` when the findings arrived in-conversation — a list is fine when a second pass is
-     adopted into the same epic). The `kind` stamp is the whole contract with [[fix-next]]: it is how
+     `{{KIND}}` = **`review-intake`** plus `{{SOURCE}}` = the provenance. **It names the pass, whatever
+     else it carries**: the skill that ran it, as step 2's Source column names it (`code-review`,
+     `specs regen`, `improve-architecture`), or the words that name it where no skill ran (`cold drill`,
+     `field use`), then a report path, a PR, a commit or a date. A list is fine when a second pass is
+     adopted into the same epic, each entry naming its own pass. A later pass finds its earlier runs by
+     this name, so a `source:` that is only a path files a pass nobody can find again. The `kind` stamp is the whole contract with [[fix-next]]: it is how
      the drain finds this backlog, so no epic id is ever hard-coded anywhere; `source` is what lets a
      reader six months later find what produced these tasks. Write the pass itself into
      `## Area of concern` — what was reviewed, by what, on which commit, how many findings, and the
@@ -153,7 +176,7 @@ different source of work.
 
    11 findings → 6 tasks · 2 dropped (recorded on the epic) · 1 → /feature decide
 
-   Drain it with /fix-next.
+   Drain it with /fix-next.          ← omit when no task was filed
    ```
 
 ## Edge cases
@@ -183,8 +206,15 @@ different source of work.
   so this is the one path where the field is otherwise absent forever — and `fix-next`'s key 6 would
   announce itself inert on exactly the trees this verb exists to rescue. Offer it; never guess silently,
   and a story the user won't classify stays unstamped rather than mis-stamped.
-- **One or two findings only** — don't scaffold an epic for it. Say so and use
+- **One or two findings, none dropped** — don't scaffold an epic for it. Say so and use
   [`/tasks spawn`](spawn.md) (or `/tasks new`) instead; the ceremony costs more than it tracks.
+  **A pass that dropped any finding gets its epic whatever its size**, even when every finding was dropped
+  and no task is filed: the dropped list lives only on an epic, a spawned task has nowhere to keep a
+  rejection, and a rejection with no home is raised again by the next pass. An epic that files no task is a
+  record, not a backlog: pass `{{STATUS}}` = `done` when chaining [new.md](new.md) for it, or it reads
+  `planned` over no children forever. **A later pass filed into it with `--epic` that files tasks re-opens
+  it**: set it to `in-progress` in the same change, the parent rollup [[tasks]] § *Lifecycle* requires
+  whenever a child changes.
 - **Findings span several existing epics' areas** — still file them under the review epic. The pass is
   the unit: "how much of the audit is left?" must stay answerable, and it isn't once findings scatter
   across subject epics. Cross-reference the subject epic in each task's Context.

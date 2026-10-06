@@ -85,14 +85,14 @@ Interactive scaffold of a new task tree node.
    - `{{ID}}` — generated ID
    - `{{PARENT}}` — parent ID (or `null` for orphan task / epic)
    - `{{CREATED}}` — today (`YYYY-MM-DD`)
-   - `{{STATUS}}` — `planned` for epic/story, `todo` for task
+   - `{{STATUS}}` — `planned` for epic/story, `todo` for task; `done` for an epic [intake](intake.md) files as a record of a pass that dropped every finding
    - `{{PRIORITY}}` — P0/P1/P2 (task only)
    - `{{ASSIGNEE}}` — human/ai/agent-name (task only)
    - `{{FEATURE}}` — `FEATURE-NNN` from `--from-feature`, else `null` (task only)
    - `{{FINDINGS}}` — the id list from `--from-review`, or the single `FIELD-NNN` minted by
      `--from-field`, else `[]` (task only)
    - `{{KIND}}` — `review-intake` when [intake](intake.md) is scaffolding a review pass's epic, else omit the line entirely (epic only)
-   - `{{SOURCE}}` — provenance for a `review-intake` epic: the report path(s), PR, or `<pass> <date>` when the findings arrived in-conversation. Omit the line for a normal epic (epic only)
+   - `{{SOURCE}}` — provenance for a `review-intake` epic; [intake](intake.md) step 5 owns what it carries, and it always names the pass. Omit the line for a normal epic (epic only)
    - `{{THEME}}` — the subject-ladder **slug** from [intake](intake.md)'s table when it is scaffolding
      a review-intake theme story, else **omit the field and its two comment lines entirely** (story
      only). Same rule as `{{KIND}}`/`{{SOURCE}}`: an ordinary story has no ladder position, and a
