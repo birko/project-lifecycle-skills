@@ -19,6 +19,11 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
   - **One adapter is a hypothetical seam; two make a real one.**
   - **The interface is the test surface:** a behaviour you can't observe through the interface is an interface defect.
   - **Design it twice:** draft two independent shapes before committing to an interface.
+- **`/improve-architecture` reviews the shape of the code itself, then files what it finds.** It reads the commit history for hot spots and for files that keep changing together, and sorts what it finds into five kinds of structural friction, each with a signal you can check. Every candidate has to pass the deletion test or the matching design check, and candidates that conflict with your decision records are held back unless the history shows real trouble there. The report always lands, as a private page where the session can publish one and as a local HTML file otherwise. The findings are then filed through `/tasks intake` as tasks `/fix-next` can drain. Rejected candidates are kept, keyed to the exact code they judged, and re-checked on the next run instead of being raised again.
+
+### Changed
+
+- **`/tasks intake` states how a dropped finding is written down.** A finding rejected against specific code is recorded with its path, the callers it was judged on and the commit, so a later pass can re-check it rather than raise it again. Other dropped findings keep the existing table shape. An intake epic's `source:` now always names the pass that produced it, and a pass that dropped anything gets its epic whatever its size.
 
 ### Fixed
 
