@@ -96,11 +96,20 @@ user-chosen scope from a measured one.
 | Rung | When | Scope |
 |---|---|---|
 | 1 | the user named a direction | that path, module or concept, and nothing else |
-| 2 | no direction | the hot spots from Step 2, examined first |
+| 2 | no direction | the hot spots from Step 2, then the second tier below |
 | 3 | no direction, and Step 2 found no hot spot | the whole tree, breadth-first |
 
 **Why hot spots come first:** deepening pays off only where change is coming. A beautifully restructured module
 nobody touches again returned nothing.
+
+**Rung 2 has two tiers, and both are fixed lists**, so two runs over an unchanged repo scan the same files:
+1. **the hot spots**;
+2. **then every file outside them** that is in a co-change pair or touched by a fix landing (Step 2 measured both
+   over the whole repo). Change is coming there too; it is just spread thinner.
+
+Nothing outside those two lists is scanned under rung 2. The header names both tiers and their sizes
+(`hot spots: <list>; then <n> files from co-change pairs and fix landings`). The report lists second-tier
+candidates after the hot-spot ones; that is a sort by tier, never a ranking, and strength is untouched by it.
 
 **Rung 1 — a direction.** Resolve it against `git ls-files` (a path) or the code's own names (a module or concept).
 Step 2's measurements are always taken over the whole repo: rung 1 restricts where candidates are looked for,
@@ -356,7 +365,7 @@ Read the rows in order and take the first that matches, so exactly one applies:
 (the rung, a widened window, an ambiguous direction), which the header already reports. Those decide the order the
 work is done in, and that order is blast radius, which [[fix-next]] computes from its own keys once
 `/tasks intake` has filed the task. A strength that carried priority would pre-empt that ranking. So candidates
-are listed by key (class number, then path), **never by strength**.
+are listed by rung 2's tier, then by key (class number, then path), **never by strength**.
 
 ### The rest of the page
 
