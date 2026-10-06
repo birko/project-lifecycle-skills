@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-08-26
-depends-on: [TASK-077]
+depends-on: [TASK-262, TASK-077]
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: []
@@ -52,6 +52,7 @@ New skills go in `skills/` — the only tree linked into *both* roots
 - [ ] The skill's findings hand off to [`/tasks intake`](../../../../skills/tasks/verbs/intake.md), producing an epic stamped `kind: review-intake` with stories by theme — **not** a batch of `/tasks new` calls
 - [ ] The handoff states that ending at the report is the failure mode, and why: an unfiled finding is invisible to `pick`, to the `Next up` snapshot, and to [[fix-next]]
 - [ ] Each filed task carries enough of its candidate's report content to be picked **without** re-reading the report — the report is provenance, not the brief (`intake`'s own rule for `--source`)
+- [ ] The handoff passes a `source:` that names `improve-architecture`, writes each filed task's candidate key (`<class>:<path>`) where a later run reads it, and files every rejection into the epic's dropped list in the shape TASK-262 states, even when the run has only one or two candidates (added 2026-10-06 from TASK-076's close-gate reviews)
 - [ ] A theme slug is chosen from `intake`'s ladder for each story, so `fix-next`'s key 6 has something to read — never inferred from a title
 - [ ] Both installers are re-run and the skill resolves in **both** roots; `skills-lint`'s install-root section reports no drift for it
 - [ ] The skill is registered where the repo expects a new one: `README.md`'s skill list and `docs/architecture.md` if it changes the picture
