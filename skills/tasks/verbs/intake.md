@@ -56,7 +56,7 @@ different source of work.
    | `SH-*` | [[specs]] harvest — an unexplained behavioral change in a regen diff |
    | `VC-*` | [[verify-conventions]] — adherence |
    | `VI-*` | [[verify-intent]] — fidelity: a requirement missing, partly built, or built wrong |
-   | `IA-*` | [[improve-architecture]] — the shape of the code: a deepening candidate, or one the deletion test or a decision record rejected |
+   | `IA-*` | [[improve-architecture]] — the shape of the code: a deepening candidate, or one its gate or a decision record rejected |
    | `DRILL-*` | a **cold drill** — the prose executed by a reader denied the expected answer ([[populate-tests]] § *The cold drill*) |
    | `FIELD-*` | **no pass at all** — the product failing in ordinary use. Minted by [`new`](new.md)'s `--from-field`, not by this verb |
 
@@ -103,13 +103,14 @@ different source of work.
 
    | Judged against | Entry |
    |---|---|
-   | a code path and its callers, at a commit, so a later run can re-check it | `- <path> — <reason> (callers: <paths>; at <commit>)` |
+   | a candidate's code and the paths its verdict turned on, at a commit, so a later run can re-check it | `- <key> — <reason> (callers: <paths>; at <commit>)` |
    | anything else: a misread finding, intended behaviour | a table row with three columns: Finding, Claim, Why dropped |
 
-   `<commit>` is `git rev-parse --short HEAD` when the verdict was reached. The `callers:` slot holds the paths
-   the verdict turned on: the callers for the deletion test, the implementations for a one-adapter verdict, and
-   `none` when there are none. The one entry without the slot is a move a decision record holds, because that
-   verdict turns on the history rather than on any paths: `- <path> — held by ADR NNNN — <title> (at <commit>)`. Both shapes may sit under one
+   `<key>` is the candidate's key as the pass printed it (`<n>:<path>`, or `<n>:<path>#<member>`), and
+   `<reason>` is copied as printed. `<commit>` is `git rev-parse --short HEAD` when the verdict was reached. The
+   `callers:` slot holds the paths the verdict turned on, which the pass names per gate, separated by `, `,
+   ending `, incomplete` when the pass could not find them all, and `none` when there are none. The one entry without the slot is a move a decision record holds, because that verdict turns on the
+   history rather than on any paths: `- <key> — held by ADR NNNN — <title> (at <commit>)`. Both shapes may sit under one
    heading when an epic holds several passes. **Write the list entry exactly as shown**: the reader matches it
    line by line, so an entry reworded into prose cannot be re-checked, and its candidate comes back.
 

@@ -58,6 +58,8 @@ New skills go in `skills/` — the only tree linked into *both* roots
 - [ ] The skill is registered where the repo expects a new one: `README.md`'s skill list and `docs/architecture.md` if it changes the picture
 - [ ] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass
 
+**Note from TASK-263 (2026-10-06):** a rejection a later run reports as gone (`rejected file gone` / `rejected member gone`) stays in the earlier epic's dropped list, because the pass never edits it. The handoff that files the later run decides how its record says so, or every run after it reports the same entry again. Also, the key this task writes onto each filed task is the pass's `<key>`, `<n>:<path>` or `<n>:<path>#<member>` (`skills/improve-architecture/SKILL.md` Step 4), not a bare `<class>:<path>`.
+
 **Note from TASK-077 (2026-10-06), a proposal for this task to confirm, not a settled answer:** the report's six candidate parts (`skills/improve-architecture/SKILL.md`
 § *Every candidate, one shape*) are the content each filed task carries, so it can be picked without the report.
 The report's Rejected section prints each record line verbatim, and those lines are what goes into the epic's

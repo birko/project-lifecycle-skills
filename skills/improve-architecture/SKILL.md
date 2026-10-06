@@ -34,8 +34,9 @@ Before scanning anything, collect what earlier runs and earlier decisions alread
   pass at all is listed in the header as `unattributed intake epic: EPIC-NNN — not read`, never skipped
   silently: it may be an earlier run filed without its name.
 - **From each earlier run, read three things:**
-  - its `### Findings dropped at intake` list: the rejections Step 5 re-checks;
-  - its **open** tasks: a candidate whose key (`<n>:<path>`, the class number and the main file's path, written on each filed task by the handoff)
+  - its `### Findings dropped at intake` list: the rejections Step 5 re-checks. Match its entries **by key, never
+    by path**: two members of one file are two entries;
+  - its **open** tasks: a candidate whose key (as Step 4 defines it; the handoff writes it on each filed task)
     matches one is not raised again, and is reported as `already filed: TASK-NNN`;
   - its **done** tasks: a candidate whose key matches one **is** raised, marked `recurs after TASK-NNN`. The
     earlier fix did not hold, which is a regression, not a duplicate.
@@ -153,7 +154,18 @@ to a diff.
 *Design it twice* ([interface-design.md](../tdd/interface-design.md) § *Design it twice*) is not a class: a
 reviewer sees only its late form. Use it when drafting the interface a candidate proposes.
 
-Each candidate records: its key (`<n>:<path>`: the class number from the table above and the path of its main file), its class, the files, the evidence
+Each candidate records its **key**: `<n>:<path>` (the class number and its main file's path), with `#<member>`
+appended whenever the candidate concerns one member rather than the whole file: a method, event, property,
+injected dependency or nested type, named by its identifier as written in the code (so overloads are one member).
+Whether the suffix applies depends on the candidate alone, never on what else this run found in the file, or a
+later run that finds a second member keys the first one differently and matches nothing. Two candidates of one
+class on one file, neither about one member, are one candidate. A renamed member, or a candidate that narrows
+from file to member, gets a new key and reads as new: renames are not followed here, as they are not in Step 2.
+To read a key back, the class runs to the first `:`; the member is what follows the last `#`, but only when that
+text holds no `/` and no `.` (an identifier never does), and otherwise the `#` belongs to the path; in an entry
+the key ends at the first ` — `.
+
+It also records its class, the files, the evidence
 for the signal (counts, commit hashes, paths), and its gate result from Step 5.
 
 ## Step 5 — The gate on every candidate
@@ -183,15 +195,36 @@ for the signal (counts, commit hashes, paths), and its gate result from Step 5.
 - **A class 2 candidate raised on one adapter** is judged by [interface-design.md](../tdd/interface-design.md)
   item 4 instead, which counts implementations rather than callers: `Item 4: <n> implementation(s) — <result>`.
 - **Classes 1, 3, 4 and 5** stand on their own signal, even when their move merges files:
-  `Gate: not a shallowness claim — <class>`.
+  `Gate: not a shallowness claim — <class>`. A closer look can still kill the signal: the commit that made a
+  co-change pair was later undone and fewer than 5 shared commits remain; the trace's files serve separate use
+  cases; the callers' fixes are unrelated to the function; the behaviour is visible through the interface after
+  all. The gate line is then `Gate: signal fails — <class> — <the commit or paths that show it>`, where a class 4
+  `<class>` also names the signal it was raised on (`4, co-change` or `4, internals`), and the
+  candidate is rejected with its record. **Never kill a signal without naming that evidence**: a judgement with no
+  evidence cannot be re-checked.
 
-**A rejection is recorded, so the next run does not raise it again.** The `callers:` slot holds the paths the
-verdict turned on, as `/tasks intake` step 3 states the entry: the callers for the deletion test, the
-implementations for an item 4 verdict, `none` when there are none:
+**A rejection is recorded, so the next run does not raise it again**, in the shape `/tasks intake` step 3 states:
 
 ```
-- <path> — <reason> (callers: <paths>; at <commit>)
+- <key> — <reason> (callers: <paths>; at <commit>)
 ```
+
+`<reason>` is the gate line from above, verbatim (`Deletion test: …`, `Item 4: …`, or `Gate: signal fails — …`),
+so a re-check reads off it which gate to re-run and which set the slot holds. The `callers:` slot holds the paths
+the verdict turned on, reusing the two sets Step 4 collected (the label stays `callers:` for every gate, so the
+contract does not change shape). Separate the paths with `, `; end an incomplete set (Step 4) with `, incomplete`,
+and a re-check then compares only the listed part:
+
+| Gate | `callers:` holds |
+|---|---|
+| deletion test; class 3; class 5 | its callers |
+| item 4 | the implementations |
+| class 1; class 4, co-change | its co-change partners |
+| class 4, internals | its callers |
+
+Write `none` when the set is empty. **Record the whole set**: every caller, every implementation, or every
+co-change partner of the key's path (the trace's files are evidence, not the slot), never only the ones this
+candidate happened to be raised on. A partial record reads as changed on every later run.
 
 `<commit>` is `git rev-parse --short HEAD` when the test ran. The durable home of the record is the dropped
 findings list of the intake epic this run's findings are filed into. Until a run's findings are filed, the
@@ -199,15 +232,20 @@ report is the record's only copy; say so in the report. **Never record it in a c
 and the next pass does not read comments.
 
 **A recorded rejection suppresses the candidate, never the check.** It is a derived verdict: it holds only while
-the code it judged is unchanged. For each deletion-test rejection Step 1 found, re-check it (a `held by ADR`
-entry is not re-checked here: Step 6 recomputes it every run, because it turns on the history, not on the code):
-1. run `git log <commit>..HEAD --format=%h -- <path> <callers>` (with `callers: none`, the path alone);
-2. find the paths the verdict turned on again (the callers, or the implementations for an item 4 verdict).
+the code it judged is unchanged. Re-check every rejection Step 1 found, except `held by ADR` (Step 6 recomputes
+that one every run, because it turns on the history, not on the code):
+1. if `git ls-files` no longer lists the key's path, report `rejected file gone: <key> (since <commit>)`;
+2. if the key names a member the file no longer has, report `rejected member gone: <key> (since <commit>)`;
+3. run `git log <commit>..HEAD --format=%h -- <the key's path> <callers>` (with `callers: none`, the path alone);
+4. for a callers or implementations slot, rebuild the set and compare it with the slot. **A co-change slot is not
+   rebuilt**: a new partner needs a commit to the key's path, which step 3 already sees, while a pair that ages out
+   of Step 2's window is not a change to the code.
 
-If the log printed nothing **and** the caller list is the one recorded, report
-`previously rejected, unchanged since <commit>` and do not re-run the test. If the log printed anything, the
-callers differ, or git cannot resolve `<commit>` (the history was rewritten), run the test again and record the
-new result.
+A gone entry (steps 1–2) is reported and not re-tested; this skill never edits the earlier run's record, so the
+entry stays there until the run that files these findings records the outcome. Otherwise, if the log printed
+nothing **and** any rebuilt set is the one recorded, report `previously rejected, unchanged since <commit>` and do
+not re-run the gate. If the log printed anything, a set differs, or git cannot resolve `<commit>` (the history was
+rewritten), re-run the gate the reason names and record the new result.
 
 ## Step 6 — Decision records
 
@@ -223,7 +261,7 @@ the fix landings can show friction.
 | Friction | Do |
 |---|---|
 | present | surface the candidate marked **`contradicts ADR NNNN — <title>`**, citing the evidence, and recommend reopening the record through [[domain]]. Never propose the code change alone, as if the record did not exist |
-| absent | do not propose it. List it among the rejected as **`held by ADR NNNN — <title> (at <commit>)`** |
+| absent | do not propose it. List it among the rejected as **`<key> — held by ADR NNNN — <title> (at <commit>)`**; a move set aside before it became a candidate takes the key it would have had |
 
 **"Held by" is derived too, so it is never settled.** Friction is evidence the repo still holds, so every run
 recomputes it for each held move, whatever an earlier run recorded. A move held today is surfaced the run its area
@@ -264,7 +302,7 @@ missing part cannot be told from a part nobody looked for.
 
 | Part | Holds | From |
 |---|---|---|
-| **Files** | the candidate's files, main file first; its key `<n>:<path>`; `recurs after TASK-NNN` when Step 1 found one | Steps 1, 4 |
+| **Files** | the candidate's files, main file first; its key (Step 4); `recurs after TASK-NNN` when Step 1 found one | Steps 1, 4 |
 | **Problem** | the class, and the evidence for its signal: counts, commit hashes, paths | Step 4 |
 | **Solution** | the candidate's move (Step 4's table: the class's own move, or the one the gate chose for class 2); the gate line verbatim; and, when it applies, `contradicts ADR NNNN — <title>`, with reopening that record through [[domain]] as the first step | Steps 5, 6 |
 | **Benefits** | one line for leverage and one for locality, below | Steps 2, 4, 5 |
@@ -329,9 +367,10 @@ After the candidates, each as a plain table, and every one printed with `(none)`
   none) and any `unattributed intake epic`; and on its own line, in bold, the **records line**:
   `filed into EPIC-NNN`, or `not filed yet — this report is the only copy of the rejections below`;
 - **Rejected**: one row per rejection, with its record line verbatim
-  (`- <path> — <reason> (callers: <paths>; at <commit>)`, or the `held by ADR` form), so `/tasks intake` can copy
+  (`- <key> — <reason> (callers: <paths>; at <commit>)`, or the `held by ADR` form), so `/tasks intake` can copy
   it as it stands;
-- **Previously rejected, unchanged**: `<path> — since <commit>`;
+- **Previously rejected, unchanged**: `<key> — since <commit>`;
+- **Rejections gone**: `<key> — rejected file gone | rejected member gone (since <commit>)`;
 - **Already filed**: `<key> — TASK-NNN`.
 
 ### Stdout, whichever way the page was delivered
@@ -342,17 +381,20 @@ already settled: <n> earlier runs read, <n> decision records read  [unattributed
 records: <filed into EPIC-NNN | not filed yet — this report is the only copy of the rejections below>
 
 Candidates
-  <n>. <class> — <main file>   key: <n>:<path>   strength: <strength> (<the evidence that set it>)   [recurs after TASK-NNN]
+  <n>. <class> — <main file>   key: <key>   strength: <strength> (<the evidence that set it>)   [recurs after TASK-NNN]
        evidence: <counts, commits, paths>
        <the gate line from Step 5>
        [contradicts ADR NNNN — <title>]
 
 Rejected
-  - <path> — <reason> (callers: <paths>; at <commit>)
-  - <path> — held by ADR NNNN — <title> (at <commit>)
+  - <key> — <reason> (callers: <paths>; at <commit>)
+  - <key> — held by ADR NNNN — <title> (at <commit>)
 
 Previously rejected, unchanged
-  - <path> — since <commit>
+  - <key> — since <commit>
+
+Rejections gone
+  - <key> — rejected file gone | rejected member gone (since <commit>)
 
 Already filed
   - <key> — TASK-NNN
