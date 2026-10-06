@@ -136,11 +136,35 @@ points there.
 
 | Class | Observable signal | Its move | Owned by |
 |---|---|---|---|
-| **1. Concept scatter** | following one use case through the code touches four or more files, each adding a few lines, and those files form co-change pairs (Step 2) | pull the scattered pieces into one module | *Shotgun surgery* in [refactoring.md](../tdd/refactoring.md) |
+| **1. Concept scatter** | a co-change set the table below assigns to class 1: four or more files changing together for one concept | pull the scattered pieces into one place: one module, or within a module one file or type | *Shotgun surgery* in [refactoring.md](../tdd/refactoring.md) |
 | **2. Shallow interface** | the deletion test's signal, or an interface with one adapter (a base class with exactly one subclass counts as one adapter) | the move Step 5's gate chooses: delete or merge, deepen or inline (the deletion test), or depend on the concrete type, or return the result instead of calling back (item 4) | [deep-modules.md](../tdd/deep-modules.md) § *The deletion test*; [interface-design.md](../tdd/interface-design.md) item 4 |
 | **3. Tested in isolation, broken at the call** | a function with its own tests, while the fix landings (Step 2) in its area change its **callers**, not the function | move what the callers keep correcting into the function, so the tested surface is the one that breaks | this skill |
-| **4. Leaky seam** | a co-change pair that crosses a module boundary, or one module reading another's internals or storage shape | move the logic to where the data lives, or ask the owning module for what is wanted | *Feature envy* and *Message chains* in [refactoring.md](../tdd/refactoring.md) |
+| **4. Leaky seam** | a co-change set the table below assigns to class 4 (`4, co-change`), or one module reading another's internals or storage shape outside any co-change set (`4, internals`) | move the logic to where the data lives, or ask the owning module for what is wanted | *Feature envy* and *Message chains* in [refactoring.md](../tdd/refactoring.md) |
 | **5. Untestable through its interface** | the signal of [interface-design.md](../tdd/interface-design.md) item 5 | change the interface until the behaviour can be seen through it | item 5 |
+
+**A co-change set takes exactly one class, decided in this order, and one key.** A **co-change set** is a group of
+files linked by Step 2's co-change pairs, followed transitively (two pairs that share a file are one set). For
+each set, also collect its **internal references**: whether any file in the set imports, calls or names another
+file of the set, or reads its storage shape or configuration keys. Then:
+
+| The set | Class |
+|---|---|
+| lies inside one module (as defined below) and has four or more files | **1**: one concept scattered within the module |
+| lies inside one module and has fewer than four files | not a candidate: files changing together inside a module is ordinary cohesion |
+| crosses a module boundary, and has an internal reference | **4, co-change**: the change follows a dependency across a seam |
+| crosses a module boundary, has none, and has four or more files | **1**: the same edit repeated in independent places |
+| crosses a module boundary, has none, and has fewer than four files | not a candidate: a copy in two or three places is duplicated code, which is not this pass's finding (below) |
+
+A set whose files reference each other is raised once, as `4, co-change`, never again as `4, internals`.
+
+A reference that cannot be established either way (dependency injection, reflection) counts as none, and the
+set's internal references are then incomplete, which makes the candidate `tentative`. A later run that does
+establish the reference moves the set to class 4, with a new key.
+
+**The set's main file is its first path in the order `git ls-files` prints**, so two runs over the same set agree
+on it. Which files are in the set still comes from Step 2's window: a file joining the set or ageing out of it can
+change the main file, and so the key. That is a stated limit, like renamed paths in Step 2, and a new key then
+reads as a new candidate.
 
 **A module** is the unit the build declares above a single file: a project, a package, a crate. Where the build
 declares none, it is the directory. Never a single file, even in a language that calls each file a module: two
@@ -150,11 +174,12 @@ report's frames both use this definition.
 **Every candidate collects two sets of paths around it**, whatever its class, because the report counts both:
 - **its callers**: the files that call or import what the candidate is about (the function, the interface, the
   module);
-- **its co-change partners**: the files that changed together with its main file (Step 2's pairs), and for
-  class 1 the files of the use-case trace.
+- **its co-change partners**: for a co-change set, every other file of the set; otherwise the files that changed
+  together with its main file (Step 2's pairs);
+- for a co-change set, **its internal references** (above).
 
-A set that cannot be built (callers reached through dynamic dispatch or reflection, or users outside the repo)
-is recorded as incomplete.
+A path set that cannot be built in full (callers reached through dynamic dispatch or reflection, or users outside
+the repo) is recorded as incomplete.
 
 **A smell in [refactoring.md](../tdd/refactoring.md) that fits none of these classes is not this pass's
 finding.** Leave it out rather than stretching a class to hold it; [[verify-conventions]] applies that inventory
@@ -205,7 +230,7 @@ for the signal (counts, commit hashes, paths), and its gate result from Step 5.
   item 4 instead, which counts implementations rather than callers: `Item 4: <n> implementation(s) — <result>`.
 - **Classes 1, 3, 4 and 5** stand on their own signal, even when their move merges files:
   `Gate: not a shallowness claim — <class>`. A closer look can still kill the signal: the commit that made a
-  co-change pair was later undone and fewer than 5 shared commits remain; the trace's files serve separate use
+  co-change pair was later undone and fewer than 5 shared commits remain; the set's files serve separate use
   cases; the callers' fixes are unrelated to the function; the behaviour is visible through the interface after
   all. The gate line is then `Gate: signal fails — <class> — <the commit or paths that show it>`, where a class 4
   `<class>` also names the signal it was raised on (`4, co-change` or `4, internals`), and the
@@ -232,7 +257,7 @@ and a re-check then compares only the listed part:
 | class 4, internals | its callers |
 
 Write `none` when the set is empty. **Record the whole set**: every caller, every implementation, or every
-co-change partner of the key's path (the trace's files are evidence, not the slot), never only the ones this
+co-change partner (for a co-change set, every other file of the set), never only the ones this
 candidate happened to be raised on. A partial record reads as changed on every later run.
 
 `<commit>` is `git rev-parse --short HEAD` when the test ran. The durable home of the record is the dropped
