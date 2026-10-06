@@ -14,6 +14,11 @@ was made lives in `docs/adr/` (technical) and `docs/features/*/decisions.md` (pe
 
 - **`grill-me` asks in rounds, and looks facts up instead of asking.** Each round asks every question nothing is still waiting on — up to five, numbered, each with a recommended answer — then recomputes what to ask next from your replies. A question with one discoverable answer (what the code does, what a device is configured for) is looked up, not put to you, and doesn't hold the round up; a lookup that fails is put to you, never dropped. The `## Resolved decisions` block it ends with is unchanged.
 - **Open questions survive a session reset.** `/feature new` now writes every question its grill raised but didn't reach into `idea.md` as a table — id, question, type, what it waits on, state — instead of a prose list that was lost with the conversation. `/feature pick` resumes at the *frontier* (the open questions nothing is still waiting on) before anything else, looks up factual questions itself rather than asking you, and never mistakes an older prose list for "no open questions" — it offers to bring that list into the table instead, keeping the original text in a collapsed block so nothing is lost, and remembers a "no". Two sessions resuming the same feature no longer answer the same question: a `claimed-by` column marks who is on one today, and a claim left from an earlier day can be taken over. The rules live in one place, `skills/feature/questions.md`.
+- **`tdd` gains four design checks, each with a signal you can see in the code.**
+  - **The deletion test:** inline a suspected shallow module into its callers. If the total logic shrinks, it is a finding. If it merely moves, the module earns its place, and that result is recorded.
+  - **One adapter is a hypothetical seam; two make a real one.**
+  - **The interface is the test surface:** a behaviour you can't observe through the interface is an interface defect.
+  - **Design it twice:** draft two independent shapes before committing to an interface.
 
 ### Fixed
 
