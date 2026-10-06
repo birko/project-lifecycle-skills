@@ -50,7 +50,8 @@ lifecycle stall.
 
    - `Y` → **claim each question just before you put it or look it up** (`claimed-by: <name> on <today>`). Put the
      frontier's `decision` questions to the user (through [[grill-me]] when installed), and look up its
-     `research` questions yourself — a fact is the agent's job, not the user's. For each answer, set the
+     `research` questions yourself — a fact is the agent's job, not the user's. A lookup that finds nothing or
+     finds answers that disagree is marked `open — lookup failed: <why>` and put to the user, never dropped. For each answer, set the
      state per [questions.md](../questions.md) § *States* — a `decision` answered writes a `proposed` row to
      `decisions.md` and `resolved → Dn` here; a question the user rules moot is `dropped — <reason>` and leaves
      every `blocked-by`; either way its claim goes back to `—`. Recompute the frontier and offer the next one, until

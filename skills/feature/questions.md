@@ -22,7 +22,7 @@ It lives in `idea.md` § *Open questions distilled from the grill*:
 |---|---|
 | `id` | `Q1`, `Q2`, … numbered within the feature, in the order the questions were raised. Never reused, never renumbered: edges point at ids. |
 | `question` | One sentence, ending in `?`. |
-| `type` | `decision`: answering it is a trade-off, so it is the user's to make. `research`: it has one discoverable answer (what the code already does, what an API returns, what version ships), so it is looked up, not asked. |
+| `type` | **The test: could two careful people, each looking it up, arrive at different correct answers?** No → `research`: it has one discoverable answer (what the code already does, what an API returns, what version ships), so it is looked up, never asked. Yes, because the answer is a trade-off or a preference → `decision`: it is the user's to make. A question that needs both (look it up, then choose) is a `research` question with a `decision` question blocked by it. |
 | `blocked-by` | The ids this question cannot be answered before, comma-separated, or `—`. |
 | `state` | One value from § *States*. |
 | `claimed-by` | `—`, or who is answering it right now: `<name> on <YYYY-MM-DD>`. See § *Claims*. |
@@ -31,7 +31,7 @@ It lives in `idea.md` § *Open questions distilled from the grill*:
 
 | State | Means | Set by |
 |---|---|---|
-| `open` | Raised and not yet answered. | `/feature new` when the grill raises a question it does not resolve. |
+| `open` | Raised and not yet answered. **`open — lookup failed: <why>`** is the same state, for a `research` question whose lookup found nothing or found answers that disagree. It stays on the frontier and is put to the user next, never looked up again blind. | `/feature new` when the grill raises a question it does not resolve; the grill, when a lookup fails. |
 | `resolved → Dn` | Answered. The answer is decision `Dn` in `decisions.md`, written there as a `proposed` row. An answer with no decision row is written into the question's row as `resolved — <the answer>` instead: a `research` fact that decides nothing, or an answer recorded before this table existed, which the upgrade below carries over without inventing a decision for it. | `/feature new` when the grill resolves a question it raised; `/feature pick`'s resume branch; the upgrade below. |
 | `dropped — <reason>` | No longer worth answering, because another answer made it moot. **Dropping removes its id from every other row's `blocked-by`**, so a dropped question never blocks anything. | `/feature pick`'s resume branch, when the user rules it moot. |
 
