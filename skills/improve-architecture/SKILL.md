@@ -124,13 +124,27 @@ breadth-first and list the areas covered. **Never pick an area arbitrarily and p
 Each class names the **signal you look at** to decide it applies. Where the signal is owned elsewhere, the row
 points there.
 
-| Class | Observable signal | Owned by |
-|---|---|---|
-| **1. Concept scatter** | following one use case through the code touches four or more files, each adding a few lines, and those files form co-change pairs (Step 2) | *Shotgun surgery* in [refactoring.md](../tdd/refactoring.md) |
-| **2. Shallow interface** | the deletion test's signal, or an interface with one adapter (a base class with exactly one subclass counts as one adapter) | [deep-modules.md](../tdd/deep-modules.md) § *The deletion test*; [interface-design.md](../tdd/interface-design.md) item 4 |
-| **3. Tested in isolation, broken at the call** | a function with its own tests, while the fix landings (Step 2) in its area change its **callers**, not the function | this skill |
-| **4. Leaky seam** | a co-change pair that crosses a module boundary, or one module reading another's internals or storage shape | *Feature envy* and *Message chains* in [refactoring.md](../tdd/refactoring.md) |
-| **5. Untestable through its interface** | the signal of [interface-design.md](../tdd/interface-design.md) item 5 | item 5 |
+| Class | Observable signal | Its move | Owned by |
+|---|---|---|---|
+| **1. Concept scatter** | following one use case through the code touches four or more files, each adding a few lines, and those files form co-change pairs (Step 2) | pull the scattered pieces into one module | *Shotgun surgery* in [refactoring.md](../tdd/refactoring.md) |
+| **2. Shallow interface** | the deletion test's signal, or an interface with one adapter (a base class with exactly one subclass counts as one adapter) | the move Step 5's gate chooses: delete or merge, deepen or inline (the deletion test), or depend on the concrete type, or return the result instead of calling back (item 4) | [deep-modules.md](../tdd/deep-modules.md) § *The deletion test*; [interface-design.md](../tdd/interface-design.md) item 4 |
+| **3. Tested in isolation, broken at the call** | a function with its own tests, while the fix landings (Step 2) in its area change its **callers**, not the function | move what the callers keep correcting into the function, so the tested surface is the one that breaks | this skill |
+| **4. Leaky seam** | a co-change pair that crosses a module boundary, or one module reading another's internals or storage shape | move the logic to where the data lives, or ask the owning module for what is wanted | *Feature envy* and *Message chains* in [refactoring.md](../tdd/refactoring.md) |
+| **5. Untestable through its interface** | the signal of [interface-design.md](../tdd/interface-design.md) item 5 | change the interface until the behaviour can be seen through it | item 5 |
+
+**A module** is the unit the build declares above a single file: a project, a package, a crate. Where the build
+declares none, it is the directory. Never a single file, even in a language that calls each file a module: two
+files changing together inside one package is ordinary cohesion, not a leaky seam. Class 4's boundary and the
+report's frames both use this definition.
+
+**Every candidate collects two sets of paths around it**, whatever its class, because the report counts both:
+- **its callers**: the files that call or import what the candidate is about (the function, the interface, the
+  module);
+- **its co-change partners**: the files that changed together with its main file (Step 2's pairs), and for
+  class 1 the files of the use-case trace.
+
+A set that cannot be built (callers reached through dynamic dispatch or reflection, or users outside the repo)
+is recorded as incomplete.
 
 **A smell in [refactoring.md](../tdd/refactoring.md) that fits none of these classes is not this pass's
 finding.** Leave it out rather than stretching a class to hold it; [[verify-conventions]] applies that inventory
@@ -217,9 +231,110 @@ becomes a hot spot.
 
 Never silently propose a change a record rejected. That is how a settled trade-off gets re-argued by accident.
 
-## Output
+## Output — the report
 
-*Minimal by design: the report's full shape is owned by the report surface, which replaces this section.*
+### Delivery: the analysis never depends on the surface
+
+This is the rule `/tasks close` step 5b applies to a review skill the runtime does not provide: **a missing
+runtime capability degrades the means or the delivery, never the pass.** There, the review is run inline; here,
+the report is delivered as a file. A run that ends with no report because it could not
+publish one is the failure this rule prevents.
+
+1. **Always write the page first**, to `<tmp>/improve-architecture-<repo>-<short HEAD>.html`. `<tmp>` is the
+   scratch directory the runtime designates, else the system temp directory (`$TMPDIR`, `%TEMP%`, else `/tmp`).
+   **Never write it inside the repo**: it would be committed by accident, and the next run's `git ls-files` would
+   count it. The page is one self-contained file, with inline CSS and SVG and nothing fetched from the network, so
+   it opens in a browser with nothing installed.
+2. **Publish it** when this session's tool list includes a tool that publishes an HTML page as a link only the
+   user can see (in Claude Code, `Artifact`). Decide from the tools this session actually has, never from the
+   runtime's name. Publish it private, and never share it or widen who can see it: sharing is the user's act. A
+   surface that cannot publish privately counts as absent.
+3. **No such tool, or a publish that errors or returns no link, ends the same way:** the temp file is the report.
+   Print its absolute path and the reason (`no publishing surface`, or `publish failed: <error>`).
+
+Nothing is asked before publishing. The publishing tool belongs to the runtime this session already sends the
+repository's code to, and the page it makes is private; a question would also send every unattended run down
+the fallback path. When the publishing tool sets its own rules for a page (a design pass, colour modes), follow
+them for the published copy; the temp file stays as written.
+
+### Every candidate, one shape
+
+Every candidate fills every part. A part with nothing in it says `none — <why>`; it is never left out, because a
+missing part cannot be told from a part nobody looked for.
+
+| Part | Holds | From |
+|---|---|---|
+| **Files** | the candidate's files, main file first; its key `<n>:<path>`; `recurs after TASK-NNN` when Step 1 found one | Steps 1, 4 |
+| **Problem** | the class, and the evidence for its signal: counts, commit hashes, paths | Step 4 |
+| **Solution** | the candidate's move (Step 4's table: the class's own move, or the one the gate chose for class 2); the gate line verbatim; and, when it applies, `contradicts ADR NNNN — <title>`, with reopening that record through [[domain]] as the first step | Steps 5, 6 |
+| **Benefits** | one line for leverage and one for locality, below | Steps 2, 4, 5 |
+| **Before/after** | the visual, below | Steps 2, 4, 5 |
+| **Strength** | `strong`, `moderate` or `tentative`, and the evidence that set it, below | Steps 1, 2, 4, 5 |
+
+### Benefits: leverage and locality, and nothing else
+
+These are the two quantities a reader weighs against the cost of the refactor. A benefit phrased any other way
+("cleaner", "more maintainable") cannot be compared with the next candidate's, so it is not written.
+
+- **Leverage — how much else gets easier.** The callers (Step 4) that stop carrying a pass-through, a
+  workaround or a copy, counted and named: `Leverage: 4 callers lose their retry copy — <paths>`.
+- **Locality — how much stays put.** The files one change to this concept touches today and after the move (its
+  co-change partners, Step 4), and how many of its callers the move itself leaves untouched:
+  `Locality: 5 → 1 files per change; 9 of 11 callers untouched`.
+
+Report the two side by side and never combine them into one score: a score is a ranking, and ranking happens
+downstream. A figure the run could not count is written `not measured — <why>`, never filled with an adjective.
+
+### The before/after visual
+
+Two panels on the same layout, so the only differences between them are what the move changes:
+
+- **a box per file** in Files, labelled with its path. Callers outside the list share one box, `callers (n)`,
+  naming them when there are three or fewer;
+- **solid arrows** for the calls and imports among the boxes, from the paths Step 4 collected around the candidate;
+- **dashed lines** for co-change pairs, labelled with the shared-commit count (Step 2);
+- **a frame** around each module (as Step 4 defines one), so the seam a class 4 candidate crosses is visible.
+
+The **after** panel draws the candidate's move (Step 4's table, or the gate's choice for class 2). Merged boxes
+become one, deleted boxes are gone, moved logic shows as an arrow that no longer crosses a frame, and a deepened
+module shows its interface
+as a thin strip on top of a large body (the picture in [deep-modules.md](../tdd/deep-modules.md)). The boxes and
+edges the move changes are highlighted and everything else is grey: the grey is the locality line, drawn. At most
+twelve boxes a panel; more fold into `+n more`. Under each panel, the same content as text
+(`A → B; A → C; A ~ B (7 commits)`), for a reader whose browser does not draw the picture. How it is drawn is the
+runtime's choice; what it shows is fixed here.
+
+### Strength: confidence that the candidate is real, never priority
+
+Read the rows in order and take the first that matches, so exactly one applies:
+
+| Strength | When |
+|---|---|
+| `tentative` | the gate is undecided, or a set of paths around the candidate (Step 4) is incomplete |
+| `strong` | otherwise, when the history corroborates the candidate with evidence **other than the signal that raised it**: fix landings or `recurs after` for a candidate raised on co-change; co-change or `recurs after` for one raised on fix landings; any of the three, in the candidate's own files, for the rest |
+| `moderate` | otherwise: the signal and the gate hold, with no history behind them |
+
+**Nothing else moves it**: not hot-spot rank, payoff size, effort, a decision record, or properties of the scope
+(the rung, a widened window, an ambiguous direction), which the header already reports. Those decide the order the
+work is done in, and that order is blast radius, which [[fix-next]] computes from its own keys once
+`/tasks intake` has filed the task. A strength that carried priority would pre-empt that ranking. So candidates
+are listed by key (class number, then path), **never by strength**.
+
+### The rest of the page
+
+After the candidates, each as a plain table, and every one printed with `(none)` when empty:
+
+- **the header**: the scope rung and what it covered (an ambiguous or unmatched direction), the measurement,
+  `bar degenerate`, renames; what was already settled (earlier runs and decision records read, or that there were
+  none) and any `unattributed intake epic`; and on its own line, in bold, the **records line**:
+  `filed into EPIC-NNN`, or `not filed yet — this report is the only copy of the rejections below`;
+- **Rejected**: one row per rejection, with its record line verbatim
+  (`- <path> — <reason> (callers: <paths>; at <commit>)`, or the `held by ADR` form), so `/tasks intake` can copy
+  it as it stands;
+- **Previously rejected, unchanged**: `<path> — since <commit>`;
+- **Already filed**: `<key> — TASK-NNN`.
+
+### Stdout, whichever way the page was delivered
 
 ```
 improve-architecture — scope: <rung and what it covered; direction ambiguous / matched nothing>  (<the measurement; bar degenerate; renames>)
@@ -227,9 +342,9 @@ already settled: <n> earlier runs read, <n> decision records read  [unattributed
 records: <filed into EPIC-NNN | not filed yet — this report is the only copy of the rejections below>
 
 Candidates
-  <n>. <class> — <files>   key: <n>:<path>   [recurs after TASK-NNN]
+  <n>. <class> — <main file>   key: <n>:<path>   strength: <strength> (<the evidence that set it>)   [recurs after TASK-NNN]
        evidence: <counts, commits, paths>
-       <the gate line from Step 5, including `undecided — <outcome>`>
+       <the gate line from Step 5>
        [contradicts ADR NNNN — <title>]
 
 Rejected
@@ -241,10 +356,12 @@ Previously rejected, unchanged
 
 Already filed
   - <key> — TASK-NNN
+
+report: <link> | <path> (<reason>)
 ```
 
-Print every section even when it is empty, with `(none)`. A section that disappears when it has nothing in it
-cannot be told apart from a section that was never computed.
+Every section prints here too, with `(none)` when empty. The rejection sections print in full even when the page
+holds them: until the run is filed they exist nowhere else, and a temp file can be cleaned away.
 
 ## What this skill does NOT do
 

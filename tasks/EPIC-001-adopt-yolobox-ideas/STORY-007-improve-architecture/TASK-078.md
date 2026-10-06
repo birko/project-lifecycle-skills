@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-08-26
-depends-on: [TASK-262, TASK-077]
+depends-on: [TASK-263, TASK-262, TASK-077]
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: []
@@ -57,6 +57,11 @@ New skills go in `skills/` — the only tree linked into *both* roots
 - [ ] Both installers are re-run and the skill resolves in **both** roots; `skills-lint`'s install-root section reports no drift for it
 - [ ] The skill is registered where the repo expects a new one: `README.md`'s skill list and `docs/architecture.md` if it changes the picture
 - [ ] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass
+
+**Note from TASK-077 (2026-10-06), a proposal for this task to confirm, not a settled answer:** the report's six candidate parts (`skills/improve-architecture/SKILL.md`
+§ *Every candidate, one shape*) are the content each filed task carries, so it can be picked without the report.
+The report's Rejected section prints each record line verbatim, and those lines are what goes into the epic's
+dropped list.
 
 ## Out of scope
 

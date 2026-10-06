@@ -280,6 +280,13 @@ The skills *are* the product, so their prose is the user interface. This subsect
   `single-branch`. The configuration that hides such a gap is usually the one it was written on. The
   trade-off that produced the flag is [ADR 0001](docs/adr/0001-unattended-close-merges.md); this rule is its
   enforcement half.
+- **A runtime-provided capability degrades the means or the delivery, never the pass.** Where a step uses
+  something only some runtimes offer (a review skill, a surface that publishes a page), the step names its
+  fallback, and the result is the same either way: a missing capability changes who does the work or how the
+  result reaches the user, never whether there is one. Today: `close` step 5b runs a review the runtime does not
+  provide inline; [[feature]] `prototype`'s state-model playground and [[improve-architecture]]'s report always
+  write a file, and add a link only when something can publish it. Detail: [[improve-architecture]] § *Delivery*. *No record: a rulebook
+  entry whose footprint is the prose it shapes.*
 - **A ranking key that cannot discriminate must say so, not pass quietly.** Where one skill orders work by
   several keys in sequence (today [[fix-next]]'s eight), the key's input is **declared in frontmatter, never
   inferred from a title** (`theme:` on a review-intake STORY, written by `/tasks intake`, read by
