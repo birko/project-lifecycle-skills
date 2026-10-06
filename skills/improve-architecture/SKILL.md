@@ -337,9 +337,8 @@ is known in advance; a published link may be added to the epic afterwards.
 Chain intake with the scope `architecture — <rung>` and
 `--source "improve-architecture <short HEAD> <date> — report: <the report's path>"`. **Always a new epic, never
 `--epic`**: each run's dropped list is the whole standing set of rejections, so Step 1 reads only the latest run's
-list, and nothing ever edits an earlier run's epic. This departs on purpose from intake's advice to file a re-run
-into the earlier epic, and it needs intake to file an epic for every run of this pass, even one with one or two
-findings and nothing dropped.
+list, and nothing ever edits an earlier run's epic. Intake's edge cases name this pass as the exception to both
+its small-pass shortcut and its re-run advice, so every run gets its own epic, whatever its size.
 
 - **Candidates.** Each candidate is one finding; intake mints its `IA-<n>` id and groups findings into tasks by
   its own rule. Each filed task's `## Context` carries, for every finding it holds:

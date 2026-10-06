@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 19:40. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-06 19:45. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 3                  | —                   |
-| todo         | —                  | —                  | 74                  |
+| todo         | —                  | —                  | 73                  |
 | in-progress  | 4                  | 11                 | 1                   |
-| verify       | —                  | —                  | 2                   |
+| verify       | —                  | —                  | 3                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 3                  | 11                 | 173                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 65× P2 · 9× P3.
+`todo` by priority: 64× P2 · 9× P3.
 
 ## In progress now
 
@@ -24,6 +24,7 @@ _Generated 2026-10-06 19:40. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Awaiting verification
 
+- [TASK-270](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-270.md) — `intake` cannot file an epic for a small architecture run, or a new epic for its re-run (P2, agent)
 - [TASK-265](EPIC-001-adopt-yolobox-ideas/STORY-007-improve-architecture/TASK-265.md) — Rung 2 does not say whether a candidate outside the hot spots is raised, so two runs of one repo differ (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
@@ -85,7 +86,7 @@ _Generated 2026-10-06 19:40. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-265 Rung 2 does not say whether a candidate outside the hot spots is raised, so two runs of one repo differ 🔍 verify
     - [x] TASK-266 Classes 1 and 4 both fire on co-change across modules, so one finding gets two different keys
     - [x] TASK-267 Whether a candidate "concerns one member" is a judgement, so two runs key one finding differently
-    - [ ] TASK-270 `intake` cannot file an epic for a small architecture run, or a new epic for its re-run
+    - [ ] TASK-270 `intake` cannot file an epic for a small architecture run, or a new epic for its re-run 🔍 verify
   - STORY-008 Harvest the skill set's own specs — in-progress (3/6 done)
     - [x] TASK-079 `/specs init` — build the area map, and turn the spec layer on
     - [ ] TASK-080 `/specs regen` — generate the specs, and review the diff as the deliverable ← in-progress

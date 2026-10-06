@@ -209,6 +209,10 @@ different source of work.
   and a story the user won't classify stays unstamped rather than mis-stamped.
 - **One or two findings, none dropped** — don't scaffold an epic for it. Say so and use
   [`/tasks spawn`](spawn.md) (or `/tasks new`) instead; the ceremony costs more than it tracks.
+  **Except a pass whose later runs read its epic back** — today the `IA-*` pass, [[improve-architecture]]:
+  it always gets its epic, whatever its size. Its next run finds its earlier runs by the epic's `source:` and
+  its tasks by their `IA-*` ids, so a spawned task, with no epic and no id, would be invisible to it and
+  raised again.
   **A pass that dropped any finding gets its epic whatever its size**, even when every finding was dropped
   and no task is filed: the dropped list lives only on an epic, a spawned task has nowhere to keep a
   rejection, and a rejection with no home is raised again by the next pass. An epic that files no task is a
@@ -220,7 +224,10 @@ different source of work.
   the unit: "how much of the audit is left?" must stay answerable, and it isn't once findings scatter
   across subject epics. Cross-reference the subject epic in each task's Context.
 - **Re-running a pass over the same scope** — `--epic <EPIC-NNN>` into the existing intake epic and
-  continue the finding numbering. Findings that duplicate an open task from the last pass link to it
+  continue the finding numbering. **A pass that carries its standing state forward files each run as a new
+  epic instead** — today the `IA-*` pass, whose every run writes the whole standing set of rejections into its
+  own dropped list, so its next run reads only the latest epic and nothing edits an earlier one. Its finding
+  numbers then restart in each epic; the pass matches findings by its own key, never by the id. Findings that duplicate an open task from the last pass link to it
   (step 3); findings that duplicate a **`done`** task are a regression — file fresh, and say so in the
   Context, because that's evidence the earlier fix or its test didn't hold.
 - **A finding the reviewer marked blocker but you judge a false positive** — you don't get to drop it
