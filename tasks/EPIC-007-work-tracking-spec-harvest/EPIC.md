@@ -2,7 +2,7 @@
 id: EPIC-007
 parent: null
 kind: review-intake
-source: specs regen work-tracking, 2026-10-03, harvested at b7bd8fc, spec committed in 0c84b8a — suspected bugs found while reading skills/tasks/**; specs regen feature-lifecycle, project-roadmap, defect-draining, specs-from-code (first harvests), 2026-10-03, specs committed in b24eb8b — suspected bugs found while reading skills/feature/**, skills/roadmap/SKILL.md, skills/fix-next/SKILL.md, skills/specs/**; specs regen project-baseline, change-review (first harvests, TASK-080), 2026-10-04, harvested at adc4c27 — suspected bugs found while reading skills/new-project/**, skills/adopt-project/**, skills/verify-conventions/**, skills/verify-intent/**, skills/review-comments/**, skills-pi/**
+source: specs regen work-tracking, 2026-10-03, harvested at b7bd8fc, spec committed in 0c84b8a — suspected bugs found while reading skills/tasks/**; specs regen feature-lifecycle, project-roadmap, defect-draining, specs-from-code (first harvests), 2026-10-03, specs committed in b24eb8b — suspected bugs found while reading skills/feature/**, skills/roadmap/SKILL.md, skills/fix-next/SKILL.md, skills/specs/**; specs regen project-baseline, change-review (first harvests, TASK-080), 2026-10-04, harvested at adc4c27 — suspected bugs found while reading skills/new-project/**, skills/adopt-project/**, skills/verify-conventions/**, skills/verify-intent/**, skills/review-comments/**, skills-pi/**; specs regen idea-interrogation (first harvest, TASK-080), 2026-10-06, harvested at 07de657 — suspected bugs found while reading skills/grill-me/SKILL.md
 # status — one of: planned, in-progress, done, cancelled
 status: in-progress
 owner: human
@@ -39,6 +39,12 @@ that holds), 2 refuted.
 30 findings (SH-53 … SH-82) → 10 new tasks (TASK-242 … TASK-251), grouped by root cause · 2 linked to the open
 TASK-085 (SH-53, SH-55) · 2 dropped (below) · none routed to a decision.
 
+**Fourth pass — `idea-interrogation`**, a first harvest run under TASK-080 on 2026-10-06 at `07de657`
+(`skills/grill-me/SKILL.md`, after STORY-004 changed it). The harvester raised 4 findings, and each was checked
+against `skills/feature/verbs/new.md`, `pick.md` and `questions.md` before intake. All 4 held.
+
+4 findings (SH-83 … SH-86) → 3 new tasks (TASK-258 … TASK-260) · none dropped · none routed to a decision.
+
 ### Findings dropped at intake
 
 | Finding | Claim | Why dropped |
@@ -51,5 +57,5 @@ TASK-085 (SH-53, SH-55) · 2 dropped (below) · none routed to a decision.
 ## Stories
 
 - STORY-023 — correctness and invariants: behaviour that leaves the tree contradicting itself, or a run with no
-  defined next step (19 tasks)
-- STORY-024 — contract drift: lists, labels and references that no longer match what they describe (13 tasks)
+  defined next step (22 tasks)
+- STORY-024 — contract drift: lists, labels and references that no longer match what they describe (14 tasks)

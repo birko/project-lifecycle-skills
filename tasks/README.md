@@ -1,22 +1,22 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 7 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, idea-interrogation, session-handoff, installation, skill-authoring-rules; the 7 generated areas are fresh) — run `/roadmap --check`.
+> ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 08:28. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-06 11:57. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 0                  | 3                  | —                   |
-| todo         | —                  | —                  | 70                  |
+| todo         | —                  | —                  | 73                  |
 | in-progress  | 4                  | 10                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 3                  | 11                 | 165                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 63× P2 · 7× P3.
+`todo` by priority: 66× P2 · 7× P3.
 
 ## In progress now
 
@@ -204,8 +204,8 @@ _Generated 2026-10-06 08:28. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (2/33 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (2/20 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (2/36 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (2/22 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
@@ -226,7 +226,9 @@ _Generated 2026-10-06 08:28. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-246 `verify-intent` never maps its classes to severities, and leaves "which task" open
     - [ ] TASK-247 The review axes ask the user things with no question text and no unanswered path
     - [ ] TASK-256 `adopt-project` adds the seed's missing sections with their tokens unrendered
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/13 done)
+    - [ ] TASK-258 A question the grill drops or defers during `/feature new` has nowhere to land in the table
+    - [ ] TASK-259 `grill-me` has no answer-less path: with nobody to answer, it neither ends nor reports
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (0/14 done)
     - [ ] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [ ] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [ ] TASK-226 Three references point at things that do not exist
@@ -240,6 +242,7 @@ _Generated 2026-10-06 08:28. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-249 The adopter's files cite rules a consumer does not have, and miscount their own buckets
     - [ ] TASK-250 The pi review fallbacks have drifted from the axes they stand in for
     - [ ] TASK-251 `review-comments` miscounts its PATH rules and offers a range it has no syntax for
+    - [ ] TASK-260 `grill-me`'s description has no Slovak triggers and predates the skill it describes
 
 ## Loose tasks
 
