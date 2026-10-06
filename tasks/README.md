@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 11:57. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-06 12:50. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
-| planned      | 0                  | 3                  | —                   |
+| planned      | 0                  | 2                  | —                   |
 | todo         | —                  | —                  | 73                  |
-| in-progress  | 4                  | 10                 | 1                   |
+| in-progress  | 4                  | 11                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 11                 | 165                 |
+| done         | 3                  | 11                 | 166                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 66× P2 · 7× P3.
+`todo` by priority: 65× P2 · 8× P3.
 
 ## In progress now
 
@@ -28,7 +28,7 @@ _Generated 2026-10-06 11:57. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (37/50 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (38/50 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -74,8 +74,8 @@ _Generated 2026-10-06 11:57. Run `/tasks triage` to refresh. **Do not hand-edit*
     - ~~TASK-123 Wide refactors — the case no vertical slice can cover, sequenced expand → migrate → contract~~
     - [ ] TASK-124 `/feature prototype` gains a fourth form — "does this state model feel right?" 🔍 verify ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
     - [x] TASK-125 A prototype-derived snippet may enter a decision — the one exception to "no code in decisions"
-  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — planned (0/4 done)
-    - [ ] TASK-075 Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
+  - STORY-007 `improve-architecture` — make the codebase itself a subject of the lifecycle — in-progress (1/4 done)
+    - [x] TASK-075 Backfill the four ideas `improve-architecture` will need into `tdd`'s existing files
     - [ ] TASK-076 `improve-architecture` — the skill, its scoping pass, and the candidate filter
     - [ ] TASK-077 The report surface — an Artifact, a fallback, and what each candidate must carry
     - [ ] TASK-078 Findings end at `/tasks intake`, and the skill is actually installed
@@ -255,6 +255,7 @@ _Generated 2026-10-06 11:57. Run `/tasks triage` to refresh. **Do not hand-edit*
 - [x] TASK-040 The loose defect backlog is filed but unschedulable — nothing can drain 15 of its 17 tasks (P1, agent)
 - ~~TASK-121 `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice~~ (P2, agent)
 - [x] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed (P3, unassigned)
+- [ ] TASK-261 Run the deletion test on the three `help` verb files, and keep or fold each one (P3, agent)
 
 <details>
 <summary><strong>Completed</strong> — 3 epics</summary>
