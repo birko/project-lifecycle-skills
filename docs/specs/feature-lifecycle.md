@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: 7ed24786acac1c12e1acd2c3f7a3cf699afe0fc8
-generated-on: 2026-10-04
+generated-at: d97f2f9a0b93aca6543e444b7c25cbf0b13c788b
+generated-on: 2026-10-06
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -103,7 +103,7 @@ The system SHALL, on `/feature new`, interrogate the idea with the grill skill b
 
 ### Requirement: Open questions survive the session as a table with a computed frontier
 
-The system SHALL keep a feature's open questions as a table in its idea file — id, question, type (`decision` or `research`), blocked-by, state — defined in one owner file that every other reader points at. States SHALL be `open`, `resolved → Dn` (or `resolved — <fact>` for research that decides nothing) and `dropped — <reason>`, each set by a named step; dropping a question SHALL remove it from every blocked-by. The frontier SHALL be every open row whose blockers are all resolved, computed fresh and never stored; a blocker id missing from the table is a broken edge. A row SHALL hold only a question stated precisely as one sentence ending in `?`; vaguer concerns stay in a Fog list, and ruled-out scope is neither. On `/feature new` the system SHALL give each question its id and edges when raised, write unreached ones as `open`, write one of two explicit lines when none remain (all resolved, or `--no-grill`), and name the frontier in its closing output.
+The system SHALL keep a feature's open questions as a table in its idea file — id, question, type (`decision` or `research`), blocked-by, state, claimed-by — defined in one owner file that every other reader points at. States SHALL be `open`, `resolved → Dn` (or `resolved — <fact>` for research that decides nothing) and `dropped — <reason>`, each set by a named step; dropping a question SHALL remove it from every blocked-by. A question SHALL be claimed (`<name> on <date>`) by the step that puts it, released when it is resolved or dropped or when that session stops, and a claim dated before today SHALL be stale and may be taken over with a statement saying so; a five-column table reads as unclaimed. The frontier SHALL be every open row whose blockers are all resolved, computed fresh and never stored; a blocker id missing from the table is a broken edge. A row SHALL hold only a question stated precisely as one sentence ending in `?`; vaguer concerns stay in a Fog list, and ruled-out scope is neither. On `/feature new` the system SHALL give each question its id and edges when raised, write unreached ones as `open`, write one of two explicit lines when none remain (all resolved, or `--no-grill`), and name the frontier in its closing output.
 
 #### Scenario: A session cut short leaves its frontier on disk
 
@@ -396,6 +396,12 @@ The system SHALL, on `/feature pick`, resolve the feature by id (or short number
 - **Given** a feature at phase `idea` whose table has Q4, Q6, Q7 and Q8 on the frontier and Q5 waiting on Q4
 - **When** `/feature pick` runs
 - **Then** it first offers "FEATURE-NNN has 4 open question(s) on the frontier: … Resume the grill there? [Y/n]", ahead of any decide offer
+
+#### Scenario: A live claim is skipped and a stale one taken over
+
+- **Given** a frontier of Q4, claimed today by Alice, and Q6, claimed two days ago by Bob
+- **When** Carol runs `/feature pick` and answers yes
+- **Then** Q4 is reported as being answered by Alice and not offered, Q6 is offered with a note that Carol is taking it over, and when Carol stops, only her own claims are cleared
 
 #### Scenario: A pre-table file is not an empty frontier
 

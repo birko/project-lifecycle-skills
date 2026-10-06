@@ -23,7 +23,8 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
    - Problem / Proposed shape / Open questions distilled from the grill / Out of scope.
    - **The open questions are a table, not a list** — replace the template's example rows with every question
      the grill raised: `resolved → Dn` for each it answered (the decision is step 5's `proposed` row), and
-     `open` with its edges for each it did not reach. Concerns too vague to be a row go in the *Fog* list, per
+     `open` with its edges for each it did not reach. Every row is written `claimed-by: —`; nobody holds a
+     question once this session ends. Concerns too vague to be a row go in the *Fog* list, per
      [questions.md](../questions.md) § *What earns a row*.
    - **No open rows is still written down, in one of two lines** — never as an empty table, which reads the same as
      a grill that never got there: *"The grill resolved every question it raised — see decisions.md."*, or, under

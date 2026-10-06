@@ -39,16 +39,23 @@ lifecycle stall.
    | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN` — "N approved decision(s) have no tasks. Decompose now? [Y/n]"** |
    | **E · Signed off** | phase is `review` (all tasks `done` or `verify`, sign-off not recorded) | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this |
 
-3b. **Gate Q — resume at the frontier.** Compute the frontier fresh, then put this question:
+3b. **Gate Q — resume at the frontier.** Compute the frontier fresh. **Leave out every question claimed today by
+   another name** ([questions.md](../questions.md) § *Claims*), naming each one (`Q4 is being answered by <name>
+   (claimed today)`). A claim dated before today is stale: offer that question, and say you are taking it over.
+   Then put this question:
 
    > **FEATURE-NNN has N open question(s) on the frontier: Q4 — <question>, Q6 — <question>. Resume the grill there? [Y/n]**
 
-   - `Y` → put the frontier's `decision` questions to the user (through [[grill-me]] when installed), and look
-     up its `research` questions yourself — a fact is the agent's job, not the user's. For each answer, set the
+   If every frontier question is claimed by someone else today, do not offer: report them and continue to gate A.
+
+   - `Y` → **claim each question just before you put it or look it up** (`claimed-by: <name> on <today>`). Put the
+     frontier's `decision` questions to the user (through [[grill-me]] when installed), and look up its
+     `research` questions yourself — a fact is the agent's job, not the user's. For each answer, set the
      state per [questions.md](../questions.md) § *States* — a `decision` answered writes a `proposed` row to
      `decisions.md` and `resolved → Dn` here; a question the user rules moot is `dropped — <reason>` and leaves
-     every `blocked-by`. Recompute the frontier and offer the next one, until it is empty or the user stops.
-     Then re-run step 3.
+     every `blocked-by`; either way its claim goes back to `—`. Recompute the frontier and offer the next one, until
+     it is empty or the user stops. **When the session stops — the user stops, or no answer comes — clear every
+     claim this session wrote, and only those.** Then re-run step 3.
    - `n`, or **no answer** → change nothing; report `not resumed: N open question(s) on the frontier — <ids>`
      and continue to gate A. The questions stay on disk; nothing is lost by declining.
    - **Open rows but no frontier** → do not offer; report it as itself — *"N open questions, none answerable

@@ -12,11 +12,11 @@ feature in a new session and the answers were on disk while the frontier was gon
 
 It lives in `idea.md` § *Open questions distilled from the grill*:
 
-| id | question | type | blocked-by | state |
-|----|----------|------|------------|-------|
-| Q1 | Who may edit a count after it is submitted? | decision | — | open |
-| Q2 | Does an edit after submission notify the warehouse lead? | decision | Q1 | open |
-| Q3 | Which barcode formats does the current scanner firmware read? | research | — | resolved → D4 |
+| id | question | type | blocked-by | state | claimed-by |
+|----|----------|------|------------|-------|------------|
+| Q1 | Who may edit a count after it is submitted? | decision | — | open | Dana on 2026-10-06 |
+| Q2 | Does an edit after submission notify the warehouse lead? | decision | Q1 | open | — |
+| Q3 | Which barcode formats does the current scanner firmware read? | research | — | resolved → D4 | — |
 
 | Column | Holds |
 |---|---|
@@ -25,6 +25,7 @@ It lives in `idea.md` § *Open questions distilled from the grill*:
 | `type` | `decision`: answering it is a trade-off, so it is the user's to make. `research`: it has one discoverable answer (what the code already does, what an API returns, what version ships), so it is looked up, not asked. |
 | `blocked-by` | The ids this question cannot be answered before, comma-separated, or `—`. |
 | `state` | One value from § *States*. |
+| `claimed-by` | `—`, or who is answering it right now: `<name> on <YYYY-MM-DD>`. See § *Claims*. |
 
 ## States
 
@@ -35,6 +36,27 @@ It lives in `idea.md` § *Open questions distilled from the grill*:
 | `dropped — <reason>` | No longer worth answering, because another answer made it moot. **Dropping removes its id from every other row's `blocked-by`**, so a dropped question never blocks anything. | `/feature pick`'s resume branch, when the user rules it moot. |
 
 No other value is legal, and no state is set by hand.
+
+## Claims
+
+`claimed-by` stops two sessions answering the same question. It is a working note about who is on a question
+**now**, not part of its state.
+
+- **Who claims:** the step that puts a question to the user (`/feature pick`'s resume) writes `<name> on <today>`
+  just before putting it. The name is `git config user.name`, or `unnamed session` when that is empty.
+- **Released when:** the question is resolved or dropped (the claim goes back to `—` with the state change), or the
+  session stops — the user stops, or no answer comes — and then it clears **every claim it wrote itself**, and
+  no others.
+- **Stale:** a claim dated **before today** is stale. A session that crashed never released its claim, and a claim
+  that cannot expire is a deadlock, so a stale claim may be taken over. The taker says so: `taking over Q4 —
+  claimed by <name> on <date>`.
+- **A live claim is respected:** a question claimed today by another name is on the frontier, but is not offered.
+  Report it: `Q4 is being answered by <name> (claimed today)`.
+- **What a claim can see:** sessions reading the same file. Sessions in other clones see it only once it is
+  committed and pulled, so a claim is a courtesy, not a lock.
+
+A table written before this column existed has five columns. Read every row of it as `claimed-by: —`, and write the
+sixth column the next time the table is written.
 
 ## The frontier
 
@@ -63,7 +85,8 @@ are the questions that can be answered now. Compute it fresh from the table ever
 A feature written before this table existed has a bulleted or prose list in that section. Find the section by its
 heading **starting** `## Open questions` — older files reword the rest (*"Open questions — resolved 2026-07-28"*).
 **Tell the two apart by the section's table header**: a header row starting `| id | question | type | blocked-by |
-state |` is a current table, and anything else is a pre-table section. Never read a pre-table section as an empty
+state |` is a current table, with or without the `claimed-by` column after it, and anything else is a pre-table
+section. Never read a pre-table section as an empty
 frontier. It holds questions in a shape no frontier can be computed from, so say exactly that.
 
 The three states a reader reports, each with its own line:
@@ -88,6 +111,7 @@ and number the rows in that order:
 | names a decision (`→ D3`, `(**D3**)`) | a row `resolved → D3` |
 | gives an answer and names no decision (`→ shows both`, a struck-through question with its answer) | a row `resolved — <the answer, as written>` |
 | a precise question with no answer | a row `open`. Its `blocked-by` is `—` unless the item itself names what it waits on: **never invent an edge** |
+| (every row) | `claimed-by: —`. Nobody holds an upgraded question |
 | too vague to be a question (§ *What earns a row*) | a Fog bullet, verbatim |
 | the template's own placeholder lines (`Question / assumption surfaced → …`, a bare `…`) | left out of the rows and the kept block, and counted in the report. They are not content |
 
