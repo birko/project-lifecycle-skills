@@ -36,10 +36,13 @@ in real source.
   that toolkit's own adoption doc to wire it (the project layer owns those specifics — keep this skill
   stack-agnostic). Re-running is a no-op when the harness already exists. **Read [REFERENCE.md](REFERENCE.md)
   § Adopt before wiring** — it carries the harness invariants (single runner instance, supported runtime,
-  module mode, ignores). `survey`/`populate` call `adopt` first when no harness is found; a project's
-  scaffolder can invoke it too.
+  module mode, ignores). `populate` calls `adopt` first when no harness is found, and `survey`
+  never does; a project's scaffolder can invoke it too.
 - **survey** — list surfaces (from the manifest/router/endpoint map) vs what's tested; report gaps as a
-  table: surface → tested? → layer. No edits.
+  table: surface → tested? → layer. **No edits, in every case.** With no harness found (neither a test
+  dir nor a runner config, the test [REFERENCE.md](REFERENCE.md) § Adopt uses), report every surface
+  untested and end with `no harness — run /populate-tests adopt to wire one`. Survey is the bare default,
+  the one a user runs to look, so a survey that scaffolds a harness writes files nobody asked for.
 - **populate** — per untested surface: ground in real source (page model, required filters, schema,
   delete pattern), author a spec from the project's pattern + toolkit. For web apps, author/refresh the
   **generated route-smoke** from the app's manifest.

@@ -1,7 +1,7 @@
 ---
 area: test-authoring
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: e7828fc02eb23298ab367cab0853f2c8e97c2375
+generated-on: 2026-10-07
 sources:
   - skills/populate-tests/REFERENCE.md
   - skills/populate-tests/SKILL.md
@@ -196,7 +196,7 @@ The system SHALL populate coverage in three layers. Layer 1 is generated smoke o
 
 ### Requirement: Five modes with survey as the default
 
-The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [scope]`, and a bare invocation SHALL run `survey`. `survey` SHALL list surfaces against what is tested, as a table of surface → tested? → layer, and is described as making no edits. However, `survey` and `populate` SHALL both call `adopt` first when no harness is found, and `adopt` writes files.
+The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [scope]`, and a bare invocation SHALL run `survey`. `survey` SHALL list surfaces against what is tested, as a table of surface → tested? → layer, and SHALL make no edits in any case. With no harness found (neither a test directory nor a runner config), it SHALL report every surface untested and end with `no harness — run /populate-tests adopt to wire one`. Of the five modes, only `populate` SHALL call `adopt` first when no harness is found.
 
 #### Scenario: Bare invocation in a repo with a harness
 
@@ -208,7 +208,7 @@ The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [
 
 - **Given** a repo with no test directory or runner config
 - **When** the user runs `/populate-tests survey`
-- **Then** `adopt` runs first and scaffolds the harness
+- **Then** no file changes, every surface is reported untested, and the report ends by pointing at `/populate-tests adopt`
 
 ### Requirement: Adopt wires the harness idempotently
 
