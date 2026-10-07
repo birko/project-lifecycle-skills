@@ -488,13 +488,13 @@ is what separates a finding from a taste (FEATURE-002 D10). Obtaining a reader t
 |---|---|---|---|---|
 | `.github/workflows/skills-lint.sh` | **passes** — TASK-252's last reader pair agreed on nothing here; check 8 added | 349 | 117 (33%) | 22 |
 | `.github/workflows/skills-lint-test.sh` | **passes** — TASK-252's last reader pair agreed on one comment (its own check-8 note), cut to a pointer; two more cut by the pair before | 421 | 70 (16%) | 7 |
-| `pi-install.sh` | **passes** — mechanism and pointers only; the restated line removed by TASK-166 | 41 | 5 (12%) | 5 |
-| `pi-install.ps1` | **passes** — same shape as `pi-install.sh` | 36 | 4 (11%) | 4 |
-| `install.sh` | **passes** — mechanism and pointer only (TASK-148) | 38 | 5 (13%) | 5 |
-| `install.ps1` | **passes** — same shape as `install.sh` | 30 | 4 (13%) | 4 |
+| `pi-install.sh` | **passes** — mechanism and pointers only; the restated line removed by TASK-166 | 49 | 6 (12%) | 5 |
+| `pi-install.ps1` | **passes** — same shape as `pi-install.sh`; TASK-277's `Resolve-Real` comment is mechanism | 61 | 5 (8%) | 4 |
+| `install.sh` | **passes** — mechanism and pointer only (TASK-148); TASK-277's Git Bash line is mechanism too | 46 | 6 (13%) | 5 |
+| `install.ps1` | **passes** — same shape as `install.sh` | 55 | 5 (9%) | 4 |
 
-Counts re-measured 2026-10-04 (fifteenth time — after TASK-252) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 116 / 69 / 4 / 4 for the four shell scripts and will look
+Counts re-measured 2026-10-07 (sixteenth time — after TASK-277) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 116 / 69 / 5 / 5 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits

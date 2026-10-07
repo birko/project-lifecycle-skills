@@ -6,6 +6,9 @@
 
 set -euo pipefail
 
+# Git Bash's ln -s copies unless told otherwise; make it link or fail instead.
+case "$(uname -s)" in MINGW*|MSYS*) export MSYS="${MSYS:+$MSYS }winsymlinks:nativestrict" ;; esac
+
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 target="$HOME/.pi/agent/skills"
 
@@ -28,11 +31,16 @@ for repo_skills in "$repo_root/skills" "$repo_root/skills-pi"; do
         fi
 
         if [ -e "$link" ]; then
-            echo "warning: $name: a real directory already exists at $link — move it aside and re-run" >&2
+            kind=directory; [ -d "$link" ] || kind=file
+            echo "warning: $name: a $kind already exists at $link — move it aside and re-run" >&2
             continue
         fi
 
-        ln -s "$src" "$link"
+        if ! ln -s "$src" "$link" || [ ! -L "$link" ]; then
+            [ -L "$link" ] || rm -rf -- "$link"   # only what this ln made: $link did not exist above
+            echo "error: could not link $name — on Windows without symlink rights, run the .ps1 installer instead" >&2
+            exit 1
+        fi
         echo "+ $name -> $src"
     done
 done

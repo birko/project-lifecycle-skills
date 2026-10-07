@@ -6,24 +6,49 @@
 $repoSkills = Join-Path $PSScriptRoot 'skills'
 $target = Join-Path $HOME '.claude\skills'
 
+# The PowerShell counterpart of bash's `pwd -P`: follow a link at every component of the path.
+function Resolve-Real([string]$path) {
+    $parts = [IO.Path]::GetFullPath($path).TrimEnd([char]92) -split '\\'
+    $acc = $parts[0] + [char]92
+    foreach ($part in $parts[1..($parts.Count - 1)]) {
+        if (-not $part) { continue }
+        $acc = Join-Path $acc $part
+        $item = Get-Item -LiteralPath $acc -Force -ErrorAction SilentlyContinue
+        if ($item -and $item.LinkType -and "$($item.Target)") { $acc = Resolve-Real "$($item.Target)" }
+    }
+    $acc.TrimEnd([char]92)
+}
+
 if (-not (Test-Path $target)) { New-Item -ItemType Directory -Force $target | Out-Null }
 
 Get-ChildItem $repoSkills -Directory | ForEach-Object {
-    $link = Join-Path $target $_.Name
+    $name = $_.Name
+    $link = Join-Path $target $name
     if (Test-Path $link) {
         $existing = Get-Item $link -Force
         if ($existing.LinkType) {
-            if ($existing.Target -ne $_.FullName) {
+            $stored = "$($existing.Target)"
+            if (-not $stored -or (Resolve-Real $stored) -ne (Resolve-Real $_.FullName)) {
                 Write-Warning "$($_.Name): links elsewhere ($($existing.Target)) — remove it and re-run to relink here"
             } else {
                 Write-Host "= $($_.Name) (already linked)"
             }
             return
         }
-        Write-Warning "$($_.Name): a real directory already exists at $link — move it aside and re-run"
+        $kind = if ($existing.PSIsContainer) { 'directory' } else { 'file' }
+        Write-Warning "$($_.Name): a $kind already exists at $link — move it aside and re-run"
         return
     }
-    New-Item -ItemType Junction -Path $link -Target $_.FullName | Out-Null
+    try {
+        New-Item -ItemType Junction -Path $link -Target $_.FullName -ErrorAction Stop | Out-Null
+    } catch {
+        [Console]::Error.WriteLine("error: could not link ${name}: $($_.Exception.Message)")
+        exit 1
+    }
+    if (-not (Get-Item -LiteralPath $link -Force).LinkType) {
+        [Console]::Error.WriteLine("error: $name was created but is not a junction")
+        exit 1
+    }
     Write-Host "+ $($_.Name) -> $($_.FullName)"
 }
 

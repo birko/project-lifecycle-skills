@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-06 21:16. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-07 08:28. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,7 +13,7 @@ _Generated 2026-10-06 21:16. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 176                 |
+| done         | 3                  | 12                 | 177                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 1× P1 · 73× P2 · 10× P3.
@@ -211,8 +211,8 @@ _Generated 2026-10-06 21:16. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (2/46 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (2/28 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (3/46 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (3/28 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
@@ -237,7 +237,7 @@ _Generated 2026-10-06 21:16. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-259 `grill-me` has no answer-less path: with nobody to answer, it neither ends nor reports
     - [ ] TASK-272 `/populate-tests survey` promises no edits, but chains `adopt`, which writes files
     - [ ] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
-    - [ ] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
+    - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
     - [ ] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4
     - [ ] TASK-279 `improve-architecture`'s records line cannot say what happened when filing fails or nothing is found
     - [ ] TASK-280 `improve-architecture`: the item 4 gate maps no result, and a held move whose ADR is gone has no outcome
