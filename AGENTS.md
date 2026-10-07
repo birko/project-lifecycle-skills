@@ -427,7 +427,12 @@ The skills *are* the product, so their prose is the user interface. This subsect
   a line of any `.sh` file and on any script the index stores other than as LF. A CRLF *working copy*
   passes, because git normalises it on commit. In a regex, write a CR or a tab as an escape (`\r`,
   `\t`), never as the raw byte.
-- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, **71** cases over a throwaway fixture, run by CI *before* the lint. (The count has moved ten times — 16 → 25 → 36 → 40 → 43 → 47 → 63 → 66 → 67 → 71 — which is TASK-029's whole argument: nothing records what any of them pin, so a case deleted in a refactor is indistinguishable from one that never existed.) It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **A `.ps1` is ASCII, or carries a UTF-8 BOM.** Windows PowerShell 5.1, the host a stock Windows machine runs
+  `.ps1` files with, reads a BOM-less script in the system code page. One `—` in a string therefore broke both
+  installers with 2 parse errors, while every test, run under pwsh 7, passed (TASK-282). Check 9 fails any `.ps1` in
+  the tree that has non-ASCII bytes and no BOM (UTF-8 or UTF-16). Prefer plain ASCII: an editor that does not preserve a BOM drops it
+  silently, and the check then fires on the next commit rather than on the machine of the next installer.
+- **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, **75** cases over a throwaway fixture, run by CI *before* the lint. (The count has moved eleven times — 16 → 25 → 36 → 40 → 43 → 47 → 63 → 66 → 67 → 71 → 75 — which is TASK-029's whole argument: nothing records what any of them pin, so a case deleted in a refactor is indistinguishable from one that never existed.) It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`. **What a drill is, and when it is worth its cost, is `skills/populate-tests/SKILL.md` § *The cold drill*** — this repo's product is prose an agent reads, so the reader must be **cold** and the brief must withhold the plan's expected answer, or the test degrades into a confirmation. That section also owns the fixture rule that bites here constantly: **a change justified by naming a repo cannot be drilled on that repo**, and this repo's habit of measured justification disqualifies fixtures faster than any other. Pointer, not a second copy.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task.
 - **A drill record names how its runner was obtained** — the command, the working directory, and the result of the coldness check. *Cold* is two conditions, not one: the brief withholds the change, **and** the runner's context does not already hold the subject. The second is not controlled by the brief and is not closed by changing repository — this repo's own skills are installed at user level, so every agent on the machine holds them. `skills/populate-tests/SKILL.md` § *Acquiring a cold runner* owns the channels, the confirmation signals and the measured instance; this is the pointer. Recording only the brief is what made TASK-079's first two readers permanently unclassifiable.
@@ -486,15 +491,15 @@ is what separates a finding from a taste (FEATURE-002 D10). Obtaining a reader t
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | **passes** — TASK-252's last reader pair agreed on nothing here; check 8 added | 349 | 117 (33%) | 22 |
-| `.github/workflows/skills-lint-test.sh` | **passes** — TASK-252's last reader pair agreed on one comment (its own check-8 note), cut to a pointer; two more cut by the pair before | 421 | 70 (16%) | 7 |
+| `.github/workflows/skills-lint.sh` | **passes** — TASK-252's last reader pair agreed on nothing here; check 8 added | 361 | 118 (33%) | 22 |
+| `.github/workflows/skills-lint-test.sh` | **passes** — TASK-252's last reader pair agreed on one comment (its own check-8 note), cut to a pointer; two more cut by the pair before | 431 | 71 (16%) | 7 |
 | `pi-install.sh` | **passes** — mechanism and pointers only; the restated line removed by TASK-166 | 49 | 6 (12%) | 5 |
 | `pi-install.ps1` | **passes** — same shape as `pi-install.sh`; TASK-277's `Resolve-Real` comment is mechanism | 61 | 5 (8%) | 4 |
 | `install.sh` | **passes** — mechanism and pointer only (TASK-148); TASK-277's Git Bash line is mechanism too | 46 | 6 (13%) | 5 |
 | `install.ps1` | **passes** — same shape as `install.sh` | 55 | 5 (9%) | 4 |
 
-Counts re-measured 2026-10-07 (sixteenth time — after TASK-277) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
-shebang**, so a re-run excluding `#!` gets 116 / 69 / 5 / 5 for the four shell scripts and will look
+Counts re-measured 2026-10-07 (seventeenth time — after TASK-282) with `wc -l` and `grep -cE '^[[:space:]]*#'` — **which counts the
+shebang**, so a re-run excluding `#!` gets 117 / 70 / 5 / 5 for the four shell scripts and will look
 stale unless it uses the same command. Longest run is the longest unbroken sequence matching that
 same pattern. The counts are context for where to look; they are **not** the verdict, and the
 2026-09-19 row for `skills-lint.sh` (288 / 123 / 35) had already gone stale through ordinary edits

@@ -1,7 +1,7 @@
 ---
 area: installation
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: 53c587805869ccff17920c6cc4270a34136d3b2d
+generated-on: 2026-10-07
 sources:
   - install.ps1
   - install.sh
@@ -60,7 +60,7 @@ The system SHALL, when `pi-install.sh` or `pi-install.ps1` runs, link each immed
 
 ### Requirement: Link type depends on the script, not the operating system
 
-The system SHALL create entries with `ln -s` in the bash installers and with `New-Item -ItemType Junction` in the PowerShell installers. The bash installers SHALL NOT check whether `ln -s` actually produced a link, and SHALL report success and finish with "Skills resolve from this repo via symlinks" whatever `ln -s` produced.
+The system SHALL create entries with `ln -s` in the bash installers and with `New-Item -ItemType Junction` in the PowerShell installers. Under Git Bash (when `uname -s` starts with `MINGW` or `MSYS`), the bash installers SHALL append `winsymlinks:nativestrict` to the `MSYS` environment variable, keeping any value it already had, so that `ln -s` makes a native link or fails rather than copying. Every installer SHALL check that each entry it creates is a link, and SHALL report `+ <name> -> <path>` only for an entry that is one.
 
 #### Scenario: PowerShell on Windows
 
@@ -68,11 +68,17 @@ The system SHALL create entries with `ln -s` in the bash installers and with `Ne
 - **When** the developer runs `install.ps1`
 - **Then** `~/.claude/skills/domain` is created as a directory junction pointing at `skills/domain`
 
-#### Scenario: Bash under Git Bash on Windows without native symlinks enabled
+#### Scenario: Bash under Git Bash on Windows without symlink rights
 
-- **Given** Git Bash on Windows, where `ln -s` copies a folder instead of linking it unless `MSYS` enables native symlinks
+- **Given** Git Bash on Windows, where the developer has no right to create native symbolic links
 - **When** the developer runs `./install.sh`
-- **Then** each skill is copied into `~/.claude/skills`, the script still prints `+ <name> -> <path>` for each, and its closing line still says the skills resolve via symlinks
+- **Then** `ln -s` fails instead of copying the folder, nothing is left at the entry's path, the script writes `error: could not link <name> — on Windows without symlink rights, run the .ps1 installer instead` to standard error, and it exits with status 1 without printing its closing line
+
+#### Scenario: The developer's own MSYS setting is kept
+
+- **Given** Git Bash on Windows with `MSYS` set to `noglob`
+- **When** the developer runs `./pi-install.sh`
+- **Then** `ln -s` runs with `MSYS` set to `noglob winsymlinks:nativestrict`
 
 ### Requirement: The target root is created if missing
 
@@ -86,7 +92,7 @@ The system SHALL create the target root (`~/.claude/skills` or `~/.pi/agent/skil
 
 ### Requirement: Re-running is safe and leaves correct links alone
 
-The system SHALL, for an entry that is already a link resolving to the same skill folder, leave it unchanged and print `= <name> (already linked)`. The bash scripts SHALL compare the fully resolved physical paths of both sides; the PowerShell scripts SHALL compare the link's stored target string with the source folder's full path, case-insensitively and without resolving either.
+The system SHALL, for an entry that is already a link resolving to the same skill folder, leave it unchanged and print `= <name> (already linked)`. The bash scripts SHALL compare the fully resolved physical paths of both sides; the PowerShell scripts SHALL compare the link's stored target with the source folder's full path, case-insensitively, after following any link found at every component of each path.
 
 #### Scenario: A second run with nothing new
 
@@ -100,9 +106,15 @@ The system SHALL, for an entry that is already a link resolving to the same skil
 - **When** the installer runs again
 - **Then** only `new-skill` is linked, reported with `+`, and every other skill is reported as already linked
 
+#### Scenario: The repository is reached through a link
+
+- **Given** `C:\src` is a junction to `D:\work`, the repository was cloned at `D:\work\project-lifecycle-skills`, and `~/.claude/skills/tasks` is a junction to `D:\work\project-lifecycle-skills\skills\tasks`
+- **When** the developer runs `C:\src\project-lifecycle-skills\install.ps1`
+- **Then** `tasks` is reported `= tasks (already linked)` rather than as linking elsewhere
+
 ### Requirement: A link to somewhere else is reported, never replaced
 
-The system SHALL, for an entry that is a link but does not resolve to this repository's skill folder, leave it unchanged and print a warning naming where it points and telling the user to remove it and re-run. The bash scripts SHALL write this warning to standard error, and SHALL also give it for a broken link, since a broken link cannot be resolved.
+The system SHALL, for an entry that is a link but does not resolve to this repository's skill folder, leave it unchanged and print a warning naming where it points and telling the user to remove it and re-run. The bash scripts SHALL write this warning to standard error, and SHALL also give it for a broken link, since a broken link cannot be resolved. The PowerShell scripts SHALL also give it for a link with no stored target.
 
 #### Scenario: A link from another checkout
 
@@ -118,17 +130,23 @@ The system SHALL, for an entry that is a link but does not resolve to this repos
 
 ### Requirement: A real folder in the way is reported, never overwritten
 
-The system SHALL, for an entry that exists and is not a link, leave it unchanged and warn that a real directory already exists at that path and must be moved aside before re-running. The same warning SHALL be given when the entry is a file rather than a folder.
+The system SHALL, for an entry that exists and is not a link, leave it unchanged and warn that a directory already exists at that path and must be moved aside before re-running. When the entry is a file rather than a folder, the warning SHALL say a file instead of a directory.
 
 #### Scenario: A hand-copied skill folder
 
 - **Given** `~/.claude/skills/feature` is an ordinary folder holding an older copy of the skill
 - **When** the developer runs `install.ps1`
-- **Then** the folder is not modified and the script warns `feature: a real directory already exists at <path> — move it aside and re-run`
+- **Then** the folder is not modified and the script warns `feature: a directory already exists at <path> - move it aside and re-run`
+
+#### Scenario: A file in the way
+
+- **Given** `~/.claude/skills/feature` is an ordinary file
+- **When** the developer runs `./install.sh`
+- **Then** the file is not modified and the script warns `feature: a file already exists at <path> — move it aside and re-run` on standard error
 
 ### Requirement: Installers only ever add
 
-The system SHALL NOT remove, rename or repoint any entry in a target root. A link left behind by a renamed or deleted skill folder SHALL remain until someone removes it by hand.
+The system SHALL NOT remove, rename or repoint any entry in a target root that existed before the installer reached it. The one removal SHALL be the bash installers deleting a non-link entry that their own `ln -s` produced at a path where nothing existed. A link left behind by a renamed or deleted skill folder SHALL remain until someone removes it by hand.
 
 #### Scenario: A skill was renamed
 
@@ -136,15 +154,21 @@ The system SHALL NOT remove, rename or repoint any entry in a target root. A lin
 - **When** the installer runs again
 - **Then** `new-name` is linked, and the `old-name` entry is left in place pointing at a folder that no longer exists
 
+#### Scenario: `ln -s` leaves a copy instead of a link
+
+- **Given** `~/.claude/skills/tasks` did not exist, and `ln -s` produces an ordinary folder there instead of a link
+- **When** `./install.sh` runs
+- **Then** that folder is removed, the error is reported, and the run exits with status 1
+
 ### Requirement: Failure handling differs between bash and PowerShell
 
-The bash scripts SHALL stop at the first failing command (`set -euo pipefail`), so a failing `ln -s` ends the run with the remaining skills unlinked. The PowerShell scripts SHALL continue past a failing `New-Item`, write its error, and still print the `+ <name> -> <path>` line for that skill. All four scripts SHALL exit successfully when every problem was only a warning.
+The bash scripts SHALL stop at the first failing command (`set -euo pipefail`). Every installer SHALL stop at the first skill whose link it could not create, or whose created entry is not a link, writing an error naming that skill to standard error and exiting with status 1, with the remaining skills unlinked and the links already made in that run left in place. The bash error SHALL be `error: could not link <name> — on Windows without symlink rights, run the .ps1 installer instead`; the PowerShell error SHALL be `error: could not link <name>: <reason>` when `New-Item` fails, and `error: <name> was created but is not a junction` when the created entry is not a link. All four scripts SHALL exit successfully when every problem was only a warning.
 
 #### Scenario: Link creation is refused in PowerShell
 
 - **Given** `New-Item` cannot create the junction for `tasks`
 - **When** `install.ps1` runs
-- **Then** PowerShell writes the error, the script still prints `+ tasks -> <path>`, and it goes on to the next skill
+- **Then** the script writes `error: could not link tasks: <reason>` to standard error, prints no `+ tasks` line, links no further skill, and exits with status 1
 
 #### Scenario: Warnings do not fail the run
 

@@ -417,5 +417,15 @@ case_is           "CRLF working copy alone is fine"  0  s_crlf
 case_fails_saying "shell script stored as CRLF"         s_stored "stored as crlf"
 case_fails_saying "shell script git classes as binary"  s_binary "stored as -text"
 
+# check 9 — TASK-282 (AGENTS.md § Testing).
+p_nobom() { printf 'Write-Host "a \xe2\x80\x94 b"\n' > "$1/tool.ps1"; }
+p_bom()   { printf '\xef\xbb\xbfWrite-Host "a \xe2\x80\x94 b"\n' > "$1/tool.ps1"; }
+p_ascii() { printf 'Write-Host "a - b"\n' > "$1/tool.ps1"; }
+p_utf16() { printf '\xff\xfeW\x00\n\x00' > "$1/tool.ps1"; }
+case_fails_saying "non-ASCII .ps1 with no BOM"  p_nobom "no UTF-8 BOM"
+case_is           "non-ASCII .ps1 with a BOM"  0 p_bom
+case_is           "ASCII-only .ps1"            0 p_ascii
+case_is           "UTF-16 .ps1 with its BOM"   0 p_utf16
+
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

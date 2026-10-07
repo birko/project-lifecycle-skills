@@ -29,14 +29,14 @@ Get-ChildItem $repoSkills -Directory | ForEach-Object {
         if ($existing.LinkType) {
             $stored = "$($existing.Target)"
             if (-not $stored -or (Resolve-Real $stored) -ne (Resolve-Real $_.FullName)) {
-                Write-Warning "$($_.Name): links elsewhere ($($existing.Target)) — remove it and re-run to relink here"
+                Write-Warning "$($_.Name): links elsewhere ($($existing.Target)) - remove it and re-run to relink here"
             } else {
                 Write-Host "= $($_.Name) (already linked)"
             }
             return
         }
         $kind = if ($existing.PSIsContainer) { 'directory' } else { 'file' }
-        Write-Warning "$($_.Name): a $kind already exists at $link — move it aside and re-run"
+        Write-Warning "$($_.Name): a $kind already exists at $link - move it aside and re-run"
         return
     }
     try {

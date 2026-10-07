@@ -339,6 +339,18 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 [ "$sh_bad" -eq 0 ] && printf '  every shell script is LF text\n'
 
+printf '== 9. PowerShell scripts are ASCII or carry a BOM ==\n'
+# Why: AGENTS.md § Testing (TASK-282).
+ps_bad=0
+while IFS= read -r s; do
+  bom=$(head -c3 "$s" | od -An -tx1 | tr -d ' \n')
+  case "$bom" in efbbbf|fffe*|feff*) continue ;; esac
+  if LC_ALL=C grep -q $'[\x80-\xff]' "$s"; then
+    err "$s — non-ASCII bytes and no UTF-8 BOM; Windows PowerShell 5.1 reads it in the system code page and cannot parse it"; ps_bad=1
+  fi
+done < <(find . -name '*.ps1' -not -path './.git/*' | sort)
+[ "$ps_bad" -eq 0 ] && printf '  every PowerShell script is ASCII or carries a BOM\n'
+
 [ -s "$FAILFILE" ] && fail=1
 if [ "$fail" -eq 0 ]; then
   printf '\nskills-lint: OK (%s skills)\n' "$n_skills"
