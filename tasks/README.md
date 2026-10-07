@@ -95,7 +95,7 @@ _Generated 2026-10-07 08:28. Run `/tasks triage` to refresh. **Do not hand-edit*
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (50/93 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (50/94 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -148,7 +148,7 @@ _Generated 2026-10-07 08:28. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-128 Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - ~~TASK-129 A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding~~
     - ~~TASK-134 `/specs init` step 1's meta-root ask has no question text and no unattended path~~
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (10/14 done)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (10/15 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -163,6 +163,7 @@ _Generated 2026-10-07 08:28. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [x] TASK-171 `docs/architecture.md` still calls install-root drift "check 4"
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [ ] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
+    - [ ] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
