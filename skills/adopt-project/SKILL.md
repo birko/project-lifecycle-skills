@@ -184,6 +184,12 @@ The rules that bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
 - **A row's action does not fire when the repo already carries what it would produce** — and the report says it was suppressed and why. See [LAYER.md](../new-project/LAYER.md) § *A prescribed action is suppressed when the repo has already done it*. Where you cannot tell, it fires: an unnecessary offer costs one *no*, a suppressed necessary one costs the artifact.
+- **A seed section this run adds to the guide is rendered, never copied raw.** Fill each `{{…}}` from the
+  adopter's column of [LAYER.md](../new-project/LAYER.md) § *Filling a seed section's tokens*, write its
+  no-source outcome where the repo holds no evidence, and delete the hint comment beneath it. Then grep **the sections
+  you added** for `{{`, never the rest of the guide, whose own `{{` is the repo's content: a hit is a
+  defect, fixed before the report. An adopted repo already has code, so a token
+  left raw here had a real source and nobody read it.
 - **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](../new-project/LAYER.md) § The adopted-repo brief).
 - **An `unknown` row is not filled — ask instead.** The survey never established that artifact was
   absent, so writing it is a guess aimed at the user's own files: the false-missing defect with one

@@ -79,7 +79,7 @@ Gather in one or two question batches:
   § *The adopted-repo brief* has to work around when a repo arrives without one.
   - **A repo with existing history and no surviving original ask** takes the adopted-repo form instead — stamp the adoption date and state that no original brief exists, per [LAYER.md](LAYER.md) § The adopted-repo brief. **Never reconstruct one from the README**: a paraphrase presented as ground truth is precisely what the verbatim rule exists to prevent, and it is worse than an absent file because it reads as authoritative.
   - **Keep it append-only as the project evolves.** The original block stays immutable, but when the user makes a later requirement-changing request (a new feature, a scope change), append it **verbatim** under an "Amendments" section with a date and the feature it became. The brief is the running ground truth of *everything the user asked for*, not just the opening ask — so a mid-project request (a new feature, mode, or integration) is logged here too, not only as a distilled feature.
-- **Templates are copied, not rewritten from this description.** Copy the file, then change only lines carrying a `{{…}}` token, plus the `<!-- e.g. … -->` hint directly beneath one, which is deleted as the token is filled. Measured over five scaffold runs on 2026-09-18: composing instead produced guides missing the task-first gate and five other universal rules — which is why the agent guide is assembled from **two** files below, one of which has no tokens at all and is appended untouched.
+- **Templates are copied, not rewritten from this description.** Copy the file, then change only lines carrying a `{{…}}` token, plus the hint comment (`<!-- … -->`) directly beneath one, which is deleted as the token is filled. Measured over five scaffold runs on 2026-09-18: composing instead produced guides missing the task-first gate and five other universal rules — which is why the agent guide is assembled from **two** files below, one of which has no tokens at all and is appended untouched.
 - **`README.md`** — copy [templates/README.seed.md](templates/README.seed.md), then fill its intake tokens now. The two that describe the skeleton, `{{GETTING_STARTED_COMMANDS}}` and `{{LAYOUT_TREE}}`, wait for the last bullet of step 5, because the skeleton does not exist yet. `{{AGENT_GUIDE_FILE}}` is `CLAUDE.md` (default) or `AGENTS.md` (canonical-AGENTS choice), so the "full convention" link points at the real guide.
 - **Agent config — two files, spliced. The target is `CLAUDE.md`, or `AGENTS.md` when step 1 chose canonical-AGENTS.**
   1. Copy [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md) to that target and fill its `{{…}}` tokens from intake — stack, naming, testing, stakeholders. `{{ARCHITECTURE_NOTES}}` and `{{BUILD_RUN_COMMANDS}}` wait for the last bullet of step 5.
@@ -146,14 +146,7 @@ Create a **source root** so there's an obvious place for code — but make it **
   - Confirm the layout with the user if the stack's convention is ambiguous (e.g. Python src-layout vs flat).
 - **none / docs-only** → no source root; stop at the universal layer.
 
-**Fill the four tokens that describe the skeleton — last, for every stack, docs-only included.** Step 3 left them because the skeleton did not exist yet. Delete the `<!-- e.g. … -->` hint comment under each as you fill it; it is a note to you, not part of the project.
-
-| Token | File | Source | No source (docs-only, no skeleton, grill skipped) |
-|---|---|---|---|
-| `{{GETTING_STARTED_COMMANDS}}` | README | the install and run commands of the skeleton just written | replace the code block with one line: *No code yet — this repository holds documents only.* |
-| `{{LAYOUT_TREE}}` | README | the top two levels of the tree as it now stands | always has a source: the universal layer itself |
-| `{{BUILD_RUN_COMMANDS}}` | agent guide | the skeleton's build and test commands, the same ones the CI stub runs | one line: *None yet — no code.* |
-| `{{ARCHITECTURE_NOTES}}` | agent guide | the scope grill's resolved decisions (step 2) | one line pointing at `docs/architecture.md`, which step 3 wrote |
+**Fill the tokens that describe the skeleton — last, for every stack, docs-only included.** They are the rows whose scaffolder column in [LAYER.md](LAYER.md) § *Filling a seed section's tokens* reads `step 5`, and that column with the no-source one gives each token's source and outcome. The adopter reads the same table, so it lives there. Step 3 left these tokens because the skeleton did not exist yet. Delete the hint comment under each token as you fill it; it is a note to you, not part of the project.
 
 **Then grep the README and the agent guide for `{{`. Any hit is a defect: fill it or remove its section, before step 6.** A token that reaches a consumer's repo unrendered reads as a broken template, and a plausible value invented to fill one is worse, because nothing marks it as a guess.
 

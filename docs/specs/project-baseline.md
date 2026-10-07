@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: 18ff18927ce8f17af29c789910fa45d88a6e1b19
-generated-on: 2026-10-04
+generated-at: b53e33a21c7b8ac9db32fedb7c1290a6521c679b
+generated-on: 2026-10-07
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md
@@ -464,6 +464,16 @@ The system SHALL read the seed guide's `##` headings and bodies as the section i
 - **Given** a guide with no commands section while `README.md` §§ Build / Run carry that content
 - **When** sections are matched
 - **Then** the section is `present`, naming the README, and no second copy is offered
+
+### Requirement: A seed section the adopter adds is rendered, never copied raw
+
+The system SHALL fill each `{{…}}` token in a seed section the adopter adds to a guide from that token's adopter source in the shared token table, which both front doors read — the architecture notes from an existing `docs/architecture.md` or else the units the build declares, the build/run commands from what CI runs or else the manifest's build and test entry points, the stakeholders from the audience the README or the guide names — SHALL write the token's stated no-source outcome where the repo holds no evidence and never a guess, SHALL delete the hint comment beneath each token, and SHALL grep the sections it added for `{{` and leave none there before the report, never grepping or editing the guide's own sections, which may legitimately hold `{{`.
+
+#### Scenario: Guide missing Architecture and Commands
+
+- **Given** an adopted repo whose guide has neither an architecture nor a commands section, with a CI workflow running `npm run build` and `npm test`
+- **When** the adopter adds both sections
+- **Then** the commands section lists the CI's commands, the architecture section says what the repo holds or says plainly that nothing documents it, and neither added section contains `{{` or a hint comment
 
 ### Requirement: Ignore coverage counts only the repo's own ignore file
 

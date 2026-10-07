@@ -18,7 +18,7 @@ for adoption — **what to do when the repo already has one**.
 | Artifact | Owner | Already present? |
 |---|---|---|
 | `README.md` | — | **Leave it.** Offer to append a short "How we work" pointer at the end; never rewrite a human's README. |
-| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections; never touch an existing one's content. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** **A companion the guide links (`CLAUDE-*.md` and the like) is part of this one artifact** — not a separate row, not `present, elsewhere` — and is classified by **existence and role only** — its prose is content, not shape. See § *Location is orthogonal too*. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
+| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections, rendered per § *Filling a seed section's tokens*; never touch an existing one's content. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** **A companion the guide links (`CLAUDE-*.md` and the like) is part of this one artifact** — not a separate row, not `present, elsewhere` — and is classified by **existence and role only** — its prose is content, not shape. See § *Location is orthogonal too*. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
 | `docs/architecture.md` | — | Leave it; report if absent. |
 | `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
@@ -449,6 +449,30 @@ fourteen UI rule sections in a linked companion. It resolved the case only becau
 forty rule sections of its own, and said so: *"had the rules been only in the companion, the two sentences
 would genuinely conflict and the text does not say which wins."* Reachability is what both sentences were
 reaching for.
+
+## Filling a seed section's tokens
+
+Both front doors write seed sections into a guide: the scaffolder writes all of them, and the adopter adds the
+ones a guide is missing. **A section is written rendered, never as copied.** Fill each token from its row
+below, delete the hint comment (`<!-- … -->`) directly beneath it, then grep **what this run wrote** for `{{`:
+the whole file for the scaffolder, only the sections it added for the adopter. A hit there is a defect: fill
+it or remove its section before the run ends. The adopter never greps the rest of the guide, because a
+repo's own sections can legitimately hold `{{` (a guide documenting a template engine), and the guide row
+forbids touching them. A token that reaches a repo unrendered reads as a
+broken template. A plausible value invented to fill one is worse, because nothing marks it as a guess.
+
+The two doors have different evidence, so each has its own source column. The scaffolder's column names the step of its flow that fills the token. The scaffolder has a skeleton it
+just wrote; the adopter has a repo that already holds code. **No source means the no-source outcome, written
+as given, never a guess.** The `## Conventions` subsections' tokens are not here: the scaffolder fills them in
+its step 3, and the adopter through `INFER.md`.
+
+| Token | File | Scaffolder's source | Adopter's source | No source |
+|---|---|---|---|---|
+| `{{ARCHITECTURE_NOTES}}` | agent guide | step 5: the scope grill's resolved decisions (its step 2) | a `docs/architecture.md` the repo already has (point at it), else the units the build declares (solution projects, workspace packages, crates), each named with its path | scaffolder: one line pointing at `docs/architecture.md`, which its step 3 wrote. Adopter: one line, *Not described yet: nothing in the repo documents its structure.* |
+| `{{BUILD_RUN_COMMANDS}}` | agent guide | step 5: the skeleton's build and test commands, the same ones the CI stub runs | the commands the repo's CI runs, else the build and test entry points its manifest declares (`package.json` scripts, `Makefile` targets) | scaffolder: one line, *None yet — no code.* Adopter: one line, *None found — no CI workflow or manifest declares a build or test command.* |
+| `{{STAKEHOLDERS}}` | agent guide | step 3: intake | the audience the README or the existing guide names | scaffolder: its step 3's default. Adopter: `stakeholders not yet named` |
+| `{{GETTING_STARTED_COMMANDS}}` | README | step 5: the install and run commands of the skeleton just written | never: the adopter leaves the README (the README row) | replace the code block with one line: *No code yet — this repository holds documents only.* |
+| `{{LAYOUT_TREE}}` | README | step 5: the top two levels of the tree as it now stands | never, as above | always has a source: the universal layer itself |
 
 ## The adopted-repo brief
 
