@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: 12267912e416fa22a113c63c32f60819be5eb33b
+generated-on: 2026-10-07
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -450,6 +450,22 @@ The system SHALL, at task close, require the `## Human test plan` to be resolved
 - **When** it is closed
 - **Then** the closer must write steps or `N/A` with a reason before choosing between `done` and `verify`
 
+### Requirement: The default branch's CI is reported at the gate, and never holds it
+
+The system SHALL, on every task close, including one parking at `verify`, read the latest completed run of each CI workflow on the default branch with the host's CLI and print exactly one `ci:` line: green with the number of workflows read (every latest run concluded success, neutral or skipped), RED naming each workflow whose latest run concluded anything else with its conclusion, commit and run URL, or `not read` with the reason (no CI configuration, no remote, no CLI, not authenticated, offline, no completed run). It SHALL NOT wait for a run its own push triggers. A red result SHALL warn and never hold the close or the merge, SHALL be printed on its own line apart from the review verdicts, and SHALL appear in the merge question and the task confirmation. A STORY or EPIC close reads no CI.
+
+#### Scenario: CI red on the default branch
+
+- **Given** a task whose review passes all pass, on a repo whose last completed CI run on the default branch failed
+- **When** the task is closed
+- **Then** a `ci: … RED …` line names the workflow and its run, separate from the verdicts, and the close still reaches `done`
+
+#### Scenario: No way to read CI
+
+- **Given** a repo with no CI configuration
+- **When** the task is closed
+- **Then** the gate prints `ci: not read` with that reason, never nothing
+
 ### Requirement: Review axes reported side by side
 
 The system SHALL, for a non-trivial task, run conventions adherence, intent fidelity against the acceptance criteria, and correctness on every close; security review when the diff touches a security surface; comment review when the diff carries a comment; and a PR-altitude review when a PR exists — doing a pass inline when its skill does not resolve. Each pass SHALL keep its own verdict and severity order, never merged or reranked, and a conditional pass that did not run SHALL be reported as not applicable with a reason. Blockers inside scope hold the merge; findings outside scope are spawned, not folded in; comment-review findings whose content lives nowhere else are reported held and do not hold the merge.
@@ -468,7 +484,7 @@ The system SHALL, for a non-trivial task, run conventions adherence, intent fide
 
 ### Requirement: Merge decided before the status is written
 
-The system SHALL, on a `pr-per-task` close on a task branch, ask whether to merge as part of the close — stating every pass's verdict in the question, default yes — before writing frontmatter. On yes the status SHALL be written `done`; on no the task SHALL stay `in-progress` and gain `blocked: 'merge deferred: <reason>; code complete on task/TASK-NNN'` (plus a dependency when waiting on another task's merge), the branch pushed and the PR opened or updated, and the task resumes later through `unblock` and a re-close. The decision is skipped for `--no-pr`, non-git, `single-branch`, or a close not on a task branch.
+The system SHALL, on a `pr-per-task` close on a task branch, ask whether to merge as part of the close — stating every pass's verdict and the `ci:` line in the question, default yes — before writing frontmatter. On yes the status SHALL be written `done`; on no the task SHALL stay `in-progress` and gain `blocked: 'merge deferred: <reason>; code complete on task/TASK-NNN'` (plus a dependency when waiting on another task's merge), the branch pushed and the PR opened or updated, and the task resumes later through `unblock` and a re-close. The decision is skipped for `--no-pr`, non-git, `single-branch`, or a close not on a task branch.
 
 #### Scenario: Stacked PR
 
@@ -536,7 +552,7 @@ The system SHALL, after a close commit on `task/TASK-NNN` that was decided as me
 
 ### Requirement: Unattended close contract
 
-The system SHALL, under `close --unattended`, ask nothing at any step: refuse a closed or blocked task, resolve an unfilled test plan itself, push and open the PR when parking at `verify`, merge at the merge decision, spawn every work bullet (treating unclassifiable bullets as work, with "decided not to do" unavailable), commit with explicit staging, skip the clean-tree reference prompt, skip the spec regen when references are missing, and skip an unauthenticated Jira step and report it. Every step that could ask SHALL have a defined unattended row.
+The system SHALL, under `close --unattended`, ask nothing at any step: refuse a closed or blocked task, print the CI line without asking, resolve an unfilled test plan itself, push and open the PR when parking at `verify`, merge at the merge decision, spawn every work bullet (treating unclassifiable bullets as work, with "decided not to do" unavailable), commit with explicit staging, skip the clean-tree reference prompt, skip the spec regen when references are missing, and skip an unauthenticated Jira step and report it. Every step that could ask SHALL have a defined unattended row.
 
 #### Scenario: Drain-driven close
 

@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-07 12:17. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-07 12:58. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 3                  | —                   |
-| todo         | —                  | —                  | 82                  |
+| todo         | —                  | —                  | 81                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 180                 |
+| done         | 3                  | 12                 | 181                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 71× P2 · 11× P3.
+`todo` by priority: 70× P2 · 11× P3.
 
 ## In progress now
 
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (51/94 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (52/94 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -149,7 +149,7 @@ _None_
     - [ ] TASK-128 Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - ~~TASK-129 A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding~~
     - ~~TASK-134 `/specs init` step 1's meta-root ask has no question text and no unattended path~~
-  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (11/15 done)
+  - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (12/15 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
@@ -163,7 +163,7 @@ _None_
     - [x] TASK-108 Check 4 only sees a flag that immediately follows the verb, so a fifth of real invocations are unchecked
     - [x] TASK-171 `docs/architecture.md` still calls install-root drift "check 4"
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
-    - [ ] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
+    - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
   - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists

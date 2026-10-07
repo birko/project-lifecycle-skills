@@ -339,8 +339,8 @@ Final report, short:
 
 1. What was broken, in one sentence a reader with no context understands.
 2. The step-6 split, as numbers.
-3. Anything flagged and not fixed, including every blocked task in the pool with its reason, and
-   **every task id `close` spawned from the out-of-scope sweep** —
+3. Anything flagged and not fixed, including every blocked task in the pool with its reason, a red
+   `ci:` line from the close (quoted), and **every task id `close` spawned from the out-of-scope sweep** —
    by id and one-line subject. Nobody watched the run; if the report doesn't name them, the only trace
    is a file in the tree nobody knows to look for.
 4. **The next pick**, named.

@@ -26,6 +26,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      | 4 (blocked) | ask "Unblock it and close?" | **refuse and report** (`not closed: … is blocked`), write nothing. Never clear a block nobody asked to clear |
      | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `verify`, never `done` |
      | 5 (`verify` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
+     | 5a | prints the `ci:` line; a red one never holds the close | **the same.** Listed although it never asks, because a red result looks like a reason to stop, and an unattended run must not invent a hold or a question |
      | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
      | 5d | work bullet → offer `spawn` | **spawn** it; *decided not to do* is unavailable |
      | 7 (dirty tree) | ask commit / reference / skip | **commit**, with step 7's explicit staging — never blanket `git add -A` |
@@ -158,9 +159,38 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
    - If it has real steps with unchecked `[ ]` boxes, **don't close to `done`** — the manual/visual sign-off hasn't happened. Either (a) the user confirms they just ran it → check the boxes and proceed to `done`, or (b) it's not verified yet → set **`status: verify`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
      - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (verify — human test plan pending)`), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `verify` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
+     - **Run step 5a before parking**, so a parked close still prints its `ci:` line: a red default branch
+       matters as much to work awaiting sign-off as to work reaching `done`.
      - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `verify` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `verify` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
      - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `verify`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `verify` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `verify → done`, re-run `close` once the human step is checked off.)
+
+5a. **Read the default branch's CI — a warning, never a hold** (every task close, including one
+   5b skips and one parking at `verify`, which runs it from step 5). The review axes and the task's own evidence ran on **this** machine;
+   the project's CI runs on another, and any difference between the two (GNU against BSD tools, a missing
+   binary, a path, a locale, a line ending) passes here and fails only there, where nobody looks.
+   - **Read the latest completed run of each CI workflow on the default branch**, with the host's CLI. On
+     GitHub: `gh run list --branch <default> --status completed --limit 100 --json workflowName,conclusion,headSha,url`,
+     keeping the newest run per `workflowName`. A workflow with no run in that window is not seen, so the
+     line counts the workflows it read. Another host: its CLI's equivalent. Read the last
+     *completed* run; never wait for one this close's own push triggers.
+   - **Print exactly one line, always**, in one of three shapes, so silence never stands in for a result:
+
+     | Result | Line |
+     |---|---|
+     | every workflow's latest run concluded `success`, `neutral` or `skipped` | `ci: <default> green — <n> workflows read` |
+     | any workflow's latest run concluded anything else (`failure`, `cancelled`, `timed_out`, `startup_failure`, `action_required`, `stale`, or a value not listed here) | `ci: <default> RED — <workflow> <conclusion> at <sha>: <url>` (one entry per red workflow, each with its own commit) |
+     | not read | `ci: not read — <reason>` (no CI configuration in the repo, no remote, no CLI for this host, not authenticated, offline, no completed run yet) |
+
+   - **A red CI warns and never holds the close or the merge.** The run it reports is about code already
+     on the default branch, usually unrelated to this task, so holding would stop every close in the
+     project until someone else fixed it. **Rejected: holding** (it turns one unrelated red build into a
+     stalled backlog, and an unattended drain stops at every close) **and asking each time** (the
+     question has one sensible answer and a run with nobody present cannot put it). What this step
+     removes is the silence: a red default branch is named at the gate on its own line, never folded
+     into a review verdict and never outranked by a green local run.
+   - **It is not a review axis.** 5b's verdicts judge this task's diff; this line reports the state of
+     the branch the diff lands on. Print it beside them and keep it out of their ordering.
 
 5b. **The review axes — the merge gate** (non-trivial tasks only; skip for docs/renames/one-liners):
    - Run [[verify-conventions]] on the task's diff — does it follow the project's documented rules in `CLAUDE.md § Conventions` (framework/stack, UI/UX, structure, naming, testing)? Address 🛑 blockers before `done`, or note in the task why any are deferred.
@@ -224,7 +254,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
    - **State every gate verdict in the question**, not one blended summary — *standards pass, intent
      fail* is a different situation from *all pass*, and a merge decision taken from a single merged verdict
      cannot tell them apart. That means each pass 5b actually ran, including [[security-review]] when the
-     diff reached it.
+     diff reached it, and step 5a's `ci:` line on its own.
    - Ask (AskUserQuestion): *"Merge `task/TASK-NNN` into the default branch as part of this close?"*
      Default: **Yes, merge now.** Step 8 executes whichever answer you get; this step only decides,
      so that step 6 knows which status is true.
@@ -474,6 +504,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
    passes is indistinguishable from one that never ran):
     - Which file was updated
     - What changed (`status: todo → done`, `pr: null → 123`)
+    - Step 5a's `ci:` line, verbatim (task closes only; a STORY or EPIC close reads no CI)
     - Remote close result if hybrid
 
 ## Closing a STORY / EPIC (`--story` / `--epic`)

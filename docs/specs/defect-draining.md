@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: eebeb6e79631d115bc4ae1831c6e92792b594311
-generated-on: 2026-10-04
+generated-at: 12267912e416fa22a113c63c32f60819be5eb33b
+generated-on: 2026-10-07
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -363,7 +363,7 @@ The system SHALL stop after one defect on a bare invocation; with `--loop` it SH
 
 ### Requirement: The final report and a verified-safe reset
 
-The system SHALL end with a short report giving what was broken in one context-free sentence, the step-6 split as numbers, everything flagged and not fixed — including every blocked pool task with its reason and every task id the close step spawned from its out-of-scope sweep, by id and subject — and the next pick; and before reporting SHALL confirm that every touched repository's working tree is clean, that the task file alone tells the whole story, and that nothing learned lives only in the conversation, fixing any failure first.
+The system SHALL end with a short report giving what was broken in one context-free sentence, the step-6 split as numbers, everything flagged and not fixed — including every blocked pool task with its reason, a red `ci:` line from the close, quoted, and every task id the close step spawned from its out-of-scope sweep, by id and subject — and the next pick; and before reporting SHALL confirm that every touched repository's working tree is clean, that the task file alone tells the whole story, and that nothing learned lives only in the conversation, fixing any failure first.
 
 #### Scenario: Close spawned follow-ups
 
