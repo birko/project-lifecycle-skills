@@ -74,11 +74,23 @@ for d in $skill_dirs; do
   name=$(printf '%s\n' "$fm" | grep -m1 '^name:' | sed 's/^name:[[:space:]]*//')
   printf '%s\n' "$fm" | grep -q '^description:' || err "$f has no description:"
   desc=$(printf '%s\n' "$fm" | grep -m1 '^description:' | sed 's/^description:[[:space:]]*//')
+  # An empty first line is still a description when the value continues on indented lines below it.
+  more=$(printf '%s\n' "$fm" | awk '/^description:/ { if ((getline n) > 0 && n ~ /^[ \t]+[^ \t]/) print "y"; exit }')
+  # Each verdict is what pi's YAML parser makes of the value, measured on TASK-278.
   case "$desc" in
-    \"*|\'*|'|'*|'>'*) ;;
+    \"\"|\'\') err "$f description is empty — pi does not load the skill" ;;
+    \"*|\'*) ;;
+    '|'|'>'|'|'[-+1-9]|'>'[-+1-9]|'|'[-+1-9][-+1-9]|'>'[-+1-9][-+1-9]) ;;
+    ''|'~'|null|Null|NULL) [ "$more" = y ] || err "$f description is empty — pi does not load the skill" ;;
+    '#'*) err "$f description is unquoted and starts with '#' — YAML reads a comment and pi does not load the skill" ;;
+    [][*{}%@\`,\|\>]*|'- '*|'-'|'? '*|'?') err "$f description is unquoted and starts with a YAML indicator — invalid YAML; quote it" ;;
+    '&'*|'!'*) err "$f description is unquoted and starts with '&' or '!' — YAML reads an anchor or a tag and drops the first word" ;;
+    *':') err "$f description is unquoted and ends with ':' — invalid YAML" ;;
     *': '*) err "$f description is unquoted and contains ': ' — invalid YAML" ;;
     *' #'*) err "$f description is unquoted and contains ' #' — YAML truncates it there" ;;
   esac
+  printf '%s\n' "$desc" | grep -qxE '[-+]?([0-9]+[.]?[0-9]*|[.][0-9]+)([eE][-+]?[0-9]+)?|0x[0-9a-fA-F]+|true|false|True|False|TRUE|FALSE' &&
+    err "$f description '$desc' parses as a number or boolean, not text — pi does not load the skill"
   # Under a C locale ${#desc} counts bytes, never fewer than pi's characters: stricter, never looser.
   [ "${#desc}" -le 1024 ] || err "$f description is ${#desc} characters — the limit is 1024"
   case "$name" in *[!a-z0-9-]*|-*|*-|*--*) err "$f name '$name' must be a-z, 0-9 and single inner hyphens" ;; esac

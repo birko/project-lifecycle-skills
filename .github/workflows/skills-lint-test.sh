@@ -93,6 +93,23 @@ m_nameshape() { mv "$1/skills/beta" "$1/skills/Beta_2"; sed -i 's/^name: beta/na
 m_namedash()  { mv "$1/skills/beta" "$1/skills/be--ta"; sed -i 's/^name: beta/name: be--ta/' "$1/skills/be--ta/SKILL.md"; sed -i 's/\[\[beta\]\]/[[be--ta]]/' "$1/skills/alpha/SKILL.md"; }
 m_nametwice() { mkdir -p "$1/skills-pi/beta"; cp "$1/skills/beta/SKILL.md" "$1/skills-pi/beta/"; }
 m_descquote() { desc_is "$1" '"Do a thing: then #N"'; }
+# TASK-278: each of these parses to nothing, to a non-string, or to an error in pi's yaml package.
+m_descempty() { desc_is "$1" ''; }
+m_descqempty(){ desc_is "$1" '""'; }
+m_desctilde() { desc_is "$1" '~'; }
+m_descend()   { desc_is "$1" 'Use when:'; }
+m_descstar()  { desc_is "$1" '*Review* the diff'; }
+m_descbrack() { desc_is "$1" '[draft] Review the diff'; }
+m_descat()    { desc_is "$1" '@mention a reviewer'; }
+m_descdash()  { desc_is "$1" '- Review the diff'; }
+m_descamp()   { desc_is "$1" '&staging Review the diff'; }
+m_descbar()   { desc_is "$1" '|x'; }
+m_descbool()  { desc_is "$1" 'true'; }
+m_descnum()   { desc_is "$1" '42'; }
+# These must still pass: a hyphenated first word, a block scalar, and a value continued on indented lines.
+m_descdashw() { desc_is "$1" '-v flags'; }
+m_descblock() { printf -- '---\nname: beta\ndescription: >-\n  Review the diff: all of it\n---\n\nBeta.\n' > "$1/skills/beta/SKILL.md"; }
+m_desccont()  { printf -- '---\nname: beta\ndescription:\n  Review the diff\n---\n\nBeta.\n' > "$1/skills/beta/SKILL.md"; }
 # check 4 — cross-skill flags. alpha's router tells you to run beta's verb with a flag; the pair of
 # mutations is the point: the first must fail, the second must not, or the check is either blind or
 # indiscriminate.
@@ -241,6 +258,21 @@ case_is "unquoted description with ': '"   1 m_desccolon
 case_is "unquoted description with ' #'"   1 m_deschash
 case_is "description over 1024 chars"      1 m_desclong
 case_is "quoted description with ': ' #"   0 m_descquote
+case_is "empty description"                1 m_descempty
+case_is "quoted empty description"         1 m_descqempty
+case_is "description '~'"                  1 m_desctilde
+case_is "description ending in ':'"        1 m_descend
+case_is "description starting with '*'"    1 m_descstar
+case_is "description starting with '['"    1 m_descbrack
+case_is "description starting with '@'"    1 m_descat
+case_is "description starting with '- '"   1 m_descdash
+case_is "description starting with '&'"    1 m_descamp
+case_is "description '|x'"                 1 m_descbar
+case_is "description 'true'"               1 m_descbool
+case_is "description '42'"                 1 m_descnum
+case_is "description starting '-v'"        0 m_descdashw
+case_is "block-scalar description"         0 m_descblock
+case_is "description on indented lines"    0 m_desccont
 case_is "name with uppercase/underscore"   1 m_nameshape
 case_is "name with a doubled hyphen"       1 m_namedash
 case_is "same name in both trees"          1 m_nametwice

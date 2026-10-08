@@ -1,7 +1,7 @@
 ---
 area: skill-authoring-rules
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: d2e9efba50f605f8c56e0e4cc8df7d63c74c5fea
+generated-on: 2026-10-08
 sources:
   - .github/workflows/skills-lint-test.sh
   - .github/workflows/skills-lint.sh
@@ -82,9 +82,9 @@ The system SHALL fail the run when the same folder name exists in both `skills/`
 - **When** the lint runs
 - **Then** it reports that skill `beta` exists in both trees and exits non-zero
 
-### Requirement: The description line must be present and must parse as YAML
+### Requirement: The description line must be present and must parse as YAML text
 
-The system SHALL fail the run when the frontmatter has no `description:` line. It SHALL also fail the run when the value on that line does not start with `"`, `'`, `|` or `>` and either contains `: ` (which pi's YAML parser rejects) or contains ` #` (which YAML reads as the start of a comment, cutting the description short). The system SHALL accept any value that starts with a quote or block-scalar indicator without further inspection. It SHALL NOT fail an empty description (`description:` or `description: ""`), a value ending in a bare `:`, or a value starting with another YAML indicator such as `*`, `[` or `{`.
+The system SHALL fail the run when the frontmatter has no `description:` line. It SHALL also fail the run when the value on that line is empty (`description:`, `""`, `''`, `~` or `null`), unless the value continues on indented lines below it. For a value that does not start with `"` or `'` and is not a block-scalar header (`|` or `>`, optionally followed by a chomping or indentation indicator), the system SHALL fail the run when the value starts with `#` (read as a comment, so empty), with `[`, `]`, `{`, `}`, `*`, `%`, `@`, a backtick, `,`, `- ` or `? `, or with any other `|` or `>` (each a parse error in pi's YAML parser); when it starts with `&` or `!` (read as an anchor or tag, silently dropping the first word); when it ends with `:`, contains `: `, or contains ` #`; and when it is a bare number or boolean (`42`, `true`), which pi rejects as not a string. The system SHALL accept a quoted value without further inspection, and SHALL accept a value whose first word merely begins with `-` or `?` (`-v flags`).
 
 #### Scenario: Missing description
 
@@ -110,11 +110,23 @@ The system SHALL fail the run when the frontmatter has no `description:` line. I
 - **When** the lint runs
 - **Then** the description is accepted
 
-#### Scenario: Empty description passes
+#### Scenario: Empty description fails
 
-- **Given** a frontmatter line that reads `description:` with no value
+- **Given** a frontmatter line that reads `description:` with no value and no indented line below it
 - **When** the lint runs
-- **Then** the run passes: the lint does not detect an empty description
+- **Then** it reports that the description is empty and pi does not load the skill, and exits non-zero
+
+#### Scenario: A description that YAML misreads fails
+
+- **Given** `description: Use when:`, `description: *Review* the diff`, `description: &staging Review the diff`, or `description: true`
+- **When** the lint runs
+- **Then** each is reported, as invalid YAML, as an anchor or tag that drops the first word, or as not text, and the run exits non-zero
+
+#### Scenario: Legitimate shapes still pass
+
+- **Given** `description: -v flags`, a `description: >-` block scalar, or `description:` followed by an indented line of text
+- **When** the lint runs
+- **Then** each is accepted
 
 ### Requirement: The description fits pi's length limit when it is on one line
 
