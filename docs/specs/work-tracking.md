@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: 12267912e416fa22a113c63c32f60819be5eb33b
-generated-on: 2026-10-07
+generated-at: cd70a3755618d706ff60c131ecb0aaac698c5126
+generated-on: 2026-10-08
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -494,7 +494,7 @@ The system SHALL, on a `pr-per-task` close on a task branch, ask whether to merg
 
 ### Requirement: A blocked task cannot be closed
 
-The system SHALL ask, when closing a task blocked in either form, whether to unblock and close; with no answer, nobody present, or `--unattended`, it SHALL print `not closed: TASK-NNN is blocked: <reason>` and write nothing. An already `done` or `cancelled` task SHALL prompt to reopen interactively and be refused under `--unattended`, except an unmerged close (task branch reads `done`, the default branch does not), which resumes the merge without asking.
+The system SHALL ask, when closing a task blocked in either form, whether to unblock and close; with no answer, nobody present, or `--unattended`, it SHALL print `not closed: TASK-NNN is blocked: <reason>` and write nothing. An already `done` or `cancelled` task SHALL prompt to reopen interactively and be refused under `--unattended`, except an unmerged close (task branch reads `done`, the default branch does not), which resumes the merge without asking. A `done` or `verify` in the working copy that `HEAD`'s copy does not carry SHALL NOT count as a closed record: the system SHALL read the status from `HEAD`'s copy (`todo` when it has none) and run the close again from deciding where it runs, review passes included, under `--unattended` too; an uncommitted `in-progress`, `cancelled` or `blocked:` SHALL be read as written.
 
 #### Scenario: Unattended close of a blocked task
 
@@ -507,6 +507,12 @@ The system SHALL ask, when closing a task blocked in either form, whether to unb
 - **Given** a previous close committed `done` on `task/TASK-033` and then failed to merge
 - **When** the task is closed again
 - **Then** the close goes straight to the merge step without asking to reopen
+
+#### Scenario: Close interrupted before its commit
+
+- **Given** `TASK-034`'s working copy reads `done` while `HEAD`'s copy reads `todo`
+- **When** it is closed with `--unattended`
+- **Then** the close is not refused as already done; it runs the review passes again, writes `done`, and commits
 
 ### Requirement: Out-of-scope sweep at close
 

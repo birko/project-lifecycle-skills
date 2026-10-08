@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-08 08:03. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-08 11:20. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 1                  | 3                  | —                   |
-| todo         | —                  | —                  | 81                  |
+| todo         | —                  | —                  | 80                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 182                 |
+| done         | 3                  | 12                 | 183                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 70× P2 · 11× P3.
+`todo` by priority: 69× P2 · 11× P3.
 
 ## In progress now
 
@@ -213,8 +213,8 @@ _None_
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (6/48 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (6/30 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (7/48 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (7/30 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [ ] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
@@ -239,7 +239,7 @@ _None_
     - [ ] TASK-259 `grill-me` has no answer-less path: with nobody to answer, it neither ends nor reports
     - [x] TASK-272 `/populate-tests survey` promises no edits, but chains `adopt`, which writes files
     - [ ] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
-    - [ ] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
+    - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
     - [ ] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
     - [ ] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4

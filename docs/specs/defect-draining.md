@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: f7a62c83a3f48f3b59c6835a2c02b7b79cd6cbcb
+generated-at: cd70a3755618d706ff60c131ecb0aaac698c5126
 generated-on: 2026-10-08
 sources:
   - skills/fix-next/SKILL.md
@@ -19,7 +19,7 @@ Defect draining is the second half of a find → file → drain pipeline: once a
 
 ### Requirement: Resume an interrupted run before picking new work
 
-The system SHALL, before selecting any new work, look for in-flight runs in two independent places — task files reading `in-progress` in the task tree, and, when the project declares worktree workspaces, the task file on each local task branch — and SHALL resume a run only when its task carries `picked-by: fix-next` and a progress log, counts a branch copy only when it reads `in-progress` and is not blocked, and otherwise leaves in-progress work alone without counting or reporting it.
+The system SHALL, before selecting any new work, look for in-flight runs in three independent places — task files reading `in-progress` in the task tree; task files whose working copy reads `done` or `verify`, carries `picked-by: fix-next`, and differs in status from `HEAD`'s copy, which are closes interrupted before their commit and resume at the close step; and, when the project declares worktree workspaces, the task file on each local task branch — and SHALL resume a run only when its task carries `picked-by: fix-next` and a progress log, counts a branch copy only when it reads `in-progress` and is not blocked, and otherwise leaves in-progress work alone without counting or reporting it.
 
 #### Scenario: A run of this skill was interrupted
 
@@ -38,6 +38,12 @@ The system SHALL, before selecting any new work, look for in-flight runs in two 
 - **Given** the project declares worktree workspaces with an upstream, and the default branch's copy of TASK-903 reads `todo` while branch `task/TASK-903` holds a copy reading `in-progress` with `picked-by: fix-next`
 - **When** the skill is invoked
 - **Then** it treats TASK-903 as an in-flight run and resumes it from the branch copy rather than picking new work
+
+#### Scenario: A close stopped before its commit
+
+- **Given** TASK-905's working copy reads `done` with `picked-by: fix-next` and step 8's line last, while `HEAD`'s copy reads `todo`
+- **When** the skill is invoked
+- **Then** it resumes TASK-905 at step 8, reruns close, and does not pick a second task
 
 #### Scenario: A branch copy parked at verify is not a run
 

@@ -23,6 +23,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      | Step | Interactive | `--unattended` |
      |---|---|---|
      | 4 | already `done`/`cancelled` → ask "reopen and re-close?" | **refuse and report.** Never silently reopen a closed record |
+     | 4 (uncommitted `done`/`verify`) | read `HEAD`'s status and run the close again, gate included | **the same.** It is not the closed record the row above refuses |
      | 4 (blocked) | ask "Unblock it and close?" | **refuse and report** (`not closed: … is blocked`), write nothing. Never clear a block nobody asked to clear |
      | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Real unrun manual steps ⇒ `verify`, never `done` |
      | 5 (`verify` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
@@ -47,6 +48,20 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
 3. **Locate the file** — Grep `^id: TASK-NNN[[:space:]]*$` (or STORY/EPIC variant) across `tasks/`. If not found, suggest `/tasks triage` to refresh dashboard.
 
 4. **Read current status**:
+   - **A `done` or `verify` that no commit carries is not a closed record.** In a git repo, when the working
+     copy reads `done` or `verify` and `HEAD`'s copy (`git show HEAD:<task file>`) reads anything else, or
+     `HEAD` has no copy, an earlier close wrote its status (step 6, or step 5's `verify` park) and stopped
+     before the commit that carries it. A status written by hand looks the same. Either way, read the status
+     from `HEAD`'s copy (`todo` when it has none) and run this close as usual from step 4b, review passes
+     included. Step 6 then writes the status again. This applies under `--unattended` too: the
+     already-`done` refusal below is for a closed record, and this is not one.
+     - **Why the gate runs again rather than resuming at the commit:** the working copy cannot prove the
+       gate ran before the status was written, and a hand-written `done` must not commit without a review.
+       Running the passes twice costs time. Skipping them would merge unreviewed work under a status that
+       claims otherwise.
+     - **Only `done` and `verify`**, the two statuses this verb writes in place. An uncommitted `in-progress`,
+       `cancelled` or `blocked:` is the normal output of `pick`, `cancel` and `block` on an in-place
+       project, none of which commits. Reading past it would undo their work.
    - **Except an unmerged close**: the task branch's copy reads `done` (`git show task/TASK-NNN:<task file>`)
      while the default branch's copy still reads otherwise (`git show <default>:<task file>`). Read both with
      `git show`, never by path: branches are shared by every tree, so it works from the worktree and from

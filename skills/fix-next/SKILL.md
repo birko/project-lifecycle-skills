@@ -34,8 +34,17 @@ half guesses: intake stamps the epic `kind: review-intake`, and this skill reads
 
 Never select new work before establishing that no run is already in flight. A reset session is
 indistinguishable from a fresh one except by what's on disk, so look there: find the task root
-([[tasks]] § Shape detection), then look in **two places, independently**:
+([[tasks]] § Shape detection), then look in **three places, independently**:
 - grep `tasks/` for `^status: in-progress` in `TASK-*.md`;
+- **the committed copy of every task file that `git status --porcelain -- tasks/` reports as modified.**
+  `close` writes the new status (its step 6, or step 5's `verify` park) before committing it. A run interrupted
+  between the two leaves the working copy reading `done` or `verify` while `HEAD`'s copy
+  (`git show HEAD:<task file>`) reads something else, or does not exist yet. On an in-place project that is
+  usually `todo`, because an in-place pick commits nothing. The grep above misses that file, and a reset drain
+  would start a second task on top of the uncommitted work. Such a file counts when its working copy reads
+  `done` or `verify`, `HEAD`'s does not, and the working copy carries `picked-by: fix-next`. **Resume it at
+  step 8**: rerun `close`, which treats a `done` or `verify` it never committed as unwritten (its step 4) and
+  so runs its gate again;
 - **under `workspace: worktree`, the task branches too.** List local `task/*` branches
   (`git branch --list "task/*"`) and read each one's task file with `git show task/TASK-NNN:<task file>`.
   With an upstream the default branch's copy of an in-progress task still reads `todo`, so the grep alone
@@ -348,6 +357,8 @@ Log: `- step 8 — handed to /tasks close --unattended; outcome in status:, comm
 wrote some status other than an unblocked `in-progress`, because setting it is what its step 6 is for. So
 step 0 no longer resumes the task: it does not find it, or it reports it as blocked. A task that still reads
 `in-progress`, not blocked, with this as the last line, has no close commit: rerun step 8 from the top.
+**A status `close` wrote but never committed does not count as moving it.** Step 0's modified-file search
+finds that task and sends it back here.
 
 ## Step 9 — Stop clean
 
