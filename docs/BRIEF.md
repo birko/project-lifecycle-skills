@@ -59,3 +59,13 @@ Asked while trying the state-model playground built for TASK-124.
 > islo my hlavne toto v ihrysku
 
 > 1 urcote druhy stav rozpracovana, 6 takisto rozpracovana  kedze nieoc na nej uz bolo spravene spravne to chapem?
+
+### 2026-10-08 — became FEATURE-004 (`/specs` learns from OpenSpec)
+
+Asked after reading OpenSpec's release notes, v1.8.0 to v1.14.1.
+
+> we need maye update our spec regen https://openspec.dev/ has some updates
+
+> ok do it
+
+> maybe add also a copilont agent on github to chek the openscpecs site?

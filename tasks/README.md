@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-08 14:07. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-08 14:49. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
-| planned      | 1                  | 3                  | —                   |
-| todo         | —                  | —                  | 79                  |
+| planned      | 2                  | 5                  | —                   |
+| todo         | —                  | —                  | 86                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 3                  | 12                 | 184                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 68× P2 · 11× P3.
+`todo` by priority: 75× P2 · 11× P3.
 
 ## In progress now
 
@@ -269,6 +269,17 @@ _None_
   - STORY-025 Changes that ripple across skill folders — planned (0/2 done)
     - [ ] TASK-268 A change to a cross-skill contract ripples through up to 21 files in six skill folders
     - [ ] TASK-269 `adopt-project` changes with `new-project`'s LAYER.md in 19 commits, and both keep needing fixes
+
+- EPIC-009 Specs learn from OpenSpec — planned (0/7 tasks done)
+  - STORY-026 The regen review reads one requirement at a time, and loses nothing silently — planned (0/5 done)
+    - [ ] TASK-285 `/specs regen`'s review lists changes per requirement, with renames shown FROM → TO
+    - [ ] TASK-286 `/specs regen` names every scenario a regeneration dropped
+    - [ ] TASK-287 `/specs regen` flags a requirement it writes or rewrites past ~500 characters
+    - [ ] TASK-288 `/specs regen --all` writes each area as soon as its review is accepted
+    - [ ] TASK-289 `/specs regen` keeps a spec file's existing line endings
+  - STORY-027 Checks that do not depend on anyone running the skill — planned (0/2 done)
+    - [ ] TASK-290 `skills-lint.sh` fails a structurally broken spec file
+    - [ ] TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release
 
 ## Loose tasks
 
