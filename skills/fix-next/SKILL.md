@@ -324,7 +324,30 @@ What this skill adds, before handing over: write an `## Outcome` section into th
 *That section replaces the conversation.* Write it before `close` runs, so it rides in the same commit
 as the work.
 
-Log: `- step 8 — closed <status>; <sha>`
+**Write step 8's log line before `close` runs too, in the same copy of the task file as the Outcome**, so
+`close`'s own commit carries it. Nothing gets written to the task file after `close` starts. A line written
+afterwards cannot be committed: it would need the sha of the commit that carries it, and a commit cannot
+contain its own hash. That leaves the task file dirty, which fails § *Verify the reset really is safe* on
+every run. Under `workspace: worktree` there may be no file left to write: `close` removes the worktree
+after merging.
+
+| Project | Copy that gets the Outcome and the line | What carries them to the default branch |
+|---|---|---|
+| `single-branch` | the task file in the working tree | `close`'s commit |
+| PR-per-task, in place | the task file on `task/TASK-NNN`, checked out | `close`'s commit, then its merge |
+| `workspace: worktree` | the worktree's copy, where `pick` step 6b put the session | `close`'s commit there, then its merge into the main copy |
+
+The line names neither the status nor the sha, because both are settled after it is written. **The task's
+`status:` records how `close` ended, and the commit is the newest one whose subject's first task id is
+this task's** (the rule [[specs]] `regen` attributes by). Step 9's report quotes both from there.
+
+Log: `- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log`
+
+**Step 0 tells whether step 8 completed from git, never from this line.** The line is the same whether
+`close` finished or was interrupted, because it is written before `close` runs. A `close` that committed
+wrote some status other than an unblocked `in-progress`, because setting it is what its step 6 is for. So
+step 0 no longer resumes the task: it does not find it, or it reports it as blocked. A task that still reads
+`in-progress`, not blocked, with this as the last line, has no close commit: rerun step 8 from the top.
 
 ## Step 9 — Stop clean
 

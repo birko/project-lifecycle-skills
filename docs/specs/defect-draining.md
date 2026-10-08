@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: 12267912e416fa22a113c63c32f60819be5eb33b
-generated-on: 2026-10-07
+generated-at: f7a62c83a3f48f3b59c6835a2c02b7b79cd6cbcb
+generated-on: 2026-10-08
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -249,7 +249,7 @@ The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task
 
 ### Requirement: Every step appends a progress line
 
-The system SHALL append one line to the task's progress log after each step, in the step's stated form (verified, layer, fix and tests, revert split, respec, closed), so that a reset session can resume from the last recorded step.
+The system SHALL append one line to the task's progress log after each step, in the step's stated form (verified, layer, fix and tests, revert split, respec, handed to close), so that a reset session can resume from the last recorded step.
 
 #### Scenario: Step lines accumulate
 
@@ -337,13 +337,25 @@ The system SHALL find the spec area whose map globs cover the changed files and 
 
 ### Requirement: Close through the merge gate unattended
 
-The system SHALL, before handing over, write an outcome section into the task file stating what the fix was, the step-6 split with names, the judgement calls and why the stricter option was rejected, and anything flagged but not fixed; and SHALL then close the task with `/tasks close --unattended`, never re-implementing the review passes, merge decision, commit or rollups that close owns, and never skipping the gate because a review skill's name did not resolve.
+The system SHALL, before handing over, write an outcome section into the task file stating what the fix was, the step-6 split with names, the judgement calls and why the stricter option was rejected, and anything flagged but not fixed; SHALL write step 8's progress line beside it, in the same copy of the task file, naming neither the closing status nor the commit; and SHALL then close the task with `/tasks close --unattended`, writing nothing to the task file after close starts, never re-implementing the review passes, merge decision, commit or rollups that close owns, and never skipping the gate because a review skill's name did not resolve. The copy written is the working tree's on a single-branch project, the checked-out task branch's on an in-place pull-request-per-task project, and the worktree's under worktree workspaces. The task's status and the newest commit whose subject's first task id is this task's then record how close ended, and a reset session judges step 8 complete from those rather than from the line: a task still reading `in-progress`, unblocked, with step 8's line last, has no close commit and step 8 runs again.
 
 #### Scenario: Closing a pull-request-per-task project
 
 - **Given** TASK-1080's fix is complete on a pull-request-per-task project
 - **When** step 8 runs
 - **Then** the outcome section is written first, close runs with the unattended flag, and the merge decision is resolved as merge without a question
+
+#### Scenario: The close commit carries the last line
+
+- **Given** TASK-1081's fix is complete on a single-branch project
+- **When** step 8 runs and close commits
+- **Then** the outcome section and the line `- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log` are in that commit, and the working tree is clean afterwards
+
+#### Scenario: Interrupted before close committed
+
+- **Given** TASK-1082 reads `in-progress`, is not blocked, and its progress log ends with step 8's line, and close never committed
+- **When** a new run reaches step 0
+- **Then** it resumes TASK-1082 at step 8 and runs close again
 
 ### Requirement: One defect per bare run; loop continues until a stopping point
 
