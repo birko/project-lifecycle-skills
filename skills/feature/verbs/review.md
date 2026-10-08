@@ -23,8 +23,11 @@ Three checks before a feature is called done: it's **complete** (every decision 
 
 3. **Gate B — Human test plan verification** (the part automated review can't do):
    - For every task with `feature: FEATURE-NNN`, read its `## Human test plan`.
-   - Each plan must be either: all steps checked `[x]` (manually run), or explicitly `N/A — fully covered by automated tests`.
-   - Any plan with unchecked steps → list them and ask the user to run them (or confirm N/A). This is the same check `/tasks close` runs per-task; here it's enforced feature-wide so nothing slips through.
+   - Read every step as **passed**, **failed** or **not run**, by [[tasks]] § *Lifecycle*'s table: `[x]` is passed; `[ ]` whose last nested line starts `**Failed YYYY-MM-DD:**` is failed; any other `[ ]` is not run.
+   - Each plan must be either: every step passed, or explicitly `N/A — fully covered by automated tests`.
+   - **Report the three states on separate lines, per task**: `TASK-NNN — N passed, N failed, N not run`, and under it each failed step with its date and the task ids its line names. Never fold a failed step into *not run*: a plan that was run, at real cost, must not read the same as one nobody touched.
+   - Any failed step → Gate B fails. A failure is not resolved by running the step again unchanged; the work its line names has to land first. List those task ids as what blocks the feature.
+   - Any step not run → list it and ask: *"These steps have not been run: <list>. Run them now, or confirm the plan is N/A, and tell me the result of each."* No answer → Gate B stays unmet and the feature is set to `review`, as step 5 describes. This is the same check `/tasks close` runs per-task; here it's enforced feature-wide so nothing slips through.
    - Capture the result (who tested, when) — note it in the feature's `decisions.md` History log.
 
 4. **Gate C — Stakeholder sign-off:**

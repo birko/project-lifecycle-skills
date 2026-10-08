@@ -46,6 +46,8 @@ _State the expected outcome here — that is what makes a step checkable. **If t
 - [ ] Edge case / boundary to exercise by hand
 - [ ] Integration touchpoint to verify against the real external system
 
+_Tick a step only when it passed. A step that ran and failed stays `[ ]` and gets a nested line `- **Failed YYYY-MM-DD:** <what happened> → <task ids>`, so it cannot be read as either passed or never run ([[tasks]] § *Lifecycle*)._
+
 _Write `N/A — fully covered by automated tests` here if no manual testing is needed, so reviewers know it was a deliberate choice, not an omission._
 
 ## Implementation plan

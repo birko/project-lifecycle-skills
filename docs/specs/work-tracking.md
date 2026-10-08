@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: cd70a3755618d706ff60c131ecb0aaac698c5126
+generated-at: b94dd8cabd0e5a7c177fc209e45a53b7a4523817
 generated-on: 2026-10-08
 sources:
   - skills/tasks/SKILL.md
@@ -436,13 +436,19 @@ The system SHALL, on `intake --adopt <EPIC>`, stamp `kind: review-intake` on an 
 
 ### Requirement: Human test plan decides verify or done
 
-The system SHALL, at task close, require the `## Human test plan` to be resolved: an absent section or untouched placeholder must be filled with steps or with `N/A` and a reason before any status is chosen, and is never defaulted to `verify`. A step stays manual only when it needs human judgement or hardware; otherwise it is automated and proven able to fail. Unchecked real manual steps SHALL close the task to `verify`, never `done`, committing the finished work on the task branch, offering a PR marked awaiting sign-off, running the out-of-scope sweep, skipping the remote-tracker close, and still regenerating the dashboard. An explicit `N/A` plan closes straight to `done`.
+The system SHALL, at task close, require the `## Human test plan` to be resolved: an absent section or untouched placeholder must be filled with steps or with `N/A` and a reason before any status is chosen, and is never defaulted to `verify`. A step stays manual only when it needs human judgement or hardware; otherwise it is automated and proven able to fail. Each manual step SHALL be read as passed (ticked), failed (unticked, its last nested line a dated `Failed` entry naming where its findings went) or not run (unticked, no such line); only a passed step counts toward `done`, and a failed step is never ticked. A failed or not-run real manual step SHALL close the task to `verify`, never `done`, a failed one reported with its date and findings and a `Failed` line naming no task first having its work spawned, committing the finished work on the task branch, offering a PR marked awaiting sign-off, running the out-of-scope sweep, skipping the remote-tracker close, and still regenerating the dashboard. An explicit `N/A` plan closes straight to `done`.
 
 #### Scenario: Unrun manual step
 
 - **Given** a task whose test plan has an unchecked visual check
 - **When** it is closed and the user has not run the check
 - **Then** the status becomes `verify`, the work is committed, and the linked issue stays open
+
+#### Scenario: Failed manual step
+
+- **Given** a task whose only manual step is unticked with a `Failed` line naming TASK-041
+- **When** it is closed and the user says they ran it
+- **Then** the step stays unticked, the status becomes `verify`, and the report names the failed step and TASK-041
 
 #### Scenario: Missing section
 

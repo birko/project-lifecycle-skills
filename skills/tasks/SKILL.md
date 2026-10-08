@@ -308,7 +308,7 @@ migrates are out of reach:
 
 | In the file | Read as |
 |---|---|
-| `status: verify`, or `status: review` | awaiting verification: code complete, the manual step unrun |
+| `status: verify`, or `status: review` | awaiting verification: code complete, a manual step not run or failed |
 | a `blocked: <reason>` field | blocked, **in the state its `status:` names** |
 | `status: blocked` (old form) | blocked, **prior state unknown**: counted as blocked only, never guessed into a state, until a migration reads its history |
 | a `blocked:` field on a `done` or `cancelled` task | a contradiction; `audit` reports it |
@@ -400,7 +400,34 @@ it under "Awaiting verification" and it should be closed (run the test → `done
   reason a human adds nothing) *before* choosing the status. Defaulting a missing plan to `verify`
   parks the task on a step that may not exist, and it is indistinguishable from an unrun one
   afterwards, so it becomes debt nobody can clear. `close` step 5 enforces this.
-- `verify` → `done` only after the human step is checked off (the `close` verb enforces this).
+- `verify` → `done` only after the human step is checked off **as passed** (the `close` verb enforces this).
+
+**A Human test plan step has three states, and the box alone records two.** A step that ran and
+failed is the ordinary result of testing, and it is the result that produces work. So it needs its own
+record: ticking it would let `close` treat a failing test as permission to close, and leaving it bare
+makes it look as if nobody ran it. Every reader of a plan (`close` step 5, [[feature]] `review` Gate B)
+reads a step like this:
+
+| The step reads | State |
+|---|---|
+| `- [x]` | **passed**: its latest run matched the expected result |
+| `- [ ]` and its **last** nested line starts `**Failed YYYY-MM-DD:**` | **failed**: it ran and did not match |
+| `- [ ]` with no such line | **not run** |
+
+```markdown
+- [ ] Export a report with an empty date range. Expected: a file with headers and no rows.
+  - **Failed 2026-03-14:** the export threw on the empty range → TASK-041
+```
+
+- **Tick a box only for a pass.** A failed step stays `[ ]` and gets the `Failed` line. The line says
+  what was observed and where the findings went, as task ids. A failure whose findings have no task is
+  work nobody owns: file it with `/tasks spawn` before writing the line.
+- **A re-run adds a line and never deletes one.** A re-run that passes ticks the box and appends
+  `**Passed YYYY-MM-DD:**`. A re-run that fails appends a new `Failed` line. The last line is the
+  current state, and the earlier ones are the history.
+- **A failed step keeps the box unticked on purpose.** A reader that predates this table sees an
+  unchecked box and refuses `done`. So an older reader misreports a failure as not run, but it never
+  closes the task on one. A new marker inside the box would not fail safe that way.
 - **A change landing on a closed feature reopens the implementing task.** This is the
   *down-the-tree* counterpart to the roll-up rule below: when a post-sign-off change
   with a human-verifiable surface lands on a `done` feature (the [[feature]] skill's

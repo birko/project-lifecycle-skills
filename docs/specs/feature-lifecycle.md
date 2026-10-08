@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: d97f2f9a0b93aca6543e444b7c25cbf0b13c788b
-generated-on: 2026-10-06
+generated-at: b94dd8cabd0e5a7c177fc209e45a53b7a4523817
+generated-on: 2026-10-08
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -555,7 +555,7 @@ The system SHALL treat each feature's rollup and the features index as generated
 
 ### Requirement: Review is a three-gate completeness check
 
-The system SHALL, on `/feature review`, run Gate A (completeness: every approved or changed decision decomposed and every linked task `done`, stopping with a list of open tasks otherwise; a confirmation that any new cross-cutting pattern was recorded; a fidelity check of the cumulative change against the approved and changed decisions, reported separately from the completeness findings and never merged or reranked with them; a spec-landing check; and optional cumulative correctness and security passes for cross-task seams, done inline when the runtime lacks them, with any blocker routed back to a task rather than fixed in place), Gate B (every linked task's human test plan fully checked or explicitly marked not applicable, unchecked steps listed for the user to run, and the result recorded in History) and Gate C (a stakeholder summary and explicit sign-off recorded as a History line), and SHALL print a per-gate pass/fail and the final state.
+The system SHALL, on `/feature review`, run Gate A (completeness: every approved or changed decision decomposed and every linked task `done`, stopping with a list of open tasks otherwise; a confirmation that any new cross-cutting pattern was recorded; a fidelity check of the cumulative change against the approved and changed decisions, reported separately from the completeness findings and never merged or reranked with them; a spec-landing check; and optional cumulative correctness and security passes for cross-task seams, done inline when the runtime lacks them, with any blocker routed back to a task rather than fixed in place), Gate B (every step of every linked task's human test plan read as passed, failed or not run and reported per task on separate counts, the plan passing only when every step passed or it is explicitly marked not applicable, any failed step failing the gate with the task ids its line names listed as what blocks the feature, not-run steps listed for the user to run, and the result recorded in History) and Gate C (a stakeholder summary and explicit sign-off recorded as a History line), and SHALL print a per-gate pass/fail and the final state.
 
 #### Scenario: Open task fails completeness
 
@@ -568,6 +568,12 @@ The system SHALL, on `/feature review`, run Gate A (completeness: every approved
 - **Given** a linked task whose human test plan has two unchecked steps
 - **When** Gate B runs
 - **Then** the steps are listed and the user is asked to run them or confirm not applicable
+
+#### Scenario: A failed step is not reported as unrun
+
+- **Given** one linked task with a passed step, one with a step never run, and one with a step carrying a `Failed` line
+- **When** Gate B runs
+- **Then** each task's line shows its own passed, failed and not-run counts, and Gate B fails on the failed step
 
 #### Scenario: Stakeholder requests changes
 

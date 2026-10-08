@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-08 14:49. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-08 16:40. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -11,12 +11,12 @@ _Generated 2026-10-08 14:49. Run `/tasks triage` to refresh. **Do not hand-edit*
 | planned      | 2                  | 5                  | —                   |
 | todo         | —                  | —                  | 86                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 1                   |
+| verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 3                  | 12                 | 184                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 75× P2 · 11× P3.
+`todo` by priority: 74× P2 · 12× P3.
 
 ## In progress now
 
@@ -24,6 +24,7 @@ _None_
 
 ## Awaiting verification
 
+- [TASK-161](EPIC-003-field-found-defects/TASK-161.md) — A human test plan that ran and failed cannot be told from one that never ran (P2, unassigned)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
 ## Tree
@@ -200,7 +201,7 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (5/9 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (5/10 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -208,10 +209,11 @@ _None_
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
   - (epic level) — 3/4 done
-    - [ ] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
+    - [ ] TASK-161 A human test plan that ran and failed cannot be told from one that never ran 🔍 verify
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
+    - [ ] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (8/48 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (8/30 done)

@@ -313,6 +313,13 @@ The skills *are* the product, so their prose is the user interface. This subsect
   root), while **which** siblings participate is derived from the filesystem and so is recomputed every
   run, never listed. *No record: a rulebook entry whose footprint is the prose it shapes; the decision
   that produced it, with both rejected alternatives, is on TASK-130.*
+- **A Human test plan step is passed, failed or not run, and only a pass is ticked.** A failed step stays `[ ]`
+  with a dated `**Failed YYYY-MM-DD:**` line naming where its findings went. Every gate that reads a plan
+  (`close` step 5, [[feature]] `review` Gate B) reads all three, and only *passed* counts toward `done`.
+  Ticking a failure makes a failing test into permission to close, and leaving it bare reports a test run
+  at real cost as never run. Unticked-plus-line rather than a new marker because it fails safe: a
+  reader that predates the rule still refuses `done`. Table and example: [[tasks]] § *Lifecycle*.
+  Measured: TASK-161.
 - **A move into a worktree is proved, never assumed — and it has one owner.** Any skill that puts a session
   in a worktree (today `pick`, `close`, [[fix-next]]) goes through `skills/tasks/verbs/pick.md` step 6b, which
   owns the enter-then-prove mechanics; the sites point there. Record: FEATURE-001 D4, D14.
