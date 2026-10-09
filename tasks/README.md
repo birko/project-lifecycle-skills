@@ -10,7 +10,7 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
 | todo         | —                  | —                  | 84                  |
-| in-progress  | 4                  | 10                 | 0                   |
+| in-progress  | 5                  | 11                 | 1                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 3                  | 12                 | 188                 |
@@ -20,7 +20,7 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
 
 ## In progress now
 
-_None_
+- [TASK-293](EPIC-010-ux-guidance/STORY-028-ux-baseline/TASK-293.md) — A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory (P3, agent)
 
 ## Awaiting verification
 
@@ -282,6 +282,10 @@ _None_
   - STORY-027 Checks that do not depend on anyone running the skill — planned (0/2 done)
     - [ ] TASK-290 `skills-lint.sh` fails a structurally broken spec file
     - [ ] TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release
+
+- EPIC-010 Interaction-design (UX) guidance in the skill set — in-progress (0/1 tasks done)
+  - STORY-028 A UX baseline that the review and prototype skills read — in-progress (0/1 done)
+    - [ ] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory
 
 ## Loose tasks
 
