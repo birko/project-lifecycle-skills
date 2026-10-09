@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-08 16:40. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 86                  |
+| todo         | —                  | —                  | 85                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 184                 |
+| done         | 3                  | 12                 | 185                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 74× P2 · 12× P3.
+`todo` by priority: 73× P2 · 12× P3.
 
 ## In progress now
 
@@ -215,10 +215,10 @@ _None_
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
     - [ ] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (8/48 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (8/30 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (9/48 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (9/30 done)
     - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
-    - [ ] TASK-221 `cancel` and container close disagree about cancelled work
+    - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
     - [ ] TASK-223 A taken task is "shown as in progress", but no index says where it is counted
     - [x] TASK-227 `fix-next` step 8 writes a log line after `close` has committed, so the run never ends clean

@@ -33,6 +33,10 @@ upstream only", with "In-place projects keep today's behaviour". Nothing says wh
 next `close`'s clean-tree checks, and [[fix-next]]'s *Verify the reset really is safe*, then meet a dirty
 tree that no step owns.
 
+A container close does the same: TASK-221's fixture run of `/tasks close --story` (2026-10-09, single-branch)
+ended with the regenerated `tasks/README.md` and the story file both uncommitted, and said so. The acceptance
+criteria below cover task closes; a container close is the same question.
+
 Not yet established: whether the `done` path differs. This repo's own closes do carry `tasks/README.md` in
 the task commit (for example `e9cc2c7`), so either the agent folds it in off-script or a step says so and the
 fixture runner missed it. Find out first.

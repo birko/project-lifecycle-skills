@@ -42,7 +42,7 @@ deletion. The file stays for the audit trail.
    - `jira-key: <KEY>` → transition to a closed/won't-do status via the Atlassian MCP (search the transition tool via ToolSearch; prompt if not authenticated). Don't reopen-loop if it's already closed.
 
 9. **Roll status up to parents** (same rule as `close` — parents must not lie):
-   - After cancelling, re-evaluate the parent STORY then its EPIC. If **every** child of a STORY is now `done`/`cancelled`, that STORY should not still read `in-progress` — reconcile it (a story with all children cancelled is itself `cancelled`; a mix of done+cancelled is `done`). Update the parent files, not just the leaf.
+   - After cancelling, re-evaluate the parent STORY then its EPIC. If **every** child of a STORY is now `done`/`cancelled`, that STORY should not still read `in-progress` — reconcile it (a story with all children cancelled is itself `cancelled`; a mix of done+cancelled is `done`; for an epic, its stories and directly parented tasks count together). `close --story`/`--epic` applies the same rule, so the tree gets one answer whichever verb closes the last child. Update the parent files, not just the leaf.
    - Cancelling a STORY/EPIC directly → confirm it has no work you mean to keep; its open children don't auto-cancel — list them and ask whether to cancel them too.
 
 10. **Regenerate dashboard** ([triage](triage.md)). Cancelled items render struck-through and fold into the Completed section.
@@ -54,8 +54,13 @@ deletion. The file stays for the audit trail.
 - **Cancelling a task that other tasks list in `depends-on`** — warn: list the dependents; their `depends-on`
   now points at a cancelled task (a satisfied-by-cancellation, not by-completion). Suggest
   `/tasks audit` (broken-links/unblock check) to reconcile, or unblock them via `/tasks unblock`.
-- **Reviving a cancelled task** — there's no "uncancel"; create afresh with `/tasks new` (and
-  reference the cancelled ID in Context) so the revival is itself tracked, or `/tasks pick`
-  after manually flipping it back if it was cancelled by mistake moments ago.
+- **Reviving a cancelled task** — there's no "uncancel" and no hand edit of `status:`: create it
+  afresh with `/tasks new`, and cite the cancelled ID in Context. `pick` refuses a cancelled task and
+  points here too. A revival reverses a recorded decision, so it is a new decision and gets its own
+  task. Flipping the old file back would erase the cancellation that the note in step 6 records. If the
+  cancel was a mistake and is **not committed yet**, discard it with `git restore` on the files it
+  changed: that undoes an unrecorded edit, it does not rewrite a recorded status. Read `git diff` on
+  those files first: restore them only when the cancel's edits are the only changes in them, or other
+  uncommitted work goes with it. Git cannot undo step 8, so in hybrid mode reopen the remote issue too.
 - **Cancelling the last open task of a feature** — combine step 7's decision-follow-up with a
   note that `/feature status` / `/feature review` should be re-run so the rollup reflects the drop.

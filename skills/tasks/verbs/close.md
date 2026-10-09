@@ -535,7 +535,13 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
 Container closes are simpler than task closes — no human-test plan, no merge gate (each child task already passed both at its own close). The procedure:
 
 1. **Children-done check** — every child TASK (and, for an epic, every STORY) must be `done`/`cancelled`; otherwise block by default, listing the open children ("STORY-001 has 2 open tasks; close them first or pass `--force`").
-2. **Flip `status:` → `done`** in the STORY.md/EPIC.md frontmatter.
+2. **Flip `status:` in the STORY.md/EPIC.md frontmatter — to `done`, or to `cancelled` when it has children
+   and every one is `cancelled`.** An empty container keeps closing `done`, as before. A mix of `done` and `cancelled` children is `done`; for an epic, "every child" is its stories
+   and its directly parented tasks together. A container whose work was all dropped did not get done, and
+   writing `done` would contradict [`cancel`](cancel.md), which rolls the same tree up to `cancelled`. Both
+   verbs state this one rule, so the tree gets one answer whichever verb closes the last child.
+   With `--force` and open children, the result is `done`: forcing closes a container whose remaining work
+   is being set aside, and the open children are listed in the confirmation.
 3. **Parent rollup** — re-evaluate the parent: a story close may leave its EPIC with no open stories (suggest closing it, per step 11); an epic close ends the chain. Update parent files, not just the leaf.
 4. **Regenerate the dashboard** (step 10) and run step 11's hints — for a STORY, that's where the **spec regen offer** fires; the changelog nudge applies only to feature-less containers.
 5. **Confirm** (step 12 format).

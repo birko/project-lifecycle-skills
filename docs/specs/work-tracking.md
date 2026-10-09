@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: b94dd8cabd0e5a7c177fc209e45a53b7a4523817
-generated-on: 2026-10-08
+generated-at: 0050c4314cc9f0485cb3765fa8757188cdc6a239
+generated-on: 2026-10-09
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -590,13 +590,19 @@ The system SHALL close the linked GitHub issue or transition the Jira ticket onl
 
 ### Requirement: Closing stories and epics
 
-The system SHALL close a story or epic only when every child task (and, for an epic, every story) is `done` or `cancelled`, listing open children and refusing otherwise unless `--force` is passed; it then flips the container to `done`, re-evaluates its parent, regenerates the dashboard and runs the post-close hints. Containers have no test plan or merge step.
+The system SHALL close a story or epic only when every child task (and, for an epic, every story) is `done` or `cancelled`, listing open children and refusing otherwise unless `--force` is passed; it then flips the container to `cancelled` when every child is `cancelled` (an epic counting its stories and directly parented tasks together) and to `done` otherwise, the same rule `cancel`'s rollup applies, re-evaluates its parent, regenerates the dashboard and runs the post-close hints. Containers have no test plan or merge step.
 
 #### Scenario: Open children
 
 - **Given** a story with two open tasks
 - **When** the user runs `/tasks close --story STORY-008`
 - **Then** it refuses, naming the two tasks and `--force`
+
+#### Scenario: Every child cancelled
+
+- **Given** a story whose two tasks are both `cancelled`
+- **When** the user runs `/tasks close --story STORY-004`
+- **Then** the story reads `cancelled`, not `done`
 
 ### Requirement: Parents rolled up after child changes
 
@@ -626,7 +632,7 @@ The system SHALL re-home one or more tasks or stories under a story, an epic or 
 
 ### Requirement: Cancelling work
 
-The system SHALL set a task, story or epic to `cancelled` (confirming first when it is `in-progress` or `done`), append a dated reason note, never delete the file, warn about dependents, point at the owning feature decision when the item is feature-linked without editing the ledger, close the remote issue as not planned in hybrid mode, roll up parents, and regenerate the dashboard. Cancelling a container SHALL list its open children and ask whether to cancel them, never cascading automatically.
+The system SHALL set a task, story or epic to `cancelled` (confirming first when it is `in-progress` or `done`), append a dated reason note, never delete the file, warn about dependents, point at the owning feature decision when the item is feature-linked without editing the ledger, close the remote issue as not planned in hybrid mode, roll up parents, and regenerate the dashboard. Cancelling a container SHALL list its open children and ask whether to cancel them, never cascading automatically. There is no uncancel: reviving cancelled work SHALL go through `/tasks new` citing the cancelled id, never a hand edit of `status:`; a cancel not yet committed MAY be discarded with `git restore` when its edits are the only changes in those files, reopening any remote issue it closed.
 
 #### Scenario: Feature-linked task cancelled
 
