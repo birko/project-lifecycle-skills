@@ -44,7 +44,7 @@ Analyze every task and report duplicates, mergeable/splittable items, stale work
    | `old-form` | a task written in the old status vocabulary | `status: review` or `status: blocked` ([SKILL.md](../SKILL.md) § *Lifecycle*). Read correctly as it is; `/tasks init` step 3b rewrites it. Report the count and point there, never fix it here | ⚪ |
    | `contradiction` | a status two fields disagree on | a `blocked:` field on a `done` or `cancelled` task ([SKILL.md](../SKILL.md) § *Lifecycle*) | 🟡 |
    | `stale` | abandoned work | `status: todo`/`in-progress`, `created` far in the past (>~60 days as a default heuristic — compare to today's date), no `pr`/movement | 🟡 |
-   | `broken-links` | dangling references | `depends-on`/`blocks`/`parent`/`feature:` pointing at an ID that doesn't exist, or `depends-on` a task already `done`/`cancelled` (→ unblock candidate) | 🔴 |
+   | `broken-links` | dangling references | `depends-on`/`blocks`/`parent`/`feature:` pointing at an ID that doesn't exist, or `depends-on` a task already `done`/`cancelled` (→ a satisfied dependency; also an unblock candidate when the task carries `blocked:`) | 🔴 |
    | `cycles` | circular deps | walk `depends-on` graph; report any A→…→A cycle | 🔴 |
    | `incomplete` | not pick-ready | empty/placeholder Acceptance criteria, or `## Human test plan` still holding the template placeholder text (neither real steps nor an explicit `N/A`) | 🟡 |
    | `orphans` | structural gaps | task in `_loose/` that clearly belongs under an existing epic/story; `feature:` set but no such `docs/features/FEATURE-NNN/` | ⚪ |
@@ -63,7 +63,7 @@ Analyze every task and report duplicates, mergeable/splittable items, stale work
 
    🔴 Broken links (1)
      TASK-019 depends-on TASK-004, which is done
-       → unblock TASK-019
+       → drop TASK-004 from TASK-019's depends-on
 
    🟡 Splittable (1)
      TASK-027 has 7 acceptance items spanning auth + logging + UI
@@ -76,12 +76,16 @@ Analyze every task and report duplicates, mergeable/splittable items, stale work
      TASK-007 in _loose/ overlaps EPIC-002 (Caching)
        → reparent under EPIC-002
 
-   Run with --fix to apply the 3 safe findings (1 merge, 1 unblock, 1 reparent).
+   Run with --fix to apply the 3 safe findings (1 merge, 1 dependency pruned, 1 reparent).
    ```
 
 4. **If `--fix`** — walk the **safe** findings only, one at a time, each gated by an explicit confirm. Safe = reversible/non-destructive:
-   - **Merge** → set the absorbed task `status: cancelled`, append a body line `> Merged into TASK-NNN on <today>` (and copy any unique acceptance items into the survivor). **Never delete the file** — keeps the audit trail, mirrors how `decisions.md` never deletes rows.
-   - **Unblock** → remove the satisfied (done) ID from the dependent's `depends-on`.
+   - **Merge** → set the absorbed task `status: cancelled` (removing any `blocked:` field, as [`cancel`](cancel.md) step 5 does), append a body line `> Merged into TASK-NNN on <today>` (and copy any unique acceptance items into the survivor). **Never delete the file** — keeps the audit trail, mirrors how `decisions.md` never deletes rows.
+   - **Prune a satisfied dependency** → remove the satisfied (done) ID from the dependent's `depends-on`.
+     **This does not unblock**, and is not called unblocking: a `blocked:` field stays, because its reason
+     may be more than the dependency, and clearing it is [`unblock`](block.md)'s call. When the task carries
+     one and none of its remaining `depends-on` is open, print
+     `TASK-NNN is still blocked: <reason> — every dependency is satisfied; run /tasks unblock TASK-NNN if that was the reason`.
    - **Reparent** → move the file under the suggested epic/story folder, fix `parent:`.
    - **NOT auto-fixed** (judgment/destructive): splits, dependency cycles, staleness verdicts, ambiguous dedup pairs below high confidence — these are reported for the human/agent to resolve manually.
    - After fixes, **regenerate the dashboard** ([triage](triage.md)).

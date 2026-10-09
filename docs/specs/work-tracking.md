@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: aabc0e4324d3a2857ed3cb93aa37ae8458fd66cc
+generated-at: c366167b247a6c90fa1e9240301b96bcde44b0c6
 generated-on: 2026-10-09
 sources:
   - skills/tasks/SKILL.md
@@ -638,7 +638,7 @@ The system SHALL re-home one or more tasks or stories under a story, an epic or 
 
 ### Requirement: Cancelling work
 
-The system SHALL set a task, story or epic to `cancelled` (confirming first when it is `in-progress` or `done`), append a dated reason note, never delete the file, warn about dependents, point at the owning feature decision when the item is feature-linked without editing the ledger, close the remote issue as not planned in hybrid mode, roll up parents, and regenerate the dashboard. Cancelling a container SHALL list its open children and ask whether to cancel them, never cascading automatically. There is no uncancel: reviving cancelled work SHALL go through `/tasks new` citing the cancelled id, never a hand edit of `status:`; a cancel not yet committed MAY be discarded with `git restore` when its edits are the only changes in those files, reopening any remote issue it closed.
+The system SHALL set a task, story or epic to `cancelled` (confirming first when it is `in-progress` or `done`), remove any `blocked:` field (the block's reason survives in its body note), append a dated reason note, never delete the file, warn about dependents, point at the owning feature decision when the item is feature-linked without editing the ledger, close the remote issue as not planned in hybrid mode, roll up parents, and regenerate the dashboard. Cancelling a container SHALL list its open children and ask whether to cancel them, never cascading automatically. There is no uncancel: reviving cancelled work SHALL go through `/tasks new` citing the cancelled id, never a hand edit of `status:`; a cancel not yet committed MAY be discarded with `git restore` when its edits are the only changes in those files, reopening any remote issue it closed.
 
 #### Scenario: Feature-linked task cancelled
 
@@ -664,7 +664,7 @@ The system SHALL add a `blocked:` reason field to a task without changing its st
 
 ### Requirement: Backlog audit
 
-The system SHALL scan the backlog, read-only by default, for duplicates (wide acceptance and Context overlap, judged by meaning, reporting score and judgement), mergeable and splittable tasks, old-form statuses (counted and pointed at `init`), blocked-field contradictions, stale work, broken links (including a dependency on a finished task as an unblock candidate), dependency cycles, incomplete tasks and orphans, each with a severity and a suggested action; drift between tasks and features is left to the roadmap view. With `--fix` it SHALL apply only reversible fixes, one confirmation each — merge as cancel-with-note, removing a satisfied dependency, reparenting — then regenerate the dashboard. Under `--across` checks run within each project, and `--fix` and `--scope` are refused.
+The system SHALL scan the backlog, read-only by default, for duplicates (wide acceptance and Context overlap, judged by meaning, reporting score and judgement), mergeable and splittable tasks, old-form statuses (counted and pointed at `init`), blocked-field contradictions, stale work, broken links (including a dependency on a finished task as an unblock candidate), dependency cycles, incomplete tasks and orphans, each with a severity and a suggested action; drift between tasks and features is left to the roadmap view. With `--fix` it SHALL apply only reversible fixes, one confirmation each — merge as cancel-with-note, removing a satisfied dependency (which never removes a `blocked:` field: a blocked task whose dependencies are all satisfied is named as an unblock candidate for `unblock`), reparenting — then regenerate the dashboard. Under `--across` checks run within each project, and `--fix` and `--scope` are refused.
 
 #### Scenario: Synonym duplicate
 

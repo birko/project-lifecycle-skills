@@ -24,7 +24,10 @@ deletion. The file stays for the audit trail.
    - `done` → warn ("this is already done — cancel anyway?"); cancelling done work is unusual but allowed (e.g. shipped then pulled). Confirm before proceeding.
    - `in-progress` → confirm intent ("work is in progress on this — cancel it?").
 
-5. **Edit frontmatter** — `status: … → status: cancelled`.
+5. **Edit frontmatter** — `status: … → status: cancelled`, and **remove a `blocked:` field if the task carries
+   one**. A block holds open work, and cancelled work is not open: left in place, the field contradicts the
+   status, which `audit` reports ([SKILL.md](../SKILL.md) § *Lifecycle*). Its reason is not lost — `block`
+   wrote it into the body as a `> Blocked` note, and step 6's note records why the work was dropped.
 
 6. **Record the reason (don't lose the why)** — append to the body, under a trailing note:
    `> Cancelled {{today}} — <reason>` (use the conversation/runtime date; this skill has no clock of its own). If `--reason` wasn't given, ask for one line; accept "no reason" but prefer a real one.
@@ -47,13 +50,13 @@ deletion. The file stays for the audit trail.
 
 10. **Regenerate dashboard** ([triage](triage.md)). Cancelled items render struck-through and fold into the Completed section.
 
-11. **Confirm** — print the file updated, `status: … → cancelled`, the reason recorded, any remote close result, and any feature-decision follow-up suggested.
+11. **Confirm** — print the file updated, `status: … → cancelled`, `blocked: <reason> removed` when step 5 removed one, the reason recorded, any remote close result, and any feature-decision follow-up suggested.
 
 ## Edge cases
 
 - **Cancelling a task that other tasks list in `depends-on`** — warn: list the dependents; their `depends-on`
   now points at a cancelled task (a satisfied-by-cancellation, not by-completion). Suggest
-  `/tasks audit` (broken-links/unblock check) to reconcile, or unblock them via `/tasks unblock`.
+  `/tasks audit` (its broken-links check) to reconcile, or unblock them via `/tasks unblock`.
 - **Reviving a cancelled task** — there's no "uncancel" and no hand edit of `status:`: create it
   afresh with `/tasks new`, and cite the cancelled ID in Context. `pick` refuses a cancelled task and
   points here too. A revival reverses a recorded decision, so it is a new decision and gets its own

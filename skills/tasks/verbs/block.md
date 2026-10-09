@@ -66,8 +66,9 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 ## Edge cases
 
 - **Auto-unblock suggestion** — `/tasks close`/`cancel` doesn't auto-unblock dependents (status
-  changes stay explicit), but `/tasks audit` flags a `blocked` task whose every `depends-on` is now
-  `done` as an unblock candidate. So the loop is: close the blocker → `audit` surfaces it → `unblock`.
+  changes stay explicit), but `/tasks audit` reports a satisfied dependency and names a blocked task
+  carrying one as an unblock candidate. Its `--fix` only prunes `depends-on`; it never removes the
+  `blocked:` field. So the loop is: close the blocker → `audit` surfaces it → `/tasks unblock`.
 - **Block with no `--on`** — fine; not every block is a task dependency (waiting on a stakeholder,
   an external service, a decision). The reason note carries the why; `depends-on` stays empty.
 - **Blocking on a cancelled task** — warn: the blocker will never complete, so this is really a

@@ -9,14 +9,14 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 84                  |
+| todo         | —                  | —                  | 83                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 187                 |
+| done         | 3                  | 12                 | 188                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 73× P2 · 11× P3.
+`todo` by priority: 72× P2 · 11× P3.
 
 ## In progress now
 
@@ -214,9 +214,9 @@ _None_
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
     - [x] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (9/48 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (9/30 done)
-    - [ ] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
+- EPIC-007 First spec harvest review 2026-10 — in-progress (10/48 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (10/30 done)
+    - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
     - [ ] TASK-223 A taken task is "shown as in progress", but no index says where it is counted
