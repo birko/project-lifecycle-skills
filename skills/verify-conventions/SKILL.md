@@ -52,8 +52,16 @@ If the guide carries **no normative content anywhere** — you worked the whole 
 
 ### The smell baseline — what to say when the repo documented nothing
 
-**The inventory lives in [[tdd]]'s [refactor candidates](../tdd/refactoring.md)** — one list, read here,
-never copied. It carries each smell's observable signal and a suggested move.
+**The baseline has two inventories, both read here and never copied.** Each row in them carries an observable
+signal and a suggested move.
+
+| Inventory | Applies to | Owner |
+|---|---|---|
+| code smells | every changed source file | [[tdd]]'s [refactor candidates](../tdd/refactoring.md) |
+| interaction design | changed files a human sees: components, pages, templates, forms, dialogs, user-facing messages and output | this skill's [UX baseline](ux-baseline.md) |
+
+A UI file gets both. The three rules below cover both, so a new inventory adds a row to this table and
+nothing else.
 
 This is a **floor**, not a rulebook, and three rules keep it from behaving like one:
 
@@ -204,6 +212,14 @@ Sample:
    Judgement call from the smell baseline ([[tdd]] § refactor candidates), not a documented rule —
    this project has recorded no conventions.
    Suggested move: polymorphism, or one lookup table.
+```
+
+```
+⚠ smell: confirm guarding a reversible action — src/pages/orders.ts:212
+   Signal: `await confirm('Archive this order?')` before `archive()`, which the API can reverse (`unarchive`).
+   Judgement call from the smell baseline (UX baseline), not a documented rule — the guide's UI section
+   says nothing about confirmation.
+   Suggested move: archive at once and put Undo on the success toast.
 ```
 
 If clean, the source line still leads — the verdict alone is the defect:

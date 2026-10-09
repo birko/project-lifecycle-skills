@@ -269,7 +269,9 @@ The skills *are* the product, so their prose is the user interface. This subsect
   it diverges like a full copy while also being silently narrower. **The second instance is
   `skills/tasks/slicing.md`**, the slicing doctrine: where nothing owned a vocabulary yet, the owner is the
   skill an existing pointer already named (`decompose` cited a "[[tasks]] granularity rule" that did not
-  exist), not a neutral new home. *No record: this is a rulebook entry, not a
+  exist), not a neutral new home. **The third is `skills/verify-conventions/ux-baseline.md`**, the
+  interaction-design heuristics (TASK-293). It follows the same rule: the owner is the skill whose rulebook
+  already named *UI / UX rules* and which already ran a baseline. [[feature]]'s `prototype` reads it too. *No record: this is a rulebook entry, not a
   project decision — its footprint is a file that did not move, so there is no artifact outside the rulebook
   for a record to explain.*
 - **A flag that declares an absent capability must define behaviour at every point that needs it.**
