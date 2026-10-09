@@ -180,12 +180,12 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      line that names no task is work nobody owns: `/tasks spawn` it and add the id to the line before
      parking (`--unattended` does the same). The task leaves `verify` when a re-run passes and ticks the box.
    - If it has real steps that are not run, **don't close to `done`** — the manual/visual sign-off hasn't happened. Ask, once per such step: *"Did you run "<step>"? Answer passed, failed and what you saw, or not run."* **Passed** → tick it. **Failed** → leave it unticked, append the `Failed` line with what the user saw, and treat it as the failed case above. **Not run, or no answer** → leave it as it is. `--unattended` asks nothing and leaves every such step not run. Then: every step passed → proceed to `done`. Otherwise set **`status: verify`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
-     - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (verify — human test plan pending)`, or `failed` in place of `pending` when a step failed), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `verify` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching.
+     - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (verify — human test plan pending)`, or `failed` in place of `pending` when a step failed), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `verify` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching. When the park commit lands on the default branch (in place, no task branch), run steps 10–11 before it and stage what they write, per step 10's table.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
      - **Run step 5a before parking**, so a parked close still prints its `ci:` line: a red default branch
        matters as much to work awaiting sign-off as to work reaching `done`.
      - **Run step 5d before parking.** The out-of-scope sweep is not part of the close-to-`done` path and must not be skipped with it — parking at `verify` with unowned work bullets is the evaporation 5d exists to stop, and it is worse here than at a `done` close, because nobody returns to a `verify` task's Out of scope section. This was ambiguous before: "skip to step 10" reads as skipping 5d too, since 5d sits between 5c and 6, while the same sentence said only steps 6-9 were skipped.
-     - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run, or `tasks/README.md` keeps claiming `in-progress` while the file says `verify`; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `verify` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
+     - **A worktree close (step 4b) first runs step 8's kept bullet** — commit in the worktree, keep it, name it — and then **ends there**: steps 10, 10b and 11 write nothing for it, because the parked status exists only on the task branch, so the main copy's dashboard and rollups have nothing new to show, and reaching the main copy from an isolated session is refused anyway. Print the **kept** line. Otherwise **skip to step 10** — the dashboard regen and rollup hints must still run where step 10's table says they do, or `tasks/README.md` keeps claiming `in-progress` while the file says `verify`; an in-place park on a task branch writes nothing, for the reason the worktree park just gave; the whole close-to-`done` path (steps 6–9) is skipped. **Step 9 in particular must not run**: closing the GitHub issue / transitioning the Jira ticket for work whose sign-off hasn't happened tells the remote tracker a lie the local file doesn't. Never mark `done` over an unrun checklist, and never write "done (pending)" — that's what `verify` is for. A genuinely `N/A — covered by tests` plan closes straight to `done`.
    - This is the same check `/feature review` runs; closing a task is the per-task enforcement point. (To later move `verify → done`, re-run `close` once every human step reads passed.)
 
 5a. **Read the default branch's CI — a warning, never a hold** (every task close, including one
@@ -366,7 +366,10 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
 7. **Commit progress / record reference** (tasks only, skip if `--no-pr`):
    - **Is it git-tracked?** Run `git rev-parse --is-inside-work-tree` from the task root. If it's not a git repo (or the command errors), skip this whole step and leave `pr:` as-is.
    - **Anything to commit?** Run `git status --porcelain`. If the tree is clean, don't offer a commit — just optionally ask for an existing PR number / commit SHA (accept empty as skip) and continue. **`--unattended` → skip that prompt** and continue with `pr:` as-is.
-   - **`--unattended` → commit, without asking.** Take the "commit the progress now" branch below with its staging discipline intact: stage the task file plus the change set explicitly, never blanket `git add -A`, and sanity-check `git diff --cached --name-only` first. Step 6 has already written the frontmatter, so this is *always* the branch taken — the tree cannot be clean here.
+   - **`--unattended` → commit, without asking.** Take the "commit the progress now" branch below with its staging discipline intact: stage the task file plus the change set explicitly (including any task file step 5d spawned, and the origin's `Deferred to` line it wrote), never blanket `git add -A`, and sanity-check `git diff --cached --name-only` first. Step 6 has already written the frontmatter, so this is *always* the branch taken — the tree cannot be clean here.
+   - **When this commit lands on the default branch** (in place, no task branch), run steps 10–11 first
+     and stage the dashboard and rollup files they write with it, per step 10's table. Written after the
+     commit, they are left over with no step to commit them.
    - **If there are uncommitted changes, ask the user** (AskUserQuestion) what to do:
      - **Commit the progress now** → stage the work plus the updated task file (already flipped in step 6 — to `done`, or left `in-progress` with the `blocked:` field when the merge was deferred at 5c) and create one commit.
        - Message: `{{ID}}: {{task title}}`, mirroring the repo's existing style if there is one (e.g. a `@ <area>:` prefix — check `git log --oneline -5`). **Keep the id in the *subject*, ahead of any other task id it mentions** — a prefix before it is fine. [[specs]] provenance attributes a commit to the task whose id leads its subject and treats an id in the body as a cross-reference, so a subject that buries the id makes this task's work invisible to `shaped-by`. Show the message and the file list before committing.
@@ -482,12 +485,27 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
     remote. Print the task's new status instead, and name the owning verbs (`/tasks triage`,
     `/feature status`) for a person to refresh the shared copies through an ordinary PR.
 
-10b. **Commit what steps 10–11 regenerated — worktree closes with no upstream only (with an upstream nothing was written); run it after step 11.** The dashboard and the feature
+    **Every file steps 10–11 write is committed by a named step, or the close says it was not.** A
+    generated file written after the last commit leaves a dirty tree no step owns, and the next `pick`,
+    `close` or [[fix-next]] run meets it as somebody's uncommitted work. Which commit carries it is read
+    off where the close commit landed:
+
+    | The close commit landed… | Steps 10–11 |
+    |---|---|
+    | on the default branch: an in-place close with no task branch (`single-branch`, or `pick` cut none) | **run them before that commit** (step 7, or step 5's park commit) and stage what they wrote in it, so one commit carries the work, the status and the views of that status. Nothing is left to do here |
+    | on a task branch that step 8 merged, with no upstream, in place or in a worktree | run them on the default branch after the merge; **step 10b commits them** |
+    | on a task branch left unmerged (parked at `verify`, or merge deferred) | **write nothing.** The new status exists only on that branch, and in place that branch is the checkout, so a regen there commits the dashboard onto one task branch, the per-task conflict 4b names |
+    | anywhere, with an upstream | write nothing on the default branch (above) |
+    | nowhere: `--no-pr`, step 7's **Skip**, or no git | run them, leave them uncommitted, and name the files in the step-12 confirmation |
+
+10b. **Commit what steps 10–11 regenerated after a step-8 merge with no upstream — in place or in a worktree (with an upstream nothing was written); run it after step 11.** The dashboard and the feature
     rollups are written into the main copy after the merge; left uncommitted, they dirty it, and the next
     `pick` falls back while the next `close` fails its clean check. Commit exactly those files and nothing
     else from the index — `git -C "<main>" commit --only -m "chore: dashboard and rollups after TASK-NNN" --
     <the files written>`. The subject deliberately does not **lead** with the id, so [[specs]] attributes
-    no behaviour to this commit. In-place projects keep today's behaviour.
+    no behaviour to this commit. In place, `git commit --only -m "…" -- <the files written>` from the
+    checkout, now on the default branch. A close whose commit landed on the default branch has nothing
+    here: step 7 already carried these files.
 
     **Report lines for a worktree close** — fixed, one per outcome:
     - closing from: `workspace: closing from the worktree at <path> on task/TASK-NNN — merging in the main copy at <main>`
@@ -544,7 +562,14 @@ Container closes are simpler than task closes — no human-test plan, no merge g
    is being set aside, and the open children are listed in the confirmation.
 3. **Parent rollup** — re-evaluate the parent: a story close may leave its EPIC with no open stories (suggest closing it, per step 11); an epic close ends the chain. Update parent files, not just the leaf.
 4. **Regenerate the dashboard** (step 10) and run step 11's hints — for a STORY, that's where the **spec regen offer** fires; the changelog nudge applies only to feature-less containers.
-5. **Confirm** (step 12 format).
+5. **Commit the close** (git repo, no upstream, `--no-pr` not passed): the container files steps 2–3
+   flipped and the files step 4 wrote, and nothing else from the index —
+   `git commit --only -m "chore: close STORY-NNN" -- <those files>` (`EPIC-NNN` for an epic). The subject
+   does not lead with the id, so [[specs]] attributes no behaviour to it: a container close changes no
+   code. Without this step the flip floats uncommitted, and the next close's clean-tree check finds it.
+   With an upstream nothing is committed on the default branch (step 10): the confirmation names the
+   flipped files as uncommitted, for a person to land through an ordinary PR.
+6. **Confirm** (step 12 format).
 
 ## Edge cases
 

@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 0050c4314cc9f0485cb3765fa8757188cdc6a239
+generated-at: aabc0e4324d3a2857ed3cb93aa37ae8458fd66cc
 generated-on: 2026-10-09
 sources:
   - skills/tasks/SKILL.md
@@ -574,7 +574,13 @@ The system SHALL, under `close --unattended`, ask nothing at any step: refuse a 
 
 ### Requirement: Post-close tracker sync and hints
 
-The system SHALL close the linked GitHub issue or transition the Jira ticket only when the task reached `done`, never for `verify` or a deferred merge. It SHALL regenerate the dashboard and chain the feature status refresh for any feature-linked task whose status changed, but fire last-open-task suggestions, the feature review prompt and the changelog nudge only on `done`. A story close SHALL offer a scoped spec regen (or report that no usable spec map exists). With an upstream nothing is written on the default branch; the new status is printed with the verbs to run through a PR. A worktree close with no upstream SHALL commit only the regenerated files with a subject that does not lead with the task id.
+The system SHALL close the linked GitHub issue or transition the Jira ticket only when the task reached `done`, never for `verify` or a deferred merge. It SHALL regenerate the dashboard and chain the feature status refresh for any feature-linked task whose status changed, but fire last-open-task suggestions, the feature review prompt and the changelog nudge only on `done`. A story close SHALL offer a scoped spec regen (or report that no usable spec map exists). With an upstream nothing is written on the default branch; the new status is printed with the verbs to run through a PR. Every file the dashboard and rollup steps write SHALL be committed by a named step or named as uncommitted in the confirmation: a close whose commit lands on the default branch SHALL regenerate them first and carry them in that commit; a close merged by the merge gate with no upstream, in place or in a worktree, SHALL commit only the regenerated files with a subject that does not lead with the task id; a close left unmerged on a task branch SHALL write neither.
+
+#### Scenario: Single-branch close leaves a clean tree
+
+- **Given** a `single-branch` project with no upstream, and a task closed to `done` or parked at `verify`
+- **When** the close finishes
+- **Then** one commit carries the work, the task file and the regenerated dashboard, and `git status --short` is empty
 
 #### Scenario: Verify does not close the issue
 
@@ -590,7 +596,7 @@ The system SHALL close the linked GitHub issue or transition the Jira ticket onl
 
 ### Requirement: Closing stories and epics
 
-The system SHALL close a story or epic only when every child task (and, for an epic, every story) is `done` or `cancelled`, listing open children and refusing otherwise unless `--force` is passed; it then flips the container to `cancelled` when every child is `cancelled` (an epic counting its stories and directly parented tasks together) and to `done` otherwise, the same rule `cancel`'s rollup applies, re-evaluates its parent, regenerates the dashboard and runs the post-close hints. Containers have no test plan or merge step.
+The system SHALL close a story or epic only when every child task (and, for an epic, every story) is `done` or `cancelled`, listing open children and refusing otherwise unless `--force` is passed; it then flips the container to `cancelled` when every child is `cancelled` (an epic counting its stories and directly parented tasks together) and to `done` otherwise, the same rule `cancel`'s rollup applies, re-evaluates its parent, regenerates the dashboard and runs the post-close hints, then, with no upstream, commits only the flipped container files and the regenerated dashboard under a subject that does not lead with the container id. Containers have no test plan or merge step.
 
 #### Scenario: Open children
 

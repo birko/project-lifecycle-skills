@@ -9,14 +9,14 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 85                  |
+| todo         | —                  | —                  | 84                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 185                 |
+| done         | 3                  | 12                 | 186                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 73× P2 · 12× P3.
+`todo` by priority: 73× P2 · 11× P3.
 
 ## In progress now
 
@@ -201,7 +201,7 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (5/10 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (6/10 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -213,7 +213,7 @@ _None_
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
-    - [ ] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
+    - [x] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (9/48 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (9/30 done)
