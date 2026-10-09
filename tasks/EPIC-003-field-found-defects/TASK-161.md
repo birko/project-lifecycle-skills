@@ -3,7 +3,7 @@ id: TASK-161
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: verify
+status: done
 priority: P2
 assignee: unassigned
 created: 2026-09-20
@@ -82,8 +82,9 @@ misreports verification debt on the other.
 
 - [x] Write a task whose plan has one step, mark it run-and-failed in the new shape, and run `/tasks close` on it. Expected: it refuses `done` and says why, naming the failed step.
   - **Passed 2026-10-08:** fixture `%TEMP%\d161` (`single-branch`, no remote), command `echo "/tasks close TASK-001 --unattended" | claude -p --permission-mode acceptEdits --allowedTools "Bash(git:*)" … --add-dir ~/.claude/skills C:/Source/project-lifecycle-skills`. Ended at `verify`, box left unticked, report named the failed step and its task. Not a cold runner and did not need to be: this step tests behaviour, not wording. A first attempt without `--add-dir` could not read `close.md` and stopped, which is a harness failure, not a result. The run also left `tasks/README.md` uncommitted → TASK-292
-- [ ] Run `/feature review` over a feature holding one never-run plan, one passed plan and one run-and-failed plan. Expected: three distinct lines. Today two of the three collapse.
+- [x] Run `/feature review` over a feature holding one never-run plan, one passed plan and one run-and-failed plan. Expected: three distinct lines. Today two of the three collapse.
   - **Not run as written.** Evidence short of it (2026-10-08): a cold reader applied Gate B's text verbatim to exactly these three plans (step 6 of the Progress log), and printed three distinct lines and failed the gate on the failed step, where the pre-fix text gave "2 of 3 plans have unchecked steps". A real `/feature review` run on a fixture feature is still owed.
+  - **Passed 2026-10-09:** fixture `%TEMP%\d161r` (`single-branch`, FEATURE-001 with three `done` tasks: TASK-001 all passed, TASK-002 never run, TASK-003 one passed and one `Failed 2026-10-05` → TASK-004), `echo "/feature review FEATURE-001" | claude -p --permission-mode acceptEdits --allowedTools "Bash(git:*)" … --add-dir ~/.claude/skills C:/Source/project-lifecycle-skills`. Gate B printed `2/0/0`, `0/0/2` and `1/1/0` (passed/failed/not run) on separate rows, listed the failed step with its date and TASK-004, said re-running it would not help until TASK-004 lands, and failed the gate. Fixture compromises, both caught by the runner: the tasks read `done` despite unrun and failed steps, a pre-rule state, so that Gate A would let Gate B run (TASK-235 owns whether a `verify` task reaches Gate B); and TASK-004 was unlinked from the feature for the same reason, which the runner flagged as hiding an open blocker. It also left its History line in `decisions.md` uncommitted
 - [x] Expected failure to watch for: the new marker is added to the format and neither gate reads it, so the state is now writable and still unenforced — which is worse than the binary, because it reads as handled.
   - **Passed 2026-10-08:** both gates read it: the real close above parked at `verify` on it, and the Gate B drill counted it as failed.
 
@@ -118,8 +119,8 @@ only: the lint and its tests.
   the rule TASK-210 is filing.
 
 **Flagged, not fixed.**
-- Human test plan step 2 (a real `/feature review` run on a fixture) has not been run. A cold reader
-  applied the Gate B text instead, so this task closes to `verify`.
+- Human test plan step 2 (a real `/feature review` run on a fixture) was not run at first close, so this task
+  parked at `verify`. Run and passed 2026-10-09; closed `verify → done`.
 - TASK-292: an in-place close leaves the regenerated `tasks/README.md` uncommitted. Seen in the fixture run.
 
 ## Implementation plan

@@ -11,9 +11,9 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
 | planned      | 2                  | 5                  | —                   |
 | todo         | —                  | —                  | 84                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 2                   |
+| verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 186                 |
+| done         | 3                  | 12                 | 187                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 73× P2 · 11× P3.
@@ -24,7 +24,6 @@ _None_
 
 ## Awaiting verification
 
-- [TASK-161](EPIC-003-field-found-defects/TASK-161.md) — A human test plan that ran and failed cannot be told from one that never ran (P2, unassigned)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
 ## Tree
@@ -201,7 +200,7 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (6/10 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (7/10 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (2/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -209,7 +208,7 @@ _None_
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
   - (epic level) — 3/4 done
-    - [ ] TASK-161 A human test plan that ran and failed cannot be told from one that never ran 🔍 verify
+    - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
