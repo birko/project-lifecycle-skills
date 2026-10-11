@@ -1,6 +1,6 @@
 ---
 area: project-roadmap
-generated-at: d09666715f2f96bd4dcd0e1d60deb56225735514
+generated-at: a2d31c0d7715c59d36a93ae2dc4eb8df0f83b013
 generated-on: 2026-10-11
 sources:
   - skills/roadmap/SKILL.md
@@ -47,7 +47,7 @@ The system SHALL accept `/roadmap` with no arguments as a full render (every epi
 
 ### Requirement: Nothing to show
 
-The system SHALL print exactly `No tasks/ or docs/features/ in this project.` and stop when the project has neither a task tree nor a feature tree.
+The system SHALL print exactly `No tasks/ or docs/features/ in this project.` and stop when the project has neither a task tree nor a feature tree; under `--across` the condition SHALL cover the whole participating set instead — a project with neither tree is simply not participating, so this repo having neither while a sibling has one renders the siblings, and only when no participating project has either tree SHALL it print `No tasks/ or docs/features/ in any project under <root>.` and stop.
 
 #### Scenario: Empty project
 
@@ -70,6 +70,16 @@ The system SHALL, under `--across`, render every sibling project by passing the 
 - **Given** `alpha` has FEATURE-007 and `beta` has a task carrying `feature: FEATURE-007`
 - **When** the user runs `/roadmap --across`
 - **Then** the task in `beta` is not joined to the feature in `alpha` and no divergence is raised from pairing them
+
+### Requirement: An epic scope across repositories names its repository
+
+The system SHALL, under `--across`, scope to `<repo>/EPIC-NNN` when given a qualified id; for a bare `EPIC-NNN` it SHALL resolve the id against every participating project on each run, scoping to it and printing `scope: <repo>/EPIC-NNN` when exactly one project has it, rendering nothing and printing `EPIC-NNN is ambiguous across projects: <repo>/EPIC-NNN, … — pass one of these.` when several do, and printing `EPIC-NNN is not in any participating project.` when none does; it SHALL never choose among several by the invoking repository or by order.
+
+#### Scenario: Two siblings share an epic id
+
+- **Given** siblings `alpha` and `beta` each hold an unrelated `EPIC-001`
+- **When** the user runs `/roadmap EPIC-001 --across` from `alpha`
+- **Then** nothing is rendered and the run prints `EPIC-001 is ambiguous across projects: alpha/EPIC-001, beta/EPIC-001 — pass one of these.`
 
 ### Requirement: Fix is refused across repositories
 

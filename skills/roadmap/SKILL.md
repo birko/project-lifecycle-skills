@@ -40,8 +40,23 @@ Invoked as `/roadmap [args]`:
   a features-only project is invisible otherwise, which is the drift a roadmap exists to catch.
   **`--fix` is refused together with `--across`**, for the reason [`audit`](../tasks/verbs/audit.md) gives
   for the same pair: its proposals are edits, and across-mode is read-only.
+  **An epic scope under `--across` names its repo**, because epic ids collide between siblings the same way
+  task ids do. Take `<repo>/EPIC-NNN` and scope the render to that repo's epic. A bare `EPIC-NNN` is resolved
+  against every participating project, recomputed each run:
+  - exactly one has it → scope to that one, and print `scope: <repo>/EPIC-NNN` so the reader sees which;
+  - several have it → render nothing and print
+    `EPIC-NNN is ambiguous across projects: <repo>/EPIC-NNN, … — pass one of these.`;
+  - none has it → print `EPIC-NNN is not in any participating project.` and render nothing.
 
-If neither tree exists, print one line: `No tasks/ or docs/features/ in this project.` and exit.
+  Never pick one of several by the invoking repo or by order. Two runs from different folders would then scope
+  differently with nothing to say so.
+
+If neither tree exists, print one line: `No tasks/ or docs/features/ in this project.` and exit. **Under
+`--across` the line is about the whole set**, not this repo: a project with neither tree is simply not
+participating. So this repo having neither, while a sibling has one, renders the siblings. Only when no
+participating project has either tree, print `No tasks/ or docs/features/ in any project under <root>.` and
+exit. Where `siblings.root` is undeclared or does not resolve, [[tasks]] step 1b's line comes first and the run
+is single-repo, so the single-repo line applies.
 
 ## Cross-tree pass (shared engine)
 
