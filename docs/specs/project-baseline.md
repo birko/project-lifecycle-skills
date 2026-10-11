@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: b53e33a21c7b8ac9db32fedb7c1290a6521c679b
-generated-on: 2026-10-07
+generated-at: 55bcb9ba852099efed900af014704946f8b07071
+generated-on: 2026-10-11
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md
@@ -503,7 +503,7 @@ The system SHALL resolve stack, component behaviour, declared kind, licensing po
 
 ### Requirement: Conventions are inferred from the code, proposed with evidence, and only where uncovered
 
-The system SHALL infer conventions per rulebook subsection (framework/stack, code structure, naming, testing, UI/UX only where a human surface exists) from the repo's own source, showing each proposal with a count and two or three representative paths; SHALL propose at roughly 80%+ of applicable files and at least 5 files, ask at roughly 20–80%, and stay silent under 20% or under 3 files unless structural or security-relevant; SHALL drop any unconfirmed inference; and SHALL judge coverage per subsection, skipping proposals for covered ones, offering (not running) a round for a thinly answered one, never proposing beside an existing rule, and saying what it skipped and what covered it in this step and in the final report.
+The system SHALL infer conventions per rulebook subsection (framework/stack, code structure, naming, testing, UI/UX only where a human surface exists) from the repo's own source, showing each proposal with a count and two or three representative paths; SHALL apply the first matching row of an ordered table — silent under 3 files, silent under roughly 20%, propose at roughly 80%+ and at least 5 files, ask at roughly 80%+ across 3 or 4 files, and ask for anything else (roughly 20–80%) — so every share and file count maps to exactly one treatment, the silent rows yielding to anything structural or security-relevant; SHALL drop any unconfirmed inference; and SHALL judge coverage per subsection, skipping proposals for covered ones, offering (not running) a round for a thinly answered one, never proposing beside an existing rule, and saying what it skipped and what covered it in this step and in the final report.
 
 #### Scenario: Prevalent pattern
 
@@ -525,13 +525,19 @@ The system SHALL infer conventions per rulebook subsection (framework/stack, cod
 
 ### Requirement: Glossary candidates and split findings survive a skipped round
 
-The system SHALL collect recurring domain nouns and suspected synonyms as glossary candidates and hand them to `/domain`, appending confirmed terms through `/domain` when `docs/glossary.md` exists; it SHALL report glossary candidates and 20–80% split findings even when every subsection is covered — stated as findings, not asked — and SHALL, meanwhile, record candidates in the guide's § Conventions › Naming marked unresolved, retiring that copy once the glossary exists.
+The system SHALL collect recurring domain nouns and suspected synonyms as glossary candidates and hand them to `/domain`, appending confirmed terms through `/domain` when `docs/glossary.md` exists; it SHALL report glossary candidates and 20–80% split findings even when every subsection is covered — stated as findings, not asked — and SHALL record candidates in the guide's § Conventions › Naming, marked unresolved, only when a round runs and the user confirms the list — on the skip path, or when a round gets no answer, reporting them only — retiring that copy once the glossary exists.
 
 #### Scenario: Migration in flight on a covered repo
 
 - **Given** a fully covered rulebook and two error-handling shapes in a 50/50 split
 - **When** step 2 skips the proposal round
 - **Then** the split is reported as a finding and no question is asked about it
+
+#### Scenario: Candidates on the skip path are not written
+
+- **Given** a guide whose rulebook covers every subsection, and code where `User` and `Account` look like one concept
+- **When** adoption runs unattended
+- **Then** the round is skipped, the synonym is reported as a finding for `/domain`, and the guide gains no candidate list
 
 ### Requirement: Inferences and declarations go to the user in one frontier round
 

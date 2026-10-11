@@ -32,11 +32,18 @@ Handlers return a Result type rather than throwing     [24/26 files]
 
 The distinguishing question is **prevalence among files the rule could apply to** — not raw count.
 
-| Share of applicable files | Treat as |
-|---|---|
-| ~80%+ **and** at least 5 files | propose as a rule |
-| roughly 20–80% | **ask**, don't assert — "these two shapes both appear; which is the intent?" |
-| under 20%, or fewer than 3 files | stay silent, unless it is structural or security-relevant |
+Take the **first row that matches**, top to bottom, so every share and file count lands in exactly one:
+
+| # | Applicable files and share | Treat as |
+|---|---|---|
+| 1 | fewer than 3 files, at any share | stay silent, unless it is structural or security-relevant |
+| 2 | under ~20% | stay silent, with the same exception |
+| 3 | ~80%+ **and** at least 5 files | propose as a rule |
+| 4 | ~80%+ across 3 or 4 files | **ask** — "<n> of <m> files do this; is it the rule, or too few to say?" |
+| 5 | anything else (roughly 20–80%) | **ask**, don't assert — "these two shapes both appear; which is the intent?" |
+
+Row 4 asks rather than proposes because 3 or 4 files is too small a sample to tell a convention from a
+coincidence, and stays out of silence because a consistent shape is still evidence worth putting to the user.
 
 A split codebase is a **finding, not a failure**: mixed shapes usually mean a migration in flight,
 and the useful output is "you have two patterns here — which one wins?" That question is often
@@ -64,8 +71,11 @@ Hand these to [[domain]], which owns the glossary and the four behaviours that k
 **suspected synonyms** are what it most wants, since *"same thing, or genuinely different?"* is the
 question a project cannot answer from the inside.
 
-**Record them in the agent guide meanwhile, under its § Conventions › Naming subsection**, and say
-plainly that they are unresolved candidates rather than settled vocabulary. **Retire that copy the moment
+**Write them into the agent guide only when a round runs and the user confirms the list**, under its
+§ Conventions › Naming subsection, and say plainly that they are unresolved candidates rather than settled
+vocabulary. Nothing else writes them: on the skip path (§ *When the rulebook already answers it*) and when a
+round gets no answer, they are **reported only**. Writing them unconfirmed would assert vocabulary nobody
+agreed to, which is what *propose, never assert* forbids. **Retire that copy the moment
 `docs/glossary.md` exists** — two records of one vocabulary is exactly the rot AGENTS.md § *The five
 records* exists to prevent, and nothing else will prompt the removal. Naming the subsection matters
 because two adoptions of one repo must land the list in the same place for `domain` to find it later.
