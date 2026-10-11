@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 4e8e71637f6fdd0efe524c4dcfbd64a4d22cadda
+generated-at: 099564904fd81ce435240116bc74532d99d26553
 generated-on: 2026-10-11
 sources:
   - skills/fix-next/SKILL.md
@@ -69,7 +69,7 @@ The system SHALL, when resuming, first enter the task's worktree under worktree 
 
 ### Requirement: A blocked run of this skill is not resumed
 
-The system SHALL NOT resume a skill-owned in-progress task that has since been blocked; it SHALL report `not resumed: TASK-NNN (this skill's run) is blocked: <reason>`, leave that task's log and branch untouched, and go on to build the pool.
+The system SHALL NOT resume a skill-owned in-progress task that has since been blocked; it SHALL report `not resumed: TASK-NNN (this skill's run) is blocked: <reason>`, leave that task's log and branch untouched, and go on to build the pool. This report SHALL be described as the expected end state of a run that blocked its task on an upstream fix, repeated until a person unblocks it.
 
 #### Scenario: Someone blocked the skill's own run
 
@@ -159,7 +159,7 @@ The system SHALL treat tasks at `verify` (or the older `review`) as outside the 
 
 ### Requirement: An empty pool stops the run without inventing scope
 
-The system SHALL, when the pool is empty, say so and stop without inventing defects; where review-looking epics exist that lack the `kind: review-intake` stamp it SHALL say exactly that and offer to adopt them with the intake verb rather than start working their tasks, and otherwise SHALL direct the user to run a review pass and file it first.
+The system SHALL, when the pool is empty, say so and stop without inventing defects; where review-looking epics exist that lack the `kind: review-intake` stamp it SHALL say exactly that and offer to adopt them with the intake verb rather than start working their tasks, where every pool task is blocked it SHALL list each with its reason and stop, offering nothing; and otherwise SHALL direct the user to run a review pass and file it first.
 
 #### Scenario: No review was ever filed
 
@@ -172,6 +172,12 @@ The system SHALL, when the pool is empty, say so and stop without inventing defe
 - **Given** EPIC-960 holds `todo` tasks whose bodies cite findings but carries no review-intake stamp
 - **When** the pool is built
 - **Then** the run names EPIC-960, offers `/tasks intake --adopt EPIC-960`, and starts none of its tasks
+
+#### Scenario: Every pool task is blocked
+
+- **Given** the pool holds TASK-961 and TASK-962, both blocked
+- **When** the pool is ranked
+- **Then** the run lists both with their reasons, starts neither, offers no unblock, and stops
 
 ### Requirement: Rank by blast radius, with priority demoted
 
@@ -265,7 +271,7 @@ The system SHALL append one line to the task's progress log after each step, in 
 
 ### Requirement: Re-verify the finding before fixing it
 
-The system SHALL confirm the cited mechanism by reading the source rather than trusting the task's description; where the finding holds it SHALL log that and continue; where it is real but differently scoped it SHALL correct the task's context and acceptance criteria before writing code; where it is not a defect it SHALL record the evidence, cancel the task and return to pool building for the next candidate.
+The system SHALL confirm the cited mechanism by reading the source rather than trusting the task's description; where the finding holds it SHALL log that and continue; where it is real but differently scoped it SHALL correct the task's context and acceptance criteria before writing code; where it is not a defect it SHALL record the evidence, cancel the task and end the run without a fix.
 
 #### Scenario: The finding names the wrong trigger
 
@@ -277,7 +283,7 @@ The system SHALL confirm the cited mechanism by reading the source rather than t
 
 - **Given** TASK-1031's described mechanism cannot occur
 - **When** step 3 runs
-- **Then** the context is rewritten with the evidence, the task is cancelled, the log reads `- step 3 — verified: rejected: …`, and the run returns to pool building
+- **Then** the context is rewritten with the evidence, the task is cancelled, the log reads `- step 3 — verified: rejected: …`, and the run ends without a fix
 
 ### Requirement: Related findings are folded in or filed, never silently widened
 
@@ -291,7 +297,7 @@ The system SHALL pull into the fix any defect in the same function that shares t
 
 ### Requirement: Fix at the layer where the root cause lives
 
-The system SHALL decide before writing code whether the root cause is in this repository or upstream; where it is upstream it SHALL record the root cause, the proposed upstream change and what it unblocks, flag it to the user and mark the local task blocked rather than patch locally; where the root cause is this repository's use of a dependency it SHALL fix locally.
+The system SHALL decide before writing code whether the root cause is in this repository or upstream; where it is upstream it SHALL record the root cause, the proposed upstream change and what it unblocks, flag it to the user and mark the local task blocked rather than patch locally, then end the run without a fix; where the root cause is this repository's use of a dependency it SHALL fix locally.
 
 #### Scenario: Defect in a shared library
 
@@ -362,6 +368,16 @@ The system SHALL, before handing over, write an outcome section into the task fi
 - **Given** TASK-1082 reads `in-progress`, is not blocked, and its progress log ends with step 8's line, and close never committed
 - **When** a new run reaches step 0
 - **Then** it resumes TASK-1082 at step 8 and runs close again
+
+### Requirement: A run that ends without a fix still ends clean
+
+The system SHALL treat a run that cancels its task as not a defect, or blocks it on an upstream fix, as the bare run's one defect, because the run has already done a defect's work; it SHALL commit exactly the files that outcome wrote when the task file is on the default branch, under the subject `TASK-NNN: cancelled — not a defect` or `TASK-NNN: blocked — fix belongs upstream`, and with no co-author trailer; when the pick cut a task branch it SHALL commit nothing, name every file in the report and stop even under `--loop`; and it SHALL then stop on a bare run, or return to pool building under `--loop`.
+
+#### Scenario: A false positive on a bare run
+
+- **Given** an in-place single-branch project whose top-ranked task is a false positive and whose next task is a real defect
+- **When** `/fix-next` runs without `--loop`
+- **Then** the first task is cancelled and committed as `TASK-NNN: cancelled — not a defect`, the tree is clean, the second task is untouched, and it is named as the next pick
 
 ### Requirement: One defect per bare run; loop continues until a stopping point
 

@@ -61,7 +61,9 @@ in flight: leave it alone, don't count it, don't report it as blocking you.
 **A run of this skill's own that someone has since blocked is not resumed.** Report it as
 `not resumed: TASK-NNN (this skill's run) is blocked: <reason>`, leave its log and branch untouched, and
 go on to step 1. Unblocking is a person's decision, and resuming work somebody deliberately stopped would
-override it.
+override it. **This line is also the expected end state of step 4's upstream path**, which blocks the task on
+the upstream fix. Expect it on every run until a person unblocks the task once that fix lands; it is not a
+fault to investigate.
 
 If you find a skill-owned in-progress task:
 
@@ -148,6 +150,8 @@ mode this branch exists to prevent. Two causes, two different offers:
   it. **Don't just start working those tasks** because they look like defects — that's the
   theme-guessing this pool definition exists to eliminate, and guessing wrong means picking a new
   capability and "fixing" it.
+- **Every task in the pool is blocked** — found in step 2, which treats it as an empty pool. List each blocked
+  task with its reason and stop. Offer nothing: unblocking is a person's decision (step 0).
 
 ## Step 2 — Rank by blast radius, not by the `priority:` field
 
@@ -241,7 +245,8 @@ Read the cited source and confirm the mechanism by hand. Then:
   silently redefines "done". (Correcting a criterion *before* the work is legitimate; rewriting one
   *afterwards* to fit the result is not — [close.md](../tasks/verbs/close.md) step 6.)
 - **Not a defect** → don't fix it. Rewrite the Context with the evidence, `/tasks cancel` the task, log
-  it, and return to step 1 for the next candidate. **A correct "no" is a deliverable.**
+  it, and end the run as [§ *A run that ends without a fix*](#a-run-that-ends-without-a-fix) says.
+  **A correct "no" is a deliverable**, so it is this run's one defect.
 
 Findings travel in packs. Pull in anything in the same function that shares the root cause; file the
 rest via [`/tasks spawn`](../tasks/verbs/spawn.md) rather than widening scope silently.
@@ -257,13 +262,35 @@ shared library, or upstream package this repo consumes?
   copy-pasted override, a re-implemented helper, or a shadowing subclass — that multiplies the defect
   across every other consumer and buries the evidence. Record the decision in the task (root cause,
   the proposed upstream change, what unblocks once it lands), flag it to the user, and mark the local
-  side blocked on it.
+  side blocked on it (`/tasks block TASK-NNN --reason "<the upstream change it waits on>"`). Then end the run as
+  [§ *A run that ends without a fix*](#a-run-that-ends-without-a-fix) says.
 - **Root cause is this repo's *usage* of the dependency** (wrong call, missing registration,
   misconfiguration) → fix locally; the dependency is fine.
 - **"The same defect probably repeats in other consumers"** is a strong upstream signal even when a
   local patch would be smaller.
 
 Log: `- step 4 — layer: <local / upstream: <where>>`
+
+### A run that ends without a fix
+
+Step 3's rejection and step 4's upstream block both end the run here, with no fix, drill or close.
+
+- **It counts as the bare run's one defect.** The run has already done the work a defect costs: it read the
+  code, wrote evidence into the task and changed the task's status. Starting a second candidate in the same
+  session is what makes a reset unsafe, whether or not the first one ended in a fix.
+- **Commit the record**, because neither `/tasks cancel` nor `/tasks block` commits, and step 9's reset check
+  needs a clean tree. When the task file is on the default branch (an in-place pick that cut no task branch),
+  commit exactly the files the outcome wrote, the task file and any dashboard or rollup its verb regenerated:
+  `git commit --only -m "TASK-NNN: cancelled — not a defect" -- <files>`, or
+  `"TASK-NNN: blocked — fix belongs upstream"`. Both lead with the id because they touch only the task tree,
+  like `pick`'s commit. No `Co-Authored-By:` trailer. **When step 2 cut a task branch**, where this record
+  belongs is not defined yet (TASK-298): commit nothing, name every file in the report, and stop even under
+  `--loop`.
+- **Then go to step 9.** A bare run stops there. `--loop` continues to step 1, where a cancelled task is no
+  longer `todo` and a blocked one is ranked but skipped (step 2).
+
+Log: `- step 3 — rejected: …` or `- step 4 — layer: upstream: <where>; blocked`, then
+`- step 9 — ended without a fix: <cancelled | blocked>; commit <sha> | uncommitted: <files>`.
 
 ## Step 5 — Fix the root cause, with the test that proves it
 
@@ -373,8 +400,9 @@ that answer rather than taking new scope. Either way, **name the next pick** so 
 
 Final report, short:
 
-1. What was broken, in one sentence a reader with no context understands.
-2. The step-6 split, as numbers.
+1. What was broken, in one sentence a reader with no context understands. For a run that ended without a
+   fix: what the finding claimed, and why it was rejected or where its fix belongs.
+2. The step-6 split, as numbers (none for a run that ended without a fix).
 3. Anything flagged and not fixed, including every blocked task in the pool with its reason, a red
    `ci:` line from the close (quoted), and **every task id `close` spawned from the out-of-scope sweep** —
    by id and one-line subject. Nobody watched the run; if the report doesn't name them, the only trace
@@ -395,7 +423,7 @@ If any fails, fix it before finishing. **That is this skill's actual contract.**
 
 - **One task in-progress at a time.** Finish it or hand it back before picking another.
 - **A finding that turns out to be a false positive doesn't get forced into a change.** Record the
-  evidence, close it out per step 3, move on.
+  evidence and end the run per step 3.
 - **A decision only the user can make** (a breaking API change, a secret rotation, a convention that
   isn't settled) → implement everything non-controversial, then stop and ask with a concrete
   recommendation. Don't guess and don't stall the parts that were never in doubt.

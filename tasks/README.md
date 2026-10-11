@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-11 17:22. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-11 17:33. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,7 +13,7 @@ _Generated 2026-10-11 17:22. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 196                 |
+| done         | 4                  | 13                 | 197                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 68× P2 · 12× P3.
@@ -218,14 +218,14 @@ _None_
     - [ ] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next
     - [x] TASK-297 `/feature review` sets a feature to `review` without regenerating its rollup
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (13/48 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (13/30 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (14/49 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (14/31 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [ ] TASK-222 `new` and Jira import offer only P0–P2
     - [x] TASK-223 A taken task is "shown as in progress", but no index says where it is counted
     - [x] TASK-227 `fix-next` step 8 writes a log line after `close` has committed, so the run never ends clean
-    - [ ] TASK-228 `fix-next` does not say where a run goes after an outcome that is not a fix
+    - [x] TASK-228 `fix-next` does not say where a run goes after an outcome that is not a fix
     - [ ] TASK-229 `fix-next`'s ask-steps carry no question and no answer-less path, in a skill built to run unattended
     - [ ] TASK-230 `/specs regen`'s two ask-steps carry no question and no answer-less path
     - [ ] TASK-231 `roadmap` states DV10's trigger twice, and the two statements contradict
@@ -244,6 +244,7 @@ _None_
     - [ ] TASK-259 `grill-me` has no answer-less path: with nobody to answer, it neither ends nor reports
     - [x] TASK-272 `/populate-tests survey` promises no edits, but chains `adopt`, which writes files
     - [ ] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
+    - [ ] TASK-298 A `/fix-next` run that cancels or blocks its task on a task branch has nowhere to commit the record
     - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
     - [ ] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
