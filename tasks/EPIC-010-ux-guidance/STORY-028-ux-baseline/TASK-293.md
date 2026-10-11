@@ -3,7 +3,7 @@ id: TASK-293
 parent: STORY-028
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: in-progress
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -54,16 +54,32 @@ a signal anyone can see in a diff.
 ## Out of scope
 
 - A `new-project` intake question about confirm-vs-undo policy — an ask-step needs its question text and its
-  answer-less path (AGENTS.md § *Output / prose rules*); file separately if wanted
+  answer-less path (AGENTS.md § *Output / prose rules*). **Decided not to do (owner, 2026-10-11):** a project
+  that cares writes the rule in one line, and the baseline already yields to it (drill step 2), so asking every
+  new project costs more than it saves
 - Any consumer-side rule or framework change (Birko.Web toast action slot, undo hook) — those belong to the consumer
 
 ## Human test plan
 
-- [ ] In a repo with UI code and a rulebook that says nothing about confirmation, stage a diff adding a
+- [x] In a repo with UI code and a rulebook that says nothing about confirmation, stage a diff adding a
       `confirm()` before a reversible delete and run `/verify-conventions`. Expect a `⚠ smell:` finding citing the
       UX baseline, after the rulebook findings
-- [ ] Add a rule to that repo's CLAUDE.md requiring a confirm on every delete and rerun. Expect the finding to
+  - **Passed 2026-10-11:** `⚠ smell: confirm guarding a reversible action — src/note-list.js:12`, citing the soft
+    delete and `restoreNote` as evidence, after the ✅ rulebook verdict; plus `💡 smell: confirmation that names
+    nothing` for *"Are you sure?"*
+- [x] Add a rule to that repo's CLAUDE.md requiring a confirm on every delete and rerun. Expect the finding to
       disappear (repo overrides)
+  - **Passed 2026-10-11:** the reversible-action smell was gone from the findings, and the runner said the rule
+    suppresses it; the names-nothing smell stayed, correctly, since the rule says nothing about wording
+
+**Drill record.** Fixture: `%TEMP%\d293`, a fresh `git init` notes app (plain JS) whose `CLAUDE.md` has four
+conventions and no word on confirmation; `src/api.js` soft-deletes (`trashNote`/`restoreNote`); the staged diff
+adds `if (!confirm("Are you sure?")) return;` before `trashNote`. Runner, from that cwd:
+`echo "/verify-conventions" | claude -p --permission-mode acceptEdits --allowedTools "Bash(git:*)" Read Grep Glob
+--add-dir C:/Users/FinStat/.claude/skills C:/Source/project-lifecycle-skills`. Coldness: the brief was the bare
+invocation, with no expected finding; the runner holds the installed skill roster, which a **behaviour** drill
+needs (it must run the skill), and the fixture's guide names no skill. Step 2 appended
+`- Every delete asks the user for confirmation before it runs.` and reran the same command.
 
 ## Implementation plan
 

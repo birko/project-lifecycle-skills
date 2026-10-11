@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-11 12:55. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -10,17 +10,17 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
 | todo         | —                  | —                  | 84                  |
-| in-progress  | 5                  | 11                 | 1                   |
+| in-progress  | 5                  | 11                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 188                 |
+| done         | 3                  | 12                 | 189                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 72× P2 · 12× P3.
 
 ## In progress now
 
-- [TASK-293](EPIC-010-ux-guidance/STORY-028-ux-baseline/TASK-293.md) — A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory (P3, agent)
+_None_
 
 ## Awaiting verification
 
@@ -283,9 +283,9 @@ _Generated 2026-10-09 09:30. Run `/tasks triage` to refresh. **Do not hand-edit*
     - [ ] TASK-290 `skills-lint.sh` fails a structurally broken spec file
     - [ ] TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release
 
-- EPIC-010 Interaction-design (UX) guidance in the skill set — in-progress (0/1 tasks done)
-  - STORY-028 A UX baseline that the review and prototype skills read — in-progress (0/1 done)
-    - [ ] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory
+- EPIC-010 Interaction-design (UX) guidance in the skill set — in-progress (1/1 tasks done)
+  - STORY-028 A UX baseline that the review and prototype skills read — in-progress (1/1 done)
+    - [x] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory
 
 ## Loose tasks
 
