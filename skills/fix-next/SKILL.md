@@ -27,7 +27,7 @@ half guesses: intake stamps the epic `kind: review-intake`, and this skill reads
 
 - **bare** — one defect, then **stop**. The default, and the recommended way to run it.
 - `--loop` — keep going to the next pick until the pool is empty, context runs short, or a question is
-  pending. Higher throughput, at the cost of the clean boundary.
+  pending (step 9 says which questions halt it). Higher throughput, at the cost of the clean boundary.
 - `--epic EPIC-NNN` — restrict the pool to one epic.
 
 ## Step 0 — Resume before you pick (ALWAYS FIRST)
@@ -137,8 +137,17 @@ that runs most often **and** the one that would act on the answer; leaving it to
 run `/roadmap` is what let that epic sit for three weeks.
 
 **Verification debt comes first.** Tasks at `status: verify` (or the older `review`) are not in the pool — they're not `todo` —
-but they are debt, and the house rule is that debt surfaces before new scope. Offer to clear them first
-by running their `## Human test plan` and closing `verify → done`.
+but they are debt, and the house rule is that debt surfaces before new scope. Put this question before ranking:
+
+> **<n> task(s) are awaiting verification: <TASK-NNN — title, one per line>. Their test plans need a person to
+> run them. Clear them first (run each plan, then `/tasks close` it `verify → done`), or go on to the next
+> defect?**
+
+**No answer, or nobody to ask:** go on to the next defect, and list every one of them in step 9's report as
+`awaiting verification, not cleared: TASK-NNN`. Never tick a step nobody ran: a person's test cannot be done
+unattended, so skipping the offer is the only outcome that claims nothing. Under `--loop`, put the question
+once per invocation, not once per pick. It is not a pending question for step 9, because the run never
+waits on it.
 
 **Empty pool → say so and stop. Don't invent scope.** Inventing defects to look busy is the failure
 mode this branch exists to prevent. Two causes, two different offers:
@@ -213,8 +222,15 @@ blocked one; when there is none, the line says `ranked above none — every othe
 report the blocked tasks and stop.
 
 State the ranking in one short paragraph — the top pick and *why it beat the runner-up* — then start.
-**Don't ask which to take;** that's the decision this skill exists to make. Do stop and ask only if the
-top two are genuinely inseparable on every key above.
+**Don't ask which to take;** that's the decision this skill exists to make. Ask only if the top two are
+genuinely inseparable on every key above:
+
+> **TASK-AAA and TASK-BBB tie on every ranking key (1–8). Which first? Without an answer I take TASK-AAA, the
+> lower id.**
+
+**No answer, or nobody to ask:** take the lower id, and write in the ranking paragraph and the pick's log line
+`keys 1–8 exhausted; took the lower id — nobody chose`. The id is a fallback, not a judgement: it makes two runs
+over the same pool agree, and the line says that is all it is. It is not a pending question for step 9.
 
 **Write the pick to disk immediately, before any code is read:**
 
@@ -273,7 +289,8 @@ Log: `- step 4 — layer: <local / upstream: <where>>`
 
 ### A run that ends without a fix
 
-Step 3's rejection and step 4's upstream block both end the run here, with no fix, drill or close.
+Step 3's rejection, step 4's upstream block and an unanswered decision (§ *Guardrails*) end the run here,
+with no fix, drill or close.
 
 - **It counts as the bare run's one defect.** The run has already done the work a defect costs: it read the
   code, wrote evidence into the task and changed the task's status. Starting a second candidate in the same
@@ -282,14 +299,17 @@ Step 3's rejection and step 4's upstream block both end the run here, with no fi
   needs a clean tree. When the task file is on the default branch (an in-place pick that cut no task branch),
   commit exactly the files the outcome wrote, the task file and any dashboard or rollup its verb regenerated:
   `git commit --only -m "TASK-NNN: cancelled — not a defect" -- <files>`, or
-  `"TASK-NNN: blocked — fix belongs upstream"`. Both lead with the id because they touch only the task tree,
+  `"TASK-NNN: blocked — fix belongs upstream"`, or `"TASK-NNN: blocked — decision pending"`. A pending decision
+  also commits the non-controversial work already done, since that work belongs to this task. Both lead with the id because they touch only the task tree,
   like `pick`'s commit. No `Co-Authored-By:` trailer. **When step 2 cut a task branch**, where this record
   belongs is not defined yet (TASK-298): commit nothing, name every file in the report, and stop even under
   `--loop`.
 - **Then go to step 9.** A bare run stops there. `--loop` continues to step 1, where a cancelled task is no
-  longer `todo` and a blocked one is ranked but skipped (step 2).
+  longer `todo` and a blocked one is ranked but skipped (step 2). A pending decision halts `--loop` too: it is
+  a question waiting on a person (step 9).
 
-Log: `- step 3 — rejected: …` or `- step 4 — layer: upstream: <where>; blocked`, then
+Log: `- step 3 — rejected: …`, `- step 4 — layer: upstream: <where>; blocked`, or
+`- step <n> — blocked: decision pending: <the question>`, then
 `- step 9 — ended without a fix: <cancelled | blocked>; commit <sha> | uncommitted: <files>`.
 
 ## Step 5 — Fix the root cause, with the test that proves it
@@ -394,9 +414,11 @@ finds that task and sends it back here.
 **Bare invocation: stop here. One defect per invocation.** Don't roll into the next one — the clean
 boundary is the deliverable, and a second fix in the same session is exactly what makes a reset unsafe.
 
-`--loop`: continue to step 1 unless context is nearly exhausted, the pool is empty, or a
-scope-escalation ask is pending ([spawn.md](../tasks/verbs/spawn.md) § *Scope escalation*) — wait for
-that answer rather than taking new scope. Either way, **name the next pick** so a reset resumes there.
+`--loop`: continue to step 1 unless context is nearly exhausted, the pool is empty, or a question is
+pending. **Two questions are pending in this sense:** a scope-escalation ask ([spawn.md](../tasks/verbs/spawn.md)
+§ *Scope escalation*) and a decision only the user can make (§ *Guardrails*). Wait for that answer rather than
+taking new scope. The verification-debt offer (step 1) and the tie question (step 2) never halt the loop,
+because each has an unattended outcome that needs no one. Either way, **name the next pick** so a reset resumes there.
 
 Final report, short:
 
@@ -426,7 +448,15 @@ If any fails, fix it before finishing. **That is this skill's actual contract.**
   evidence and end the run per step 3.
 - **A decision only the user can make** (a breaking API change, a secret rotation, a convention that
   isn't settled) → implement everything non-controversial, then stop and ask with a concrete
-  recommendation. Don't guess and don't stall the parts that were never in doubt.
+  recommendation. Don't guess and don't stall the parts that were never in doubt. The question:
+
+  > **TASK-NNN needs a decision: <the question>. Options: <a>, <b>[, <c>]. I recommend <x>, because <reason>.
+  > Which?**
+
+  **No answer, or nobody to ask:** write the question, the options and the recommendation into the task's
+  `## Context` under `Open decision`, block the task with `/tasks block TASK-NNN --reason "decision pending:
+  <the question>"`, and end the run as [§ *A run that ends without a fix*](#a-run-that-ends-without-a-fix)
+  says. Never apply the recommendation: it would read as decided when nobody decided it.
 - **Never commit a secret.** If the fix removes one, the old value must be treated as leaked — say so
   in the task, and rotate rather than just deleting.
 - **Scope escalation is measured, not assumed** — [spawn.md](../tasks/verbs/spawn.md) § *Scope

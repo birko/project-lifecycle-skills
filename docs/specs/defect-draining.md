@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 099564904fd81ce435240116bc74532d99d26553
+generated-at: 120d8553d45db6bbd371d9362aa6b8cbb9a43d12
 generated-on: 2026-10-11
 sources:
   - skills/fix-next/SKILL.md
@@ -149,13 +149,19 @@ The system SHALL, while walking review-intake epics, flag every story that has u
 
 ### Requirement: Verification debt surfaces before new scope
 
-The system SHALL treat tasks at `verify` (or the older `review`) as outside the pool but as debt, and SHALL offer to clear them — by running their human test plans and closing them to `done` — before new work.
+The system SHALL treat tasks at `verify` (or the older `review`) as outside the pool but as debt, and SHALL offer to clear them — by running their human test plans and closing them to `done` — before new work, putting a fixed question that lists each such task; with no answer, or nobody to ask, it SHALL go on to the next defect and list each as `awaiting verification, not cleared` in the final report, never ticking a step nobody ran; under `--loop` it SHALL put the question once per invocation, and the offer SHALL never halt the loop.
 
 #### Scenario: A task awaits verification
 
 - **Given** TASK-950 is at `verify` and the pool holds TASK-951
 - **When** the run reaches pool building
 - **Then** it offers to run TASK-950's human test plan and close it before taking TASK-951
+
+#### Scenario: Nobody is present to answer
+
+- **Given** TASK-950 is at `verify`, the pool holds TASK-951, and the run is unattended
+- **When** the run reaches pool building
+- **Then** it takes TASK-951, leaves TASK-950 at `verify` with no step ticked, and reports `awaiting verification, not cleared: TASK-950`
 
 ### Requirement: An empty pool stops the run without inventing scope
 
@@ -213,7 +219,7 @@ The system SHALL resolve a candidate's theme from the `theme:` field on its pare
 
 ### Requirement: The ranking names the key that broke the tie
 
-The system SHALL state the ranking in one short paragraph naming the pick and why it beat the runner-up, SHALL say which key separated them, SHALL say when the theme key was inert (no candidate declares one, all declare the same one, or earlier keys already separated the pool), and SHALL say when every key was exhausted; it SHALL NOT ask which task to take, and SHALL stop and ask only when the top two are inseparable on every key.
+The system SHALL state the ranking in one short paragraph naming the pick and why it beat the runner-up, SHALL say which key separated them, SHALL say when the theme key was inert (no candidate declares one, all declare the same one, or earlier keys already separated the pool), and SHALL say when every key was exhausted; it SHALL NOT ask which task to take, and SHALL ask only when the top two are inseparable on every key, putting a fixed question that names its fallback; with no answer, or nobody to ask, it SHALL take the lower id and record `keys 1–8 exhausted; took the lower id — nobody chose` in the ranking paragraph and the pick's log line, and the question SHALL never halt the loop.
 
 #### Scenario: Theme could not discriminate
 
@@ -371,7 +377,7 @@ The system SHALL, before handing over, write an outcome section into the task fi
 
 ### Requirement: A run that ends without a fix still ends clean
 
-The system SHALL treat a run that cancels its task as not a defect, or blocks it on an upstream fix, as the bare run's one defect, because the run has already done a defect's work; it SHALL commit exactly the files that outcome wrote when the task file is on the default branch, under the subject `TASK-NNN: cancelled — not a defect` or `TASK-NNN: blocked — fix belongs upstream`, and with no co-author trailer; when the pick cut a task branch it SHALL commit nothing, name every file in the report and stop even under `--loop`; and it SHALL then stop on a bare run, or return to pool building under `--loop`.
+The system SHALL treat a run that cancels its task as not a defect, blocks it on an upstream fix, or blocks it on a decision only the user can make that nobody answered — after recording the question, options and recommendation in the task and never applying the recommendation — as the bare run's one defect, because the run has already done a defect's work; it SHALL commit exactly the files that outcome wrote when the task file is on the default branch, under the subject `TASK-NNN: cancelled — not a defect`, `TASK-NNN: blocked — fix belongs upstream` or `TASK-NNN: blocked — decision pending` (the last also carrying the non-controversial work already done), and with no co-author trailer; when the pick cut a task branch it SHALL commit nothing, name every file in the report and stop even under `--loop`; and it SHALL then stop on a bare run, or return to pool building under `--loop`.
 
 #### Scenario: A false positive on a bare run
 
@@ -381,7 +387,7 @@ The system SHALL treat a run that cancels its task as not a defect, or blocks it
 
 ### Requirement: One defect per bare run; loop continues until a stopping point
 
-The system SHALL stop after one defect on a bare invocation; with `--loop` it SHALL return to pool building unless context is nearly exhausted, the pool is empty, or a scope-escalation question is pending; with `--epic` it SHALL restrict the pool to that epic; and in every mode it SHALL name the next pick.
+The system SHALL stop after one defect on a bare invocation; with `--loop` it SHALL return to pool building unless context is nearly exhausted, the pool is empty, or a scope-escalation question or a decision only the user can make is pending — the verification-debt offer and the tie question never count as pending; with `--epic` it SHALL restrict the pool to that epic; and in every mode it SHALL name the next pick.
 
 #### Scenario: Bare invocation
 
