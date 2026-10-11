@@ -1,7 +1,7 @@
 ---
 id: EPIC-010
 # status — one of: planned, in-progress, done, cancelled
-status: in-progress
+status: done
 created: 2026-10-09
 owner: unassigned
 ---
