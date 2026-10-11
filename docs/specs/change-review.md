@@ -1,7 +1,7 @@
 ---
 area: change-review
-generated-at: adc4c27f8733e01ca655b4ec26dfe0a68e190b0f
-generated-on: 2026-10-04
+generated-at: 999322441e2a75a0b4185c1f2d72aa4c5126661f
+generated-on: 2026-10-11
 sources:
   - skills-pi/code-review/SKILL.md
   - skills-pi/review/SKILL.md
@@ -158,7 +158,7 @@ The system SHALL drop generated, vendored and minified files from the rules axis
 
 ### Requirement: Rules axis — each violation quotes the rule it breaks
 
-The system SHALL check each changed file against each rule whose domain matches the file's kind or path, and SHALL report every violation with a clickable `path:line`, the quoted guide line it comes from, and a one-line suggested fix, grouped as 🛑 (hard, unambiguous rule), ⚠ (likely violation needing judgement) and 💡 (register-on-introduce gaps, architecture-doc drift, soft style rules).
+The system SHALL check each changed file against each rule whose domain matches the file's kind or path, and SHALL report every violation with a clickable `path:line`, the quoted guide line it comes from, and a one-line suggested fix, grouped as 🛑 (hard, unambiguous rule), ⚠ (likely violation needing judgement, and architecture-doc drift) and 💡 (register-on-introduce gaps, soft style rules).
 
 #### Scenario: A handler queries the database directly
 
@@ -168,7 +168,7 @@ The system SHALL check each changed file against each rule whose domain matches 
 
 ### Requirement: Rules axis — a new cross-cutting pattern must be recorded in the same change
 
-The system SHALL flag a diff that establishes a new cross-cutting pattern — a new framework or major dependency, a UI pattern not in the rules, a new architectural layer or module shape, a new naming or testing convention — without updating `CLAUDE.md` § Conventions (and `## Architecture` when structure changed) in the same change, with the message *"New pattern introduced (`<what>`) but not recorded in CLAUDE.md § Conventions — add it so the next task follows it."*
+The system SHALL flag a diff that establishes a new cross-cutting pattern — a new framework or major dependency, a UI pattern not in the rules, a new architectural layer or module shape, a new naming or testing convention — without updating the rulebook where the ladder found it (`CLAUDE.md` § Conventions in a seeded project), and `## Architecture` when structure changed, in the same change, with the message *"New pattern introduced (`<what>`) but not recorded in `<file> § <section the ladder found>` — add it so the next task follows it."*; it SHALL never name a section the guide does not have, and where no rulebook was found it SHALL say the pattern was introduced and that the project records no conventions yet.
 
 #### Scenario: A new state-management library
 
@@ -184,7 +184,13 @@ The system SHALL flag a change that alters structure (a new module, engine, prot
 
 - **Given** a diff introducing a new `billing/` engine and an `## Architecture` section that does not mention it
 - **When** the rules axis runs
-- **Then** it reports architecture drift (in the 💡 group)
+- **Then** it reports architecture drift in the ⚠ group
+
+#### Scenario: Register-on-introduce names the guide's own section
+
+- **Given** a guide whose rules sit under `## Key Conventions`, and a diff adding a read-through cache used for every read
+- **When** the conventions are verified
+- **Then** the register-on-introduce finding says the pattern is not recorded in `CLAUDE.md § Key Conventions`, and nothing suggests adding a `§ Conventions` section
 
 ### Requirement: Rules axis — the smell baseline is a labelled floor that the repo overrides
 

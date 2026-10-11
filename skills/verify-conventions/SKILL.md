@@ -1,6 +1,6 @@
 ---
 name: verify-conventions
-description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions, `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic. A project with no rulebook still gets a code-smell baseline, labelled as judgement calls. Also flags a change that INTRODUCES a new cross-cutting pattern not yet recorded in CLAUDE.md (register-on-introduce). Distinct from [[code-review]] (correctness/bugs). Runs a project-local `verify-<project>-conventions` variant when the repo ships one.
+description: Lint the current/staged diff against THIS project's own conventions, wherever its agent guide records them — `CLAUDE.md` § Conventions, `## Key Conventions`, a non-English heading, or rules woven through the guide. Covers framework/stack, UI/UX, code structure & patterns, naming, testing, and § Architecture. Use when the user says "/verify-conventions", "verify conventions", "check project rules", "does this follow our conventions", "lint pred commitom", "skontroluj zmeny", or before marking a task/feature done. Tech-agnostic. A project with no rulebook still gets a code-smell baseline, labelled as judgement calls. Also flags a change that INTRODUCES a new cross-cutting pattern not yet recorded in that rulebook (register-on-introduce). Distinct from [[code-review]] (correctness/bugs). Runs a project-local `verify-<project>-conventions` variant when the repo ships one.
 ---
 
 # verify-conventions
@@ -153,8 +153,8 @@ its own headings has solved this; the skill adapts to the project, not the rever
    - **File + line** (clickable `path:line`)
    - **The rule** (quote the CLAUDE.md line it comes from — so the finding is traceable, not made up)
    - **Suggested fix** (one line)
-4. **Register-on-introduce check (the currency rule).** A diff that establishes a *new* cross-cutting pattern — pulls in a new framework/major dependency, introduces a UI pattern not in the rules, adds a new architectural layer/module shape, sets a new naming or testing convention — must also **update `CLAUDE.md` § Conventions** (and `## Architecture` if structure changed) in the same change. If it doesn't, flag it: *"New pattern introduced (`<what>`) but not recorded in CLAUDE.md § Conventions — add it so the next task follows it."* This is the mechanism that keeps the rule list complete as the project grows; it mirrors the [[feature]] decision-ledger discipline.
-5. **Architecture-drift check.** If a change alters structure (new module/engine/protocol/dependency direction) and `## Architecture` still describes the old shape, flag it — a stale architecture doc is a real defect, not stale-but-harmless.
+4. **Register-on-introduce check (the currency rule).** A diff that establishes a *new* cross-cutting pattern — pulls in a new framework/major dependency, introduces a UI pattern not in the rules, adds a new architectural layer/module shape, sets a new naming or testing convention — must also **update the rulebook where step 2 found it** (`CLAUDE.md` § Conventions in a seeded project; `## Key Conventions`, a non-English heading or the guide's own rule list elsewhere), and `## Architecture` if structure changed, in the same change. If it doesn't, flag it, naming that location: *"New pattern introduced (`<what>`) but not recorded in `<file> § <section step 2 found>` — add it so the next task follows it."* Never name a section the guide does not have: a repo whose rules sit under `## Key Conventions` is told to add it there, not to create `§ Conventions`. Where step 2 found no rulebook at all, the none-recorded finding already covers it: say *"New pattern introduced (`<what>`); this project records no conventions yet (see above)."* This is the mechanism that keeps the rule list complete as the project grows; it mirrors the [[feature]] decision-ledger discipline.
+5. **Architecture-drift check.** If a change alters structure (new module/engine/protocol/dependency direction) and `## Architecture` still describes the old shape, flag it — a stale architecture doc is a real defect, not stale-but-harmless, so it is reported as a **⚠ Warning** (§ *Output format*): a person decides whether the doc or the change is wrong.
 
 ## Output format
 
@@ -186,8 +186,8 @@ Three reasons it leads rather than trails, and the third is the one that bites:
 Then group findings by severity; quote the source rule on each so it's auditable:
 
 - **🛑 Blockers** — a hard, unambiguous rule is violated (e.g. "all DB access goes through the repository layer" but the diff queries the driver directly; a forbidden dependency was added).
-- **⚠ Warnings** — a likely violation needing human judgment (heuristic match, a convention with stated exceptions).
-- **💡 Suggestions** — register-on-introduce gaps, architecture-doc drift, soft style rules.
+- **⚠ Warnings** — a likely violation needing human judgment (heuristic match, a convention with stated exceptions), and architecture-doc drift (step 5).
+- **💡 Suggestions** — register-on-introduce gaps, soft style rules.
 
 **A smell-baseline finding is prefixed `smell:` and never a 🛑.** It is a judgement call from a
 project-independent floor, so it must be distinguishable at a glance from a rule this project wrote
@@ -258,7 +258,7 @@ shape is broken, because it meets repos it did not create.
 
 - It does **not** auto-fix — findings are advisory; the developer (or a follow-up `--fix` pass via another tool) applies them.
 - It does **not** judge correctness or hunt for bugs — that's [[code-review]].
-- It does **not** invent rules — it only checks what the project recorded in `CLAUDE.md`. No conventions written down → nothing to verify (and that's the finding).
+- It does **not** invent rules — it checks only what the project recorded, wherever step 2's ladder found it. No conventions written down → the none-recorded finding, **plus the smell baseline**, which is not an invented rule but the floor that applies with or without a rulebook (§ *Finding the rulebook*).
 - It does **not** block commits by itself. To hard-enforce, wire a pre-commit hook via [[update-config]].
 
 ## Related skills
