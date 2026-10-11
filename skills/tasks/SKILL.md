@@ -72,7 +72,7 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
      ├─ blocked:     <n>
      └─ done:        <n>
 
-   In progress: <list or "(none)">          ← a blocked one carries "⚠ blocked: <reason>"
+   In progress: <list or "(none)">          ← a blocked one carries "⚠ blocked: <reason>", a taken one "taken: <branch>"
    Awaiting verification: <list or "(none)">
 
    Next up (top 3 by priority, blocked excluded):
@@ -173,17 +173,24 @@ from every project at once to answer a question only occasionally asked.
      count of blocked tasks rather than a state, and an old-form `status: blocked` counts in `blocked` only.
      So the rows need not sum to the task total; wherever counts are shown, say so when `blocked` overlaps
      another row (`blocked: 3 (2 also counted in their own state)`), or the table reads as an error.
+     A **taken** task (step 5) counts in `in-progress`, **not** in `todo`, and so stays out of the `todo`
+     priority breakdown below. Its file reads `todo`, but the branch says the work has started, and counting it
+     in both would make the rows sum past the total with nothing to say why.
    - Priority sub-breakdown for `tasks.todo`: **one bucket per priority actually present**, ordered P0→P1→P2→P3→…
      Do **not** hard-code the set. A fixed `{P0, P1, P2}` silently drops any other value in use — measured on
      this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
-   - `inProgressTasks[]` — TASKs with `status: in-progress`, sorted by priority then created
+   - `inProgressTasks[]` — TASKs with `status: in-progress`, **plus every taken task** (below), each taken one
+     carrying the branch that took it, sorted by priority then created
    - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` with an upstream), and the debt would otherwise be invisible.
    - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted P0→P1→P2 then created asc
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,
      another clone's pick shows only as that pushed branch: the default branch's file still reads `todo`
-     until the merge. So count it and show it as in progress, and never offer it as next work. This is
+     until the merge. So count it and show it as in progress, and never offer it as next work: it counts in the
+     `in-progress` bucket (step 4), is listed in `inProgressTasks[]`, and every view that lists it renders it once,
+     marked `taken: <branch>` with the branch as found (`task/TASK-NNN`, or `origin/task/TASK-NNN` for a remote
+     one), so a reader can tell it from a task whose own file reads `in-progress`. This is
      derived from branches the repo holds, so it is recomputed every run, never written into the file.
      Without git there is nothing to derive, and the step is skipped.
    - `byParent` map — for building tree views

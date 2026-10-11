@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 4e8e71637f6fdd0efe524c4dcfbd64a4d22cadda
+generated-at: 1890ce63187e66b7eb50b216e418fc9ae9025f98
 generated-on: 2026-10-11
 sources:
   - skills/tasks/SKILL.md
@@ -154,13 +154,19 @@ The system SHALL enumerate every epic, story and task file in one pass, read eac
 
 ### Requirement: Taken tasks derived from branches
 
-The system SHALL treat a `todo` task as taken when a `task/TASK-NNN` branch exists locally or on a remote, show it as in progress, and never offer it as next work. This SHALL be recomputed from the branches on every run and never written into the task file, and skipped where there is no git.
+The system SHALL treat a `todo` task as taken when a `task/TASK-NNN` branch exists locally or on a remote, count it in the in-progress bucket rather than `todo` (and so outside the `todo` priority breakdown), list it among the in-progress tasks once, marked `taken: <branch>` with the branch as found, render it the same way in the snapshot and the dashboard, and never offer it as next work. This SHALL be recomputed from the branches on every run and never written into the task file, and skipped where there is no git.
 
 #### Scenario: Another clone picked the task
 
 - **Given** the default branch's copy of `TASK-017` reads `todo` and `origin/task/TASK-017` exists
 - **When** the snapshot or `pick` runs
 - **Then** `TASK-017` is not offered as next work and is shown as taken
+
+#### Scenario: A taken task is counted once, as in progress
+
+- **Given** `TASK-002` reads `todo` in its file and `origin/task/TASK-002` exists, beside one task whose file reads `in-progress`
+- **When** the snapshot or the dashboard is rendered
+- **Then** the in-progress count is 2 and the `todo` count leaves `TASK-002` out, and `TASK-002` is listed under in progress once, marked `taken: origin/task/TASK-002`
 
 ### Requirement: Status snapshot and help
 

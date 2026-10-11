@@ -24,7 +24,7 @@ dashboard is regenerated on the default branch when `close` merges.
 
 2. **Build the counts table** from the buckets (the `blocked` row counts blocked tasks across states, as the Collection pass buckets them) — epics × statuses, stories × statuses, tasks × statuses. Use `—` for status/level pairs that don't apply (e.g. epics have no `todo` or `blocked`).
 
-3. **Build "In progress now"** from `inProgressTasks[]`. One bullet per task; a blocked one ends with `⚠ blocked: <reason>`, so stalled work does not read as active:
+3. **Build "In progress now"** from `inProgressTasks[]`. One bullet per task; a blocked one ends with `⚠ blocked: <reason>`, so stalled work does not read as active, and a taken one ([SKILL.md](../SKILL.md) § *Collection pass*) ends with `taken: <branch>`, because its file still reads `todo`:
    ```
    - [TASK-014](EPIC-001-auth/STORY-001-login/TASK-014-jwt.md) — JWT issuance on login (P1, ai)
    ```
@@ -46,6 +46,7 @@ dashboard is regenerated on the default branch when `close` merges.
    Markers:
    - Task status `done` → `[x]`
    - Task status `in-progress` → `[ ] ... ← in-progress`
+   - Task taken (its file reads `todo`, its branch exists) → `[ ] ... ← in-progress, taken: <branch>`
    - Task status `verify` or `review` → `[ ] ... 🔍 verify` (code done, sign-off pending — verification debt)
    - Task blocked by either form ([SKILL.md](../SKILL.md) § *Lifecycle*) → `[ ] ... ⚠ blocked: <reason>` after
      its own state's marker; an old-form `status: blocked` has no other state to show, so it renders
