@@ -22,8 +22,17 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
 4. **Distill into `idea.md`** — render [templates/idea.md](../templates/idea.md):
    - Problem / Proposed shape / Open questions distilled from the grill / Out of scope.
    - **The open questions are a table, not a list** — replace the template's example rows with every question
-     the grill raised: `resolved → Dn` for each it answered (the decision is step 5's `proposed` row), and
-     `open` with its edges for each it did not reach. Every row is written `claimed-by: —`; nobody holds a
+     the grill raised, in the state its grill outcome maps to:
+
+     | The grill's outcome ([[grill-me]]) | The row reads |
+     |---|---|
+     | answered | `resolved → Dn`, where `Dn` is step 5's `proposed` row |
+     | **deferred** (`<topic> → deferred: <unblock condition>`) | `resolved → Dn` as well: deferring is an answer, *not now*. Step 5's row for it is `proposed`, with the unblock condition in its Rationale, for `/feature decide` to stamp `deferred` |
+     | **made moot** by another answer, dropped with a reason | `dropped — <the grill's reason>`, and its id removed from every other row's `blocked-by` |
+     | not reached | `open`, with its edges |
+
+     Never write a moot or deferred question as `open`: it would sit on the frontier and block its dependants
+     after a reset, although the grill already settled it. Never omit it either, because its edges go with it. Every row is written `claimed-by: —`; nobody holds a
      question once this session ends. Concerns too vague to be a row go in the *Fog* list, per
      [questions.md](../questions.md) § *What earns a row*.
    - **No open rows is still written down, in one of two lines** — never as an empty table, which reads the same as

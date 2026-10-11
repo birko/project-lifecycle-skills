@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: a87cd45ff58f6199054ed12b846b70c6c64a7440
+generated-at: 4bc23d8c35d8f59d938e70fcce546a598f1eacb9
 generated-on: 2026-10-11
 sources:
   - skills/feature/SKILL.md
@@ -103,7 +103,7 @@ The system SHALL, on `/feature new`, interrogate the idea with the grill skill b
 
 ### Requirement: Open questions survive the session as a table with a computed frontier
 
-The system SHALL keep a feature's open questions as a table in its idea file — id, question, type (`decision` or `research`), blocked-by, state, claimed-by — defined in one owner file that every other reader points at. The type SHALL be decided by one test — could two careful people looking it up arrive at different correct answers (decision) or not (research) — and a failed lookup SHALL stay `open — lookup failed: <why>` and be put to the user. States SHALL be `open`, `resolved → Dn` (or `resolved — <fact>` for research that decides nothing) and `dropped — <reason>`, each set by a named step; dropping a question SHALL remove it from every blocked-by. A question SHALL be claimed (`<name> on <date>`) by the step that puts it, released when it is resolved or dropped or when that session stops, and a claim dated before today SHALL be stale and may be taken over with a statement saying so; a five-column table reads as unclaimed. The frontier SHALL be every open row whose blockers are all resolved, computed fresh and never stored; a blocker id missing from the table is a broken edge. A row SHALL hold only a question stated precisely as one sentence ending in `?`; vaguer concerns stay in a Fog list, and ruled-out scope is neither. On `/feature new` the system SHALL give each question its id and edges when raised, write unreached ones as `open`, write one of two explicit lines when none remain (all resolved, or `--no-grill`), and name the frontier in its closing output.
+The system SHALL keep a feature's open questions as a table in its idea file — id, question, type (`decision` or `research`), blocked-by, state, claimed-by — defined in one owner file that every other reader points at. The type SHALL be decided by one test — could two careful people looking it up arrive at different correct answers (decision) or not (research) — and a failed lookup SHALL stay `open — lookup failed: <why>` and be put to the user. States SHALL be `open`, `resolved → Dn` (or `resolved — <fact>` for research that decides nothing) and `dropped — <reason>`, each set by a named step; dropping a question SHALL remove it from every blocked-by, and only the user, or the grill when an answer it just received makes the question moot and it says which, may rule a question moot. A question SHALL be claimed (`<name> on <date>`) by the step that puts it, released when it is resolved or dropped or when that session stops, and a claim dated before today SHALL be stale and may be taken over with a statement saying so; a five-column table reads as unclaimed. The frontier SHALL be every open row whose blockers are all resolved, computed fresh and never stored; a blocker id missing from the table is a broken edge. A row SHALL hold only a question stated precisely as one sentence ending in `?`; vaguer concerns stay in a Fog list, and ruled-out scope is neither. On `/feature new` the system SHALL give each question its id and edges when raised, write unreached ones as `open`, write a question the grill dropped as moot as `dropped — <the grill's reason>` and one the user deferred as `resolved → Dn` whose `proposed` row carries the unblock condition — never writing either as `open` or omitting it — write one of two explicit lines when none remain (all resolved, or `--no-grill`), and name the frontier in its closing output.
 
 #### Scenario: A session cut short leaves its frontier on disk
 
@@ -122,6 +122,12 @@ The system SHALL keep a feature's open questions as a table in its idea file —
 - **Given** the concern "something about making sure handover happens properly"
 - **When** it is recorded
 - **Then** it goes in the Fog list, not the table
+
+#### Scenario: A moot question and a deferred one
+
+- **Given** a grill where the answer "A4 only" makes "should users pick a paper size?" moot, and the user defers emailing the PDF until an SMTP account exists
+- **When** `/feature new` writes the idea file
+- **Then** the paper-size question reads `dropped — <reason naming the A4 answer>`, the email question reads `resolved → Dn`, and `Dn` is a `proposed` row whose rationale carries the SMTP unblock condition
 
 ### Requirement: New adopts a seeded stub instead of minting a duplicate
 
