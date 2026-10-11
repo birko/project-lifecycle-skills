@@ -7,7 +7,16 @@ Three checks before a feature is called done: it's **complete** (every decision 
 1. **Locate the feature**; read `decisions.md` and collect its tasks (Grep `tasks/` for `feature: FEATURE-NNN`).
 
 2. **Gate A — Completeness** (code correctness was already reviewed per task at each `/tasks close` merge gate — don't re-review wholesale):
-   - **Every `approved`/`changed` decision is decomposed**, and **every linked task is merged (`done`)** — Grep `tasks/` for `feature: FEATURE-NNN`; any still-open task means the feature isn't done (list them and stop).
+   - **Every `approved`/`changed` decision is decomposed**, and **every linked task is merged** — Grep `tasks/` for `feature: FEATURE-NNN`; any still-open task means the feature isn't done (list them and stop).
+     - **Merged means `done`, or awaiting verification with its work on the default branch.** Read each
+       status by [[tasks]] § *Lifecycle* → *Reading a task's status*. A `verify` task (or `review`, the older
+       form) is built and is waiting only for its Human test plan, which is Gate B's question, not this one.
+       Stopping on it here would loop: [pick.md](pick.md) sends a feature whose tasks are all `done` or
+       `verify` to this verb, and step 5 below parks tasks at `verify` for the next review to pick up.
+     - **Open is everything else**: `todo`, `in-progress`, blocked in either form, and a `verify` task whose
+       work is still on an unmerged branch. That is a `close` that parked on a task branch, in place or in a
+       worktree, leaving the code on `task/TASK-NNN` (on a PR project, with a PR awaiting sign-off):
+       `git branch -a --no-merged <default> --list "*task/TASK-NNN"` names the branch. Without git, or with no such branch, a `verify` task's work is on the default branch.
    - **Register-on-introduce confirmed:** if the feature introduced a new cross-cutting pattern, confirm it was recorded in `CLAUDE.md § Conventions` (and `## Architecture` if structure changed) — run [[verify-conventions]] to flag an unrecorded one. (Per-task `verify-conventions` + `code-review` already ran at each `/tasks close`; this is the feature-wide *confirmation*, not a re-run.)
    - **Fidelity confirmed:** run [[verify-intent]] over the feature's cumulative diff against its
      **approved and `changed` decisions** — the feature-level statement of what was asked, where each
@@ -52,7 +61,9 @@ Three checks before a feature is called done: it's **complete** (every decision 
      review. If `status.md` and the index row still read `building` while `idea.md` says `review`, the rollup
      is wrong, which is the case [status.md](status.md) names. This is stated once, here, so a branch added
      later is covered too.
-   - **All three gates pass** → `idea.md` frontmatter `status: done`, so the chained rollup shows phase `done`; suggest closing any still-open tasks via `/tasks close`.
+   - **All three gates pass** → `idea.md` frontmatter `status: done`, so the chained rollup shows phase `done`. Gate A let only `verify` tasks through without being `done`,
+     and Gate B has now passed their plans, so name each one and suggest `/tasks close TASK-NNN` for it: that
+     moves it `verify → done` through its own gate. Don't flip them here. With no `verify` task, suggest nothing.
    - **Changelog nudge** (don't auto-run): a feature reaching `done` is a genuine ship event, so if the project has a `CHANGELOG.md`, print one line — *"FEATURE-NNN shipped — consider `/roll-changelog` to record what changed for users."* The changelog is a human-curated summary, so leave the call to the user; just make sure they don't forget. Skip the nudge if there's no `CHANGELOG.md`.
    - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. **That means every linked task whose plan Gate B did not pass**: a step not run, a step failed, or a false `N/A`. Gate A has already required all of them to be `done`, so parking moves `done → verify`, the same move [decide.md](decide.md) makes for a surface-dependent revert. A task whose plan passed stays `done`. Never write "done (pending)".
 
@@ -83,7 +94,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
 
 ## Edge cases
 
-- **Some tasks still open / unmerged** — Gate A fails by definition (completeness); list the open tasks and stop. There's nothing to sign off until the work is merged.
+- **Some tasks still open / unmerged** — Gate A fails by definition (completeness); list the open tasks and stop. There's nothing to sign off until the work is merged. A `verify` task whose work is on the default branch is not open (Gate A); its plan is Gate B's.
 - **Optional cumulative pass finds a blocker** — a cross-task integration bug or security issue is real verification debt: open (or reopen) a `/tasks` for the fix and hold the feature at `review` until it's merged. Don't fix silently inside the review step.
 - **Stakeholder unavailable** — set `status: review` (not `done`); record sign-off as `pending` in the History log. Close it later by re-running `/feature review` once signed off.
 - **Review surfaces a contested decision** — re-grill *just that branch* with [[grill-me]], then `/feature decide` to re-stamp; don't re-grill the whole feature.

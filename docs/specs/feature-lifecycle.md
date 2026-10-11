@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 7317a2480b8f54d58570997edc22a02da4a9ccb5
+generated-at: bf841027c62d9befab4ca4782ff502bcd9025fe0
 generated-on: 2026-10-11
 sources:
   - skills/feature/SKILL.md
@@ -561,13 +561,19 @@ The system SHALL treat each feature's rollup and the features index as generated
 
 ### Requirement: Review is a three-gate completeness check
 
-The system SHALL, on `/feature review`, run Gate A (completeness: every approved or changed decision decomposed and every linked task `done`, stopping with a list of open tasks otherwise; a confirmation that any new cross-cutting pattern was recorded; a fidelity check of the cumulative change against the approved and changed decisions, reported separately from the completeness findings and never merged or reranked with them; a spec-landing check; and optional cumulative correctness and security passes for cross-task seams, done inline when the runtime lacks them, with any blocker routed back to a task rather than fixed in place), Gate B (every step of every linked task's human test plan read as passed, failed or not run and reported per task on separate counts, the plan passing only when every step passed or it is explicitly marked not applicable with the automated coverage it claims actually present — a not-applicable claim whose coverage is missing being read as an unsatisfied plan and reported on its own line as `N/A claimed, coverage not found`, any failed step failing the gate with the task ids its line names listed as what blocks the feature, not-run steps listed for the user to run, and the result recorded in History) and Gate C (a stakeholder summary and explicit sign-off recorded as a History line), and SHALL print a per-gate pass/fail and the final state.
+The system SHALL, on `/feature review`, run Gate A (completeness: every approved or changed decision decomposed and every linked task merged — `done`, or awaiting verification with its work on the default branch, whose plan is left to Gate B — stopping with a list of open tasks otherwise, where open means `todo`, `in-progress`, blocked, or awaiting verification on an unmerged task branch; a confirmation that any new cross-cutting pattern was recorded; a fidelity check of the cumulative change against the approved and changed decisions, reported separately from the completeness findings and never merged or reranked with them; a spec-landing check; and optional cumulative correctness and security passes for cross-task seams, done inline when the runtime lacks them, with any blocker routed back to a task rather than fixed in place), Gate B (every step of every linked task's human test plan read as passed, failed or not run and reported per task on separate counts, the plan passing only when every step passed or it is explicitly marked not applicable with the automated coverage it claims actually present — a not-applicable claim whose coverage is missing being read as an unsatisfied plan and reported on its own line as `N/A claimed, coverage not found`, any failed step failing the gate with the task ids its line names listed as what blocks the feature, not-run steps listed for the user to run, and the result recorded in History) and Gate C (a stakeholder summary and explicit sign-off recorded as a History line), and SHALL print a per-gate pass/fail and the final state.
 
 #### Scenario: Open task fails completeness
 
 - **Given** one of the feature's four tasks is still `in-progress`
 - **When** review runs
 - **Then** Gate A fails, the open task is listed, and the review stops
+
+#### Scenario: A task parked at verify by an earlier review is not open
+
+- **Given** a single-branch project where an earlier review parked one linked task at `verify`, and its test step has since passed
+- **When** review runs with the stakeholder signing off
+- **Then** Gate A passes without closing the task, the feature is `done`, and the review names `/tasks close` for that task rather than flipping it itself
 
 #### Scenario: Unchecked test steps
 
@@ -611,7 +617,7 @@ The system SHALL, in Gate A, require a usable spec map (one with at least one ar
 
 ### Requirement: Review sets the coarse status honestly
 
-The system SHALL regenerate the feature's rollup and index row after any review outcome that changes the coarse status or parks a task, on every branch; SHALL set the coarse status to `done` only when all three gates pass and, when the project has a changelog, print a one-line nudge to record the ship without running it; and SHALL set the status to `review` — recording sign-off as pending — when completeness passes but test verification or sign-off has not happened, re-running review later to close it.
+The system SHALL regenerate the feature's rollup and index row after any review outcome that changes the coarse status or parks a task, on every branch; SHALL set the coarse status to `done` only when all three gates pass, naming each task still awaiting verification for `/tasks close` and suggesting nothing when there is none, and, when the project has a changelog, print a one-line nudge to record the ship without running it; and SHALL set the status to `review` — recording sign-off as pending — when completeness passes but test verification or sign-off has not happened, re-running review later to close it.
 
 #### Scenario: All gates pass
 
