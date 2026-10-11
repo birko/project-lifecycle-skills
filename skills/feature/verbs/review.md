@@ -47,7 +47,12 @@ Three checks before a feature is called done: it's **complete** (every decision 
    - If the stakeholder rejects or requests changes → add/flip decisions (`/feature decide`), which feeds back into `decompose`. The loop reopens; the feature is not done.
 
 5. **Set the coarse status honestly:**
-   - **All three gates pass** → `idea.md` frontmatter `status: done`; run `/feature status` so the phase shows `done`; suggest closing any still-open tasks via `/tasks close`.
+   - **Whichever branch below runs, if it changes `idea.md`'s `status:` or parks a task, chain
+     `/feature status FEATURE-NNN` (single-feature mode) after it.** The stakeholder rollup must never lag the
+     review. If `status.md` and the index row still read `building` while `idea.md` says `review`, the rollup
+     is wrong, which is the case [status.md](status.md) names. This is stated once, here, so a branch added
+     later is covered too.
+   - **All three gates pass** → `idea.md` frontmatter `status: done`, so the chained rollup shows phase `done`; suggest closing any still-open tasks via `/tasks close`.
    - **Changelog nudge** (don't auto-run): a feature reaching `done` is a genuine ship event, so if the project has a `CHANGELOG.md`, print one line — *"FEATURE-NNN shipped — consider `/roll-changelog` to record what changed for users."* The changelog is a human-curated summary, so leave the call to the user; just make sure they don't forget. Skip the nudge if there's no `CHANGELOG.md`.
    - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. **That means every linked task whose plan Gate B did not pass**: a step not run, a step failed, or a false `N/A`. Gate A has already required all of them to be `done`, so parking moves `done → verify`, the same move [decide.md](decide.md) makes for a surface-dependent revert. A task whose plan passed stays `done`. Never write "done (pending)".
 

@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: f914ceba2dc8dbb255f1993e4086b9b012bc44f3
+generated-at: 7317a2480b8f54d58570997edc22a02da4a9ccb5
 generated-on: 2026-10-11
 sources:
   - skills/feature/SKILL.md
@@ -611,7 +611,7 @@ The system SHALL, in Gate A, require a usable spec map (one with at least one ar
 
 ### Requirement: Review sets the coarse status honestly
 
-The system SHALL set the coarse status to `done` only when all three gates pass, then regenerate the rollup and, when the project has a changelog, print a one-line nudge to record the ship without running it; and SHALL set the status to `review` — recording sign-off as pending — when completeness passes but test verification or sign-off has not happened, re-running review later to close it.
+The system SHALL regenerate the feature's rollup and index row after any review outcome that changes the coarse status or parks a task, on every branch; SHALL set the coarse status to `done` only when all three gates pass and, when the project has a changelog, print a one-line nudge to record the ship without running it; and SHALL set the status to `review` — recording sign-off as pending — when completeness passes but test verification or sign-off has not happened, re-running review later to close it.
 
 #### Scenario: All gates pass
 
@@ -623,7 +623,7 @@ The system SHALL set the coarse status to `done` only when all three gates pass,
 
 - **Given** Gate A passes and the stakeholder cannot be reached
 - **When** review finishes
-- **Then** the status is `review`, History records sign-off as pending, and nothing reads `done`
+- **Then** the status is `review`, History records sign-off as pending, the rollup and index row show `review`, and nothing reads `done`
 
 #### Scenario: A not-applicable plan whose test does not exist
 
