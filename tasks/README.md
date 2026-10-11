@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-11 12:55. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-11 12:56. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -10,10 +10,10 @@ _Generated 2026-10-11 12:55. Run `/tasks triage` to refresh. **Do not hand-edit*
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
 | todo         | —                  | —                  | 84                  |
-| in-progress  | 5                  | 11                 | 0                   |
+| in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 3                  | 12                 | 189                 |
+| done         | 4                  | 13                 | 189                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 72× P2 · 12× P3.
@@ -283,10 +283,6 @@ _None_
     - [ ] TASK-290 `skills-lint.sh` fails a structurally broken spec file
     - [ ] TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release
 
-- EPIC-010 Interaction-design (UX) guidance in the skill set — in-progress (1/1 tasks done)
-  - STORY-028 A UX baseline that the review and prototype skills read — in-progress (1/1 done)
-    - [x] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory
-
 ## Loose tasks
 
 - [x] TASK-006 verify-conventions reports "no conventions" on repos full of conventions (P1, unassigned)
@@ -301,7 +297,7 @@ _None_
 - [ ] TASK-261 Run the deletion test on the three `help` verb files, and keep or fold each one (P3, agent)
 
 <details>
-<summary><strong>Completed</strong> — 3 epics</summary>
+<summary><strong>Completed</strong> — 4 epics</summary>
 
 - EPIC-004 Comment discipline in agent-written code — done (28/29 tasks done)
   - STORY-018 Seed the comment-discipline rule into both rulebooks — 17/18 done (done)
@@ -377,5 +373,9 @@ _None_
     - [x] TASK-215 The `blocked:` writers do not quote their value, and two readers of the block note are undeclared · FEATURE-003
     - [x] TASK-217 `/tasks migrate` never exports a task awaiting verification · FEATURE-003
     - [x] TASK-219 A task blocked on another task drops out of `fix-next`, and a few labels still say `review` · FEATURE-003
+
+- EPIC-010 Interaction-design (UX) guidance in the skill set — done (1/1 tasks done)
+  - STORY-028 A UX baseline that the review and prototype skills read — 1/1 done (done)
+    - [x] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory
 
 </details>
