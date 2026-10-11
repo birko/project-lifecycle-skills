@@ -80,9 +80,9 @@ DV7 becomes decorative. An external source with no `source-commits` entry is **u
 baseline**, which DV7 reports as stale — never as fresh. Don't re-derive spec semantics
 beyond that — generation and the staleness definition live in [[specs]]; this engine only
 consumes them for the drift audit. When the map is **absent or still the empty scaffold seed
-(`areas: []` — what [[new-project]] writes at birth)**, skip the collection — but if the
-project has real code (a `src/` tree or a build manifest with tracked source files), flag
-DV10 instead of staying silent: the spec layer is missing, not merely unconfigured. An empty
+(`areas: []` — what [[new-project]] writes at birth)**, skip the collection — but evaluate
+DV10 instead of staying silent (§ *DV10: what counts as code* decides whether the repo has
+behaviour to spec): the spec layer may be missing, not merely unconfigured. An empty
 map must never be collected as a "working" spec layer with zero areas.
 
 ### 3. Join feature ↔ tasks ↔ epic
