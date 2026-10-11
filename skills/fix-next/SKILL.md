@@ -349,7 +349,9 @@ spec for the fixed area is now wrong, and the spec diff is the fix's evidence.
 Find the area whose `.map.yml` globs cover the changed files and run `/specs regen <area>`, honouring
 the stable-wording rule — change only what the code now contradicts, including requirement *titles*
 when they assert the old behaviour. Reviewing that diff is part of the step, not a formality: anything
-in it you did not intend is a finding, and gets a [`/tasks spawn`](../tasks/verbs/spawn.md).
+in it you did not intend is a finding, and gets a [`/tasks spawn`](../tasks/verbs/spawn.md). When regen asks
+whether a change was intended, this run answers from the task's acceptance criteria, as regen step 4 allows
+the verb that made the change; a change those criteria do not cover is not yours to call intended.
 
 If the project has no `docs/specs/.map.yml`, or its `areas:` list is empty, print one line — *"no
 usable spec map — run `/specs init` to bootstrap the spec layer"* — and continue. Don't skip silently.

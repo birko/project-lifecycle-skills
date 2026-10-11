@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 120d8553d45db6bbd371d9362aa6b8cbb9a43d12
+generated-at: c447ce2a1ea7fa8c9f86ce58adef61d1e2a16b81
 generated-on: 2026-10-11
 sources:
   - skills/fix-next/SKILL.md
@@ -339,7 +339,7 @@ The system SHALL NOT skip proving the guard can fail; it SHALL run one of the po
 
 ### Requirement: Respec the fixed area
 
-The system SHALL find the spec area whose map globs cover the changed files and regenerate it under the stable-wording rule, review the diff, and file anything unintended as a new task; where the project has no usable spec map it SHALL print "no usable spec map — run `/specs init` to bootstrap the spec layer" and continue.
+The system SHALL find the spec area whose map globs cover the changed files and regenerate it under the stable-wording rule, review the diff, answering the regeneration's "was this intended" question from the task's acceptance criteria and never for a change those criteria do not cover, and file anything unintended as a new task; where the project has no usable spec map it SHALL print "no usable spec map — run `/specs init` to bootstrap the spec layer" and continue.
 
 #### Scenario: No spec map
 

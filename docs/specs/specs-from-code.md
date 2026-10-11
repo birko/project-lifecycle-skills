@@ -1,7 +1,7 @@
 ---
 area: specs-from-code
-generated-at: 1cdf452fbb2594ffe3016cf359b041815fdd8957
-generated-on: 2026-10-03
+generated-at: c447ce2a1ea7fa8c9f86ce58adef61d1e2a16b81
+generated-on: 2026-10-11
 sources:
   - skills/specs/SKILL.md
   - skills/specs/templates/map.yml
@@ -250,7 +250,7 @@ The system SHALL end init by suggesting a full regeneration of every area withou
 
 ### Requirement: Regen resolves which areas to harvest
 
-The system SHALL accept named areas, `--all`, `--story STORY-NNN` (areas resolved from the story's tasks' recorded references matched against map globs, asking which areas when references are missing), and `--feature FEATURE-NNN` (the same resolution over all the feature's tasks), and SHALL list the valid areas and stop when a named area is unknown.
+The system SHALL accept named areas, `--all`, `--story STORY-NNN` (areas resolved from the story's tasks' recorded references matched against map globs, asking which areas for the tasks whose references are missing — with a fixed question listing the mapped areas — and, with no answer or nobody to ask, regenerating no area for those tasks and reporting them as unresolved rather than guessing areas from a title or a path), and `--feature FEATURE-NNN` (the same resolution over all the feature's tasks), and SHALL list the valid areas and stop when a named area is unknown.
 
 #### Scenario: Unknown area name
 
@@ -263,6 +263,12 @@ The system SHALL accept named areas, `--all`, `--story STORY-NNN` (areas resolve
 - **Given** a story whose two tasks record commits touching files under the `alpha-sync` globs
 - **When** regen runs with `--story STORY-042`
 - **Then** `alpha-sync` is harvested and the tasks' feature links are carried into its provenance
+
+#### Scenario: Story with no resolvable references, nobody present
+
+- **Given** a story whose only task records no commit or PR, while a recent commit plainly touched the `import` area
+- **When** regen runs with `--story STORY-001` unattended
+- **Then** no area is regenerated, and the run reports `unresolved for STORY-001: TASK-001 — no resolvable pr:; their areas were not regenerated`
 
 ### Requirement: Harvest grounds the spec in the code as it is
 
@@ -308,13 +314,19 @@ The system SHALL, under `--all`, harvest areas in parallel with one agent per ar
 
 ### Requirement: Every behavioural change in a spec diff is classified
 
-The system SHALL show each changed area's spec diff and classify every behavioural change as matching an approved decision (checked against the approved and changed rows of features resolved from story or feature context), intended anyway (confirmed by the user), or unexplained — a finding for which it offers a new task or reopening a deferred or removed decision; in feature context it SHALL report an approved decision absent from the diff as an incomplete feature, and when the user rejects the regeneration it SHALL write nothing.
+The system SHALL show each changed area's spec diff and classify every behavioural change as matching an approved decision (checked against the approved and changed rows of features resolved from story or feature context), intended anyway (confirmed by the user in answer to a fixed question, or by the verb that made the change in the same run — today the defect-draining run respeccing its own fix — answering from that task's acceptance criteria and named in the classification), or unexplained — a finding for which it offers a new task or reopening a deferred or removed decision; in feature context it SHALL report an approved decision absent from the diff as an incomplete feature, and when the user rejects the regeneration it SHALL write nothing.
 
 #### Scenario: Unexplained change
 
 - **Given** a regen diff in which a timeout changed from 30 to 10 seconds and no decision covers it
 - **When** the diff is reviewed
 - **Then** the change is recorded as a finding and a new task is offered
+
+#### Scenario: Nobody confirms an expected-looking change
+
+- **Given** an unattended regen whose diff shows a change a done task's acceptance criteria support, with no approved decision behind it
+- **When** the diff is reviewed
+- **Then** the change is classified unexplained with `nobody confirmed it was intended`, the offers are reported but not acted on, and nothing is classified intended anyway
 
 #### Scenario: Expected change missing
 

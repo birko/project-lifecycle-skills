@@ -6,7 +6,10 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 
 - `<area> [<area> ...]` — regen the named area(s) from `.map.yml`.
 - `--all` — every area in the map (fan out; see step 3).
-- `--story STORY-NNN` — resolve areas from the story's merged work (the [[tasks]] `close` hook passes this): read the story's tasks, resolve their `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`), match against `.map.yml` globs. Missing references → fall back to asking which areas. Also resolves the story's tasks' `feature:` links for step 5's stamp.
+- `--story STORY-NNN` — resolve areas from the story's merged work (the [[tasks]] `close` hook passes this): read the story's tasks, resolve their `pr:` commits/PRs to changed files (`git show --name-only <sha>` / `gh pr diff <n> --name-only`), match against `.map.yml` globs. **Missing references** (a task with no `pr:`, or one that resolves to no files) → regenerate the areas the other tasks did resolve, and ask about the rest:
+  > **STORY-NNN's tasks <TASK-NNN, …> name no commit or PR I can resolve, so I can't tell which spec areas they changed. Which areas should I regenerate for them? Mapped areas: <area, …>. Answer with area names, or "none".**
+
+  **No answer, or nobody to ask:** regenerate no area for those tasks. Report `unresolved for STORY-NNN: <task ids> — no resolvable pr:; their areas were not regenerated`, so the caller can rerun `regen <area>` by name. Never pick areas by guessing from a title or a path a task mentions: a guessed area is a respec nobody asked for, and a missed one looks like an area with no changes. Also resolves the story's tasks' `feature:` links for step 5's stamp.
 - `--feature FEATURE-NNN` — resolve areas from all of the feature's tasks (same mechanics); used by [[feature]] `review` Gate A.
 
 ## Steps
@@ -25,7 +28,20 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    - Show the spec diff (old vs new — `git diff` if the old spec was committed, otherwise render both).
    - Classify each behavioral change in the diff:
      - **Matches an approved decision** — when `--story`/`--feature` context resolves to features, check the diff against their `decisions.md` `approved`/`changed` rows. Match → clean.
-     - **Intended anyway** — user confirms it's expected (e.g. covered by task acceptance criteria).
+     - **Intended anyway** — user confirms it's expected (e.g. covered by task acceptance criteria). Ask, once per change:
+       > **This spec change has no approved decision behind it: <the change, one line>. Was it intended? Answer yes (and why, for example the task whose criteria cover it) or no.**
+
+       **No answer, or nobody to ask:** classify it **Unexplained**, add `nobody confirmed it was intended` to the
+       finding, and report it with the offers below without acting on them. Never classify a change *Intended
+       anyway* on the run's own reading: that class means a person confirmed it, and a spec diff marked
+       intended is the one nobody looks at again. A task's criteria can support the user's answer, never stand
+       in for it.
+
+       **The one caller that may answer** is the verb that made the change in this same run, today [[fix-next]]
+       step 7, which respecs the defect it just fixed. It answers from that task's acceptance criteria, and the
+       classification names it: `intended anyway — TASK-NNN's criteria, answered by /fix-next`. A change outside
+       that task's criteria is still asked, and unanswered it is still **Unexplained**. A story-close chain made
+       no change in this run, so it does not answer.
      - **Unexplained** — a behavioral change nobody decided → a **finding**. Offer `/tasks new` (regression or follow-up) or, if it invalidates a `deferred`/`removed` decision, `/feature decide` to reopen it. Record the outcome; don't just shrug past it.
    - **Expected-but-missing:** in `--feature` context, an approved decision whose change does NOT appear in the diff means the feature isn't done — report it back to the caller ([[feature]] review treats it as a failed completeness check).
    - Suspected bugs found while harvesting: raise them here (offer `/tasks new`), spec the behavior as-is.
