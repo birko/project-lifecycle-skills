@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: b94dd8cabd0e5a7c177fc209e45a53b7a4523817
-generated-on: 2026-10-08
+generated-at: 031efac80c00e888bd091df4eb7a28823e0051c1
+generated-on: 2026-10-11
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -173,7 +173,7 @@ The system SHALL keep a `## Prototype` line in every feature's idea file stating
 
 ### Requirement: Prototype builds a stakeholder artifact in a form chosen per feature
 
-The system SHALL, on `/feature prototype`, ask which form to build unless the user named one — an HTML mockup, a markdown wireframe, a code spike on an unmerged flagged branch, or a state-model playground — and build it from the current proposed and approved decisions; an HTML mockup or playground SHALL be one self-contained file that opens in a browser with nothing installed and is labelled as a prototype; a playground SHALL carry both free play over the transitions and guided walkthroughs chosen for difficulty, each naming the decision row it exercises; and every form a stakeholder drives SHALL open by saying what it models, what to do and what answer is wanted.
+The system SHALL, on `/feature prototype`, ask which form to build unless the user named one — an HTML mockup, a markdown wireframe, a code spike on an unmerged flagged branch, or a state-model playground — and build it from the current proposed and approved decisions; an HTML mockup or playground SHALL be one self-contained file that opens in a browser with nothing installed and is labelled as a prototype; a playground SHALL carry both free play over the transitions and guided walkthroughs chosen for difficulty, each naming the decision row it exercises; every form a stakeholder drives SHALL open by saying what it models, what to do and what answer is wanted; and an HTML mockup or markdown wireframe SHALL be checked against the shared UX baseline before it is shown, with a rule the project recorded winning over the baseline and a baseline question whose answer is not obvious shown as a choice and raised in the decision ledger rather than built in as a default.
 
 #### Scenario: Form is asked each time
 
@@ -192,6 +192,12 @@ The system SHALL, on `/feature prototype`, ask which form to build unless the us
 - **Given** the risk is technical feasibility
 - **When** a code spike is chosen
 - **Then** a `spike/` branch is created behind a flag, a short note pointing at it is left in the feature folder, and the branch is not merged
+
+#### Scenario: Mockup questions a confirm dialog
+
+- **Given** a mockup that puts a confirm dialog in front of an action of unknown reversibility, and a project with no rule about confirmation
+- **When** the mockup is checked against the UX baseline before it is shown
+- **Then** confirm-or-undo is shown as a choice and a `proposed` row is flagged in the decision ledger
 
 ### Requirement: Prototype records reactions and its own outcome
 
@@ -618,6 +624,22 @@ The system SHALL set the coarse status to `done` only when all three gates pass,
 - **Given** Gate A passes and the stakeholder cannot be reached
 - **When** review finishes
 - **Then** the status is `review`, History records sign-off as pending, and nothing reads `done`
+
+### Requirement: Review commits its own record
+
+The system SHALL, at the end of `/feature review` and whichever way the gates went, commit exactly the files that run wrote — the History lines, the coarse status change, task files parked at `verify`, and the rollup and index — as one commit with the subject `chore: review FEATURE-NNN` in a git repository whose default branch has no upstream, and otherwise commit nothing; it SHALL never commit files another verb wrote, such as a spec regeneration, and its confirmation SHALL name either that commit or every file left uncommitted, by path.
+
+#### Scenario: Failed review is still committed
+
+- **Given** a project with no upstream and a feature whose Gate B has a step not run
+- **When** review records the result in History
+- **Then** that line is committed as `chore: review FEATURE-NNN` and the working tree is clean
+
+#### Scenario: Upstream leaves the record uncommitted
+
+- **Given** a project whose default branch tracks a remote
+- **When** review signs off a feature
+- **Then** nothing is committed and the confirmation names every file it wrote as uncommitted
 
 ### Requirement: Every requirement has a tracked feature and scope is never silently displaced
 

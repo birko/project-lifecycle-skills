@@ -40,7 +40,30 @@ Three checks before a feature is called done: it's **complete** (every decision 
    - **Changelog nudge** (don't auto-run): a feature reaching `done` is a genuine ship event, so if the project has a `CHANGELOG.md`, print one line — *"FEATURE-NNN shipped — consider `/roll-changelog` to record what changed for users."* The changelog is a human-curated summary, so leave the call to the user; just make sure they don't forget. Skip the nudge if there's no `CHANGELOG.md`.
    - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. Never write "done (pending)".
 
-6. **Confirm** — print the gate results (✅/❌ per gate) and the final state.
+5b. **Commit what this run wrote** — whichever way the gates went. A review that fails writes too: Gate B's
+   result and a `pending` sign-off are History lines. Left uncommitted, the record of the review sits in a
+   dirty tree that no step owns. It then rides into whatever unrelated commit comes next, or is lost with it.
+   The next `/tasks close` meets it as somebody's uncommitted work. This is the rule `/tasks close` follows for
+   a container close, and for the same reason: a gate's verdict belongs in a commit of its own.
+   - **The files are the ones this run wrote**, counted off the steps that ran rather than from a list here:
+     `decisions.md` when a History line was added, `idea.md` when step 5 changed its `status:`, each task
+     file step 5 parked at `verify`, and `status.md` and `docs/features/README.md` when `/feature status` ran. A run that wrote nothing, such as
+     Gate A stopping on open tasks, has nothing to commit.
+   - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails) → commit exactly
+     those files and nothing else from the index:
+     `git commit --only -m "chore: review FEATURE-NNN" -- <the files written>`. The subject does not lead
+     with a task id, so [[specs]] attributes no behaviour to it: a review changes no code. No
+     `Co-Authored-By:` trailer.
+   - **With an upstream, or no git** → commit nothing. Step 6 names each file as uncommitted, so a person can
+     land them through an ordinary PR. A review's record must not be committed on a default branch that has
+     to mirror its remote.
+   - **Files another verb wrote stay that verb's to commit.** A `/specs regen` run from Gate A writes spec
+     files whose diff the user accepts or rejects, so this step never commits them. Step 6 names them as
+     uncommitted.
+
+6. **Confirm** — print the gate results (✅/❌ per gate) and the final state, then either the commit from step
+   5b or **every file left uncommitted, by path**. Never end without one of those: a clean report over a dirty
+   tree is the defect step 5b exists to remove.
 
 ## Edge cases
 
