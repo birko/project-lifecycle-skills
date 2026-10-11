@@ -60,9 +60,19 @@ happened. Spawn instead of widening.
 4. **Create the task** — chain [verbs/new.md](new.md) (`/tasks new task`) with these defaults
    pre-filled so the user only confirms or corrects:
    - **parent** — the origin's STORY; else the origin's EPIC; else `_loose`. **If you reach `_loose` and
-     the discovery is a review finding, stop and place it in a pool instead** — `_loose` with no
+     the discovery is a finding, stop and put it in a pool instead.** A finding is a defect, whether a
+     review pass raised it or the work itself turned it up with no pass behind it. `_loose` with no
      `findings:` id and no `kind: review-intake` ancestor is outside [[fix-next]]'s pool entirely, so the
-     task is filed and unranked (SKILL.md § *A task outside a pool*). The fallback is where this happens
+     task is filed and unranked (SKILL.md § *A task outside a pool*). Two routes put it in the pool:
+     - **It carries an id.** A review finding keeps the id its pass gave it. A defect with no pass behind
+       it gets one minted: chain `/tasks new task --from-field` rather than plain `/tasks new task`. An id
+       in `findings:` puts the task in the pool wherever it sits, so it may stay in `_loose`.
+     - **It moves** under a `kind: review-intake` epic that covers its subject.
+
+     **Work that is not a defect stays loose, and that is not a gap**: a follow-up refactor, tree hygiene,
+     meta-work about the tree. Filing it into a pool makes the pool misreport what it holds. The test is
+     whether the discovery describes something **broken**, not whether it feels important.
+     The fallback is where this happens
      by inheritance rather than by choice: a finding spawned from a loose origin lands loose with nobody
      deciding it should. Inheriting the
      parent is what "place it correctly in the plan" means structurally — a spawned task that
@@ -156,7 +166,7 @@ defect.
 ## Edge cases
 
 - **No origin task** (spotted during a conversational fix or a review) — still create the task;
-  skip step 5's wiring; place it under the best-matching story/epic, else `_loose` — subject to the same check as step 4: a **finding** must not come to rest in `_loose`, because nothing ranks it there.
+  skip step 5's wiring; place it under the best-matching story/epic, else `_loose` — subject to the same check as step 4: a **finding** (a defect, raised by a review pass or not) must not come to rest in `_loose` without an id, because nothing ranks it there.
 - **Several items at once** — batch them: one task each, one shared History line per decision row.
   Don't merge unrelated discoveries into one task to save typing.
 - **Discovered during `/tasks close`** — spawn first, *then* re-ask whether the origin can close.

@@ -97,7 +97,9 @@ than it looks: this used to read *"joins the pool the moment someone puts its fi
 which assumed an id the reporter does not have — every prefix on [intake](../tasks/verbs/intake.md)'s table
 named a **pass**, and a field report has none. So the opt-in named a door with no key cut, and the failure
 was silent in the worst way: a real defect sat unranked while `--loop` reported the pool empty, *truthfully*.
-An already-filed task joins the same way — mint the id by that route and write it in.
+An already-filed task joins through the same flag's **already-filed path** in
+[`new`](../tasks/verbs/new.md), which names the steps that run for it: the mint, the write into its
+existing `findings:`, and the report, and nothing that creates, drafts or plans.
 
 A **blocked** task stays in the pool, in either form: a `todo` task carrying a `blocked:` field, or an
 old-form `status: blocked` task (see [[tasks]] § *Lifecycle*). It is ranked with the rest so its place in the

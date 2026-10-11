@@ -28,7 +28,8 @@ Interactive scaffold of a new task tree node.
      the id, because no pass ran to do it. When present:
      - Mint the next `FIELD-NNN` — take the current max `FIELD-NNN` over every `findings:` list in **every copy
        of the task tree** ([SKILL.md § ID generation](../SKILL.md#id-generation) names the copies), increment,
-       zero-pad to three digits — and set `{{FINDINGS}}` to `[FIELD-NNN]`. The
+       zero-pad to three digits — and set `{{FINDINGS}}` to `[FIELD-NNN]`. **When no copy holds any
+       `FIELD-NNN`, the first is `FIELD-001`**: never `FIELD-000`, and never unpadded. The
        counter is **tree-wide, not per-epic**; [intake.md](intake.md)'s prefix table owns the prefix and
        the reason the scope differs from every other one.
      - Write the **field evidence** into `## Context`: what was being done, what happened instead, and the
@@ -44,6 +45,15 @@ Interactive scaffold of a new task tree node.
        looks like a defect.
      - Composes with `--from-review` only in the odd case where a review *later* confirmed a field report;
        then both ids ride in `findings:`. Do not mint a `FIELD-NNN` for a finding a pass already numbered.
+     - **An already-filed task joins the pool through the mint alone.** A defect filed earlier without an
+       id, by hand or by `spawn`, is not created again. Only three things run for it, named here so no
+       reader has to scope a general sentence:
+       - **Runs:** the mint above; adding the id to that task's existing `findings:` list (append it, and
+         keep any ids already there); and reporting the id and its consequence as step 13 does.
+       - **Does not run:** steps 1–10b, which create a file. The `## Context` and `## Acceptance criteria`
+         drafting above also stays out: the task already has both, and someone else wrote them. Step 11 does
+         not run either, because no status or placement changed, so the dashboard is still true. Nor does
+         step 12, because drafting a plan onto a task somebody filed is not what was asked.
 
 1. **Find task root** — walk up from cwd: a directory containing `tasks/.config.yml` wins; else the project root (`*.slnx`/`*.sln`, then `.git`) → `<root>/tasks/`. A project's CLAUDE.md may override placement (aggregator repos hosting cross-cutting epics for a polyrepo family).
    - If `tasks/.config.yml` is **missing** → run the [mode detection flow](#mode-detection-flow) first. Write `.config.yml` before creating any task files.

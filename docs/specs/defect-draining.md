@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: cd70a3755618d706ff60c131ecb0aaac698c5126
-generated-on: 2026-10-08
+generated-at: 4e8e71637f6fdd0efe524c4dcfbd64a4d22cadda
+generated-on: 2026-10-11
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -79,7 +79,7 @@ The system SHALL NOT resume a skill-owned in-progress task that has since been b
 
 ### Requirement: The pool is explicit, never inferred
 
-The system SHALL admit a task to the pool only when it is `todo` (or an old-form blocked task) and either carries a non-empty `findings:` list or sits under an epic stamped `kind: review-intake`; it SHALL never infer a defect from an epic title or task prose, and SHALL drop any task whose task branch already exists locally or on a remote.
+The system SHALL admit a task to the pool only when it is `todo` (or an old-form blocked task) and either carries a non-empty `findings:` list or sits under an epic stamped `kind: review-intake`; it SHALL never infer a defect from an epic title or task prose, and SHALL drop any task whose task branch already exists locally or on a remote. A defect already filed without an id SHALL join through the task tracker's already-filed path for field findings, which mints the id, writes it into the task's `findings:` and reports it, and does nothing that creates, drafts or plans.
 
 #### Scenario: A task carries a finding id outside any review epic
 

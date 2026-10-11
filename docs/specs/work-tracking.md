@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: c366167b247a6c90fa1e9240301b96bcde44b0c6
-generated-on: 2026-10-09
+generated-at: 4e8e71637f6fdd0efe524c4dcfbd64a4d22cadda
+generated-on: 2026-10-11
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -234,13 +234,19 @@ The system SHALL create a node by asking its level (with a decision test when un
 
 ### Requirement: Tasks born from findings
 
-The system SHALL, on `new --from-review <ids>`, set `findings:` to those ids and write each finding's evidence into the task's Context so it stands alone, drafting acceptance criteria from what must hold once fixed. On `new --from-field` it SHALL mint the next tree-wide `FIELD-NNN`, set it as the task's only finding, write the field evidence into Context, and report the minted id and that the task is now in the defect drain's pool.
+The system SHALL, on `new --from-review <ids>`, set `findings:` to those ids and write each finding's evidence into the task's Context so it stands alone, drafting acceptance criteria from what must hold once fixed. On `new --from-field` it SHALL mint the next tree-wide `FIELD-NNN` (`FIELD-001` when no copy of the tree holds one), set it as the task's only finding, write the field evidence into Context, and report the minted id and that the task is now in the defect drain's pool. For a defect already filed without an id, it SHALL run only the mint, append the id to that task's existing `findings:` and report it, and SHALL NOT create a file, redraft the task's Context or criteria, regenerate the dashboard or draft a plan.
 
 #### Scenario: Field-found defect
 
 - **Given** the highest field finding anywhere in the tree is `FIELD-006`
 - **When** the user runs `/tasks new task --from-field`
 - **Then** the task carries `findings: [FIELD-007]` and the confirmation says it is now in the drain's pool
+
+#### Scenario: First field finding joins an already-filed task
+
+- **Given** a hand-filed loose defect with `findings: []` and no `FIELD-NNN` anywhere in the tree
+- **When** it is brought into the drain's pool
+- **Then** its `findings:` reads `[FIELD-001]`, nothing else in the file or the tree changes, and the report names the id and its consequence
 
 ### Requirement: Implementation plans
 
@@ -368,7 +374,7 @@ The system SHALL print a task, story or epic by id — header with parent chain,
 
 ### Requirement: Spawning discovered work
 
-The system SHALL, when work outside the current task's acceptance criteria surfaces, offer to spawn it unprompted after a scope test (in scope or a one-line incidental is just done; torn spawns). It SHALL route a new capability to the feature lifecycle and an overturned decision to a decision change rather than mint a task; otherwise create the task under the origin's story, else its epic, else loose — stopping to place a review finding in a pool instead of loose — inheriting feature and assignee, with Context naming what, where and the origin. It SHALL then add a `Deferred to TASK-NNN` line to the origin's out-of-scope, rewrite a displaced plan step in place to point at the new id, wire dependencies, reconcile the feature ledger (a new `proposed` row when no decision covers it), regenerate the dashboard, and return to the origin.
+The system SHALL, when work outside the current task's acceptance criteria surfaces, offer to spawn it unprompted after a scope test (in scope or a one-line incidental is just done; torn spawns). It SHALL route a new capability to the feature lifecycle and an overturned decision to a decision change rather than mint a task; otherwise create the task under the origin's story, else its epic, else loose — stopping, when the discovery is a defect (raised by a review pass or not), to put it in a pool instead of leaving it loose without an id: by carrying its finding id, minting one through `new --from-field` for a defect with no pass behind it, or moving it under a review-intake epic, while work that is not a defect stays loose — inheriting feature and assignee, with Context naming what, where and the origin. It SHALL then add a `Deferred to TASK-NNN` line to the origin's out-of-scope, rewrite a displaced plan step in place to point at the new id, wire dependencies, reconcile the feature ledger (a new `proposed` row when no decision covers it), regenerate the dashboard, and return to the origin.
 
 #### Scenario: Refactor exposed mid-work
 
@@ -381,6 +387,12 @@ The system SHALL, when work outside the current task's acceptance criteria surfa
 - **Given** the origin carries `feature: FEATURE-003` and no decision covers the discovery
 - **When** it is spawned
 - **Then** a new `proposed` row is appended to FEATURE-003's ledger and the user is told it needs a decision
+
+#### Scenario: Pass-less defect spawned from a loose origin
+
+- **Given** a loose task in progress turns up a crash nobody reviewed
+- **When** it is spawned
+- **Then** it is created through `/tasks new task --from-field`, so it carries a `FIELD-NNN` and is in the drain's pool, while a cleanup found the same way would stay loose with no id
 
 ### Requirement: Scope escalation of the task in hand
 

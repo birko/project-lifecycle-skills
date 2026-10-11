@@ -2,9 +2,10 @@
 id: TASK-133
 parent: STORY-017
 feature: null
-status: todo
+status: done
 priority: P2
-assignee: unassigned
+assignee: agent
+picked-by: fix-next
 created: 2026-09-17
 depends-on: []
 blocks: []
@@ -87,24 +88,24 @@ filed task. Three defensible readings, no rule.
 
 ## Acceptance criteria
 
-- [ ] 1. `spawn.md`'s `_loose` rescue covers a discovery with **no pass behind it**, not only a review
+- [x] 1. `spawn.md`'s `_loose` rescue covers a discovery with **no pass behind it**, not only a review
       finding, and names `--from-field` as the route that gives it an id.
-- [ ] 2. The rescue does **not** widen into "anything spawned into `_loose` joins the pool". Tree hygiene
+- [x] 2. The rescue does **not** widen into "anything spawned into `_loose` joins the pool". Tree hygiene
       and meta-work about the tree legitimately stay loose and unranked — [[tasks]] SKILL.md § *A task
       outside a pool* calls that arm explicitly not a loophole, and this must not quietly overturn it.
       Whatever wording lands has to keep the two distinguishable.
-- [ ] 3. Whatever `spawn.md` ends up asserting about `--from-field` is pinned by `skills-lint.sh`
+- [x] 3. Whatever `spawn.md` ends up asserting about `--from-field` is pinned by `skills-lint.sh`
       check 4 — i.e. if it names the flag in an invocation, the receiving verb must still declare it.
 
 *From TASK-137:*
 
-- [ ] `new.md`'s `--from-field` mint states the first-id case explicitly, rather than leaving it to
+- [x] `new.md`'s `--from-field` mint states the first-id case explicitly, rather than leaving it to
       analogy with the task-id counter
-- [ ] The already-filed path states **which** of `new`'s steps apply to it and which do not — by naming
+- [x] The already-filed path states **which** of `new`'s steps apply to it and which do not — by naming
       them, not by a general sentence a reader must scope themselves
-- [ ] Both are stated where the runner actually reads them; a rule added only to `fix-next` does not
+- [x] Both are stated where the runner actually reads them; a rule added only to `fix-next` does not
       reach someone who entered through `/tasks new`
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -117,7 +118,8 @@ filed task. Three defensible readings, no rule.
 - The field-report `## Context` standard (*"repo, version or invocation"*) for an **already-filed**
   task. The runner raised it as a third undecided point and it is a weaker claim: the requirement is
   written for a task being created, and whether a pre-existing one must be backfilled to it is a
-  question about filing standards, not about this door. File separately if it recurs.
+  question about filing standards, not about this door. Settled by the fix: `new.md`'s already-filed path
+  does not redraft an existing task's Context (see Outcome).
 
 ## Human test plan
 
@@ -128,10 +130,60 @@ own drill already exercises, so a second runner would be re-reading the same par
 
 *From TASK-137:*
 
-- [ ] Re-run TASK-131's drill recipe on a tree with **no** `FIELD-*` id anywhere and a hand-filed defect
+- [x] Re-run TASK-131's drill recipe on a tree with **no** `FIELD-*` id anywhere and a hand-filed defect
       task, with a cold runner, and confirm the report cites a rule for the first id rather than deriving
       one. Then re-run it on a tree that already has `FIELD-001` and confirm the increment still holds.
+  - **Passed 2026-10-11:** cold `claude -p` runs on `%TEMP%\d133` (a loose hand-filed crash report, `findings: []`). With
+    no `FIELD-*` anywhere, the runner wrote `[FIELD-001]` quoting "When no copy holds any `FIELD-NNN`, the first is
+    `FIELD-001`". With `FIELD-001` on another task, it wrote `[FIELD-002]`. Each made one edit and quoted the
+    already-filed path for every step it skipped. Brief: "get TASK-002 into /fix-next's pool, do what the skills
+    say and nothing more, quote the rule for each change", with no expected id. Runner: `claude -p
+    --permission-mode acceptEdits --allowedTools "Bash(git:*)" Read Grep Glob Edit Write --add-dir
+    C:/Users/FinStat/.claude/skills C:/Source/project-lifecycle-skills`, run from the fixture. Coldness: the
+    brief withheld the answer. The runner holds the installed skills, which a behaviour drill needs
 
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-133` — leave empty until then._
+
+## Outcome
+
+**The fix.** A defect discovered while doing other work, with no review pass behind it, used to be filed
+outside `/fix-next`'s pool whenever its origin task was loose, because `spawn`'s rescue only fired for a
+*review* finding. The rescue now covers any defect and sends a pass-less one through
+`/tasks new task --from-field`, which mints the id that puts it in the pool. Work that is not a defect stays
+loose, as SKILL.md § *A task outside a pool* intends. `new.md` now states that the first field id is
+`FIELD-001`, and gives an already-filed defect a named path: the mint, the write into its `findings:`, and
+the report run; creating, redrafting, the dashboard and the plan do not. `fix-next` step 1 points there.
+
+**Step 6 split.** The drill (`%TEMP%\d133`, a hand-filed loose defect) reached the same end state with and
+without the fix: one edit, `findings: [FIELD-001]`. **That end state is a contract pin, not evidence.** What
+the fix changed is the grounding. The reverted runner derived the first id and scoped the path by itself
+("I wasn't creating a task"). Both fixed runners quoted the new rules, and the second one minted `FIELD-002`
+over an existing `FIELD-001`. **AC3 is fix-dependent:** with `--from-field` renamed in `new.md`, lint check 4
+failed on both invocations, including `spawn.md`'s new one, and it passes with the declaration restored.
+
+**Judgement calls.**
+- *"Carry an id" rather than "move it into an epic".* An id in `findings:` puts a task in the pool wherever
+  it sits, so the rescue does not force a move. Moving every loose defect was the stricter option, rejected
+  because it would refile tasks for no ranking gain.
+- *The test is "something broken", not importance.* AC2 needs the two arms kept apart. A rule about how
+  much something matters would let any important cleanup into the pool and make the pool misreport its
+  size.
+- *The already-filed path does not redraft Context.* A runner could backfill the field-evidence standard on
+  an existing task. The path rules that out, because the task is someone else's. This settles the third
+  point TASK-137's runner raised. It was in Out of scope as "file separately if it recurs".
+
+**Flagged, not fixed.** Two of the three drill runners pointed out that the already-filed path leaves its one
+edit uncommitted, and neither skill says who commits it. This is the authoring-verb norm (`pick`, `cancel`
+and `block` do not commit either; TASK-294's Outcome records why), so nothing was filed.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-295 because both give a silent wrong result behind an uncommon precondition (keys 1–3 tie), and TASK-133 is a scoped prose change while TASK-295 carries an open design question, which of two readings is right (key 4). Key 6 inert: separated on keys 1–5
+- step 3 — verified: all three held as written — `spawn.md` step 4 conditions the `_loose` rescue on "a review finding" (its edge case says "a finding", unqualified); `new.md`'s `--from-field` mint never states the first id; `fix-next` step 1's "joins the same way" points at steps written only inside a create flow. A `findings:` id alone puts a task in the pool wherever it sits, so the rescue can be "carry an id", not "move it"
+- step 4 — layer: local (`skills/tasks/verbs/spawn.md`, `skills/tasks/verbs/new.md`, `skills/fix-next/SKILL.md`)
+- step 5 — fix in `skills/tasks/verbs/spawn.md` (step 4's `_loose` rescue covers any defect, review-raised or not, routes a pass-less one through `/tasks new task --from-field`, and keeps non-defect work loose; edge case aligned), `skills/tasks/verbs/new.md` (`FIELD-001` as the first id; an already-filed path naming what runs and what does not), `skills/fix-next/SKILL.md` (step 1 points at that path); tests: lint green, check 4 now reads `spawn.md`'s invocation; drill on `%TEMP%\d133` (hand-filed loose defect) — no ids → `FIELD-001`, `FIELD-001` present → `FIELD-002`, one edit each, every skipped step named and quoted
+- step 6 — reverted (pre-fix `new.md`, `spawn.md`, `fix-next` for one run, then restored): the reverted runner reached the same single edit and `FIELD-001`, so the end state is a contract pin, not evidence; fix-dependent = the grounding, the reverted report derives the first id ("none contains a FIELD id, so the next is FIELD-001") and scopes the path by itself ("I wasn't creating a task"), where both fixed runs quote the new rules. AC3: with `--from-field` renamed in `new.md`, check 4 failed 2/2 invocations including `spawn.md`'s new one (exit 1); restored, it passes — fix-dependent
+- step 7 — respecced work-tracking ("Tasks born from findings": first id and the already-filed path, plus a scenario; "Spawning discovered work": the rescue covers any defect, plus a scenario) and defect-draining ("The pool is explicit, never inferred": the already-filed route); `generated-at` restamped on both
+- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
