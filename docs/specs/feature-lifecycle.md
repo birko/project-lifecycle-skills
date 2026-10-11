@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: bf841027c62d9befab4ca4782ff502bcd9025fe0
+generated-at: a87cd45ff58f6199054ed12b846b70c6c64a7440
 generated-on: 2026-10-11
 sources:
   - skills/feature/SKILL.md
@@ -465,7 +465,7 @@ The system SHALL, on `/feature show`, print the feature's title, phase, owner, d
 
 ### Requirement: Coarse status is stored, phase is derived
 
-The system SHALL store exactly one coarse status per feature with the values `idea`, `review`, `done`, `dropped` and `superseded` (a superseded feature also naming its successor and keeping its folder), and SHALL compute a displayed phase from the decisions, task progress and coarse status — `idea`, `prototyping`, `deciding`, `building`, `review`, `done` — with `dropped` and `superseded` shown as mirrors of the coarse status; phase SHALL never be stored or hand-maintained. A feature with approved decisions and no tasks yet SHALL show phase `building` with `0/0` tasks and a next step of decompose; a feature whose existing tasks are all done or awaiting verification, with at least one task, SHALL show phase `review` until signed off.
+The system SHALL store exactly one coarse status per feature with the values `idea`, `review`, `done`, `dropped` and `superseded` (a superseded feature also naming its successor and keeping its folder), and SHALL compute a displayed phase from the decisions, task progress and coarse status — `idea`, `prototyping`, `deciding`, `building`, `review`, `done` — with `dropped` and `superseded` shown as mirrors of the coarse status; phase SHALL never be stored or hand-maintained. The phase SHALL be the first of six ordered rules that matches, so every feature gets exactly one: the stored status when it is `done`, `dropped`, `superseded` or `review`; `review` when at least one task is not cancelled and every such task is done or awaiting verification; `building` when any row is approved or changed; `prototyping` while the recorded prototype is built and still standing; `deciding` when any row is deferred or removed, or the prototype was skipped or built and then deleted; and `idea` otherwise. The prototype SHALL be read from the feature's recorded prototype line, not the folder. A feature with approved decisions and no tasks yet SHALL show phase `building` with `0/0` tasks and a next step of decompose; a feature whose every row is deferred or removed, without being dropped, SHALL show phase `deciding` with a next step of reopening a row or dropping the feature.
 
 #### Scenario: Freshly decided feature
 
@@ -478,6 +478,18 @@ The system SHALL store exactly one coarse status per feature with the values `id
 - **Given** a feature with coarse status `idea` and five tasks, all `done`
 - **When** the phase is computed
 - **Then** it is `review`, not `done`
+
+#### Scenario: Every decision deferred
+
+- **Given** a feature with no prototype recorded and two rows, both `deferred`, whose coarse status is still `idea`
+- **When** the phase is computed
+- **Then** it is `deciding`, the next step names reopening a row or dropping the feature, and two runs agree
+
+#### Scenario: A standing prototype outranks deciding
+
+- **Given** a feature whose prototype line reads Built with the artifact present, and rows mostly `proposed` with one `deferred`
+- **When** the phase is computed
+- **Then** it is `prototyping`
 
 #### Scenario: Re-homed feature
 
@@ -529,7 +541,7 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 
-The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row.
+The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row.
 
 #### Scenario: Single-feature run
 
