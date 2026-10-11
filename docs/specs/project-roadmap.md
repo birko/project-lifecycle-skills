@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: 1cdf452fbb2594ffe3016cf359b041815fdd8957
-generated-on: 2026-10-03
+generated-at: d09666715f2f96bd4dcd0e1d60deb56225735514
+generated-on: 2026-10-11
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -231,7 +231,7 @@ The system SHALL flag DV4 when a feature has linked tasks but every one of its d
 
 ### Requirement: DV5 — tracked in one tree only
 
-The system SHALL flag DV5 for a feature with no matching epic, story or tasks unless it is a shipped `done` backfill, and for a story or epic that has tasks but no feature folder.
+The system SHALL flag DV5 for a feature with no matching epic, story or tasks unless it is a shipped `done` backfill, and for a story or epic that has tasks but no feature folder, except defect work read from declared fields — an epic stamped `kind: review-intake` with everything under it, and a story or epic whose every task carries a non-empty `findings:` list — and never exempting a story by its title.
 
 #### Scenario: Orphan feature
 
@@ -250,6 +250,12 @@ The system SHALL flag DV5 for a feature with no matching epic, story or tasks un
 - **Given** FEATURE-037 is a shipped `done` backfill with no tasks
 - **When** the audit runs
 - **Then** DV5 is not raised for FEATURE-037
+
+#### Scenario: A review backlog has no feature by design
+
+- **Given** EPIC-070 is stamped `kind: review-intake` and its stories hold `todo` tasks with no feature link
+- **When** the audit runs
+- **Then** DV5 is not raised for EPIC-070 or its stories
 
 ### Requirement: DV6 — invalid lifecycle marker
 
