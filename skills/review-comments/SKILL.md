@@ -82,8 +82,14 @@ this root, and the remedy is re-running an installer.
 ## Step 2 — Pick the scope
 
 **Default: the current diff.** Prefer staged (`git diff --cached`); fall back to the working tree
-(`git diff`); use a branch or PR range only if the user names one; not git-tracked → ask which files to
-check. Same precedence as [[verify-conventions]] and [[verify-intent]], deliberately — a reviewer should
+(`git diff`); use a branch or PR range only if the user names one; not git-tracked → ask:
+
+> **This folder is not a git repository, so there is no diff to read. Which files should I check? Give paths, or "none".**
+
+**No answer, or nobody to ask:** report `no diff — not a git repository and no files named; nothing checked` and
+stop. Never choose files yourself: a verdict over a scope nobody chose reads as a pass over the change.
+
+Same precedence as [[verify-conventions]] and [[verify-intent]], deliberately — a reviewer should
 not have to learn a third convention.
 
 A diff gives you changed *lines*; this check needs whole *blocks*. Two rules follow:

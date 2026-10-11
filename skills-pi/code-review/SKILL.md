@@ -25,7 +25,12 @@ description: Review the current diff (working tree, staged, or a PR range) for c
 ## Steps
 
 1. **Determine the diff** — prefer staged (`git diff --cached`); fall back to the working
-   tree (`git diff`), or a branch/PR range if asked. Not git-tracked → ask which files.
+   tree (`git diff`), or a branch/PR range if asked. Not git-tracked → ask:
+
+   > **This folder is not a git repository, so there is no diff to read. Which files should I check? Give paths, or "none".**
+
+   **No answer, or nobody to ask:** report `no diff — not a git repository and no files named; nothing reviewed` and
+   stop. Never choose files yourself: a verdict over a scope nobody chose reads as a pass over the change.
 2. **Read the changed code in context** — understand the intent from the task's acceptance
    criteria or the feature's decisions; read enough of the surrounding file and the callers
    to judge the change, not just the hunk.

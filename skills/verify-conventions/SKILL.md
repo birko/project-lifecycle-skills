@@ -111,7 +111,12 @@ its own headings has solved this; the skill adapts to the project, not the rever
    both fixes assumed name-shadowing works. The report header is the only place a human can see the
    difference, which is why the extension's status is required there even when everything passes.
 
-1. **Determine the diff.** Prefer staged (`git diff --cached`); fall back to the working tree (`git diff`) or, if asked, a branch range. If not git-tracked, ask the user which files to check.
+1. **Determine the diff.** Prefer staged (`git diff --cached`); fall back to the working tree (`git diff`) or, if asked, a branch range. If not git-tracked, ask:
+
+   > **This folder is not a git repository, so there is no diff to read. Which files should I check? Give paths, or "none".**
+
+   **No answer, or nobody to ask:** report `no diff — not a git repository and no files named; nothing checked` and
+   stop. Never choose files yourself: a verdict over a scope nobody chose reads as a pass over the change.
 2. **Read the project's `CLAUDE.md`**, locate the rulebook via the ladder above, and extract its rules into a working checklist. Where the guide uses the seed's subsections, follow them; where it does not, group the rules however that guide groups them — do not force a foreign structure onto it, and do not drop a rule because it fits no subsection.
 2b. **Drop generated, vendored and minified files from the diff — a rule the author never wrote cannot
    be violated by output they never typed.** Findings against a bundle are noise at best, and at worst

@@ -35,7 +35,15 @@ claim than "checked against the task, the agreed decisions, and the area's curre
 | A task id (`/verify-intent TASK-046`) | that task's `## Acceptance criteria` |
 | That task carries `feature: FEATURE-NNN` | **also** the `approved` and `changed` rows of `docs/features/FEATURE-NNN/decisions.md` — the `Decision` column is the statement, the `→ Tasks` column says which tasks were meant to carry it |
 | Nothing, but a task is in progress | that task's criteria — name which task you picked. **With more than one in progress**, take the one the checkout names: the current branch `task/TASK-NNN`, which is also the worktree's task. Otherwise ask the question below |
-| Nothing, and no task in flight | ask the user what the change was meant to do, in one line |
+| Nothing, and no task in flight | ask the question below |
+
+**No task named and none in progress** — ask:
+
+> **No task is named or in progress. What was this change meant to do? One line is enough.**
+
+**No answer, or nobody to ask:** report `Intent: none — no task named or in progress, and nobody said what was
+asked`, skip the criteria-based classes, and still run the baseline below. Never write an intent from the diff
+itself: the change would then be judged against a description of itself.
 
 **Several tasks in progress, and the checkout names none of them** — ask:
 
@@ -128,7 +136,12 @@ noise nobody trusts.
 ## Steps
 
 1. **Determine the diff.** Prefer staged (`git diff --cached`); fall back to the working tree, or a
-   branch/PR range if the user names one. Not git-tracked → ask which files to judge.
+   branch/PR range if the user names one. Not git-tracked → ask:
+
+   > **This folder is not a git repository, so there is no diff to read. Which files should I check? Give paths, or "none".**
+
+   **No answer, or nobody to ask:** report `no diff — not a git repository and no files named; nothing judged` and
+   stop. Never choose files yourself: a verdict over a scope nobody chose reads as a pass over the change.
 2. **Resolve the intent source** per the table above, and note it for the report header.
 3. **Read the criteria as a list of claims**, ignoring their checkboxes entirely.
 4. **Walk the diff once**, mapping each hunk to the criterion it serves, or to nothing.

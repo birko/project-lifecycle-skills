@@ -1,6 +1,6 @@
 ---
 area: change-review
-generated-at: 4e293bee27eb3fc0e21cae3b4fae9aac8bfa611e
+generated-at: ec0a2c922d1ee33d802c950a1beec4e44230c7d9
 generated-on: 2026-10-11
 sources:
   - skills-pi/code-review/SKILL.md
@@ -56,7 +56,7 @@ The system SHALL treat rules-, intent- and comment-axis findings as advisory. Th
 
 ### Requirement: Every axis resolves the diff the same way
 
-The system SHALL, in each axis that reviews a diff, prefer the staged diff, fall back to the working tree, use a branch or PR range only when one is named or asked for, and ask which files to check when the project is not git-tracked.
+The system SHALL, in each axis that reviews a diff, prefer the staged diff, fall back to the working tree, use a branch or PR range only when one is named or asked for, and, when the project is not git-tracked, ask a fixed question naming that there is no diff and asking which files to check; with no answer, or nobody to ask, it SHALL report `no diff — not a git repository and no files named; nothing <checked>` and stop, never choosing files itself.
 
 #### Scenario: Nothing is staged
 
@@ -69,6 +69,12 @@ The system SHALL, in each axis that reviews a diff, prefer the staged diff, fall
 - **Given** a folder that is not git-tracked
 - **When** any of these axes runs
 - **Then** it asks the user which files to check
+
+#### Scenario: Not a git repository, nobody to ask
+
+- **Given** a folder that is not git-tracked and an unattended run
+- **When** an axis runs
+- **Then** it reports `no diff — not a git repository and no files named` with nothing judged, and no file is chosen by the run
 
 ### Requirement: Rules axis — the rulebook is the project's own guide, found by content
 
@@ -216,7 +222,7 @@ The system SHALL read the code-smell inventory from the `tdd` skill's refactor-c
 
 ### Requirement: Intent axis — the intent sources and their precedence
 
-The system SHALL take intent from a named task's `## Acceptance criteria`; when that task carries `feature: FEATURE-NNN`, also from the `approved` and `changed` rows of that feature's decision ledger, read through the `roadmap` skill's Cross-tree pass; with no argument, from the in-progress task's criteria, naming the task picked — with several in progress, the one the checkout's `task/TASK-NNN` branch names, else by asking which, and with no answer choosing none; and with no argument and no task in flight, by asking the user in one line what the change was meant to do.
+The system SHALL take intent from a named task's `## Acceptance criteria`; when that task carries `feature: FEATURE-NNN`, also from the `approved` and `changed` rows of that feature's decision ledger, read through the `roadmap` skill's Cross-tree pass; with no argument, from the in-progress task's criteria, naming the task picked — with several in progress, the one the checkout's `task/TASK-NNN` branch names, else by asking which, and with no answer choosing none; and with no argument and no task in flight, by asking a fixed one-line question what the change was meant to do — with no answer reporting `Intent: none`, skipping the criteria-based classes and still running the spec baseline, never writing an intent from the diff itself.
 
 #### Scenario: A task linked to a feature
 
