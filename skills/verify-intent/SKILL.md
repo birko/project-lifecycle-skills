@@ -34,8 +34,17 @@ claim than "checked against the task, the agreed decisions, and the area's curre
 |---|---|
 | A task id (`/verify-intent TASK-046`) | that task's `## Acceptance criteria` |
 | That task carries `feature: FEATURE-NNN` | **also** the `approved` and `changed` rows of `docs/features/FEATURE-NNN/decisions.md` — the `Decision` column is the statement, the `→ Tasks` column says which tasks were meant to carry it |
-| Nothing, but a task is in progress | that task's criteria — name which task you picked |
+| Nothing, but a task is in progress | that task's criteria — name which task you picked. **With more than one in progress**, take the one the checkout names: the current branch `task/TASK-NNN`, which is also the worktree's task. Otherwise ask the question below |
 | Nothing, and no task in flight | ask the user what the change was meant to do, in one line |
+
+**Several tasks in progress, and the checkout names none of them** — ask:
+
+> **<n> tasks are in progress: <TASK-NNN — title, one per line>. Which one is this diff for?**
+
+**No answer, or nobody to ask:** pick none. Report `Intent: unresolved — <n> tasks in progress, none chosen`,
+skip the criteria-based classes, and still run the baseline below, which needs no task. Never pick the task
+whose criteria the diff best matches: that infers the intent from the change being judged, which makes every
+diff look faithful.
 
 **The states that are *not* intent still carry information.** Read `approved` and `changed` as what was
 asked — and treat a diff that implements a `removed` or `deferred` row as **scope creep of the worst
@@ -96,11 +105,16 @@ one where letting the tick move a finding between classes would make the common 
 
 ## The three classes
 
-| Class | Fires when | The finding must carry |
-|---|---|---|
-| **Missing** | A criterion has no corresponding change in the diff, or is implemented for only part of what it states | the criterion quoted verbatim, and the `file:line` where the implementation *should* have gone — the nearest place the change would land. A missing thing has no location of its own, which is exactly why naming the expected one is the useful half: "nothing implements this" sends a reader hunting, "nothing at `close.md:96` implements this" does not |
-| **Scope creep** | The diff changes behaviour no criterion asked for | `file:line`, what the change does, and the fact that no criterion covers it |
-| **Wrong** | A criterion has a corresponding change that does not do what the criterion says. *Corresponding change* is the whole test — no change at all is Missing, whatever the checkbox says | the criterion quoted, the `file:line`, and the specific divergence |
+| Class | Fires when | Severity | The finding must carry |
+|---|---|---|---|
+| **Missing** | A criterion has no corresponding change in the diff, or is implemented for only part of what it states | 🛑 | the criterion quoted verbatim, and the `file:line` where the implementation *should* have gone — the nearest place the change would land. A missing thing has no location of its own, which is exactly why naming the expected one is the useful half: "nothing implements this" sends a reader hunting, "nothing at `close.md:96` implements this" does not |
+| **Wrong** | A criterion has a corresponding change that does not do what the criterion says. *Corresponding change* is the whole test — no change at all is Missing, whatever the checkbox says | ⚠ | the criterion quoted, the `file:line`, and the specific divergence |
+| **Scope creep** | The diff changes behaviour no criterion asked for | 💡 by default · ⚠ when it implements a `proposed` row or contradicts a spec requirement (§ *Baseline*) · 🛑 when it implements a `removed` or `deferred` row | `file:line`, what the change does, and the fact that no criterion covers it — and, for a `removed`/`deferred` row, that row's rationale quoted |
+
+**Severity tracks how far the change departs from what was agreed**, not how large it is. Unasked-for work is
+usually just a task that was never filed (💡). Taking an undecided row or changing behaviour the area
+promised is a decision someone made in code (⚠). Building what was decided *against* is the worst case § *Intent*
+names (🛑).
 
 **Scope creep is a finding, not an accusation.** Most instances are legitimate work that simply belongs
 in its own task — the right resolution is usually [`/tasks spawn`](../tasks/verbs/spawn.md), not a
@@ -135,7 +149,7 @@ Intent:   TASK-046 § Acceptance criteria (8) · FEATURE-012 decisions.md (3 app
 Baseline: docs/specs/auth-session.md — covers 4 of 6 changed files
 Not read: no other mapped area matches this diff
 
-🛑 Missing — criterion 4, expected at skills/verify-intent/SKILL.md § What it reads
+🛑 Missing — criterion 4, expected at skills/verify-intent/SKILL.md:38
    "Runs standalone against the working tree or a named diff, with no task id required"
    Nothing in the diff handles an invocation without a task id.
 
@@ -168,7 +182,8 @@ the same source line, so a clean pass still shows what it checked.
 
 ## Related skills
 
-- [[verify-conventions]] — the standards axis; the other half of the pair. Same advisory posture, same severities.
+- [[verify-conventions]] — the standards axis; the other half of the pair. Same advisory posture and the same three
+  marks (🛑 ⚠ 💡). What puts a finding under each differs: there, how hard the rule is; here, the class table above.
 - [[code-review]] — the correctness axis. Runtime-provided in Claude Code.
 - [[tasks]] — owns the `## Acceptance criteria` this skill reads, and `spawn` is where scope creep usually goes.
 - [[feature]] — owns the decision ledger this skill reads **now** as its second intent source: the

@@ -1,6 +1,6 @@
 ---
 area: change-review
-generated-at: 999322441e2a75a0b4185c1f2d72aa4c5126661f
+generated-at: 4e293bee27eb3fc0e21cae3b4fae9aac8bfa611e
 generated-on: 2026-10-11
 sources:
   - skills-pi/code-review/SKILL.md
@@ -216,7 +216,7 @@ The system SHALL read the code-smell inventory from the `tdd` skill's refactor-c
 
 ### Requirement: Intent axis — the intent sources and their precedence
 
-The system SHALL take intent from a named task's `## Acceptance criteria`; when that task carries `feature: FEATURE-NNN`, also from the `approved` and `changed` rows of that feature's decision ledger, read through the `roadmap` skill's Cross-tree pass; with no argument, from the in-progress task's criteria, naming the task picked; and with no argument and no task in flight, by asking the user in one line what the change was meant to do.
+The system SHALL take intent from a named task's `## Acceptance criteria`; when that task carries `feature: FEATURE-NNN`, also from the `approved` and `changed` rows of that feature's decision ledger, read through the `roadmap` skill's Cross-tree pass; with no argument, from the in-progress task's criteria, naming the task picked — with several in progress, the one the checkout's `task/TASK-NNN` branch names, else by asking which, and with no answer choosing none; and with no argument and no task in flight, by asking the user in one line what the change was meant to do.
 
 #### Scenario: A task linked to a feature
 
@@ -229,6 +229,12 @@ The system SHALL take intent from a named task's `## Acceptance criteria`; when 
 - **Given** no task id given and no task in progress
 - **When** the intent axis runs
 - **Then** it asks the user, in one line, what the change was meant to do
+
+#### Scenario: Several tasks in progress, nobody to ask
+
+- **Given** TASK-001 and TASK-002 are both in progress, no task id is given, the branch names neither, and the run is unattended
+- **When** the intent axis resolves its sources
+- **Then** it reports `Intent: unresolved — 2 tasks in progress, none chosen`, skips the criteria-based classes, runs the spec baseline, and never picks the task the diff best matches
 
 ### Requirement: Intent axis — a decision outranks a task criterion
 
@@ -248,7 +254,7 @@ The system SHALL report a diff implementing a `removed` or `deferred` decision a
 
 - **Given** FEATURE-012 D7 is `removed` with rationale "replaced by D9"
 - **When** the diff implements D7
-- **Then** the intent axis reports scope creep quoting "replaced by D9"
+- **Then** the intent axis reports scope creep at 🛑, quoting "replaced by D9"
 
 ### Requirement: Intent axis — specs are a baseline, not intent
 
@@ -294,7 +300,7 @@ The system SHALL ignore criterion checkboxes when classifying, so a ticked crite
 
 ### Requirement: Intent axis — three classes plus an unverifiable outcome
 
-The system SHALL walk the diff once mapping each hunk to the criterion it serves or to nothing, and SHALL classify an unmatched criterion (or one only partly built) as Missing, carrying the criterion verbatim and the `file:line` where the implementation should have gone; a matched but divergent criterion as Wrong, carrying the criterion, the `file:line` and the divergence; an unmatched hunk as Scope creep, carrying the `file:line`, what it does, and that no criterion covers it, with the usual resolution offered as `/tasks spawn` rather than a revert; and a criterion the diff cannot settle as *unverifiable from this diff*, with the reason, never counted as met or missing.
+The system SHALL walk the diff once mapping each hunk to the criterion it serves or to nothing, and SHALL classify an unmatched criterion (or one only partly built) as Missing, carrying the criterion verbatim and the `file:line` where the implementation should have gone; a matched but divergent criterion as Wrong, carrying the criterion, the `file:line` and the divergence; an unmatched hunk as Scope creep, carrying the `file:line`, what it does, and that no criterion covers it, with the usual resolution offered as `/tasks spawn` rather than a revert; and a criterion the diff cannot settle as *unverifiable from this diff*, with the reason, never counted as met or missing. It SHALL grade Missing 🛑 and Wrong ⚠, and Scope creep 💡 by default, ⚠ when it implements a `proposed` row or contradicts a spec requirement, and 🛑 when it implements a `removed` or `deferred` row — severity tracking how far the change departs from what was agreed.
 
 #### Scenario: A router wording change no criterion covers
 
