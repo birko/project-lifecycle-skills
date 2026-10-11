@@ -25,6 +25,17 @@ Three checks before a feature is called done: it's **complete** (every decision 
    - For every task with `feature: FEATURE-NNN`, read its `## Human test plan`.
    - Read every step as **passed**, **failed** or **not run**, by [[tasks]] § *Lifecycle*'s table: `[x]` is passed; `[ ]` whose last nested line starts `**Failed YYYY-MM-DD:**` is failed; any other `[ ]` is not run.
    - Each plan must be either: every step passed, or explicitly `N/A — fully covered by automated tests`.
+   - **An `N/A` is a claim, so check it.** Look for the coverage it names: the test file, the test, or the
+     assertion its reason describes. When the plan names nothing specific, look for any test of the code the
+     task changed. **Coverage that is not there makes the `N/A` false**, and a false `N/A` is an unsatisfied
+     plan, read exactly like a step not run. Gate B is unmet, the task is listed, and step 5 parks it at
+     `verify`. Report it on its own line, so nobody reads it as an unrun step:
+     `TASK-NNN — N/A claimed, coverage not found: <what was looked for>`. Two remedies clear it: write the
+     test the plan claims, or replace the `N/A` with real steps and run them. Either way, the task is then
+     closed again through `/tasks close`.
+     - **Why this is not left to the reviewer's judgement:** two runs of this gate on the same task disagreed.
+       One reopened it, and the other left it `done` because no step had been written to park it on. A gate
+       whose outcome depends on which reading a runner chose cannot be re-run to the same result.
    - **Report the three states on separate lines, per task**: `TASK-NNN — N passed, N failed, N not run`, and under it each failed step with its date and the task ids its line names. Never fold a failed step into *not run*: a plan that was run, at real cost, must not read the same as one nobody touched.
    - Any failed step → Gate B fails. A failure is not resolved by running the step again unchanged; the work its line names has to land first. List those task ids as what blocks the feature.
    - Any step not run → list it and ask: *"These steps have not been run: <list>. Run them now, or confirm the plan is N/A, and tell me the result of each."* No answer → Gate B stays unmet and the feature is set to `review`, as step 5 describes. This is the same check `/tasks close` runs per-task; here it's enforced feature-wide so nothing slips through.
@@ -38,7 +49,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
 5. **Set the coarse status honestly:**
    - **All three gates pass** → `idea.md` frontmatter `status: done`; run `/feature status` so the phase shows `done`; suggest closing any still-open tasks via `/tasks close`.
    - **Changelog nudge** (don't auto-run): a feature reaching `done` is a genuine ship event, so if the project has a `CHANGELOG.md`, print one line — *"FEATURE-NNN shipped — consider `/roll-changelog` to record what changed for users."* The changelog is a human-curated summary, so leave the call to the user; just make sure they don't forget. Skip the nudge if there's no `CHANGELOG.md`.
-   - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. Never write "done (pending)".
+   - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. **That means every linked task whose plan Gate B did not pass**: a step not run, a step failed, or a false `N/A`. Gate A has already required all of them to be `done`, so parking moves `done → verify`, the same move [decide.md](decide.md) makes for a surface-dependent revert. A task whose plan passed stays `done`. Never write "done (pending)".
 
 5b. **Commit what this run wrote** — whichever way the gates went. A review that fails writes too: Gate B's
    result and a `pending` sign-off are History lines. Left uncommitted, the record of the review sits in a

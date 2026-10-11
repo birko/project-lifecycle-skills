@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-002, EPIC-003, EPIC-007 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-11 13:41. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-11 14:27. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,7 +13,7 @@ _Generated 2026-10-11 13:41. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 191                 |
+| done         | 4                  | 13                 | 192                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 72× P2 · 12× P3.
@@ -200,22 +200,23 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (9/13 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (10/14 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 6/8 done
+  - (epic level) — 7/9 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
     - [x] TASK-206 The id scan misses task files with Windows line endings, so a new task can reuse a number
     - [x] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
     - [x] TASK-294 `/feature review` writes its result into `decisions.md` and leaves it uncommitted
-    - [ ] TASK-295 `/feature review` is read two ways on a `done` task whose `N/A` test plan turns out to be false
+    - [x] TASK-295 `/feature review` is read two ways on a `done` task whose `N/A` test plan turns out to be false
     - [ ] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next
+    - [ ] TASK-297 `/feature review` sets a feature to `review` without regenerating its rollup
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (10/48 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (10/30 done)

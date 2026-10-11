@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 031efac80c00e888bd091df4eb7a28823e0051c1
+generated-at: f914ceba2dc8dbb255f1993e4086b9b012bc44f3
 generated-on: 2026-10-11
 sources:
   - skills/feature/SKILL.md
@@ -513,7 +513,7 @@ The system SHALL order every feature listing — the bare listing, show, pick's 
 
 ### Requirement: Feature and task status vocabularies stay separate
 
-The system SHALL keep the feature's own coarse `review` marker distinct from task statuses, bucketing a feature's tasks by task status (todo, in-progress, review, blocked, done, cancelled), counting a task in `verify` — or in the older `review` form — as awaiting verification, letting a blocked task keep its own state, and parking a feature's tasks awaiting sign-off at the task status `verify`, never at the feature's marker.
+The system SHALL keep the feature's own coarse `review` marker distinct from task statuses, bucketing a feature's tasks by task status (todo, in-progress, review, blocked, done, cancelled), counting a task in `verify` — or in the older `review` form — as awaiting verification, letting a blocked task keep its own state, and parking a feature's tasks awaiting sign-off at the task status `verify`, never at the feature's marker — every linked task whose plan the review's test gate did not pass, which moves a `done` task to `verify`, while a task whose plan passed stays `done`.
 
 #### Scenario: Verify task feeds the review bucket
 
@@ -561,7 +561,7 @@ The system SHALL treat each feature's rollup and the features index as generated
 
 ### Requirement: Review is a three-gate completeness check
 
-The system SHALL, on `/feature review`, run Gate A (completeness: every approved or changed decision decomposed and every linked task `done`, stopping with a list of open tasks otherwise; a confirmation that any new cross-cutting pattern was recorded; a fidelity check of the cumulative change against the approved and changed decisions, reported separately from the completeness findings and never merged or reranked with them; a spec-landing check; and optional cumulative correctness and security passes for cross-task seams, done inline when the runtime lacks them, with any blocker routed back to a task rather than fixed in place), Gate B (every step of every linked task's human test plan read as passed, failed or not run and reported per task on separate counts, the plan passing only when every step passed or it is explicitly marked not applicable, any failed step failing the gate with the task ids its line names listed as what blocks the feature, not-run steps listed for the user to run, and the result recorded in History) and Gate C (a stakeholder summary and explicit sign-off recorded as a History line), and SHALL print a per-gate pass/fail and the final state.
+The system SHALL, on `/feature review`, run Gate A (completeness: every approved or changed decision decomposed and every linked task `done`, stopping with a list of open tasks otherwise; a confirmation that any new cross-cutting pattern was recorded; a fidelity check of the cumulative change against the approved and changed decisions, reported separately from the completeness findings and never merged or reranked with them; a spec-landing check; and optional cumulative correctness and security passes for cross-task seams, done inline when the runtime lacks them, with any blocker routed back to a task rather than fixed in place), Gate B (every step of every linked task's human test plan read as passed, failed or not run and reported per task on separate counts, the plan passing only when every step passed or it is explicitly marked not applicable with the automated coverage it claims actually present — a not-applicable claim whose coverage is missing being read as an unsatisfied plan and reported on its own line as `N/A claimed, coverage not found`, any failed step failing the gate with the task ids its line names listed as what blocks the feature, not-run steps listed for the user to run, and the result recorded in History) and Gate C (a stakeholder summary and explicit sign-off recorded as a History line), and SHALL print a per-gate pass/fail and the final state.
 
 #### Scenario: Open task fails completeness
 
@@ -624,6 +624,12 @@ The system SHALL set the coarse status to `done` only when all three gates pass,
 - **Given** Gate A passes and the stakeholder cannot be reached
 - **When** review finishes
 - **Then** the status is `review`, History records sign-off as pending, and nothing reads `done`
+
+#### Scenario: A not-applicable plan whose test does not exist
+
+- **Given** a `done` task whose plan reads `N/A — fully covered by automated tests` and a repo with no test of the code it changed
+- **When** review runs, with the stakeholder signing off
+- **Then** Gate B is unmet with the line `TASK-NNN — N/A claimed, coverage not found`, the task is parked at `verify`, the feature is `review`, and two runs give the same result
 
 ### Requirement: Review commits its own record
 
