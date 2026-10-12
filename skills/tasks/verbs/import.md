@@ -67,9 +67,9 @@ Three modes:
    - Description → split into sections, fallback to Context dump
    - Priority → a `P<n>` value, never a fixed set. Collapsing every lower level into P2 files a P3
      as more urgent than it is, and nothing in the result shows that it happened. **A `priority/P<n>` label wins**,
-     as on `--github`: it is how [export.md](export.md) sends a task's priority to Jira, and export never sets the
-     priority field, so on a ticket this skill exported the field holds only the project's default. Read the
-     field only when there is no such label:
+     as on `--github`: [export.md](export.md) always sends it, and sets the priority field only when the project
+     has a matching priority, so on a ticket this skill exported the field may hold only the project's default.
+     Read the field only when there is no such label:
 
      | The Jira priority | Write |
      |---|---|

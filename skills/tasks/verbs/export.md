@@ -29,9 +29,9 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      Tracked locally: `tasks/EPIC-001-auth/STORY-001-login/TASK-014-jwt.md` (ID: TASK-014)
      ```
    - **Labels** —
-     - `priority/<the task's priority value>`, whatever value it is; never a fixed set of priorities. On Jira too
-       this label is the priority's only route: leave the Jira priority field as the project sets it, because
-       [import.md](import.md) reads the label first and a field set from a guessed mapping would disagree with it
+     - `priority/<the task's priority value>`, whatever value it is; never a fixed set of priorities. Send it on
+       Jira too, even when the priority field is set below: [import.md](import.md) reads the label first, so it is
+       what carries the value back
      - `assignee/{human|ai}` or `agent/{AgentName}`
      - `epic/{epic-slug}` (the parent epic's slug)
      - `story/{story-slug}` (the parent story's slug, if any)
@@ -42,6 +42,23 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
        `blocked:` field's parsed value — without its YAML quotes ([SKILL.md](../SKILL.md) § *Writing a
        `blocked:` value*) — else the text of the task's newest `> Blocked <date> — <reason>` note, else
        `reason unknown`. On Jira, set Flagged instead of a label.
+   - **Priority field** (Jira only, a TASK only: a STORY or EPIC has no `priority:`, so leave its field alone
+     and print no line for it) — a person reading the ticket sees the field, not the label, so a P0 left at a
+     project default of Medium reads as Medium. Read the priorities the project offers for this issue type from
+     the Atlassian MCP's create metadata, then set the field by the inverse of [import.md](import.md)'s Jira
+     table, first row that matches:
+
+     | When | Set the field to |
+     |---|---|
+     | the task's value is `P<n>` and the project offers a priority with exactly that name | that priority |
+     | the project offers all five of Highest, High, Medium, Low and Lowest, whatever else it offers, and the task's value is P0–P4 | Highest, High, Medium, Low, Lowest in that order |
+     | anything else, or the metadata cannot be read, or it has no priority field | nothing: leave the field as the project sets it, and name the task in step 9's confirmation |
+
+     Never pick the nearest name for a value with no row: a guessed field disagrees with the label and reads as
+     decided. The label still holds the value, so nothing is lost, and the confirmation says the field does not.
+     A value that is not `P<n>` (`priority: High`) never sets the field, even where a priority of that name
+     exists: import reads only a `priority/P<n>` label, so it would read the field back and the round trip would
+     change the value. `--dry-run` reads the metadata too and shows the field it would set.
    - **Assignee** (GH only) — if `assignee:` is `human` and a GH username is known, set it; otherwise skip.
 
 6. **Push**:
@@ -71,6 +88,8 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
    - Local path
    - Remote URL
    - Labels applied, and any label this run created
+   - On Jira, `Jira priority field: <the priority set>`, or, when step 5 left it unset,
+     `TASK-NNN: Jira priority field left at the project default (<no matching priority | metadata unreadable | no priority field>); the label priority/<value> carries it`
 
 ## Exporting STORY or EPIC
 

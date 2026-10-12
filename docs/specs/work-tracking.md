@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 6873992f1d714ba6edd3fcc2cf39acfcc8f41268
+generated-at: dda482ad9afb0f80b93864bd25720741ef95099d
 generated-on: 2026-10-12
 sources:
   - skills/tasks/SKILL.md
@@ -708,7 +708,7 @@ The system SHALL decompose a local notes file into a proposed epic, story and ta
 
 #### Scenario: Exported priority survives a round trip
 
-- **Given** a `P3` task exported to a Jira project whose default priority is Medium
+- **Given** a `P3` task exported to a Jira project that offers no priority matching P3, so its field stays at the default Medium
 - **When** the ticket is imported back
 - **Then** the task reads `priority: P3`, taken from the `priority/P3` label, not P2 from the Medium field
 
@@ -726,7 +726,19 @@ The system SHALL decompose a local notes file into a proposed epic, story and ta
 
 ### Requirement: Exporting a task
 
-The system SHALL, in hybrid mode only, push one task, story or epic to the configured tracker: title from the first heading after the frontmatter (never a frontmatter comment), body from the task's sections plus a footer pointing back to the local file, labels for priority (on Jira too, where the label is the priority's only route and the ticket's priority field is left as the project sets it), assignee, epic, story and the configured defaults — creating any missing label first and naming it — plus a blocked marker and `Blocked:` comment for a blocked task; then write the returned id back to frontmatter. Re-exporting a linked item SHALL ask first, defaulting to abort, and a failed push SHALL leave frontmatter untouched.
+The system SHALL, in hybrid mode only, push one task, story or epic to the configured tracker: title from the first heading after the frontmatter (never a frontmatter comment), body from the task's sections plus a footer pointing back to the local file, labels for priority (on Jira too, where the label is what carries the value back), assignee, epic, story and the configured defaults — creating any missing label first and naming it — plus a blocked marker and `Blocked:` comment for a blocked task; on Jira, a task's priority field SHALL be set by the inverse of the import mapping, to a priority named exactly the task's `P<n>` value or, where the project offers all five of Highest through Lowest, those for P0 through P4, and otherwise (no match, a value not of the form `P<n>`, unreadable metadata, no priority field) left as the project sets it, never set to a nearest name, with the confirmation naming the task and why; then write the returned id back to frontmatter. Re-exporting a linked item SHALL ask first, defaulting to abort, and a failed push SHALL leave frontmatter untouched.
+
+#### Scenario: Exported priority sets the Jira field
+
+- **Given** a `P0` task and a Jira project offering Highest, High, Medium, Low and Lowest, with Medium as its default
+- **When** the task is exported
+- **Then** the ticket's priority field is Highest and the `priority/P0` label is sent too
+
+#### Scenario: Jira priority with no match
+
+- **Given** a `P7` task and a Jira project offering Highest through Lowest
+- **When** the task is exported
+- **Then** the priority field is left at the project default, the `priority/P7` label is sent, and the confirmation names the task and says the label carries the priority
 
 #### Scenario: Missing label
 
