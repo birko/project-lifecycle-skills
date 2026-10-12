@@ -13,7 +13,7 @@ _Generated 2026-10-12 09:46. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 212                 |
+| done         | 4                  | 13                 | 213                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 55× P2 · 11× P3.
@@ -218,8 +218,8 @@ _None_
     - [ ] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next
     - [x] TASK-297 `/feature review` sets a feature to `review` without regenerating its rollup
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (29/50 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (28/32 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (30/51 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (29/33 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [x] TASK-222 `new` and Jira import offer only P0–P2
@@ -245,7 +245,8 @@ _None_
     - [x] TASK-272 `/populate-tests survey` promises no edits, but chains `adopt`, which writes files
     - [x] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
     - [ ] TASK-298 A `/fix-next` run that cancels or blocks its task on a task branch has nowhere to commit the record
-    - [ ] TASK-299 `/tasks export --to jira` never says how a task's priority reaches the ticket
+    - [x] TASK-299 `import --jira` ignores the `priority/<value>` label export sends, so a round trip changes the priority
+    - [ ] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
     - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
     - [x] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently

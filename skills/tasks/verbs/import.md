@@ -65,14 +65,17 @@ Three modes:
 3. **Map fields** like `--github` but with Jira semantics:
    - Summary → title
    - Description → split into sections, fallback to Context dump
-   - Priority field → a `P<n>` value, never a fixed set. Collapsing every lower level into P2 files a P3
-     as more urgent than it is, and nothing in the result shows that it happened:
+   - Priority → a `P<n>` value, never a fixed set. Collapsing every lower level into P2 files a P3
+     as more urgent than it is, and nothing in the result shows that it happened. **A `priority/P<n>` label wins**,
+     as on `--github`: it is how [export.md](export.md) sends a task's priority to Jira, and export never sets the
+     priority field, so on a ticket this skill exported the field holds only the project's default. Read the
+     field only when there is no such label:
 
      | The Jira priority | Write |
      |---|---|
      | already named `P<n>` (a scheme renamed to P0, P1, …) | that value as given |
      | a name from Jira's default scheme: Highest, High, Medium, Low, Lowest | P0, P1, P2, P3, P4 in that order |
-     | any other name, or no priority | `P1`, `new`'s default, and a line in the task's `## Context`: `Jira priority "<name>" has no mapping; P1 is the default, nobody chose it`. Name the task in step 7's confirmation |
+     | any other name, or no priority and no label | `P1`, `new`'s default, and a line in the task's `## Context`: `Jira priority "<name>" has no mapping; P1 is the default, nobody chose it`. Name the task in step 7's confirmation |
 
      The field cannot be left absent, because every ranking reads it, so an unmapped value gets the fallback
      and the record that nobody chose it, never a guess at what the name means.

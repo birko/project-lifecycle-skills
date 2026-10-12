@@ -29,7 +29,9 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      Tracked locally: `tasks/EPIC-001-auth/STORY-001-login/TASK-014-jwt.md` (ID: TASK-014)
      ```
    - **Labels** —
-     - `priority/<the task's priority value>`, whatever value it is; never a fixed set of priorities
+     - `priority/<the task's priority value>`, whatever value it is; never a fixed set of priorities. On Jira too
+       this label is the priority's only route: leave the Jira priority field as the project sets it, because
+       [import.md](import.md) reads the label first and a field set from a guessed mapping would disagree with it
      - `assignee/{human|ai}` or `agent/{AgentName}`
      - `epic/{epic-slug}` (the parent epic's slug)
      - `story/{story-slug}` (the parent story's slug, if any)

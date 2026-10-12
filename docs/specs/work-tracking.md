@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 713dc0e442d61989fde3456924322717e6723d70
+generated-at: 6873992f1d714ba6edd3fcc2cf39acfcc8f41268
 generated-on: 2026-10-12
 sources:
   - skills/tasks/SKILL.md
@@ -704,7 +704,13 @@ The system SHALL scan the backlog, read-only by default, for duplicates (wide ac
 
 ### Requirement: Importing work
 
-The system SHALL decompose a local notes file into a proposed epic, story and task tree for review, create the approved items with default fields, preserve done items as `done`, and never modify the source file. In hybrid mode it SHALL import a GitHub issue or Jira ticket into a local file, mapping title, body sections, priority, assignee, parent, open or closed state, and a blocked label or flag to a `blocked:` field whose reason comes from the newest `Blocked:` comment (else `reason unknown`), recording the issue link and refusing an issue already linked locally. A Jira priority SHALL map to a `P<n>` value and never into a fixed set: a name already of the form `P<n>` as given, Jira's default scheme Highest through Lowest to P0 through P4, and any other name or none to `P1` with a `## Context` line saying nobody chose it, named again in the import's confirmation.
+The system SHALL decompose a local notes file into a proposed epic, story and task tree for review, create the approved items with default fields, preserve done items as `done`, and never modify the source file. In hybrid mode it SHALL import a GitHub issue or Jira ticket into a local file, mapping title, body sections, priority, assignee, parent, open or closed state, and a blocked label or flag to a `blocked:` field whose reason comes from the newest `Blocked:` comment (else `reason unknown`), recording the issue link and refusing an issue already linked locally. A Jira ticket's priority SHALL come from a `priority/P<n>` label when it has one, as for GitHub, and from the priority field only otherwise; the field SHALL map to a `P<n>` value and never into a fixed set: a name already of the form `P<n>` as given, Jira's default scheme Highest through Lowest to P0 through P4, and any other name or none to `P1` with a `## Context` line saying nobody chose it, named again in the import's confirmation.
+
+#### Scenario: Exported priority survives a round trip
+
+- **Given** a `P3` task exported to a Jira project whose default priority is Medium
+- **When** the ticket is imported back
+- **Then** the task reads `priority: P3`, taken from the `priority/P3` label, not P2 from the Medium field
 
 #### Scenario: Unmapped Jira priority
 
@@ -720,7 +726,7 @@ The system SHALL decompose a local notes file into a proposed epic, story and ta
 
 ### Requirement: Exporting a task
 
-The system SHALL, in hybrid mode only, push one task, story or epic to the configured tracker: title from the first heading after the frontmatter (never a frontmatter comment), body from the task's sections plus a footer pointing back to the local file, labels for priority, assignee, epic, story and the configured defaults — creating any missing label first and naming it — plus a blocked marker and `Blocked:` comment for a blocked task; then write the returned id back to frontmatter. Re-exporting a linked item SHALL ask first, defaulting to abort, and a failed push SHALL leave frontmatter untouched.
+The system SHALL, in hybrid mode only, push one task, story or epic to the configured tracker: title from the first heading after the frontmatter (never a frontmatter comment), body from the task's sections plus a footer pointing back to the local file, labels for priority (on Jira too, where the label is the priority's only route and the ticket's priority field is left as the project sets it), assignee, epic, story and the configured defaults — creating any missing label first and naming it — plus a blocked marker and `Blocked:` comment for a blocked task; then write the returned id back to frontmatter. Re-exporting a linked item SHALL ask first, defaulting to abort, and a failed push SHALL leave frontmatter untouched.
 
 #### Scenario: Missing label
 
