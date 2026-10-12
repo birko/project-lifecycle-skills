@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: 1890ce63187e66b7eb50b216e418fc9ae9025f98
-generated-on: 2026-10-11
+generated-at: 713dc0e442d61989fde3456924322717e6723d70
+generated-on: 2026-10-12
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -224,7 +224,7 @@ The system SHALL regenerate the dashboard file only through `triage` (chained by
 
 ### Requirement: Creating epics, stories and tasks
 
-The system SHALL create a node by asking its level (with a decision test when unsure), title, parent (an existing epic for a story; a story, an epic or none for a task), and for tasks priority and assignee (defaults P1 and ai); it SHALL mint the id, compute the path from the parent chain, render the level's template with `planned` for containers and `todo` for tasks (but `done` for an epic that intake files as the record of a pass that dropped every finding), offer to draft the task body (writing `N/A — fully covered by automated tests` for a plainly unit-testable task rather than filler steps), regenerate the dashboard, and auto-run `plan` for a task unless `--no-plan` was passed. Template fields with no value for this node (an epic's `kind:`/`source:`, a story's `theme:`) SHALL be omitted rather than rendered empty. Whenever the new task carries a `feature:` link, by any route, it SHALL be written into the owning decision row's task column, and if no approved or changed row covers it a new `proposed` row SHALL be appended instead.
+The system SHALL create a node by asking its level (with a decision test when unsure), title, parent (an existing epic for a story; a story, an epic or none for a task), and for tasks priority and assignee (defaults P1 and ai, with any `P<n>` priority written as given rather than limited to the values offered); it SHALL mint the id, compute the path from the parent chain, render the level's template with `planned` for containers and `todo` for tasks (but `done` for an epic that intake files as the record of a pass that dropped every finding), offer to draft the task body (writing `N/A — fully covered by automated tests` for a plainly unit-testable task rather than filler steps), regenerate the dashboard, and auto-run `plan` for a task unless `--no-plan` was passed. Template fields with no value for this node (an epic's `kind:`/`source:`, a story's `theme:`) SHALL be omitted rather than rendered empty. Whenever the new task carries a `feature:` link, by any route, it SHALL be written into the owning decision row's task column, and if no approved or changed row covers it a new `proposed` row SHALL be appended instead.
 
 #### Scenario: Task inheriting a feature
 
@@ -704,7 +704,13 @@ The system SHALL scan the backlog, read-only by default, for duplicates (wide ac
 
 ### Requirement: Importing work
 
-The system SHALL decompose a local notes file into a proposed epic, story and task tree for review, create the approved items with default fields, preserve done items as `done`, and never modify the source file. In hybrid mode it SHALL import a GitHub issue or Jira ticket into a local file, mapping title, body sections, priority, assignee, parent, open or closed state, and a blocked label or flag to a `blocked:` field whose reason comes from the newest `Blocked:` comment (else `reason unknown`), recording the issue link and refusing an issue already linked locally.
+The system SHALL decompose a local notes file into a proposed epic, story and task tree for review, create the approved items with default fields, preserve done items as `done`, and never modify the source file. In hybrid mode it SHALL import a GitHub issue or Jira ticket into a local file, mapping title, body sections, priority, assignee, parent, open or closed state, and a blocked label or flag to a `blocked:` field whose reason comes from the newest `Blocked:` comment (else `reason unknown`), recording the issue link and refusing an issue already linked locally. A Jira priority SHALL map to a `P<n>` value and never into a fixed set: a name already of the form `P<n>` as given, Jira's default scheme Highest through Lowest to P0 through P4, and any other name or none to `P1` with a `## Context` line saying nobody chose it, named again in the import's confirmation.
+
+#### Scenario: Unmapped Jira priority
+
+- **Given** a Jira ticket whose priority reads `Blocker`
+- **When** it is imported
+- **Then** the task reads `priority: P1`, its Context says the priority had no mapping and nobody chose P1, and the confirmation names it
 
 #### Scenario: Blocked GitHub issue
 

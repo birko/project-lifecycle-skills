@@ -76,7 +76,9 @@ Interactive scaffold of a new task tree node.
    - **task** → list epics and stories under each. User picks story ID, **or** epic ID for a direct-child task, **or** "none" to place in `_loose/`.
 
 5. **Ask priority and assignee** (task only):
-   - Priority: P0 / **P1** (default) / P2
+   - Priority: P0 / **P1** (default) / P2 / P3. These are the common values, not the only ones: write any `P<n>`
+     the user gives exactly as given. The Collection pass buckets whatever priorities are present and `export`
+     sends any value, so a value this step refused could still be read and exported but never created.
    - Assignee: human / **ai** (default) / `<specific-agent-name>`
 
 6. **Generate ID**:
@@ -96,7 +98,7 @@ Interactive scaffold of a new task tree node.
    - `{{PARENT}}` — parent ID (or `null` for orphan task / epic)
    - `{{CREATED}}` — today (`YYYY-MM-DD`)
    - `{{STATUS}}` — `planned` for epic/story, `todo` for task; `done` for an epic [intake](intake.md) files as a record of a pass that dropped every finding
-   - `{{PRIORITY}}` — P0/P1/P2 (task only)
+   - `{{PRIORITY}}` — `P<n>`, the value step 5 settled (task only)
    - `{{ASSIGNEE}}` — human/ai/agent-name (task only)
    - `{{FEATURE}}` — `FEATURE-NNN` from `--from-feature`, else `null` (task only)
    - `{{FINDINGS}}` — the id list from `--from-review`, or the single `FIELD-NNN` minted by

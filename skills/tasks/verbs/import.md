@@ -65,7 +65,17 @@ Three modes:
 3. **Map fields** like `--github` but with Jira semantics:
    - Summary → title
    - Description → split into sections, fallback to Context dump
-   - Priority field → P0/P1/P2
+   - Priority field → a `P<n>` value, never a fixed set. Collapsing every lower level into P2 files a P3
+     as more urgent than it is, and nothing in the result shows that it happened:
+
+     | The Jira priority | Write |
+     |---|---|
+     | already named `P<n>` (a scheme renamed to P0, P1, …) | that value as given |
+     | a name from Jira's default scheme: Highest, High, Medium, Low, Lowest | P0, P1, P2, P3, P4 in that order |
+     | any other name, or no priority | `P1`, `new`'s default, and a line in the task's `## Context`: `Jira priority "<name>" has no mapping; P1 is the default, nobody chose it`. Name the task in step 7's confirmation |
+
+     The field cannot be left absent, because every ranking reads it, so an unmapped value gets the fallback
+     and the record that nobody chose it, never a guess at what the name means.
    - Assignee → human if a real account, ai if it's a bot
    - Status → todo/in-progress/done mapping
    - Flagged → a `blocked:` field with the reason from the newest `Blocked:` comment, or `reason unknown`, written as the GitHub row above says; never a status
@@ -79,6 +89,9 @@ Three modes:
 5. **Consider chaining** to a `jira-task` skill, if one is installed, when the user wants the full ticket workflow (intake → triage → fix → close-out).
 
 6. **Regenerate dashboard**.
+
+7. **Confirm**: print the created file's path and its `jira-key:`, and under it every priority step 3 could not map,
+   as `ABC-3: Jira priority "Blocker" has no mapping; wrote P1, nobody chose it`.
 
 ## Edge cases
 
