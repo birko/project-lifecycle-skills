@@ -247,6 +247,15 @@ for the signal (counts, commit hashes, paths), and its gate result from Step 5.
   than forcing it into a row.
 - **A class 2 candidate raised on one adapter** is judged by [interface-design.md](../tdd/interface-design.md)
   item 4 instead, which counts implementations rather than callers: `Item 4: <n> implementation(s) — <result>`.
+
+  | Implementations, per item 4 | Result here |
+  |---|---|
+  | one, counting no test double at a system boundary | **candidate**: depend on the concrete type, or, for a callback, return the result instead |
+  | two or more, a test double at a system boundary counting as one | **rejected** as a real seam, with its record (below) |
+
+  A mock of an internal collaborator is not an implementation, since item 4 rules it out. **Item 4 owns the
+  count; this table only maps it**, as for the deletion test: a result the table lacks is reported by its own name,
+  with the candidate left undecided (`Item 4: undecided — <result>`).
 - **Classes 1, 3, 4 and 5** stand on their own signal, even when their move merges files:
   `Gate: not a shallowness claim — <class>`. A closer look can still kill the signal: the commit that made a
   co-change pair was later undone and fewer than 5 shared commits remain; the set's files serve separate use
@@ -322,6 +331,13 @@ the fix landings can show friction.
 recomputes it for each held move, whatever an earlier run recorded. A move held today is surfaced the run its area
 becomes a hot spot.
 
+**A hold whose record is gone is released.** When the record a `held by ADR` entry names is now superseded or
+retired (the records Step 1 does not read), nothing holds the move any more. Report
+`hold released: <key> — ADR NNNN superseded by MMMM | retired (since <commit>)`. When the superseding record also
+contradicts the move, apply this step to that record instead, and a hold under it names the new record.
+Otherwise put the move through Step 5's gate as an ordinary candidate. Never carry the old hold forward: a hold on
+a record nobody keeps protects a decision that no longer exists.
+
 Never silently propose a change a record rejected. That is how a settled trade-off gets re-argued by accident.
 
 ## Step 7 — File the findings
@@ -365,8 +381,11 @@ its small-pass shortcut and its re-run advice, so every run gets its own epic, w
   | Classes | `theme:` |
   |---|---|
   | 1, 2 | `reuse-dead-code` |
-  | 3, 4 | `correctness-invariants` |
-  | 5 | `docs-i18n-coverage` |
+  | 3, 4, 5 | `correctness-invariants` |
+
+  Class 5 is in that row because item 5 calls its signal an interface defect, which is a broken architectural
+  rule fixed by changing the interface in place. `docs-i18n-coverage` is for audits that spawn fix work instead,
+  and filing it there would rank it last.
 
   A task holding findings of two themes goes under the story of the theme that comes first in intake's ladder
   (`theme:` is a story's field, so it is set once per story).

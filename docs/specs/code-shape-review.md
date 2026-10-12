@@ -1,6 +1,6 @@
 ---
 area: code-shape-review
-generated-at: 41459e27f9395736b55b38c25abb24724621e4f4
+generated-at: 03d66e2682b0a784d916faf12777a46288f4e97e
 generated-on: 2026-10-12
 sources:
   - skills/improve-architecture/SKILL.md
@@ -301,7 +301,7 @@ The system SHALL read a key back with the class running to the first `:`, the me
 
 ### Requirement: Exactly one gate per candidate, chosen by the signal that raised it
 
-The system SHALL state for every candidate which test judged it and its answer, applying exactly one gate: the deletion test (line `Deletion test: <outcome> — callers checked: <paths>`) for a class 2 candidate raised on the deletion test's signal; interface-design item 4 (line `Item 4: <n> implementation(s) — <result>`) for a class 2 candidate raised on one adapter; and `Gate: not a shallowness claim — <class>` for classes 1, 3, 4 and 5.
+The system SHALL state for every candidate which test judged it and its answer, applying exactly one gate: the deletion test (line `Deletion test: <outcome> — callers checked: <paths>`) for a class 2 candidate raised on the deletion test's signal; interface-design item 4 (line `Item 4: <n> implementation(s) — <result>`) for a class 2 candidate raised on one adapter, where one implementation (no test double at a system boundary) SHALL make a candidate moved to the concrete type or, for a callback, to a returned result, two or more (a boundary test double counting as one, a mock of an internal collaborator not counting) SHALL be rejected as a real seam, and a result outside these SHALL be reported by its own name with the candidate undecided; and `Gate: not a shallowness claim — <class>` for classes 1, 3, 4 and 5.
 
 #### Scenario: Class 4 candidate
 
@@ -369,7 +369,7 @@ The system SHALL re-check every rejection Step 1 read except `held by ADR` entri
 
 ### Requirement: A move contradicting a decision record is surfaced only on real friction
 
-The system SHALL treat a move as contradicting a record when it would reinstate a *Rejected alternative* or undo its *Decision* in the area the move names, including moves set aside before becoming candidates and every `held by ADR` entry read in Step 1 whatever the scope. With friction — the area is a hot spot or fix landings cluster there, with commits cited (only fix landings under rung 3) — it SHALL surface the candidate marked `contradicts ADR NNNN — <title>` and recommend reopening the record through `domain`, never proposing the code change alone; without friction it SHALL list it as rejected `<key> — held by ADR NNNN — <title> (at <commit>)`, keyed by the element the move would change.
+The system SHALL treat a move as contradicting a record when it would reinstate a *Rejected alternative* or undo its *Decision* in the area the move names, including moves set aside before becoming candidates and every `held by ADR` entry read in Step 1 whatever the scope. With friction — the area is a hot spot or fix landings cluster there, with commits cited (only fix landings under rung 3) — it SHALL surface the candidate marked `contradicts ADR NNNN — <title>` and recommend reopening the record through `domain`, never proposing the code change alone; without friction it SHALL list it as rejected `<key> — held by ADR NNNN — <title> (at <commit>)`, keyed by the element the move would change. When the record a held entry names is now superseded or retired, the system SHALL report `hold released: <key> — ADR NNNN superseded by MMMM | retired (since <commit>)`, apply this rule to the superseding record when it also contradicts the move, and otherwise put the move through the gate as an ordinary candidate, never carrying the old hold forward.
 
 #### Scenario: Held move, quiet area
 
@@ -421,7 +421,7 @@ The system SHALL file a `recurs after TASK-NNN` candidate fresh with its Context
 
 ### Requirement: Every finding is a suggestion, themed by class
 
-The system SHALL file every finding with severity `suggestion`, and SHALL set its theme by class — classes 1 and 2 `reuse-dead-code`, classes 3 and 4 `correctness-invariants`, class 5 `docs-i18n-coverage` — placing a task that holds findings of two themes under the story of the theme first in intake's ladder.
+The system SHALL file every finding with severity `suggestion`, and SHALL set its theme by class — classes 1 and 2 `reuse-dead-code`, classes 3, 4 and 5 `correctness-invariants` (class 5 because its signal is an interface defect fixed in place, not an audit that spawns work) — placing a task that holds findings of two themes under the story of the theme first in intake's ladder.
 
 #### Scenario: Mixed task
 
