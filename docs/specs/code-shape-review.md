@@ -1,7 +1,7 @@
 ---
 area: code-shape-review
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: 41459e27f9395736b55b38c25abb24724621e4f4
+generated-on: 2026-10-12
 sources:
   - skills/improve-architecture/SKILL.md
 shaped-by: []
@@ -439,15 +439,21 @@ The system SHALL write into the new epic's dropped list, verbatim, this run's re
 - **When** this run files
 - **Then** the new dropped list omits it and the area of concern says `not carried forward: <key> — rejected file gone (since <commit>)`
 
-### Requirement: With no task tree, nothing is created and the report says how to file later
+### Requirement: The records line says what filing did, in one of five forms
 
-The system SHALL, when no task tree exists, create nothing and set the report's records line to `not filed — no task tree; run /tasks init, then /tasks intake --source <the report's path>`.
+The system SHALL print one records line, on the page and in stdout alike, in exactly one of five forms: `filed into EPIC-NNN` when intake finished; `not filed — no task tree; run /tasks init, then /tasks intake --source <the report's path>` when no task tree exists, in which case it SHALL create nothing; `not filed — intake failed: <what it said>; this report is the only copy; …` when intake stopped before creating the epic; `filed in part into EPIC-NNN — not filed: <keys>; intake failed: <what it said>; file the rest with /tasks intake --epic EPIC-NNN --source <the report's path>` when intake stopped after creating it; and `nothing to file — no candidate and no rejection standing`, with no epic created, when there was nothing to file. When intake stops part-way the system SHALL keep what it wrote, SHALL NOT retry in the same run, and SHALL name every unfiled finding by its key, and every rejection too when intake stopped before writing the epic's dropped list.
 
 #### Scenario: Fresh repository
 
 - **Given** the repo has no task tree
 - **When** Step 7 runs
 - **Then** no tree or epic is created and the records line gives the init-then-intake command
+
+#### Scenario: Intake stops part-way
+
+- **Given** intake created this run's epic and filed two of three findings, then failed
+- **When** the report is written
+- **Then** the epic and its two tasks are kept, nothing is retried, and the records line reads `filed in part into EPIC-NNN — not filed: <the third key>; …` with the `--epic` command to file the rest
 
 ### Requirement: The report is always written to a temp file outside the repo, and published privately when possible
 
@@ -513,7 +519,7 @@ The system SHALL assign `tentative` when the gate is undecided or a path set is 
 
 ### Requirement: The page ends with header and four listing sections, each printed even when empty
 
-The system SHALL print, each as a plain table and `(none)` when empty: the header (scope rung and coverage, measurement, `bar degenerate`, renames, what was already settled, any unattributed intake epic, and in bold on its own line the records line `filed into EPIC-NNN` or `not filed yet — this report is the only copy of the rejections below`); Rejected, with each record line verbatim; Previously rejected, unchanged; Rejections gone; and Already filed (`<key> — TASK-NNN` or `<key> — declined: TASK-NNN`).
+The system SHALL print, each as a plain table and `(none)` when empty: the header (scope rung and coverage, measurement, `bar degenerate`, renames, what was already settled, any unattributed intake epic, and in bold on its own line the records line, in the form the filing outcome gives); Rejected, with each record line verbatim; Previously rejected, unchanged; Rejections gone; and Already filed (`<key> — TASK-NNN` or `<key> — declined: TASK-NNN`).
 
 #### Scenario: Nothing previously rejected
 

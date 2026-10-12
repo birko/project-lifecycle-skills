@@ -375,12 +375,31 @@ its small-pass shortcut and its re-run advice, so every run gets its own epic, w
   list as it stands. A gone entry (Step 5) is **not** copied; name it in the epic's area of concern as
   `not carried forward: <key> — rejected file gone (since <commit>)`, or `rejected member gone`. Write the list
   whatever the run's size, even with no candidate at all: intake files an epic for any pass that dropped a finding,
-  and writes it `done` when it holds no task.
+  and writes it `done` when it holds no task. The one run that writes no list is one with nothing in it, the
+  `nothing to file` row below.
 
 Nothing is asked before filing: filing is the deliverable, and a question would send every unattended run down the
 report-only path. **When no task tree exists**, intake would have to ask where to create one, and nobody may be
-there to answer: create nothing, and set the report's records line to
-`not filed — no task tree; run /tasks init, then /tasks intake --source <the report's path>`.
+there to answer: create nothing, and use the records line's no-task-tree form below.
+
+**The records line** says what filing did, on the page's header and in stdout alike. It takes exactly one of
+these forms, and both templates under § *Output* print it from this table:
+
+| What filing did | The records line |
+|---|---|
+| intake finished and filed an epic | `filed into EPIC-NNN` |
+| no task tree, so nothing was created | `not filed — no task tree; run /tasks init, then /tasks intake --source <the report's path>` |
+| intake stopped before creating the epic | `not filed — intake failed: <what it said>; this report is the only copy; run /tasks intake --source <the report's path>` |
+| intake stopped after creating the epic, with some findings filed | `filed in part into EPIC-NNN — not filed: <keys, rejections included when the dropped list was not written>; intake failed: <what it said>; file the rest with /tasks intake --epic EPIC-NNN --source <the report's path>` |
+| no candidate, no rejection and no standing rejection to carry, so there was nothing to file | `nothing to file — no candidate and no rejection standing` |
+
+**When intake stops part-way, keep what it wrote and stop there.** Do not delete the epic or the tasks it filed,
+since a later run reads them, and do not retry in the same run, since a second attempt that fails the same way
+leaves two partial epics. Name every finding that did not reach a task by its key, and, when intake stopped
+before writing the epic's dropped list, every rejection too: a later run's Step 1 reads that list as the whole
+standing set, so a rejection missing from it is raised again. `--epic` is correct here,
+although Step 7 otherwise forbids it: the epic is this run's own, so finishing it edits no earlier run's record.
+A run with nothing to file creates no epic, because there is no finding to record.
 
 ## Output — the report
 
@@ -477,8 +496,8 @@ After the candidates, each as a plain table, and every one printed with `(none)`
 
 - **the header**: the scope rung and what it covered (an ambiguous or unmatched direction), the measurement,
   `bar degenerate`, renames; what was already settled (earlier runs and decision records read, or that there were
-  none) and any `unattributed intake epic`; and on its own line, in bold, the **records line**:
-  `filed into EPIC-NNN`, or `not filed yet — this report is the only copy of the rejections below`;
+  none) and any `unattributed intake epic`; and on its own line, in bold, the **records line**, in the form
+  Step 7's table gives for what filing did;
 - **Rejected**: one row per rejection, with its record line verbatim
   (`- <key> — <reason> (callers: <paths>; at <commit>)`, or the `held by ADR` form), so `/tasks intake` can copy
   it as it stands;
@@ -491,7 +510,7 @@ After the candidates, each as a plain table, and every one printed with `(none)`
 ```
 improve-architecture — scope: <rung and what it covered; direction ambiguous / matched nothing>  (<the measurement; bar degenerate; renames>)
 already settled: <n> earlier runs read, <n> decision records read  [unattributed intake epic: EPIC-NNN — not read]
-records: <filed into EPIC-NNN | not filed yet — this report is the only copy of the rejections below>
+records: <the records line, in Step 7's form>
 
 Candidates
   <n>. <class> — <main file>   key: <key>   strength: <strength> (<the evidence that set it>)   [recurs after TASK-NNN]
