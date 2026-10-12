@@ -309,6 +309,11 @@ nothing **and** any rebuilt set is the one recorded, report `previously rejected
 not re-run the gate. If the log printed anything, a set differs, or git cannot resolve `<commit>` (the history was
 rewritten), re-run the gate the reason names and record the new result.
 
+**`since <commit>` names the commit recorded on the earlier entry**, its `at <commit>`, in every line that
+carries it: the gone and unchanged lines here, Step 6's `hold released`, Step 7's `not carried forward`, and both
+templates. That is the commit step 3 reads the log from, so every line measures from the same point. Never print this run's HEAD, and never search for the commit that removed the file or retired the record:
+the verdict does not turn on it, and two runs reading the same entry must print the same commit.
+
 ## Step 6 — Decision records
 
 **A move contradicts a record** when it would reinstate one of the record's *Rejected alternatives*, or undo its

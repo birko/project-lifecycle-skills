@@ -1,6 +1,6 @@
 ---
 area: code-shape-review
-generated-at: 03d66e2682b0a784d916faf12777a46288f4e97e
+generated-at: e6d575734be061289579792b1458e873c8bc3cce
 generated-on: 2026-10-12
 sources:
   - skills/improve-architecture/SKILL.md
@@ -347,7 +347,7 @@ The system SHALL record each rejection as `- <key> — <reason> (callers: <paths
 
 ### Requirement: A recorded rejection suppresses the candidate, never the re-check
 
-The system SHALL re-check every rejection Step 1 read except `held by ADR` entries: report `rejected file gone: <key> (since <commit>)` when the key's path is no longer listed; report `rejected member gone: <key> (since <commit>)` when the member is gone; otherwise run `git log <commit>..HEAD --format=%h -- <path> <callers>` (path alone for `callers: none`), rebuild a callers or implementations slot (never a co-change slot) and compare it; report `previously rejected, unchanged since <commit>` without re-running the gate when the log is empty and every rebuilt set matches; and re-run the gate the reason names and record the new result when the log prints anything, a set differs, or `<commit>` cannot be resolved. It SHALL never edit the earlier run's record.
+The system SHALL re-check every rejection Step 1 read except `held by ADR` entries: report `rejected file gone: <key> (since <commit>)` when the key's path is no longer listed; report `rejected member gone: <key> (since <commit>)` when the member is gone; otherwise run `git log <commit>..HEAD --format=%h -- <path> <callers>` (path alone for `callers: none`), rebuild a callers or implementations slot (never a co-change slot) and compare it; report `previously rejected, unchanged since <commit>` without re-running the gate when the log is empty and every rebuilt set matches; and re-run the gate the reason names and record the new result when the log prints anything, a set differs, or `<commit>` cannot be resolved. In every `since <commit>` line — these, `hold released` and `not carried forward` — `<commit>` SHALL be the commit recorded on the earlier entry, never this run's HEAD or the commit that removed the file or retired the record. It SHALL never edit the earlier run's record.
 
 #### Scenario: Untouched rejection
 
