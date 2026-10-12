@@ -12,7 +12,14 @@ Populate and maintain a project's tests + manual coverage ledger, on any stack. 
 
 Read the project's `CLAUDE.md` § Testing (the layered model [[new-project]] seeds). Learn: the stack +
 test framework, where tests live (`tests/`), the layers, the done-gate. No § Testing? Infer the stack
-from the repo and offer to seed the convention first (use the [[new-project]] template). **Never author
+from the repo and offer to seed the convention first (use the [[new-project]] template):
+
+> **This project's `CLAUDE.md` has no § Testing. I read the stack as <stack>, with tests in <path>. Shall I add the
+> testing convention from the [[new-project]] template before going on?**
+
+**No answer, or nobody to ask:** seed nothing, because the convention is the project's rulebook and nobody approved
+its content. Carry on with the inferred stack, and open the report with `§ Testing: absent, not seeded; stack
+inferred as <stack>, nobody confirmed it`. **Never author
 tests for code you haven't read — that produces brittle, wrong tests.** Ground every selector/API/field
 in real source.
 

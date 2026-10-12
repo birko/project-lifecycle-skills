@@ -34,7 +34,14 @@ The four behaviours below are keyed on signals that occur mid-conversation, so a
 signal to react to. It gets one job — **behaviour 4 over what already exists**: read `docs/glossary.md`,
 cross-reference every entry against the code's type, table and module names, and report the
 contradictions. No glossary yet? Say so, and offer to start one from the terms that are *actually*
-ambiguous in this repo — never from a list of obvious nouns.
+ambiguous in this repo — never from a list of obvious nouns:
+
+> **There is no `docs/glossary.md`. These terms look ambiguous here: <terms, each with its two readings>. Shall I
+> start a glossary with them?**
+
+Found no ambiguous term? Say that, and do not offer: a glossary started from nothing is the padded list the
+introduction warns about. **No answer, or nobody to ask:** write no file, and report
+`glossary not started, nobody asked for it: <terms>`. A glossary nobody requested claims the vocabulary was examined.
 
 That is the whole of the cold path. It is deliberately narrow: the value of this skill is in the other
 three behaviours, and those need a conversation to be applied to.
@@ -47,7 +54,7 @@ vocabulary list, which nobody reads.
 | Behaviour | Signal |
 |---|---|
 | **Challenge a term** | someone uses a defined word to mean something else — in conversation, a commit message, a type name. Say so at the moment it happens; a glossary nobody is held to is decoration |
-| **Sharpen a fuzzy or overloaded term** | two names appear to mean one concept (`Tenant`/`Organization`, `User`/`Account`), or one name covers two (`status` as lifecycle *and* as health). Ask *"same thing, or genuinely different?"* — a "yes, same" is a real defect, and it is nearly invisible from inside the project |
+| **Sharpen a fuzzy or overloaded term** | two names appear to mean one concept (`Tenant`/`Organization`, `User`/`Account`), or one name covers two (`status` as lifecycle *and* as health). Ask *"Are <A> and <B> the same thing, or genuinely different?"* — a "yes, same" is a real defect, and it is nearly invisible from inside the project. No answer: rename nothing, record nothing, and report `unresolved: <A> / <B>, same or different?` |
 | **Stress-test a relationship** | a definition asserts structure — *"a Tenant has Users"*. Test it with a concrete case: can a User belong to two Tenants? Can a Tenant exist with none? The answers usually reveal that the term meant something narrower |
 | **Cross-reference against the code** | the glossary says one thing and the type names, table names or module boundaries say another. Surface the contradiction; don't quietly reconcile it — which one is wrong is the project's call, not yours |
 
@@ -90,6 +97,14 @@ result of a real trade-off**. Miss any one and skip it.
 | Hard to reverse | nothing exists that reversing would leave behind | a rule that produced only its own wording — read the standing-rule paragraph below before applying this row |
 | Surprising without context | the next reader would have done the same | following a convention the guide already states |
 | The result of a real trade-off | there was no rejected alternative | the only option that worked |
+
+When a decision passes all three, and the scope check below says it is a project decision, the offer is:
+
+> **<the decision> passes the ADR bar: reversing it would leave <what exists because of it>, a newcomer would not
+> expect it, and it was chosen over <the alternative>. Shall I record it in `docs/adr/`?**
+
+**No answer, or nobody to ask:** write no record, and report `ADR candidate, not written: <the decision>`. A record
+nobody asked for states a rationale nobody confirmed.
 
 **First, ask what kind of thing this is. The bar is for a PROJECT decision, not for a rulebook entry.**
 This scope check comes before the three tests, because applying them to the wrong species is what makes them

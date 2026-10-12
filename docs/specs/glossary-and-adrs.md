@@ -1,7 +1,7 @@
 ---
 area: glossary-and-adrs
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: 5c2c8e458c82f59aaee913ce7f0dbe8bdf4966f8
+generated-on: 2026-10-12
 sources:
   - skills/domain/SKILL.md
 shaped-by: []
@@ -51,7 +51,7 @@ The system SHALL keep out of the glossary any definition that names a file, clas
 
 ### Requirement: A cold invocation cross-references the existing glossary against the code and nothing else
 
-The system SHALL, when invoked as `/domain` without a mid-conversation signal, read `docs/glossary.md`, cross-reference every entry against the code's type, table and module names, and report the contradictions; when no glossary exists it SHALL say so and offer to start one only from terms that are actually ambiguous in the repo, never from a list of obvious nouns. The cold path SHALL do nothing beyond this — in particular it does not read `docs/adr/`.
+The system SHALL, when invoked as `/domain` without a mid-conversation signal, read `docs/glossary.md`, cross-reference every entry against the code's type, table and module names, and report the contradictions; when no glossary exists it SHALL say so and offer to start one only from terms that are actually ambiguous in the repo, never from a list of obvious nouns. Finding no such term, it SHALL say so and not offer. With no answer to the offer it SHALL write no file and report the candidate terms as `glossary not started`. The cold path SHALL do nothing beyond this — in particular it does not read `docs/adr/`.
 
 #### Scenario: Glossary disagrees with a type name
 
@@ -77,7 +77,7 @@ The system SHALL, when someone uses a defined word to mean something other than 
 
 ### Requirement: Sharpen synonyms and overloaded terms by asking whether they are the same concept
 
-The system SHALL, when two names appear to mean one concept or one name appears to cover two, ask *"same thing, or genuinely different?"*, and SHALL treat a "yes, same" as a real defect; it SHALL treat the suspected synonyms collected by the adoption survey's *Glossary candidates* pass as its best input.
+The system SHALL, when two names appear to mean one concept or one name appears to cover two, ask *"Are <A> and <B> the same thing, or genuinely different?"*, and SHALL treat a "yes, same" as a real defect; with no answer it SHALL rename and record nothing and report the pair as unresolved; it SHALL treat the suspected synonyms collected by the adoption survey's *Glossary candidates* pass as its best input.
 
 #### Scenario: Two names for one concept
 
@@ -171,7 +171,7 @@ The system SHALL first classify a candidate as a **project decision** (a stack c
 
 ### Requirement: Offer a record only when all three tests pass, and decline out loud
 
-The system SHALL offer a decision record only when the decision is hard to reverse (something exists that reversing would leave behind), surprising without context, and the result of a real trade-off with a rejected alternative; when any test fails it SHALL skip the record and say which test failed. It SHALL only offer — the user's call makes it a decision.
+The system SHALL offer a decision record only when the decision is hard to reverse (something exists that reversing would leave behind), surprising without context, and the result of a real trade-off with a rejected alternative; when any test fails it SHALL skip the record and say which test failed. It SHALL only offer — the user's call makes it a decision. With no answer to the offer it SHALL write no record and report `ADR candidate, not written: <the decision>`.
 
 #### Scenario: No rejected alternative
 

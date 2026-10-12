@@ -1,6 +1,6 @@
 ---
 area: changelog-maintenance
-generated-at: bb7f84df4060671865afecb42bec57552ed18335
+generated-at: 5c2c8e458c82f59aaee913ce7f0dbe8bdf4966f8
 generated-on: 2026-10-12
 sources:
   - skills/roll-changelog/SKILL.md
@@ -41,7 +41,7 @@ The system SHALL treat `/roll-changelog` with no arguments as a roll into `## [U
 
 ### Requirement: Offer to seed a missing changelog before rolling
 
-The system SHALL, when `CHANGELOG.md` does not exist, offer to seed a Keep a Changelog skeleton (described as the same stub the project scaffolder writes) before rolling. It SHALL NOT create the file unasked. The skill itself does not spell out the skeleton's contents: the reference to its file shape points at a section the skill does not have.
+The system SHALL, when `CHANGELOG.md` does not exist, offer to seed a Keep a Changelog skeleton (described as the same stub the project scaffolder writes) before rolling. It SHALL NOT create the file unasked: with no answer it SHALL create nothing, roll nothing, and report `no CHANGELOG.md: not seeded, nothing rolled`. The skill itself does not spell out the skeleton's contents: the reference to its file shape points at a section the skill does not have.
 
 #### Scenario: No changelog yet
 
@@ -67,7 +67,7 @@ The system SHALL file every entry under exactly one of `Added`, `Changed`, `Depr
 
 ### Requirement: Find the boundary of new work by a fixed preference order
 
-The system SHALL decide what counts as new work in this order: the most recent `## [x.y.z]` release section in `CHANGELOG.md`; in a git repository, `git log <last-tag>..HEAD --no-merges` (or commits since the date of the top release section), reading commit subjects and bodies for intent; and, when the repository is not tracked in git or its history is thin, asking the user what shipped or reading tasks that moved to `done` under `tasks/` and features that reached `done` under `docs/features/` since the last release. Where the boundary falls is stated two ways: the roll is described as gathering work "since the last recorded entry", while this preference order names only release sections, tags and dates, and no rule de-duplicates against bullets already in `## [Unreleased]`.
+The system SHALL decide what counts as new work in this order: the most recent `## [x.y.z]` release section in `CHANGELOG.md`; in a git repository, `git log <last-tag>..HEAD --no-merges` (or commits since the date of the top release section), reading commit subjects and bodies for intent; and, when the repository is not tracked in git or its history is thin, reading tasks that moved to `done` under `tasks/` and features that reached `done` under `docs/features/` since the last release, and asking the user what shipped only when those show nothing either. With no answer it SHALL write nothing into `## [Unreleased]` and report `nothing rolled: no record of shipped work since <the boundary>`, never composing entries from the conversation or from memory. Where the boundary falls is stated two ways: the roll is described as gathering work "since the last recorded entry", while this preference order names only release sections, tags and dates, and no rule de-duplicates against bullets already in `## [Unreleased]`.
 
 #### Scenario: Git repository with a previous release
 
@@ -79,7 +79,7 @@ The system SHALL decide what counts as new work in this order: the most recent `
 
 - **Given** a project that is not a git repository
 - **When** a roll runs
-- **Then** the skill asks the user what shipped, or reads `done` tasks and `done` features since the last release
+- **Then** the skill reads `done` tasks and `done` features since the last release, and asks the user what shipped only when they show nothing
 
 #### Scenario: Rolling twice before a release
 
@@ -141,7 +141,7 @@ The system SHALL trace every bullet to a real commit, closed task or shipped fea
 
 ### Requirement: Suggest a semver bump from the buckets, never apply it unconfirmed
 
-The system SHALL, for `release` without a version, suggest a major bump when Unreleased has any `Removed` entry or a breaking `Changed` entry, a minor bump when it has any `Added` entry and nothing breaking, and a patch bump when it has only `Fixed`, `Security` or `Deprecated` entries. It SHALL confirm the suggestion before writing. Where the project's version history follows its own scheme (CalVer, or 0.x where a minor bump means breaking), the system SHALL match that scheme, and ask when it is unclear.
+The system SHALL, for `release` without a version, suggest a major bump when Unreleased has any `Removed` entry or a breaking `Changed` entry, a minor bump when it has any `Added` entry and nothing breaking, and a patch bump when it has only `Fixed`, `Security` or `Deprecated` entries. It SHALL confirm the suggestion before writing, and with no answer SHALL cut nothing and report `release not cut: <x.y.z> suggested, nobody confirmed`. Where the project's version history follows its own scheme (CalVer, or 0.x where a minor bump means breaking), the system SHALL match that scheme, and ask when it is unclear; with no answer it SHALL suggest no version, cut nothing, and report the scheme as undetermined.
 
 #### Scenario: New features, nothing breaking
 
@@ -163,7 +163,7 @@ The system SHALL, for `release` without a version, suggest a major bump when Unr
 
 ### Requirement: Cut a release section with a supplied date
 
-The system SHALL cut a release by confirming the version and date, renaming `## [Unreleased]` to `## [<version>] - <YYYY-MM-DD>`, inserting a new empty `## [Unreleased]` above it, and — only when the project uses git-host compare links — pointing the `[Unreleased]` link at `v<version>...HEAD` and adding a `[<version>]` link comparing `v<prev>...v<version>`. The date SHALL come from the user, a `--date` argument or the conversation context; the skill has no clock and SHALL NOT invent one. No rule covers cutting a release from an empty `## [Unreleased]`.
+The system SHALL cut a release by settling the version (the one passed to `release`, which needs no second confirm, or the confirmed suggestion) and the date, renaming `## [Unreleased]` to `## [<version>] - <YYYY-MM-DD>`, inserting a new empty `## [Unreleased]` above it, and — only when the project uses git-host compare links — pointing the `[Unreleased]` link at `v<version>...HEAD` and adding a `[<version>]` link comparing `v<prev>...v<version>`. The date SHALL come from the user, a `--date` argument or the conversation context; the skill has no clock and SHALL NOT invent one. With none of these it SHALL ask, and with no answer cut nothing and report `release not cut: no date`. No rule covers cutting a release from an empty `## [Unreleased]`.
 
 #### Scenario: Cutting 1.4.0
 
@@ -185,7 +185,7 @@ The system SHALL cut a release by confirming the version and date, renaming `## 
 
 ### Requirement: Outward-facing release steps are offered, never run
 
-The system SHALL offer, and not run, a git tag `v<version>` and, in hybrid task mode, closing the milestone. It SHALL NOT tag or push unless the user asks.
+The system SHALL offer, and not run, a git tag `v<version>` and, in hybrid task mode, closing the milestone. It SHALL NOT tag or push unless the user asks; with no answer to the offer it SHALL tag nothing, close nothing, and report `not tagged: v<version>`.
 
 #### Scenario: Release cut, no instruction to tag
 

@@ -87,7 +87,13 @@ Before writing any code:
 - [ ] List the behaviors to test (not implementation steps)
 - [ ] Get user approval on the plan
 
-Ask: "What should the public interface look like? Which behaviors are most important to test?"
+Ask, once, with your own proposal filled in so agreeing is one word:
+
+> **I propose this public interface: <the interface>, and these behaviors to test, most important first: <list>. What should the public interface look like? Which behaviors are most important to test?**
+
+**No answer, or nobody to ask:** write no test. The interface and the priorities are the user's choice, and a test
+written against your own proposal turns it into a contract nobody agreed to. Stop before the first RED and report
+`not confirmed: <interface>; <behaviors>` as the open question that blocks the cycle.
 
 **You can't test everything.** Confirm with the user exactly which behaviors matter most. Focus testing effort on critical paths and complex logic, not every possible edge case.
 

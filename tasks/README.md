@@ -9,14 +9,14 @@ _Generated 2026-10-12 09:46. Run `/tasks triage` to refresh. **Do not hand-edit*
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 68                  |
+| todo         | —                  | —                  | 67                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 210                 |
+| done         | 4                  | 13                 | 211                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 56× P2 · 12× P3.
+`todo` by priority: 55× P2 · 12× P3.
 
 ## In progress now
 
@@ -218,8 +218,8 @@ _None_
     - [ ] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next
     - [x] TASK-297 `/feature review` sets a feature to `review` without regenerating its rollup
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (27/50 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (26/32 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (28/50 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (27/32 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [x] TASK-222 `new` and Jira import offer only P0–P2
@@ -247,7 +247,7 @@ _None_
     - [ ] TASK-298 A `/fix-next` run that cancels or blocks its task on a task branch has nowhere to commit the record
     - [ ] TASK-299 `/tasks export --to jira` never says how a task's priority reaches the ticket
     - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
-    - [ ] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
+    - [x] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
     - [x] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4
     - [ ] TASK-279 `improve-architecture`'s records line cannot say what happened when filing fails or nothing is found

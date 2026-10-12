@@ -1,7 +1,7 @@
 ---
 area: test-authoring
-generated-at: e7828fc02eb23298ab367cab0853f2c8e97c2375
-generated-on: 2026-10-07
+generated-at: 5c2c8e458c82f59aaee913ce7f0dbe8bdf4966f8
+generated-on: 2026-10-12
 sources:
   - skills/populate-tests/REFERENCE.md
   - skills/populate-tests/SKILL.md
@@ -78,7 +78,7 @@ The system SHALL exercise the real entry point the way the real consumer does. F
 
 ### Requirement: Plan the interface and the behaviours with the user before writing code
 
-The system SHALL, before writing any code, confirm with the user which interface changes are needed and which behaviours to test, in priority order. It SHALL look for deep-module opportunities, design interfaces for testability, list the behaviours rather than implementation steps, and get the user's approval of the plan. The question it puts is "What should the public interface look like? Which behaviors are most important to test?" The prose defines no outcome for the case where no answer comes.
+The system SHALL, before writing any code, confirm with the user which interface changes are needed and which behaviours to test, in priority order. It SHALL look for deep-module opportunities, design interfaces for testability, list the behaviours rather than implementation steps, and get the user's approval of the plan. The question it puts is "What should the public interface look like? Which behaviors are most important to test?" It SHALL put its own proposed interface and behaviours in that question. With no answer it SHALL write no test, stop before the first red step, and report the proposal as `not confirmed`.
 
 #### Scenario: Starting a TDD cycle
 
@@ -176,7 +176,7 @@ The system SHALL, when about to commit to an interface that has only one drafted
 
 ### Requirement: Read the testing convention before authoring
 
-The system SHALL read the project's `CLAUDE.md` § Testing first, to learn the stack, the test framework, where tests live, the layers and the done-gate. If that section is missing, it SHALL infer the stack from the repo and offer to seed the convention from the new-project template. It SHALL never write tests for code it has not read, and SHALL ground every selector, API and field in real source.
+The system SHALL read the project's `CLAUDE.md` § Testing first, to learn the stack, the test framework, where tests live, the layers and the done-gate. If that section is missing, it SHALL infer the stack from the repo and offer to seed the convention from the new-project template. With no answer it SHALL seed nothing, carry on with the inferred stack, and open its report with `§ Testing: absent, not seeded`, naming the inferred stack as unconfirmed. It SHALL never write tests for code it has not read, and SHALL ground every selector, API and field in real source.
 
 #### Scenario: No § Testing section
 

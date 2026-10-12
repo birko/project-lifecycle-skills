@@ -17,7 +17,13 @@ Invoked as `/roll-changelog [args]`:
 - `/roll-changelog release <version>` — **cut a release**: rename `## [Unreleased]` to `## [<version>] - <date>`, add a fresh empty `## [Unreleased]` on top, and update the compare links at the bottom.
 - `/roll-changelog release` — infer the next version from the Unreleased buckets (see [Version inference](#version-inference)) and confirm before cutting.
 
-If `CHANGELOG.md` doesn't exist, offer to seed one (the [Keep a Changelog](#file-shape) skeleton — the same stub [[new-project]] writes) before rolling.
+If `CHANGELOG.md` doesn't exist, offer to seed one (the [Keep a Changelog](#file-shape) skeleton — the same stub [[new-project]] writes) before rolling:
+
+> **This repo has no `CHANGELOG.md`. Shall I create one from the Keep a Changelog skeleton and roll into it?**
+
+**No answer, or nobody to ask:** create nothing, roll nothing, and report `no CHANGELOG.md: not seeded, nothing rolled`.
+Every answer-less path in this skill ends this way, in a reported state and no write: a changelog is published
+text, and a line in it nobody confirmed reads as a statement of what shipped.
 
 ## Change-type buckets (Keep a Changelog)
 
@@ -41,7 +47,11 @@ The goal is **human-facing, not a commit dump**. One bullet per user-meaningful 
 1. **Find the boundary** — what's already recorded vs. new. In order of preference:
    - The most recent `## [x.y.z]` release tag/date in `CHANGELOG.md` → gather work since then.
    - If the repo is git-tracked: `git log <last-tag>..HEAD --no-merges` (or since the date of the top release section). Read commit subjects/bodies for intent.
-   - If not git-tracked or history is thin: ask the user what shipped, or read `tasks/` for TASKs that moved to `done` and `docs/features/` for features that reached `done` since the last release.
+   - If not git-tracked or history is thin: read `tasks/` for TASKs that moved to `done` and `docs/features/` for features that reached `done` since the last release. Only when those show nothing either, ask:
+
+     > **Neither git history nor the trackers show anything shipped since <the boundary>. What shipped?**
+
+     **No answer, or nobody to ask:** write nothing into `## [Unreleased]`, and report `nothing rolled: no record of shipped work since <the boundary>`. Never compose entries from the conversation or from memory: § Conventions says *don't invent changes*, and a run with no source has nothing else to write from.
 2. **Translate to user language.** "Refactored `StoreResolver` to a strategy map" → *Changed: store backend resolution is now pluggable per-provider.* A reader of the changelog is a user or a future maintainer, not the author of the diff. Drop pure-internal churn (lint, formatting, test-only refactors) unless it changed observable behavior.
 3. **Bucket** each change into Added / Changed / Fixed / etc.
 4. **Cross-check the trackers** (don't double-count, don't miss): a feature that reached `done` in `docs/features/` and the TASKs under it are the *same* shipped work — record it once, as the user-facing capability. A `Security`/`Fixed` item that came from a Jira ticket can cite the key (`Fixed: … (SUP-1234)`) if the project links them.
@@ -49,20 +59,36 @@ The goal is **human-facing, not a commit dump**. One bullet per user-meaningful 
 
 ## Version inference
 
-When the user runs `release` without a version, suggest one by semver from the Unreleased buckets — and **confirm before writing** (never auto-bump):
+When the user runs `release` without a version, suggest one by semver from the Unreleased buckets — and **confirm before writing** (never auto-bump), with the question:
+
+> **`## [Unreleased]` holds <the non-empty buckets>, so I suggest <x.y.z>, a <major | minor | patch> bump from <previous>. Cut <x.y.z>?**
+
+**No answer, or nobody to ask:** cut nothing, and report `release not cut: <x.y.z> suggested, nobody confirmed`. The suggestion follows:
 - any `Removed` or a breaking `Changed` → **major** bump
 - any `Added` (and no breaks) → **minor** bump
 - only `Fixed` / `Security` / `Deprecated` → **patch** bump
 
-Respect a project that pins its own scheme (CalVer, 0.x where minor = breaking) — read the existing version history first and match it; ask if ambiguous.
+Respect a project that pins its own scheme (CalVer, 0.x where minor = breaking) — read the existing version history first and match it. If it does not settle the scheme, ask:
+
+> **The existing versions (<the last few>) fit both <scheme A> and <scheme B>. Which does this project use?**
+
+**No answer, or nobody to ask:** suggest no version and cut nothing, and report `release not cut: version scheme undetermined (<A> or <B>)`.
 
 ## Cut a release
 
-1. Confirm the version + today's date (the date is passed in — this skill has no clock; ask or accept a `--date`).
+1. Settle the version and the date. The version is the one passed to `release`, or the one confirmed under § Version inference; a version the user passed is their statement and needs no second confirm. The date comes from `--date` or the conversation, because this skill has no clock. With neither, ask:
+
+   > **Which date goes on <version>? (YYYY-MM-DD)**
+
+   **No answer, or nobody to ask:** cut nothing, and report `release not cut: no date`. A guessed date is an invented one.
 2. Rename `## [Unreleased]` → `## [<version>] - <YYYY-MM-DD>`.
 3. Insert a new empty `## [Unreleased]` above it.
 4. Update the reference links at the bottom (`[Unreleased]: …/compare/v<version>...HEAD` and add `[<version>]: …/compare/v<prev>...v<version>`) — only if the project uses git-host compare links.
-5. **Offer** (don't auto-run — these are outward-facing): a git tag `v<version>` and, in hybrid task mode, closing the milestone. Don't tag or push unless the user asks.
+5. **Offer** (don't auto-run — these are outward-facing): a git tag `v<version>` and, in hybrid task mode, closing the milestone. Don't tag or push unless the user asks. The offer:
+
+   > **Release <version> is written. Shall I tag it `v<version>`[ and close the milestone <name>]? Nothing is pushed either way.**
+
+   **No answer, or nobody to ask:** tag nothing, close nothing, and report `not tagged: v<version>`.
 
 ## Conventions
 
