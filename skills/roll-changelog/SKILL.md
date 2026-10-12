@@ -7,7 +7,7 @@ description: Maintain a project's CHANGELOG.md (Keep a Changelog format) — rol
 
 Keeps `CHANGELOG.md` honest and current in the [Keep a Changelog](https://keepachangelog.com) format. It rolls finished work into the `## [Unreleased]` section and, on request, cuts that section into a dated, versioned release.
 
-This is the *code* changelog (what shipped). *Why* a choice was made lives in the per-feature `decisions.md` ([[feature]] skill). A repo may ship its own project-local `roll-changelog` that shadows this one — same scope-layering as project-local `verify-conventions` variants.
+This is the *code* changelog (what shipped). *Why* a choice was made lives in the per-feature `decisions.md` ([[feature]] skill). A same-named project-local `roll-changelog` never runs on Claude Code, because the user-level copy resolves first ([[verify-conventions]] § Scope layering has the measurement). A repo that needs its own changelog process ships it under a distinct name and invokes that skill by its own name; this skill does not look for one.
 
 ## Verbs / args
 

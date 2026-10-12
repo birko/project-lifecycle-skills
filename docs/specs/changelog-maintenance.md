@@ -1,7 +1,7 @@
 ---
 area: changelog-maintenance
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: bb7f84df4060671865afecb42bec57552ed18335
+generated-on: 2026-10-12
 sources:
   - skills/roll-changelog/SKILL.md
 shaped-by: []
@@ -205,7 +205,7 @@ The system SHALL add no `Co-Authored-By:` trailer to any commit it creates, and 
 
 ### Requirement: Code changelog, not the decision ledger
 
-The system SHALL record only what shipped and leave *why* it was chosen to the per-feature `decisions.md`. It also says a repository may ship a project-local `roll-changelog` that shadows this one, the same way project-local `verify-conventions` variants work.
+The system SHALL record only what shipped and leave *why* it was chosen to the per-feature `decisions.md`. It also says a same-named project-local `roll-changelog` never runs on Claude Code, because the user-level copy resolves first, so a repository that needs its own changelog process ships it under a distinct name and invokes it by that name; this skill does not look for one.
 
 #### Scenario: A rationale in the source commit
 

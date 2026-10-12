@@ -478,7 +478,9 @@ If any fails, fix it before finishing. **That is this skill's actual contract.**
 - **No `Co-Authored-By:` trailers** in commit messages (inherited from [[tasks]] § Conventions).
 - PowerShell-compatible (no `2>/dev/null`, no inline `VAR=x cmd`).
 - Stack specifics are never hard-coded here — read them from `CLAUDE.md` § Conventions / § Testing.
-  A project needing more than that should ship a project-local skill that shadows this one.
+  A project needing more records it there, since this skill reads it. Do not ship a project-local
+  `fix-next` to override this one: on Claude Code the user-level copy resolves first, so a same-named
+  local copy never runs ([[verify-conventions]] § Scope layering has the measurement).
 
 ## Related skills
 

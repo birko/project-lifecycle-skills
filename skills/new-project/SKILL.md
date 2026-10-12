@@ -233,6 +233,6 @@ no-op.) This makes the CI gate and the lifecycle's **PROVE** leg
 - [[specs]] — the harvested-spec skill whose `docs/specs/.map.yml` anchor this scaffold seeds; `/specs init` fills the map once the project has real code.
 - [[domain]] — owns the layer's `(lazy)` rows. Nothing to create at scaffold time; each appears on first real use. Which rows those are is [LAYER.md](LAYER.md)'s to say.
 - [[grill-me]] — optional project-scope interrogation in step 2.
-- [[roll-changelog]] — the generic skill that maintains the `CHANGELOG.md` this skill seeds (a project-local variant may shadow it).
+- [[roll-changelog]] — the generic skill that maintains the `CHANGELOG.md` this skill seeds (a project-local variant needs a distinct name, because a same-named copy loses to the user-level one; [[verify-conventions]] § Scope layering).
 - [[verify-conventions]] — the generic adherence lint that reads the `## Conventions` rulebook seeded here and checks diffs against it; wired into `/tasks close` and `/feature review`.
 - [[init]] — Claude Code's built-in CLAUDE.md generator for an *existing* codebase; this skill is for *new* projects and seeds a lifecycle-aware CLAUDE.md instead.
