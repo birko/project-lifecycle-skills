@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: 55bcb9ba852099efed900af014704946f8b07071
-generated-on: 2026-10-11
+generated-at: 3d062e713bf85444423590e371de2ec49cdc6d5e
+generated-on: 2026-10-12
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md
@@ -89,7 +89,7 @@ The system SHALL ask the integration model (`pr-per-task` / `single-branch`) and
 
 ### Requirement: Optional scope grill for substantial projects
 
-The system SHALL offer, never force, a scope grill for non-trivial projects, fold resolved decisions into the README overview and the agent guide's constraints/architecture notes when accepted, and skip the offer silently for a throwaway library or a docs-only repo.
+The system SHALL offer, never force, a scope grill for non-trivial projects, fold the grill's resolved decisions into the README overview and the agent guide's constraints/architecture notes when accepted, never fold a still-open line, and name each open one in the closing checklist as an open scope question, and skip the offer silently for a throwaway library or a docs-only repo.
 
 #### Scenario: Service project
 

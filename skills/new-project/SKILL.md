@@ -65,7 +65,7 @@ Gather in one or two question batches:
 ### 2. Offer a scope grill (optional — only for substantial projects)
 
 - If the project is non-trivial (a service, a product, anything with real architecture choices), **offer** — don't force — a scope grill: "Want me to grill you on scope/architecture before scaffolding? A wrong project-level assumption is the most expensive to unwind."
-- If yes → invoke [[grill-me]] on the project scope. Fold the resolved decisions into `README.md` (overview) and `CLAUDE.md` (constraints/architecture notes).
+- If yes → invoke [[grill-me]] on the project scope. Fold its `## Resolved decisions` lines into `README.md` (overview) and `CLAUDE.md` (constraints/architecture notes). Fold nothing from `## Still open`: a recommendation there was never chosen. Name each open line in step 6's closing checklist as an open scope question.
 - For a throwaway lib or a docs-only repo, skip silently. (Per-*feature* grilling is mandatory later in [[feature]] `new`; per-*project* grilling is opt-in here.)
 
 ### 3. Scaffold the universal layer

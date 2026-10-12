@@ -29,7 +29,7 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
      | answered | `resolved → Dn`, where `Dn` is step 5's `proposed` row |
      | **deferred** (`<topic> → deferred: <unblock condition>`) | `resolved → Dn` as well: deferring is an answer, *not now*. Step 5's row for it is `proposed`, with the unblock condition in its Rationale, for `/feature decide` to stamp `deferred` |
      | **made moot** by another answer, dropped with a reason | `dropped — <the grill's reason>`, and its id removed from every other row's `blocked-by` |
-     | not reached | `open`, with its edges |
+     | not reached, or asked and not answered (both under the grill's `## Still open`) | `open`, with its edges. The grill's recommendation for an unanswered one is not a decision, so step 5 writes no row for it |
 
      Never write a moot or deferred question as `open`: it would sit on the frontier and block its dependants
      after a reset, although the grill already settled it. Never omit it either, because its edges go with it. Every row is written `claimed-by: —`; nobody holds a

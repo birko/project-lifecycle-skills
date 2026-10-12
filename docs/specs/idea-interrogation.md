@@ -1,7 +1,7 @@
 ---
 area: idea-interrogation
-generated-at: 07de65705efd05a13f9f35e12a85cbefd7482b40
-generated-on: 2026-10-06
+generated-at: 3d062e713bf85444423590e371de2ec49cdc6d5e
+generated-on: 2026-10-12
 sources:
   - skills/grill-me/SKILL.md
 shaped-by: []
@@ -161,22 +161,28 @@ The system SHALL, when a lookup finds nothing or finds answers that disagree, ma
 - **When** the next round is asked
 - **Then** it includes *"I couldn't establish Q3 — the firmware notes list two versions. Do you know which one ships?"*, and Q3 reads `open — lookup failed: <why>`
 
-### Requirement: The grill ends when nothing is unresolved, or when the user stops it
+### Requirement: The grill ends when nothing is unresolved, when the user stops it, or when nobody can answer
 
-The system SHALL end the grill when no unresolved branch remains, meaning every open question has an answer or an explicit "defer", or when the user calls it off.
+The system SHALL end the grill when no unresolved branch remains, meaning every open question has an answer or an explicit "defer", when the user calls it off, or when a round has nobody to answer it because the caller says no user is present or the runtime cannot put a question. It SHALL then neither repeat the round nor answer it itself.
 
 #### Scenario: The user calls it off
 
 - **Given** two questions are still open
 - **When** the user says to stop
-- **Then** the grill ends and emits its resolved-decisions block
+- **Then** the grill ends and emits its resolved-decisions and still-open blocks
 
-### Requirement: Close with a `## Resolved decisions` block
+#### Scenario: Nobody is present to answer
 
-The system SHALL close every grill, whether completed or called off, with a `## Resolved decisions` block holding one line per decision, in one of two shapes: `- <topic> → <choice> (<one-line rationale>)` or `- <topic> → deferred: <unblock condition>`. This block is the artifact callers consume: project scaffolding folds its lines into the README and the agent guide, and `/feature new` turns each line into a `proposed` row in `decisions.md`.
+- **Given** an unattended caller and a first round of five questions, each with a recommendation
+- **When** the round gets no answer
+- **Then** the grill ends, `## Resolved decisions` holds `- none`, and every question appears under `## Still open`, with each recommendation marked as not chosen
+
+### Requirement: Close with a `## Resolved decisions` block and a `## Still open` block
+
+The system SHALL close every grill, whether completed, called off or unanswered, with a `## Resolved decisions` block holding one line per decision, in one of two shapes: `- <topic> → <choice> (<one-line rationale>)` or `- <topic> → deferred: <unblock condition>`, followed by a `## Still open` block holding every question not settled, as `- <topic> → not answered (recommended: <recommendation>, not chosen)`, `- <topic> → not answered (lookup failed: <why>)` for a research question whose failed lookup nobody answered, or `- <topic> → not reached`. A choice SHALL be written as resolved only when the user gave it or agreed to it, and either block with nothing in it SHALL hold `- none`. These blocks are the artifact callers consume: project scaffolding folds the resolved lines into the README and the agent guide and reports the open ones, and `/feature new` turns each resolved line into a `proposed` row in `decisions.md` and writes each open one as an `open` question.
 
 #### Scenario: A completed grill
 
 - **Given** the grill resolved the storage choice and deferred the sync choice until offline use is confirmed
 - **When** it ends
-- **Then** it emits `## Resolved decisions` with `- storage → SQLite (single-user, offline)` and `- sync → deferred: offline use confirmed`
+- **Then** it emits `## Resolved decisions` with `- storage → SQLite (single-user, offline)` and `- sync → deferred: offline use confirmed`, and `## Still open` with `- none`

@@ -26,6 +26,10 @@ outside one, keep the same list in the conversation. The grill works on any plan
 - **After the replies, recompute the frontier and derive the next round from it.** Never carry the last round
   forward by habit. A question left unanswered is still on the frontier and comes back; a question an answer
   made moot is dropped, and says why.
+- **A round nobody can answer ends the grill.** When no user is present (the caller says the run is unattended,
+  or the runtime has no way to put a question), do not repeat the round and do not answer it yourself. Close as
+  § *When the grill is done* says. Your recommendations stay recommendations, and every question still on the
+  list is written as open.
 
 ## Facts are looked up; decisions are asked
 
@@ -46,12 +50,24 @@ answer → `research`; a trade-off or a preference → `decision`.
 
 ## When the grill is done — emit the resolved decisions
 
-The grill ends when no unresolved branch remains (every open question has an answer or an explicit "defer") or the user calls it off. Either way, close with a **`## Resolved decisions`** block — one line per decision:
+The grill ends when no unresolved branch remains (every open question has an answer or an explicit "defer"), when the user calls it off, or when a round has nobody to answer it (§ *Ask in rounds*). Whichever way it ends, close with a **`## Resolved decisions`** block, one line per decision, followed by a **`## Still open`** block listing every question that was not settled:
 
 ```
 ## Resolved decisions
 - <topic> → <choice> (<one-line rationale>)
 - <topic> → deferred: <unblock condition>
+
+## Still open
+- <topic> → not answered (recommended: <your recommendation>, not chosen)
+- <topic> → not answered (lookup failed: <why>)
+- <topic> → not reached
 ```
 
-This is the artifact callers consume — [[new-project]]'s scope grill folds these lines into README/CLAUDE.md, and [[feature]] `new` turns each into a `proposed` row in `decisions.md`. Without this block the interview evaporates into chat history; with it, any caller gets a stable shape.
+- **A choice goes under `## Resolved decisions` only when the user gave it or agreed to it.** A recommendation
+  nobody answered goes under `## Still open`. Callers turn every `## Resolved decisions` line into a decision,
+  so a recommendation written there becomes a decision nobody made.
+- **Always emit both blocks.** When nothing is open, `## Still open` holds the single line `- none`, and an
+  empty `## Resolved decisions` holds `- none` too. A missing block cannot be told apart from a grill that
+  forgot to write it.
+
+These blocks are the artifact callers consume — [[new-project]]'s scope grill folds the resolved lines into README/CLAUDE.md and reports the open ones, and [[feature]] `new` turns each resolved line into a `proposed` row in `decisions.md` and writes each open one as an `open` question. Without these blocks the interview evaporates into chat history; with them, any caller gets a stable shape.
