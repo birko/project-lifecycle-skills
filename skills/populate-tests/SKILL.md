@@ -43,8 +43,8 @@ in real source.
   that toolkit's own adoption doc to wire it (the project layer owns those specifics — keep this skill
   stack-agnostic). Re-running is a no-op when the harness already exists. **Read [REFERENCE.md](REFERENCE.md)
   § Adopt before wiring** — it carries the harness invariants (single runner instance, supported runtime,
-  module mode, ignores). `populate` calls `adopt` first when no harness is found, and `survey`
-  never does; a project's scaffolder can invoke it too.
+  module mode, ignores). `populate` calls `adopt` first when no harness is found, and `survey`,
+  `verify` and `ledger` never do; a project's scaffolder can invoke it too.
 - **survey** — list surfaces (from the manifest/router/endpoint map) vs what's tested; report gaps as a
   table: surface → tested? → layer. **No edits, in every case.** With no harness found (neither a test
   dir nor a runner config, the test [REFERENCE.md](REFERENCE.md) § Adopt uses), report every surface
@@ -64,9 +64,17 @@ in real source.
   check they claimed to cover.) **Run it against a disposable/seeded test
   environment, never dev or production data** — live-API/DB suites (an in-house E2E toolkit's
   CRUD flows) really create/update/delete. If only a shared/prod-ish stack is reachable, run the
-  read-only smoke and say so rather than mutating real data.
+  read-only smoke and say so rather than mutating real data. **With no harness found** (the test
+  [REFERENCE.md](REFERENCE.md) § Adopt uses), run nothing, write nothing, and end with
+  `no harness — nothing verified; run /populate-tests adopt, then populate`. Never call `adopt` from here, since
+  a harness wired by `verify` holds no test to verify. **With a harness but no test in the scope**, end with
+  `no tests in <scope> — nothing verified`. In both cases report no pass, no count and no `0 failed`: a run over
+  nothing reads as a green suite to whoever sees only the summary.
 - **ledger** — fill/refresh each surface's manual checklist: collapse generic "renders / CRUD / no
-  errors" items to `[auto]` (name the spec), keep only human-judgement as `[manual]`.
+  errors" items to `[auto]` (name the spec), keep only human-judgement as `[manual]`. An item moves to
+  `[auto]` only when the spec it names exists. **With no harness found**, move nothing to `[auto]`: write
+  every item as `[manual]` and end with `no harness — no item moved to [auto]; run /populate-tests adopt, then
+  populate`. Never call `adopt` from here either.
 
 ## Fan out for scale
 

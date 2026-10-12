@@ -1,6 +1,6 @@
 ---
 area: test-authoring
-generated-at: 5c2c8e458c82f59aaee913ce7f0dbe8bdf4966f8
+generated-at: 222c36d591ea60911e53aeca76314a0ec43c77b6
 generated-on: 2026-10-12
 sources:
   - skills/populate-tests/REFERENCE.md
@@ -196,7 +196,7 @@ The system SHALL populate coverage in three layers. Layer 1 is generated smoke o
 
 ### Requirement: Five modes with survey as the default
 
-The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [scope]`, and a bare invocation SHALL run `survey`. `survey` SHALL list surfaces against what is tested, as a table of surface → tested? → layer, and SHALL make no edits in any case. With no harness found (neither a test directory nor a runner config), it SHALL report every surface untested and end with `no harness — run /populate-tests adopt to wire one`. Of the five modes, only `populate` SHALL call `adopt` first when no harness is found.
+The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [scope]`, and a bare invocation SHALL run `survey`. `survey` SHALL list surfaces against what is tested, as a table of surface → tested? → layer, and SHALL make no edits in any case. With no harness found (neither a test directory nor a runner config), it SHALL report every surface untested and end with `no harness — run /populate-tests adopt to wire one`. Of the five modes, only `populate` SHALL call `adopt` first when no harness is found. With no harness, `verify` SHALL run nothing, write nothing, and end with `no harness — nothing verified; run /populate-tests adopt, then populate`; with a harness but no test in the scope it SHALL end with `no tests in <scope> — nothing verified`; in neither case SHALL it report a pass, a count or `0 failed`. With no harness, `ledger` SHALL move no item to `[auto]`, write every item as `[manual]`, and end with `no harness — no item moved to [auto]; run /populate-tests adopt, then populate`.
 
 #### Scenario: Bare invocation in a repo with a harness
 
@@ -336,7 +336,7 @@ The system SHALL require a bug reported from production to get a regression spec
 
 ### Requirement: The manual ledger keeps only human judgement
 
-The system SHALL keep one checklist per surface in the form `- [ ] <surface> · _[auto] <spec> · [manual] <residue>_`. Generic "loads / renders / CRUD / no console errors" items SHALL be collapsed to `[auto]` with the covering spec named, and only what a bot cannot judge SHALL stay `[manual]`. A ledger file with no `[manual]` items left may be reduced to a one-line pointer to its spec.
+The system SHALL keep one checklist per surface in the form `- [ ] <surface> · _[auto] <spec> · [manual] <residue>_`. Generic "loads / renders / CRUD / no console errors" items SHALL be collapsed to `[auto]` with the covering spec named, and only when that spec exists, and only what a bot cannot judge SHALL stay `[manual]`. A ledger file with no `[manual]` items left may be reduced to a one-line pointer to its spec.
 
 #### Scenario: Refreshing a ledger
 
