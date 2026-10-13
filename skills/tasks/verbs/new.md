@@ -168,7 +168,12 @@ Interactive scaffold of a new task tree node.
      only). Same rule as `{{KIND}}`/`{{SOURCE}}`: an ordinary story has no ladder position, and a
      rendered-but-empty `theme:` would read as a declared value rather than an absent one
    - `{{OWNER}}` — human/ai/both (epic only; default `human`)
-   - `{{AFFECTS}}` — `[]` unless the EPIC is cross-cutting in an aggregator repo of a polyrepo family (see SKILL.md § Shape detection); then ask the user which sub-projects it affects and write the list
+   - `{{AFFECTS}}` — `[]` unless the EPIC is cross-cutting in an aggregator repo of a polyrepo family (see SKILL.md § Shape detection); then ask the user which sub-projects it affects and write the list. Put this question:
+
+     > **Which sub-projects does "<title>" affect?** Give their folder names, or `none`.
+
+     **Unless a caller set it.** **No answer, or nobody to ask:** write `[]` and mark `affects` (§ *Unanswered questions*). The template
+     always renders the line, and a bare `[]` reads as "affects nothing". An answer of `none` writes `[]`, unmarked.
    - `{{TITLE}}` — the title from step 3
 
 9. **For task: offer to draft body sections** (Context / Acceptance / Out-of-scope / **Human test plan**) using any context already in the conversation. User reviews/edits before writing. If you can't draft confidently, leave the templates' placeholder copy and tell the user to fill it in.
@@ -230,7 +235,8 @@ a decision.
 - **The mark** is one line directly under the new file's `# Heading`, written only when something was
   inferred, naming every such field:
   `> Filed with nobody to answer — inferred, not chosen: <fields>.`
-  Step 13 repeats it. Whoever confirms the values deletes the line.
+  Step 13 repeats it, and [pick](pick.md) step 9 prints it again when the task is picked with `/tasks pick`. Whoever
+  confirms the values deletes the line.
 - **A field a calling verb sets is not asked for here and never marked.** That covers a value passed as an
   argument, one the caller pre-fills or derives by its own rules, one of its stated defaults, and the body
   sections a step-0 flag drafts. A rule chose it, not a guess. Each question below runs only for a field
@@ -288,7 +294,7 @@ Runs once per project, when `.config.yml` is missing.
 
 - **Slug collision** — if the slugged folder/file already exists, append `-2`, `-3`, etc. (not `-002` — keep it short).
 - **No epics yet, user wants story/task** — prompt "no epics — create one first?" and chain into `/tasks new epic` if confirmed.
-- **Cross-cutting EPIC in an aggregator repo** — when the project's CLAUDE.md designates this repo as the polyrepo family's aggregator (see SKILL.md § Shape detection), a new EPIC here is cross-cutting. Ask which sub-projects it affects; write the list to `affects:`.
+- **Cross-cutting EPIC in an aggregator repo** — when the project's CLAUDE.md designates this repo as the polyrepo family's aggregator (see SKILL.md § Shape detection), a new EPIC here is cross-cutting: step 8's `{{AFFECTS}}` question.
 - **Existing `tasks/` but no `.config.yml`** — skill was previously used in a different version. Run mode detection to backfill.
 - **Parent is `done` or `cancelled`** — step 4's table: a `done` one takes the child and reopens, a `cancelled` one asks.
 - **`_loose/` doesn't exist yet** — create it when first loose task is added; never create it eagerly.

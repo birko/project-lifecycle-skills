@@ -301,6 +301,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 8. **Regenerate dashboard** — chain to triage logic.
 
 9. **Hand off to work**:
+   - **If the task file carries the inferred-values line** (`> Filed with nobody to answer — inferred, not
+     chosen: <fields>.`, written by [new.md](new.md) § *Unanswered questions*) → print it first, as
+     `⚠ TASK-NNN was filed with nobody to answer — <fields> inferred, not chosen. Check them before relying
+     on them, and delete the line once they are confirmed.` A parent or priority nobody chose has already
+     placed and ranked this task, so the person starting it is the first who can catch a wrong guess.
    - If `assignee:` is a specific agent name (e.g. `CSharpCodingAgent`) → suggest spawning that agent via the Agent tool with the task body as the brief.
    - If `assignee: ai` (generic) → present the task body as the work brief; this conversation can begin work directly.
    - If `assignee: human` → print the task body and wait.
