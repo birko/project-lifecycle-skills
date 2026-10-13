@@ -1,22 +1,22 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
+> ⚠ **Feature drift (1):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-10-13 16:32. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-13 17:59. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 65                  |
+| todo         | —                  | —                  | 69                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 226                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 55× P2 · 10× P3.
+`todo` by priority: 56× P2 · 13× P3.
 
 ## In progress now
 
@@ -188,7 +188,7 @@ _None_
     - ~~TASK-101 Two rows read one fact in opposite directions, because "a working runner" names no bar~~
     - [ ] TASK-102 Nothing says whether a step-3 fill offer joins step 2's round or comes after it
     - ~~TASK-112 The adopter's report list gained no entry for the `not applicable` state~~
-  - (epic level) — 6/9 done
+  - (epic level) — 6/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
@@ -200,14 +200,14 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (19/24 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (19/28 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 8/9 done
+  - (epic level) — 16/23 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
@@ -215,7 +215,7 @@ _None_
     - [x] TASK-292 An in-place `close` regenerates `tasks/README.md` after its own commit and leaves it uncommitted
     - [x] TASK-294 `/feature review` writes its result into `decisions.md` and leaves it uncommitted
     - [x] TASK-295 `/feature review` is read two ways on a `done` task whose `N/A` test plan turns out to be false
-    - [x] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next
+    - [x] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next · FEATURE-001
     - [x] TASK-297 `/feature review` sets a feature to `review` without regenerating its rollup
     - [x] TASK-303 `/feature review` parks a `done` task at `verify` under a STORY that already reads `done`
     - [ ] TASK-304 `pick` regenerates `tasks/README.md` on the default branch when the default branch has an upstream
@@ -227,6 +227,10 @@ _None_
     - [x] TASK-310 `/tasks new`'s `affects:` question has no answer-less path, and nothing reads the "inferred, not chosen" mark
     - [x] TASK-311 The "inferred, not chosen" mark reaches no reader through `/fix-next`, nor on an epic or story
     - [x] TASK-312 `/tasks pick` step 6's stale-plan offer has no question text
+    - [ ] TASK-313 A new task under an open story whose epic is cancelled leaves open work under the cancelled epic, unreported
+    - [ ] TASK-314 SKILL.md re-checks the epic only above a reopened story, while new.md checks it either way
+    - [ ] TASK-315 move.md never states the reopen it performs
+    - [ ] TASK-316 fix-next's tie scenario never states what happens when nobody answers
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (35/53 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (34/35 done)
@@ -253,18 +257,18 @@ _None_
     - [x] TASK-258 A question the grill drops or defers during `/feature new` has nowhere to land in the table
     - [x] TASK-259 `grill-me` has no answer-less path: with nobody to answer, it neither ends nor reports
     - [x] TASK-272 `/populate-tests survey` promises no edits, but chains `adopt`, which writes files
-    - [x] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
-    - [ ] TASK-298 A `/fix-next` run that cancels or blocks its task on a task branch has nowhere to commit the record
-    - [x] TASK-299 `import --jira` ignores the `priority/<value>` label export sends, so a round trip changes the priority
-    - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
-    - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
-    - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
-    - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
     - [x] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
     - [x] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4
     - [x] TASK-279 `improve-architecture`'s records line cannot say what happened when filing fails or nothing is found
     - [x] TASK-280 `improve-architecture`: the item 4 gate maps no result, and a held move whose ADR is gone has no outcome
+    - [x] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
+    - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
+    - [ ] TASK-298 A `/fix-next` run that cancels or blocks its task on a task branch has nowhere to commit the record
+    - [x] TASK-299 `import --jira` ignores the `priority/<value>` label export sends, so a round trip changes the priority
+    - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
+    - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
+    - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
   - STORY-024 Lists, labels and references that no longer match what they describe — planned (1/18 done)
     - [ ] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [ ] TASK-225 Two sentences still describe the task states before FEATURE-003
@@ -292,14 +296,14 @@ _None_
 
 - EPIC-009 Specs learn from OpenSpec — planned (0/7 tasks done)
   - STORY-026 The regen review reads one requirement at a time, and loses nothing silently — planned (0/5 done)
-    - [ ] TASK-285 `/specs regen`'s review lists changes per requirement, with renames shown FROM → TO
-    - [ ] TASK-286 `/specs regen` names every scenario a regeneration dropped
-    - [ ] TASK-287 `/specs regen` flags a requirement it writes or rewrites past ~500 characters
-    - [ ] TASK-288 `/specs regen --all` writes each area as soon as its review is accepted
-    - [ ] TASK-289 `/specs regen` keeps a spec file's existing line endings
+    - [ ] TASK-285 `/specs regen`'s review lists changes per requirement, with renames shown FROM → TO · FEATURE-004
+    - [ ] TASK-286 `/specs regen` names every scenario a regeneration dropped · FEATURE-004
+    - [ ] TASK-287 `/specs regen` flags a requirement it writes or rewrites past ~500 characters · FEATURE-004
+    - [ ] TASK-288 `/specs regen --all` writes each area as soon as its review is accepted · FEATURE-004
+    - [ ] TASK-289 `/specs regen` keeps a spec file's existing line endings · FEATURE-004
   - STORY-027 Checks that do not depend on anyone running the skill — planned (0/2 done)
-    - [ ] TASK-290 `skills-lint.sh` fails a structurally broken spec file
-    - [ ] TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release
+    - [ ] TASK-290 `skills-lint.sh` fails a structurally broken spec file · FEATURE-004
+    - [ ] TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release · FEATURE-004
 
 ## Loose tasks
 

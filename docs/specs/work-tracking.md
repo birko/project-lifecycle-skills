@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 0977261b5dfe2347f10de6b5989ac1b99331a2df
+generated-at: 6681d3faa3dcc2d9dce9d3b4875c42c501e58b35
 generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
@@ -29,7 +29,7 @@ sources:
   - skills/tasks/verbs/triage.md
 shaped-by: [FEATURE-001, FEATURE-002, FEATURE-003]
 shaped-by-derived: true
-shaped-by-unresolved: 5
+shaped-by-unresolved: 12
 ---
 
 # The developer-facing backlog — epics, stories and tasks, with a gate before done
@@ -238,6 +238,50 @@ The system SHALL create a node by asking its level (with a decision test when un
 - **When** the task is created
 - **Then** no plan is drafted and the confirmation says to run `plan` later
 
+### Requirement: Creation questions and the inferred-values mark
+
+The system SHALL, when creating a node, put a stated question for each of the level, the title, the parent, a task's priority and assignee, the offer to draft a task's body sections, and an aggregator epic's `affects:` list, asking only for a field no calling verb has set. With no answer, or nobody to ask, it SHALL give each field its step's fallback — the level from the decision test, a short noun phrase from the request as the title, the candidate that owns the subject as the parent (for a task, the loose folder when none clearly does), `P1` and `ai`, the body sections drafted only when the request supports it (otherwise left as placeholders and reported unfilled), and `[]` for `affects:` — and SHALL write one line directly under the new file's heading, `> Filed with nobody to answer — inferred, not chosen: <fields>.`, naming every inferred field, repeated in the confirmation and written only when something was inferred. A field a calling verb set — an argument, a value it pre-filled or derived by its own rules, one of its stated defaults, or sections a flag drafted — SHALL never be marked, and an `affects` answer of `none` writes `[]` unmarked. A story whose epic nobody chose and that no epic clearly owns SHALL NOT be created, and the run reports `not created: no epic owns "<title>"`. Whoever confirms the values deletes the line.
+
+#### Scenario: Task filed with nobody to answer
+
+- **Given** `/tasks new task` run with nobody to answer, for a request one existing story clearly owns
+- **When** the task is written
+- **Then** it is filed under that story at `P1`, assigned to `ai`, and the line under its heading names the title, parent, priority and assignee as inferred, not chosen
+
+#### Scenario: Story nobody can place
+
+- **Given** `/tasks new story` run with nobody to answer, for a request no existing epic owns
+- **When** the parent question goes unanswered
+- **Then** no story is created and the run reports that no epic owns it
+
+#### Scenario: Aggregator epic with no answer about its sub-projects
+
+- **Given** a new epic in a polyrepo aggregator repo and nobody to answer which sub-projects it affects
+- **When** the epic is written
+- **Then** it reads `affects: []` and its inferred-values line names `affects`
+
+### Requirement: New work under a closed container
+
+The system SHALL list every candidate parent whatever its status, marking a `done` one as reopened if chosen and a `cancelled` one as won't-do, and SHALL file new work under the container that owns it even when that container is `done`, never in the loose folder because of a parent's status. When an open item is created under a `done` parent, or under a `cancelled` one the user chose to reopen, the parent SHALL be set to `in-progress` in the same change, with a dated `> Reopened` line under its heading (ending `(placement inferred — see <new id>)` when the parent was inferred), and the reopen reported; the epic above a parent story SHALL be checked the same way whether or not the story was reopened. A `cancelled` parent, chosen or inherited from a caller, SHALL be asked about first; with no answer it is not reopened, the item is filed under the nearest ancestor that is not cancelled (a `done` one taking it and reopening), else in the loose folder — where a finding gets a minted `FIELD-NNN` — and the run reports where it went and the `move` command that would reopen the cancelled parent. A story under a `cancelled` epic with no answer SHALL NOT be created. A new item that is itself `done` or `cancelled` reopens nothing.
+
+#### Scenario: Task filed under a done story
+
+- **Given** `STORY-001` reads `done` and owns the subject of a new task
+- **When** the task is created under it
+- **Then** the task is filed in `STORY-001`, the story reads `in-progress` with a dated `> Reopened` line, its epic is checked the same way, and the confirmation reports `STORY-001 reopened: <new id> is now todo`
+
+#### Scenario: Cancelled parent with nobody to answer
+
+- **Given** a task spawned from an origin under `STORY-014`, which reads `cancelled`, inside the open epic `EPIC-002`
+- **When** nobody answers whether to reopen `STORY-014`
+- **Then** the new task is filed under `EPIC-002`, `STORY-014` stays `cancelled`, and the report names `/tasks move <new id> --to STORY-014` as the way to reopen it
+
+#### Scenario: Closed issue imported under a done story
+
+- **Given** a closed issue imported as a `done` task under a `done` story
+- **When** the task is written
+- **Then** the story stays `done`
+
 ### Requirement: Tasks born from findings
 
 The system SHALL, on `new --from-review <ids>`, set `findings:` to those ids and write each finding's evidence into the task's Context so it stands alone, drafting acceptance criteria from what must hold once fixed. On `new --from-field` it SHALL mint the next tree-wide `FIELD-NNN` (`FIELD-001` when no copy of the tree holds one), set it as the task's only finding, write the field evidence into Context, and report the minted id and that the task is now in the defect drain's pool. For a defect already filed without an id, it SHALL run only the mint, append the id to that task's existing `findings:` and report it, and SHALL NOT create a file, redraft the task's Context or criteria, regenerate the dashboard or draft a plan.
@@ -288,7 +332,7 @@ The system SHALL cut work into vertical tasks that each pass three hard checks �
 
 ### Requirement: Picking a task
 
-The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn.
+The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields.
 
 #### Scenario: Debt nudge
 
@@ -313,6 +357,18 @@ The system SHALL list `todo` tasks matching the filters (priority, assignee, epi
 - **Given** `mode: local` and a task carrying `github-issue: 42` from when the repo was hybrid
 - **When** the task is picked
 - **Then** no `gh` command runs and the hand-off prints `github-issue: #42 not fetched — mode: local`
+
+#### Scenario: Stale plan with nobody to answer
+
+- **Given** a task whose plan predates changes to files it references
+- **When** it is picked and nobody answers the replan question
+- **Then** the plan is kept and the hand-off says `plan kept: it predates changes to <paths> — may be stale`
+
+#### Scenario: Picking a task filed with inferred values
+
+- **Given** a task whose file carries `> Filed with nobody to answer — inferred, not chosen: parent, priority.`
+- **When** it is picked
+- **Then** the hand-off first prints a warning that its parent and priority were inferred, not chosen, and should be checked before relying on them
 
 ### Requirement: Task branch per integration policy
 
@@ -370,7 +426,7 @@ The system SHALL treat a worktree workspace as having an upstream whenever the d
 
 ### Requirement: Read-only view of a node
 
-The system SHALL print a task, story or epic by id — header with parent chain, a metadata line (status with any blocked reason, priority, assignee, created, links and dependencies) and its body sections, or a container's children, recursing with `--tree` — without changing status, writing the dashboard or spawning agents, and SHALL end with a level-appropriate next-step hint.
+The system SHALL print a task, story or epic by id — header with parent chain, a metadata line (status with any blocked reason, priority, assignee, created, links and dependencies) and its body sections, or a container's children, recursing with `--tree` — without changing status, writing the dashboard or spawning agents, and SHALL end with a level-appropriate next-step hint. At every level, a file carrying the inferred-values line SHALL have it printed once, directly under the header, as `⚠ inferred, not chosen: <fields> — confirm them, then delete the line`, and left out of the body below; an epic's `affects:` list SHALL be shown when non-empty or when the line names `affects`, with `(inferred)` appended in that case.
 
 #### Scenario: Unplanned task shown
 
@@ -378,9 +434,15 @@ The system SHALL print a task, story or epic by id — header with parent chain,
 - **When** the user runs `/tasks show TASK-021`
 - **Then** the task is printed with a hint to run `plan` and a hint to pick it, and no file changes
 
+#### Scenario: Epic with an inferred empty affects list
+
+- **Given** an epic reading `affects: []` whose inferred-values line names `affects`
+- **When** it is shown
+- **Then** the warning appears once under the header and the `affects:` list is printed empty with `(inferred)` appended
+
 ### Requirement: Spawning discovered work
 
-The system SHALL, when work outside the current task's acceptance criteria surfaces, offer to spawn it unprompted after a scope test (in scope or a one-line incidental is just done; torn spawns). It SHALL route a new capability to the feature lifecycle and an overturned decision to a decision change rather than mint a task; otherwise create the task under the origin's story, else its epic, else loose — stopping, when the discovery is a defect (raised by a review pass or not), to put it in a pool instead of leaving it loose without an id: by carrying its finding id, minting one through `new --from-field` for a defect with no pass behind it, or moving it under a review-intake epic, while work that is not a defect stays loose — inheriting feature and assignee, with Context naming what, where and the origin. It SHALL then add a `Deferred to TASK-NNN` line to the origin's out-of-scope, rewrite a displaced plan step in place to point at the new id, wire dependencies, reconcile the feature ledger (a new `proposed` row when no decision covers it), regenerate the dashboard, and return to the origin.
+The system SHALL, when work outside the current task's acceptance criteria surfaces, offer to spawn it unprompted after a scope test (in scope or a one-line incidental is just done; torn spawns). It SHALL route a new capability to the feature lifecycle and an overturned decision to a decision change rather than mint a task; otherwise create the task under the origin's story, else its epic, else loose — stopping, when the discovery is a defect (raised by a review pass or not), to put it in a pool instead of leaving it loose without an id: by carrying its finding id, minting one through `new --from-field` for a defect with no pass behind it, or moving it under a review-intake epic, while work that is not a defect stays loose — inheriting feature and assignee, with Context naming what, where and the origin. A `done` origin story or epic SHALL still be the parent, reopened by creation. Before creating, it SHALL ask one question naming the parent, priority and assignee it will use; with no answer, `close --unattended` included, it SHALL go ahead with those defaults, which are its own rules and never marked as inferred. It SHALL then add a `Deferred to TASK-NNN` line to the origin's out-of-scope, rewrite a displaced plan step in place to point at the new id, wire dependencies, reconcile the feature ledger (a new `proposed` row when no decision covers it), regenerate the dashboard, and return to the origin.
 
 #### Scenario: Refactor exposed mid-work
 
@@ -400,6 +462,12 @@ The system SHALL, when work outside the current task's acceptance criteria surfa
 - **When** it is spawned
 - **Then** it is created through `/tasks new task --from-field`, so it carries a `FIELD-NNN` and is in the drain's pool, while a cleanup found the same way would stay loose with no id
 
+#### Scenario: Spawn with nobody to confirm
+
+- **Given** a spawn during an unattended close
+- **When** nobody answers the confirmation question
+- **Then** the task is created with the origin's parent, the default priority and the inherited assignee, and its file carries no inferred-values line for them
+
 ### Requirement: Scope escalation of the task in hand
 
 The system SHALL, when a task's own subject measures larger than filed, sweep without asking when it is a wider population or a higher altitude of the same fix, and stop and ask when it is a different problem — after finishing every covered part, recording the measurement as numbers in the task, filing the residue as its own task, and leaving the unmet criterion unticked as `⚠ NOT MET — split to TASK-NNN`.
@@ -412,7 +480,7 @@ The system SHALL, when a task's own subject measures larger than filed, sweep wi
 
 ### Requirement: Filing a review pass
 
-The system SHALL turn a review pass's findings into one epic stamped `kind: review-intake` with its `source:`, one story per theme that received findings (each stamped with its ladder slug in `theme:`), and one task per group of findings sharing a root cause, each created through `new --from-review --no-plan` and prioritised by severity. The epic's `source:` SHALL always name the pass — the skill that ran it, or the words naming it where no skill ran — followed by any report path, PR, commit or date, with each entry naming its own pass when several passes share the epic. Each finding SHALL get a source-prefixed id (`CR`, `SEC`, `SH`, `VC`, `VI`, `IA`, `DRILL`; `FIELD` belongs to `new`), numbered within the pass or continuing an existing intake epic's numbering under `--epic`. Not-a-defect findings SHALL be dropped with the reason recorded on the epic; findings needing a decision go to the feature lifecycle; duplicates link to the existing task. A finding SHALL never be filed as a bare checklist line. One or two findings, none dropped, SHALL be redirected to `spawn` or `new` — except from the `IA` pass, which always gets its epic. A pass that dropped any finding SHALL get its epic whatever its size, even when no task is filed; such an epic is created `done`, and a later pass filed into it with `--epic` that files tasks SHALL set it back to `in-progress` in the same change. The `IA` pass SHALL file each re-run as a new epic rather than into the earlier one, restarting its finding numbers. The report's drain hint SHALL be omitted when no task was filed.
+The system SHALL turn a review pass's findings into one epic stamped `kind: review-intake` with its `source:`, one story per theme that received findings (each stamped with its ladder slug in `theme:`), and one task per group of findings sharing a root cause, each created through `new --from-review --no-plan` and prioritised by severity. The epic's `source:` SHALL always name the pass — the skill that ran it, or the words naming it where no skill ran — followed by any report path, PR, commit or date, with each entry naming its own pass when several passes share the epic. Each finding SHALL get a source-prefixed id (`CR`, `SEC`, `SH`, `VC`, `VI`, `IA`, `DRILL`; `FIELD` belongs to `new`), numbered within the pass or continuing an existing intake epic's numbering under `--epic`. Not-a-defect findings SHALL be dropped with the reason recorded on the epic; findings needing a decision go to the feature lifecycle; duplicates link to the existing task. A finding SHALL never be filed as a bare checklist line. One or two findings, none dropped, SHALL be redirected to `spawn` or `new` — except from the `IA` pass, which always gets its epic. A pass that dropped any finding SHALL get its epic whatever its size, even when no task is filed; such an epic is created `done`, and a later pass filed into it with `--epic` that files tasks SHALL set it back to `in-progress` in the same change, with a dated `> Reopened` line. The `IA` pass SHALL file each re-run as a new epic rather than into the earlier one, restarting its finding numbers. The report's drain hint SHALL be omitted when no task was filed.
 
 #### Scenario: Pass with a false positive
 
@@ -582,7 +650,7 @@ The system SHALL, after a close commit on `task/TASK-NNN` that was decided as me
 
 ### Requirement: Unattended close contract
 
-The system SHALL, under `close --unattended`, ask nothing at any step: refuse a closed or blocked task, print the CI line without asking, resolve an unfilled test plan itself, push and open the PR when parking at `verify`, merge at the merge decision, spawn every work bullet (treating unclassifiable bullets as work, with "decided not to do" unavailable), commit with explicit staging, skip the clean-tree reference prompt, skip the spec regen when references are missing, and skip an unauthenticated Jira step and report it. Every step that could ask SHALL have a defined unattended row.
+The system SHALL, under `close --unattended`, ask nothing at any step: refuse a closed or blocked task, print the CI line without asking, resolve an unfilled test plan itself, push and open the PR when parking at `verify`, merge at the merge decision, spawn every work bullet (treating unclassifiable bullets as work, with "decided not to do" unavailable) with each of the spawn's own questions taking its answer-less path — the spawn's defaults standing unmarked, any other field marked as inferred, and a `cancelled` parent left cancelled — commit with explicit staging, skip the clean-tree reference prompt, skip the spec regen when references are missing, and skip an unauthenticated Jira step and report it. Every step that could ask SHALL have a defined unattended row.
 
 #### Scenario: Drain-driven close
 
@@ -636,7 +704,7 @@ The system SHALL close a story or epic only when every child task (and, for an e
 
 ### Requirement: Parents rolled up after child changes
 
-The system SHALL, after any child status or placement change, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container.
+The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container.
 
 #### Scenario: Last task cancelled
 

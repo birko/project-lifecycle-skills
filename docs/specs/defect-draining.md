@@ -1,12 +1,12 @@
 ---
 area: defect-draining
-generated-at: c447ce2a1ea7fa8c9f86ce58adef61d1e2a16b81
-generated-on: 2026-10-11
+generated-at: 6681d3faa3dcc2d9dce9d3b4875c42c501e58b35
+generated-on: 2026-10-13
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
 shaped-by-derived: true
-shaped-by-unresolved: 7
+shaped-by-unresolved: 12
 ---
 
 # Working a filed review backlog down, one defect per run, without supervision
@@ -251,7 +251,7 @@ The system SHALL walk down the ranking to the first unblocked task, writing `ski
 
 ### Requirement: The pick is written to disk before any code is read
 
-The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task's frontmatter, append a progress log whose first line is `- step 2 — picked; ranked above <runner-up> because <reason>`, and move the task from `todo` to `in-progress`, cutting the task branch on a pull-request-per-task project; under worktree workspaces it SHALL always take the pick verb's blank-answer branch for the root question and SHALL write the two lines where they ride in the pick commit — the main copy with no upstream, the worktree with an upstream.
+The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task's frontmatter, append a progress log whose first line is `- step 2 — picked; ranked above <runner-up> because <reason>` — ending, after any tie note, `; inferred, not chosen: <fields>` when the task file carries the task tracker's inferred-values line — and move the task from `todo` to `in-progress`, cutting the task branch on a pull-request-per-task project; under worktree workspaces it SHALL always take the pick verb's blank-answer branch for the root question and SHALL write the two lines where they ride in the pick commit — the main copy with no upstream, the worktree with an upstream.
 
 #### Scenario: Worktree pick with no upstream
 
@@ -264,6 +264,12 @@ The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task
 - **Given** a project declaring worktree workspaces whose default branch tracks a remote
 - **When** TASK-1011 is picked
 - **Then** the two lines are written in the worktree and ride in the pick commit on the task branch
+
+#### Scenario: The picked task was filed with inferred values
+
+- **Given** TASK-1012's file carries `> Filed with nobody to answer — inferred, not chosen: parent, priority.`
+- **When** TASK-1012 is picked
+- **Then** the first progress-log line ends `; inferred, not chosen: parent, priority`, after any tie note
 
 ### Requirement: Every step appends a progress line
 
@@ -387,7 +393,7 @@ The system SHALL treat a run that cancels its task as not a defect, blocks it on
 
 ### Requirement: One defect per bare run; loop continues until a stopping point
 
-The system SHALL stop after one defect on a bare invocation; with `--loop` it SHALL return to pool building unless context is nearly exhausted, the pool is empty, or a scope-escalation question or a decision only the user can make is pending — the verification-debt offer and the tie question never count as pending; with `--epic` it SHALL restrict the pool to that epic; and in every mode it SHALL name the next pick.
+The system SHALL stop after one defect on a bare invocation; with `--loop` it SHALL return to pool building unless context is nearly exhausted, the pool is empty, or a scope-escalation question or a decision only the user can make is pending — the verification-debt offer, the tie question and the cancelled-parent question a spawn can reach never count as pending; with `--epic` it SHALL restrict the pool to that epic; and in every mode it SHALL name the next pick.
 
 #### Scenario: Bare invocation
 
@@ -401,15 +407,27 @@ The system SHALL stop after one defect on a bare invocation; with `--loop` it SH
 - **When** step 9 is reached
 - **Then** the run stops, waits for the answer, and names the next pick
 
+#### Scenario: A spawn meets a cancelled parent under the loop
+
+- **Given** `--loop`, and a spawn during TASK-1092's run would file under a cancelled story, so the task tracker asks whether to reopen it and nobody answers
+- **When** step 9 is reached
+- **Then** that question is not pending, the loop returns to pool building, and the next pick is named
+
 ### Requirement: The final report and a verified-safe reset
 
-The system SHALL end with a short report giving what was broken in one context-free sentence, the step-6 split as numbers, everything flagged and not fixed — including every blocked pool task with its reason, a red `ci:` line from the close, quoted, and every task id the close step spawned from its out-of-scope sweep, by id and subject — and the next pick; and before reporting SHALL confirm that every touched repository's working tree is clean, that the task file alone tells the whole story, and that nothing learned lives only in the conversation, fixing any failure first.
+The system SHALL end with a short report giving what was broken in one context-free sentence, the step-6 split as numbers, everything flagged and not fixed — including every blocked pool task with its reason, a red `ci:` line from the close, quoted, every task id the close step spawned from its out-of-scope sweep, by id and subject, and the picked task's inferred fields when step 2 logged any — and the next pick; and before reporting SHALL confirm that every touched repository's working tree is clean, that the task file alone tells the whole story, and that nothing learned lives only in the conversation, fixing any failure first.
 
 #### Scenario: Close spawned follow-ups
 
 - **Given** close's out-of-scope sweep spawned TASK-1100 while closing TASK-1099, and TASK-1101 in the pool is blocked
 - **When** the final report is written
 - **Then** it lists TASK-1100 with its subject and TASK-1101 with its block reason
+
+#### Scenario: The pick's values were inferred
+
+- **Given** step 2 logged `; inferred, not chosen: parent` for TASK-1102
+- **When** the final report is written
+- **Then** it names TASK-1102's inferred parent among the things flagged and not fixed
 
 #### Scenario: Uncommitted work remains
 
