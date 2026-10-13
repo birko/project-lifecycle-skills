@@ -218,8 +218,8 @@ different source of work.
   rejection, and a rejection with no home is raised again by the next pass. An epic that files no task is a
   record, not a backlog: pass `{{STATUS}}` = `done` when chaining [new.md](new.md) for it, or it reads
   `planned` over no children forever. **A later pass filed into it with `--epic` that files tasks re-opens
-  it**: set it to `in-progress` in the same change, the parent rollup [[tasks]] § *Lifecycle* requires
-  whenever a child changes.
+  it**: [new.md](new.md) step 10 sets it to `in-progress` in the same change, with its dated `> Reopened`
+  line, per [[tasks]] § *Roll status up to parents*.
 - **Findings span several existing epics' areas** — still file them under the review epic. The pass is
   the unit: "how much of the audit is left?" must stay answerable, and it isn't once findings scatter
   across subject epics. Cross-reference the subject epic in each task's Context.

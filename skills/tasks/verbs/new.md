@@ -74,6 +74,34 @@ Interactive scaffold of a new task tree node.
 4. **Ask for parent** (story/task only):
    - **story** → list existing epics with their IDs + titles, user picks one (epic must exist; if none, propose `/tasks new epic` first).
    - **task** → list epics and stories under each. User picks story ID, **or** epic ID for a direct-child task, **or** "none" to place in `_loose/`.
+   - **List every candidate whatever its status, and mark the closed ones.** Placement follows ownership,
+     not status:
+
+     | Candidate reads | Show it as | When chosen |
+     |---|---|---|
+     | `planned` / `in-progress` | plain | file under it |
+     | `done` | `EPIC-009 <title> (done — choosing it reopens it)` | file under it; step 10 reopens it |
+     | `cancelled` | `STORY-014 <title> (cancelled — won't-do)` | put the question below |
+
+     **`done` is not a reason to pick `none`.** A done container that owns the work takes it and reopens
+     ([SKILL.md](../SKILL.md) § *Roll status up to parents*). `_loose/` would lose the placement and leave
+     the task unranked.
+
+     **A `cancelled` candidate** — chosen, or inherited from a caller such as [spawn](spawn.md). Put this question:
+
+     > **STORY-NNN "<title>" is cancelled (won't-do). File the new item under it and reopen it, or file it elsewhere?**
+     > · **Reopen and file here** — it goes back to `in-progress`.
+     > · **File under <nearest ancestor that is not cancelled, or `_loose/`>** — the cancel stands.
+
+     **No answer, or nobody to ask:** do not reopen. File under the nearest ancestor that is not cancelled
+     (the epic above a cancelled story; a `done` one takes it and reopens, as above), else `_loose/`, and report
+     `STORY-NNN is cancelled — <new id> filed under <where>; nothing chose to reopen it. /tasks move <new id> --to STORY-NNN reopens it if the cancel no longer holds.`
+     - **A task that is a finding and would land in `_loose/`** gets its id here: mint a `FIELD-NNN` exactly
+       as `--from-field` does, unless it already carries one. Loose and id-less, it is outside [[fix-next]]'s
+       pool ([spawn.md](spawn.md) step 4).
+     - **A story has no such fallback**, since it needs an epic and cannot be loose. A story under a cancelled
+       epic with no answer is **not created**: report
+       `not created: EPIC-NNN is cancelled and nothing chose to reopen it — /tasks new story again and choose it, or another epic.`
 
 5. **Ask priority and assignee** (task only):
    - Priority: P0 / **P1** (default) / P2 / P3. These are the common values, not the only ones: write any `P<n>`
@@ -117,6 +145,15 @@ Interactive scaffold of a new task tree node.
    - **Human test plan** — draft concrete manual steps only for behaviour automated tests can't cover (UI/UX, edge cases, external integrations). If the task is plainly unit-testable, write `N/A — fully covered by automated tests` rather than inventing filler steps. When `--from-feature` is set, mine the feature's prototype + decisions for the UI/UX flows worth manual-testing.
 
 10. **Write the file** with the Write tool.
+    - **The new item is open** (anything but `done` or `cancelled`) **and its parent reads `done`, or
+      `cancelled` and step 4 chose to reopen it** → set the parent to `in-progress` in the same change, with
+      its dated `> Reopened` line ([SKILL.md](../SKILL.md) § *Roll status up to parents*). Writing the child
+      and leaving the parent for later leaves a `done` container over an open child if the run stops in between.
+    - **Then check the epic above a parent story, whether or not the story was reopened.** A `planned` story
+      can sit under a `done` epic (left by `close --epic --force`), and an open task in it makes that epic's
+      `done` false too. Reopen a `done` epic the same way. A `cancelled` one asks first, as step 4 does.
+    - **A new item that is itself `done` or `cancelled`** ([import](import.md) brings in closed issues this
+      way) reopens nothing. A closed child does not falsify a closed parent, as [move](move.md) already says.
 
 10b. **Backfill the feature ledger** — runs whenever the new task carries a non-null `feature: FEATURE-NNN`, **whatever set it**: the `--from-feature` flag, a value inherited from its parent, or one written by hand. Write this `TASK-NNN` into the `→ Tasks` column of the owning decision row(s) in `docs/features/FEATURE-NNN/decisions.md` (idempotent — skip IDs already listed), and append the History line `{{DATE}} — D<n> decomposed → TASK-NNN`. Via `/feature decompose`, leave the batch History line to its step 4 instead.
 
@@ -132,6 +169,8 @@ Interactive scaffold of a new task tree node.
 
 13. **Confirm** — print:
     - File path created
+    - **Each container step 10 reopened**, as `STORY-NNN reopened: <new id> is now <its status>`, and any
+      cancelled parent step 4 declined to reopen, with its report line
     - Next-step hint depending on level:
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"
@@ -195,4 +234,5 @@ Runs once per project, when `.config.yml` is missing.
 - **No epics yet, user wants story/task** — prompt "no epics — create one first?" and chain into `/tasks new epic` if confirmed.
 - **Cross-cutting EPIC in an aggregator repo** — when the project's CLAUDE.md designates this repo as the polyrepo family's aggregator (see SKILL.md § Shape detection), a new EPIC here is cross-cutting. Ask which sub-projects it affects; write the list to `affects:`.
 - **Existing `tasks/` but no `.config.yml`** — skill was previously used in a different version. Run mode detection to backfill.
+- **Parent is `done` or `cancelled`** — step 4's table: a `done` one takes the child and reopens, a `cancelled` one asks.
 - **`_loose/` doesn't exist yet** — create it when first loose task is added; never create it eagerly.

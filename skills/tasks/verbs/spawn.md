@@ -59,7 +59,9 @@ happened. Spawn instead of widening.
 
 4. **Create the task** — chain [verbs/new.md](new.md) (`/tasks new task`) with these defaults
    pre-filled so the user only confirms or corrects:
-   - **parent** — the origin's STORY; else the origin's EPIC; else `_loose`. **If you reach `_loose` and
+   - **parent** — the origin's STORY; else the origin's EPIC; else `_loose`. A `done` STORY or EPIC is
+     still the parent: [new.md](new.md) step 4 files under it and reopens it, and asks first for a
+     `cancelled` one. **If you reach `_loose` and
      the discovery is a finding, stop and put it in a pool instead.** A finding is a defect, whether a
      review pass raised it or the work itself turned it up with no pass behind it. `_loose` with no
      `findings:` id and no `kind: review-intake` ancestor is outside [[fix-next]]'s pool entirely, so the
@@ -166,7 +168,7 @@ defect.
 ## Edge cases
 
 - **No origin task** (spotted during a conversational fix or a review) — still create the task;
-  skip step 5's wiring; place it under the best-matching story/epic, else `_loose` — subject to the same check as step 4: a **finding** (a defect, raised by a review pass or not) must not come to rest in `_loose` without an id, because nothing ranks it there.
+  skip step 5's wiring; place it under the best-matching story/epic, `done` ones included (step 4), else `_loose` — subject to the same check as step 4: a **finding** (a defect, raised by a review pass or not) must not come to rest in `_loose` without an id, because nothing ranks it there.
 - **Several items at once** — batch them: one task each, one shared History line per decision row.
   Don't merge unrelated discoveries into one task to save typing.
 - **Discovered during `/tasks close`** — spawn first, *then* re-ask whether the origin can close.

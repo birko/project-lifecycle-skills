@@ -419,8 +419,9 @@ boundary is the deliverable, and a second fix in the same session is exactly wha
 `--loop`: continue to step 1 unless context is nearly exhausted, the pool is empty, or a question is
 pending. **Two questions are pending in this sense:** a scope-escalation ask ([spawn.md](../tasks/verbs/spawn.md)
 § *Scope escalation*) and a decision only the user can make (§ *Guardrails*). Wait for that answer rather than
-taking new scope. The verification-debt offer (step 1) and the tie question (step 2) never halt the loop,
-because each has an unattended outcome that needs no one. Either way, **name the next pick** so a reset resumes there.
+taking new scope. The verification-debt offer (step 1), the tie question (step 2) and the cancelled-parent question
+a spawn can reach ([new.md](../tasks/verbs/new.md) step 4) never halt the loop, because each has an
+unattended outcome that needs no one. Either way, **name the next pick** so a reset resumes there.
 
 Final report, short:
 
