@@ -60,16 +60,32 @@ Three modes:
 
 1. **Require** `mode: hybrid` and `provider: jira`.
 
-2. **Fetch the issue** via the Atlassian MCP. Search for the read/get-issue tool via ToolSearch (the deferred tool list includes `mcp__claude_ai_Atlassian__*`). Authenticate via `mcp__claude_ai_Atlassian__authenticate` if not yet authed.
+2. **Fetch the issue** via the Atlassian MCP, **with its changelog** (the REST `expand=changelog`, or the tool's equivalent), which step 3 reads for priority. Search for the read/get-issue tool via ToolSearch (the deferred tool list includes `mcp__claude_ai_Atlassian__*`). Authenticate via `mcp__claude_ai_Atlassian__authenticate` if not yet authed.
 
 3. **Map fields** like `--github` but with Jira semantics:
    - Summary → title
    - Description → split into sections, fallback to Context dump
    - Priority → a `P<n>` value, never a fixed set. Collapsing every lower level into P2 files a P3
-     as more urgent than it is, and nothing in the result shows that it happened. **A `priority/P<n>` label wins**,
-     as on `--github`: [export.md](export.md) always sends it, and sets the priority field only when the project
-     has a matching priority, so on a ticket this skill exported the field may hold only the project's default.
-     Read the field only when there is no such label:
+     as more urgent than it is, and nothing in the result shows that it happened. **With no `priority/P<n>`
+     label, map the field** by the table below. **With one**, map the field too, and compare, first row that
+     matches. Several `priority/P<n>` labels with different values count as no label, and step 7 reports
+     `ABC-3: several priority labels (priority/P1, priority/P3); read the field`.
+
+     | Label and field | Write | Report in step 7 |
+     |---|---|---|
+     | the field is empty, or has no mapping (third row of the next table) | the label's value, without that row's Context line | `ABC-3: field "Blocker" has no mapping; wrote P3 from the label priority/P3` (`field empty` for an empty one) |
+     | the field maps to the label's value | that value | nothing |
+     | they differ, and the changelog's last priority change is later than the change that added the label (the issue's creation, when the label was there from the start) | the field's mapped value: someone, or an automation, set it in Jira after the label | `ABC-3: priority changed in Jira after the label was set (label priority/P3, field "Highest"); wrote P0` |
+     | they differ otherwise: no priority change after the label, or the changelog cannot be read | the label's value | `ABC-3: label priority/P3 and field "Medium" disagree; wrote P3 from the label` (add `, changelog unreadable` when it was) |
+
+     Why the changelog and not the field: [export.md](export.md) sets the field only when the project has a
+     matching priority, and exports from before it did never set it, so a field that disagrees with its label
+     is normal on a ticket nobody touched. Only a priority change made after the label was set shows that
+     someone chose the field over it. The changelog records label changes as well as priority changes, so
+     the comparison does not depend on how the ticket was created. Neither value is ever dropped silently: a
+     disagreement is always reported, whichever side was written.
+
+     The field's mapping:
 
      | The Jira priority | Write |
      |---|---|
@@ -93,8 +109,10 @@ Three modes:
 
 6. **Regenerate dashboard**.
 
-7. **Confirm**: print the created file's path and its `jira-key:`, and under it every priority step 3 could not map,
-   as `ABC-3: Jira priority "Blocker" has no mapping; wrote P1, nobody chose it`.
+7. **Confirm**: print the created file's path and its `jira-key:`, and under it every ticket that got step 3's P1
+   fallback, as `ABC-3: Jira priority "Blocker" has no mapping; wrote P1, nobody chose it`, and every
+   label and field that disagreed, in the line step 3's comparison table gives. A ticket with a label never gets the
+   fallback line: the label's value was written.
 
 ## Edge cases
 

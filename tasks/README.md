@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link; docs/specs DV7 — 6 of 14 mapped areas never generated (test-authoring, glossary-and-adrs, changelog-maintenance, session-handoff, installation, skill-authoring-rules; the 8 generated areas are fresh) — run `/roadmap --check`.
 
-_Generated 2026-10-12 16:37. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-13 10:02. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 64                  |
+| todo         | —                  | —                  | 63                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 217                 |
+| done         | 4                  | 13                 | 218                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 53× P2 · 11× P3.
+`todo` by priority: 52× P2 · 11× P3.
 
 ## In progress now
 
@@ -218,8 +218,8 @@ _None_
     - [ ] TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next
     - [x] TASK-297 `/feature review` sets a feature to `review` without regenerating its rollup
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (34/53 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (33/35 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (35/53 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (34/35 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [x] TASK-222 `new` and Jira import offer only P0–P2
@@ -248,7 +248,7 @@ _None_
     - [x] TASK-299 `import --jira` ignores the `priority/<value>` label export sends, so a round trip changes the priority
     - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
     - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
-    - [ ] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
+    - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
     - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
     - [x] TASK-273 Ask-steps in `tdd`, `populate-tests`, `domain` and `roll-changelog` state no question or no answer-less path
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently

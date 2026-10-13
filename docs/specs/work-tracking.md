@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: dda482ad9afb0f80b93864bd25720741ef95099d
-generated-on: 2026-10-12
+generated-at: 0c672193daee082b48f6ea110db734af8a68d092
+generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -704,13 +704,25 @@ The system SHALL scan the backlog, read-only by default, for duplicates (wide ac
 
 ### Requirement: Importing work
 
-The system SHALL decompose a local notes file into a proposed epic, story and task tree for review, create the approved items with default fields, preserve done items as `done`, and never modify the source file. In hybrid mode it SHALL import a GitHub issue or Jira ticket into a local file, mapping title, body sections, priority, assignee, parent, open or closed state, and a blocked label or flag to a `blocked:` field whose reason comes from the newest `Blocked:` comment (else `reason unknown`), recording the issue link and refusing an issue already linked locally. A Jira ticket's priority SHALL come from a `priority/P<n>` label when it has one, as for GitHub, and from the priority field only otherwise; the field SHALL map to a `P<n>` value and never into a fixed set: a name already of the form `P<n>` as given, Jira's default scheme Highest through Lowest to P0 through P4, and any other name or none to `P1` with a `## Context` line saying nobody chose it, named again in the import's confirmation.
+The system SHALL decompose a local notes file into a proposed epic, story and task tree for review, create the approved items with default fields, preserve done items as `done`, and never modify the source file. In hybrid mode it SHALL import a GitHub issue or Jira ticket into a local file, mapping title, body sections, priority, assignee, parent, open or closed state, and a blocked label or flag to a `blocked:` field whose reason comes from the newest `Blocked:` comment (else `reason unknown`), recording the issue link and refusing an issue already linked locally. A Jira ticket with no `priority/P<n>` label SHALL take its priority from the priority field. One with a label SHALL compare the two: when they agree, that value; when they differ and the issue's changelog shows a priority change later than the change that set the label, the field's value, since someone chose it there; otherwise, or when the field is empty or unmapped, the label's value. Several priority labels with different values SHALL count as none. A disagreement SHALL always be reported in the confirmation, whichever side was written, and never resolved silently; the field SHALL map to a `P<n>` value and never into a fixed set: a name already of the form `P<n>` as given, Jira's default scheme Highest through Lowest to P0 through P4, and, on a ticket with no usable label, any other name or none to `P1` with a `## Context` line saying nobody chose it, named again in the import's confirmation.
 
 #### Scenario: Exported priority survives a round trip
 
 - **Given** a `P3` task exported to a Jira project that offers no priority matching P3, so its field stays at the default Medium
 - **When** the ticket is imported back
-- **Then** the task reads `priority: P3`, taken from the `priority/P3` label, not P2 from the Medium field
+- **Then** the task reads `priority: P3`, taken from the `priority/P3` label, not P2 from the Medium field, and the confirmation reports the disagreement
+
+#### Scenario: Priority edited in Jira after export
+
+- **Given** a ticket labelled `priority/P3` since creation, whose priority field a user later changed from Low to Highest
+- **When** it is imported
+- **Then** the task reads `priority: P0`, and the confirmation reports that the priority changed in Jira after the label was set
+
+#### Scenario: Label and an untouched field disagree
+
+- **Given** a ticket labelled `priority/P3` whose field has held the project default Medium since creation
+- **When** it is imported
+- **Then** the task reads `priority: P3`, and the confirmation reports the disagreement
 
 #### Scenario: Unmapped Jira priority
 

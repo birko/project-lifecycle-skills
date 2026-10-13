@@ -30,8 +30,8 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      ```
    - **Labels** —
      - `priority/<the task's priority value>`, whatever value it is; never a fixed set of priorities. Send it on
-       Jira too, even when the priority field is set below: [import.md](import.md) reads the label first, so it is
-       what carries the value back
+       Jira too, even when the priority field is set below: [import.md](import.md) keeps the label's value unless
+       the field was changed in Jira after the label was set, so the label is what carries the value back
      - `assignee/{human|ai}` or `agent/{AgentName}`
      - `epic/{epic-slug}` (the parent epic's slug)
      - `story/{story-slug}` (the parent story's slug, if any)
