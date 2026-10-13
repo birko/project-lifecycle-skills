@@ -69,7 +69,20 @@ Interactive scaffold of a new task tree node.
    - Is it a **single implementable unit** — completable in one sitting/PR, with acceptance criteria you could check off? → `task`; how to cut one is [slicing.md](../slicing.md). Tasks are the only level that gets *done*; epics and stories mostly stay open.
    - Rules of thumb: too big for one PR but still one behaviour → keep it a `story` and split into tasks; several distinct behaviours → `epic` with stories under it (mirrors [[feature]] decompose: "a feature usually maps to one STORY or a small EPIC"). When genuinely torn between story and task, pick `task` — promoting a task to a story later is cheap; a hollow story is noise.
 
+   Put this question:
+
+   > **Is this an epic, a story or a task?**
+   > · **epic** — a lasting area that keeps gaining work. · **story** — one user behaviour. · **task** — one implementable unit.
+
+   **Unless a caller set it.** **No answer, or nobody to ask:** apply the decision test above to the request, and mark `level`
+   (§ *Unanswered questions*, below).
+
 3. **Ask the title** — short noun phrase. Generate slug: lowercase, hyphens, ASCII only, max 50 chars. Strip stop words only if title would exceed length.
+   Put this question:
+
+   > **What should this <level> be called?** A short noun phrase, such as `Password reset email sent twice`.
+
+   **Unless a caller set it.** **No answer, or nobody to ask:** write a short noun phrase from the request itself, and mark `title`.
 
 4. **Ask for parent** (story/task only):
    - **story** → list existing epics with their IDs + titles, user picks one (epic must exist; if none, propose `/tasks new epic` first).
@@ -82,6 +95,17 @@ Interactive scaffold of a new task tree node.
      | `planned` / `in-progress` | plain | file under it |
      | `done` | `EPIC-009 <title> (done — choosing it reopens it)` | file under it; step 10 reopens it |
      | `cancelled` | `STORY-014 <title> (cancelled — won't-do)` | put the question below |
+
+     Put this question, listing the candidates as the table shows them:
+
+     > **Where does "<title>" belong?**
+     > · `1. STORY-001 Password login (done — choosing it reopens it)` · `2. EPIC-002 Reporting` · …
+     > · **none** — `_loose/`, for work no epic or story owns (task only).
+
+     **Unless a caller set it.** **No answer, or nobody to ask:** choose the candidate whose title and body own the subject, and mark
+     `parent`. When none clearly does, a task goes to `_loose/` (a finding gets its `FIELD-NNN` there, as
+     the cancelled path below says), and a story is **not created**: report
+     `not created: no epic owns "<title>" — /tasks new story again and choose one.`
 
      **`done` is not a reason to pick `none`.** A done container that owns the work takes it and reopens
      ([SKILL.md](../SKILL.md) § *Roll status up to parents*). `_loose/` would lose the placement and leave
@@ -108,6 +132,12 @@ Interactive scaffold of a new task tree node.
      the user gives exactly as given. The Collection pass buckets whatever priorities are present and `export`
      sends any value, so a value this step refused could still be read and exported but never created.
    - Assignee: human / **ai** (default) / `<specific-agent-name>`
+
+   Put this question:
+
+   > **Priority and assignee?** Priority `P0`–`P3` (default `P1`); assignee `human`, `ai` (default) or an agent's name.
+
+   **Unless a caller set them.** **No answer, or nobody to ask:** `P1` and `ai`, and mark `priority, assignee`.
 
 6. **Generate ID**:
    - Take the max for the requested type over **every copy of the tree**, as
@@ -142,9 +172,17 @@ Interactive scaffold of a new task tree node.
    - `{{TITLE}}` — the title from step 3
 
 9. **For task: offer to draft body sections** (Context / Acceptance / Out-of-scope / **Human test plan**) using any context already in the conversation. User reviews/edits before writing. If you can't draft confidently, leave the templates' placeholder copy and tell the user to fill it in.
+   Put this question:
+
+   > **Shall I draft the Context, Acceptance criteria, Out of scope and Human test plan from what we have discussed?** You review them before I write the file.
+
+   **No answer, or nobody to ask:** draft them when the request gives enough to do so confidently, and mark
+   `body sections`; otherwise leave the placeholder copy and report the sections as unfilled. Sections a
+   step-0 flag already drafts are not offered, so they are never marked.
    - **Human test plan** — draft concrete manual steps only for behaviour automated tests can't cover (UI/UX, edge cases, external integrations). If the task is plainly unit-testable, write `N/A — fully covered by automated tests` rather than inventing filler steps. When `--from-feature` is set, mine the feature's prototype + decisions for the UI/UX flows worth manual-testing.
 
-10. **Write the file** with the Write tool.
+10. **Write the file** with the Write tool, with the mark line under its heading when any field was
+    inferred (§ *Unanswered questions*).
     - **The new item is open** (anything but `done` or `cancelled`) **and its parent reads `done`, or
       `cancelled` and step 4 chose to reopen it** → set the parent to `in-progress` in the same change, with
       its dated `> Reopened` line ([SKILL.md](../SKILL.md) § *Roll status up to parents*). Writing the child
@@ -169,6 +207,7 @@ Interactive scaffold of a new task tree node.
 
 13. **Confirm** — print:
     - File path created
+    - **The mark line**, when the file carries one, and any body section left unfilled (step 9)
     - **Each container step 10 reopened**, as `STORY-NNN reopened: <new id> is now <its status>`, and any
       cancelled parent step 4 declined to reopen, with its report line
     - Next-step hint depending on level:
@@ -181,6 +220,23 @@ Interactive scaffold of a new task tree node.
       task is now in `/fix-next`'s pool."* Say the consequence, not just the id. A task that entered the pool
       and one that merely reads like a defect are indistinguishable from the outside, and that ambiguity is the
       whole reason the flag exists.
+
+## Unanswered questions
+
+Every field a question in this verb asks for must exist in the file, so an unanswered one cannot be left
+out. It gets the fallback its step names and is **marked as inferred**, or the next reader takes a guess for
+a decision.
+
+- **The mark** is one line directly under the new file's `# Heading`, written only when something was
+  inferred, naming every such field:
+  `> Filed with nobody to answer — inferred, not chosen: <fields>.`
+  Step 13 repeats it. Whoever confirms the values deletes the line.
+- **A field a calling verb sets is not asked for here and never marked.** That covers a value passed as an
+  argument, one the caller pre-fills or derives by its own rules, one of its stated defaults, and the body
+  sections a step-0 flag drafts. A rule chose it, not a guess. Each question below runs only for a field
+  still unset. A caller that wants its values confirmed asks that itself ([spawn](spawn.md) step 4).
+- **An inferred parent that reopens a container says so there too.** Its `> Reopened` line ends
+  `(placement inferred — see <new id>)`, since the reopen is a side effect of that guess on another record.
 
 ## Mode detection flow
 

@@ -92,6 +92,13 @@ happened. Spawn instead of widening.
    - Pass `--no-plan` by default (the plan gets drafted when it's picked); drop it if the user
      wants the plan now.
 
+   Put this question before chaining:
+
+   > **Spawn "<title>" under <parent>, priority <P>, assigned to <assignee>? Change any of them, or go ahead.**
+
+   **No answer, or nobody to ask** (`close --unattended` among them): go ahead with the defaults. They are
+   this step's rules, not guesses, so [new.md](new.md) marks none of them (§ *Unanswered questions*).
+
 5. **Wire origin ↔ new task** — this is the "place it correctly in the plan" half:
    - **`## Out of scope`** on the origin — add `- Deferred to TASK-NNN — <one line>`. The template
      already invites this; an origin whose out-of-scope list doesn't name the spawned task will

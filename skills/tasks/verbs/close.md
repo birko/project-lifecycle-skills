@@ -30,7 +30,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      | 5a | prints the `ci:` line; a red one never holds the close | **the same.** Listed although it never asks, because a red result looks like a reason to stop, and an unattended run must not invent a hold or a question |
      | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
      | 5d | work bullet → offer `spawn` | **spawn** it; *decided not to do* is unavailable |
-     | 5d (spawn under a `cancelled` parent) | [new.md](new.md) step 4 asks whether to reopen it | **don't reopen**: new.md step 4's answer-less path files it under the nearest ancestor that is not cancelled, and its report line goes in step 12 |
+     | 5d (the spawn's own questions) | [spawn.md](spawn.md) step 4 asks to confirm its defaults; [new.md](new.md) asks for any field spawn did not set, and whether to reopen a `cancelled` parent | **each question's own answer-less path**: spawn's defaults stand unmarked, the inferred fields are marked in the new file (new.md § *Unanswered questions*), a cancelled parent is not reopened, and both report lines go in step 12 |
      | 7 (dirty tree) | ask commit / reference / skip | **commit**, with step 7's explicit staging — never blanket `git add -A` |
      | 7 (clean tree) | optionally ask for an existing PR / SHA | **skip it**; leave `pr:` as-is |
      | 11 spec regen | if `pr:` references are missing, ask which areas | **skip the regen and say so.** Guessing an area writes a spec diff nobody asked for |
