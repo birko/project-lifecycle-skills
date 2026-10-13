@@ -65,7 +65,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
      and Gate B has now passed their plans, so name each one and suggest `/tasks close TASK-NNN` for it: that
      moves it `verify → done` through its own gate. Don't flip them here. With no `verify` task, suggest nothing.
    - **Changelog nudge** (don't auto-run): a feature reaching `done` is a genuine ship event, so if the project has a `CHANGELOG.md`, print one line — *"FEATURE-NNN shipped — consider `/roll-changelog` to record what changed for users."* The changelog is a human-curated summary, so leave the call to the user; just make sure they don't forget. Skip the nudge if there's no `CHANGELOG.md`.
-   - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. **That means every linked task whose plan Gate B did not pass**: a step not run, a step failed, or a false `N/A`. Gate A has already required all of them to be `done`, so parking moves `done → verify`, the same move [decide.md](decide.md) makes for a surface-dependent revert. A task whose plan passed stays `done`. Never write "done (pending)".
+   - **Gate A passes + code/tasks complete, but Gate B/C sign-off hasn't happened** (e.g. stakeholder unavailable, or you're parking it for a later playtest) → set `status: review`, **not** `done`. The feature is built but unsigned — verification debt. Park any client tasks awaiting sign-off at `status: verify` — the task status; `review` is this feature's own marker. **That means every linked task whose plan Gate B did not pass**: a step not run, a step failed, or a false `N/A`. Gate A has already required all of them to be `done`, so parking moves `done → verify`, the same move [decide.md](decide.md) makes for a surface-dependent revert. A task whose plan passed stays `done`. Never write "done (pending)". **Then roll the park up** by [[tasks]] § *Roll status up to parents* (the reopening direction), and name each container it reopened in the confirmation. Its files are among the ones step 5b commits.
 
 5b. **Commit what this run wrote** — whichever way the gates went. A review that fails writes too: Gate B's
    result and a `pending` sign-off are History lines. Left uncommitted, the record of the review sits in a
@@ -74,7 +74,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
    a container close, and for the same reason: a gate's verdict belongs in a commit of its own.
    - **The files are the ones this run wrote**, counted off the steps that ran rather than from a list here:
      `decisions.md` when a History line was added, `idea.md` when step 5 changed its `status:`, each task
-     file step 5 parked at `verify`, and `status.md` and `docs/features/README.md` when `/feature status` ran. A run that wrote nothing, such as
+     file step 5 parked at `verify`, each `STORY.md` or `EPIC.md` the park reopened, and `status.md` and `docs/features/README.md` when `/feature status` ran. A run that wrote nothing, such as
      Gate A stopping on open tasks, has nothing to commit.
    - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails) → commit exactly
      those files and nothing else from the index:

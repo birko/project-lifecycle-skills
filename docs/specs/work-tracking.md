@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: b1f2b5f1f7236e2d15860a7427f8e7ab0989cce1
+generated-at: 0977261b5dfe2347f10de6b5989ac1b99331a2df
 generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
@@ -643,6 +643,12 @@ The system SHALL, after any child status or placement change, re-evaluate the pa
 - **Given** a story whose other tasks are `done`
 - **When** its last open task is cancelled
 - **Then** the story is reconciled to `done`
+
+#### Scenario: A child leaving done reopens its story
+
+- **Given** a story reading `done` whose task is moved from `done` to `verify`
+- **When** the parent is re-evaluated
+- **Then** the story reads `in-progress` with a dated reopen line, its epic is re-evaluated the same way, and the reopen is reported
 
 ### Requirement: Moving a task or story
 

@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: b1f2b5f1f7236e2d15860a7427f8e7ab0989cce1
+generated-at: 0977261b5dfe2347f10de6b5989ac1b99331a2df
 generated-on: 2026-10-13
 sources:
   - skills/feature/SKILL.md
@@ -329,7 +329,7 @@ The system SHALL, when every decision ends `removed`, set the feature's coarse s
 
 ### Requirement: Changing a signed-off feature reverts it by surface
 
-The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`.
+The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`.
 
 #### Scenario: Visual tweak reopens sign-off
 
@@ -531,7 +531,7 @@ The system SHALL order every feature listing — the bare listing, show, pick's 
 
 ### Requirement: Feature and task status vocabularies stay separate
 
-The system SHALL keep the feature's own coarse `review` marker distinct from task statuses, bucketing a feature's tasks by task status (todo, in-progress, review, blocked, done, cancelled), counting a task in `verify` — or in the older `review` form — as awaiting verification, letting a blocked task keep its own state, and parking a feature's tasks awaiting sign-off at the task status `verify`, never at the feature's marker — every linked task whose plan the review's test gate did not pass, which moves a `done` task to `verify`, while a task whose plan passed stays `done`.
+The system SHALL keep the feature's own coarse `review` marker distinct from task statuses, bucketing a feature's tasks by task status (todo, in-progress, review, blocked, done, cancelled), counting a task in `verify` — or in the older `review` form — as awaiting verification, letting a blocked task keep its own state, and parking a feature's tasks awaiting sign-off at the task status `verify`, never at the feature's marker — every linked task whose plan the review's test gate did not pass, which moves a `done` task to `verify`, while a task whose plan passed stays `done`. A parked task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, with a dated reopen line in the container, and the confirmation SHALL name it.
 
 #### Scenario: Verify task feeds the review bucket
 
@@ -544,6 +544,12 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 - **Given** a feature is built but the stakeholder is unavailable
 - **When** review parks it
 - **Then** the feature's status is `review` and its unsigned tasks are `verify`
+
+#### Scenario: Parking reopens a closed story
+
+- **Given** a feature whose only task is `done` under a story already closed `done`, and whose test plan claims `N/A` with no test behind it
+- **When** review parks the task at `verify`
+- **Then** the story reads `in-progress`, the confirmation names it as reopened, and the story file is in the review's commit
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 

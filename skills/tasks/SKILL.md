@@ -530,6 +530,17 @@ non-obvious rules travel with this:
 
 **Roll status up to parents — don't leave them stale.** A child changing status is not done until its parents reflect reality:
 - `close` (and any status change): after updating a TASK, re-evaluate its parent STORY, then that STORY's EPIC. A STORY whose every TASK is done should not still read `in-progress`; a container whose children are all `cancelled` is `cancelled`, and a mix of `done` and `cancelled` is `done` (`close --story`/`--epic` and `cancel` both apply this); an EPIC's body/status and any requirement→feature table it carries must match its children. Update the parent files, not just the leaf + the dashboard. (Real failure this guards: leaves and the dashboard were kept current but `EPIC.md` sat at `in-progress` with a stale prose story list and an obsolete roadmap line.)
+- **The rule runs the other way too.** A child that stops being `done` or `cancelled` (parked `done → verify`,
+  reopened by `close`, or an open task moved in by `move`) reopens its parent to `in-progress` when that parent
+  reads `done` or `cancelled`: a STORY, or an EPIC the task is parented to directly. Then re-evaluate the EPIC
+  above a reopened STORY the same way. One left `done` over a `verify` child is a claim its own close gate
+  would refuse ([verbs/close.md](verbs/close.md) § *Closing a STORY / EPIC*, its children-done check). Reopen rather than leave it
+  for a person: the container's state is derived from its children, and the move that changed them has already
+  happened. **A container closed with `--force` is no exception.** Forcing set aside the children open at that
+  close; a child that leaves `done` later is new information. Never reopen silently: add a dated line under the
+  container's heading, `> Reopened YYYY-MM-DD — TASK-NNN is now <its status> (<the verb that moved it>)`, and
+  report `STORY-NNN reopened: TASK-NNN is now <its status>`. Whoever closed it closes it again through
+  `close --story` / `--epic` once its children allow.
 - `triage` / `audit`: flag any parent whose status contradicts its children (e.g. all-children-done under an `in-progress` story, or a story listed in an EPIC body that no longer exists), and offer to reconcile.
 
 ## Conventions

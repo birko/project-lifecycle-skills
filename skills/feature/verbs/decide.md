@@ -76,9 +76,10 @@ never a silent edit:
    so no artifact lies about the new value.
 4. **Status rule:** a change with a human-verifiable surface reverts the owning feature `done → review`
    **and** its implementing task(s) `done → verify` (re-run their Human test plans before re-closing);
-   a change fully covered by automated tests stays `done`. Then re-run `/feature status` so
+   a change fully covered by automated tests stays `done`. Roll each reverted task's parents up by
+   [[tasks]] § *Roll status up to parents* (the reopening direction). Then re-run `/feature status` so
    `status.md` and the index recompute — the revert touches four surfaces (`idea.md`, task
-   file(s), `status.md`, index) and isn't done until all four agree.
+   file(s), `status.md`, index), plus any parent it reopened, and isn't done until they all agree.
 
 ## Edge cases
 
