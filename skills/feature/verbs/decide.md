@@ -22,11 +22,40 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    - For `changed`, write the delta into the Decision/Rationale cell so the new shape is unambiguous for `decompose`.
    - **Append a History log line** per change: `{{DATE}} — D3 proposed → removed (out of budget, per PM)`. Never overwrite history; append.
 
-5. **Confirm + next step:**
+5. **Refresh the rollup** — chain `/feature status FEATURE-NNN` (single-feature mode) automatically to refresh
+   the rollup + index row — a suggestion the user can skip leaves the stakeholder view stale. A revert
+   (§ *Changing a closed feature* step 4) also chains [[tasks]] `triage`.
+
+6. **Commit what this run wrote.** Left uncommitted, the ledger sits in a dirty tree that no step owns. It
+   then rides into whatever unrelated commit comes next, or is lost with it, and the next `/tasks close` meets
+   it as somebody's uncommitted work. A verdict is a record, so it gets a commit of its own, as
+   [review.md](review.md) step 5b gives a review's.
+   - **The files are the ones this run wrote**, counted off the steps that ran: `decisions.md` when a row
+     or History line changed, `idea.md` when its `status:` changed, and for a revert each task file it moved
+     to `verify`, each `STORY.md` or `EPIC.md` it reopened, the owning feature's files a re-home touched,
+     any file the ripple trace edited, `tasks/README.md` when `triage` ran, and `status.md` and
+     `docs/features/README.md` from step 5. A run where every verdict was skipped wrote nothing and commits
+     nothing.
+   - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails) → commit exactly
+     those files and nothing else from the index:
+     `git commit --only -m "chore: decide FEATURE-NNN" -- <the files written>`. The subject does not lead
+     with a task id, so [[specs]] attributes no behaviour to it: a verdict changes no code, and a reverted
+     task's own behaviour is attributed when that task closes again. No `Co-Authored-By:` trailer.
+   - **With an upstream** → commit the same files on `record/FEATURE-NNN`, by the record-branch rule in
+     [[tasks]] `close` § *Closing a STORY / EPIC* step 5, with the subject above. It is the branch name a
+     review uses, on purpose: both write the same `decisions.md`, so a decide and a review of one feature
+     must not race, and that rule stops the second with `record/FEATURE-NNN exists, land it first`.
+   - **No git** → commit nothing. Step 7 names each file as uncommitted.
+   - **Nothing else in the working tree is committed.** A file this run did not write stays as it was,
+     uncommitted, even when it sits beside the ledger.
+
+7. **Confirm + next step:**
    - Summarize counts (`3 approved, 1 changed, 1 deferred, 2 removed`).
+   - Name the commit from step 6, the `record/FEATURE-NNN` branch it pushed (`record/FEATURE-NNN pushed —
+     open a PR to land it`), or, when the rule stopped or there is no git, its line and **every file left
+     uncommitted, by path**. A clean report over a dirty tree is the defect step 6 exists to remove.
    - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`".
    - If `proposed` remain → note how many still need a verdict.
-   - Chain `/feature status FEATURE-NNN` (single-feature mode) automatically to refresh the rollup + index row — a suggestion the user can skip leaves the stakeholder view stale.
 
 ## Deciding rules
 
@@ -79,10 +108,10 @@ never a silent edit:
    a change fully covered by automated tests stays `done`. Roll each reverted task's parents up by
    [[tasks]] § *Roll status up to parents* (the reopening direction). Then re-run `/feature status` so
    `status.md` and the index recompute, and chain [[tasks]] `triage` so `tasks/README.md` shows the reverted
-   tasks. With an upstream write no dashboard on the default branch, as `close` step 10 rules, and name
-   `/tasks triage` for a person instead; `decide` has no record branch yet (TASK-307). The
+   tasks. With an upstream the dashboard rides on `record/FEATURE-NNN` with the rest (step 6), as it does for
+   a review, and never stays on the default branch. The
    revert touches `idea.md`, the task file(s), `status.md`, the index and the dashboard, plus any parent it
-   reopened, and isn't done until they all agree.
+   reopened, and isn't done until they all agree and step 6 has committed them.
 
 ## Edge cases
 

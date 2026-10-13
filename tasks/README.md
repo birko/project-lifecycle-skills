@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (1):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-10-13 17:59. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-13 20:06. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 69                  |
+| todo         | —                  | —                  | 68                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 1                   |
+| verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 226                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 56× P2 · 13× P3.
+`todo` by priority: 55× P2 · 13× P3.
 
 ## In progress now
 
@@ -25,6 +25,7 @@ _None_
 ## Awaiting verification
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
+- [TASK-307](EPIC-003-field-found-defects/TASK-307.md) — `/feature decide` commits nothing, so a revert's task files and rollups stay uncommitted (P2, agent)
 
 ## Tree
 
@@ -221,7 +222,7 @@ _None_
     - [ ] TASK-304 `pick` regenerates `tasks/README.md` on the default branch when the default branch has an upstream
     - [x] TASK-305 `/feature review` parks tasks at `verify` and never regenerates `tasks/README.md`
     - [ ] TASK-306 With an upstream, a park can miss a story whose `done` waits on an unlanded `record/` branch
-    - [ ] TASK-307 `/feature decide` commits nothing, so a revert's task files and rollups stay uncommitted
+    - [ ] TASK-307 `/feature decide` commits nothing, so a revert's task files and rollups stay uncommitted 🔍 verify
     - [x] TASK-308 A new task filed under a `done` story or epic goes there and reopens it, instead of going to `_loose/`
     - [x] TASK-309 `/tasks new`'s title, parent, priority and draft questions carry no question text and no answer-less path
     - [x] TASK-310 `/tasks new`'s `affects:` question has no answer-less path, and nothing reads the "inferred, not chosen" mark

@@ -572,7 +572,7 @@ Container closes are simpler than task closes — no human-test plan, no merge g
    branch (step 10). Left in the main copy instead, it is carried silently onto the next task branch and back,
    and nothing ever lands it. Measured on TASK-296's fixture: six files sat uncommitted through a close, a
    review, a pick and a merge, and no verb mentioned them again. **This is the record-branch rule, and
-   [[feature]] `review` step 5b follows it too**, with its own files and subject. The commit is made in a
+   [[feature]] `review` step 5b and `decide` step 6 follow it too**, each with its own files and subject. The commit is made in a
    temporary worktree, so the tree the gate ran in never switches branch. Stop at the first step that fails,
    print `record not branched: <reason>` and every file left uncommitted, and never force:
    1. **The remote** is `git config branch.<default>.remote`, the one the upstream belongs to. Run

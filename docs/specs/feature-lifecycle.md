@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 558088ea2c57a21f397e9a487e30b036b5c85e19
+generated-at: 4e09eee7245923e84ec71c27d19f23ff946ef07e
 generated-on: 2026-10-13
 sources:
   - skills/feature/SKILL.md
@@ -269,6 +269,22 @@ The system SHALL, on `/feature decide`, walk every `proposed` row and any `defer
 - **When** it confirms
 - **Then** it prints the counts, offers `/feature decompose`, notes one row still needs a verdict, and runs `/feature status` for that feature automatically
 
+### Requirement: Decide commits its own record
+
+The system SHALL, at the end of `/feature decide`, commit exactly the files that run wrote — the ledger, the idea file when its status changed, and for a revert the task files moved to `verify`, the containers they reopened, any file the ripple trace edited, the task dashboard, and the rollup and index — as one commit with the subject `chore: decide FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, so a decide and a review of one feature never race and the second stops until the first record lands; with no git, or a run that wrote nothing, it SHALL commit nothing. Its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path.
+
+#### Scenario: A revert is committed whole
+
+- **Given** a project with no upstream and a `done` feature with a human-verifiable surface
+- **When** decide records a `changed` decision that reverts the feature and its task
+- **Then** one commit `chore: decide FEATURE-NNN` carries the ledger, the reverted task, its reopened story, the rollup, the index and the dashboard, and the working tree is clean
+
+#### Scenario: Upstream puts the verdict on its own branch
+
+- **Given** a project whose default branch tracks a remote and is level with it
+- **When** decide stamps a verdict
+- **Then** nothing is committed on the default branch, `record/FEATURE-NNN` is pushed carrying `chore: decide FEATURE-NNN`, and the confirmation names the branch
+
 ### Requirement: The ledger is never pruned and its history is append-only
 
 The system SHALL never delete a decision row — `removed` is a state — SHALL append a dated History line for every state change and never rewrite earlier History lines, SHALL keep each row's text rewritten to the current form of the decision, and SHALL reopen an overturned `deferred` or `removed` decision by adding a new `proposed` row that references the superseded one rather than editing the old row.
@@ -329,7 +345,7 @@ The system SHALL, when every decision ends `removed`, set the feature's coarse s
 
 ### Requirement: Changing a signed-off feature reverts it by surface
 
-The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, or, with an upstream, named for a person to regenerate.
+The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, carried with an upstream on the decision's `record/FEATURE-NNN` branch rather than written on the default branch.
 
 #### Scenario: Visual tweak reopens sign-off
 
