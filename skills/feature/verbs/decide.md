@@ -78,8 +78,11 @@ never a silent edit:
    **and** its implementing task(s) `done → verify` (re-run their Human test plans before re-closing);
    a change fully covered by automated tests stays `done`. Roll each reverted task's parents up by
    [[tasks]] § *Roll status up to parents* (the reopening direction). Then re-run `/feature status` so
-   `status.md` and the index recompute — the revert touches four surfaces (`idea.md`, task
-   file(s), `status.md`, index), plus any parent it reopened, and isn't done until they all agree.
+   `status.md` and the index recompute, and chain [[tasks]] `triage` so `tasks/README.md` shows the reverted
+   tasks. With an upstream write no dashboard on the default branch, as `close` step 10 rules, and name
+   `/tasks triage` for a person instead; `decide` has no record branch yet (TASK-307). The
+   revert touches `idea.md`, the task file(s), `status.md`, the index and the dashboard, plus any parent it
+   reopened, and isn't done until they all agree.
 
 ## Edge cases
 

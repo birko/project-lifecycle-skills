@@ -61,6 +61,12 @@ Three checks before a feature is called done: it's **complete** (every decision 
      review. If `status.md` and the index row still read `building` while `idea.md` says `review`, the rollup
      is wrong, which is the case [status.md](status.md) names. This is stated once, here, so a branch added
      later is covered too.
+     **A park changes the task tree too, so also chain [[tasks]] `triage`** whenever step 5 parked a task or
+     reopened a container. Otherwise the review's commit carries a `tasks/README.md` that contradicts the task
+     files committed beside it. With an upstream the dashboard rides on `record/FEATURE-NNN` with the rest
+     (step 5b), like `status.md` and the index. Left off, the parked task files would land beside a stale
+     dashboard, and a conflict between two record branches' dashboards is fixed by re-running `triage`, while
+     a stale one goes unnoticed. `triage`'s own rule skips it inside a task's linked worktree.
    - **All three gates pass** → `idea.md` frontmatter `status: done`, so the chained rollup shows phase `done`. Gate A let only `verify` tasks through without being `done`,
      and Gate B has now passed their plans, so name each one and suggest `/tasks close TASK-NNN` for it: that
      moves it `verify → done` through its own gate. Don't flip them here. With no `verify` task, suggest nothing.
@@ -74,7 +80,7 @@ Three checks before a feature is called done: it's **complete** (every decision 
    a container close, and for the same reason: a gate's verdict belongs in a commit of its own.
    - **The files are the ones this run wrote**, counted off the steps that ran rather than from a list here:
      `decisions.md` when a History line was added, `idea.md` when step 5 changed its `status:`, each task
-     file step 5 parked at `verify`, each `STORY.md` or `EPIC.md` the park reopened, and `status.md` and `docs/features/README.md` when `/feature status` ran. A run that wrote nothing, such as
+     file step 5 parked at `verify`, each `STORY.md` or `EPIC.md` the park reopened, `tasks/README.md` when `triage` ran, and `status.md` and `docs/features/README.md` when `/feature status` ran. A run that wrote nothing, such as
      Gate A stopping on open tasks, has nothing to commit.
    - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails) → commit exactly
      those files and nothing else from the index:

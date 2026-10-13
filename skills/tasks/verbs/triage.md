@@ -2,7 +2,7 @@
 
 Rebuild `tasks/README.md` from the current state of every file in `tasks/`.
 
-This verb is also chained automatically by `new`, `pick`, `close`, `import`, `export`, and `migrate` after they touch files. When called directly, it just refreshes the dashboard and prints a one-line summary.
+This verb is also chained automatically by `new`, `pick`, `close`, `import`, `export`, and `migrate` after they touch files, and by any other verb that changes a task's status or placement ([[feature]] `review` and `decide` among them). When called directly, it just refreshes the dashboard and prints a one-line summary.
 
 **Never inside a task's linked worktree** (`git rev-parse --path-format=absolute --git-dir` differs from the same command's `--git-common-dir`, both absolute, as [pick.md](pick.md) step 6b explains),
 whichever verb chained it — `spawn` and `block` run there mid-task. Skip it and say so in one line. Every

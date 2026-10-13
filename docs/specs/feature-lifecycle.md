@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 0977261b5dfe2347f10de6b5989ac1b99331a2df
+generated-at: 558088ea2c57a21f397e9a487e30b036b5c85e19
 generated-on: 2026-10-13
 sources:
   - skills/feature/SKILL.md
@@ -329,7 +329,7 @@ The system SHALL, when every decision ends `removed`, set the feature's coarse s
 
 ### Requirement: Changing a signed-off feature reverts it by surface
 
-The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`.
+The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, or, with an upstream, named for a person to regenerate.
 
 #### Scenario: Visual tweak reopens sign-off
 
@@ -663,7 +663,13 @@ The system SHALL regenerate the feature's rollup and index row after any review 
 
 ### Requirement: Review commits its own record
 
-The system SHALL, at the end of `/feature review` and whichever way the gates went, commit exactly the files that run wrote — the History lines, the coarse status change, task files parked at `verify`, and the rollup and index — as one commit with the subject `chore: review FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, and with no git it SHALL commit nothing. It SHALL never commit files another verb wrote, such as a spec regeneration, and its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path.
+The system SHALL, at the end of `/feature review` and whichever way the gates went, commit exactly the files that run wrote — the History lines, the coarse status change, task files parked at `verify` and the containers they reopened, the task dashboard regenerated after a park, and the rollup and index — as one commit with the subject `chore: review FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, and with no git it SHALL commit nothing. It SHALL never commit files another verb wrote, such as a spec regeneration, and its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path.
+
+#### Scenario: A park refreshes the task dashboard
+
+- **Given** a project with no upstream and a feature whose only task has an `N/A` plan with no test behind it
+- **When** review parks the task at `verify`
+- **Then** the review's commit carries a `tasks/README.md` that shows the task awaiting verification
 
 #### Scenario: Failed review is still committed
 
