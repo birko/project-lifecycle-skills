@@ -6,7 +6,7 @@ _Generated 2026-10-04 by `/feature status` (all-features mode). **Do not hand-ed
 
 | Feature | Title | Phase | Decisions (a/c/d/r/p) | Tasks | Prototype |
 |---------|-------|-------|-----------------------|-------|-----------|
-| [FEATURE-001](FEATURE-001-task-worktrees/) | Task worktrees — run a task in its own checkout | done — signed off 2026-09-25, closed 2026-10-04 | 25/5/0/1/0 | 17/17 | skipped |
+| [FEATURE-001](FEATURE-001-task-worktrees/) | Task worktrees — run a task in its own checkout | done — signed off 2026-09-25, closed 2026-10-04 | 26/5/0/1/0 | 18/18 | skipped |
 | [FEATURE-002](FEATURE-002-comment-discipline/) | Comment discipline — keep the source free of everything that belongs elsewhere | done — signed off 2026-09-24, closed 2026-10-04 | 14/2/0/1/0 | 28/29 | skipped |
 | [FEATURE-003](FEATURE-003-blocked-becomes-a-flag/) | Task states follow common practice — "blocked" becomes a flag | done — signed off 2026-10-03 | 8/1/0/0/0 | 18/18 | built (playground) |
 | [FEATURE-004](FEATURE-004-specs-learn-from-openspec/) | Specs learn from OpenSpec — reviewable regen diffs, checked spec files, and a watch on upstream | building | 8/0/0/2/0 | 0/7 | skipped |

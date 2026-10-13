@@ -81,15 +81,18 @@ Three checks before a feature is called done: it's **complete** (every decision 
      `git commit --only -m "chore: review FEATURE-NNN" -- <the files written>`. The subject does not lead
      with a task id, so [[specs]] attributes no behaviour to it: a review changes no code. No
      `Co-Authored-By:` trailer.
-   - **With an upstream, or no git** → commit nothing. Step 6 names each file as uncommitted, so a person can
-     land them through an ordinary PR. A review's record must not be committed on a default branch that has
-     to mirror its remote.
+   - **With an upstream** → commit the same files on a branch of their own, `record/FEATURE-NNN`, by the
+     record-branch rule in [[tasks]] `close` § *Closing a STORY / EPIC* step 5, with the subject above. A
+     review's record must not be committed on a default branch that has to mirror its remote, and left in the
+     main copy it is carried silently onto the next task branch and never landed. Step 6 names the pushed
+     branch, or, when the rule stops, its line and every file left uncommitted.
+   - **No git** → commit nothing. Step 6 names each file as uncommitted.
    - **Files another verb wrote stay that verb's to commit.** A `/specs regen` run from Gate A writes spec
      files whose diff the user accepts or rejects, so this step never commits them. Step 6 names them as
      uncommitted.
 
-6. **Confirm** — print the gate results (✅/❌ per gate) and the final state, then either the commit from step
-   5b or **every file left uncommitted, by path**. Never end without one of those: a clean report over a dirty
+6. **Confirm** — print the gate results (✅/❌ per gate) and the final state, then the commit from step 5b, the
+   `record/FEATURE-NNN` branch it pushed, or **every file left uncommitted, by path**. Never end without one of those: a clean report over a dirty
    tree is the defect step 5b exists to remove.
 
 ## Edge cases

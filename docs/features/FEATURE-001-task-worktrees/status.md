@@ -1,6 +1,6 @@
 ---
 id: FEATURE-001
-generated: 2026-10-04
+generated: 2026-10-13
 ---
 
 # Task worktrees — run a task in its own checkout — Status
@@ -13,7 +13,7 @@ generated: 2026-10-04
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 25 |
+| ✅ approved | 26 |
 | ✏️ changed | 5 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 1 |
@@ -21,7 +21,7 @@ generated: 2026-10-04
 
 ## Build progress
 
-17 / 17 tasks done.
+18 / 18 tasks done.
 
 - TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
 - TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
@@ -40,6 +40,7 @@ generated: 2026-10-04
 - TASK-189 — the project rulebook and architecture notes record the new patterns (done)
 - TASK-193 — one phrase, "local mode", means two different settings; give one of them a clearer name (done — the two cases are now called "upstream" and "no upstream"; checked by an independent test run)
 - TASK-194 — make two sentences in the task-picking step say plainly what they mean (done — checked by re-running the earlier test, which no longer found anything unclear)
+- TASK-296 — on projects that merge through a shared online copy, closing a story and reviewing a feature now save their record on a branch of its own for someone to merge, instead of leaving the files lying around (done — tried on a test copy before and after the change)
 
 ## What can be tested now
 

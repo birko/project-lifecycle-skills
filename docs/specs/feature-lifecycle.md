@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: 3d062e713bf85444423590e371de2ec49cdc6d5e
-generated-on: 2026-10-12
+generated-at: b1f2b5f1f7236e2d15860a7427f8e7ab0989cce1
+generated-on: 2026-10-13
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -657,7 +657,7 @@ The system SHALL regenerate the feature's rollup and index row after any review 
 
 ### Requirement: Review commits its own record
 
-The system SHALL, at the end of `/feature review` and whichever way the gates went, commit exactly the files that run wrote — the History lines, the coarse status change, task files parked at `verify`, and the rollup and index — as one commit with the subject `chore: review FEATURE-NNN` in a git repository whose default branch has no upstream, and otherwise commit nothing; it SHALL never commit files another verb wrote, such as a spec regeneration, and its confirmation SHALL name either that commit or every file left uncommitted, by path.
+The system SHALL, at the end of `/feature review` and whichever way the gates went, commit exactly the files that run wrote — the History lines, the coarse status change, task files parked at `verify`, and the rollup and index — as one commit with the subject `chore: review FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, and with no git it SHALL commit nothing. It SHALL never commit files another verb wrote, such as a spec regeneration, and its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path.
 
 #### Scenario: Failed review is still committed
 
@@ -665,11 +665,11 @@ The system SHALL, at the end of `/feature review` and whichever way the gates we
 - **When** review records the result in History
 - **Then** that line is committed as `chore: review FEATURE-NNN` and the working tree is clean
 
-#### Scenario: Upstream leaves the record uncommitted
+#### Scenario: Upstream puts the record on its own branch
 
-- **Given** a project whose default branch tracks a remote
+- **Given** a project whose default branch tracks a remote and is level with it
 - **When** review signs off a feature
-- **Then** nothing is committed and the confirmation names every file it wrote as uncommitted
+- **Then** nothing is committed on the default branch, `record/FEATURE-NNN` is pushed carrying `chore: review FEATURE-NNN`, and the confirmation names the branch
 
 ### Requirement: Every requirement has a tracked feature and scope is never silently displaced
 

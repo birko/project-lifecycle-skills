@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 0c672193daee082b48f6ea110db734af8a68d092
+generated-at: b1f2b5f1f7236e2d15860a7427f8e7ab0989cce1
 generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
@@ -614,7 +614,7 @@ The system SHALL close the linked GitHub issue or transition the Jira ticket onl
 
 ### Requirement: Closing stories and epics
 
-The system SHALL close a story or epic only when every child task (and, for an epic, every story) is `done` or `cancelled`, listing open children and refusing otherwise unless `--force` is passed; it then flips the container to `cancelled` when every child is `cancelled` (an epic counting its stories and directly parented tasks together) and to `done` otherwise, the same rule `cancel`'s rollup applies, re-evaluates its parent, regenerates the dashboard and runs the post-close hints, then, with no upstream, commits only the flipped container files and the regenerated dashboard under a subject that does not lead with the container id. Containers have no test plan or merge step.
+The system SHALL close a story or epic only when every child task (and, for an epic, every story) is `done` or `cancelled`, listing open children and refusing otherwise unless `--force` is passed; it then flips the container to `cancelled` when every child is `cancelled` (an epic counting its stories and directly parented tasks together) and to `done` otherwise, the same rule `cancel`'s rollup applies, re-evaluates its parent, regenerates the dashboard and runs the post-close hints, then, with no upstream, commits only the flipped container files and the regenerated dashboard under a subject that does not lead with the container id. With an upstream it SHALL commit the container files, under the same subject, in a temporary worktree at the upstream, push them as `record/<ID>`, then restore them in the main copy, leaving it clean and naming the branch for a person to land through a PR. It SHALL commit nothing, and name the files instead, when it is not in the main copy on the default branch, the default branch is ahead of its upstream or cannot fast-forward to it, or `record/<ID>` already exists. When the push is refused it SHALL keep the temporary worktree and name the commit. Containers have no test plan or merge step.
 
 #### Scenario: Open children
 
@@ -627,6 +627,12 @@ The system SHALL close a story or epic only when every child task (and, for an e
 - **Given** a story whose two tasks are both `cancelled`
 - **When** the user runs `/tasks close --story STORY-004`
 - **Then** the story reads `cancelled`, not `done`
+
+#### Scenario: Story closed with an upstream
+
+- **Given** a project whose default branch tracks a remote and is level with it
+- **When** the user runs `/tasks close --story STORY-001`
+- **Then** `record/STORY-001` is pushed carrying `chore: close STORY-001`, the main copy is clean on the default branch, and the confirmation names the branch
 
 ### Requirement: Parents rolled up after child changes
 

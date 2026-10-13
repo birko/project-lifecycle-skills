@@ -562,13 +562,50 @@ Container closes are simpler than task closes — no human-test plan, no merge g
    is being set aside, and the open children are listed in the confirmation.
 3. **Parent rollup** — re-evaluate the parent: a story close may leave its EPIC with no open stories (suggest closing it, per step 11); an epic close ends the chain. Update parent files, not just the leaf.
 4. **Regenerate the dashboard** (step 10) and run step 11's hints — for a STORY, that's where the **spec regen offer** fires; the changelog nudge applies only to feature-less containers.
-5. **Commit the close** (git repo, no upstream, `--no-pr` not passed): the container files steps 2–3
+5. **Commit the close** (git repo, `--no-pr` not passed): the container files steps 2–3
    flipped and the files step 4 wrote, and nothing else from the index —
    `git commit --only -m "chore: close STORY-NNN" -- <those files>` (`EPIC-NNN` for an epic). The subject
    does not lead with the id, so [[specs]] attributes no behaviour to it: a container close changes no
    code. Without this step the flip floats uncommitted, and the next close's clean-tree check finds it.
-   With an upstream nothing is committed on the default branch (step 10): the confirmation names the
-   flipped files as uncommitted, for a person to land through an ordinary PR.
+   **With an upstream, the record goes on a branch of its own**, because nothing is committed on the default
+   branch (step 10). Left in the main copy instead, it is carried silently onto the next task branch and back,
+   and nothing ever lands it. Measured on TASK-296's fixture: six files sat uncommitted through a close, a
+   review, a pick and a merge, and no verb mentioned them again. **This is the record-branch rule, and
+   [[feature]] `review` step 5b follows it too**, with its own files and subject. The commit is made in a
+   temporary worktree, so the tree the gate ran in never switches branch. Stop at the first step that fails,
+   print `record not branched: <reason>` and every file left uncommitted, and never force:
+   1. **The remote** is `git config branch.<default>.remote`, the one the upstream belongs to. Run
+      `git fetch --prune <remote>`.
+   2. **This tree is the main copy, on `<default>`, with no commit ahead of `<upstream>`.** Check the
+      first entry of `git worktree list --porcelain`, `git symbolic-ref --short HEAD` and
+      `git rev-list --count <upstream>..<default>`. Behind only → `git merge --ff-only <upstream>` first,
+      since a file edited on an older base would otherwise overwrite newer upstream lines. A linked worktree,
+      another branch, a commit ahead, or a refused fast-forward stops here, with nothing changed.
+   3. **`record/<ID>` does not exist yet** (`record/STORY-NNN`, `record/EPIC-NNN`, `record/FEATURE-NNN`), on
+      the remote (`git ls-remote --heads <remote> record/<ID>`) or locally. Otherwise an earlier record of the
+      same id has not landed. Stop with `record/<ID> exists, land it first`, naming the files as for any stop. A second `/feature review` before
+      the first one's record lands always stops here, and that is correct: two records of one feature must
+      not race.
+   4. **Commit in a temporary worktree.** `git worktree add --detach <tmp> <upstream>`, with `<tmp>` the
+      system temp folder plus `<repo>-record-<ID>`. Not `worktree-root:`: that declares where a task's
+      worktree lives for the work, and this one is never entered and lives for one commit. Copy each file this run wrote into `<tmp>` at the same
+      path, then `git -C <tmp> add -- <those files>` and `git -C <tmp> commit -m "chore: close STORY-NNN"`,
+      the no-upstream path's subject. `add` takes a new file, such as a first review's `status.md`, where
+      `commit --only` refuses it. A failure here removes `<tmp>` (`git worktree remove <tmp>`) and leaves
+      this tree as it was.
+   5. **`git -C <tmp> push <remote> HEAD:refs/heads/record/<ID>`.** Refused → stop, and keep `<tmp>` and
+      this tree's files as they are: the commit exists only in `<tmp>`. Print its path, the sha and the push
+      command still to run.
+   6. **Tidy.** `git worktree remove <tmp>`. Then restore each record file in this tree, since the pushed
+      branch now holds it: `git restore -- <tracked files>`, and delete the ones this run created. The main
+      copy is clean again, and no local branch is left to delete. A refused removal is reported by path.
+
+   A record file is committed whole, as on the no-upstream path, so another edit already sitting in the same
+   file rides along with it.
+
+   The confirmation names the pushed branch for a person to open a PR from (`record/STORY-NNN pushed — open
+   a PR to land it`). It never opens one: whether a record lands is a person's decision, and the branch keeps
+   it safe until then.
 6. **Confirm** (step 12 format).
 
 ## Edge cases

@@ -328,6 +328,11 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **A pushed `task/TASK-NNN` branch means the task is taken, in every clone.** `pick` writes the signal when
   the default branch has an upstream, and [[tasks]]' Collection pass, `pick` and [[fix-next]] read it, recomputed from the branches,
   never stored. Detail: [[tasks]] § *Collection pass*. Record: FEATURE-001 D25.
+- **With an upstream, a gate's record goes on a `record/<ID>` branch, never into the main copy.** A container close
+  and `/feature review` commit what they wrote in a temporary worktree at the upstream and push it as `record/STORY-NNN`,
+  `record/EPIC-NNN` or `record/FEATURE-NNN`. A person lands it through a PR. Left uncommitted, the record rides silently
+  onto the next task branch and is never landed (measured on TASK-296). Owner of the mechanics:
+  `skills/tasks/verbs/close.md` § *Closing a STORY / EPIC* step 5. Record: FEATURE-001 D31.
 - **Whether there is an upstream is derived, not declared — and that passes the determined/consistent test.** Under
   `workspace: worktree`, whether the default branch tracks a remote (`<default>@{upstream}`) decides whether
   `pick` and `close` may commit on it, and it is recomputed every run. The upstream **determines** the one fact
