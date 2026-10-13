@@ -89,7 +89,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      triggered the recommendation — a concrete reason beats a generic prompt.
    - If a plan already exists, **read it as the work brief** and note its age: when the plan
      predates changes to the code it references, flag it and offer `/tasks plan {{ID}} --replan`
-     rather than silently working from a stale plan.
+     rather than silently working from a stale plan. Put this question:
+
+     > **TASK-NNN's plan dates from <date>, and <paths> changed since. Replan it with `/tasks plan TASK-NNN --replan` first? [y/N]**
+
+     **No answer, or nobody to ask:** keep the plan and work from it, and say so in the hand-off:
+     `plan kept: it predates changes to <paths> — may be stale`. Replanning overwrites the plan, so it is
+     never done unasked.
    - A plan whose steps turn out to be separately-completable units of work is a **split signal**,
      not a bigger task — see step 9's spawn rule.
 

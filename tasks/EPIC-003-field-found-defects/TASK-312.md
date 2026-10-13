@@ -3,7 +3,7 @@ id: TASK-312
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -30,9 +30,9 @@ path. The missing-plan offer in the same step already quotes its question. AGENT
 
 ## Acceptance criteria
 
-- [ ] The stale-plan offer states its exact question
-- [ ] It states what happens with no answer (proceed on the existing plan, reported as possibly stale)
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The stale-plan offer states its exact question
+- [x] It states what happens with no answer (proceed on the existing plan, reported as possibly stale)
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -45,4 +45,13 @@ covers the link, and the next drill touching `pick` exercises it.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-312` — leave empty until then._
+Not drafted: a one-offer wording change.
+
+## Outcome
+
+`pick.md` step 6 puts `TASK-NNN's plan dates from <date>, and <paths> changed since. Replan it with
+/tasks plan TASK-NNN --replan first? [y/N]`. Unanswered, the plan is kept and the hand-off says it may be
+stale, because replanning overwrites it. Review run inline for a five-line diff. Standards: the ask-step
+rule is met. Fidelity: all three criteria met. Correctness: `--replan` is declared by `plan.md`, whose own
+in-progress confirmation still applies; `/fix-next` never reaches this step. Security and comments: not
+applicable.
