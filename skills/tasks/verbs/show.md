@@ -15,7 +15,11 @@ Read-only inspection. Does **not** change status, does **not** regenerate the da
 
 3. **Read the file** in full.
 
-4. **Render the view** by level:
+4. **Render the view** by level. **At every level**, when the file carries the inferred-values line
+   (`> Filed with nobody to answer — inferred, not chosen: <fields>.`, written by [new.md](new.md)
+   § *Unanswered questions*), print it directly under the header as
+   `⚠ inferred, not chosen: <fields> — confirm them, then delete the line`, and leave the line itself out of
+   the body below, so it is shown once.
 
    **TASK** — print:
    - Header: `TASK-NNN — <title>` and the parent chain (`EPIC-NNN <epic title> → STORY-NNN <story title>` or `[loose]`)
@@ -31,7 +35,7 @@ Read-only inspection. Does **not** change status, does **not** regenerate the da
 
    **EPIC** — print:
    - Header: `EPIC-NNN — <title>`
-   - Status, created, owner, `affects:` list (if non-empty)
+   - Status, created, owner, `affects:` list as written (if non-empty, or whenever the inferred-values line names `affects`), with `(inferred)` appended when it does
    - The EPIC body
    - List of child STORYs (one line each) and loose tasks directly under this epic
    - If `--tree` → also recurse into each STORY and print its TASKs indented under it

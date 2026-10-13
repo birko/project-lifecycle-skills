@@ -235,8 +235,8 @@ a decision.
 - **The mark** is one line directly under the new file's `# Heading`, written only when something was
   inferred, naming every such field:
   `> Filed with nobody to answer — inferred, not chosen: <fields>.`
-  Step 13 repeats it, and [pick](pick.md) step 9 prints it again when the task is picked with `/tasks pick`. Whoever
-  confirms the values deletes the line.
+  Step 13 repeats it. Other verbs read it too, and each cites this section, so search for the section's
+  name before changing the line's wording. Whoever confirms the values deletes the line.
 - **A field a calling verb sets is not asked for here and never marked.** That covers a value passed as an
   argument, one the caller pre-fills or derives by its own rules, one of its stated defaults, and the body
   sections a step-0 flag drafts. A rule chose it, not a guess. Each question below runs only for a field

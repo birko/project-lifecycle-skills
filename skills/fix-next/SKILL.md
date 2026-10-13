@@ -236,7 +236,10 @@ over the same pool agree, and the line says that is all it is. It is not a pendi
 
 - add `picked-by: fix-next` to frontmatter
 - append a `## Progress log` section whose first line is
-  `- step 2 — picked; ranked above <runner-up> because <reason>`
+  `- step 2 — picked; ranked above <runner-up> because <reason>`, ending — after any tie note —
+  `; inferred, not chosen: <fields>` when the task file carries the inferred-values line
+  ([[tasks]] `new.md` § *Unanswered questions*). A run with nobody present cannot confirm those values, so
+  it records them, and step 9's report repeats them
 - `status: todo` → `in-progress` (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project —
   including its step 6b when the project declares `workspace: worktree`. This skill never answers
   6b's root question: it takes the blank-answer branch every time). **Write the two lines above so they
@@ -432,6 +435,8 @@ Final report, short:
    `ci:` line from the close (quoted), and **every task id `close` spawned from the out-of-scope sweep** —
    by id and one-line subject. Nobody watched the run; if the report doesn't name them, the only trace
    is a file in the tree nobody knows to look for.
+   Also **the picked task's inferred fields**, when step 2 logged any: a parent or priority nobody chose
+   placed and ranked the work this run did, and the reader of this report is the first who can check them.
 4. **The next pick**, named.
 
 ## Verify the reset really is safe
