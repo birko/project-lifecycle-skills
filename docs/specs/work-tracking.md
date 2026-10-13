@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 6681d3faa3dcc2d9dce9d3b4875c42c501e58b35
+generated-at: e4ba5474ef57dbadbd63e6e53f4b5a71f78e185d
 generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
@@ -704,7 +704,7 @@ The system SHALL close a story or epic only when every child task (and, for an e
 
 ### Requirement: Parents rolled up after child changes
 
-The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container.
+The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked.
 
 #### Scenario: Last task cancelled
 
@@ -717,6 +717,12 @@ The system SHALL, after any child status or placement change, or the creation of
 - **Given** a story reading `done` whose task is moved from `done` to `verify`
 - **When** the parent is re-evaluated
 - **Then** the story reads `in-progress` with a dated reopen line, its epic is re-evaluated the same way, and the reopen is reported
+
+#### Scenario: A story closed on an unlanded record branch
+
+- **Given** a project whose default branch tracks a remote, and `STORY-001` closed `done` on `record/STORY-001`, which has not landed, so the main copy still reads `in-progress`
+- **When** one of its tasks moves from `done` to `verify`
+- **Then** the story is not changed, and the report says `record/STORY-001` is unlanded, closes `STORY-001`, and now has an open child, so it must not be landed as is
 
 ### Requirement: Moving a task or story
 

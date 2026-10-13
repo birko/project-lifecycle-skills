@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 4e09eee7245923e84ec71c27d19f23ff946ef07e
+generated-at: e4ba5474ef57dbadbd63e6e53f4b5a71f78e185d
 generated-on: 2026-10-13
 sources:
   - skills/feature/SKILL.md
@@ -566,6 +566,12 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 - **Given** a feature whose only task is `done` under a story already closed `done`, and whose test plan claims `N/A` with no test behind it
 - **When** review parks the task at `verify`
 - **Then** the story reads `in-progress`, the confirmation names it as reopened, and the story file is in the review's commit
+
+#### Scenario: Parking under a story closed on an unlanded record branch
+
+- **Given** a project whose default branch tracks a remote, and a story closed on `record/STORY-NNN` that has not landed
+- **When** review parks one of that story's tasks at `verify`
+- **Then** the confirmation names the unlanded record branch as one not to land as is
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 

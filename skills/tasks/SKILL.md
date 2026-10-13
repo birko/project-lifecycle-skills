@@ -542,6 +542,19 @@ non-obvious rules travel with this:
   container's heading, `> Reopened YYYY-MM-DD — <child id> is now <its status> (<the verb that moved it>)`, and
   report `STORY-NNN reopened: <child id> is now <its status>`. Whoever closed it closes it again through
   `close --story` / `--epic` once its children allow.
+  - **With an upstream, a parent that reads open may already be closed on an unlanded record branch.** A
+    container close commits `done` on `record/<ID>` and leaves the main copy reading `in-progress` until a
+    person lands it ([verbs/close.md](verbs/close.md) § *Closing a STORY / EPIC* step 5). So a child that
+    leaves `done` in that window reopens nothing here, and landing the record later writes `done` over the
+    open child. Whenever a child stops being `done` or `cancelled`, and the default branch has an upstream,
+    check the containers this rule would reopen (the parent, and the EPIC above a STORY parent) for that
+    branch on the remote the upstream belongs to:
+    `git ls-remote --heads <remote> record/<ID>`. Recompute it every run, never remember it: the branch lands
+    or is deleted without this skill seeing it. For each one found, report
+    `record/<ID> is unlanded and closes <ID>, which now has an open child <child id> — do not land it as is`,
+    and write nothing for it. The branch is a person's to land, discard or re-record, and this run did not
+    create it. A check that cannot reach the remote reports `record/<ID> not checked: <reason>` rather than
+    passing silently.
   - **A `done` parent is never a reason to file new work elsewhere.** Epics and stories gain work over time, so
     new work goes under the container that owns it, and this rule reopens it. Filing it in `_loose/` instead
     loses its placement and leaves it unranked (§ *A task outside a pool*). `_loose/` is for work no
