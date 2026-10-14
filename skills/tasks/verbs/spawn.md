@@ -135,6 +135,9 @@ happened. Spawn instead of widening.
    - the new `TASK-NNN` + file path, its parent and `feature:`;
    - what changed on the origin (plan step deferred / out-of-scope line / `blocks` wired);
    - the ledger reconciliation (row touched, or "new `proposed` row D<n> — needs `/feature decide`");
+   - every container [new.md](new.md) step 10 reopened, and every `record/<ID> is unlanded …` or
+     `record/<ID> not checked: <reason>` line its check produced, as its step 13 words them. This print
+     replaces `new`'s confirmation, so a line left out here is seen by nobody;
    - then **"resuming TASK-origin"** and pick the thread back up. Spawning is an interruption, not
      a context switch — never leave the user mid-air on the task they were actually doing.
 

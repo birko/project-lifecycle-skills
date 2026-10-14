@@ -62,6 +62,10 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
      when step 6 pushed `record/FEATURE-NNN`**: the record-branch rule restored this copy's ledger, so it
      reads as it did before this run, and `decompose` would refuse it. Print instead
      `Land record/FEATURE-NNN, then decompose: /feature decompose FEATURE-NNN`.
+   - **Each container a revert reopened**, as `STORY-NNN reopened: <child id> is now <its status>`, and every
+     `record/<ID> is unlanded …` or `record/<ID> not checked: <reason>` line the rollup in § *Changing a closed
+     feature* step 4 produced ([[tasks]] § *Roll status up to parents*). The reopen also rides in step 6's commit,
+     but only this line tells anyone a pushed record would close it again.
    - If `proposed` remain → note how many still need a verdict.
 
 ## Deciding rules

@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: 78dedc51510a0d7abd0bafec3a6e6119e72c0ebd
-generated-on: 2026-10-13
+generated-at: 04ebaf589db1606b7a99656fe9b1b2ed7b54a2f5
+generated-on: 2026-10-14
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -716,7 +716,7 @@ The system SHALL close a story or epic only when every child task (and, for an e
 
 ### Requirement: Parents rolled up after child changes
 
-The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked.
+The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked. An open child moved in or created SHALL be checked against its parent and the epic above a parent story whatever they read, since a container closed on an unlanded record branch still reads open in the main copy. Move, creation (including a spawn, which prints in its place), a decide revert and a review park SHALL each carry these lines, and each reopened container, in their own report.
 
 #### Scenario: Last task cancelled
 
@@ -735,6 +735,12 @@ The system SHALL, after any child status or placement change, or the creation of
 - **Given** a project whose default branch tracks a remote, and `STORY-001` closed `done` on `record/STORY-001`, which has not landed, so the main copy still reads `in-progress`
 - **When** one of its tasks moves from `done` to `verify`
 - **Then** the story is not changed, and the report says `record/STORY-001` is unlanded, closes `STORY-001`, and now has an open child, so it must not be landed as is
+
+#### Scenario: New or moved work under a story closed on an unlanded record branch
+
+- **Given** a project whose default branch tracks a remote, and `STORY-001` closed `done` on the unlanded `record/STORY-001`, so the main copy reads `in-progress`
+- **When** an open task is moved into `STORY-001`, or a new task is created under it
+- **Then** nothing is reopened, and the move's report and the creation's confirmation each name `record/STORY-001` as unlanded, closing `STORY-001` over the open child, and not to be landed as is
 
 ### Requirement: Moving a task or story
 

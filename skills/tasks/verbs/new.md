@@ -206,6 +206,10 @@ Interactive scaffold of a new task tree node.
       `EPIC-NNN is cancelled over open work — <new id> filed under STORY-NNN; nothing chose to reopen it. Whether the cancel still holds is a person's call; /tasks move <new id> --to <ID> re-homes the task if it does.`
       Never leave it unreported: a cancelled epic over an open child is a container its children contradict,
       and a run that created it silently hands the next reader a contradiction with no cause.
+    - **With an upstream, an open new item also runs the unlanded-record check** of [SKILL.md](../SKILL.md)
+      § *Roll status up to parents* on its parent and the epic above a parent story, **whatever they read**.
+      The bullets above fire only on a parent reading `done` or `cancelled`, and a container closed on an
+      unlanded `record/<ID>` still reads `in-progress` here, so they never reach that check.
     - **A new item that is itself `done` or `cancelled`** ([import](import.md) brings in closed issues this
       way) reopens nothing. A closed child does not falsify a closed parent, as [move](move.md) already says.
 
@@ -227,6 +231,7 @@ Interactive scaffold of a new task tree node.
     - **Each container step 10 reopened**, as `STORY-NNN reopened: <new id> is now <its status>`, and any
       cancelled parent step 4 declined to reopen, and any cancelled epic step 10 left over open work, each
       with its report line
+    - **Every `record/<ID> is unlanded …` or `record/<ID> not checked: <reason>` line** step 10's check produced
     - Next-step hint depending on level:
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"

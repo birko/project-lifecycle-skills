@@ -47,12 +47,17 @@ defect tasks, pool = 2.** They were re-homed by hand because no verb could.
    the *source* is the one that gets forgotten: a STORY that just lost its last open task may now be
    `done`, and a STORY that gained one may no longer be. Re-evaluate the old parent, the new parent, and
    each of their epics. Never leave a container asserting a state its children contradict.
+   **With an upstream, an open task moved in also runs that section's unlanded-record check** on the new
+   parent and the epic above it, **whatever they read**: inside the window a container closed on
+   `record/<ID>` still reads `in-progress` here, so the reopen above never fires for it.
 
 7. **Regenerate the dashboard** — chain [verbs/triage.md](triage.md).
 
-8. **Report**: each move, each parent whose status changed, and each that was re-evaluated and left
-   alone. Say the second part out loud — "checked, unchanged" and "not checked" look identical
-   afterwards, and this verb's whole risk is a stale parent.
+8. **Report**: each move, each parent whose status changed (a reopen as `STORY-NNN reopened: <child id> is
+   now <its status>`), each that was re-evaluated and left alone, and every `record/<ID> is unlanded …` or
+   `record/<ID> not checked: <reason>` line step 6's check produced. Say the left-alone ones out loud —
+   "checked, unchanged" and "not checked" look identical afterwards, and this verb's whole risk is a stale
+   parent.
 
 ## What this verb does NOT do
 
