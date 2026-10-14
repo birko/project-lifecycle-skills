@@ -204,8 +204,8 @@ Interactive scaffold of a new task tree node.
 
       **No answer, or nobody to ask:** do not reopen, and still file the item in its story. Report
       `EPIC-NNN is cancelled over open work — <new id> filed under STORY-NNN; nothing chose to reopen it. Whether the cancel still holds is a person's call; /tasks move <new id> --to <ID> re-homes the task if it does.`
-      Never leave it unreported: a cancelled epic over an open child is a contradiction `audit` flags, and a
-      run that created it silently hands the next reader a finding with no cause.
+      Never leave it unreported: a cancelled epic over an open child is a container its children contradict,
+      and a run that created it silently hands the next reader a contradiction with no cause.
     - **A new item that is itself `done` or `cancelled`** ([import](import.md) brings in closed issues this
       way) reopens nothing. A closed child does not falsify a closed parent, as [move](move.md) already says.
 
@@ -225,7 +225,8 @@ Interactive scaffold of a new task tree node.
     - File path created
     - **The mark line**, when the file carries one, and any body section left unfilled (step 9)
     - **Each container step 10 reopened**, as `STORY-NNN reopened: <new id> is now <its status>`, and any
-      cancelled parent step 4 declined to reopen, with its report line
+      cancelled parent step 4 declined to reopen, and any cancelled epic step 10 left over open work, each
+      with its report line
     - Next-step hint depending on level:
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"

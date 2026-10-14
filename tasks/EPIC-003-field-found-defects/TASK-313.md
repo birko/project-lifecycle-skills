@@ -3,7 +3,7 @@ id: TASK-313
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: agent
@@ -29,7 +29,7 @@ Raised by the spec harvest of work-tracking (`/specs regen`, 2026-10-13). `skill
 
 - [x] Step 10 states the question for a cancelled epic above an open parent story, verbatim
 - [x] It states the answer-less outcome, and that outcome is reported, never silent
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -37,7 +37,8 @@ Raised by the spec harvest of work-tracking (`/specs regen`, 2026-10-13). `skill
 
 ## Human test plan
 
-- [ ] A cold runner files a task in an open story under a cancelled epic with nobody to answer. Expected: it quotes the question and reports what it left, and the epic is not silently left `cancelled` over open work without a report.
+- [x] A cold runner files a task in an open story under a cancelled epic with nobody to answer. Expected: it quotes the question and reports what it left, and the epic is not silently left `cancelled` over open work without a report.
+  Passed 2026-10-14: fixture `%TEMP%\d313`, cancelled EPIC-002 over `in-progress` STORY-002, `/tasks new task` under STORY-002 with nobody to answer. The runner quoted step 10's question word for word, left EPIC-002 `cancelled`, filed TASK-003 in STORY-002, and printed `EPIC-002 is cancelled over open work — TASK-003 filed under STORY-002; nothing chose to reopen it.` Runner: cold `claude -p --disable-slash-commands` in the fixture dir, skills granted by `--add-dir` on `~/.claude/skills` and `skills/`; probe listed no skills or slash commands.
 
 ## Outcome
 
@@ -62,6 +63,8 @@ evidence. The guard is the human test plan's cold drill, not run, so the task pa
 **Flagged, not fixed.** No verb reopens a cancelled container on its own; the only ways are side effects of
 `move` and `new`. Existing gap, not created here; TASK-314 already owns the related SKILL.md/new.md mismatch,
 so nothing new was filed.
+
+**Close review (2026-10-14, `verify → done`).** All three passes reported pass with notes. Two gaps in this change were fixed in this close: step 13's confirmation now has a slot for the cancelled-epic report line, which a run following step 13 could otherwise drop; and the line's reason no longer claims `audit` flags the contradiction, which audit.md's `contradiction` row does not cover. The drill also found that `plan.md`'s grill question has no answer-less path; that went to TASK-318.
 
 ## Implementation plan
 
