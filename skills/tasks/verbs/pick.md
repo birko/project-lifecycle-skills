@@ -23,7 +23,23 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - `--story <ID>` — limit to tasks under one story
    - `--feature <FEATURE-NNN>` — limit to tasks carrying that `feature:` frontmatter (how
      [[feature]]'s `/feature pick` hands off once a feature is decomposed)
-   - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5
+   - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5 — **after step 3's taken check
+     on that one task.** Skipping the picker must not skip the check, or naming a task is the way to pick one
+     another session or clone already holds. Read it as step 3 does:
+
+     | `task/TASK-NNN` | Do |
+     |---|---|
+     | exists nowhere | go to step 5 |
+     | is the current checkout | go to step 5: this session's own in-place pick, which step 7 treats as already on its branch |
+     | exists locally, under `workspace: worktree` | go to step 5. Step 6b owns every local case: its resume row (with a worktree or without), and its prunable, not-resumed and leftover lines. Refusing here would pre-empt the resume it promises |
+     | exists in any other way: locally in an in-place project, or only on a remote (`git branch --list`, `git branch -r --list "*/task/TASK-NNN"`) | print the **taken** line, write nothing, and stop |
+
+     taken: `pick: TASK-NNN is taken — task/TASK-NNN exists <locally | on <remote>>, and this session is not on it. Nothing was changed. If it is yours, switch to it (or enter its worktree) and pick again.`
+
+     **With an upstream, fetch first** (`git fetch --prune <remote>`), as 6b does: a stale remote list hides
+     another clone's newer branch, and keeps showing one deleted since. A failed fetch prints 6b's
+     **fetch-failed** line, and the check runs on what is known locally.
+     Without git there are no branches to read, and the check is skipped, as the Collection pass skips it.
 
 2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` or `status: verify`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `verify` lives on its task branch) — code
    complete, sign-off pending — and report them **before** the candidate list. They are deliberately

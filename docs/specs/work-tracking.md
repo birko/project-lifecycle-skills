@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 40b405a65f789bd66bb0ea3eaa7863a1e3a9fcc3
+generated-at: b52f5737ce6100848215c3eb0a28bc36e35b5bbc
 generated-on: 2026-10-14
 sources:
   - skills/tasks/SKILL.md
@@ -338,7 +338,13 @@ The system SHALL cut work into vertical tasks that each pass three hard checks �
 
 ### Requirement: Picking a task
 
-The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields.
+The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. A task named by id SHALL pass the same taken check, after a fetch when there is an upstream: it SHALL proceed when no task branch exists, when the branch is the current checkout, or when the branch exists locally under a worktree workspace, whose resume and leftover rules then decide; and otherwise SHALL refuse with a line naming where the branch exists, writing nothing. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields.
+
+#### Scenario: A task named by id that another clone holds
+
+- **Given** an in-place PR-per-task project whose remote holds `task/TASK-001`, with no local branch
+- **When** `/tasks pick TASK-001` runs
+- **Then** it refuses with the taken line naming the remote, and the task still reads `todo`
 
 #### Scenario: Debt nudge
 
