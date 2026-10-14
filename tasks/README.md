@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (1):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-10-14 11:34. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-14 13:39. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 65                  |
+| todo         | —                  | —                  | 69                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 4                   |
+| verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 227                 |
+| done         | 4                  | 13                 | 230                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 52× P2 · 13× P3.
+`todo` by priority: 54× P2 · 15× P3.
 
 ## In progress now
 
@@ -25,9 +25,6 @@ _None_
 ## Awaiting verification
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
-- [TASK-307](EPIC-003-field-found-defects/TASK-307.md) — `/feature decide` commits nothing, so a revert's task files and rollups stay uncommitted (P2, agent)
-- [TASK-306](EPIC-003-field-found-defects/TASK-306.md) — With an upstream, a park can miss a story whose `done` waits on an unlanded `record/` branch (P2, agent)
-- [TASK-313](EPIC-003-field-found-defects/TASK-313.md) — A new task under an open story whose epic is cancelled leaves open work under the cancelled epic, unreported (P2, agent)
 
 ## Tree
 
@@ -203,14 +200,14 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (20/28 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (23/32 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 16/23 done
+  - (epic level) — 19/27 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
@@ -223,17 +220,21 @@ _None_
     - [x] TASK-303 `/feature review` parks a `done` task at `verify` under a STORY that already reads `done`
     - [x] TASK-304 `pick` regenerates `tasks/README.md` on the default branch when the default branch has an upstream
     - [x] TASK-305 `/feature review` parks tasks at `verify` and never regenerates `tasks/README.md`
-    - [ ] TASK-306 With an upstream, a park can miss a story whose `done` waits on an unlanded `record/` branch 🔍 verify
-    - [ ] TASK-307 `/feature decide` commits nothing, so a revert's task files and rollups stay uncommitted 🔍 verify
+    - [x] TASK-306 With an upstream, a park can miss a story whose `done` waits on an unlanded `record/` branch
+    - [x] TASK-307 `/feature decide` commits nothing, so a revert's task files and rollups stay uncommitted
     - [x] TASK-308 A new task filed under a `done` story or epic goes there and reopens it, instead of going to `_loose/`
     - [x] TASK-309 `/tasks new`'s title, parent, priority and draft questions carry no question text and no answer-less path
     - [x] TASK-310 `/tasks new`'s `affects:` question has no answer-less path, and nothing reads the "inferred, not chosen" mark
     - [x] TASK-311 The "inferred, not chosen" mark reaches no reader through `/fix-next`, nor on an epic or story
     - [x] TASK-312 `/tasks pick` step 6's stale-plan offer has no question text
-    - [ ] TASK-313 A new task under an open story whose epic is cancelled leaves open work under the cancelled epic, unreported 🔍 verify
+    - [x] TASK-313 A new task under an open story whose epic is cancelled leaves open work under the cancelled epic, unreported
     - [ ] TASK-314 SKILL.md re-checks the epic only above a reopened story, while new.md checks it either way
     - [ ] TASK-315 move.md never states the reopen it performs
     - [ ] TASK-316 fix-next's tie scenario never states what happens when nobody answers
+    - [ ] TASK-317 `move` and `new` never report an unlanded `record/<ID>` branch, though TASK-306 says every trigger does
+    - [ ] TASK-318 `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers
+    - [ ] TASK-319 A `decide` revert sends a task back to `verify` with its old test step still ticked, so a re-close can count the old pass
+    - [ ] TASK-320 Two cold runners disagreed on whether `/feature status` creates the features index when it is absent
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (35/53 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (34/35 done)

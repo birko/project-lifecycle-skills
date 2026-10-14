@@ -3,7 +3,7 @@ id: TASK-306
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: agent
@@ -36,7 +36,8 @@ Found by the correctness pass at TASK-303's close (2026-10-13). With an upstream
 
 ## Human test plan
 
-- [ ] On an upstream fixture, close a STORY (leaving `record/STORY-NNN` unlanded), then run `/feature review` so it parks one of that story's tasks. Expected: the report names the unlanded record branch.
+- [x] On an upstream fixture, close a STORY (leaving `record/STORY-NNN` unlanded), then run `/feature review` so it parks one of that story's tasks. Expected: the report names the unlanded record branch.
+  Passed 2026-10-14: fixture `%TEMP%\d306` (local bare remote, `record/STORY-001` pushed and unlanded, STORY-001 `in-progress` on `main`). `/feature review FEATURE-001` parked TASK-001 `done → verify`, reopened nothing, and printed `record/STORY-001 is unlanded and closes STORY-001, which now has an open child TASK-001 — do not land it as is`. Runner: cold `claude -p --disable-slash-commands` in the fixture dir, skills granted by `--add-dir` on `~/.claude/skills` and `skills/`; probe listed no skills or slash commands. Its own record commit stopped at step 4 (the runner's sandbox refused writes to the temp worktree); that is the harness, not this rule.
 
 ## Outcome
 
@@ -63,6 +64,8 @@ not evidence. The guard is the human test plan's upstream-fixture drill, not run
   so the result is computed from the remote on each run, not stored.
 
 **Flagged, not fixed.** Nothing.
+
+**Close review (2026-10-14, `verify → done`).** Standards pass with notes, intent pass, correctness pass with notes, reported separately. The review found that the Outcome above overclaims: only the review park relays the new line, and `move` and `new` do not (`new` never reaches the check while the parent reads `in-progress`). This task's criterion was the park, which is built, so the gap went to TASK-317 rather than holding this close.
 
 ## Implementation plan
 
