@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 3f3f29e4dd37bee9c1b4e4a75eb5189a75abd866
+generated-at: 40b405a65f789bd66bb0ea3eaa7863a1e3a9fcc3
 generated-on: 2026-10-14
 sources:
   - skills/tasks/SKILL.md
@@ -422,7 +422,7 @@ The system SHALL, when `workspace: worktree` is declared under `pr-per-task`, gi
 
 ### Requirement: Upstream
 
-The system SHALL treat a worktree workspace as having an upstream whenever the default branch tracks one, recomputed every run: fetch with prune first; refuse when the local default branch has commits the upstream lacks; refuse when the task branch exists on the remote but not locally (another clone has it); fast-forward a behind default branch; cut the task branch from the upstream; commit nothing on the local default branch; carry the new task's files into the worktree and restore the main copy; commit the pick on the task branch and push it, so the pushed branch marks the task taken in every clone. When the worktree cannot be created it SHALL pick in place and push the task branch, leaving the status flip an uncommitted edit until close commits it with the work, since the pushed branch alone is the taken signal.
+The system SHALL treat a worktree workspace as having an upstream whenever the default branch tracks one, recomputed every run: fetch with prune first; refuse when the local default branch has commits the upstream lacks; refuse when the task branch exists on the remote but not locally (another clone has it); fast-forward a behind default branch; cut the task branch from the upstream; commit nothing on the local default branch; carry the new task's files into the worktree and restore the main copy; commit the pick on the task branch and push it, so the pushed branch marks the task taken in every clone. Whenever it falls back to an in-place pick — the worktree root undeclared or refused, the main copy not clean, the worktree failing to be created, or the move failing its proof — it SHALL first run any upstream check that fallback skipped (fetch, local-ahead, taken-elsewhere, fast-forward), stopping where one fails, then cut the branch from the upstream and push it, or report that it could not or that no branch was cut, leaving the status flip an uncommitted edit until close commits it with the work, since the pushed branch alone is the taken signal.
 
 #### Scenario: Another clone holds the task
 

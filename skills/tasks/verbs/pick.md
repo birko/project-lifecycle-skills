@@ -234,9 +234,25 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    upstream cut it from `<upstream>` instead**, the remote's tip, so a stale local default branch
    cannot put an old base under the task. It fails → the **fell-back** line quoting git's message, and
    step 7, which now only cuts the branch in place (the pick is already committed when there is no upstream).
-   **A fallback with an upstream** follows the in-place pick in step 7 (status flip, branch cut) and then runs
-   `git push -u <remote> task/TASK-NNN`, so other clones see the task as taken even though it is worked
-   in place. A failed push prints the **not-pushed** line. **The status flip is not committed here**: it stays
+   **Every fallback with an upstream pushes, not only this one** — this failure, the proof mismatch below,
+   `worktree-root undeclared`, the refused root and the unclean main copy all end in step 7's in-place pick.
+   With an upstream, that pick is the same pick as the worktree's, so it is guarded the same way:
+   - **Run the upstream checks first, if this fallback left before them.** The undeclared root, the
+     unclean main copy and the refused root leave before the **Check** block's upstream items. So, before
+     step 7, run the main-copy check (*Run from the main copy*) and then those items in their order: the
+     fetch, the local-ahead check, the taken-elsewhere check, and the fast-forward. Each failure prints its own line and stops, as it says there. A fallback that
+     skips them would cut a stale branch over a task another clone already holds. The fast-forward refuses
+     on an unclean main copy whose edits collide with incoming ones; that is its **ff-refused** stop.
+   - **Then step 7 cuts the branch from `<upstream>`** (`git switch -c task/TASK-NNN <upstream>`), the
+     remote's tip, as *Create* does, carrying this task's uncommitted files along. Then run
+     `git push -u <remote> task/TASK-NNN`, so other clones see the task as taken even though it is
+     worked in place.
+   - **Report both outcomes.** The fallback's own line (**fell-back**, or **refusal** for the refused root)
+     comes first, printed once those checks pass; a check that stops prints only its own line, since the
+     run never reaches step 7. A push that lands then prints the **upstream** line, and a failed one the **not-pushed**
+     line. When step 7 cuts no branch (the main copy was not on the default branch), there is nothing to
+     push. Print the **no-branch** line: an unpushed in-place pick with an upstream is invisible to every
+     other clone, so it is never left unreported. **The status flip is not committed here**: it stays
    an uncommitted edit in the task branch's checkout until `close` commits it with the work. Nothing is
    committed on the local default branch when there is an upstream, and the pushed branch, not the file, is
    the taken signal (FEATURE-001 D25), so the push needs no commit to carry it. So this pick makes no
@@ -258,7 +274,8 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      without regard to case.
    - **Mismatch** → `git worktree remove "<path>"` and `git branch -d task/TASK-NNN` (the branch holds
      nothing beyond the pick it shares with the default branch, so never force), print the **fell-back**
-     line naming both paths, and continue at step 7, which cuts the branch in place. A removal that fails
+     line naming both paths, and continue at step 7, which cuts the branch in place (and, with an upstream,
+     pushes it, as the *Create* paragraph above says for every fallback). A removal that fails
      → report what is left and stop. Expect a mismatch from an agent whose working directory was pinned
      at launch (a subagent): falling back there is correct.
    - **Match** → print the **in-a-worktree** line and go to step 9. Steps 7 and 8 already ran inside the
@@ -282,6 +299,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - fetch failed: `workspace: upstream — git fetch <remote> failed (<git message>); tasks other clones have taken may not be visible.`
    - local ahead: `workspace: upstream — <default-branch> has <n> commits <upstream> lacks; get them onto <upstream> through a PR, then pick again. Nothing was changed.`
    - not pushed: `workspace: upstream — task/TASK-NNN could not be pushed (<git message>); in progress here, unseen elsewhere until it is.`
+   - no branch: `workspace: upstream — no task branch was cut (the main copy is on <branch>, not <default-branch>); TASK-NNN is in progress here and unseen by every other clone.`
    - taken elsewhere: `workspace: task/TASK-NNN already exists on <remote> — another clone has this task; nothing was changed.`
    - wrong tree: `workspace: this session is inside a linked worktree (<toplevel>) — pick from the main copy (<main copy>); nothing was changed.`
    - resumed: `workspace: resumed in the worktree at <path> on task/TASK-NNN — proved: git rev-parse --show-toplevel = <path>`
