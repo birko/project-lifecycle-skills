@@ -236,7 +236,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    step 7, which now only cuts the branch in place (the pick is already committed when there is no upstream).
    **A fallback with an upstream** follows the in-place pick in step 7 (status flip, branch cut) and then runs
    `git push -u <remote> task/TASK-NNN`, so other clones see the task as taken even though it is worked
-   in place. A failed push prints the **not-pushed** line.
+   in place. A failed push prints the **not-pushed** line. **The status flip is not committed here**: it stays
+   an uncommitted edit in the task branch's checkout until `close` commits it with the work. Nothing is
+   committed on the local default branch when there is an upstream, and the pushed branch, not the file, is
+   the taken signal (FEATURE-001 D25), so the push needs no commit to carry it. So this pick makes no
+   `TASK-NNN: pick` commit, unlike the no-upstream fallback, whose pick was committed on the default branch
+   before the worktree was tried.
 
    **Enter, then prove — before anything is written in the worktree.** A worktree nobody enters is a
    trap, not a spare folder: its branch cannot be checked out in the main copy, so the work would land on

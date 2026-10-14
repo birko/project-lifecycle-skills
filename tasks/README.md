@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (1):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-10-14 16:39. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-10-14 17:28. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,10 +13,10 @@ _Generated 2026-10-14 16:39. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 236                 |
+| done         | 4                  | 13                 | 237                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 51× P2 · 19× P3.
+`todo` by priority: 52× P2 · 18× P3.
 
 ## In progress now
 
@@ -96,11 +96,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (52/94 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (53/94 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (10/21 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (11/21 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -120,7 +120,7 @@ _None_
     - [ ] TASK-182 `/tasks pick` step 7's two questions carry no wording and no answer-less path
     - [ ] TASK-212 Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes
     - [ ] TASK-218 `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined
-    - [ ] TASK-254 `pick`'s in-place fallback with an upstream never says where the status flip is committed
+    - [x] TASK-254 `pick`'s in-place fallback with an upstream never says where the status flip is committed
     - [ ] TASK-255 `pick`'s list output leaves five rendering details for each reader to settle
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
@@ -200,7 +200,7 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (28/39 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (28/40 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
@@ -242,6 +242,7 @@ _None_
     - [ ] TASK-325 Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item
     - [x] TASK-326 `close`'s "reopen and re-close" never says what reopening resets, so a re-close over a ticked plan goes straight back to `done`
     - [ ] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained
+    - [ ] TASK-328 `pick`'s proof-mismatch fallback never pushes the task branch with an upstream, so other clones see the task as free
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (36/53 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (35/35 done)

@@ -252,7 +252,8 @@ over the same pool agree, and the line says that is all it is. It is not a pendi
   6b's root question: it takes the blank-answer branch every time). **Write the two lines above so they
   ride in 6b's pick commit**: with no upstream write them first, in the main copy, since 6b commits the pick
   on the default branch; with an upstream write them in the worktree, where 6b commits the pick on the task
-  branch. Written anywhere else, a reset session would take this task for a human's)
+  branch; on 6b's fallback with an upstream there is no worktree and no pick commit, so write them in the
+  checkout, where they stay uncommitted until `close` carries them with the work. Written anywhere else, a reset session would take this task for a human's)
 
 Every step below appends one line. The log is how step 0 resumes; a step that ran without a line is a
 step the next session will redo.
