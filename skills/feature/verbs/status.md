@@ -14,18 +14,26 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 
    | # | When | Phase |
    |---|---|---|
-   | 1 | `idea.md` status is `done`, `dropped`, `superseded` or `review` | that status |
-   | 2 | ≥1 linked task that is not `cancelled`, and every such task is `done` or awaiting verification (`verify`, or the older `review`, read per [[tasks]] § *Lifecycle*) | `review` |
-   | 3 | ≥1 `approved` or `changed` row | `building` |
-   | 4 | the prototype line reads **Built** (the artifact is still there) | `prototyping` |
-   | 5 | ≥1 row stamped `deferred` or `removed`, or the prototype line reads **Skipped** or **Built, then deleted** | `deciding` |
-   | 6 | anything else: no row stamped, no prototype recorded | `idea` |
+   | 1 | `idea.md` status is `done`, `dropped` or `superseded` | that status |
+   | 2 | ≥1 `approved` or `changed` row is not decomposed: its `→ Tasks` cell is empty, or names a task that is not on disk | `building` |
+   | 3 | `idea.md` status is `review` | `review` |
+   | 4 | ≥1 linked task that is not `cancelled`, and every such task is `done` or awaiting verification (`verify`, or the older `review`, read per [[tasks]] § *Lifecycle*) | `review` |
+   | 5 | ≥1 `approved` or `changed` row | `building` |
+   | 6 | the prototype line reads **Built** (the artifact is still there) | `prototyping` |
+   | 7 | ≥1 row stamped `deferred` or `removed`, or the prototype line reads **Skipped** or **Built, then deleted** | `deciding` |
+   | 8 | anything else: no row stamped, no prototype recorded | `idea` |
 
    - **`done`, `dropped` and `superseded` are mirrors of the stored marker**, not derived: `done` means reviewed and
      signed off, `dropped` means every decision was `removed` (show the rollup but mark it killed), and
      `superseded` means the scope moved to another feature (show the `superseded-by:` pointer). Stored marker =
      `status` in `idea.md`; computed display = phase. Never hand-maintain phase.
-   - **`review` from rule 2 means built but not signed off.** Client tasks awaiting sign-off carry `status: verify`.
+   - **`review` from rules 3 and 4 means built but not signed off.** Client tasks awaiting sign-off carry `status: verify`.
+   - **Rule 2 runs before both `review` rules, whatever is stored, because a row with no tasks is work nobody has
+     built.** Without it the old tasks of a `changed` row still back-link through `feature:`, so rule 4 reads them
+     all `done` and the rollup tells stakeholders an unbuilt change awaits sign-off. Its condition is the one
+     [pick](pick.md)'s gate D fails on, so gate E, which reads this phase, never fires beside it. A stored `review`
+     with tasks parked at `verify` shows `building` too while a new row waits; pick's hand-off still surfaces
+     those tasks first.
    - **`building` with no tasks yet is the normal case**, not a corner: `decide` chains this verb right after
      stamping. Render `0/0 tasks` and point the next-step line at `/feature decompose`.
    - **`deciding` with no `proposed` row left** is a ledger whose every verdict is `deferred` or `removed` but whose
@@ -71,6 +79,7 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 - This verb never changes decisions or tasks — read-only aggregation + write of the rollup file.
 - Chain this automatically after `decide` and `decompose`, and after a `/tasks close` that changes a feature-linked task's status — those verbs each carry the chain instruction on their side, so the rollup never goes stale.
 - **Also chain it after a surface-dependent revert** (a `changed` decision that reverts a
-  `done` feature to `review` — see [decide.md § Changing a closed feature](decide.md)).
+  `done` feature to `review`, or to `idea` when the change is not built — see
+  [decide.md § Changing a closed feature](decide.md)).
   Flipping `idea.md`/tasks without re-running `status` leaves `status.md` reading `done`
-  while everything else says `review` — the stakeholder's rollup then lies.
+  while everything else says otherwise — the stakeholder's rollup then lies.

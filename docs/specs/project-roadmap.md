@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: a2d31c0d7715c59d36a93ae2dc4eb8df0f83b013
-generated-on: 2026-10-11
+generated-at: bf22a27d2308f07bbda125d963ec48c083082977
+generated-on: 2026-10-14
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -199,11 +199,11 @@ The system SHALL flag DV1 when a feature's phase is `idea` or all its decisions 
 
 ### Requirement: DV2 — shipped work never closed on the feature side
 
-The system SHALL flag DV2 when at least one task is linked, every linked task is `done`, the feature's coarse status is not `done`, and its phase is neither `done` nor `review`.
+The system SHALL flag DV2 when at least one task is linked, every linked task is `done`, the feature's coarse status is not `done`, and its phase is neither `done` nor `review` — except when an `approved` or `changed` row has no tasks or names tasks missing on disk, which is work not filed yet rather than shipped work left open.
 
 #### Scenario: All done, feature still building
 
-- **Given** FEATURE-031's two tasks are `done`, its coarse status is `idea` and its phase is `building`
+- **Given** FEATURE-031's two tasks are `done`, every approved row names its tasks, its coarse status is `idea` and its phase is `building`
 - **When** the audit runs
 - **Then** FEATURE-031 is flagged DV2
 
@@ -212,6 +212,12 @@ The system SHALL flag DV2 when at least one task is linked, every linked task is
 - **Given** FEATURE-032's tasks are all `done` and its phase is `review`
 - **When** the audit runs
 - **Then** DV2 is not raised for FEATURE-032
+
+#### Scenario: An unbuilt change waiting for decompose is not drift
+
+- **Given** FEATURE-033 was signed off, its old task is `done`, and a `changed` row whose change is not built has an empty task column, so its coarse status is `idea` and its phase is `building`
+- **When** the audit runs
+- **Then** DV2 is not raised for FEATURE-033
 
 ### Requirement: DV3 — broken back-link, only where work exists
 

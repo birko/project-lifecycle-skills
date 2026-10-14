@@ -22,7 +22,7 @@ The lifecycle is **not strictly linear** — you loop back to `decide` after a p
 
 **Entering an existing feature: `/feature pick`.** It resolves which stage the feature is actually
 at and offers the verb that unblocks it — undecided rows → `decide`, **approved rows with no tasks
-→ `decompose`** (the most common stall), all-tasks-done → `review` — and only hands off to
+→ `decompose`** (the most common stall, and it outranks sign-off), all-tasks-done → `review` — and only hands off to
 `/tasks pick` once real tasks exist. Never begin implementation straight from a feature folder;
 that's the task-first gate. See [verbs/pick.md](verbs/pick.md).
 
@@ -131,14 +131,14 @@ verb that owns stamping.
 
 | `status` | Set by | Meaning |
 |---|---|---|
-| `idea` | `new` (initial) | captured; not yet built |
-| `review` | `review` (gate opened, code/tasks complete, human sign-off pending) | **built but NOT signed off** — verification debt; never call this "done" |
+| `idea` | `new` (initial); `decide` (a change to a `done` feature that is not built yet) | captured; not yet built |
+| `review` | `review` (gate opened, code/tasks complete, human sign-off pending); `decide` (a built change to a `done` feature) | **built but NOT signed off** — verification debt; never call this "done" |
 | `done` | `review` (all gates pass + sign-off) | shipped and signed off |
 | `dropped` | `decide` (when every decision ends `removed`) | feature killed; no work generated |
 | `superseded` | when a feature is re-homed into another (scope moved, not killed) | requirement still lives, but tracked elsewhere; add `superseded-by: FEATURE-NNN` and keep the folder for the audit trail |
 
 A feature whose code/tasks are complete but whose human/visual sign-off hasn't
-happened carries **`status: review`** — *not* `idea` (it's built, not unstarted) and
+happened carries **`status: review`** — *not* `idea` (it's built, and `idea` claims nothing is) and
 *not* `done` (it's not signed off). This is the first-class coarse marker behind the
 no-"done-pending" rule below, and it mirrors the [[tasks]] skill's `verify` task status.
 

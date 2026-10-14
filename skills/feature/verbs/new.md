@@ -83,6 +83,6 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
   alert) routes the same way a new idea does: `/feature new`, or a new `proposed` decision on
   the owning feature. A `removed`/`deferred` decision overturned by evidence is reopened via
   `/feature decide` (a new `proposed` row referencing the superseded one). A regression in
-  shipped behavior → `/tasks new` (which may revert the owning feature `done → review` — see
+  shipped behavior → `/tasks new` (which may revert the owning feature out of `done` — see
   decide.md's surface-dependent-revert rule). Work is a loop, not a line; `done` is never the
   terminus.

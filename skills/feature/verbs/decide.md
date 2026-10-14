@@ -110,14 +110,15 @@ never a silent edit:
    behavior, not the one you were working in; rewrite its row + append a History line.
 3. **Trace the ripple** — fix downstream constants, comments, and other features' decision text
    so no artifact lies about the new value.
-4. **Status rule:** a change with a human-verifiable surface reverts the owning feature `done → review`;
-   a change fully covered by automated tests stays `done`. What the implementing task(s) do depends on
-   whether the change is already in the code:
+4. **Status rule:** a change with a human-verifiable surface reverts the owning feature out of `done`;
+   a built change fully covered by automated tests stays `done`. A change that is not built yet leaves `done`
+   either way, by the second row below, because a feature reading `done` is listed nowhere as work. Where the feature and its implementing task(s) go
+   depends on whether the change is already in the code:
 
-   | The changed shape is | Implementing task(s) |
-   |---|---|
-   | **built** — code implementing it is in the tree | `done → verify`; re-run their Human test plans before re-closing, after resetting each step the change affects to *not run* by [[tasks]] § *Lifecycle* ("A change landing on a closed feature"). A step left ticked reads as passed and lets `close` skip the re-run |
-   | **not built yet** | stay `done`: their work shipped and nothing in the code changed. **Move their ids out of the row's `→ Tasks` cell** into the History line (`D<n> changed — TASK-NNN built the prior shape`) and leave the cell `—`. The row then reads as not decomposed everywhere it is checked (`pick`'s gate D, `decompose`, `review` Gate A), so the change cannot pass as built. Step 7 offers `decompose`, which files it as a new task with its own Human test plan |
+   | The changed shape is | Feature (`idea.md` `status:`) | Implementing task(s) |
+   |---|---|---|
+   | **built** — code implementing it is in the tree | `done → review`: built, sign-off pending | `done → verify`; re-run their Human test plans before re-closing, after resetting each step the change affects to *not run* by [[tasks]] § *Lifecycle* ("A change landing on a closed feature"). A step left ticked reads as passed and lets `close` skip the re-run |
+   | **not built yet** | `done → idea`, the one stored value that does not claim the work is built: `review` says built and awaiting sign-off, and the coarse set has no `building`. The phase then derives `building` from the emptied row ([status.md](status.md) step 2's not-decomposed rule), and `/feature review` sets `review` or `done` again once the change ships | stay `done`: their work shipped and nothing in the code changed. **Move their ids out of the row's `→ Tasks` cell** into the History line (`D<n> changed — TASK-NNN built the prior shape`) and leave the cell `—`. The row then reads as not decomposed everywhere it is checked (`pick`'s gate D, `decompose`, `review` Gate A), so the change cannot pass as built. Step 7 offers `decompose`, which files it as a new task with its own Human test plan |
 
    Read *built* off the code, never off the request. **Unsure counts as not built:** a task filed for work
    that turns out to exist closes quickly, while a `verify` over unbuilt work claims code is complete when

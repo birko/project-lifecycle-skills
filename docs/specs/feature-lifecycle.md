@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 7cc3a8ac8c7beaef3ca56486dcebc1258461216e
+generated-at: bf22a27d2308f07bbda125d963ec48c083082977
 generated-on: 2026-10-14
 sources:
   - skills/feature/SKILL.md
@@ -345,7 +345,7 @@ The system SHALL, when every decision ends `removed`, set the feature's coarse s
 
 ### Requirement: Changing a signed-off feature reverts it by surface
 
-The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and, when the changed shape is already built in the code, its implementing tasks `done → verify` with every test plan step the change affects reset to not run (unticked, earlier passes kept as history); when the change is not built yet, or it is unclear whether it is, the implementing tasks SHALL stay `done`, their ids SHALL move from the row's task column into a History line so the row reads as not decomposed, and the change SHALL arrive as a new task through decompose, and the confirmation SHALL offer decompose only for a changed row that is not built; then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, carried with an upstream on the decision's `record/FEATURE-NNN` branch rather than written on the default branch.
+The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature out of `done` and, when the changed shape is already built in the code, setting the feature to `review` and its implementing tasks `done → verify` with every test plan step the change affects reset to not run (unticked, earlier passes kept as history); when the change is not built yet, or it is unclear whether it is, the feature SHALL be set to `idea`, the one stored status that does not claim the work is built, the implementing tasks SHALL stay `done`, their ids SHALL move from the row's task column into a History line so the row reads as not decomposed, and the change SHALL arrive as a new task through decompose, and the confirmation SHALL offer decompose only for a changed row that is not built; then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, carried with an upstream on the decision's `record/FEATURE-NNN` branch rather than written on the default branch.
 
 #### Scenario: Visual tweak reopens sign-off
 
@@ -357,7 +357,7 @@ The system SHALL treat a later change to a `done` feature as a recorded decision
 
 - **Given** FEATURE-030 is `done`, and an agreed change to its screen is not in the code yet
 - **When** the `changed` decision is recorded
-- **Then** FEATURE-030 becomes `review`, its implementing task stays `done`, the row's task column is emptied with a History line naming the task that built the prior shape, and the confirmation offers decompose for the change
+- **Then** FEATURE-030 becomes `idea` and its phase `building`, its implementing task stays `done`, the row's task column is emptied with a History line naming the task that built the prior shape, and the confirmation offers decompose for the change
 
 #### Scenario: Test-covered change stays done
 
@@ -399,7 +399,7 @@ The system SHALL require that the tasks for a feature exist before any implement
 
 ### Requirement: Pick enters a feature at the stage that unblocks it
 
-The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself. With an upstream, a decide in that chain which pushed `record/FEATURE-NNN` SHALL stop the chain before decompose, reporting the branch and that decompose waits until it lands.
+The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`, which never fails beside the decompose gate, because such a row makes the phase `building`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself. With an upstream, a decide in that chain which pushed `record/FEATURE-NNN` SHALL stop the chain before decompose, reporting the branch and that decompose waits until it lands.
 
 #### Scenario: Most common stall offers decompose
 
@@ -499,7 +499,7 @@ The system SHALL, on `/feature show`, print the feature's title, phase, owner, d
 
 ### Requirement: Coarse status is stored, phase is derived
 
-The system SHALL store exactly one coarse status per feature with the values `idea`, `review`, `done`, `dropped` and `superseded` (a superseded feature also naming its successor and keeping its folder), and SHALL compute a displayed phase from the decisions, task progress and coarse status — `idea`, `prototyping`, `deciding`, `building`, `review`, `done` — with `dropped` and `superseded` shown as mirrors of the coarse status; phase SHALL never be stored or hand-maintained. The phase SHALL be the first of six ordered rules that matches, so every feature gets exactly one: the stored status when it is `done`, `dropped`, `superseded` or `review`; `review` when at least one task is not cancelled and every such task is done or awaiting verification; `building` when any row is approved or changed; `prototyping` while the recorded prototype is built and still standing; `deciding` when any row is deferred or removed, or the prototype was skipped or built and then deleted; and `idea` otherwise. The prototype SHALL be read from the feature's recorded prototype line, not the folder. A feature with approved decisions and no tasks yet SHALL show phase `building` with `0/0` tasks and a next step of decompose; a feature whose every row is deferred or removed, without being dropped, SHALL show phase `deciding` with a next step of reopening a row or dropping the feature.
+The system SHALL store exactly one coarse status per feature with the values `idea`, `review`, `done`, `dropped` and `superseded` (a superseded feature also naming its successor and keeping its folder), and SHALL compute a displayed phase from the decisions, task progress and coarse status — `idea`, `prototyping`, `deciding`, `building`, `review`, `done` — with `dropped` and `superseded` shown as mirrors of the coarse status; phase SHALL never be stored or hand-maintained. The phase SHALL be the first of eight ordered rules that matches, so every feature gets exactly one: the stored status when it is `done`, `dropped` or `superseded`; `building` when any approved or changed row has no tasks or names tasks missing on disk, whatever else is stored or linked, so a change nobody has built never reads as awaiting sign-off; the stored status when it is `review`; `review` when at least one task is not cancelled and every such task is done or awaiting verification; `building` when any row is approved or changed; `prototyping` while the recorded prototype is built and still standing; `deciding` when any row is deferred or removed, or the prototype was skipped or built and then deleted; and `idea` otherwise. The prototype SHALL be read from the feature's recorded prototype line, not the folder. A feature with approved decisions and no tasks yet SHALL show phase `building` with `0/0` tasks and a next step of decompose; a feature whose every row is deferred or removed, without being dropped, SHALL show phase `deciding` with a next step of reopening a row or dropping the feature.
 
 #### Scenario: Freshly decided feature
 
@@ -512,6 +512,12 @@ The system SHALL store exactly one coarse status per feature with the values `id
 - **Given** a feature with coarse status `idea` and five tasks, all `done`
 - **When** the phase is computed
 - **Then** it is `review`, not `done`
+
+#### Scenario: An undecomposed row outranks a stored review
+
+- **Given** a feature with coarse status `review`, its linked tasks all `done`, and a `changed` row whose task column is empty
+- **When** the phase is computed
+- **Then** it is `building`, and pick offers decompose with no sign-off offer beside it
 
 #### Scenario: Every decision deferred
 
