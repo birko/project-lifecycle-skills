@@ -538,7 +538,7 @@ non-obvious rules travel with this:
 **Roll status up to parents — don't leave them stale.** A child changing status is not done until its parents reflect reality:
 - `close` (and any status change): after updating a TASK, re-evaluate its parent STORY, then that STORY's EPIC. A STORY whose every TASK is done should not still read `in-progress`; a container whose children are all `cancelled` is `cancelled`, and a mix of `done` and `cancelled` is `done` (`close --story`/`--epic` and `cancel` both apply this); an EPIC's body/status and any requirement→feature table it carries must match its children. Update the parent files, not just the leaf + the dashboard. (Real failure this guards: leaves and the dashboard were kept current but `EPIC.md` sat at `in-progress` with a stale prose story list and an obsolete roadmap line.)
 - **The rule runs the other way too.** A child that stops being `done` or `cancelled` (parked `done → verify`,
-  reopened by `close`, an open task moved in by `move`, or a new open child **created** under it by the `new` flow, directly
+  parked at `verify` by a `close` that reopened it, an open task moved in by `move`, or a new open child **created** under it by the `new` flow, directly
   or through any verb that runs it) reopens its parent to `in-progress` when that parent
   reads `done` or `cancelled`: a STORY, or an EPIC the child is parented to directly. Then re-evaluate the EPIC
   above a reopened STORY the same way. One left `done` over a `verify` child is a claim its own close gate

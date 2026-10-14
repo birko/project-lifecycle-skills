@@ -181,6 +181,29 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      line that names no task is work nobody owns: `/tasks spawn` it and add the id to the line before
      parking (`--unattended` does the same). The task leaves `verify` when a re-run passes and ticks the box.
    - If it has real steps that are not run, **don't close to `done`** — the manual/visual sign-off hasn't happened. Ask, once per such step: *"Did you run "<step>"? Answer passed, failed and what you saw, or not run."* **Passed** → tick it. **Failed** → leave it unticked, append the `Failed` line with what the user saw, and treat it as the failed case above. **Not run, or no answer** → leave it as it is. `--unattended` asks nothing and leaves every such step not run. Then: every step passed → proceed to `done`. Otherwise set **`status: verify`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
+     - **Roll the park up first when the task read `done` or `cancelled` before this close** (step 4's reopen
+       and re-close). Only that park takes a task out of a closed status; every other close starts from an open
+       one, and a re-close that ends `done` reopens nothing, because its parents never stopped being right. Apply
+       the reopening direction of [SKILL.md](../SKILL.md) § *Roll status up to parents* to its parent (a STORY,
+       or an EPIC it is filed under directly) and the EPIC above a STORY parent, **at the park and not at step
+       4**: step 4 runs before 4b settles where the close runs, and before step 5 knows the task will not end
+       `done`.
+       - **Where the reopened container files go is step 10's table, read for the park commit**:
+
+         | The park commit lands… | Reopened container files |
+         |---|---|
+         | on the default branch, no upstream | write them and stage them in the park commit |
+         | nowhere (`--no-pr`, step 7's **Skip**, no git) | write them, leave them uncommitted, and name them in step 12, as step 10 does for its own files |
+         | on a task branch, in place or in a worktree | write nothing, and report `<ID> not reopened: <child id> is verify only on task/TASK-NNN`. The default branch still reads the task `done`, so its parents are right there; a later re-close that ends `done` merges with nothing to reopen |
+         | anywhere, with an upstream | write nothing, and report `<ID> not reopened: <child id> is verify — with an upstream the reopen lands through a PR` |
+
+         A container file written where the table says nothing rides onto a branch that owns none of it, or
+         dirties a copy step 10 keeps clean.
+       - **A resumed park finds its own earlier write.** A container that already reads `in-progress` with a
+         `> Reopened` line naming this task, uncommitted in the working tree, is this park's reopen from a run
+         that stopped before its commit: stage it in the park commit and report it as reopened.
+       - **With an upstream, run that section's unlanded-record check too**, which writes nothing anywhere.
+       - Step 12 reports each container reopened or not reopened, and every `record/<ID>` line.
      - **Commit the finished work on the task branch** (same staging discipline as step 7) with a message noting the parked state (`TASK-NNN: … (verify — human test plan pending)`, or `failed` in place of `pending` when a step failed), and on a PR project **offer to push and open the PR marked "awaiting sign-off"** — `verify` is exactly the moment a PR should exist; finished code must never float uncommitted while a human schedules the test. **`--unattended` → do it rather than offer it**; the reason the offer exists is that finished code must not float, and that is not weaker when nobody is watching. When the park commit lands on the default branch (in place, no task branch), run steps 10–11 before it and stage what they write, per step 10's table.
      - Optionally run the 5b checks now (recommended) so the human tests *reviewed* code; otherwise they run at the eventual re-close.
      - **Run step 5a before parking**, so a parked close still prints its `ci:` line: a red default branch
@@ -546,6 +569,8 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
    passes is indistinguishable from one that never ran):
     - Which file was updated
     - What changed (`status: todo → done`, `pr: null → 123`)
+    - **After a re-close parked at `verify`**, each container step 5's rollup reopened or reported not reopened,
+      and every `record/<ID> is unlanded …` or `record/<ID> not checked: <reason>` line it produced
     - Step 5a's `ci:` line, verbatim (task closes only; a STORY or EPIC close reads no CI)
     - Remote close result if hybrid
 
