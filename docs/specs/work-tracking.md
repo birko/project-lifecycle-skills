@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: bbbecdd66f01299c0407d488428f842385ac6085
+generated-at: 21f86acc08fa13f11bcf0b7afb7adb9966986e2d
 generated-on: 2026-10-14
 sources:
   - skills/tasks/SKILL.md
@@ -534,7 +534,13 @@ The system SHALL, on `intake --adopt <EPIC>`, stamp `kind: review-intake` on an 
 
 ### Requirement: Human test plan decides verify or done
 
-The system SHALL, at task close, require the `## Human test plan` to be resolved: an absent section or untouched placeholder must be filled with steps or with `N/A` and a reason before any status is chosen, and is never defaulted to `verify`. A step stays manual only when it needs human judgement or hardware; otherwise it is automated and proven able to fail. Each manual step SHALL be read as passed (ticked), failed (unticked, its last nested line a dated `Failed` entry naming where its findings went) or not run (unticked, no such line); only a passed step counts toward `done`, and a failed step is never ticked. A failed or not-run real manual step SHALL close the task to `verify`, never `done`, a failed one reported with its date and findings and a `Failed` line naming no task first having its work spawned, committing the finished work on the task branch, offering a PR marked awaiting sign-off, running the out-of-scope sweep, skipping the remote-tracker close, and still regenerating the dashboard. An explicit `N/A` plan closes straight to `done`.
+The system SHALL, at task close, require the `## Human test plan` to be resolved: an absent section or untouched placeholder must be filled with steps or with `N/A` and a reason before any status is chosen, and is never defaulted to `verify`. A step stays manual only when it needs human judgement or hardware; otherwise it is automated and proven able to fail. Each manual step SHALL be read as passed (ticked), failed (unticked, its last nested line a dated `Failed` entry naming where its findings went) or not run (unticked, no such line); only a passed step counts toward `done`, and a failed step is never ticked. A failed or not-run real manual step SHALL close the task to `verify`, never `done`, a failed one reported with its date and findings and a `Failed` line naming no task first having its work spawned, committing the finished work on the task branch, offering a PR marked awaiting sign-off, running the out-of-scope sweep, skipping the remote-tracker close, and still regenerating the dashboard. An explicit `N/A` plan closes straight to `done`. A `done` or `cancelled` task reopened for a re-close SHALL have every ticked step reset to not run, unticked with a dated reopened line and its earlier passes kept, once the close has settled where it runs and before the plan is read, so a re-close never reaches `done` on the earlier ticks; a reset step proven by an automated check SHALL be re-run by the close rather than asked, and a fresh pass SHALL be recorded with a dated passed line.
+
+#### Scenario: A re-close re-asks every step
+
+- **Given** a `done` task whose Human test plan steps are all ticked
+- **When** the user reopens and re-closes it
+- **Then** each step is unticked with a dated reopened line, the close asks whether each was run, and the task reaches `done` only on fresh passes
 
 #### Scenario: Unrun manual step
 

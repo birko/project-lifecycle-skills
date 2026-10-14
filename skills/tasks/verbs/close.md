@@ -89,8 +89,11 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      a block nobody asked to clear overrides a decision a person made.
      A deferred merge is not caught here: it resumes with `/tasks unblock` first (§ Edge cases), so the
      re-close arrives unblocked.
-   - Already `done` → warn, ask "reopen and re-close?" or abort.
+   - Already `done` → warn, ask "reopen and re-close?" or abort. **No answer, or nobody to ask:** abort and
+     write nothing, since a reopen nobody chose overrides a closed record.
    - `cancelled` → warn similarly.
+   - **A reopen resets the plan** — written at the start of step 5, after 4b has settled where this close
+     runs, since nothing is written before that.
    - **`--unattended` → refuse and report; do not reopen.** Reaching here means something upstream is
      wrong — [[fix-next]]'s step 0 resume exists precisely so a drain never re-picks a closed task — and
      silently reopening a closed record to re-close it would erase the evidence of that.
@@ -133,6 +136,22 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
    Steps 10–11 regenerate it on the default branch after the merge instead.
 
 5. **Verify the Human test plan** (tasks only):
+   - **After step 4's reopen, reset the plan first.** Set every ticked `## Human test plan` step, and every failed one (a
+     reopened `cancelled` task can carry one), back to **not run**: untick it and append `**Reopened YYYY-MM-DD:** re-close — re-run before closing`, keeping its
+     earlier lines as history. This is the reset [SKILL.md](../SKILL.md) § *Lifecycle* gives a feature change
+     landing on a closed task, applied to every step, because a re-close says nothing about which behaviour
+     moved. Without it this step reads the old ticks as current, never asks, and the task is `done` again on a
+     test of whatever shipped before. Then:
+     - **A reset manual step is asked below**, like any step not run, and its answer-less path (*not run* →
+       `verify`) is the safe outcome. **A reset step an automated check proved is re-run by this close, not
+       asked**: run the check, and tick it only when it passes again.
+     - **A pass on a reset step appends `**Passed YYYY-MM-DD:** <what was seen>`** beside the tick, so its last
+       line is the current state rather than the reset.
+     - **A resumed re-close keeps today's fresh passes.** A ticked step whose last two lines are a `Reopened`
+       line and then a `Passed` line, both dated today, is this re-close's own result from a run that stopped
+       before its commit: leave it ticked. A step already reset and not yet re-run is unticked, so the reset
+       skips it.
+     - An `N/A` plan has nothing to reset.
    - Read the `## Human test plan` section. If it still holds the template placeholder text (un-filled), warn: "Human test plan was never filled — confirm it's genuinely `N/A` or fill it before closing." Let the user proceed or pause.
      - **`--unattended` → resolve it rather than proceeding past it**, exactly as the absent-section rule
        below requires: write the manual steps the task actually needs, or write `N/A` with the reason a

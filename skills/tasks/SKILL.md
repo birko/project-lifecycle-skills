@@ -447,7 +447,8 @@ reads a step like this:
   reaches `done` on a test of behaviour that no longer exists. A change **decided but not built yet**
   reopens nothing: the task's work shipped, and the change arrives as a new task through `/feature
   decompose`, whose own plan re-checks the surface. A
-  tests-only change (nothing for a human to check) stays `done`. Don't reopen a task
+  tests-only change (nothing for a human to check) stays `done`. A plain re-close resets every step the same way
+  ([verbs/close.md](verbs/close.md) step 5), because it says nothing about which behaviour moved. Don't reopen a task
   without also recording the matching `changed` decision in its feature's ledger —
   the two move together.
 
