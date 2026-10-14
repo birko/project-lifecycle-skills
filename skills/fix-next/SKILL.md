@@ -45,7 +45,8 @@ indistinguishable from a fresh one except by what's on disk, so look there: find
   `done` or `verify`, `HEAD`'s does not, and the working copy carries `picked-by: fix-next`. **Resume it at
   step 8**: rerun `close`, which treats a `done` or `verify` it never committed as unwritten (its step 4) and
   so runs its gate again;
-- **under `workspace: worktree`, the task branches too.** List local `task/*` branches
+- **the task branches too, on any project whose `pick` cuts them** (every `integration:` but
+  `single-branch`). List local `task/*` branches
   (`git branch --list "task/*"`) and read each one's task file with `git show task/TASK-NNN:<task file>`.
   With an upstream the default branch's copy of an in-progress task still reads `todo`, so the grep alone
   never finds it. Worse, the pool rule below hides it as taken, and a reset drain would start a second
@@ -53,6 +54,10 @@ indistinguishable from a fresh one except by what's on disk, so look there: find
   blocked**. Read the status in both forms ([[tasks]] § *Lifecycle* → *Reading a task's status*). A copy
   parked at `review` or `verify`, one blocked by either form, or one reading `done` after a failed merge is
   not an active run.
+  **One exception: an unfinished landing.** A branch copy carrying `picked-by: fix-next` whose last log line
+  is `step 9 — ended without a fix: …; recorded on task/TASK-NNN; landing` was committed and never landed,
+  whatever status it reads. Resume it at that landing (§ *A run that ends without a fix*), and pick nothing
+  else in this run. A branch the run deliberately kept ends `…; kept` instead, and is not resumed.
 
 For each hit, read the file — **the branch copy (`git show task/TASK-NNN:<task file>`) for a hit found on a branch**, since with an upstream the default branch's copy carries none of this. **Only resume tasks this skill owns** — they carry `picked-by: fix-next`
 in frontmatter and a `## Progress log` section. Anything else that is `in-progress` is a human's work
@@ -67,7 +72,9 @@ fault to investigate.
 
 If you find a skill-owned in-progress task:
 
-1. **Under `workspace: worktree`, resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
+1. **A hit found on a branch in place is resumed on that branch**: `git switch task/TASK-NNN` first, after
+   checking the tree is clean, since the next steps and the landing work from that checkout.
+   **Under `workspace: worktree`, resume into the task's worktree first**, through [[tasks]] `pick` step 6b's
    resume (locate, enter, prove). Only the first log line rode in the pick commit, and every later line is on
    the task branch. **Any stop in that resume stops this run too**: report its line, and do not pick a
    second task. Run step 2's reconciliation below in the tree you are now in, not the main copy.
@@ -304,16 +311,49 @@ with no fix, drill or close.
   `git commit --only -m "TASK-NNN: cancelled — not a defect" -- <files>`, or
   `"TASK-NNN: blocked — fix belongs upstream"`, or `"TASK-NNN: blocked — decision pending"`. A pending decision
   also commits the non-controversial work already done, since that work belongs to this task. Both lead with the id because they touch only the task tree,
-  like `pick`'s commit. No `Co-Authored-By:` trailer. **When step 2 cut a task branch**, where this record
-  belongs is not defined yet (TASK-298): commit nothing, name every file in the report, and stop even under
-  `--loop`.
-- **Then go to step 9.** A bare run stops there. `--loop` continues to step 1, where a cancelled task is no
-  longer `todo` and a blocked one is ranked but skipped (step 2). A pending decision halts `--loop` too: it is
+  like `pick`'s commit. No `Co-Authored-By:` trailer.
+- **When step 2 cut a task branch, the record goes on that branch, and whether the branch lands depends on
+  what it holds.** The branch is the [[tasks]] *taken* signal: while it exists, every pool hides the task,
+  and the default branch's copy keeps reading what `pick` left (`todo` after an in-place pick or with an
+  upstream, `in-progress` after a worktree pick without one). A record left only on the branch is never seen.
+
+  | Outcome | Besides the record, the branch holds | Do |
+  |---|---|---|
+  | cancelled — not a defect | no work: step 3 stopped before any fix | commit the record on the branch, then **land the branch** |
+  | blocked — fix belongs upstream | no work: step 4 stopped before any fix | commit the record on the branch, then **land the branch** |
+  | blocked — decision pending | **the non-controversial work** | commit both on the branch and **keep it**. Landing it would merge half a fix onto the default branch |
+
+  **The branch commit carries the task tree's own record, never the dashboard.** `cancel` and `block` also
+  chain `triage`, and in place that writes `tasks/README.md` on the task-branch checkout. Commit only the task
+  file and any container their rollup changed, with `git commit --only` and the same subject as the in-place
+  commit above, so it leads with the id. Then discard this run's own dashboard write (`git restore --
+  tasks/README.md`): a dashboard committed on a task branch is the per-task conflict `close` step 10's table
+  forbids. Write the step-9 log line **before** that commit, so it rides in it, as step 8 does for `close`.
+
+  **Land the branch** through [[tasks]] `close` step 8, by whichever of its paths applies (in place, from a
+  worktree, or through the remote with an upstream), with its failure lines, and never forced. Skip every
+  `pr:` write it makes, the backfill and the PR number alike: there is no work commit to reference, and the
+  record's own commit is the trail. Then run `close` steps 10 and 10b on the default branch, which regenerate
+  the dashboard and commit it as `chore: dashboard and rollups after TASK-NNN` (with an upstream they write
+  nothing, as their table says). The merge carries the `cancelled` or blocked record to the default branch,
+  and deleting the branch ends the taken signal. A landing that fails stops the run with `close`'s line for
+  it; step 0 resumes it.
+
+  **A kept branch** stays as the record of an open question. Push it when the default branch has an upstream,
+  so other clones see the question rather than an anonymous taken branch. Then return to the default branch:
+  in place `git switch <default>`, from a worktree leave it as `close` step 8 leaves one, keeping the
+  worktree. A new pick must never start on top of a kept branch. Step 0 then finds it through the branch scan
+  and reports `not resumed: TASK-NNN (this skill's run) is blocked: decision pending: …` on every run, until a
+  person answers and unblocks it. Name the branch in step 9's report.
+- **Then go to step 9.** A bare run stops there. `--loop` continues to step 1. A cancelled task is no
+  longer `todo`. A blocked one keeps `in-progress` beside its `blocked:` field, so it is outside the pool, and
+  step 0 reports it on every run. A pending decision halts `--loop` too: it is
   a question waiting on a person (step 9).
 
 Log: `- step 3 — rejected: …`, `- step 4 — layer: upstream: <where>; blocked`, or
 `- step <n> — blocked: decision pending: <the question>`, then
-`- step 9 — ended without a fix: <cancelled | blocked>; commit <sha> | uncommitted: <files>`.
+`- step 9 — ended without a fix: <cancelled | blocked>; commit <sha> | uncommitted: <files>`, or with a task
+branch `- step 9 — ended without a fix: <cancelled | blocked>; recorded on task/TASK-NNN; <landing | kept>`.
 
 ## Step 5 — Fix the root cause, with the test that proves it
 

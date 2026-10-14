@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: 6681d3faa3dcc2d9dce9d3b4875c42c501e58b35
-generated-on: 2026-10-13
+generated-at: c4d5677b0c9cc08d624f06f00b9462524f027d75
+generated-on: 2026-10-14
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -383,13 +383,19 @@ The system SHALL, before handing over, write an outcome section into the task fi
 
 ### Requirement: A run that ends without a fix still ends clean
 
-The system SHALL treat a run that cancels its task as not a defect, blocks it on an upstream fix, or blocks it on a decision only the user can make that nobody answered — after recording the question, options and recommendation in the task and never applying the recommendation — as the bare run's one defect, because the run has already done a defect's work; it SHALL commit exactly the files that outcome wrote when the task file is on the default branch, under the subject `TASK-NNN: cancelled — not a defect`, `TASK-NNN: blocked — fix belongs upstream` or `TASK-NNN: blocked — decision pending` (the last also carrying the non-controversial work already done), and with no co-author trailer; when the pick cut a task branch it SHALL commit nothing, name every file in the report and stop even under `--loop`; and it SHALL then stop on a bare run, or return to pool building under `--loop`.
+The system SHALL treat a run that cancels its task as not a defect, blocks it on an upstream fix, or blocks it on a decision only the user can make that nobody answered — after recording the question, options and recommendation in the task and never applying the recommendation — as the bare run's one defect, because the run has already done a defect's work; it SHALL commit exactly the files that outcome wrote when the task file is on the default branch, under the subject `TASK-NNN: cancelled — not a defect`, `TASK-NNN: blocked — fix belongs upstream` or `TASK-NNN: blocked — decision pending` (the last also carrying the non-controversial work already done), and with no co-author trailer; when the pick cut a task branch it SHALL commit the task file and any rolled-up container on that branch under the same subject, never the dashboard, and SHALL land the branch — merging it to the default branch and deleting it, by the task tracker's close merge paths, with no `pr:` write, then regenerating and committing the dashboard on the default branch where no upstream forbids it — for a cancel or an upstream block, so the default branch reads the outcome and the task is no longer taken; for a pending decision it SHALL keep the branch, which also holds the non-controversial work, push it when there is an upstream, and return to the default branch; a landing committed but not finished SHALL be resumed before any new pick, on any project that cuts task branches; and it SHALL then stop on a bare run, or return to pool building under `--loop`.
 
 #### Scenario: A false positive on a bare run
 
 - **Given** an in-place single-branch project whose top-ranked task is a false positive and whose next task is a real defect
 - **When** `/fix-next` runs without `--loop`
 - **Then** the first task is cancelled and committed as `TASK-NNN: cancelled — not a defect`, the tree is clean, the second task is untouched, and it is named as the next pick
+
+#### Scenario: A false positive on a task branch
+
+- **Given** a PR-per-task project with no upstream, where the pick cut `task/TASK-NNN` and the finding is then rejected
+- **When** the run ends without a fix
+- **Then** the cancel is committed on the branch, the branch is merged into the default branch and deleted, the default branch reads `cancelled`, the tree is clean, and no later run ranks the task again
 
 ### Requirement: One defect per bare run; loop continues until a stopping point
 
