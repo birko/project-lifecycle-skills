@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 33b7528bebfebf1525a892a6e2a3bb306fd742eb
+generated-at: 78dedc51510a0d7abd0bafec3a6e6119e72c0ebd
 generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
@@ -338,7 +338,7 @@ The system SHALL cut work into vertical tasks that each pass three hard checks �
 
 ### Requirement: Picking a task
 
-The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields.
+The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields.
 
 #### Scenario: Debt nudge
 
@@ -369,6 +369,12 @@ The system SHALL list `todo` tasks matching the filters (priority, assignee, epi
 - **Given** a task whose plan predates changes to files it references
 - **When** it is picked and nobody answers the replan question
 - **Then** the plan is kept and the hand-off says `plan kept: it predates changes to <paths> — may be stale`
+
+#### Scenario: In-place pick with an upstream
+
+- **Given** a project with no `workspace:` whose default branch tracks a remote
+- **When** a task is picked in place
+- **Then** `tasks/README.md` is not written, and the pick prints that the dashboard was not refreshed and names `/tasks triage` to run through a PR
 
 #### Scenario: Picking a task filed with inferred values
 

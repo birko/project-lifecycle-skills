@@ -304,7 +304,15 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      work on an unborn branch — `close`'s diff/merge gate would have nothing to compare.
    - If user knows the branch/PR, ask whether to fill `pr:` now. Otherwise leave null — `/tasks close` will prompt for it later.
 
-8. **Regenerate dashboard** — chain to triage logic.
+8. **Regenerate dashboard — only where the status flip landed on a default branch with no upstream.** The
+   rule is [close.md](close.md) step 10's, for the same reasons; read it off where step 7 left the flip:
+
+   | Step 7's flip is… | Do |
+   |---|---|
+   | on the default branch (no task branch cut), with no upstream | chain to triage logic |
+   | on a task branch cut in place | **write nothing**: that checkout is the task branch, and a dashboard written there rides into its close commit, the per-task conflict step 6b's worktree avoids |
+   | anywhere, with an upstream (`git rev-parse --abbrev-ref <default-branch>@{upstream}` succeeds) | **write nothing on the default branch**, which must stay a mirror of the remote. Print `TASK-NNN is now in-progress — dashboard not refreshed; run /tasks triage through a PR` |
+   | in a worktree (step 6b entered one) | never reached here: with no upstream 6b runs the first row itself, on the default branch before the worktree exists; with one it writes no dashboard |
 
 9. **Hand off to work**:
    - **If the task file carries the inferred-values line** (`> Filed with nobody to answer — inferred, not
