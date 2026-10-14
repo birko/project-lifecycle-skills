@@ -194,7 +194,18 @@ Interactive scaffold of a new task tree node.
       and leaving the parent for later leaves a `done` container over an open child if the run stops in between.
     - **Then check the epic above a parent story, whether or not the story was reopened.** A `planned` story
       can sit under a `done` epic (left by `close --epic --force`), and an open task in it makes that epic's
-      `done` false too. Reopen a `done` epic the same way. A `cancelled` one asks first, as step 4 does.
+      `done` false too. Reopen a `done` epic the same way. A `cancelled` one asks first, for the reason
+      step 4 gives, but with its own question: the item is already placed in its open story, so only the
+      epic's state is in question. Put this question:
+
+      > **EPIC-NNN "<title>" is cancelled (won't-do), and <new id> goes into STORY-NNN, an open story under it. Reopen EPIC-NNN?**
+      > · **Reopen it** — it goes back to `in-progress`, with its dated `> Reopened` line.
+      > · **Leave it cancelled** — the cancel stands over open work, and the report names it.
+
+      **No answer, or nobody to ask:** do not reopen, and still file the item in its story. Report
+      `EPIC-NNN is cancelled over open work — <new id> filed under STORY-NNN; nothing chose to reopen it. Whether the cancel still holds is a person's call; /tasks move <new id> --to <ID> re-homes the task if it does.`
+      Never leave it unreported: a cancelled epic over an open child is a contradiction `audit` flags, and a
+      run that created it silently hands the next reader a finding with no cause.
     - **A new item that is itself `done` or `cancelled`** ([import](import.md) brings in closed issues this
       way) reopens nothing. A closed child does not falsify a closed parent, as [move](move.md) already says.
 

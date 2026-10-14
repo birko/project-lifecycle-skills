@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: e4ba5474ef57dbadbd63e6e53f4b5a71f78e185d
+generated-at: 33b7528bebfebf1525a892a6e2a3bb306fd742eb
 generated-on: 2026-10-13
 sources:
   - skills/tasks/SKILL.md
@@ -262,7 +262,7 @@ The system SHALL, when creating a node, put a stated question for each of the le
 
 ### Requirement: New work under a closed container
 
-The system SHALL list every candidate parent whatever its status, marking a `done` one as reopened if chosen and a `cancelled` one as won't-do, and SHALL file new work under the container that owns it even when that container is `done`, never in the loose folder because of a parent's status. When an open item is created under a `done` parent, or under a `cancelled` one the user chose to reopen, the parent SHALL be set to `in-progress` in the same change, with a dated `> Reopened` line under its heading (ending `(placement inferred — see <new id>)` when the parent was inferred), and the reopen reported; the epic above a parent story SHALL be checked the same way whether or not the story was reopened. A `cancelled` parent, chosen or inherited from a caller, SHALL be asked about first; with no answer it is not reopened, the item is filed under the nearest ancestor that is not cancelled (a `done` one taking it and reopening), else in the loose folder — where a finding gets a minted `FIELD-NNN` — and the run reports where it went and the `move` command that would reopen the cancelled parent. A story under a `cancelled` epic with no answer SHALL NOT be created. A new item that is itself `done` or `cancelled` reopens nothing.
+The system SHALL list every candidate parent whatever its status, marking a `done` one as reopened if chosen and a `cancelled` one as won't-do, and SHALL file new work under the container that owns it even when that container is `done`, never in the loose folder because of a parent's status. When an open item is created under a `done` parent, or under a `cancelled` one the user chose to reopen, the parent SHALL be set to `in-progress` in the same change, with a dated `> Reopened` line under its heading (ending `(placement inferred — see <new id>)` when the parent was inferred), and the reopen reported; the epic above a parent story SHALL be checked the same way whether or not the story was reopened. A `cancelled` parent, chosen or inherited from a caller, SHALL be asked about first; with no answer it is not reopened, the item is filed under the nearest ancestor that is not cancelled (a `done` one taking it and reopening), else in the loose folder — where a finding gets a minted `FIELD-NNN` — and the run reports where it went and the `move` command that would reopen the cancelled parent. A story under a `cancelled` epic with no answer SHALL NOT be created. When an open item goes into an open story whose epic is `cancelled`, the system SHALL ask whether to reopen the epic; with no answer the item is still filed in its story, the epic stays `cancelled`, and the run SHALL report the cancelled epic over open work rather than leave it silent. A new item that is itself `done` or `cancelled` reopens nothing.
 
 #### Scenario: Task filed under a done story
 
@@ -275,6 +275,12 @@ The system SHALL list every candidate parent whatever its status, marking a `don
 - **Given** a task spawned from an origin under `STORY-014`, which reads `cancelled`, inside the open epic `EPIC-002`
 - **When** nobody answers whether to reopen `STORY-014`
 - **Then** the new task is filed under `EPIC-002`, `STORY-014` stays `cancelled`, and the report names `/tasks move <new id> --to STORY-014` as the way to reopen it
+
+#### Scenario: Open story under a cancelled epic with nobody to answer
+
+- **Given** `STORY-020` reads `in-progress` inside `EPIC-005`, which reads `cancelled`
+- **When** a task is created in `STORY-020` and nobody answers whether to reopen `EPIC-005`
+- **Then** the task is filed in `STORY-020`, `EPIC-005` stays `cancelled`, and the report says `EPIC-005` is cancelled over open work and nothing chose to reopen it
 
 #### Scenario: Closed issue imported under a done story
 
