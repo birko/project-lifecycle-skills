@@ -124,8 +124,9 @@ Once work starts, two standing rules keep the feature honest — surface them at
 - **Feature is `superseded`** — redirect to the `superseded-by: FEATURE-NNN` target; don't start
   work on the shell.
 - **Feature is `done`** — confirm intent. New work on a signed-off feature reopens it: record a
-  `changed` decision first (and per SKILL.md, a change to a human-verifiable surface sends the
-  implementing task back to `verify`).
+  `changed` decision first. A change to a human-verifiable surface sends the implementing task back to
+  `verify` when the change is already built, and otherwise arrives as new work to decompose
+  ([decide.md](decide.md) § *Changing a closed feature*).
 - **Mixed states** — some rows decomposed, others not, plus leftover `proposed` rows: gates run in
   order, so `decide` clears first, then `decompose` picks up everything approved in that pass. One
   `pick` can legitimately chain decide → decompose → tasks pick. **Except with an upstream:** a `decide`

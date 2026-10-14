@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: b2ac5245510ef3da80d5c80d0be432b63cdd5188
+generated-at: 7cc3a8ac8c7beaef3ca56486dcebc1258461216e
 generated-on: 2026-10-14
 sources:
   - skills/feature/SKILL.md
@@ -345,13 +345,19 @@ The system SHALL, when every decision ends `removed`, set the feature's coarse s
 
 ### Requirement: Changing a signed-off feature reverts it by surface
 
-The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and its implementing tasks `done → verify`, then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, carried with an upstream on the decision's `record/FEATURE-NNN` branch rather than written on the default branch.
+The system SHALL treat a later change to a `done` feature as a recorded decision change in the feature that owns the affected behaviour, previewing options with the user before touching a human-verifiable surface, tracing the ripple through other artifacts, and — when the change has a human-verifiable surface — reverting the owning feature `done → review` and, when the changed shape is already built in the code, its implementing tasks `done → verify` with every test plan step the change affects reset to not run (unticked, earlier passes kept as history); when the change is not built yet, or it is unclear whether it is, the implementing tasks SHALL stay `done`, their ids SHALL move from the row's task column into a History line so the row reads as not decomposed, and the change SHALL arrive as a new task through decompose, and the confirmation SHALL offer decompose only for a changed row that is not built; then re-running the status rollup until the idea file, task files, rollup and index agree; a change fully covered by automated tests SHALL leave the feature `done`; a reverted task's parent story or epic that reads `done` or `cancelled` SHALL reopen to `in-progress`, and the task dashboard SHALL be regenerated, carried with an upstream on the decision's `record/FEATURE-NNN` branch rather than written on the default branch.
 
 #### Scenario: Visual tweak reopens sign-off
 
-- **Given** FEATURE-030 is `done`
-- **When** a colour change to its screen is agreed
-- **Then** a `changed` row and History line are recorded in FEATURE-030, its status becomes `review`, its implementing task becomes `verify`, and the rollup is regenerated
+- **Given** FEATURE-030 is `done`, and a colour change to its screen is already in the code
+- **When** the colour change is agreed
+- **Then** a `changed` row and History line are recorded in FEATURE-030, its status becomes `review`, its implementing task becomes `verify` with the affected test plan steps unticked, the rollup is regenerated, and the confirmation points at re-running that task's test plan rather than offering decompose for the row
+
+#### Scenario: An unbuilt change files new work instead of reopening the task
+
+- **Given** FEATURE-030 is `done`, and an agreed change to its screen is not in the code yet
+- **When** the `changed` decision is recorded
+- **Then** FEATURE-030 becomes `review`, its implementing task stays `done`, the row's task column is emptied with a History line naming the task that built the prior shape, and the confirmation offers decompose for the change
 
 #### Scenario: Test-covered change stays done
 

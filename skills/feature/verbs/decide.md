@@ -54,7 +54,11 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    - Name the commit from step 6, the `record/FEATURE-NNN` branch it pushed (`record/FEATURE-NNN pushed —
      open a PR to land it`), or, when the rule stopped or there is no git, its line and **every file left
      uncommitted, by path**. A clean report over a dirty tree is the defect step 6 exists to remove.
-   - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`". **Not
+   - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`". A
+     `changed` row that § *Changing a closed feature* step 4 found **built** does not count: its change is
+     in the code, and its reverted task's re-run covers it. For each such row print
+     `Re-run TASK-NNN's Human test plan, then /tasks close TASK-NNN`, and offer decompose only when a row
+     is left that does count. **Not
      when step 6 pushed `record/FEATURE-NNN`**: the record-branch rule restored this copy's ledger, so it
      reads as it did before this run, and `decompose` would refuse it. Print instead
      `Land record/FEATURE-NNN, then decompose: /feature decompose FEATURE-NNN`.
@@ -106,9 +110,18 @@ never a silent edit:
    behavior, not the one you were working in; rewrite its row + append a History line.
 3. **Trace the ripple** — fix downstream constants, comments, and other features' decision text
    so no artifact lies about the new value.
-4. **Status rule:** a change with a human-verifiable surface reverts the owning feature `done → review`
-   **and** its implementing task(s) `done → verify` (re-run their Human test plans before re-closing);
-   a change fully covered by automated tests stays `done`. Roll each reverted task's parents up by
+4. **Status rule:** a change with a human-verifiable surface reverts the owning feature `done → review`;
+   a change fully covered by automated tests stays `done`. What the implementing task(s) do depends on
+   whether the change is already in the code:
+
+   | The changed shape is | Implementing task(s) |
+   |---|---|
+   | **built** — code implementing it is in the tree | `done → verify`; re-run their Human test plans before re-closing, after resetting each step the change affects to *not run* by [[tasks]] § *Lifecycle* ("A change landing on a closed feature"). A step left ticked reads as passed and lets `close` skip the re-run |
+   | **not built yet** | stay `done`: their work shipped and nothing in the code changed. **Move their ids out of the row's `→ Tasks` cell** into the History line (`D<n> changed — TASK-NNN built the prior shape`) and leave the cell `—`. The row then reads as not decomposed everywhere it is checked (`pick`'s gate D, `decompose`, `review` Gate A), so the change cannot pass as built. Step 7 offers `decompose`, which files it as a new task with its own Human test plan |
+
+   Read *built* off the code, never off the request. **Unsure counts as not built:** a task filed for work
+   that turns out to exist closes quickly, while a `verify` over unbuilt work claims code is complete when
+   it is not. Roll each reverted task's parents up by
    [[tasks]] § *Roll status up to parents* (the reopening direction). Then re-run `/feature status` so
    `status.md` and the index recompute, and chain [[tasks]] `triage` so `tasks/README.md` shows the reverted
    tasks. With an upstream the dashboard rides on `record/FEATURE-NNN` with the rest (step 6), as it does for

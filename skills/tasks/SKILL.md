@@ -439,7 +439,14 @@ reads a step like this:
   *down-the-tree* counterpart to the roll-up rule below: when a post-sign-off change
   with a human-verifiable surface lands on a `done` feature (the [[feature]] skill's
   surface-dependent-revert rule), the TASK(s) that implement the changed surface go
-  `done → verify` and their `## Human test plan` is re-run before re-closing. A
+  `done → verify` and their `## Human test plan` is re-run before re-closing. **Reopening resets
+  the plan:** every step the change affects is set back to
+  **not run**: untick it and append `**Reopened YYYY-MM-DD:** D<n> changed — re-run before
+  re-closing`. Its earlier `Passed` lines stay as history. A step the change cannot affect keeps its
+  tick; a step you cannot tell about is reset. Left ticked, `close` reads the old pass as current and
+  reaches `done` on a test of behaviour that no longer exists. A change **decided but not built yet**
+  reopens nothing: the task's work shipped, and the change arrives as a new task through `/feature
+  decompose`, whose own plan re-checks the surface. A
   tests-only change (nothing for a human to check) stays `done`. Don't reopen a task
   without also recording the matching `changed` decision in its feature's ledger —
   the two move together.
