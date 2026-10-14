@@ -54,7 +54,10 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    - Name the commit from step 6, the `record/FEATURE-NNN` branch it pushed (`record/FEATURE-NNN pushed —
      open a PR to land it`), or, when the rule stopped or there is no git, its line and **every file left
      uncommitted, by path**. A clean report over a dirty tree is the defect step 6 exists to remove.
-   - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`".
+   - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`". **Not
+     when step 6 pushed `record/FEATURE-NNN`**: the record-branch rule restored this copy's ledger, so it
+     reads as it did before this run, and `decompose` would refuse it. Print instead
+     `Land record/FEATURE-NNN, then decompose: /feature decompose FEATURE-NNN`.
    - If `proposed` remain → note how many still need a verdict.
 
 ## Deciding rules

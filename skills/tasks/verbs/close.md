@@ -584,8 +584,8 @@ Container closes are simpler than task closes — no human-test plan, no merge g
       another branch, a commit ahead, or a refused fast-forward stops here, with nothing changed.
    3. **`record/<ID>` does not exist yet** (`record/STORY-NNN`, `record/EPIC-NNN`, `record/FEATURE-NNN`), on
       the remote (`git ls-remote --heads <remote> record/<ID>`) or locally. Otherwise an earlier record of the
-      same id has not landed. Stop with `record/<ID> exists, land it first`, naming the files as for any stop. A second `/feature review` before
-      the first one's record lands always stops here, and that is correct: two records of one feature must
+      same id has not landed. Stop with `record/<ID> exists, land it first`, naming the files as for any stop. A second `/feature review` or
+      `/feature decide` of one feature before the first one's record lands always stops here, and that is correct: two records of one feature must
       not race.
    4. **Commit in a temporary worktree.** `git worktree add --detach <tmp> <upstream>`, with `<tmp>` the
       system temp folder plus `<repo>-record-<ID>`. Not `worktree-root:`: that declares where a task's

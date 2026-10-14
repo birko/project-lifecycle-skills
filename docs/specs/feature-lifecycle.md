@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: e4ba5474ef57dbadbd63e6e53f4b5a71f78e185d
-generated-on: 2026-10-13
+generated-at: b2ac5245510ef3da80d5c80d0be432b63cdd5188
+generated-on: 2026-10-14
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -271,7 +271,7 @@ The system SHALL, on `/feature decide`, walk every `proposed` row and any `defer
 
 ### Requirement: Decide commits its own record
 
-The system SHALL, at the end of `/feature decide`, commit exactly the files that run wrote — the ledger, the idea file when its status changed, and for a revert the task files moved to `verify`, the containers they reopened, any file the ripple trace edited, the task dashboard, and the rollup and index — as one commit with the subject `chore: decide FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, so a decide and a review of one feature never race and the second stops until the first record lands; with no git, or a run that wrote nothing, it SHALL commit nothing. Its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path.
+The system SHALL, at the end of `/feature decide`, commit exactly the files that run wrote — the ledger, the idea file when its status changed, and for a revert the task files moved to `verify`, the containers they reopened, any file the ripple trace edited, the task dashboard, and the rollup and index — as one commit with the subject `chore: decide FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, so a decide and a review of one feature never race and the second stops until the first record lands; with no git, or a run that wrote nothing, it SHALL commit nothing. Its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path. When it pushed `record/FEATURE-NNN`, the main copy's ledger reads as it did before the run, so the confirmation SHALL NOT offer `/feature decompose` and SHALL instead say to land the branch first.
 
 #### Scenario: A revert is committed whole
 
@@ -283,7 +283,7 @@ The system SHALL, at the end of `/feature decide`, commit exactly the files that
 
 - **Given** a project whose default branch tracks a remote and is level with it
 - **When** decide stamps a verdict
-- **Then** nothing is committed on the default branch, `record/FEATURE-NNN` is pushed carrying `chore: decide FEATURE-NNN`, and the confirmation names the branch
+- **Then** nothing is committed on the default branch, `record/FEATURE-NNN` is pushed carrying `chore: decide FEATURE-NNN`, and the confirmation names the branch and says to land it before decomposing, without offering decompose
 
 ### Requirement: The ledger is never pruned and its history is append-only
 
@@ -393,7 +393,7 @@ The system SHALL require that the tasks for a feature exist before any implement
 
 ### Requirement: Pick enters a feature at the stage that unblocks it
 
-The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself.
+The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide`; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking; an approved or changed row with no tasks or with tasks missing on disk → `decompose`; phase `review` → `review`. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself. With an upstream, a decide in that chain which pushed `record/FEATURE-NNN` SHALL stop the chain before decompose, reporting the branch and that decompose waits until it lands.
 
 #### Scenario: Most common stall offers decompose
 
@@ -418,6 +418,12 @@ The system SHALL, on `/feature pick`, resolve the feature by id (or short number
 - **Given** a feature with proposed rows and nothing decomposed
 - **When** the user accepts each offer
 - **Then** pick chains decide, then decompose, then hands off to task picking
+
+#### Scenario: A pushed decide record stops the chain
+
+- **Given** a project whose default branch tracks a remote, and a feature with proposed rows and nothing decomposed
+- **When** the user accepts the decide offer and decide pushes `record/FEATURE-NNN`
+- **Then** pick stops before decompose, names the branch, and says decompose waits until it lands
 
 #### Scenario: Open questions are resumed before decisions
 

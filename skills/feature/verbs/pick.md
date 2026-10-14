@@ -128,7 +128,9 @@ Once work starts, two standing rules keep the feature honest — surface them at
   implementing task back to `verify`).
 - **Mixed states** — some rows decomposed, others not, plus leftover `proposed` rows: gates run in
   order, so `decide` clears first, then `decompose` picks up everything approved in that pass. One
-  `pick` can legitimately chain decide → decompose → tasks pick.
+  `pick` can legitimately chain decide → decompose → tasks pick. **Except with an upstream:** a `decide`
+  that pushed `record/FEATURE-NNN` restored this copy's ledger, so the chain stops there. Report the
+  branch and that decompose waits until it lands ([decide.md](decide.md) step 7).
 - **`deferred` rows only** (nothing approved) — nothing to build. Show the unblock conditions and
   stop; don't offer decompose on a feature whose every live row is parked.
 - **No `docs/features/` at all** — the project hasn't adopted the feature lifecycle. Point at

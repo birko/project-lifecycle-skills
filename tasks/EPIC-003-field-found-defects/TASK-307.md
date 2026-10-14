@@ -3,7 +3,7 @@ id: TASK-307
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: agent
@@ -38,7 +38,8 @@ Found by the correctness pass at TASK-305's close (2026-10-13). `skills/feature/
 
 ## Human test plan
 
-- [ ] On a fixture with no upstream, record a `changed` decision on a `done` feature with a human-verifiable surface. Expected: one commit carries the ledger, the reverted task, its reopened story, the rollups and the dashboard, and the tree is clean.
+- [x] On a fixture with no upstream, record a `changed` decision on a `done` feature with a human-verifiable surface. Expected: one commit carries the ledger, the reverted task, its reopened story, the rollups and the dashboard, and the tree is clean.
+  Passed 2026-10-14: fixture `%TEMP%\d307`, D1 recorded `changed` on a `done` feature. One commit `62d3233 chore: decide FEATURE-001` carries `decisions.md`, `idea.md`, `status.md`, `docs/features/README.md`, TASK-001 (`verify`), the reopened STORY-001 and EPIC-001, and `tasks/README.md`; `git status` clean. Runner: cold `claude -p --disable-slash-commands` in the fixture dir, skills granted by `--add-dir` on `~/.claude/skills` and `skills/`; probe listed no skills or slash commands.
 
 ## Outcome
 
@@ -69,6 +70,8 @@ this unattended run did not run, so the task parks at `verify`.
 **Flagged, not fixed.** A `decide` run from inside a task worktree with an upstream stops at the record-branch
 rule's main-copy check and leaves its files uncommitted, named in the report. That is the rule's existing,
 reported behaviour, not a new gap, so nothing was filed.
+
+**Close review (2026-10-14, `verify → done`).** Standards pass, intent pass. Correctness found one blocker, fixed in this close: with an upstream, step 6's record branch restores this copy's ledger, so step 7's `decompose` offer pointed at a ledger reading `proposed`, and `decompose` refuses it. Step 7 now says `Land record/FEATURE-NNN, then decompose`, `/feature pick`'s decide → decompose chain stops at the pushed record, and `close.md`'s race note names `decide` beside `review`. Rejected: having `decompose` read the unlanded branch, because that would file tasks against a ledger nobody has landed. A related gap the drill found (a revert keeps a stale ticked pass) went to TASK-319; two runners disagreeing on a missing features index went to TASK-320.
 
 ## Implementation plan
 
