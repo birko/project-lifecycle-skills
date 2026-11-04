@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 19:00. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 20:31. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -11,9 +11,9 @@ _Generated 2026-11-04 19:00. Run `/tasks triage` to refresh. **Do not hand-edit*
 | planned      | 2                  | 5                  | —                   |
 | todo         | —                  | —                  | 55                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 12                  |
+| verify       | —                  | —                  | 8                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 243                 |
+| done         | 4                  | 13                 | 247                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 45× P2 · 10× P3.
@@ -28,14 +28,10 @@ _None_
 - [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) — `pick`'s handoff branches on an `assignee:` value no task in the tree has (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 - [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) — `/tasks pick` step 7's two questions carry no wording and no answer-less path (P2, ai)
-- [TASK-212](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-212.md) — Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes (P2, unassigned)
 - [TASK-218](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-218.md) — `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined (P2, unassigned)
-- [TASK-318](EPIC-003-field-found-defects/TASK-318.md) — `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers (P3, agent)
-- [TASK-320](EPIC-003-field-found-defects/TASK-320.md) — Two cold runners disagreed on whether `/feature status` creates the features index when it is absent (P3, agent)
 - [TASK-321](EPIC-003-field-found-defects/TASK-321.md) — `/feature pick`'s decompose offer has no answer-less path (P3, agent)
 - [TASK-323](EPIC-003-field-found-defects/TASK-323.md) — A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed (P3, agent)
 - [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
-- [TASK-327](EPIC-003-field-found-defects/TASK-327.md) — `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained (P3, agent)
 
 ## Tree
 
@@ -107,11 +103,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (54/95 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (55/95 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (12/22 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (13/22 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -129,7 +125,7 @@ _None_
     - [x] TASK-135 `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
     - ~~TASK-180 `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes~~
     - [ ] TASK-182 `/tasks pick` step 7's two questions carry no wording and no answer-less path 🔍 verify
-    - [ ] TASK-212 Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes 🔍 verify
+    - [x] TASK-212 Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes
     - [ ] TASK-218 `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined 🔍 verify
     - [x] TASK-254 `pick`'s in-place fallback with an upstream never says where the status flip is committed
     - [ ] TASK-255 `pick`'s list output leaves five rendering details for each reader to settle
@@ -212,14 +208,14 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (33/41 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (36/41 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 30/36 done
+  - (epic level) — 33/36 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
@@ -244,16 +240,16 @@ _None_
     - [x] TASK-315 move.md never states the reopen it performs
     - [x] TASK-316 fix-next's tie scenario never states what happens when nobody answers
     - [x] TASK-317 `move` and `new` never report an unlanded `record/<ID>` branch, though TASK-306 says every trigger does
-    - [ ] TASK-318 `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers 🔍 verify
+    - [x] TASK-318 `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers
     - [x] TASK-319 A `decide` revert sends a task back to `verify` with its old test step still ticked, so a re-close can count the old pass
-    - [ ] TASK-320 Two cold runners disagreed on whether `/feature status` creates the features index when it is absent 🔍 verify
+    - [x] TASK-320 Two cold runners disagreed on whether `/feature status` creates the features index when it is absent
     - [ ] TASK-321 `/feature pick`'s decompose offer has no answer-less path 🔍 verify
     - [x] TASK-322 A signed-off feature with an unbuilt `changed` decision reads phase `review`, as if built
     - [ ] TASK-323 A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed 🔍 verify
     - [x] TASK-324 A re-close that parks a `done` task at `verify` never rolls its parents up
     - [ ] TASK-325 Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item 🔍 verify
     - [x] TASK-326 `close`'s "reopen and re-close" never says what reopening resets, so a re-close over a ticked plan goes straight back to `done`
-    - [ ] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained 🔍 verify
+    - [x] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained
     - [x] TASK-328 `pick`'s proof-mismatch fallback never pushes the task branch with an upstream, so other clones see the task as free
     - [x] TASK-329 `/tasks pick TASK-NNN` by bare id skips the taken filter, so an in-place pick can take a task another clone holds
 

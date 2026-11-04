@@ -3,7 +3,7 @@ id: TASK-318
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -40,7 +40,8 @@ Found by TASK-313's cold drill (2026-10-14). `skills/tasks/verbs/plan.md` step 7
 
 ## Human test plan
 
-- [ ] A cold runner files a task with nobody to answer. Expected: it quotes the grill question, takes the stated answer-less path, and reports it without calling it inferred.
+- [x] A cold runner files a task with nobody to answer. Expected: it quotes the grill question, takes the stated answer-less path, and reports it without calling it inferred.
+  - **Passed 2026-11-04:** the runner put plan step 7's question verbatim ("Draft plan written to TASK-002. Grill it via `grill-me` now? [y/N]"), quoted the step's no-answer rule, and printed `grilling: not run — nobody answered`; the task's inferred-values line lists title, parent, priority, assignee and body sections, not the grill.
 
 ## Outcome
 
@@ -74,3 +75,4 @@ _Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
 - step 6 — reverted fix: 0/0 failed — prose only, nothing executable; fix-dependent = none; contract pins = skills-lint.sh link resolution; evidence = the Human test plan cold drill, not run
 - step 7 — respecced work-tracking; requirements changed: Implementation plans (+1 scenario); intended anyway — TASK-318's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed.** Fixture: `repo/` with `tasks/.config.yml` (`mode: local`, `integration: single-branch`), EPIC-001 → STORY-001 and one done task; skill `tasks`. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd `%LOCALAPPDATA%\Temp\d318`, which holds the committed fixture `repo/` and copies of the named skill folders under `skill/`. The brief told the runner it was a drill, barred history and planning docs, told it to write any question verbatim and continue unanswered, and asked for: the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It never stated an expected outcome. Task-specific ask: "Run /tasks new task. The task you are filing: \"Rename the export command's --out flag to --output\", under STORY-001. Nothing else is supplied. Give the file it wrote, whole." **Coldness:** it listed no skills. **Result:** the runner put plan step 7's question verbatim ("Draft plan written to TASK-002. Grill it via `grill-me` now? [y/N]"), quoted the step's no-answer rule, and printed `grilling: not run — nobody answered`; the task's inferred-values line lists title, parent, priority, assignee and body sections, not the grill. Also raised, outside this task and offered as follow-ups: **DRILL-318-1:** a parent and title the user named in the request (not as an argument) were treated as unanswered, so the file says "inferred, not chosen" about a parent the user gave — `new` steps 3–4 carve out only a caller-set value; **DRILL-318-2:** `plan` step 6 inserts the plan agent's output whole; its `##` headings end `## Implementation plan` early, and the runner demoted them unlicensed; **DRILL-318-3:** `new` step 13 and `plan` step 8 each print a "Start work with `/tasks pick`" line, in no stated order. → `verify` → **done**.

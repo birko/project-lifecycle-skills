@@ -3,7 +3,7 @@ id: TASK-327
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -36,7 +36,8 @@ Found by TASK-298's cold drill (2026-10-14). Both runners reached an empty pool 
 
 ## Human test plan
 
-- [ ] On a fixture whose only review-intake epic has every task `done` or `cancelled`, run `/fix-next`. Expected: the run reports the backlog as drained and offers no review, adoption or intake.
+- [x] On a fixture whose only review-intake epic has every task `done` or `cancelled`, run `/fix-next`. Expected: the run reports the backlog as drained and offers no review, adoption or intake.
+  - **Passed 2026-11-04:** the runner printed the drained line and offered nothing, quoting "Offer nothing that creates scope".
 
 ## Outcome
 
@@ -65,3 +66,4 @@ _Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
 - step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = the Human test plan fixture run, not run
 - step 7 — respecced defect-draining; requirements changed: An empty pool stops the run without inventing scope (+1 scenario); intended anyway — TASK-327's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed.** Fixture: `repo/` with one `kind: review-intake` epic, two stories and four `findings:` tasks, three done and one cancelled; skills `fix-next`, `tasks`, `roadmap`. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd `%LOCALAPPDATA%\Temp\d327`, which holds the committed fixture `repo/` and copies of the named skill folders under `skill/`. The brief told the runner it was a drill, barred history and planning docs, told it to write any question verbatim and continue unanswered, and asked for: the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It never stated an expected outcome. Task-specific ask: "Run /fix-next. Give its closing report verbatim, including every offer it makes." **Coldness:** it listed no skills. **Result:** the runner printed the drained line and offered nothing, quoting "Offer nothing that creates scope". Also raised, outside this task and offered as follow-ups: **DRILL-327-1:** step 1 says "Two causes, two different offers" above four bullets, and the drained line's fixed text says "or awaiting verification" when nothing is; **DRILL-327-2:** "say so and stop" leaves open whether step 9's report, which says "Either way, name the next pick", still runs. → `verify` → **done**.

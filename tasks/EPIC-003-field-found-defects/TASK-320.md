@@ -3,7 +3,7 @@ id: TASK-320
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -36,7 +36,8 @@ Found by the TASK-306 and TASK-307 drills (2026-10-14), run on the same fixture 
 
 ## Human test plan
 
-- [ ] Two cold runners each run `/feature status FEATURE-001` on a fixture with no `docs/features/README.md`. Expected: both leave the same tree.
+- [x] Two cold runners each run `/feature status FEATURE-001` on a fixture with no `docs/features/README.md`. Expected: both leave the same tree.
+  - **Passed 2026-11-04:** both runners changed the same two paths (`FEATURE-001-export/status.md` rewritten, `docs/features/README.md` created), printed the same `created docs/features/README.md — it was absent`, and wrote identical index files. Only `status.md`'s prose differs (task wording, the next-step sentence), which is wording, not tree. The fixture omitted the `roadmap` copy, so both enumerated by hand and could not run the drift check; that does not touch the tree result, but the drift note went unexercised.
 
 ## Outcome
 
@@ -65,3 +66,4 @@ _Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
 - step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = the Human test plan two-runner drill, not run
 - step 7 — respecced feature-lifecycle; requirements changed: the /feature status requirement (+1 scenario); intended anyway — TASK-320's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed.** Fixture: `repo/` with FEATURE-001 and FEATURE-002 (idea.md, decisions.md, status.md), linked tasks, and no `docs/features/README.md`; skills `feature`, `tasks`. Built twice, `d320a` and `d320b`, one runner each. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd `%LOCALAPPDATA%\Temp\d320a`, which holds the committed fixture `repo/` and copies of the named skill folders under `skill/`. The brief told the runner it was a drill, barred history and planning docs, told it to write any question verbatim and continue unanswered, and asked for: the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It never stated an expected outcome. Task-specific ask: "Run /feature status FEATURE-001. Give the full contents of every file the run created or changed." **Coldness:** neither listed any skill. **Result:** both runners changed the same two paths (`FEATURE-001-export/status.md` rewritten, `docs/features/README.md` created), printed the same `created docs/features/README.md — it was absent`, and wrote identical index files. Only `status.md`'s prose differs (task wording, the next-step sentence), which is wording, not tree. The fixture omitted the `roadmap` copy, so both enumerated by hand and could not run the drift check; that does not touch the tree result, but the drift note went unexercised. Also raised, outside this task and offered as follow-ups: **DRILL-320-1:** `{{PROTOTYPE_LINK}}` does not cover a `Skipped` prototype line, the index template's `{{PROJECT_NAME}}` has no stated source, and its banner says "all-features mode" on a single-feature run. → `verify` → **done**.

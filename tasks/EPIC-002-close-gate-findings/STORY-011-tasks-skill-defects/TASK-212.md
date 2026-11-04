@@ -3,7 +3,7 @@ id: TASK-212
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: unassigned
@@ -55,8 +55,9 @@ or `init.md` step 3b.
 
 ## Human test plan
 
-- [ ] A cold run of `/tasks block TASK-X` with no `--reason` and nobody to answer, on an invented task: the
+- [x] A cold run of `/tasks block TASK-X` with no `--reason` and nobody to answer, on an invented task: the
       run puts the stated question verbatim and ends in the stated no-answer state
+  - **Passed 2026-11-04:** the runner put "Why is TASK-002 blocked? One line: it becomes the `blocked:` value and the body note." verbatim, then wrote `blocked: reason unknown`, the note `> Blocked 2026-11-04 — reason unknown; nobody gave one when it was blocked.` and the fallback line, with `status: todo` unchanged.
 
 ## Outcome
 
@@ -102,3 +103,4 @@ _Drafted 2026-11-04 by the Plan agent (`/fix-next` step 3b, `/tasks plan --no-gr
 - step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = the Human test plan cold run, not run
 - step 7 — respecced work-tracking; requirements changed: Blocking and unblocking (+2 scenarios); intended anyway — TASK-212's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed.** Fixture: `repo/` with one story and two todo tasks, TASK-002 with no `depends-on`; skill `tasks`. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd `%LOCALAPPDATA%\Temp\d212`, which holds the committed fixture `repo/` and copies of the named skill folders under `skill/`. The brief told the runner it was a drill, barred history and planning docs, told it to write any question verbatim and continue unanswered, and asked for: the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It never stated an expected outcome. Task-specific ask: "Run /tasks block TASK-002. Give TASK-002's file, whole, as it stands at the end." **Coldness:** it listed no skills. **Result:** the runner put "Why is TASK-002 blocked? One line: it becomes the `blocked:` value and the body note." verbatim, then wrote `blocked: reason unknown`, the note `> Blocked 2026-11-04 — reason unknown; nobody gave one when it was blocked.` and the fallback line, with `status: todo` unchanged. Also raised, outside this task and offered as follow-ups: **DRILL-212-1:** where `blocked:` goes relative to the template's `# blocked:` comment line is readable two ways, and "append a body note" names no place (the runner put it after `## Implementation plan`, where it reads as part of the plan); **DRILL-212-2:** step 4 writes `blocked: <reason>` before step 5 settles the reason. → `verify` → **done**.
