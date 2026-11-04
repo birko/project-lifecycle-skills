@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 16:33. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 16:44. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 61                  |
+| todo         | —                  | —                  | 60                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 6                   |
+| verify       | —                  | —                  | 7                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 242                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 49× P2 · 12× P3.
+`todo` by priority: 49× P2 · 11× P3.
 
 ## In progress now
 
@@ -30,6 +30,7 @@ _None_
 - [TASK-318](EPIC-003-field-found-defects/TASK-318.md) — `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers (P3, agent)
 - [TASK-321](EPIC-003-field-found-defects/TASK-321.md) — `/feature pick`'s decompose offer has no answer-less path (P3, agent)
 - [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
+- [TASK-327](EPIC-003-field-found-defects/TASK-327.md) — `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained (P3, agent)
 
 ## Tree
 
@@ -246,7 +247,7 @@ _None_
     - [x] TASK-324 A re-close that parks a `done` task at `verify` never rolls its parents up
     - [ ] TASK-325 Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item 🔍 verify
     - [x] TASK-326 `close`'s "reopen and re-close" never says what reopening resets, so a re-close over a ticked plan goes straight back to `done`
-    - [ ] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained
+    - [ ] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained 🔍 verify
     - [x] TASK-328 `pick`'s proof-mismatch fallback never pushes the task branch with an upstream, so other clones see the task as free
     - [x] TASK-329 `/tasks pick TASK-NNN` by bare id skips the taken filter, so an in-place pick can take a task another clone holds
 

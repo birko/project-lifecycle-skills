@@ -166,6 +166,14 @@ mode this branch exists to prevent. Two causes, two different offers:
   it. **Don't just start working those tasks** because they look like defects — that's the
   theme-guessing this pool definition exists to eliminate, and guessing wrong means picking a new
   capability and "fixing" it.
+- **The backlog has been drained** — defect work is filed (an epic stamped `kind: review-intake`, or a
+  task carrying `findings:`), and none of it is `todo` or blocked any more: every such task is `done`,
+  `cancelled`, or awaiting verification. Say *"the review backlog is drained — every filed finding is
+  closed or awaiting verification; nothing to fix"*, and list any task at `verify` as the verification
+  debt step 1 already reports. **Offer nothing that creates scope**: no review pass, no intake, no
+  adoption. The other two offers fit a backlog that was never filed or never stamped, and on a drained
+  one they would tell the user to redo finished work. A drained backlog is the outcome this skill exists
+  to produce, so report it as one.
 - **Every task in the pool is blocked** — found in step 2, which treats it as an empty pool. List each blocked
   task with its reason and stop. Offer nothing: unblocking is a person's decision (step 0).
 

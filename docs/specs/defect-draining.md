@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 711cd53ec34b60d6600645aea0692ed6e2f169e6
+generated-at: 1f05c406a5302dd207656517e7251ce2ec89250b
 generated-on: 2026-11-04
 sources:
   - skills/fix-next/SKILL.md
@@ -103,6 +103,12 @@ The system SHALL admit a task to the pool only when it is `todo` (or an old-form
 
 The system SHALL keep a blocked task in the pool — whether `todo` with a `blocked:` field or old-form `status: blocked` — so its rank stays visible, SHALL never start or unblock one, and SHALL treat a pool in which every task is blocked as empty, reporting the blocked tasks and stopping.
 
+#### Scenario: A drained backlog
+
+- **Given** EPIC-963 is stamped review-intake and every one of its tasks is `done` or `cancelled`
+- **When** the pool is built
+- **Then** the run reports the review backlog as drained and stops, offering no review pass, intake or adoption
+
 #### Scenario: Every pool task is blocked
 
 - **Given** the pool holds TASK-920 and TASK-921, both blocked
@@ -165,7 +171,7 @@ The system SHALL treat tasks at `verify` (or the older `review`) as outside the 
 
 ### Requirement: An empty pool stops the run without inventing scope
 
-The system SHALL, when the pool is empty, say so and stop without inventing defects; where review-looking epics exist that lack the `kind: review-intake` stamp it SHALL say exactly that and offer to adopt them with the intake verb rather than start working their tasks, where every pool task is blocked it SHALL list each with its reason and stop, offering nothing; and otherwise SHALL direct the user to run a review pass and file it first.
+The system SHALL, when the pool is empty, say so and stop without inventing defects; where review-looking epics exist that lack the `kind: review-intake` stamp it SHALL say exactly that and offer to adopt them with the intake verb rather than start working their tasks, where defect work is filed but every such task is `done`, `cancelled` or awaiting verification it SHALL report the backlog as drained, list any task awaiting verification, and offer nothing that creates scope; where every pool task is blocked it SHALL list each with its reason and stop, offering nothing; and otherwise SHALL direct the user to run a review pass and file it first.
 
 #### Scenario: No review was ever filed
 
