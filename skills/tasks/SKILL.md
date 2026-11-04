@@ -542,7 +542,9 @@ non-obvious rules travel with this:
   parked at `verify` by a `close` that reopened it, an open task moved in by `move`, or a new open child **created** under it by the `new` flow, directly
   or through any verb that runs it) reopens its parent to `in-progress` when that parent
   reads `done` or `cancelled`: a STORY, or an EPIC the child is parented to directly. Then re-evaluate the EPIC
-  above a reopened STORY the same way. One left `done` over a `verify` child is a claim its own close gate
+  above a STORY parent the same way, **whether or not that story was reopened**: a `planned` or `in-progress`
+  story can sit under a `done` epic (left by `close --epic --force`), and the open child makes that epic's
+  `done` false too. One left `done` over a `verify` child is a claim its own close gate
   would refuse ([verbs/close.md](verbs/close.md) § *Closing a STORY / EPIC*, its children-done check). Reopen rather than leave it
   for a person: the container's state is derived from its children, and the move that changed them has already
   happened. **A container closed with `--force` is no exception.** Forcing set aside the children open at that
