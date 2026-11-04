@@ -28,7 +28,10 @@ Three modes:
 
 6. **Regenerate dashboard**.
 
-7. **Confirm**: print summary — `Imported X epics, Y stories, Z tasks from <path>`.
+7. **Confirm**: print summary — `Imported X epics, Y stories, Z tasks from <path>`. Under it, print every
+   container the `/tasks new` runs reopened and every `record/<ID>` line their step 10 check produced, each
+   once ([SKILL.md](../SKILL.md) § *Roll status up to parents*). This summary replaces `new`'s confirmation,
+   so a line left out here is seen by nobody.
 
 8. **Don't touch the source file.** Leave TODO.md alone. The user migrates manually if they want; we want a reversible import.
 
@@ -52,7 +55,8 @@ Three modes:
    - Milestone → can map to EPIC if migration used milestones.
    - Write `github-issue: <num>` in frontmatter.
 
-4. **Create the local TASK file** via the `/tasks new` flow (skip prompts where data is known).
+4. **Create the local TASK file** via the `/tasks new` flow (skip prompts where data is known), and print
+   its step 13 confirmation, including any reopened container and any `record/<ID>` line.
 
 5. **Regenerate dashboard**.
 
@@ -112,7 +116,8 @@ Three modes:
 7. **Confirm**: print the created file's path and its `jira-key:`, and under it every ticket that got step 3's P1
    fallback, as `ABC-3: Jira priority "Blocker" has no mapping; wrote P1, nobody chose it`, and every
    label and field that disagreed, in the line step 3's comparison table gives. A ticket with a label never gets the
-   fallback line: the label's value was written.
+   fallback line: the label's value was written. Also print every container the create reopened and every
+   `record/<ID>` line its check produced, as file mode's step 7 does.
 
 ## Edge cases
 

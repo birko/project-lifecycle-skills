@@ -563,6 +563,18 @@ non-obvious rules travel with this:
     and write nothing for it. The branch is a person's to land, discard or re-record, and this run did not
     create it. A check that cannot reach the remote reports `record/<ID> not checked: <reason>` rather than
     passing silently.
+  - **The check runs once per run, not once per child.** A run that moves or creates several children (a
+    multi-id `move`, a `decide` reverting two tasks under one story, any batch of `new`) checks each container
+    at most once and prints each distinct `record/<ID>` line once, naming every open child it found:
+    `record/<ID> is unlanded and closes <ID>, which now has open children <child id>, <child id> — do not land it as is`.
+    **Skip a container this run created**: no close has run on it, so no record branch can exist for it.
+    **Stop asking a remote that already failed**: after the first `git ls-remote` that cannot reach it, the
+    run asks it nothing more and prints one line for every container it did not check,
+    `record/<ID>, record/<ID> not checked: <reason>`. One line per child would bury the report under the same
+    reason, and a reader skims past a flood of lines that all say the same thing.
+  - **A verb that runs `new` and prints its own summary relays these lines.** That summary replaces `new`'s
+    step 13 confirmation, so every reopened container and every `record/<ID>` line the runs produced goes in
+    it, deduplicated as above. A line left out of it is seen by nobody.
   - **A `done` parent is never a reason to file new work elsewhere.** Epics and stories gain work over time, so
     new work goes under the container that owns it, and this rule reopens it. Filing it in `_loose/` instead
     loses its placement and leaves it unranked (§ *A task outside a pool*). `_loose/` is for work no

@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: 04ebaf589db1606b7a99656fe9b1b2ed7b54a2f5
-generated-on: 2026-10-14
+generated-at: 25282f6167e1d35ee41e0744781ef6df85fc3cba
+generated-on: 2026-11-04
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -367,7 +367,7 @@ The system SHALL treat a later change to a `done` feature as a recorded decision
 
 ### Requirement: Decompose turns approved and changed decisions into tasks
 
-The system SHALL, on `/feature decompose`, collect `approved` and `changed` rows (only a named subset when called with one), ignore `proposed`, `deferred` and `removed` rows, ask whether to place the tasks under an existing or new epic or story or leave them loose, create one or more small tasks per decision through the task tracker's from-feature batch creation so each task carries the feature back-link, context from the decision and a human test plan, decompose a `changed` row in its changed shape, create tasks only for the uncovered part of an already-decomposed row, verify each row's task column is filled, append one History line per decision naming its tasks, and run the status rollup for that feature automatically.
+The system SHALL, on `/feature decompose`, collect `approved` and `changed` rows (only a named subset when called with one), ignore `proposed`, `deferred` and `removed` rows, ask whether to place the tasks under an existing or new epic or story or leave them loose, create one or more small tasks per decision through the task tracker's from-feature batch creation so each task carries the feature back-link, context from the decision and a human test plan, decompose a `changed` row in its changed shape, create tasks only for the uncovered part of an already-decomposed row, verify each row's task column is filled, append one History line per decision naming its tasks, and run the status rollup for that feature automatically. Its confirmation SHALL name each container the task creations reopened and every unlanded or unchecked `record/<ID>` line their check reported, each once, since it prints in place of the task tracker's own confirmation.
 
 #### Scenario: Two tasks from one decision
 

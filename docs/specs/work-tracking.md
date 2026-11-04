@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: b52f5737ce6100848215c3eb0a28bc36e35b5bbc
-generated-on: 2026-10-14
+generated-at: 25282f6167e1d35ee41e0744781ef6df85fc3cba
+generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -728,7 +728,7 @@ The system SHALL close a story or epic only when every child task (and, for an e
 
 ### Requirement: Parents rolled up after child changes
 
-The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked. An open child moved in or created SHALL be checked against its parent and the epic above a parent story whatever they read, since a container closed on an unlanded record branch still reads open in the main copy. A re-close that parks a previously `done` or `cancelled` task at `verify` SHALL reopen its parent and the epic above a story parent at the park, writing them into the park commit when it lands on the default branch with no upstream, writing them uncommitted and naming them when the close commits nothing, and otherwise writing nothing and reporting each as not reopened; a re-close that ends `done` SHALL reopen nothing. Move, creation (including a spawn, which prints in its place), a decide revert, a review park and a re-close park SHALL each carry these lines, and each reopened container, in their own report.
+The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked. The check SHALL run once per run, not once per child: each container is checked at most once and each distinct `record/<ID>` line printed once, naming every open child it found; a container created in the same run SHALL NOT be checked; and after the first failure to reach the remote the run SHALL ask it nothing more and print one not-checked line naming every container left unchecked. An open child moved in or created SHALL be checked against its parent and the epic above a parent story whatever they read, since a container closed on an unlanded record branch still reads open in the main copy. A re-close that parks a previously `done` or `cancelled` task at `verify` SHALL reopen its parent and the epic above a story parent at the park, writing them into the park commit when it lands on the default branch with no upstream, writing them uncommitted and naming them when the close commits nothing, and otherwise writing nothing and reporting each as not reopened; a re-close that ends `done` SHALL reopen nothing. Move, creation (including a spawn, an intake, an import and a feature decompose, each of which prints in its place), a decide revert, a review park and a re-close park SHALL each carry these lines, and each reopened container, in their own report.
 
 #### Scenario: Last task cancelled
 
@@ -759,6 +759,18 @@ The system SHALL, after any child status or placement change, or the creation of
 - **Given** a project whose default branch tracks a remote, and `STORY-001` closed `done` on the unlanded `record/STORY-001`, so the main copy reads `in-progress`
 - **When** an open task is moved into `STORY-001`, or a new task is created under it
 - **Then** nothing is reopened, and the move's report and the creation's confirmation each name `record/STORY-001` as unlanded, closing `STORY-001` over the open child, and not to be landed as is
+
+#### Scenario: A batch under a story closed on an unlanded record branch
+
+- **Given** a project whose default branch tracks a remote, and `STORY-001` closed `done` on the unlanded `record/STORY-001`
+- **When** `/tasks intake` files three findings as tasks under `STORY-001`
+- **Then** intake's report names `record/STORY-001` once, listing all three open children, and does not repeat it per task
+
+#### Scenario: A batch that cannot reach the remote
+
+- **Given** a project whose default branch tracks a remote that cannot be reached
+- **When** one run creates a new story and five tasks under it and two tasks under an existing story
+- **Then** the new story is not checked, and the report carries one not-checked line naming the existing story and its epic
 
 ### Requirement: Moving a task or story
 

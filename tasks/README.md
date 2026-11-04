@@ -1,22 +1,22 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (1):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
+> ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-10-14 18:15. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 14:58. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 69                  |
+| todo         | —                  | —                  | 68                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 1                   |
+| verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 239                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 51× P2 · 18× P3.
+`todo` by priority: 51× P2 · 17× P3.
 
 ## In progress now
 
@@ -25,6 +25,7 @@ _None_
 ## Awaiting verification
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
+- [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
 
 ## Tree
 
@@ -207,7 +208,7 @@ _None_
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 20/29 done
+  - (epic level) — 27/36 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
@@ -239,7 +240,7 @@ _None_
     - [x] TASK-322 A signed-off feature with an unbuilt `changed` decision reads phase `review`, as if built
     - [ ] TASK-323 A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed
     - [x] TASK-324 A re-close that parks a `done` task at `verify` never rolls its parents up
-    - [ ] TASK-325 Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item
+    - [ ] TASK-325 Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item 🔍 verify
     - [x] TASK-326 `close`'s "reopen and re-close" never says what reopening resets, so a re-close over a ticked plan goes straight back to `done`
     - [ ] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained
     - [x] TASK-328 `pick`'s proof-mismatch fallback never pushes the task branch with an upstream, so other clones see the task as free

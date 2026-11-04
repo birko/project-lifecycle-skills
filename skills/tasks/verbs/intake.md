@@ -180,6 +180,11 @@ different source of work.
    Drain it with /fix-next.          ← omit when no task was filed
    ```
 
+   Under the counts, print every container the [new.md](new.md) runs reopened and every `record/<ID>` line
+   their step 10 check produced, each once ([SKILL.md](../SKILL.md) § *Roll status up to parents*). This
+   report replaces `new`'s confirmation, so a line left out here is seen by nobody. A pass filed with
+   `--epic` into a closed intake epic is exactly the run that reopens it.
+
 ## Edge cases
 
 - **Findings already filed as tasks, but with no epic to stamp** — the case that falls between this verb's

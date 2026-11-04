@@ -33,6 +33,9 @@ uncovered.
 5. **Refresh the rollup + confirm:**
    - Chain `/feature status FEATURE-NNN` (single-feature mode) automatically — don't just suggest it; the rollup and index row must never lag a decomposition.
    - List the created tasks per decision.
+   - List every container the `/tasks new` runs reopened, and every `record/<ID>` line their check produced,
+     each once ([[tasks]] § *Roll status up to parents*). This confirmation replaces `new`'s own, so a line
+     left out here is seen by nobody.
    - "Track progress in `/tasks` (they carry `feature: FEATURE-NNN`)."
 
 ## Edge cases
