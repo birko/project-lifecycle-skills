@@ -72,6 +72,11 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    [[roadmap]]'s divergence check — don't re-derive it). Write `docs/features/README.md`
    (overwrite; it's generated, like `status.md`). Single-feature runs update only that feature's
    `status.md` and **its row** in the index, not the whole file.
+   **When the index does not exist, a single-feature run renders all of it**, exactly as all-features
+   mode does, and reports `created docs/features/README.md — it was absent`. A row needs a file to hold
+   it, and this verb owns that file. Every line in it is derived from the collection pass, so rendering
+   it whole decides nothing, and two runs over the same tree write the same file. Never skip it: an absent
+   index is a gap in the layer (`skills/new-project/LAYER.md` requires it), not a choice to respect.
 
 ## Notes
 

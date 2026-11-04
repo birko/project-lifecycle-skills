@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 766ae06a9dbdcd354b6ebfa2bc91dfd5fa859979
+generated-at: 9b998543671598bf01599724b9754d14d709fc0b
 generated-on: 2026-11-04
 sources:
   - skills/feature/SKILL.md
@@ -599,13 +599,19 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 
-The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row.
+The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
 
 #### Scenario: Single-feature run
 
 - **Given** FEATURE-012 and FEATURE-013 both exist
 - **When** `/feature status FEATURE-012` runs
 - **Then** only FEATURE-012's rollup and its index row change
+
+#### Scenario: Single-feature run with no index
+
+- **Given** FEATURE-012 and FEATURE-013 exist and `docs/features/README.md` does not
+- **When** `/feature status FEATURE-012` runs
+- **Then** FEATURE-012's rollup is written, the whole index is rendered with a row for each feature, and the report says the index was created because it was absent
 
 #### Scenario: Deleted prototype is not linked
 
