@@ -32,8 +32,14 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
 5b. **Split check — did planning reveal a second task?** If the returned plan contains steps that
    are independently completable, separately reviewable, or outside the task's stated acceptance
    criteria, that's a **split signal**. Offer [`/tasks spawn`](spawn.md) for each such step rather
-   than letting the plan quietly grow the task past its criteria. Spawned steps stay in the plan as
-   `→ deferred to TASK-NNN` lines. If the plan's *core* is bigger than one task, say so plainly —
+   than letting the plan quietly grow the task past its criteria. Put this question, once per step:
+
+   > **The plan for TASK-NNN has a step that stands as its own task: "<step>". Spawn it as a separate task? [y/N]**
+
+   Spawned steps stay in the plan as `→ deferred to TASK-NNN` lines.
+   **No answer, or nobody to ask:** spawn nothing. Leave the step in the plan, marked
+   `⚠ split signal — not spawned: nobody answered`, and list it in step 8. The step is still in the plan,
+   so nothing is lost by not spawning, whereas a task filed with nobody present is a placement nobody chose. If the plan's *core* is bigger than one task, say so plainly —
    the right fix may be promoting this task to a STORY with tasks under it. Judge the signal against
    [slicing.md](../slicing.md) § *One fresh context window*: a failed hard check is a split, and a
    tripped signal kept as one task needs its one-line reason in the task's Context. A plan that turns out
@@ -44,13 +50,22 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
    - Preserve any `⚠ Acceptance criteria question:` notes the agent emitted — keep them at the top of the section so the human sees them on next read.
 
 7. **Offer to grill** (unless `--no-grill`):
-   - Print: "Draft plan written. Grill it via `grill-me`? [y/N]"
+   - Put this question:
+
+     > **Draft plan written to TASK-NNN. Grill it via `grill-me` now? [y/N]**
+
    - `y` → invoke the `grill-me` skill via Skill, passing the TASK title + the draft plan as context. The user defends the decisions against the grilling questions. When grilling concludes, write the refined plan back into the same `## Implementation plan` section (overwrite the draft).
    - `N` → leave the draft as-is.
+   - **No answer, or nobody to ask:** do not grill, and leave the draft as-is. Step 8 reports
+     `grilling: not run — nobody answered`, never `declined`: a grill is a conversation with a person, so
+     with nobody present it cannot run, and nobody chose to skip it. This is a stated path, not an inferred
+     field, so it puts nothing in the task file's inferred-values line. **[`new`](new.md) step 12 chains
+     this verb on every task it files**, so every unattended `/tasks new` reaches this question.
 
 8. **Confirm** — print:
    - File path
-   - Whether grilling ran
+   - Whether grilling ran: `ran`, `declined`, or `not run — nobody answered`
+   - Every split signal step 5b left unspawned
    - Next-step hint: "Start work with `/tasks pick {{ID}}`"
 
 ## Edge cases
@@ -59,5 +74,12 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
 - **ID is EPIC/STORY** — error: "Plans only apply to TASKs. EPICs and STORIES are containers."
 - **TASK has no `## Context` or `## Acceptance criteria`** — warn ("planning a thinly-specified task — the plan will be vague") but proceed; pass whatever exists to the Plan agent.
 - **Plan agent fails or returns empty** — leave the TASK file untouched, report the failure, don't write a half-section.
-- **`--replan` on an in-progress task** — extra confirm: "This task is `status: in-progress`. Overwrite the existing plan? [y/N]". Prevents accidentally nuking a plan that work is already running against.
+- **`--replan` on an in-progress task** — extra confirm. Put this question:
+
+  > **TASK-NNN is `in-progress`, and work may be running against its plan. Overwrite the existing plan? [y/N]**
+
+  It prevents accidentally replacing a plan that work is already running against. **No answer, or nobody to
+  ask:** keep the existing plan, write nothing, and report
+  `plan kept — TASK-NNN is in progress and nobody confirmed overwriting its plan`. Passing `--replan` asked
+  for a new plan, but not for this task's running plan, which is exactly what this confirm protects.
 - **Grill refuses or aborts mid-way** — keep the original draft in the TASK file; don't lose it.

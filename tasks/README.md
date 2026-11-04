@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 15:15. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 15:40. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 67                  |
+| todo         | —                  | —                  | 66                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 3                   |
+| verify       | —                  | —                  | 4                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 239                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 50× P2 · 17× P3.
+`todo` by priority: 50× P2 · 16× P3.
 
 ## In progress now
 
@@ -26,6 +26,7 @@ _None_
 
 - [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) — Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
+- [TASK-318](EPIC-003-field-found-defects/TASK-318.md) — `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers (P3, agent)
 - [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
 
 ## Tree
@@ -234,7 +235,7 @@ _None_
     - [ ] TASK-315 move.md never states the reopen it performs
     - [ ] TASK-316 fix-next's tie scenario never states what happens when nobody answers
     - [x] TASK-317 `move` and `new` never report an unlanded `record/<ID>` branch, though TASK-306 says every trigger does
-    - [ ] TASK-318 `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers
+    - [ ] TASK-318 `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers 🔍 verify
     - [x] TASK-319 A `decide` revert sends a task back to `verify` with its old test step still ticked, so a re-close can count the old pass
     - [ ] TASK-320 Two cold runners disagreed on whether `/feature status` creates the features index when it is absent
     - [ ] TASK-321 `/feature pick`'s decompose offer has no answer-less path

@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 25282f6167e1d35ee41e0744781ef6df85fc3cba
+generated-at: eb15bae3d605b9b784f6bdfb3f389b76d6c3a67a
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -306,13 +306,19 @@ The system SHALL, on `new --from-review <ids>`, set `findings:` to those ids and
 
 ### Requirement: Implementation plans
 
-The system SHALL draft a task's `## Implementation plan` by handing its title, Context, acceptance criteria and out-of-scope to a planning agent that must not change the criteria (raising doubts as a flagged note at the top), refuse to overwrite a non-empty plan without `--replan` (with an extra confirmation on an in-progress task), leave the file untouched when planning fails, offer `spawn` for plan steps that are separately completable, and then offer a grilling pass. Plans apply to tasks only.
+The system SHALL draft a task's `## Implementation plan` by handing its title, Context, acceptance criteria and out-of-scope to a planning agent that must not change the criteria (raising doubts as a flagged note at the top), refuse to overwrite a non-empty plan without `--replan` (with an extra confirmation on an in-progress task, which keeps the existing plan and reports it kept when nobody answers), leave the file untouched when planning fails, offer `spawn` for plan steps that are separately completable (spawning nothing when nobody answers, marking each such step in the plan as an unspawned split signal and listing it in the confirmation), and then offer a grilling pass, which does not run when nobody answers and is reported as `not run — nobody answered`, never as declined. Plans apply to tasks only.
 
 #### Scenario: Existing plan
 
 - **Given** `TASK-014` already has a non-empty plan
 - **When** the user runs `/tasks plan TASK-014`
 - **Then** it refuses and says to re-run with `--replan`
+
+#### Scenario: Nobody answers the grill offer
+
+- **Given** `/tasks new task` files a task with nobody present, and chains `plan`
+- **When** the plan is written and the grill question is put
+- **Then** no grilling runs, the draft stays as written, and the confirmation reports `grilling: not run — nobody answered`
 
 #### Scenario: Plan on a container
 
