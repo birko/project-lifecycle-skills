@@ -401,7 +401,7 @@ real (non-`N/A`) manual/visual step that hasn't been run yet, set `status: verif
 hard rule: **never mark something `done` with the sign-off still pending, and never write
 the hybrid "done (pending)".** A `verify` task is *verification debt* — the snapshot lists
 it under "Awaiting verification" and it should be closed (run the test → `done`) before new scope.
-- A task whose `## Human test plan` is genuinely `N/A — covered by automated tests` skips
+- A task whose `## Human test plan` is genuinely `N/A — fully covered by automated tests` skips
   `verify` and goes straight to `done` when the code + tests land (nothing for a human to verify).
   **An absent section is not an `N/A` one** — resolve it (write the steps, or write `N/A` with the
   reason a human adds nothing) *before* choosing the status. Defaulting a missing plan to `verify`

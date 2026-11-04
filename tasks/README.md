@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 21:49. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 22:07. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 64                  |
+| todo         | —                  | —                  | 63                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 4                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 252                 |
+| done         | 4                  | 13                 | 253                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 47× P2 · 17× P3.
+`todo` by priority: 46× P2 · 17× P3.
 
 ## In progress now
 
@@ -99,11 +99,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (58/101 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (59/101 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (16/28 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (17/28 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -131,7 +131,7 @@ _None_
     - [ ] TASK-337 `/tasks pick` on a bare id leaves debt surfacing and plan age unclear, and 9b's offer says "1 steps"
     - [ ] TASK-338 `/tasks export` assumes a config `migrate` has not written yet, and the dry run's milestone lookup has no command
     - [ ] TASK-339 `/tasks intake --epic` leaves story reuse, the epic update, titles and group priority to the reader
-    - [ ] TASK-340 The task template has no `{{FINDINGS}}` token for `new` to fill, and the N/A test-plan wording differs
+    - [x] TASK-340 The task template has no `{{FINDINGS}}` token for `new` to fill, and the N/A test-plan wording differs
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
