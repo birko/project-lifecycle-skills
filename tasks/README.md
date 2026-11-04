@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 15:53. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 16:03. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 65                  |
+| todo         | —                  | —                  | 64                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 5                   |
+| verify       | —                  | —                  | 6                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 239                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 49× P2 · 16× P3.
+`todo` by priority: 49× P2 · 15× P3.
 
 ## In progress now
 
@@ -28,6 +28,7 @@ _None_
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 - [TASK-182](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-182.md) — `/tasks pick` step 7's two questions carry no wording and no answer-less path (P2, ai)
 - [TASK-318](EPIC-003-field-found-defects/TASK-318.md) — `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers (P3, agent)
+- [TASK-321](EPIC-003-field-found-defects/TASK-321.md) — `/feature pick`'s decompose offer has no answer-less path (P3, agent)
 - [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
 
 ## Tree
@@ -239,7 +240,7 @@ _None_
     - [ ] TASK-318 `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers 🔍 verify
     - [x] TASK-319 A `decide` revert sends a task back to `verify` with its old test step still ticked, so a re-close can count the old pass
     - [ ] TASK-320 Two cold runners disagreed on whether `/feature status` creates the features index when it is absent
-    - [ ] TASK-321 `/feature pick`'s decompose offer has no answer-less path
+    - [ ] TASK-321 `/feature pick`'s decompose offer has no answer-less path 🔍 verify
     - [x] TASK-322 A signed-off feature with an unbuilt `changed` decision reads phase `review`, as if built
     - [ ] TASK-323 A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed
     - [x] TASK-324 A re-close that parks a `done` task at `verify` never rolls its parents up

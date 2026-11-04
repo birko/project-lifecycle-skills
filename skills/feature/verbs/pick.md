@@ -39,6 +39,16 @@ lifecycle stall.
    | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN` — "N approved or changed decision(s) have no tasks. Decompose now? [Y/n]"** |
    | **E · Signed off** | phase is `review` (all tasks `done` or `verify`, sign-off not recorded), computed by [status.md](status.md) step 2, never read off `idea.md` | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this. **Never fires beside D:** a row D would offer to decompose makes the phase `building`, so a change that is not built is offered as work, not as sign-off |
 
+   **Gates A, B and C — the questions, and what silence does.** Each chained verb needs a person: a grill,
+   a verdict, or a prototype someone looks at. So with nobody present none of them runs, and the run never
+   reports one as declined. Q has its own paragraph (step 3b) and D has step 4.
+
+   | Gate | Put this question | No answer, or nobody to ask |
+   |---|---|---|
+   | **A** | **FEATURE-NNN has no decisions to build from yet. Re-grill the idea with `/feature new` now? [Y/n]** | change nothing; report `not grilled: FEATURE-NNN has no decisions — nobody answered`, and stop at step 6. Nothing past A can run without decisions |
+   | **B** | **FEATURE-NNN has N decision(s) still awaiting a verdict: <ids>. Decide them now? [Y/n]** | change nothing; report `not decided: <ids> still proposed — nobody answered`, and stop at step 6. A verdict nobody gave would read as decided, and C–E all read the verdicts |
+   | **C** | **FEATURE-NNN is UI- or state-shaped and records no prototype. Build one with `/feature prototype` before decomposing? [y/N]** | do not prototype; report `prototype: suggested, nobody answered`, and continue to gate D. C never blocks, so silence passes it exactly as `N` does, and the suggestion comes back next run |
+
 3b. **Gate Q — resume at the frontier.** Compute the frontier fresh. **Leave out every question claimed today by
    another name** ([questions.md](../questions.md) § *Claims*), naming each one (`Q4 is being answered by <name>
    (claimed today)`). A claim dated before today is stale: offer that question, and say you are taking it over.
@@ -90,6 +100,11 @@ lifecycle stall.
      precede task creation. Without tasks there's nothing to pick, and code written now has to be
      backfilled." Then stop at step 6 without handing off to work. `pick` will not start
      implementation on an undecomposed feature.
+   - **No answer, or nobody to ask** → do not decompose, and do not hand off. Report
+     `not decomposed: <row ids> have no tasks — nobody answered`, print the task-first gate as for `n`,
+     and stop at step 6. The `Y` default does not apply: decompose files tasks and asks where to place them,
+     so running it with nobody present makes placements and a task split nobody chose. Silence is not a no
+     either, so nothing is recorded as declined and the offer comes back next run.
    - A row whose `→ Tasks` names a `TASK-NNN` that no longer exists on disk is a **broken link**,
      not a decomposed row — treat it as uncovered and flag the dangling ID.
 
