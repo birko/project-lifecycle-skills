@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 19bd1d324dcd20b3f299821189d911d12aeb79ba
+generated-at: fac32d8b916d182429a864620133d5e8c5447534
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -240,13 +240,19 @@ The system SHALL create a node by asking its level (with a decision test when un
 
 ### Requirement: Creation questions and the inferred-values mark
 
-The system SHALL, when creating a node, put a stated question for each of the level, the title, the parent, a task's priority and assignee, the offer to draft a task's body sections, and an aggregator epic's `affects:` list, asking only for a field no calling verb has set. With no answer, or nobody to ask, it SHALL give each field its step's fallback — the level from the decision test, a short noun phrase from the request as the title, the candidate that owns the subject as the parent (for a task, the loose folder when none clearly does), `P1` and `ai`, the body sections drafted only when the request supports it (otherwise left as placeholders and reported unfilled), and `[]` for `affects:` — and SHALL write one line directly under the new file's heading, `> Filed with nobody to answer — inferred, not chosen: <fields>.`, naming every inferred field, repeated in the confirmation and written only when something was inferred. A field a calling verb set — an argument, a value it pre-filled or derived by its own rules, one of its stated defaults, or sections a flag drafted — SHALL never be marked, and an `affects` answer of `none` writes `[]` unmarked. A story whose epic nobody chose and that no epic clearly owns SHALL NOT be created, and the run reports `not created: no epic owns "<title>"`. Whoever confirms the values deletes the line.
+The system SHALL, when creating a node, put a stated question for each of the level, the title, the parent, a task's priority and assignee, the offer to draft a task's body sections, and an aggregator epic's `affects:` list, asking only for a field no calling verb has set and the request does not state. A value the request states — an id it names, a title in quotes, a priority or assignee by name, the level in words — SHALL be written as given, with no question and no mark; a value read off the request's subject (the parent whose title fits, a title this run composes) remains the fallback and is marked, and a stated id that does not resolve or names the wrong level counts as not stated. With no answer, or nobody to ask, it SHALL give each field its step's fallback — the level from the decision test, a short noun phrase from the request as the title, the candidate that owns the subject as the parent (for a task, the loose folder when none clearly does), `P1` and `agent`, the body sections drafted only when the request supports it (otherwise left as placeholders and reported unfilled), and `[]` for `affects:` — and SHALL write one line directly under the new file's heading, `> Filed with nobody to answer — inferred, not chosen: <fields>.`, naming every inferred field, repeated in the confirmation and written only when something was inferred. A field a calling verb set — an argument, a value it pre-filled or derived by its own rules, one of its stated defaults, or sections a flag drafted — SHALL never be marked, and an `affects` answer of `none` writes `[]` unmarked. A story whose epic nobody chose and that no epic clearly owns SHALL NOT be created, and the run reports `not created: no epic owns "<title>"`. Whoever confirms the values deletes the line.
 
 #### Scenario: Task filed with nobody to answer
 
 - **Given** `/tasks new task` run with nobody to answer, for a request one existing story clearly owns
 - **When** the task is written
 - **Then** it is filed under that story at `P1`, assigned to `agent`, and the line under its heading names the title, parent, priority and assignee as inferred, not chosen
+
+#### Scenario: Parent named in the request
+
+- **Given** `/tasks new task` run with nobody to answer, for a request that says the task goes under `STORY-001`
+- **When** the task is written
+- **Then** it is filed under `STORY-001` without the parent question, and the inferred-values line does not name `parent`
 
 #### Scenario: Story nobody can place
 
@@ -306,7 +312,7 @@ The system SHALL, on `new --from-review <ids>`, set `findings:` to those ids and
 
 ### Requirement: Implementation plans
 
-The system SHALL draft a task's `## Implementation plan` by handing its title, Context, acceptance criteria and out-of-scope to a planning agent that must not change the criteria (raising doubts as a flagged note at the top), refuse to overwrite a non-empty plan without `--replan` (with an extra confirmation on an in-progress task, which keeps the existing plan and reports it kept when nobody answers), leave the file untouched when planning fails, offer `spawn` for plan steps that are separately completable (spawning nothing when nobody answers, marking each such step in the plan as an unspawned split signal and listing it in the confirmation), and then offer a grilling pass, which does not run when nobody answers and is reported as `not run — nobody answered`, never as declined. Plans apply to tasks only.
+The system SHALL draft a task's `## Implementation plan` by handing its title, Context, acceptance criteria and out-of-scope to a planning agent that must not change the criteria (raising doubts as a flagged note at the top), refuse to overwrite a non-empty plan without `--replan` (with an extra confirmation on an in-progress task, which keeps the existing plan and reports it kept when nobody answers), leave the file untouched when planning fails, offer `spawn` for plan steps that are separately completable (spawning nothing when nobody answers, marking each such step in the plan as an unspawned split signal and listing it in the confirmation), and then offer a grilling pass, which does not run when nobody answers and is reported as `not run — nobody answered`, never as declined. Before writing, any heading in the plan at `##` or shallower SHALL be demoted, every heading by the same number of levels so the shallowest is `###`, skipping fenced code blocks, so the plan stays inside its section, and the demotion is reported. When `new` chains the plan, the plan's confirmation lines SHALL be printed inside `new`'s one confirmation, with one next-step hint, or relayed by the verb whose own summary replaces that confirmation. Plans apply to tasks only.
 
 #### Scenario: Existing plan
 
@@ -319,6 +325,12 @@ The system SHALL draft a task's `## Implementation plan` by handing its title, C
 - **Given** `/tasks new task` files a task with nobody present, and chains `plan`
 - **When** the plan is written and the grill question is put
 - **Then** no grilling runs, the draft stays as written, and the confirmation reports `grilling: not run — nobody answered`
+
+#### Scenario: Plan output with its own section headings
+
+- **Given** the planning agent returns a plan whose headings are `##` and `###`
+- **When** the plan is written into the task
+- **Then** they become `###` and `####`, the whole plan sits inside `## Implementation plan`, and the confirmation reports `plan headings demoted by 1`
 
 #### Scenario: Plan on a container
 

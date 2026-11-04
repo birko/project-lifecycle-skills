@@ -27,7 +27,8 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
    - The TASK's `## Context`, `## Acceptance criteria`, and `## Out of scope` sections verbatim.
    - The file path of the TASK so the agent can read related code from the repo.
    - Explicit scope: "Produce an implementation plan against the **existing** acceptance criteria. Do not propose changes to the criteria themselves. If you believe a criterion is wrong, missing, or ambiguous, surface it as a single note prefixed with `⚠ Acceptance criteria question:` at the top of your output — the human decides whether to edit the TASK."
-   - Output shape: step-by-step plan, critical files to touch, architectural tradeoffs, anything risky. Markdown, no preamble.
+   - Output shape: step-by-step plan, critical files to touch, architectural tradeoffs, anything risky. Markdown, no preamble,
+     and only `###` or deeper headings: the output goes under a `##` section.
 
 5b. **Split check — did planning reveal a second task?** If the returned plan contains steps that
    are independently completable, separately reviewable, or outside the task's stated acceptance
@@ -47,6 +48,13 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
 
 6. **Write the draft** into the TASK file:
    - Replace the `## Implementation plan` section body with the agent's output. If the section doesn't exist (older TASK file pre-dating the template change), append it after `## Out of scope`.
+   - **Demote the output's headings first when any is `##` or shallower.** A `##` line ends the section, so
+     step 3's capture and step 4's replan guard on the next run would read a truncated plan, and the rest
+     would read as a new section of the task. Shift **every** heading in the output down by the same number
+     of levels, so the shallowest becomes `###` and the plan keeps its own hierarchy; cap at `######`. Lines
+     inside fenced code blocks are not headings: a `#` there is a shell comment. Step 8 reports
+     `plan headings demoted by <N>`. The agent was told to use `###` (step 5), and this rule is what applies
+     when it did not.
    - Preserve any `⚠ Acceptance criteria question:` notes the agent emitted — keep them at the top of the section so the human sees them on next read.
 
 7. **Offer to grill** (unless `--no-grill`):
@@ -66,7 +74,12 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
    - File path
    - Whether grilling ran: `ran`, `declined`, or `not run — nobody answered`
    - Every split signal step 5b left unspawned
+   - `plan headings demoted by <N>`, when step 6 demoted them
    - Next-step hint: "Start work with `/tasks pick {{ID}}`"
+
+   **Chained from [new](new.md) step 12:** print none of this here. Hand the lines, the failure line of
+   § *Edge cases* included, to `new` step 13, which prints them in its one confirmation with the one
+   next-step hint. Two confirmations for one request print two hints, in an order nothing states.
 
 ## Edge cases
 

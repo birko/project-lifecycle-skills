@@ -576,7 +576,9 @@ non-obvious rules travel with this:
     reason, and a reader skims past a flood of lines that all say the same thing.
   - **A verb that runs `new` and prints its own summary relays these lines.** That summary replaces `new`'s
     step 13 confirmation, so every reopened container and every `record/<ID>` line the runs produced goes in
-    it, deduplicated as above. A line left out of it is seen by nobody.
+    it, deduplicated as above. A line left out of it is seen by nobody. **So do the lines of a `plan` that
+    `new` chained** (grilling not run, an unspawned split signal, a heading demotion, a plan failure), one
+    set per task: `plan` prints none of its own when `new` chains it ([verbs/plan.md](verbs/plan.md) step 8).
   - **A `done` parent is never a reason to file new work elsewhere.** Epics and stories gain work over time, so
     new work goes under the container that owns it, and this rule reopens it. Filing it in `_loose/` instead
     loses its placement and leaves it unranked (§ *A task outside a pool*). `_loose/` is for work no

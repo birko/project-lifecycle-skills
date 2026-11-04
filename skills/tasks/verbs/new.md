@@ -58,7 +58,7 @@ Interactive scaffold of a new task tree node.
 1. **Find task root** — walk up from cwd: a directory containing `tasks/.config.yml` wins; else the project root (`*.slnx`/`*.sln`, then `.git`) → `<root>/tasks/`. A project's CLAUDE.md may override placement (aggregator repos hosting cross-cutting epics for a polyrepo family).
    - If `tasks/.config.yml` is **missing** → run the [mode detection flow](#mode-detection-flow) first. Write `.config.yml` before creating any task files.
 
-2. **Determine level** (skip prompt if user passed it as arg: `/tasks new epic|story|task`):
+2. **Determine level** (skip prompt if user passed it as arg, `/tasks new epic|story|task`, or the request states it in words, § *Unanswered questions*):
    - `epic` — area of concern
    - `story` — user behaviour under an epic
    - `task` — single implementable unit
@@ -74,7 +74,7 @@ Interactive scaffold of a new task tree node.
    > **Is this an epic, a story or a task?**
    > · **epic** — a lasting area that keeps gaining work. · **story** — one user behaviour. · **task** — one implementable unit.
 
-   **Unless a caller set it.** **No answer, or nobody to ask:** apply the decision test above to the request, and mark `level`
+   **Unless a caller set it or the request states it.** **No answer, or nobody to ask:** apply the decision test above to the request, and mark `level`
    (§ *Unanswered questions*, below).
 
 3. **Ask the title** — short noun phrase. Generate slug: lowercase, hyphens, ASCII only, max 50 chars. Strip stop words only if title would exceed length.
@@ -82,7 +82,7 @@ Interactive scaffold of a new task tree node.
 
    > **What should this <level> be called?** A short noun phrase, such as `Password reset email sent twice`.
 
-   **Unless a caller set it.** **No answer, or nobody to ask:** write a short noun phrase from the request itself, and mark `title`.
+   **Unless a caller set it or the request states it.** **No answer, or nobody to ask:** write a short noun phrase from the request itself, and mark `title`.
 
 4. **Ask for parent** (story/task only):
    - **story** → list existing epics with their IDs + titles, user picks one (epic must exist; if none, propose `/tasks new epic` first).
@@ -102,7 +102,7 @@ Interactive scaffold of a new task tree node.
      > · `1. STORY-001 Password login (done — choosing it reopens it)` · `2. EPIC-002 Reporting` · …
      > · **none** — `_loose/`, for work no epic or story owns (task only).
 
-     **Unless a caller set it.** **No answer, or nobody to ask:** choose the candidate whose title and body own the subject, and mark
+     **Unless a caller set it or the request states it.** **No answer, or nobody to ask:** choose the candidate whose title and body own the subject, and mark
      `parent`. When none clearly does, a task goes to `_loose/` (a finding gets its `FIELD-NNN` there, as
      the cancelled path below says), and a story is **not created**: report
      `not created: no epic owns "<title>" — /tasks new story again and choose one.`
@@ -137,7 +137,7 @@ Interactive scaffold of a new task tree node.
 
    > **Priority and assignee?** Priority `P0`–`P3` (default `P1`); assignee `agent` (default), `unassigned`, `human`, or an installed agent type's name.
 
-   **Unless a caller set them.** **No answer, or nobody to ask:** `P1` and `agent`, and mark `priority, assignee`.
+   **Unless a caller set them or the request states them** (each independently). **No answer, or nobody to ask:** `P1` and `agent`, and mark `priority, assignee`.
 
 6. **Generate ID**:
    - Take the max for the requested type over **every copy of the tree**, as
@@ -172,7 +172,7 @@ Interactive scaffold of a new task tree node.
 
      > **Which sub-projects does "<title>" affect?** Give their folder names, or `none`.
 
-     **Unless a caller set it.** **No answer, or nobody to ask:** write `[]` and mark `affects` (§ *Unanswered questions*). The template
+     **Unless a caller set it or the request states it.** **No answer, or nobody to ask:** write `[]` and mark `affects` (§ *Unanswered questions*). The template
      always renders the line, and a bare `[]` reads as "affects nothing". An answer of `none` writes `[]`, unmarked.
    - `{{TITLE}}` — the title from step 3
 
@@ -224,6 +224,8 @@ Interactive scaffold of a new task tree node.
 11. **Regenerate dashboard** — chain to [verbs/triage.md](triage.md) logic. Update `tasks/README.md`.
 
 12. **Auto-plan (task only)** — if level is `task` AND user did **not** pass `--no-plan`, chain into [verbs/plan.md](plan.md) for the freshly-created TASK ID. Skip for epic/story (they don't get plans). Skip silently if `--no-plan` was passed (use case: batch-creating tasks without grilling on each one).
+    The chained `plan` prints no confirmation of its own: its step 8 lines go into step 13 below, so the run
+    ends in one confirmation with one next-step hint.
 
 13. **Confirm** — print:
     - File path created
@@ -235,7 +237,11 @@ Interactive scaffold of a new task tree node.
     - Next-step hint depending on level:
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"
-      - task → "Start work with `/tasks pick`" (or "Plan was skipped — run `/tasks plan {{ID}}` later" if `--no-plan`)
+      - task → "Start work with `/tasks pick {{ID}}`" (or "Plan was skipped — run `/tasks plan {{ID}}` later" if `--no-plan`)
+    - **When step 12 ran `plan`, its step 8 lines** above the hint: whether grilling ran, each unspawned split
+      signal, any heading demotion, or the plan failure. `plan`'s own hint is not printed; the one above
+      replaces it. A verb that prints its own summary in place of this one relays them
+      ([SKILL.md](../SKILL.md) § *Roll status up to parents*)
     - **Any copy of the task tree the id scan could not read** (step 6 — [SKILL.md § ID generation](../SKILL.md#id-generation)),
       by path: the id may still collide there, and nobody else will say so.
     - **The minted `FIELD-NNN`, when `--from-field` was passed**, and what it bought: *"minted FIELD-003 — this
@@ -258,8 +264,21 @@ a decision.
   argument, one the caller pre-fills or derives by its own rules, one of its stated defaults, and the body
   sections a step-0 flag drafts. A rule chose it, not a guess. Each question below runs only for a field
   still unset. A caller that wants its values confirmed asks that itself ([spawn](spawn.md) step 4).
+- **A value the request states is answered, not inferred.** The person who invoked this verb named the
+  value itself: an id (`under STORY-001`), a title in quotes, a priority or assignee by name, the level in
+  words (`file a task for …`). Write it, put no question, and mark nothing: copying a value someone gave is
+  not a guess, and marking it makes the record say nobody chose a value somebody did. **A value read off the
+  request's subject is still the fallback, and still marked**: choosing the parent whose title fits, or a
+  noun phrase this run composes as a title. Nobody named those; this run chose them. Three edges:
+  - a stated id that does not resolve, or names the wrong level, is not stated: put the step's question;
+  - a stated parent that is `cancelled` still gets step 4's cancelled question, because naming it did not
+    choose to reopen it;
+  - a stated parent that is `done` reopens as step 10 says, with no `(placement inferred …)` suffix.
+
+  This covers a person's request only. A calling verb's values are the bullet above, whatever they say.
 - **An inferred parent that reopens a container says so there too.** Its `> Reopened` line ends
   `(placement inferred — see <new id>)`, since the reopen is a side effect of that guess on another record.
+  A parent the request stated reopens without the suffix.
 
 ## Mode detection flow
 
