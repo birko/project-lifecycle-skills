@@ -5,6 +5,9 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
 ## Steps
 
 1. **Find task root**. Verify `mode: hybrid` in `.config.yml`. Otherwise error: "Run `/tasks migrate --to github|jira` first, or edit `.config.yml` manually."
+   This check guards a direct call only. [migrate.md](migrate.md) step 6 runs steps 3–7 here itself, with its
+   own provider and repo/project, while the config still reads `local`, because it switches the mode only
+   after every push succeeded.
 
 2. **Parse args**:
    - `<ID>` — required (TASK-NNN, STORY-NNN, or EPIC-NNN).
@@ -60,6 +63,12 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      exists: import reads only a `priority/P<n>` label, so it would read the field back and the round trip would
      change the value. `--dry-run` reads the metadata too and shows the field it would set.
    - **Assignee** (GH only) — if `assignee:` is `human` and a GH username is known, set it; otherwise skip.
+   - **Milestone** (GH only, a TASK only) — look for the parent epic's milestone in the repo by its title (the
+     format § *Exporting STORY or EPIC* gives) and pass that title as `--milestone`. When the repo has none,
+     pass nothing and name the task in step 9: `TASK-NNN: no milestone for EPIC-NNN — not linked`. Never
+     create a milestone from here: a task export does not create epic-level objects. [import.md](import.md)
+     maps a milestone back to its EPIC, so an unlinked task loses its epic on the round trip, and that is why
+     the line is printed.
 
 6. **Push**:
    - **GitHub**: the repo is `external.repo` from `.config.yml`. Pass it as `--repo` every time, because a clone
@@ -71,7 +80,7 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
        (`gh label create <name> --repo <repo>`), and name every label created in step 9's confirmation, since
        it is a change to someone's repo.
      ```powershell
-     gh issue create --repo <repo> --title "<title>" --body-file <file> --label "<labels-csv>" [--assignee <user>]
+     gh issue create --repo <repo> --title "<title>" --body-file <file> --label "<labels-csv>" [--assignee <user>] [--milestone "<title>"]
      ```
      Write the body to a temporary file and pass `--body-file`; a multi-line `--body` does not survive every
      shell. Delete the file afterwards.
@@ -88,6 +97,7 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
    - Local path
    - Remote URL
    - Labels applied, and any label this run created
+   - The milestone linked, or the `no milestone … not linked` line from step 5
    - On Jira, `Jira priority field: <the priority set>`, or, when step 5 left it unset,
      `TASK-NNN: Jira priority field left at the project default (<no matching priority | metadata unreadable | no priority field>); the label priority/<value> carries it`
 
@@ -96,6 +106,9 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
 - **GitHub**:
   - STORY → create a parent issue with `kind/story` label, OR just a `story/<slug>` label that tasks reference. Default = label-only.
   - EPIC → create a Milestone (recommended) OR a parent issue with sub-issues. Default = Milestone; ask if user prefers parent-issue.
+    **A milestone is titled `<EPIC-ID> <epic title>`** (`EPIC-001 Authentication`). Step 5 and
+    [migrate.md](migrate.md) step 6 find it by this title, since a milestone epic carries no id in its
+    frontmatter.
 - **Jira**:
   - STORY → Story issue type
   - EPIC → Epic issue type, with `Epic Link` set on child stories/tasks when they export
