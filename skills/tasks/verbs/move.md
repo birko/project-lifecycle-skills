@@ -47,6 +47,11 @@ defect tasks, pool = 2.** They were re-homed by hand because no verb could.
    the *source* is the one that gets forgotten: a STORY that just lost its last open task may now be
    `done`, and a STORY that gained one may no longer be. Re-evaluate the old parent, the new parent, and
    each of their epics. Never leave a container asserting a state its children contradict.
+   **An open task moved under a `done` or `cancelled` container reopens it, without asking.** Set it to
+   `in-progress` with its dated line, `> Reopened YYYY-MM-DD — <child id> is now <its status> (move)`, and
+   re-check the epic above a story target the same way. `new` asks first before reopening a `cancelled`
+   parent, because its parent may be inferred. A move does not ask, because the person named the target,
+   so reopening it is what they asked for. A closed child moved in reopens nothing.
    **With an upstream, an open task moved in also runs that section's unlanded-record check** on the new
    parent and the epic above it, **whatever they read**: inside the window a container closed on
    `record/<ID>` still reads `in-progress` here, so the reopen above never fires for it.
