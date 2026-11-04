@@ -22,7 +22,7 @@ The lifecycle is **not strictly linear** — you loop back to `decide` after a p
 
 **Entering an existing feature: `/feature pick`.** It resolves which stage the feature is actually
 at and offers the verb that unblocks it — undecided rows → `decide`, **approved rows with no tasks
-→ `decompose`** (the most common stall, and it outranks sign-off), all-tasks-done → `review` — and only hands off to
+→ `decompose`** (the most common stall; it outranks `/feature review`, the feature-level sign-off, but tasks already awaiting sign-off are still named first, per [verbs/pick.md](verbs/pick.md) step 6), all-tasks-done → `review` — and only hands off to
 `/tasks pick` once real tasks exist. Never begin implementation straight from a feature folder;
 that's the task-first gate. See [verbs/pick.md](verbs/pick.md).
 

@@ -25,7 +25,7 @@ lifecycle stall.
 
 2. **Read the feature** — `idea.md` (coarse `status`, and its open-questions table per
    [questions.md](../questions.md), or the note that the section predates it), `decisions.md` (every row + state +
-   `→ Tasks`), `status.md` if present, and which prototype artifact exists. Grep `tasks/` for
+   `→ Tasks`), `status.md` if present (its `**Phase:**` line, for step 6), and which prototype artifact exists. Grep `tasks/` for
    `feature: FEATURE-NNN` and bucket the back-links by status.
 
 3. **Readiness check — walk the gates in lifecycle order and stop at the first one that fails.**
@@ -120,7 +120,16 @@ lifecycle stall.
 
 6. **Confirm** — print the feature title + derived phase, the open-questions line
    ([questions.md](../questions.md) § *Current or pre-table*: current, brought up to date this run, pre-table, or
-   kept by choice), which gate fired, what was chained, and the single concrete next action. Never report a feature as `done` when sign-off is pending
+   kept by choice), which gate fired, what was chained, and the next action, stated once. On a debt feature
+   ([SKILL.md](../SKILL.md) § *Verification debt surfaces first*), that line names its tasks awaiting sign-off
+   first and the offer from the gate that fired second:
+   `Next: sign off TASK-NNN (run its human test plan, then /tasks close TASK-NNN), then decompose D2, D4`.
+   Gate D outranks `/feature review`, the feature's own sign-off, never a task's: those tests are built and
+   waiting, so leaving them out would hide the debt the listing led with.
+   When `status.md` exists and its `**Phase:**` line differs from the derived phase, also report
+   `status.md says <stored>, derived <phase> — refresh with /feature status FEATURE-NNN`. Compare after any
+   verb this run chained, each of which re-runs `/feature status`, so a gap still showing comes from a hand
+   edit or a skipped write. Report it and nothing more: `pick` writes no rollup. Never report a feature as `done` when sign-off is pending
    (SKILL.md § `done` means signed off).
 
 ## Working inside a picked feature
