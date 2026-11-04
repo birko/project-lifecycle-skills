@@ -329,7 +329,18 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - **Cut the task branch (git/PR projects).** The default integration model is PR-per-task —
      `pick` cuts the branch, `close` is the merge gate. If the project is
      a git repo on its default branch, offer to cut `task/TASK-NNN` so the work is isolated and
-     `/tasks close` can open one PR for it. Skip silently for non-git/local-only projects, or if
+     `/tasks close` can open one PR for it. Put this question:
+
+     > **Cut `task/TASK-NNN` from `<default branch>` for this work, so `/tasks close` can merge it as one unit? [Y/n]**
+
+     **No answer, or nobody to ask:** cut the branch, and report
+     `cut task/TASK-NNN — the documented default for integration: <value>; nobody chose it`. The default is
+     read off `integration:`, the declaration, never off the git log. Under a policy that merges through task
+     branches, working on the default branch is the one outcome the policy rules out, so a run that skipped
+     the cut would be choosing against the declaration. A cut nobody wanted costs one `git switch` back; a
+     task committed on the default branch costs a rewrite. An absent `integration:` line reads as the
+     template's documented default, `pr-per-task`, and the report names it as absent too.
+     Skip silently for non-git/local-only projects, or if
      the user is already on a suitable branch. **Under `workspace: worktree` the declaration has answered
      this offer**: a step 6b that fell back reaches here and **cuts the branch in place without
      asking**, and a step 6b that entered its worktree never reaches here at all.
@@ -341,7 +352,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      no base to branch from or diff against. Offer to make the initial commit first
      (`chore: initial scaffold`, staging the current tree), then cut the task branch. Don't start
      work on an unborn branch — `close`'s diff/merge gate would have nothing to compare.
-   - If user knows the branch/PR, ask whether to fill `pr:` now. Otherwise leave null — `/tasks close` will prompt for it later.
+   - **Offer to record a PR or commit that already exists.** Put this question:
+
+     > **Is there already a PR or commit for TASK-NNN? Give its number or SHA to record in `pr:`, or leave it empty.**
+
+     An empty answer, no answer, or nobody to ask: leave `pr:` null and report nothing about it.
+     `/tasks close` step 7 fills it when it commits the work, so a null here is the normal state, not a gap.
 
 8. **Regenerate dashboard — only where the status flip landed on a default branch with no upstream.** The
    rule is [close.md](close.md) step 10's, for the same reasons; read it off where step 7 left the flip:

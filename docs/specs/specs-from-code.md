@@ -1,7 +1,7 @@
 ---
 area: specs-from-code
-generated-at: c447ce2a1ea7fa8c9f86ce58adef61d1e2a16b81
-generated-on: 2026-10-11
+generated-at: 701ccee2ce5caa51189213b733de6d7e6d0be148
+generated-on: 2026-11-04
 sources:
   - skills/specs/SKILL.md
   - skills/specs/templates/map.yml
@@ -145,6 +145,12 @@ The system SHALL, on `init`, find the project root by the same walk the task tra
 - **Given** the working directory is the meta-root of a polyrepo family
 - **When** init runs
 - **Then** it asks whether to create cross-cutting specs at the meta level or for a specific subproject
+
+#### Scenario: Polyrepo meta-root with nobody to answer
+
+- **Given** the working directory is the meta-root of a polyrepo family, and nobody present
+- **When** init runs
+- **Then** it writes nothing and reports the scope as not chosen, naming how to rerun it, and never picks meta-level or a subproject
 
 #### Scenario: Inside a subproject
 

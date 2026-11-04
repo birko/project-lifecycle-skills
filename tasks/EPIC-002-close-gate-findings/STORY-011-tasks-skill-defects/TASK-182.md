@@ -3,9 +3,10 @@ id: TASK-182
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: verify
 priority: P2
 assignee: ai
+picked-by: fix-next
 created: 2026-09-24
 depends-on: []
 blocks: []
@@ -61,18 +62,18 @@ covering 97 sibling projects.
 
 ## Acceptance criteria
 
-- [ ] Both step-7 questions are quoted verbatim in `pick.md`.
-- [ ] Each has a stated answer-less path. For the branch offer, the path is read off `integration:`. Under `pr-per-task`, with nobody to ask, the branch is cut and the report says the cut was the documented default and nobody chose it. A run that works on the default branch under a policy forbidding it is the one outcome ruled out. For `pr:`, it stays null and `close` asks later.
-- [ ] A drill with two unattended runners gives the same outcome and the same report line from both.
+- [x] Both step-7 questions are quoted verbatim in `pick.md`.
+- [x] Each has a stated answer-less path. For the branch offer, the path is read off `integration:`. Under `pr-per-task`, with nobody to ask, the branch is cut and the report says the cut was the documented default and nobody chose it. A run that works on the default branch under a policy forbidding it is the one outcome ruled out. For `pr:`, it stays null and `close` asks later.
+- [ ] A drill with two unattended runners gives the same outcome and the same report line from both. — pending: this is the Human test plan's drill, not run
 
 *From TASK-134:*
 
-- [ ] Step 1's meta-root branch states **the question actually put**, in the form the other nine sites now use
-- [ ] It states what happens when **no answer comes**, and that outcome is a reported unresolved state —
+- [x] Step 1's meta-root branch states **the question actually put**, in the form the other nine sites now use
+- [x] It states what happens when **no answer comes**, and that outcome is a reported unresolved state —
       never a silently-chosen scope
-- [ ] The choice, once made, is **recorded** where a later run can read it rather than re-guess, or the
+- [x] The choice, once made, is **recorded** where a later run can read it rather than re-guess, or the
       task says explicitly why it is not worth recording
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -89,10 +90,37 @@ covering 97 sibling projects.
 
 *From TASK-134:*
 
-N/A pending the decision in AC3 — if the branch stays prose-only, this is a reviewer check against the
-`AGENTS.md` rule. If it grows a recorded scope, that is a drill-worthy change and this line is replaced
-with one, per `AGENTS.md` § Testing.
+AC3 resolved prose-only (the `.map.yml` a resolved run writes is the record), so per the line this replaces, this half is a reviewer check against the `AGENTS.md` ask-step rule: run as `/tasks close`'s standards pass on 2026-11-04 and recorded in § Outcome.
+
+## Outcome
+
+**What was fixed.** `/tasks pick` step 7 asked two questions in paraphrase, with no wording and no outcome for an unanswered run. The merged TASK-134 finding was the same defect in `/specs init` step 1's meta-root scope question. All three now quote their question and state what happens when nobody answers:
+
+- **Branch offer (`pick`):** cut `task/TASK-NNN` and report `cut task/TASK-NNN — the documented default for integration: <value>; nobody chose it`. The default is read off `integration:`. An absent line applies the `pr-per-task` default the config template documents, and the report says the line is absent.
+- **`pr:` offer (`pick`):** leave it null and say nothing, because `close` step 7 fills it. The question is now asked as "is there already a PR or commit?", the only case where filling it at pick makes sense.
+- **Meta-root scope (`specs init`):** write nothing and report `scope not chosen: …` with how to rerun. Neither scope is guessed.
+
+**Step-6 split: 0/0.** The change is prose only. `skills-lint.sh` passes (20 skills): a contract pin on link resolution, not evidence. Criterion 3 (two unattended runners agree) is the Human test plan's drill and stays unticked until it runs.
+
+**Judgement calls.**
+- **Cut the branch on no answer, rather than skip it.** The task's criteria required this. The reason is asymmetry: an unwanted cut costs one `git switch`, while work committed on the default branch under a policy that merges through task branches costs a rewrite. The report names it as a default nobody chose, so the run claims no decision.
+- **An absent `integration:` applies `pr-per-task`.** This is not an inference. `skills/tasks/templates/config.yml` defines the absent line as undeclared and says consumers apply the `pr-per-task` default. I checked it against § *Read the declaration, never infer it* before keeping the clause.
+- **TASK-134's criterion 3 (record the scope): no separate record.** The map the answer leads to is written where its scope lives, and step 2's re-discovery finds it from there. A second record would be a cache of a fact the filesystem already holds.
+
+**Respec.** `work-tracking`, *Task branch per integration policy*: the answer-less cut and the `pr:` offer, plus one scenario. `specs-from-code`: one scenario for the meta-root with nobody present. The `shaped-by` fields were carried forward, not re-derived.
+
+**Flagged, not fixed.** None.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-182` — leave empty until then._
+_Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-321 because `/tasks pick` runs on every task started, so an unworded branch offer is the most reachable remaining ask-step gap (key 2), and a runner skipping the cut on pr-per-task silently works on the default branch the policy forbids (keys 1, 3); key 6 inert — both candidates are correctness-invariants
+- step 3 — verified: held. pick.md step 7 carries the branch offer and the `pr:` ask as paraphrase with no answer-less path; specs init.md step 1 carries the meta-root scope ask the same way (the merged TASK-134 finding)
+- step 4 — layer: local (skills/tasks/verbs/pick.md, skills/specs/verbs/init.md)
+- step 5 — fix in skills/tasks/verbs/pick.md (step 7, both asks), skills/specs/verbs/init.md (step 1 meta-root); tests: skills-lint.sh (20 skills) green
+- step 6 — reverted fix: 0/0 failed — prose only, nothing executable; fix-dependent = none; contract pins = skills-lint.sh link resolution; evidence = the Human test plan drill (criterion 3), not run
+- step 7 — respecced work-tracking, specs-from-code; requirements changed: Task branch per integration policy (+1 scenario), Init discovers a capability map (+1 scenario); intended anyway — TASK-182's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
+- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log

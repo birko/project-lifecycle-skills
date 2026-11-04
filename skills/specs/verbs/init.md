@@ -4,7 +4,16 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
 ## Steps
 
-1. **Find project root** — same walk as the [[tasks]] skill (`tasks/.config.yml` marker → `*.slnx`/`*.sln` → `.git`). Polyrepo Shape A: if cwd is inside a subproject, init that subproject's `docs/specs/`; at the meta-root, ask whether the user wants meta-level (cross-cutting) specs or a specific subproject.
+1. **Find project root** — same walk as the [[tasks]] skill (`tasks/.config.yml` marker → `*.slnx`/`*.sln` → `.git`). Polyrepo Shape A: if cwd is inside a subproject, init that subproject's `docs/specs/`; at the meta-root, ask which scope to map. Put this question:
+
+   > **This is the meta-root of a polyrepo. Map cross-cutting specs here, at `<meta-root>/docs/specs/`, or a specific subproject? Answer `meta`, or a subproject name: <subproject, …>.**
+
+   **No answer, or nobody to ask:** write nothing, and report
+   `scope not chosen: <meta-root> is a polyrepo meta-root — rerun /specs init from the subproject to map, or answer "meta" to map cross-cutting specs here`.
+   Never pick either scope. A guessed `meta` writes a map at the aggregator whose globs reach every sibling,
+   the shape [regen](regen.md) step 6 records as reporting "nothing unmapped" forever; a guessed subproject
+   maps one the user never named. **The answer needs no record of its own**: the `.map.yml` it leads to is
+   written where that scope lives, and the next run from there finds it at step 2.
 
 2. **Already initialized?** If `docs/specs/.map.yml` exists, this becomes a *re-discovery*: propose additions/renames against the existing map, never drop an existing area without asking. Show the delta, not a fresh map.
 

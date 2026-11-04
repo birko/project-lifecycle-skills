@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: eb15bae3d605b9b784f6bdfb3f389b76d6c3a67a
+generated-at: 701ccee2ce5caa51189213b733de6d7e6d0be148
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -396,7 +396,13 @@ The system SHALL list `todo` tasks matching the filters (priority, assignee, epi
 
 ### Requirement: Task branch per integration policy
 
-The system SHALL read `integration:` from the configuration and never infer it from history. Under `pr-per-task` (also the default when the field is absent) `pick` SHALL offer to cut `task/TASK-NNN` from the default branch, making an initial commit first on an unborn repository; under `single-branch` it SHALL offer no branch. The field is written only from a passed argument or a user's answer.
+The system SHALL read `integration:` from the configuration and never infer it from history. Under `pr-per-task` (also the default when the field is absent) `pick` SHALL offer to cut `task/TASK-NNN` from the default branch, making an initial commit first on an unborn repository, and when nobody answers SHALL cut it and report that the cut was the documented default for the declared (or absent) `integration:` and that nobody chose it; under `single-branch` it SHALL offer no branch. `pick` SHALL also offer to record an existing PR or commit in `pr:`, leaving it null and saying nothing about it when nobody answers, since close fills it. The field is written only from a passed argument or a user's answer.
+
+#### Scenario: Nobody answers the branch offer
+
+- **Given** a `pr-per-task` project on its default branch, and nobody present
+- **When** `/tasks pick TASK-014` reaches the branch offer
+- **Then** `task/TASK-014` is cut, `pr:` stays null, and the report says the cut was the documented default for `integration: pr-per-task` and nobody chose it
 
 #### Scenario: Single-branch repo
 
