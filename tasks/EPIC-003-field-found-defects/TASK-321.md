@@ -3,7 +3,7 @@ id: TASK-321
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -39,7 +39,8 @@ Found by TASK-319's post-fix drill (2026-10-14). `skills/feature/verbs/pick.md` 
 
 ## Human test plan
 
-- [ ] A cold runner reaches gate D with nobody to answer. Expected: it takes the stated answer-less path and reports it, without saying the instructions left it undefined.
+- [x] A cold runner reaches gate D with nobody to answer. Expected: it takes the stated answer-less path and reports it, without saying the instructions left it undefined.
+  - **Passed 2026-11-04:** gates Q, A, B and C passed; at gate D it put the question, then printed `not decomposed: D1, D2 have no tasks — nobody answered` and the task-first gate and stopped at step 6, quoting step 4's no-answer rule; it did not call the path undefined.
 
 ## Outcome
 
@@ -73,3 +74,4 @@ _Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
 - step 6 — reverted fix: 0/0 failed — prose only, nothing executable; fix-dependent = none; contract pins = skills-lint.sh link resolution; evidence = the Human test plan cold drill, not run
 - step 7 — respecced feature-lifecycle; requirements changed: the /feature pick requirement (+1 scenario); intended anyway — TASK-321's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed.** Fixture: `docs/features/FEATURE-001-export/` with `idea.md` (`status: idea`, Prototype `Skipped — CLI command …`), `decisions.md` with D1 and D2 `approved` and empty `→ Tasks`, a `status.md`; `tasks/` with one epic and no tasks; skills `feature`, `tasks`, `roadmap`. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd `%LOCALAPPDATA%\Temp\d321`, which holds the committed fixture `repo/` and copies of the named skill folders under `skill/`. The brief said it was a drill, barred history and planning docs, said to write any question verbatim and continue unanswered, and asked for the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It stated no expected outcome. Task-specific ask: "Run /feature pick FEATURE-001. Stop where the instructions hand off to another verb; do not run it." **Coldness:** it listed no skills. **Result:** gates Q, A, B and C passed; at gate D it put the question, then printed `not decomposed: D1, D2 have no tasks — nobody answered` and the task-first gate and stopped at step 6, quoting step 4's no-answer rule; it did not call the path undefined. Also: it also found that `questions.md` covers no `idea.md` without an open-questions section, and that gate D's question has two wordings (the gate table's and step 4's) → TASK-336. → `verify` → **done**.

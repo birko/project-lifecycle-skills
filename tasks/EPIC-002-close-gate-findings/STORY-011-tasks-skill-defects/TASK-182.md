@@ -3,7 +3,7 @@ id: TASK-182
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: verify
+status: done
 priority: P2
 assignee: ai
 picked-by: fix-next
@@ -64,7 +64,7 @@ covering 97 sibling projects.
 
 - [x] Both step-7 questions are quoted verbatim in `pick.md`.
 - [x] Each has a stated answer-less path. For the branch offer, the path is read off `integration:`. Under `pr-per-task`, with nobody to ask, the branch is cut and the report says the cut was the documented default and nobody chose it. A run that works on the default branch under a policy forbidding it is the one outcome ruled out. For `pr:`, it stays null and `close` asks later.
-- [ ] A drill with two unattended runners gives the same outcome and the same report line from both. — pending: this is the Human test plan's drill, not run
+- [x] A drill with two unattended runners gives the same outcome and the same report line from both. — passed 2026-11-04, see the Human test plan
 
 *From TASK-134:*
 
@@ -86,7 +86,8 @@ covering 97 sibling projects.
 
 ## Human test plan
 
-- [ ] Two cold runners each run `/tasks pick` unattended on a `pr-per-task` fixture with no `workspace:`. Expected: both cut `task/TASK-NNN`, leave `pr:` null, and print the same line saying the cut was the documented default. The brief withholds the expected outcome.
+- [x] Two cold runners each run `/tasks pick` unattended on a `pr-per-task` fixture with no `workspace:`. Expected: both cut `task/TASK-NNN`, leave `pr:` null, and print the same line saying the cut was the documented default. The brief withholds the expected outcome.
+  - **Passed 2026-11-04:** both runners put the branch question and the `pr:` question verbatim, cut `task/TASK-001`, left `pr: null`, and printed the identical line `cut task/TASK-001 — the documented default for integration: pr-per-task; nobody chose it`.
 
 *From TASK-134:*
 
@@ -124,3 +125,4 @@ _Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
 - step 6 — reverted fix: 0/0 failed — prose only, nothing executable; fix-dependent = none; contract pins = skills-lint.sh link resolution; evidence = the Human test plan drill (criterion 3), not run
 - step 7 — respecced work-tracking, specs-from-code; requirements changed: Task branch per integration policy (+1 scenario), Init discovers a capability map (+1 scenario); intended anyway — TASK-182's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed.** Fixture: `repo/` on `main`, no remote, `tasks/.config.yml` `mode: local` + `integration: pr-per-task` and no `workspace:` line, one todo task (TASK-001) with a filled `## Implementation plan`; skill `tasks`. Built twice, one runner each. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd `%LOCALAPPDATA%\Temp\d182a`/`d182b`, which holds the committed fixture `repo/` and copies of the named skill folders under `skill/`. The brief said it was a drill, barred history and planning docs, said to write any question verbatim and continue unanswered, and asked for the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It stated no expected outcome. Task-specific ask: "Run /tasks pick TASK-001. Stop when the task is ready to be worked on; do not implement it. Give TASK-001's frontmatter as it stands at the end." **Coldness:** neither listed any skill. **Result:** both runners put the branch question and the `pr:` question verbatim, cut `task/TASK-001`, left `pr: null`, and printed the identical line `cut task/TASK-001 — the documented default for integration: pr-per-task; nobody chose it`. Also: both also read step 2b as possibly skipped on a bare-id pick, found no source for a plan's date in step 6, and printed "1 manual test steps" from 9b's offer → TASK-337. → `verify` → **done**.
