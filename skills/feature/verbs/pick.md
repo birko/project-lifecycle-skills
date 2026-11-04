@@ -38,7 +38,7 @@ lifecycle stall.
    | **A · Decisions exist** | `decisions.md` has no rows, or only placeholder template rows | `/feature new` (re-grill) — there's nothing to build yet |
    | **B · Decisions decided** | any `proposed` rows remain | `/feature decide FEATURE-NNN` — "N decision(s) still awaiting a verdict. Decide them now? [Y/n]" |
    | **C · Prototype (soft)** | the feature is UI/UX-shaped or adds states, has approved rows, and `idea.md`'s `## Prototype` line records no prototype. Read the line, not the folder: a prototype is deleted once it has answered its question, so a missing file does not mean one was never built | `/feature prototype FEATURE-NNN` — suggest once, `[y/N]`, never block. Some approved decisions genuinely need no mockup |
-   | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN` — "N approved or changed decision(s) have no tasks. Decompose now? [Y/n]"** |
+   | **D · Decomposed** | any `approved`/`changed` row has an empty `→ Tasks` cell, or names tasks that don't exist on disk | **`/feature decompose FEATURE-NNN`** — the question is step 4's |
    | **E · Signed off** | phase is `review` (all tasks `done` or `verify`, sign-off not recorded), computed by [status.md](status.md) step 2, never read off `idea.md` | `/feature review FEATURE-NNN` — verification debt outranks new scope; lead with this. **Never fires beside D:** a row D would offer to decompose makes the phase `building`, so a change that is not built is offered as work, not as sign-off |
 
    **Gates A, B and C — the questions, and what silence does.** Each chained verb needs a person: a grill,
@@ -73,7 +73,10 @@ lifecycle stall.
      and continue to gate A. The questions stay on disk; nothing is lost by declining.
    - **Open rows but no frontier** → do not offer; report it as itself — *"N open questions, none answerable
      now: Q7 waits on Q8, Q8 waits on Q7"* (or the broken edge, by id) — and continue to gate A.
-   - **No open rows** → the gate passes silently.
+   - **No open rows in a current table** → the gate passes silently.
+   - **No open-questions section** ([questions.md](../questions.md) § *Current or pre-table*) → do not offer, and
+     never report *no open questions*. Report `open questions: no section in idea.md — none recorded` and continue
+     to gate A.
    - **A pre-table section** (a bulleted or prose list, [questions.md](../questions.md) § *Current or
      pre-table*) → never report *no open questions*. Unless it carries the declined line, put this question:
 
@@ -94,8 +97,9 @@ lifecycle stall.
    Not decomposed:
      D2  Warn on negative delta        approved   → no tasks
      D4  Export count sheet as PDF     changed    → no tasks
-   Decompose these 2 decisions into tasks now? [Y/n]
+   FEATURE-NNN has 2 approved or changed decision(s) with no tasks: D2, D4. Decompose now? [Y/n]
    ```
+   That last line is the question, word for word.
    - `Y` → chain [decompose.md](decompose.md) for **only** the uncovered rows (it reconciles
      against the `→ Tasks` column, so partial decomposition is safe), then continue to step 5.
    - `n` → **print the task-first gate, don't just move on**: "Implementation code must never
@@ -103,7 +107,7 @@ lifecycle stall.
      backfilled." Then stop at step 6 without handing off to work. `pick` will not start
      implementation on an undecomposed feature.
    - **No answer, or nobody to ask** → do not decompose, and do not hand off. Report
-     `not decomposed: <row ids> have no tasks — nobody answered`, print the task-first gate as for `n`,
+     `not decomposed: <row ids> with no tasks — nobody answered`, print the task-first gate as for `n`,
      and stop at step 6. The `Y` default does not apply: decompose files tasks and asks where to place them,
      so running it with nobody present makes placements and a task split nobody chose. Silence is not a no
      either, so nothing is recorded as declined and the offer comes back next run.
@@ -119,8 +123,8 @@ lifecycle stall.
      `/feature review`, not to more work.
 
 6. **Confirm** — print the feature title + derived phase, the open-questions line
-   ([questions.md](../questions.md) § *Current or pre-table*: current, brought up to date this run, pre-table, or
-   kept by choice), which gate fired, what was chained, and the next action, stated once. On a debt feature
+   (exactly one report line from [questions.md](../questions.md) § *Current or pre-table*, or its `brought up to
+   date` line when this run upgraded the section), which gate fired, what was chained, and the next action, stated once. On a debt feature
    ([SKILL.md](../SKILL.md) § *Verification debt surfaces first*), that line names its tasks awaiting sign-off
    first and the offer from the gate that fired second:
    `Next: sign off TASK-NNN (run its human test plan, then /tasks close TASK-NNN), then decompose D2, D4`.

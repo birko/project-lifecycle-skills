@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: e85fcd53f07ab7a6dcc31ba7a592b5fb89fd08be
+generated-at: 9e4c7b662dd2bb4a994814c17cf56870a0749a28
 generated-on: 2026-11-04
 sources:
   - skills/feature/SKILL.md
@@ -399,13 +399,13 @@ The system SHALL require that the tasks for a feature exist before any implement
 
 ### Requirement: Pick enters a feature at the stage that unblocks it
 
-The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide` — each of these two, on no answer, SHALL change nothing, report it and stop; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking, and on no answer continue as on `N`; an approved or changed row with no tasks or with tasks missing on disk → `decompose`, which on no answer SHALL NOT run and SHALL report the rows not decomposed and stop without handing off; phase `review` → `review`, which never fails beside the decompose gate, because such a row makes the phase `building`. Its confirmation SHALL state the next action once, naming on a feature with tasks awaiting sign-off those tasks first and the fired gate's offer second, since decompose outranks only the feature-level review, never a task's sign-off; and where `status.md` exists and its phase differs from the derived one, it SHALL report the gap with `/feature status FEATURE-NNN` as the refresh, writing nothing. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself. With an upstream, a decide in that chain which pushed `record/FEATURE-NNN` SHALL stop the chain before decompose, reporting the branch and that decompose waits until it lands.
+The system SHALL, on `/feature pick`, resolve the feature by id (or short number when unambiguous) or else list non-done, non-dropped features with verification debt first, then walk readiness gates in order and stop at the first failure, offering the verb that clears it and chaining into it on acceptance before re-checking: an open-question frontier → offer to resume the grill there, first of all gates and outranked only by sign-off, looking up `research` questions rather than asking them, and on no answer changing nothing and reporting the frontier; open rows with no frontier → report what each waits on; a pre-table questions section → never "no open questions": offer to bring it into the table, on `n` record the choice so it is not offered again, and on no answer change nothing and offer again next run; no open-questions section → report that none is recorded, offer nothing, never say "no open questions", and continue; no real decision rows → re-grill with `new`; `proposed` rows remain → `decide` — each of these two, on no answer, SHALL change nothing, report it and stop; a UI- or state-shaped feature with approved rows whose Prototype line records none → suggest `prototype` once, never blocking, and on no answer continue as on `N`; an approved or changed row with no tasks or with tasks missing on disk → `decompose`, which on no answer SHALL NOT run and SHALL report the rows not decomposed and stop without handing off; phase `review` → `review`, which never fails beside the decompose gate, because such a row makes the phase `building`. Its confirmation SHALL state the next action once, naming on a feature with tasks awaiting sign-off those tasks first and the fired gate's offer second, since decompose outranks only the feature-level review, never a task's sign-off; and where `status.md` exists and its phase differs from the derived one, it SHALL report the gap with `/feature status FEATURE-NNN` as the refresh, writing nothing. Only when every gate clears SHALL it hand off to the task tracker's pick for that feature, surfacing in-progress and awaiting-verification tasks first, and it SHALL never implement anything itself. With an upstream, a decide in that chain which pushed `record/FEATURE-NNN` SHALL stop the chain before decompose, reporting the branch and that decompose waits until it lands.
 
 #### Scenario: Most common stall offers decompose
 
 - **Given** FEATURE-012 with two approved rows and empty task columns
 - **When** `/feature pick FEATURE-012` runs
-- **Then** the uncovered rows are listed by id and the user is asked "Decompose these 2 decisions into tasks now? [Y/n]"
+- **Then** the uncovered rows are listed by id and the user is asked "FEATURE-012 has 2 approved or changed decision(s) with no tasks: D1, D2. Decompose now? [Y/n]"
 
 #### Scenario: Declining decompose stops the handoff
 
@@ -470,6 +470,12 @@ The system SHALL, on `/feature pick`, resolve the feature by id (or short number
 ### Requirement: A pre-table questions section is upgraded in place, on offer
 
 The system SHALL find the section by a heading starting `## Open questions`, and SHALL upgrade it only when the user accepts. It SHALL turn every old item into a row or a Fog bullet and drop none: an item naming a decision becomes `resolved → Dn`; an answer with no decision becomes `resolved — <the answer, as written>`; a precise unanswered question becomes `open`, with no edge it does not name; anything vaguer becomes Fog verbatim; and the template's own placeholder lines are removed and counted. It SHALL keep each question's wording and the heading, SHALL keep the old list itself verbatim in a collapsed block under the table, and SHALL leave the decision ledger untouched. It SHALL report `brought up to date` with its counts, distinct from `current` on a file that already had the table. A refusal SHALL write a dated line under the heading that stops the offer recurring; no answer SHALL write nothing.
+
+#### Scenario: No questions section is reported, not passed silently
+
+- **Given** an `idea.md` with no heading starting `## Open questions`
+- **When** `/feature pick` runs
+- **Then** it reports `open questions: no section in idea.md — none recorded`, offers nothing, writes nothing, and continues to the decisions gate
 
 #### Scenario: Every old item lands somewhere
 

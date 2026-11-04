@@ -84,15 +84,19 @@ are the questions that can be answered now. Compute it fresh from the table ever
 
 A feature written before this table existed has a bulleted or prose list in that section. Find the section by its
 heading **starting** `## Open questions` — older files reword the rest (*"Open questions — resolved 2026-07-28"*).
+**A file with no such heading has no section at all, which is not a section with no open rows.** Nothing
+records whether questions were never written down or never existed, so report the section missing and add
+none: an added section would state an answer nobody gave.
 **Tell the two apart by the section's table header**: a header row starting `| id | question | type | blocked-by |
 state |` is a current table, with or without the `claimed-by` column after it, and anything else is a pre-table
 section. Never read a pre-table section as an empty
 frontier. It holds questions in a shape no frontier can be computed from, so say exactly that.
 
-The three states a reader reports, each with its own line:
+The states a reader reports, each with its own line:
 
 | The section | Report |
 |---|---|
+| is missing — no heading starts `## Open questions` | `open questions: no section in idea.md — none recorded` |
 | has the table | `open questions: current` |
 | is pre-table | `open questions: pre-table — N item(s) in the earlier format` |
 | is pre-table and carries the declined line (below) | `open questions: pre-table, kept by choice on <date>` |
