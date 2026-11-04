@@ -158,6 +158,10 @@ different source of work.
    - **TASK per group** — chain [new.md](new.md) (`task`) with
      `--from-review <ids> [--source <ref>] --no-plan`, parented to its theme story. Priority from
      severity: theme 1–2 blockers → P0, other blockers → P1, warnings → P1/P2, suggestions → P2.
+     **`--no-plan` is deliberate: intake files, it does not plan.** A pass files many tasks at once, and a
+     plan drafted now would plan against a finding nobody has re-verified yet; [[fix-next]] step 3 rescopes
+     or rejects a real share of them. The plan is drafted when the work starts: [[fix-next]] step 3b, or
+     `/tasks pick`'s plan-first check.
 
 6. **Never file a bare checklist.** ***A checklist line is filed, not scheduled.*** Only
    `status: todo` **tasks** are ranked by any picker — a finding parked as a bullet under a STORY is

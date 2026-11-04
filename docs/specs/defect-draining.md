@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 1f05c406a5302dd207656517e7251ce2ec89250b
+generated-at: 2b7c279717d0225451369e2e214c8a20fe250cd6
 generated-on: 2026-11-04
 sources:
   - skills/fix-next/SKILL.md
@@ -308,6 +308,22 @@ The system SHALL confirm the cited mechanism by reading the source rather than t
 - **Given** TASK-1031's described mechanism cannot occur
 - **When** step 3 runs
 - **Then** the context is rewritten with the evidence, the task is cancelled, the log reads `- step 3 — verified: rejected: …`, and the run ends without a fix
+
+### Requirement: Plan after re-verifying, or record why not
+
+The system SHALL, after re-verifying the finding and before fixing it, decide the plan by the task tracker's own plan-first test (more than one file, three or more acceptance criteria, a feature link, or unknowns named in the Context): a task with a non-empty plan SHALL use it as the brief, a task meeting any trigger SHALL be planned through the plan verb without grilling, and a task meeting none SHALL go unplanned; each outcome SHALL be recorded in the progress log with the triggers or the reason, so a resumed session can tell a planned task from one nobody looked at.
+
+#### Scenario: A multi-file finding gets a plan
+
+- **Given** TASK-980, re-verified as holding, whose fix touches three files and which has no plan
+- **When** step 3b runs
+- **Then** `/tasks plan TASK-980 --no-grill` drafts the plan, and the log reads `- step 3b — planned: /tasks plan --no-grill (more than one file)`
+
+#### Scenario: A one-line finding goes unplanned
+
+- **Given** TASK-981, a one-file wording fix with two acceptance criteria, no feature link and no unknowns
+- **When** step 3b runs
+- **Then** no plan is drafted, and the log names each trigger that did not fire
 
 ### Requirement: Related findings are folded in or filed, never silently widened
 

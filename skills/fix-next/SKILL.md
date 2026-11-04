@@ -290,6 +290,29 @@ rest via [`/tasks spawn`](../tasks/verbs/spawn.md) rather than widening scope si
 
 Log: `- step 3 — verified: <held / rescoped: … / rejected: …>`
 
+## Step 3b — Plan, or record why the task does not need one
+
+The rulebook's *plan before implementing* binds this skill too, and nothing upstream has done it:
+[`/tasks intake`](../tasks/verbs/intake.md) files with `--no-plan`, and this skill picks without passing
+through `/tasks pick`, which is where the plan is otherwise offered. So the decision is taken here, **after**
+step 3: a plan drafted earlier would plan against a finding that re-verification may rescope or reject.
+
+Apply `/tasks pick`'s own test, never a second policy ([pick.md](../tasks/verbs/pick.md) step 6): planning is
+recommended when the task touches more than one file, has three or more acceptance criteria, carries a
+`feature:` link, or its Context names unknowns.
+
+| The task | Do |
+|---|---|
+| already has a non-empty `## Implementation plan` | read it as the work brief. If it predates changes to the code it names, keep it and work from it, and say so in the log, as `pick` does with nobody to answer |
+| meets any trigger above | run [`/tasks plan TASK-NNN --no-grill`](../tasks/verbs/plan.md). A grill is a conversation with a person, so it cannot run here. Plan's own answer-less paths cover its split offer |
+| meets none | do not plan. The log line names why, by the same triggers |
+
+This takes the place of `pick`'s `[Y/n]` offer, which has nobody to answer it here. The offer's default is
+yes, and a run that skipped the plan because nobody said yes would turn a missing answer into a decline.
+
+Log: `- step 3b — planned: /tasks plan --no-grill (<triggers>)`, `- step 3b — plan present: <date>; used as the brief`,
+or `- step 3b — not planned: <one file, N criteria, no feature:, no unknowns>`.
+
 ## Step 4 — Fix at the right layer
 
 Before writing anything, ask where the root cause actually lives: in **this** repo, or in a dependency,
@@ -416,9 +439,9 @@ Log: `- step 7 — respecced <area>; requirements changed: <list>`
 
 Run [`/tasks close --unattended`](../tasks/verbs/close.md). **Pass the flag.** `close` § step 2 carries
 the table of what it governs — **every** step that would otherwise stop for input, including the **merge
-decision at 5c, which unattended resolves as *merge***. **Read the table for the count; do not restate it
-here** — it has grown twice, and a number written into this sentence is wrong the next time it grows. Read that table rather than assuming this step
-knows: it grew once already, because the flag first shipped covering only the out-of-scope sweep while
+decision at 5c, which unattended resolves as *merge***. **Read that table rather than assuming this step
+knows, and do not restate its count here**: a number written into this sentence is wrong the next time the
+table grows. It has grown before: the flag first shipped covering only the out-of-scope sweep while
 5c still asked a mandatory question on PR-per-task projects — the documented default, and exactly the
 projects where this skill cuts a branch. Without the flag the sweep meets a work bullet with nobody to
 answer, and the reading that keeps the loop moving is to close anyway, which is the evaporation the
