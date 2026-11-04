@@ -3,7 +3,7 @@ id: TASK-325
 parent: EPIC-003
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P3
 assignee: agent
@@ -47,7 +47,8 @@ Two smaller defects on the same output:
 
 ## Human test plan
 
-- [ ] On an upstream fixture with `record/STORY-001` pushed and unlanded, `/tasks intake` a pass that files three findings under STORY-001. Expected: one record line in intake's report.
+- [x] On an upstream fixture with `record/STORY-001` pushed and unlanded, `/tasks intake` a pass that files three findings under STORY-001. Expected: one record line in intake's report.
+  - **Passed 2026-11-04:** three findings filed under STORY-001 as two tasks (TASK-003; TASK-004 holding two), and the report carried exactly one record line: `record/STORY-001 is unlanded and closes STORY-001, which now has open children TASK-003, TASK-004 — do not land it as is`
 
 ## Outcome
 
@@ -80,3 +81,4 @@ _Not drafted: a /fix-next run, whose fix is recorded in § Outcome._
 - step 6 — reverted fix: 0/0 failed — prose only, nothing executable; fix-dependent = none; contract pins = skills-lint.sh link resolution; evidence = the Human test plan drill, not run
 - step 7 — respecced work-tracking, feature-lifecycle; requirements changed: Parents rolled up after child changes (+2 scenarios), Decompose turns approved and changed decisions into tasks; intended anyway — TASK-325's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill, passed on the second run.** Fixture `%LOCALAPPDATA%/Temp/d325b`: `repo/` with `main` tracking a local bare `remote.git`, `integration: single-branch`; EPIC-001 (`kind: review-intake`) → STORY-001 (`theme: correctness-invariants`, reading `in-progress`) with two done `findings:` tasks; a branch `record/STORY-001` committing STORY-001 `done`, pushed and not merged, local copy deleted; `src/export.py` and `review.md` with three code-review findings; skill `tasks` copied under `skill/`. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, cwd the fixture. The brief said it was a drill, barred history and planning docs, said to write any question verbatim and continue unanswered, and asked for the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It stated no expected outcome. Task-specific ask: "Run /tasks intake \"export module\" --epic EPIC-001 --source repo/review.md … Give the report the instructions tell you to print, verbatim." **Coldness:** neither run listed any skill. **Run 1** (`d325`, findings spanning three themes) is not counted: the runner filed one finding under STORY-001 and two into new stories, so only one child was new under the record's container and the once-per-run rule went unexercised; it printed the one correct line. **Run 2** (`d325b`, all three findings correctness-shaped) is the result in the ticked step. Both runs skipped the stories they created, as the rule says. Also raised by both → TASK-339. → `verify` → **done**.
