@@ -24,7 +24,7 @@ Three modes:
 
 4. **Present the proposal as a tree** for user review. Use AskUserQuestion to let them confirm or rework. For complex files, do this in batches (one epic at a time).
 
-5. **For each approved item**, run the `/tasks new` flow internally (generate ID, render template, write file). Use defaults (P1 priority, ai assignee, today as created date). Don't re-prompt the user for every field.
+5. **For each approved item**, run the `/tasks new` flow internally (generate ID, render template, write file). Use defaults (P1 priority, `agent` assignee, today as created date). Don't re-prompt the user for every field.
 
 6. **Regenerate dashboard**.
 
@@ -47,7 +47,7 @@ Three modes:
 3. **Map fields**:
    - Title → file title + slug
    - Body → attempt to split into Context / Acceptance / Out-of-scope. If the body has no recognizable structure, place it all under Context with a TODO marker for the user.
-   - Labels → derive priority (label `priority/P0` → P0), assignee (label `agent/CSharpCodingAgent` → assignee), and parent guess (label `epic/<slug>` → look up local EPIC with that slug; if not found, ask user).
+   - Labels → derive priority (label `priority/P0` → P0), assignee (label `agent/CSharpCodingAgent` → that agent type; `assignee/<value>` → that value, with `assignee/ai` read as `agent`), and parent guess (label `epic/<slug>` → look up local EPIC with that slug; if not found, ask user).
    - State `closed` → `status: done`; `open` → `status: todo`.
    - Label `blocked` → a `blocked:` field, never a status. Its reason is the text of the newest comment
      starting `Blocked:`, or `reason unknown`, written as [SKILL.md](../SKILL.md) § *Writing a `blocked:`
@@ -99,7 +99,7 @@ Three modes:
 
      The field cannot be left absent, because every ranking reads it, so an unmapped value gets the fallback
      and the record that nobody chose it, never a guess at what the name means.
-   - Assignee → human if a real account, ai if it's a bot
+   - Assignee → `human` if a real account, `agent` if it's a bot
    - Status → todo/in-progress/done mapping
    - Flagged → a `blocked:` field with the reason from the newest `Blocked:` comment, or `reason unknown`, written as the GitHub row above says; never a status
    - Issue type Epic → create local EPIC instead of TASK

@@ -32,7 +32,7 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
      34 TASKs → issues
    First 3 examples:
      EPIC-001 Authentication → milestone "EPIC-001 Authentication"
-     TASK-001 JWT issuance → issue (labels: priority/P1, assignee/ai, epic/auth, story/password-login)
+     TASK-001 JWT issuance → issue (labels: priority/P1, assignee/agent, epic/auth, story/password-login)
      ...
    Total API calls: ~51
    ```

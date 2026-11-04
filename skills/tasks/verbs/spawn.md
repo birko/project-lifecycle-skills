@@ -82,7 +82,7 @@ happened. Spawn instead of widening.
    - **feature** — inherit the origin's `feature: FEATURE-NNN` when the item belongs to the same
      feature (step 6 reconciles the ledger). Otherwise `null`.
    - **priority** — a blocker inherits the origin's priority; a follow-up defaults to P2.
-   - **assignee** — inherit the origin's.
+   - **assignee** — inherit the origin's, writing an inherited `ai` as `agent` (the template's `# assignee —` comment).
    - **Context** — must state *what* was discovered, *where* (`file:line`, or the diff), and
      *that it was found while doing TASK-origin*. That provenance line is the re-discovery
      context the next picker needs.

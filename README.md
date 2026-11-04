@@ -529,7 +529,7 @@ is the shared contract. Two ways the same `TASK-001` gets done:
 *Path A — a developer codes it:*
 ```
 /tasks pick TASK-001
-  → frontmatter flips:  status: todo → in-progress,  assignee: jana
+  → frontmatter flips:  status: todo → in-progress
   → branch task/TASK-001 cut from main
   → dev reads ## Context + ## Acceptance criteria (no re-discovery needed)
   → writes the barcode scanner in src/, adds tests/

@@ -3,9 +3,10 @@ id: TASK-120
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: verify
 priority: P2
 assignee: agent
+picked-by: fix-next
 created: 2026-09-09
 depends-on: []
 blocks: []
@@ -102,53 +103,56 @@ unranked**, and `/fix-next` will not see it. That is a known cost, accepted here
 knows it exists. If more user-requested capabilities arrive, they want an epic of their own rather than
 accumulating loose, which is the failure TASK-040 measured at 17 tasks.
 
+### Decided 2026-11-04 by the user
+
+Asked with options before planning:
+- **Scope: both halves in one change.** The alternative, splitting TASK-121 back out, was rejected because the offer hangs off the same step.
+- **The detached offer defaults to yes when the stated test passes, and to no when it fails**, naming the criterion that needs judgement. The rejected alternatives were "always no" and "always yes".
+
 ## Acceptance criteria
 
-- [ ] `pick` step 9 dispatches on the values that are actually written — `agent` and `unassigned` at
+- [x] `pick` step 9 dispatches on the values that are actually written — `agent` and `unassigned` at
       minimum — with no branch that matches nothing
-- [ ] The **writing** side states the vocabulary too: whatever fills `{{ASSIGNEE}}` names its allowed
+- [x] The **writing** side states the vocabulary too: whatever fills `{{ASSIGNEE}}` names its allowed
       values, so the two sides cannot drift again unnoticed
-- [ ] `unassigned` has defined behaviour; today it falls through every branch
-- [ ] Whether `ai` remains a synonym is decided explicitly, not left as a stale third value
-- [ ] The vocabulary is stated **once**, and the other reader points at it — `new`, `pick` and the
+- [x] `unassigned` has defined behaviour; today it falls through every branch
+- [x] Whether `ai` remains a synonym is decided explicitly, not left as a stale third value
+- [x] The vocabulary is stated **once**, and the other reader points at it — `new`, `pick` and the
       template must not each carry a list
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-121:*
 
-- [ ] `pick` offers a detached run for the generic assignee case, as an offer with a default, not a
+- [x] `pick` offers a detached run for the generic assignee case, as an offer with a default, not a
       silent change of behaviour
-- [ ] A **stated test** decides when detached is appropriate — mechanical acceptance criteria versus ones
+- [x] A **stated test** decides when detached is appropriate — mechanical acceptance criteria versus ones
       needing judgement — written so two readers reach the same answer on the same task
-- [ ] Every point in a detached `pick` that would otherwise ask the user has defined behaviour, in one
+- [x] Every point in a detached `pick` that would otherwise ask the user has defined behaviour, in one
       table, the way `close --unattended` does: the plan offer, mid-work `spawn`, and the close handoff
-- [ ] What the subagent is handed is specified — the task body is the brief, and what else (the rulebook
+- [x] What the subagent is handed is specified — the task body is the brief, and what else (the rulebook
       is loaded for it; the conversation is not)
-- [ ] How its result returns is defined: what the parent session sees, and where the progress log is
+- [x] How its result returns is defined: what the parent session sees, and where the progress log is
       written so an abandoned run is resumable
-- [ ] A detached run that hits a decision it cannot take **stops and reports**, rather than guessing —
+- [x] A detached run that hits a decision it cannot take **stops and reports**, rather than guessing —
       and the task file records where it stopped
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
-- **Offering a subagent for the generic case** — TASK-121, which depends on this dispatch being correct
-  before it adds a branch to it.
 - Any other step of `pick`.
 
 *From TASK-121:*
 
-- **Fixing the dispatch it hangs off** — TASK-120, named in `depends-on`. Adding a branch to a table
-  whose branches match nothing would bury this behind that bug.
 - Changing `fix-next`, which already runs detached and has its own contract.
 - Running a *whole story* detached. One task at a time is the unit `close` gates; a batch is a different
   design and its own task if wanted.
 
 ## Human test plan
 
-- [ ] N/A — fully covered by inspection: every `assignee:` value present in a real tree must match a
+- [x] N/A — fully covered by inspection: every `assignee:` value present in a real tree must match a
       branch, and every branch must match a value something writes. A human adds nothing to a set
       comparison.
+      **Passed 2026-11-04:** `grep -rh '^assignee:' tasks | sort -u` → `agent`, `ai`, `human`, `unassigned`; each matches a row of `pick` step 9's dispatch table, and each row's values are written by `new`, `spawn`, `import` or a person (named agent types and other values have their own rows).
 
 *From TASK-121:*
 
@@ -157,3 +161,13 @@ accumulating loose, which is the failure TASK-040 measured at 17 tasks.
       and says so, with the stopping point recorded on the task. Withhold both expectations from the
       runner's brief.
 
+## Progress log
+
+- step 2 — picked; ranked above TASK-255 because `pick` step 9's dispatch matches none of the two values 313 tasks carry (key 1 wrong results, reached on every pick, key 2), while TASK-255's rendering details are cosmetic; key 6 inert — both are correctness-invariants
+- step 3 — verified: held, re-measured 2026-11-04: agent 182, unassigned 131, ai 16, human 1; step 9 branches on a named agent, `ai`, `human` — `agent` and `unassigned` fall through. The merged TASK-121 half carries a design choice, so two questions went to the user before planning (recorded above)
+- step 3b — planned: /tasks plan --no-grill (more than one file, thirteen criteria)
+- step 4 — layer: local (skills/tasks, README.md)
+- step 5 — fix in skills/tasks/templates/TASK.md, skills/tasks/verbs/{pick,new,spawn,export,import,migrate}.md, skills/tasks/SKILL.md, README.md; tests: skills-lint.sh (20 skills) green
+- step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = TASK-120 test-plan set comparison (run, passed), TASK-121 drill (not run)
+- step 7 — respecced work-tracking; requirements changed: Creating a node (default agent), the inferred-fields scenario, Picking a task (+3 scenarios); intended anyway — TASK-120's criteria and the user's recorded decisions, answered by /fix-next; shaped-by carried forward, not re-derived
+- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log

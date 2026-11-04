@@ -529,7 +529,7 @@ non-obvious rules travel with this:
   id is ever hard-coded, plus where the findings came from), `theme:` (story — its slug on
   `intake`'s subject ladder, which `fix-next` reads as tie-break key 6 instead of inferring the theme
   from a title), `picked-by:` (task — which autonomous
-  skill owns an in-progress run), and a
+  run owns an in-progress task: `fix-next`, or `tasks-pick` for a detached run started by `pick` step 9b; each resumes only its own), and a
   `## Progress log` body section (task — one line per completed step, written *as it happens*, so an
   interrupted run resumes from disk rather than from conversation memory; on a disagreement with git,
   git wins).

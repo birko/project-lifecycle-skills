@@ -82,9 +82,9 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 4. **Present numbered list** ordered by priority (P0 first), then created date:
    ```
-   1. TASK-001 JWT issuance on login (P1, ai)
+   1. TASK-001 JWT issuance on login (P1, agent)
       EPIC-001 Authentication → STORY-001 Password login
-   2. TASK-003 Rate limit (P1, ai)
+   2. TASK-003 Rate limit (P1, agent)
       EPIC-001 Authentication → STORY-001 Password login
    3. TASK-007 Bump .NET 9 (P1, human)
       [loose]
@@ -375,9 +375,24 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      `⚠ TASK-NNN was filed with nobody to answer — <fields> inferred, not chosen. Check them before relying
      on them, and delete the line once they are confirmed.` A parent or priority nobody chose has already
      placed and ranked this task, so the person starting it is the first who can catch a wrong guess.
-   - If `assignee:` is a specific agent name (e.g. `CSharpCodingAgent`) → suggest spawning that agent via the Agent tool with the task body as the brief.
-   - If `assignee: ai` (generic) → present the task body as the work brief; this conversation can begin work directly.
-   - If `assignee: human` → print the task body and wait.
+   - **Dispatch on `assignee:`.** The values are the ones the template's `# assignee —` comment names
+     ([templates/TASK.md](../templates/TASK.md)); a value something writes with no row here is a defect in
+     this table, because a value that matches nothing falls through to whatever the reader guesses.
+
+     | `assignee:` | Do |
+     |---|---|
+     | `agent`, `unassigned`, or the older `ai` (read as `agent`) | present the task body as the work brief, then put step 9b's detached offer. `unassigned` dispatches the same way: picking it in a conversation is the claim. `pick` never rewrites the field |
+     | an installed agent type's name (`CSharpCodingAgent`) | offer to spawn that agent type, under step 9b's brief, report and contract table, since a spawn with no contract has the same unattended gaps |
+     | `human` | print the task body and wait. No detached offer: running a person's task in a subagent would override their assignment |
+     | anything else (`jana`) | treat it as a person: print the task body, print `assignee: <value> is not an agent type here — treated as a person`, and wait |
+
+   - **A task this skill already started detached** (`picked-by: tasks-pick` with a `## Progress log`) is
+     resumed, not re-offered. Put this question:
+
+     > **TASK-NNN was started in a subagent and its log ends at "<last log line>". Resume it detached? [Y/n]**
+
+     **No answer, or nobody to ask:** this conversation resumes it from the log. Reconcile the log with git
+     first, as [[fix-next]] step 0 does: where they disagree, git wins.
    - **If `jira-key:` is set in frontmatter** → suggest invoking the `jira-task` skill, if one is installed, so the user gets the full ticket workflow (intake → triage → fix → close-out).
    - **If `github-issue:` is set and `.config.yml` declares `mode: hybrid` with `external.provider: github`** → fetch comments via `gh issue view <num> --comments` so the AI agent picks up any clarifications added in GH. **Under any other mode the field is a leftover** (a repo that went from `hybrid` back to `local` keeps its `github-issue:` values): fetch nothing and print `github-issue: #<num> not fetched — mode: <mode>`. A repo that declared it does not sync must not be called.
    - **State the boundary before starting.** The task's `## Acceptance criteria` are the target and
@@ -387,6 +402,70 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      task, don't silently do the extra work, don't drop it. Spawn inherits this task's parent and
      `feature:`, rewrites the displaced plan step to `→ deferred to TASK-NNN`, reconciles the
      feature ledger, and returns here so the thread isn't lost.
+
+9b. **Detached run — offer to run the task in a subagent.** A subagent starts with a clean context: no
+   conversation, but this project's guide and installed skills load for it, which is what running a task
+   needs (it is *not* a cold reader). Steps 1–8 have already run here, with the user present, so the branch,
+   the checkout and the plan exist before it starts.
+
+   **The test** decides the offer's default. It is read off the task file alone, so two readers reach the
+   same answer:
+
+   | # | Passes when | Fails on |
+   |---|---|---|
+   | T1 | `## Acceptance criteria` has at least one item, and every item names what decides it: a command, test or lint whose result decides it, or a named file, section or field whose presence, absence or value decides it | the first item that does neither, quoted |
+   | T2 | none of these is present: an `Open decision` in Context, a `⚠ Acceptance criteria question:` in the plan, a `⚠ split signal — not spawned` mark, a `blocked:` field | the marker, quoted |
+   | T3 | announced, never fails: a Human test plan with real steps means the run ends at `verify` | — |
+
+   Passing: *"`bash .github/workflows/skills-lint.sh` passes"* (a command decides it). Failing: *"the offer
+   says when detached is the wrong choice"* (nothing named decides it; a reader must judge).
+
+   Put this question, with `[Y/n]` when the test passes and `[y/N]` when it fails:
+
+   > **Run TASK-NNN in a subagent? It starts with a clean context, loads this project's guide and skills, and works from the task file alone; this conversation waits for its report. Detached test: <passed | failed: T<n> — "<the quoted item>">.<" Ends at verify: N manual test steps." when T3 announces> [Y/n]**
+
+   An empty reply takes the default. **No reply, or nobody to ask:** this conversation does the work. A
+   detached run reports back to a person, and with nobody present a second unattended layer adds nothing.
+
+   **The brief** is the task file's absolute path, the checkout path and branch from steps 6b–7, and this
+   instruction: *the task file is your brief: its Acceptance criteria are the target, Out of scope is the
+   fence, the Implementation plan is the plan. Write tree changes only through the `tasks` verbs. Answer
+   every ask from the table in `pick.md` step 9b. Set `picked-by: tasks-pick` and append one `## Progress
+   log` line per step as it happens. End with `/tasks close TASK-NNN --unattended`.* **The conversation is
+   not handed over**, so anything this conversation knows that matters goes into the task file before the
+   spawn, or it is lost.
+
+   **The report** starts with one of these lines, then lists every spawned id, every inferred field and
+   every unmet criterion:
+   `closed: done — <pr or sha>` · `parked: verify — <n> manual steps` ·
+   `stopped: decision pending: <the question> — kept on task/TASK-NNN` · `stopped: <the verb's own line>`.
+   This conversation prints it, re-reads the task's `status:` and last log line, and says so when they
+   disagree with the report. The file wins.
+
+   **A decision only a person can take stops the run**, by [[fix-next]]'s decision-pending pattern (its
+   § *Guardrails* and § *A run that ends without a fix* own it): the question goes into Context under
+   `Open decision`, `/tasks block TASK-NNN --reason "decision pending: <the question>"`, the
+   non-controversial work is committed on the task branch and the branch is kept, and the log ends
+   `step <n> — blocked: decision pending: <the question>`. Never guess.
+
+   **The detached contract table.** Every point that would ask the user has a row. An ask reachable in a
+   detached run and missing here is a defect in this table, not a judgement call, the same rule `close`'s
+   `--unattended` table states.
+
+   | Point | Interactive | Detached |
+   |---|---|---|
+   | step 2b debt, step 4 choice, blocked edge case, step 6 plan / replan, step 6b root, step 7 branch / `pr:` | asked | asked here, before the offer; never re-asked |
+   | step 9 inferred-values line | printed with ⚠ | recorded as `inferred, not chosen: <fields>` in the first log line and in the report; the line is never deleted |
+   | step 9 `jira-key:` → `jira-task` | suggested | not invoked; named in the report |
+   | step 9 `github-issue:` comments | fetched per mode | fetched by the subagent under the same rule |
+   | entering the checkout | step 6b's proof | prove `git rev-parse --show-toplevel` is the brief's path; a mismatch stops and reports, never falls back, because the worktree holds the branch |
+   | [plan.md](plan.md) 5b split offer, step 7 grill | asked | their own answer-less paths: not spawned and marked; grill not run |
+   | adjacent work found mid-task → [spawn](spawn.md) | offered | **spawned**, as `close` 5d does unattended; spawn and new take their answer-less paths, and the ids go in the report |
+   | a spawn no feature decision covers | new `proposed` row, user told | the same; the report says it needs `/feature decide` |
+   | scope escalation, shapes 1–2 ([spawn.md](spawn.md) § *Scope escalation*) | no ask | the same |
+   | scope escalation, shape 3 | steps 1–4, then ask | steps 1–4, then the decision stop above, in place of step 5 |
+   | a decision only a person can take | asked | the decision stop above |
+   | the close | the user runs `/tasks close` | `/tasks close --unattended`; its own table governs, so manual steps park at `verify` |
 
 ## Edge cases
 

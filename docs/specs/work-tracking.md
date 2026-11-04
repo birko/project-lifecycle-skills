@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 5ea5dd3abf7cdaf5dd3623e17324651c077c701a
+generated-at: 19bd1d324dcd20b3f299821189d911d12aeb79ba
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -224,7 +224,7 @@ The system SHALL regenerate the dashboard file only through `triage` (chained by
 
 ### Requirement: Creating epics, stories and tasks
 
-The system SHALL create a node by asking its level (with a decision test when unsure), title, parent (an existing epic for a story; a story, an epic or none for a task), and for tasks priority and assignee (defaults P1 and ai, with any `P<n>` priority written as given rather than limited to the values offered); it SHALL mint the id, compute the path from the parent chain, render the level's template with `planned` for containers and `todo` for tasks (but `done` for an epic that intake files as the record of a pass that dropped every finding), offer to draft the task body (writing `N/A — fully covered by automated tests` for a plainly unit-testable task rather than filler steps), regenerate the dashboard, and auto-run `plan` for a task unless `--no-plan` was passed. Template fields with no value for this node (an epic's `kind:`/`source:`, a story's `theme:`) SHALL be omitted rather than rendered empty. Whenever the new task carries a `feature:` link, by any route, it SHALL be written into the owning decision row's task column, and if no approved or changed row covers it a new `proposed` row SHALL be appended instead.
+The system SHALL create a node by asking its level (with a decision test when unsure), title, parent (an existing epic for a story; a story, an epic or none for a task), and for tasks priority and assignee (defaults P1 and `agent`, the assignee drawn from the vocabulary the task template's comment states, never writing `ai`, with any `P<n>` priority written as given rather than limited to the values offered); it SHALL mint the id, compute the path from the parent chain, render the level's template with `planned` for containers and `todo` for tasks (but `done` for an epic that intake files as the record of a pass that dropped every finding), offer to draft the task body (writing `N/A — fully covered by automated tests` for a plainly unit-testable task rather than filler steps), regenerate the dashboard, and auto-run `plan` for a task unless `--no-plan` was passed. Template fields with no value for this node (an epic's `kind:`/`source:`, a story's `theme:`) SHALL be omitted rather than rendered empty. Whenever the new task carries a `feature:` link, by any route, it SHALL be written into the owning decision row's task column, and if no approved or changed row covers it a new `proposed` row SHALL be appended instead.
 
 #### Scenario: Task inheriting a feature
 
@@ -246,7 +246,7 @@ The system SHALL, when creating a node, put a stated question for each of the le
 
 - **Given** `/tasks new task` run with nobody to answer, for a request one existing story clearly owns
 - **When** the task is written
-- **Then** it is filed under that story at `P1`, assigned to `ai`, and the line under its heading names the title, parent, priority and assignee as inferred, not chosen
+- **Then** it is filed under that story at `P1`, assigned to `agent`, and the line under its heading names the title, parent, priority and assignee as inferred, not chosen
 
 #### Scenario: Story nobody can place
 
@@ -344,7 +344,25 @@ The system SHALL cut work into vertical tasks that each pass three hard checks �
 
 ### Requirement: Picking a task
 
-The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. A task named by id SHALL pass the same taken check, after a fetch when there is an upstream: it SHALL proceed when no task branch exists, when the branch is the current checkout, or when the branch exists locally under a worktree workspace, whose resume and leftover rules then decide; and otherwise SHALL refuse with a line naming where the branch exists, writing nothing. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee, fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields.
+The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. A task named by id SHALL pass the same taken check, after a fetch when there is an upstream: it SHALL proceed when no task branch exists, when the branch is the current checkout, or when the branch exists locally under a worktree workspace, whose resume and leftover rules then decide; and otherwise SHALL refuse with a line naming where the branch exists, writing nothing. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee — `agent`, `unassigned` and the older `ai` alike as work for this conversation, an installed agent type by offering to spawn it, `human` and any other value by printing the task and waiting, the last naming the value as not an agent type — fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields. For a generic assignee it SHALL then offer to run the task in a subagent, defaulting to yes only when a stated test passes (every acceptance criterion names the command or the file, section or field that decides it, and no open-decision, criteria-question, unspawned-split or block marker is present) and naming the failing item otherwise; with no reply this conversation does the work. A detached run SHALL be handed the task file, checkout and branch, record `picked-by: tasks-pick` and a progress log, answer every ask from a stated contract table, stop and keep its branch at a decision only a person can take, close with `--unattended`, and report with a fixed first line; a task started detached SHALL be resumed from its log rather than re-offered.
+
+#### Scenario: Detached offer on a mechanical task
+
+- **Given** TASK-060, assigned `agent`, whose every acceptance criterion names the lint or a file field that decides it, with no open decision and an `N/A` test plan
+- **When** `/tasks pick TASK-060` reaches the hand-off
+- **Then** it offers to run the task in a subagent with `[Y/n]`, stating the test passed
+
+#### Scenario: Detached offer on a judgement task
+
+- **Given** TASK-061, assigned `unassigned`, with a criterion that names nothing that decides it
+- **When** `/tasks pick TASK-061` reaches the hand-off with nobody to answer
+- **Then** the offer reads `[y/N]` quoting that criterion, and this conversation does the work
+
+#### Scenario: An assignee that is not an agent type
+
+- **Given** TASK-062 with `assignee: jana`, and no installed agent type of that name
+- **When** it is picked
+- **Then** the task body is printed with a line saying `jana` is not an agent type here and is treated as a person, and the run waits
 
 #### Scenario: A task named by id that another clone holds
 

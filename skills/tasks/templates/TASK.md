@@ -6,6 +6,7 @@ feature: {{FEATURE}}
 status: {{STATUS}}
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: {{PRIORITY}}
+# assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
 assignee: {{ASSIGNEE}}
 created: {{CREATED}}
 depends-on: []
