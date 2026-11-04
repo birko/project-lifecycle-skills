@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 17:23. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 17:46. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 58                  |
+| todo         | —                  | —                  | 57                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 8                   |
+| verify       | —                  | —                  | 9                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 243                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 48× P2 · 10× P3.
+`todo` by priority: 48× P2 · 9× P3.
 
 ## In progress now
 
@@ -30,6 +30,7 @@ _None_
 - [TASK-318](EPIC-003-field-found-defects/TASK-318.md) — `/tasks plan` asks whether to grill the plan and never says what happens when nobody answers (P3, agent)
 - [TASK-320](EPIC-003-field-found-defects/TASK-320.md) — Two cold runners disagreed on whether `/feature status` creates the features index when it is absent (P3, agent)
 - [TASK-321](EPIC-003-field-found-defects/TASK-321.md) — `/feature pick`'s decompose offer has no answer-less path (P3, agent)
+- [TASK-323](EPIC-003-field-found-defects/TASK-323.md) — A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed (P3, agent)
 - [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
 - [TASK-327](EPIC-003-field-found-defects/TASK-327.md) — `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained (P3, agent)
 
@@ -244,7 +245,7 @@ _None_
     - [ ] TASK-320 Two cold runners disagreed on whether `/feature status` creates the features index when it is absent 🔍 verify
     - [ ] TASK-321 `/feature pick`'s decompose offer has no answer-less path 🔍 verify
     - [x] TASK-322 A signed-off feature with an unbuilt `changed` decision reads phase `review`, as if built
-    - [ ] TASK-323 A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed
+    - [ ] TASK-323 A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed 🔍 verify
     - [x] TASK-324 A re-close that parks a `done` task at `verify` never rolls its parents up
     - [ ] TASK-325 Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item 🔍 verify
     - [x] TASK-326 `close`'s "reopen and re-close" never says what reopening resets, so a re-close over a ticked plan goes straight back to `done`

@@ -12,12 +12,14 @@ lifecycle stall.
 1. **Resolve the feature**:
    - Bare ID (`/feature pick FEATURE-012`, or `012` if unambiguous) → skip to step 2.
    - No arg → run the [Collection pass](../SKILL.md#collection-pass) and present a numbered list of
-     features that aren't `done`/`dropped`, **verification debt first** (phase `review` above
-     `building` above `idea`), each line showing phase + decision counts + task progress:
+     features that aren't `done`/`dropped`, **verification debt first** ([SKILL.md](../SKILL.md)
+     § *Verification debt surfaces first*: a feature in phase `review`, or with any task awaiting
+     sign-off whatever its phase), each line showing phase + decision counts + task progress:
      ```
      1. FEATURE-007  Stock count reconciliation   review     5 decisions (4✓ 1~)  6/6 tasks   ⚠ awaiting sign-off
-     2. FEATURE-011  Barcode scan on mobile       deciding   4 decisions (0✓ 4 proposed)  no tasks
-     3. FEATURE-012  Bulk CSV import              building   3 decisions (3✓)  1/5 tasks
+     2. FEATURE-030  Checkout redesign            building   4 decisions (3✓ 1 changed)  3/3 tasks   ⚠ 1 task awaiting sign-off
+     3. FEATURE-011  Barcode scan on mobile       deciding   4 decisions (0✓ 4 proposed)  no tasks
+     4. FEATURE-012  Bulk CSV import              building   3 decisions (3✓)  1/5 tasks
      ```
      Ask the user to pick by number or ID.
 

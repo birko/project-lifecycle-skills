@@ -32,8 +32,9 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
      built.** Without it the old tasks of a `changed` row still back-link through `feature:`, so rule 4 reads them
      all `done` and the rollup tells stakeholders an unbuilt change awaits sign-off. Its condition is the one
      [pick](pick.md)'s gate D fails on, so gate E, which reads this phase, never fires beside it. A stored `review`
-     with tasks parked at `verify` shows `building` too while a new row waits; pick's hand-off still surfaces
-     those tasks first.
+     with tasks parked at `verify` shows `building` too while a new row waits, and its `verify` tasks still
+     lead every listing ([SKILL.md](../SKILL.md) § *Verification debt surfaces first* keys that on tasks as
+     well as phase).
    - **`building` with no tasks yet is the normal case**, not a corner: `decide` chains this verb right after
      stamping. Render `0/0 tasks` and point the next-step line at `/feature decompose`.
    - **`deciding` with no `proposed` row left** is a ledger whose every verdict is `deferred` or `removed` but whose
@@ -57,10 +58,10 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 5. **Write** `docs/features/FEATURE-NNN-slug/status.md` (overwrite).
 
 6. **If invoked for all features** — also print a one-line-per-feature digest to stdout:
-   `FEATURE-012 Checkout redesign — building (4/7 tasks, 3 approved / 1 deferred)`.
-   **Order the digest with phase-`review` (awaiting sign-off) features first** — they
-   are outstanding verification debt and are the next action, ahead of `idea`/planned
-   ones. Never headline "all shipped" while a `review`-phase feature exists — that buries
+   `FEATURE-012 Checkout redesign — building · 2 tasks awaiting sign-off (4/7 tasks, 3 approved / 1 deferred)`.
+   **Order the digest with debt features first**, per [SKILL.md](../SKILL.md) § *Verification debt
+   surfaces first*: phase `review`, or any task awaiting sign-off, whatever the phase. They are the
+   next action, ahead of everything else. Never headline "all shipped" while one exists — that buries
    the debt. A feature whose tasks are all `done` but unsigned prints as `review (awaiting
    sign-off)`, never `done`.
 
@@ -68,7 +69,8 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    `docs/features/README.md`, the human entry-point index. From the same collection pass,
    render [templates/README.md.tmpl](../templates/README.md.tmpl): one row per feature (link ·
    title · derived phase · decision counts a/c/d/r/p · `done/total` tasks · prototype link),
-   the verification-debt note (lead with any `review`-phase features), and the drift note (reuse
+   the verification-debt note (lead with every debt feature, as SKILL.md § *Verification debt surfaces
+   first* defines it, with its task count), and the drift note (reuse
    [[roadmap]]'s divergence check — don't re-derive it). Write `docs/features/README.md`
    (overwrite; it's generated, like `status.md`). Single-feature runs update only that feature's
    `status.md` and **its row** in the index, not the whole file.

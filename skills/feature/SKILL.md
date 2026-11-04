@@ -154,10 +154,23 @@ sign-off"**.
 
 ### Verification debt surfaces first — before any new scope
 
-In every rendering (bare `/feature`, `show`, the `status` digest) and **any "what's next?"
-answer**, phase-`review` features lead the output, above `idea`/planned ones — they're
-outstanding work. Never headline "all shipped" while one exists; state the pending sign-off as
-the next action first.
+In every rendering (bare `/feature`, `show`, the `status` digest, the index, [[roadmap]]) and **any
+"what's next?" answer**, debt features lead the output, above every other feature. **A debt feature is
+one in phase `review`, or one with at least one linked task awaiting sign-off** (`verify`, or the older
+`review`, read per [[tasks]] § *Lifecycle*), **whatever its phase.** Within the group, keep the phase
+order (`review` before `building`). A line with waiting tasks names their count:
+`building · 2 tasks awaiting sign-off` (`1 task` when there is one). Never headline "all shipped" while
+a debt feature exists; state the pending sign-off as the next action first.
+
+**Why the lead keys on tasks as well as phase.** The two answer different questions. Phase answers *is
+the feature built?*, and [status.md](verbs/status.md)'s rule 2 keeps it honest by reading `building`
+while a new row waits to be decomposed. Debt answers *is someone's sign-off waiting?*, which is a fact
+about tasks. Keyed on phase alone, a feature parked at `review` with `verify` tasks dropped out of the
+lead the moment a stakeholder asked for a change. Keeping `review` until sign-off was rejected because
+it lets the label claim an unbuilt change is built. Letting such a feature sort with other `building`
+features was rejected because its waiting tests would surface only after decompose. Phase `review`
+stays in the set, because a feature whose tasks are all `done` still owes its own sign-off. (TASK-323,
+decided by the user 2026-11-04.)
 
 ## Collection pass
 
@@ -171,8 +184,8 @@ line; step 3 joins tasks via `feature: FEATURE-NNN` back-links. Two feature-side
   model's task collection, reading each task's status in both forms as [[tasks]] § *Lifecycle* defines
   them: `verify` buckets as `review`, and a blocked task keeps its own state. This is the **task** status,
   not this feature's own `review` marker in `idea.md`, which is a separate vocabulary and does not
-  change. The `review` bucket matters: phase derivation and verification-debt ordering both
-  need it.
+  change. The `review` bucket matters: phase derivation needs it, and so does verification-debt
+  ordering, which reads its count per feature (§ *Verification debt surfaces first*).
 - The model's `divergences` come along for free — the bare-`/feature` listing may surface them
   (one `⚠ DV<n>` mark per affected feature), same rules as `/roadmap --check`.
 

@@ -170,7 +170,7 @@ the ambiguity properly, because that verb can report `not-applicable` where DV10
 
 From the output model:
 
-1. **Lead with verification debt.** Any feature in phase `review` (built, sign-off pending) is listed first as outstanding work — before `building`/`idea` ones — mirroring the [[feature]] skill's "verification debt surfaces first" rule.
+1. **Lead with verification debt.** Every feature the [[feature]] skill's "verification debt surfaces first" rule counts as debt is listed first as outstanding work: phase `review` (built, sign-off pending), or any linked task awaiting sign-off whatever the phase. A line with waiting tasks names their count (`building · 2 tasks awaiting sign-off`). That rule owns the set; this render applies it.
 2. **Group by epic**, newest-active first; skip fully-`done`/`cancelled` epics into a collapsed tail. Per feature line:
    ```
    EPIC-012 Backend consolidation — in-progress (8/24 tasks)
@@ -199,7 +199,9 @@ features/  <F> features · idea <i> · prototyping <p> · deciding <de> · build
   specs: <n> stale                                [omit when docs/specs/ absent or all fresh]
 Run /roadmap for the full epic→feature→task view.
 ```
-Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros rule as the tasks snapshot), appending `dropped <x>` / `superseded <x>` when non-zero, so every feature lands in exactly one bucket and the counts sum to `<F>`. Lead the line with any `review`-phase feature count (verification debt).
+Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros rule as the tasks snapshot), appending `dropped <x>` / `superseded <x>` when non-zero, so every feature lands in exactly one bucket and the counts sum to `<F>`. Lead the line with the count of debt features as the [[feature]] rule defines them (`⚠ sign-off <n>`,
+omitted at zero). It sits outside the phase buckets, because a debt feature can be in phase `building`,
+so the buckets still sum to `<F>`.
 
 ## Conventions
 

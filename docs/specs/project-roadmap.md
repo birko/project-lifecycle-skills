@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: bf22a27d2308f07bbda125d963ec48c083082977
-generated-on: 2026-10-14
+generated-at: 02910cef4c34305229d9c09d4e551e8d4a4e4c84
+generated-on: 2026-11-04
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -393,7 +393,7 @@ The system SHALL flag DV12 when a story under an epic with `kind: review-intake`
 
 ### Requirement: Full render with verification debt first
 
-The system SHALL render the full view by listing features in phase `review` first as outstanding verification debt; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase, tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
+The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase, tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
 
 #### Scenario: Review-phase feature leads
 
@@ -415,7 +415,7 @@ The system SHALL render the full view by listing features in phase `review` firs
 
 ### Requirement: Compact slice for the task snapshot
 
-The system SHALL, when called for the task skill's bare snapshot, render only a feature count with one bucket per phase (zero-count buckets omitted, `dropped` and `superseded` appended when non-zero, so the buckets sum to the total and the `review` count leads), a divergence line listing each finding or `✓ in sync`, a stale-spec count omitted when there are no specs or none are stale, and a pointer to `/roadmap` for the full view.
+The system SHALL, when called for the task skill's bare snapshot, render only a feature count with one bucket per phase (zero-count buckets omitted, `dropped` and `superseded` appended when non-zero, so the buckets sum to the total), led by a count of verification-debt features as the feature skill defines them, kept outside the phase buckets and omitted at zero, a divergence line listing each finding or `✓ in sync`, a stale-spec count omitted when there are no specs or none are stale, and a pointer to `/roadmap` for the full view.
 
 #### Scenario: Snapshot with drift
 

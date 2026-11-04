@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 9b998543671598bf01599724b9754d14d709fc0b
+generated-at: 02910cef4c34305229d9c09d4e551e8d4a4e4c84
 generated-on: 2026-11-04
 sources:
   - skills/feature/SKILL.md
@@ -555,7 +555,7 @@ The system SHALL call a feature `done` only after the review gate passes includi
 
 ### Requirement: Verification debt is listed first
 
-The system SHALL order every feature listing — the bare listing, show, pick's list, the status digest and the index — and any "what's next" answer with phase-`review` features first, ahead of building and idea-stage ones, and SHALL never headline that everything has shipped while a `review`-phase feature exists.
+The system SHALL order every feature listing — the bare listing, show, pick's list, the status digest and the index — and any "what's next" answer with verification-debt features first — a feature in phase `review`, or one with at least one linked task awaiting sign-off whatever its phase — ahead of every other feature, keeping phase order within that group and naming the count of waiting tasks on the line, and SHALL never headline that everything has shipped while a debt feature exists.
 
 #### Scenario: Digest ordering
 
@@ -568,6 +568,12 @@ The system SHALL order every feature listing — the bare listing, show, pick's 
 - **Given** two features in `review`
 - **When** the index is regenerated
 - **Then** it opens its notes with an "Awaiting sign-off (2)" warning naming them
+
+#### Scenario: Waiting tasks lead even when a new change makes the feature building
+
+- **Given** FEATURE-030 stored at `review` with one task at `verify` and one new `approved` row with no tasks, and FEATURE-031 in `review`
+- **When** the bare listing is rendered
+- **Then** FEATURE-030 reads `building · 1 task awaiting sign-off` and sorts with FEATURE-031 ahead of every other feature, after FEATURE-031 by phase order
 
 ### Requirement: Feature and task status vocabularies stay separate
 
