@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: c4d5677b0c9cc08d624f06f00b9462524f027d75
-generated-on: 2026-10-14
+generated-at: 711cd53ec34b60d6600645aea0692ed6e2f169e6
+generated-on: 2026-11-04
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -231,7 +231,13 @@ The system SHALL state the ranking in one short paragraph naming the pick and wh
 
 - **Given** TASK-990 and TASK-991 tie on every key including the same `created` date
 - **When** the pool is ranked
-- **Then** the run says the keys were exhausted and stops to ask which to take
+- **Then** the run says the keys were exhausted and asks which to take, naming the lower id as its fallback
+
+#### Scenario: Keys exhausted with nobody to answer
+
+- **Given** the same tie, and nobody present
+- **When** the tie question gets no answer
+- **Then** the run takes TASK-990, the lower id, without halting, and the ranking paragraph and the pick's log line record `keys 1–8 exhausted; took the lower id — nobody chose`
 
 ### Requirement: Blocked tasks above the pick produce skip lines
 

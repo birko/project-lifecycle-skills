@@ -198,7 +198,9 @@ settles nothing. Order the pool by these keys, in order:
    entire pass in one of them, so it ties routinely: twelve tasks in this repo share `2026-08-20`. Keys
    1-8 therefore do **not** guarantee a total order, which is why the "genuinely inseparable" branch
    below is a reachable path rather than dead prose — reach it and *say* the keys were exhausted, per the
-   rule that a key which cannot discriminate must announce itself.
+   rule that a key which cannot discriminate must announce itself. Reaching it asks one question, and
+   with nobody to answer the run does not halt: it takes the lower id and logs that nobody chose (the
+   branch below gives the question and the log line).
 
 **Two candidate shapes have no theme by construction**, and they are not defects: a task in
 `tasks/_loose/`, and a task parented directly to an EPIC rather than a STORY. Treat them exactly like a
