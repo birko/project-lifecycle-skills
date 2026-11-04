@@ -3,7 +3,7 @@ id: TASK-218
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: unassigned
@@ -56,9 +56,11 @@ files side by side, not a judgement call.
 
 ## Human test plan
 
-- [ ] A cold `--dry-run` on an invented tree with nobody to answer: it prints the plan, asks nothing, and changes
+- [x] A cold `--dry-run` on an invented tree with nobody to answer: it prints the plan, asks nothing, and changes
       no file, `.config.yml` included
-- [ ] Reading `migrate` step 6 against `export` steps 1 and 5: a literal run creates linked issues without an error
+  - **Passed 2026-11-04:** the runner printed the plan and every payload, ended with `Dry run — nothing pushed; task files and tasks/.config.yml unchanged.`, put no question (quoting step 4's "never under `--dry-run`"), and `git status --porcelain` was empty afterwards
+- [x] Reading `migrate` step 6 against `export` steps 1 and 5: a literal run creates linked issues without an error
+  - **Passed 2026-11-04 (reading, by the author):** export step 1 states migrate bypasses its mode check; step 4's duplicate question cannot fire, since migrate pushes only unlinked tasks; step 5 reads `default-labels` from a config with no `external:` block as an empty list, and finds each milestone by `<EPIC-ID> <title>` because migrate creates the milestones first. Just outside the plan's steps, export **step 6** names the repo as `external.repo` from `.config.yml`, which a migrate run has not written yet; only migrate's "repo/project come from this run's args" covers it → TASK-338
 
 ## Outcome
 
@@ -108,3 +110,4 @@ _Drafted 2026-11-04 by the Plan agent (`/fix-next` step 3b, `/tasks plan --no-gr
 - step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = the two Human test plan steps, not run
 - step 7 — respecced work-tracking; requirements changed: Migrating to hybrid mode (+2 scenarios), Exporting a task; intended anyway — TASK-218's criteria, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-04 — **Human test plan — cold drill and reading, passed.** Fixture `%LOCALAPPDATA%\Temp\d218`: `repo/` with `mode: local`, no `external:` block, two epics, three stories, six tasks (one done, one verify, one todo with a `blocked:` field, one in `_loose/`, two todo); skill `tasks` copied under `skill/`. Runner: `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" "Bash(gh auth status:*)" "Bash(gh repo view:*)" "Bash(gh label list:*)" Read Glob Grep Edit Write < brief.txt`, cwd the fixture. `gh` was limited to those three read-only commands so nothing could be created; the target was the public `cli/cli`, so the pre-flight passes and the run reaches the payloads. The brief said it was a drill, barred history and planning docs, said to write any question verbatim and continue unanswered, and asked for the output, the questions, what was left undecided, what was settled, what was inferred, what it read unsent, and its skill list. It stated no expected outcome. Task-specific ask: "Run /tasks migrate --to github --repo cli/cli --dry-run." **Coldness:** it listed no skills. **Result:** as the ticked step says. Also raised → TASK-338: **DRILL-218-1**, export step 5 gives no command for the milestone lookup, and in a dry run the milestones do not exist yet, so a literal lookup reports every task `not linked`; **DRILL-218-2**, the dry run's payloads have no stated position or shape (epic and story payloads, which body sections, the API-call count). → `verify` → **done**.

@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-04 20:45. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-04 21:05. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 62                  |
+| todo         | —                  | —                  | 63                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 6                   |
+| verify       | —                  | —                  | 5                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 249                 |
+| done         | 4                  | 13                 | 250                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 47× P2 · 15× P3.
+`todo` by priority: 47× P2 · 16× P3.
 
 ## In progress now
 
@@ -27,7 +27,6 @@ _None_
 - [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) — Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating (P2, agent)
 - [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) — `pick`'s handoff branches on an `assignee:` value no task in the tree has (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
-- [TASK-218](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-218.md) — `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined (P2, unassigned)
 - [TASK-323](EPIC-003-field-found-defects/TASK-323.md) — A feature parked at `review` drops out of "verification debt first" while a new row waits to be decomposed (P3, agent)
 - [TASK-325](EPIC-003-field-found-defects/TASK-325.md) — Batch verbs that run `/tasks new` drop its reopen and record lines, and repeat them per item (P3, agent)
 
@@ -101,11 +100,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (56/98 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (57/99 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (14/25 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (15/26 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -124,13 +123,14 @@ _None_
     - ~~TASK-180 `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes~~
     - [x] TASK-182 `/tasks pick` step 7's two questions carry no wording and no answer-less path
     - [x] TASK-212 Six older gaps in `block`, `close`, `init` 3b and the task template, found at the TASK-209, -214 and -215 closes
-    - [ ] TASK-218 `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined 🔍 verify
+    - [x] TASK-218 `/tasks migrate` leaves its dry run, its confirmation and its hand-off to `export` undefined
     - [x] TASK-254 `pick`'s in-place fallback with an upstream never says where the status flip is committed
     - [ ] TASK-255 `pick`'s list output leaves five rendering details for each reader to settle
     - [ ] TASK-330 `/tasks migrate` prompts for the repo or project with no question text and no answer-less path
     - [ ] TASK-331 `/tasks new` marks a parent the user named as inferred, and `plan` can cut its own section short
     - [ ] TASK-332 `/tasks block` leaves where its two writes go, and their order, to the reader
     - [ ] TASK-337 `/tasks pick` on a bare id leaves debt surfacing and plan age unclear, and 9b's offer says "1 steps"
+    - [ ] TASK-338 `/tasks export` assumes a config `migrate` has not written yet, and the dry run's milestone lookup has no command
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
