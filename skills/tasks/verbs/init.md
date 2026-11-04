@@ -157,6 +157,7 @@ current template first (step 3), because a file that merely exists cannot be rep
           |---|---|
           | a `>` note — even one under a heading, since the note is the nearer place to look | ` (full text in the note of <date>)`; ` (full text in the last note of <date>)` when several notes share that date; ` (full text in the note)` when it carries no date |
           | the status comment | ` (full text in the status comment)` |
+          | a heading itself (`## DEFERRED <date> — …`) | ` (full text in the heading)` — the cut words are on that heading's own line, and the heading above it holds none of them. This row sits above the next, because a heading is also *under* its parent heading |
           | under a heading | ` (full text in § <heading>)` |
           | above the first heading | ` (full text in the body)` |
 

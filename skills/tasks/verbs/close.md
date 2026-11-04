@@ -4,7 +4,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
 
 ## Steps
 
-1. **Find task root**.
+1. **Find task root**: [SKILL.md](../SKILL.md) § *Shape detection*.
 
 2. **Parse args**:
    - `<ID>` — required. Can be `TASK-001` or just `001` if unambiguous across all task IDs in the project.

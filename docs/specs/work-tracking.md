@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 9eeeefd0edde42d137174e91eabb18fc68e211a7
+generated-at: 5ea5dd3abf7cdaf5dd3623e17324651c077c701a
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -812,7 +812,7 @@ The system SHALL set a task, story or epic to `cancelled` (confirming first when
 
 ### Requirement: Blocking and unblocking
 
-The system SHALL add a `blocked:` reason field to a task without changing its status, refusing `done` or `cancelled` tasks and warning when already blocked; it SHALL confirm an in-progress block (blocking anyway with no answer and saying nobody confirmed), merge `--on` ids into `depends-on`, append a `> Blocked <date> — <reason>` note, mirror the block to a linked tracker as a label or flag plus a `Blocked:` comment without changing the issue's open state, and regenerate the dashboard. Unblock SHALL remove the field and leave status alone, append a `> Unblocked <date> — …` note, mirror the removal, and for an old-form blocked status recover the prior state from history or ask — falling back to `todo` with a note that nobody chose it, never leaving it blocked. Containers cannot be blocked.
+The system SHALL add a `blocked:` reason field to a task without changing its status, refusing `done` or `cancelled` tasks and warning when already blocked; it SHALL confirm an in-progress block (blocking anyway with no answer and saying nobody confirmed), merge `--on` ids into `depends-on`, append a `> Blocked <date> — <reason>` note — with no reason given, using `waiting on <ids>` when `--on` names them, otherwise asking a fixed question and, with no answer, blocking with `reason unknown` and a note that nobody gave one — mirror the block to a linked tracker as a label or flag plus a `Blocked:` comment without changing the issue's open state, and regenerate the dashboard. Unblock SHALL remove the field and leave status alone, append a `> Unblocked <date> — …` note, mirror the removal, and for an old-form blocked status recover the prior state from history or ask — falling back to `todo` with a note that nobody chose it, never leaving it blocked. Containers cannot be blocked.
 
 #### Scenario: Block keeps state
 
@@ -825,6 +825,18 @@ The system SHALL add a `blocked:` reason field to a task without changing its st
 - **Given** a task reading `status: blocked` whose history does not show a prior state
 - **When** it is unblocked unattended
 - **Then** it becomes `status: todo` with no `blocked:` field and a note that the state was set to todo with nobody choosing it
+
+#### Scenario: Block with no reason and nobody to answer
+
+- **Given** an open task TASK-050 and nobody present
+- **When** `/tasks block TASK-050` runs with no `--reason` and no `--on`
+- **Then** the task gains `blocked: reason unknown`, its status is unchanged, its note says nobody gave a reason, and the report says nobody chose it
+
+#### Scenario: Block on a task with no reason
+
+- **Given** an open task TASK-050
+- **When** `/tasks block TASK-050 --on TASK-051` runs with no `--reason`
+- **Then** nothing is asked and the reason reads `waiting on TASK-051`
 
 ### Requirement: Backlog audit
 

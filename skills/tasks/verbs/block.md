@@ -30,10 +30,24 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 4. **Edit frontmatter**:
    - Add `blocked: <reason>`, written as [SKILL.md](../SKILL.md) § *Writing a `blocked:` value* says, after the `status:` line **and every indented `#` line continuing its comment** —
      never between them, which splits one comment in two — and **leave `status:` as it is**, so the task keeps
-     the state its work is in (FEATURE-003 D1). Already blocked by either form → warn ("already blocked: <reason>")
+     the state its work is in — blocked is a flag beside the state, never a state of its own. Already blocked by either form → warn ("already blocked: <reason>")
      and stop.
    - If `--on` given, merge the IDs into `depends-on: [...]` (validate each exists; warn on a missing/cancelled target).
-5. **Record the reason** — append a body note: `> Blocked {{today}} — <reason>` (runtime date), the reason as given, never in its YAML quotes — quoting belongs to the frontmatter value alone. Ask for one line if `--reason` omitted.
+5. **Record the reason** — append a body note: `> Blocked {{today}} — <reason>` (runtime date), the reason as given, never in its YAML quotes — quoting belongs to the frontmatter value alone.
+   **When `--reason` is omitted or empty:**
+   - **With `--on`**, the reason is `waiting on <TASK-NNN>[, <TASK-NNN>…]`, and nothing is asked. The caller
+     named what the task waits on, which is the reason. [spawn](spawn.md) blocks its origin this way.
+   - **Without `--on`**, put this question:
+
+     > **Why is TASK-NNN blocked? One line: it becomes the `blocked:` value and the body note.**
+
+     **No answer, or nobody to ask:** block it anyway, with `blocked: reason unknown` and the note
+     `> Blocked {{today}} — reason unknown; nobody gave one when it was blocked.`, and say so in step 7:
+     `blocked: reason unknown added (no reason given, nobody chose one) — status stays <state>`. The
+     invocation itself asked for the block, as in step 3. A block's reason is never empty (SKILL.md
+     § *Writing a `blocked:` value*), so the fallback is written and marked as nobody's choice. Not
+     blocking would replace the person's explicit act with the run's own decision. The `;` keeps every
+     reader that cuts the note at its first `;` reading exactly `reason unknown`.
    **Keep that shape — other verbs read it:** [init.md](init.md) step 3b takes it as its first reason rung,
    matching `Blocked <date> —` through emphasis and in any case; [export.md](export.md) takes the reason from
    it when the `blocked:` field is missing; [[fix-next]] takes it for an old-form `status: blocked` task's
@@ -52,7 +66,7 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 1. **Locate** the TASK file.
 2. **Read current status** — if the task is not blocked by either form ([SKILL.md](../SKILL.md) § *Lifecycle*), warn ("not blocked — nothing to clear") and stop.
 3. **Clear depends-on (optional)** — if `--clear-deps` is passed, drop now-satisfied (`done`) IDs from `depends-on`; otherwise leave `depends-on` as the historical record and only change status.
-4. **Edit frontmatter** — remove the `blocked:` field and **leave `status:` alone**: the task goes back to the state it was in (FEATURE-003 D2). An old-form `status: blocked` has no state to return to, so read it from the file's history exactly as [init.md](init.md) step 3b does, and ask its question when history cannot tell — but **never take init's no-answer fallback here**, which writes a `blocked:` field: an unblock must end unblocked. **No answer, or nobody to ask:** write `status: todo` with no `blocked:` field, add the note `> Unblocked {{today}} — state before blocking unknown; set to todo, nobody chose it.`, and print the fallback form in step 7. If the user says work resumes immediately, allow `→ in-progress` instead (or just run `/tasks pick <ID>` next).
+4. **Edit frontmatter** — remove the `blocked:` field and **leave `status:` alone**: the task goes back to the state it was in — the flag never replaced it, so there is nothing to restore. An old-form `status: blocked` has no state to return to, so read it from the file's history exactly as [init.md](init.md) step 3b does, and ask its question when history cannot tell — but **never take init's no-answer fallback here**, which writes a `blocked:` field: an unblock must end unblocked. **No answer, or nobody to ask:** write `status: todo` with no `blocked:` field, add the note `> Unblocked {{today}} — state before blocking unknown; set to todo, nobody chose it.`, and print the fallback form in step 7. If the user says work resumes immediately, allow `→ in-progress` instead (or just run `/tasks pick <ID>` next).
 5. **Append a body note** — `> Unblocked {{today}} — <reason / what resolved it>`.
    **Keep that shape** too: [init.md](init.md) step 3b reads it to tell that an earlier `Blocked` note is
    over, so a reworded note would make every resolved block read as current again.
@@ -66,9 +80,10 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 ## Edge cases
 
 - **Auto-unblock suggestion** — `/tasks close`/`cancel` doesn't auto-unblock dependents (status
-  changes stay explicit), but `/tasks audit` reports a satisfied dependency and names a blocked task
-  carrying one as an unblock candidate. Its `--fix` only prunes `depends-on`; it never removes the
-  `blocked:` field. So the loop is: close the blocker → `audit` surfaces it → `/tasks unblock`.
+  changes stay explicit), but `/tasks audit` reports a satisfied dependency (one that is `done` or
+  `cancelled`, since a cancelled task will never finish and so is nothing to wait on) and names a blocked
+  task carrying one as an unblock candidate. Its `--fix` only prunes `depends-on`; it never removes the
+  `blocked:` field. So the loop is: close or cancel the blocker → `audit` surfaces it → `/tasks unblock`.
 - **Block with no `--on`** — fine; not every block is a task dependency (waiting on a stakeholder,
   an external service, a decision). The reason note carries the why; `depends-on` stays empty.
 - **Blocking on a cancelled task** — warn: the blocker will never complete, so this is really a

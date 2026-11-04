@@ -4,7 +4,7 @@ parent: {{PARENT}}
 feature: {{FEATURE}}
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
 status: {{STATUS}}
-# blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
+# blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: {{PRIORITY}}
 assignee: {{ASSIGNEE}}
 created: {{CREATED}}
