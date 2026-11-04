@@ -820,8 +820,8 @@ Ground truth and the agent guide first (later steps read them), then **`docs/fea
 exists**, so a dashboard generated first is stale the moment the folder appears. `new-project` already
 does this in bullet order; recording it here is what makes it true for the adoption path too, and stops a
 later reordering from silently reintroducing it. (Where an ordering cannot be arranged — an artifact
-created after its consumer — [[adopt-project]] § 3c re-runs the owning verb instead; ordering is the
-cheaper guarantee, so prefer it.)
+created, landed or amended after its consumer — [[adopt-project]] § 3c re-runs the owning verb instead;
+ordering is the cheaper guarantee, so prefer it.)
 
 ## Rule
 
