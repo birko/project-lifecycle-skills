@@ -296,8 +296,8 @@ refuses) and branches that exist only on a remote are unseen, so an id minted th
 verb's confirmation names the unreadable copies, or the summary that replaces it does (§ *Roll status up to
 parents*). A skipped number is harmless. A duplicated one is the
 defect.
-`FIELD-NNN` findings ids are minted the same way, over every copy's `findings:` lists (see
-[verbs/intake.md](verbs/intake.md)).
+`FIELD-NNN` findings ids are minted the same way, over every copy's `findings:` lists, with the pattern
+[verbs/new.md](verbs/new.md) step 0 (`--from-field`) gives.
 
 ## Lifecycle
 

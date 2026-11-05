@@ -27,7 +27,12 @@ Interactive scaffold of a new task tree node.
      review pass behind it. Where `--from-review` receives ids a pass already minted, this one **mints**
      the id, because no pass ran to do it. When present:
      - Mint the next `FIELD-NNN` — take the current max `FIELD-NNN` over every `findings:` list in **every copy
-       of the task tree** ([SKILL.md § ID generation](../SKILL.md#id-generation) names the copies), increment,
+       of the task tree** ([SKILL.md § ID generation](../SKILL.md#id-generation) names the copies, and is searched as that
+       section searches for `^id:`, with the pattern `^findings:.*FIELD-[0-9]+`: `git grep -h -E` over the
+       branches, the same over this tree's and every other worktree's `tasks/`). Take **every**
+       `FIELD-[0-9]+` on each matching line, since one list can hold several (`findings: [CR-1, FIELD-002,
+       FIELD-005]`), and compare them as numbers. `^findings:` leaves out the template's `# findings:`
+       comment and any `FIELD-NNN` quoted in prose. Then increment,
        zero-pad to three digits — and set `{{FINDINGS}}` to `[FIELD-NNN]`. **When no copy holds any
        `FIELD-NNN`, the first is `FIELD-001`**: never `FIELD-000`, and never unpadded. The
        counter is **tree-wide, not per-epic**; [intake.md](intake.md)'s prefix table owns the prefix and
@@ -177,13 +182,19 @@ Interactive scaffold of a new task tree node.
    - `{{TITLE}}` — the title from step 3
 
 9. **For task: offer to draft body sections** (Context / Acceptance / Out-of-scope / **Human test plan**) using any context already in the conversation. User reviews/edits before writing. If you can't draft confidently, leave the templates' placeholder copy and tell the user to fill it in.
-   Put this question:
+   Put this question, naming only the sections no step-0 flag drafted, in this order: Context, Acceptance
+   criteria, Out of scope, Human test plan (`--from-feature` drafts Context; `--from-review` and `--from-field`
+   draft Context and Acceptance criteria). Join two names with "and", three or four with commas and a final
+   "and":
 
-   > **Shall I draft the Context, Acceptance criteria, Out of scope and Human test plan from what we have discussed?** You review them before I write the file.
+   > **Shall I draft the <sections> from what we have discussed?** You review them before I write the file.
 
-   **No answer, or nobody to ask:** draft them when the request gives enough to do so confidently, and mark
-   `body sections`; otherwise leave the placeholder copy and report the sections as unfilled. Sections a
-   step-0 flag already drafts are not offered, so they are never marked.
+   With no flag, `<sections>` is all four; with `--from-feature`, `Acceptance criteria, Out of scope and Human
+   test plan`; with `--from-review` or `--from-field`, `Out of scope and Human test plan`. **When no section is
+   left, put no question and mark nothing.**
+
+   **No answer, or nobody to ask:** draft the sections the question named when the request gives enough to do
+   so confidently, and mark `body sections`; otherwise leave the placeholder copy and report them as unfilled.
    - **Human test plan** — draft concrete manual steps only for behaviour automated tests can't cover (UI/UX, edge cases, external integrations). If the task is plainly unit-testable, write `N/A — fully covered by automated tests` rather than inventing filler steps. When `--from-feature` is set, mine the feature's prototype + decisions for the UI/UX flows worth manual-testing.
 
 10. **Write the file** with the Write tool, with the mark line under its heading when any field was
@@ -265,11 +276,15 @@ a decision.
   sections a step-0 flag drafts. A rule chose it, not a guess. Each question below runs only for a field
   still unset. A caller that wants its values confirmed asks that itself ([spawn](spawn.md) step 4).
 - **A value the request states is answered, not inferred.** The person who invoked this verb named the
-  value itself: an id (`under STORY-001`), a title in quotes, a priority or assignee by name, the level in
+  value itself: an id (`under STORY-001`), a title in quotes under the rule below, a priority or assignee by name, the level in
   words (`file a task for …`). Write it, put no question, and mark nothing: copying a value someone gave is
   not a guess, and marking it makes the record say nobody chose a value somebody did. **A value read off the
   request's subject is still the fallback, and still marked**: choosing the parent whose title fits, or a
-  noun phrase this run composes as a title. Nobody named those; this run chose them. Three edges:
+  noun phrase this run composes as a title. Nobody named those; this run chose them. Four edges:
+  - quoted text is a stated title only when the request introduces it as the title (`called "…"`,
+    `titled "…"`, `named "…"`, `title: "…"`) or it is this verb's own argument (`/tasks new task "…"`). Any
+    other quoted text, such as `The defect: "export writes a header row even when there are no rows"`, is a
+    description: step 3's fallback composes the title from it, and `title` is marked;
   - a stated id that does not resolve, or names the wrong level, is not stated: put the step's question;
   - a stated parent that is `cancelled` still gets step 4's cancelled question, because naming it did not
     choose to reopen it;
