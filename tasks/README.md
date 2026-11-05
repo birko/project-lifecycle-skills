@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-05 06:08. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-05 06:46. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 59                  |
+| todo         | —                  | —                  | 62                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 3                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 258                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 45× P2 · 14× P3.
+`todo` by priority: 45× P2 · 17× P3.
 
 ## In progress now
 
@@ -98,11 +98,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (61/101 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (61/103 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (19/28 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (19/30 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -131,6 +131,8 @@ _None_
     - [x] TASK-338 `/tasks export` assumes a config `migrate` has not written yet, and the dry run's milestone lookup has no command
     - [ ] TASK-339 `/tasks intake --epic` leaves story reuse, the epic update, titles and group priority to the reader
     - [x] TASK-340 The task template has no `{{FINDINGS}}` token for `new` to fill, and the N/A test-plan wording differs
+    - [ ] TASK-341 `/tasks pick` calls a `verify` task "in review", cannot find the default branch with no remote, and flips the status before cutting the branch
+    - [ ] TASK-343 `/tasks new` leaves the shortened body question, a quoted description, and the FIELD-NNN scan to the reader
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -209,14 +211,14 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (41/45 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (41/46 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 38/40 done
+  - (epic level) — 38/41 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
@@ -257,6 +259,7 @@ _None_
     - [ ] TASK-334 `/feature status` templates leave a skipped prototype, the project name and the run mode undefined
     - [x] TASK-335 `/feature pick` names decompose as the next action while a sign-off waits, against the debt rule
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
+    - [ ] TASK-342 `/feature pick` words gate B's question twice
 
 - EPIC-007 First spec harvest review 2026-10 — in-progress (36/53 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (35/35 done)
