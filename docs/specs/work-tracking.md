@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: fac32d8b916d182429a864620133d5e8c5447534
+generated-at: 0a1498afaebdd2350b8b03e467d03468d04576c0
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -356,7 +356,7 @@ The system SHALL cut work into vertical tasks that each pass three hard checks �
 
 ### Requirement: Picking a task
 
-The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. A task named by id SHALL pass the same taken check, after a fetch when there is an upstream: it SHALL proceed when no task branch exists, when the branch is the current checkout, or when the branch exists locally under a worktree workspace, whose resume and leftover rules then decide; and otherwise SHALL refuse with a line naming where the branch exists, writing nothing. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee — `agent`, `unassigned` and the older `ai` alike as work for this conversation, an installed agent type by offering to spawn it, `human` and any other value by printing the task and waiting, the last naming the value as not an agent type — fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields. For a generic assignee it SHALL then offer to run the task in a subagent, defaulting to yes only when a stated test passes (every acceptance criterion names the command or the file, section or field that decides it, and no open-decision, criteria-question, unspawned-split or block marker is present) and naming the failing item otherwise; with no reply this conversation does the work. A detached run SHALL be handed the task file, checkout and branch, record `picked-by: tasks-pick` and a progress log, answer every ask from a stated contract table, stop and keep its branch at a decision only a person can take, close with `--unattended`, and report with a fixed first line; a task started detached SHALL be resumed from its log rather than re-offered.
+The system SHALL list `todo` tasks matching the filters (priority, assignee, epic, story, feature), ordered by priority then creation date, including blocked ones marked with their reason and excluding taken ones, which are named in a separate line; a task in progress in a worktree on this machine, or awaiting verification on its branch, SHALL appear only on its own line and never also as taken; it SHALL report verification debt before the list, asking whether to clear it first when there are three or more such tasks but never blocking the pick. A task named by id SHALL pass the same taken check, after a fetch when there is an upstream: it SHALL proceed when no task branch exists, when the branch is the current checkout, or when the branch exists locally under a worktree workspace, whose resume and leftover rules then decide; and otherwise SHALL refuse with a line naming where the branch exists, writing nothing; once it proceeds it SHALL report verification debt as a listed pick does. After the choice it SHALL offer to plan first when no plan exists (default yes, naming what triggered the recommendation), flip the status to `in-progress`, regenerate the dashboard only when that flip lands on a default branch with no upstream — writing none on a task branch cut in place, and with an upstream writing none and naming `/tasks triage` to run through a PR — and hand off by assignee — `agent`, `unassigned` and the older `ai` alike as work for this conversation, an installed agent type by offering to spawn it, `human` and any other value by printing the task and waiting, the last naming the value as not an agent type — fetching a linked GitHub issue's comments only when the configuration declares `mode: hybrid` with the GitHub provider and otherwise printing that the issue was not fetched. A blocked task SHALL NOT be started without an explicit yes to unblocking it; unmet dependencies only warn. A plan's age SHALL be the date of the last commit that changed its section, recomputed every run and never recorded; an uncommitted plan SHALL NOT be flagged, and a repo with no git history SHALL say the age was not checked. A path the plan names SHALL count as changed when it was modified, deleted or renamed since then, and not when it never existed. When an existing plan predates changes to the code it references, it SHALL ask whether to replan first, default no; with no answer it SHALL keep the plan and say in the hand-off that it may be stale, never replanning unasked. When the task file carries the inferred-values line, the hand-off SHALL print it first as a warning naming the inferred fields. For a generic assignee it SHALL then offer to run the task in a subagent, defaulting to yes only when a stated test passes (every acceptance criterion names the command or the file, section or field that decides it, and no open-decision, criteria-question, unspawned-split or block marker is present) and naming the failing item otherwise; with no reply this conversation does the work. A detached run SHALL be handed the task file, checkout and branch, record `picked-by: tasks-pick` and a progress log, answer every ask from a stated contract table, stop and keep its branch at a decision only a person can take, close with `--unattended`, and report with a fixed first line; a task started detached SHALL be resumed from its log rather than re-offered.
 
 #### Scenario: Detached offer on a mechanical task
 
@@ -388,6 +388,12 @@ The system SHALL list `todo` tasks matching the filters (priority, assignee, epi
 - **When** the user runs `/tasks pick`
 - **Then** the ids are listed and the user is asked whether to clear verification debt first, with yes as default
 
+#### Scenario: Debt nudge on a task named by id
+
+- **Given** TASK-046 at `verify` and a free TASK-050
+- **When** the user runs `/tasks pick TASK-050`
+- **Then** the taken check passes and the debt line naming TASK-046 is printed before TASK-050 is entered
+
 #### Scenario: Blocked task with nobody to answer
 
 - **Given** `TASK-009` carries `blocked: waiting on vendor`
@@ -411,6 +417,12 @@ The system SHALL list `todo` tasks matching the filters (priority, assignee, epi
 - **Given** a task whose plan predates changes to files it references
 - **When** it is picked and nobody answers the replan question
 - **Then** the plan is kept and the hand-off says `plan kept: it predates changes to <paths> — may be stale`
+
+#### Scenario: Stale plan whose file was deleted
+
+- **Given** TASK-014's plan, committed on 2026-10-01, names `src/old.py`, which a later commit deleted, and `src/new.py`, which never existed
+- **When** TASK-014 is picked with nobody to answer
+- **Then** the replan question names `src/old.py (deleted)` and not `src/new.py`, and the hand-off says the plan is kept and may be stale
 
 #### Scenario: In-place pick with an upstream
 

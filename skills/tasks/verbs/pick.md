@@ -24,7 +24,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - `--feature <FEATURE-NNN>` — limit to tasks carrying that `feature:` frontmatter (how
      [[feature]]'s `/feature pick` hands off once a feature is decomposed)
    - Bare ID arg (`/tasks pick TASK-014`) → skip the picker, jump to step 5 — **after step 3's taken check
-     on that one task.** Skipping the picker must not skip the check, or naming a task is the way to pick one
+     on that one task, then step 2b.** The taken check runs first, since a refusal writes nothing and needs no
+     nudge; 2b then runs exactly as for a listed pick, because naming a task skips the list, not the rule that
+     verification debt comes before new scope. Count the named task in 2b only if it is not the one being
+     picked. With 3 or more in debt, a yes to 2b's question stops here before step 5: that is the debt being
+     cleared first, not a refusal. Skipping the picker must not skip the check, or naming a task is the way to pick one
      another session or clone already holds. Read it as step 3 does:
 
      | `task/TASK-NNN` | Do |
@@ -103,8 +107,24 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - **Recommend planning** whenever the task touches more than one file, has ≥3 acceptance
      criteria, carries a `feature:` link, or its Context names unknowns. Say which of those
      triggered the recommendation — a concrete reason beats a generic prompt.
-   - If a plan already exists, **read it as the work brief** and note its age: when the plan
-     predates changes to the code it references, flag it and offer `/tasks plan {{ID}} --replan`
+   - If a plan already exists, **read it as the work brief** and note its age. **The age is recomputed every
+     run and never written down**: it is derived from git evidence the repo still holds. Read the copy of the
+     task file step 5 read (on a worktree resume, the task branch's):
+
+     | Case | Reading |
+     |---|---|
+     | no git, or `HEAD` not yet born | do not check; print `plan age not checked — no git history`, ask nothing |
+     | the task file is untracked, or `git diff HEAD -- <task file>` touches a line inside the plan section | the plan is uncommitted, so newer than every commit: do not flag, ask nothing |
+     | committed | find the section's lines in `HEAD`'s copy (`git show HEAD:<task file>`): from its heading to the line before the next `## ` heading, **or to the file's last line**, since the template ends with this section. The plan's commit and `<date>` are the first line of `git log -1 -s --format='%H %cs' -L <start>,<end>:<task file>`; take only the first line, since older gits print the diff anyway. A regex range ending at `/^## /` fails with "No match" when the plan is last, which is the usual case |
+
+     The paths are every repo-relative path the plan names in backticks. One **changed since** when
+     `git diff --name-status <plan sha> HEAD -- <paths>` or `git status --porcelain -- <paths>` lists it. A path
+     absent now counts only when that diff shows it deleted or renamed, rendered `<path> (deleted)` or
+     `<path> (renamed → <new>)`. A path absent now that the diff does not show deleted or renamed is one the
+     plan means to create, not evidence of staleness, so leave it out; that includes every path when the plan's
+     commit is `HEAD`, since the diff is then empty. When none changed, do not flag and do not ask, and print
+     nothing about the age.
+     When the plan predates changes to the code it references, flag it and offer `/tasks plan {{ID}} --replan`
      rather than silently working from a stale plan. Put this question:
 
      > **TASK-NNN's plan dates from <date>, and <paths> changed since. Replan it with `/tasks plan TASK-NNN --replan` first? [y/N]**
@@ -422,7 +442,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
    Put this question, with `[Y/n]` when the test passes and `[y/N]` when it fails:
 
-   > **Run TASK-NNN in a subagent? It starts with a clean context, loads this project's guide and skills, and works from the task file alone; this conversation waits for its report. Detached test: <passed | failed: T<n> — "<the quoted item>">.<" Ends at verify: N manual test steps." when T3 announces> [Y/n]**
+   > **Run TASK-NNN in a subagent? It starts with a clean context, loads this project's guide and skills, and works from the task file alone; this conversation waits for its report. Detached test: <passed | failed: T<n> — "<the quoted item>">.<" Ends at verify: 1 manual test step." or " Ends at verify: N manual test steps." when T3 announces> [Y/n]**
 
    An empty reply takes the default. **No reply, or nobody to ask:** this conversation does the work. A
    detached run reports back to a person, and with nobody present a second unattended layer adds nothing.
@@ -437,7 +457,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
    **The report** starts with one of these lines, then lists every spawned id, every inferred field and
    every unmet criterion:
-   `closed: done — <pr or sha>` · `parked: verify — <n> manual steps` ·
+   `closed: done — <pr or sha>` · `parked: verify — <n> manual step(s)` (`1 manual step` for one) ·
    `stopped: decision pending: <the question> — kept on task/TASK-NNN` · `stopped: <the verb's own line>`.
    This conversation prints it, re-reads the task's `status:` and last log line, and says so when they
    disagree with the report. The file wins.
