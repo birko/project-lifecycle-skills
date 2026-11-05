@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-05 08:02. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-05 08:53. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 56                  |
+| todo         | —                  | —                  | 57                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 3                   |
+| verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 264                 |
+| done         | 4                  | 13                 | 265                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 45× P2 · 11× P3.
+`todo` by priority: 46× P2 · 11× P3.
 
 ## In progress now
 
@@ -24,7 +24,6 @@ _None_
 
 ## Awaiting verification
 
-- [TASK-100](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-100.md) — Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating (P2, agent)
 - [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) — `pick`'s handoff branches on an `assignee:` value no task in the tree has (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
@@ -98,11 +97,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (64/103 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (65/104 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (22/30 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (22/31 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -133,6 +132,7 @@ _None_
     - [x] TASK-340 The task template has no `{{FINDINGS}}` token for `new` to fill, and the N/A test-plan wording differs
     - [x] TASK-341 `/tasks pick` calls a `verify` task "in review", cannot find the default branch with no remote, and flips the status before cutting the branch
     - [x] TASK-343 `/tasks new` leaves the shortened body question, a quoted description, and the FIELD-NNN scan to the reader
+    - [ ] TASK-344 A detached run of a judgement task does its judging instead of stopping
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -176,7 +176,7 @@ _None_
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (12/22 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (13/22 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -195,7 +195,7 @@ _None_
     - [x] TASK-097 `unknown` is the only container for two different situations, and one of them is not ignorance
     - [x] TASK-098 A row prescribes an action and is silent on the case where it is already done
     - [ ] TASK-099 A row that names two artifacts never says whether the second carries its own state
-    - [ ] TASK-100 Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating 🔍 verify
+    - [x] TASK-100 Step 3c derives its set from what a run *created*, and landing is the one act that invalidates without creating
     - ~~TASK-101 Two rows read one fact in opposite directions, because "a working runner" names no bar~~
     - [ ] TASK-102 Nothing says whether a step-3 fill offer joins step 2's round or comes after it
     - ~~TASK-112 The adopter's report list gained no entry for the `not applicable` state~~

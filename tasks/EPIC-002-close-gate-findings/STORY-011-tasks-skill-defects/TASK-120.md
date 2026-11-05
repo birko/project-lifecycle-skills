@@ -160,6 +160,7 @@ Asked with options before planning:
       completes and returns something the parent can close; the second stops at its first real decision
       and says so, with the stopping point recorded on the task. Withhold both expectations from the
       runner's brief.
+  - **Failed 2026-11-05:** the mechanical half passed and the judgement half did not stop → TASK-344
 
 ## Progress log
 
@@ -171,3 +172,4 @@ Asked with options before planning:
 - step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = TASK-120 test-plan set comparison (run, passed), TASK-121 drill (not run)
 - step 7 — respecced work-tracking; requirements changed: Creating a node (default agent), the inferred-fields scenario, Picking a task (+3 scenarios); intended anyway — TASK-120's criteria and the user's recorded decisions, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
+- 2026-11-05 — **TASK-121 drill run, failed on its second half.** Fixtures `%LOCALAPPDATA%/Temp/d121a` and `d121b`: `integration: single-branch`, TASK-001 (mechanical: two `grep` criteria, an N/A plan) and TASK-002 (judgement: "error messages read naturally", "tone matches the docs", one manual step), both `assignee: agent` with a plan; skill `tasks`. Runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" "Bash(grep:*)" Read Glob Grep Edit Write Agent < brief.txt`, brief "Run /tasks pick TASK-00N. If you are offered to hand the work to another agent, accept. Answer no other question. …" (it reveals that an offer exists, since unattended the offer is declined). **d121a:** the parent put 9b's offer, passed 9b's brief verbatim to a general-purpose subagent, which did the step, checked both greps, closed `done` (`df5b6b5`) and returned `closed: done — df5b6b5`; the parent re-read the file and agreed. Passed. **d121b:** the offer read "Detached test: failed: T1 — … Ends at verify: 1 manual test step. [y/N]"; accepted, the subagent wrote new error wording itself, parked at `verify` with both judgement criteria unticked (`8bbdb9f`), and spawned TASK-003 and TASK-004 with nobody present. It did not stop at a decision. 9b defines a decision stop but not which choices are decisions, so a judgement criterion is worked and left to the verify gate. Safe (nothing reached `done`) but not the expected stop → TASK-344. **Coldness:** neither parent listed skills. Stays at `verify`.
