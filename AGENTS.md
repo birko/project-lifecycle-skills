@@ -156,7 +156,9 @@ The skills *are* the product, so their prose is the user interface. This subsect
   § *A template ships nothing a render cannot make true* reads it: where the field **may be absent**,
   leave it absent and name it in the report; where it **cannot** be — a field every other verb reads —
   write the safest fallback **and record beside it that nothing chose it**, the shape `/specs init`
-  already uses when it writes a map stamped `coverage: unverified`. A fallback written bare is the
+  already uses when it writes a map stamped `coverage: unverified`. In `tasks/.config.yml` the two shapes are
+  `mode: local  # defaulted — nobody was asked` and, for a field someone *declined* to answer, an absent
+  `integration:` with a dated `# integration: declined …` marker that only the re-ask checks read. A fallback written bare is the
   defect wearing a different hat. Measured (DRILL-109-1 and -2, two cold runners, 2026-09-16): told to quote their questions
   verbatim and continue as if unanswered, **neither could** — *"no question text is supplied … the
   instruction **is** the prompt"* — and one, reaching `/tasks init`'s ambiguous branch with no user, picked

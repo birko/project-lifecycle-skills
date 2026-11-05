@@ -166,7 +166,7 @@ outstanding** — a repo that already has a guide is not asked which guide it wa
 `tasks/.config.yml` predates the `integration:` field *is* asked for it, because nothing in the repo
 answers and the alternative is guessing from `git log`. **Step 1 is what establishes which of the two
 that repo is**, so this step never asks blindly and never re-asks a declaration the file already
-carries. Pass the answers to the owning verb (`/tasks init` takes `mode=`, `integration=`, `workspace=` and `worktree-root=`) so
+carries or records as declined ([LAYER.md](../new-project/LAYER.md) § *A named declaration is not a version*). An answer of "no opinion" passes `integration=declined`. Pass the answers to the owning verb (`/tasks init` takes `mode=`, `integration=`, `workspace=` and `worktree-root=`) so
 nobody is asked twice — and pass them **from here**, so the question stays in this round instead of
 surfacing inside step 3's delegation, which is the one-round rule below breaking by another route.
 
@@ -402,7 +402,7 @@ the user unable to tell what was touched in their own repo.
 - PowerShell-compatible commands.
 - Offer the adoption commit; never commit unasked.
 - **Git policy is read, not inferred.** Whether to cut a branch, and whether to merge, comes from
-  `tasks/.config.yml`'s `integration:` field. Absent → **ask, and backfill it** as part of the
+  `tasks/.config.yml`'s `integration:` field. Absent with no declination marker → **ask, and backfill it** as part of the
   adoption; an absent declaration is the thing this skill reconciles. Never infer the policy from
   `git log` — a squash-merge repo and a commit-straight-to-main repo produce the same history, which
   is why [[tasks]] forbids the inference outright. And **never delete a branch on inference**:

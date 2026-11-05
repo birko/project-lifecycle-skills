@@ -322,7 +322,10 @@ Runs once per project, when `.config.yml` is missing.
    every other verb reads it — so this is the write-and-mark case rather than the leave-absent one, and
    the annotation is what stops a later reader taking a fallback for a decision. **`/tasks migrate` is what
    clears it**, not a later run of this flow — mode detection runs only when `.config.yml` is missing, so
-   once the annotated line exists nothing here revisits it.
+   once the annotated line exists nothing here revisits it. This annotation and `integration:`'s declination
+   marker ([init.md](init.md) step 3) are one convention in its two shapes: a field that cannot be absent is
+   written with its fallback and annotated inline; a field that may be absent stays absent, with a marker
+   comment when someone declined. Verbs that read the field never read either comment.
 
 3. **For hybrid (github)**: ask for the repo, defaulting to `git remote get-url origin` parsed to `owner/name`:
 

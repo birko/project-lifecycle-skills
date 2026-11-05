@@ -104,6 +104,13 @@ never fires — turning a defect that used to reach only configs written before 
 that reaches every repo these skills scaffold. Match the field **anchored and uncommented**
 (`^integration:`, `^workspace:`), and read a commented line as **absent**.
 
+**A recorded declination settles the question without declaring the field.** When `^integration:` misses,
+grep `^# integration: declined [0-9]{4}-[0-9]{2}-[0-9]{2}`, the marker [[tasks]] `init` writes when someone
+answers "no opinion". Absent plus the marker ⇒ **settled, not asked**, reported `integration: declined
+<date>`; absent with no marker ⇒ outstanding, asked in the one round. Both are greps, so the survey stays the
+owner of finding out. A marker in any other form (no date, other wording) reads as never asked, which fails
+toward asking once. The field itself stays absent, and every consumer applies the documented default.
+
 ## Lazily-created rows
 
 A row marked **(lazy)** is part of the layer, and **nothing creates it** — not the scaffolder, not

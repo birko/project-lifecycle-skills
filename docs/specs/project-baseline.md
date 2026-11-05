@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 3a6bdd7e471466427b560217f4f6bf4964c9675a
+generated-at: 8a847ea96d9dd24b278c427055ee650d70342e7a
 generated-on: 2026-11-04
 sources:
   - skills/adopt-project/INFER.md
@@ -73,13 +73,13 @@ The system SHALL gather, in one or two question batches, the project name and ab
 
 ### Requirement: The scaffold's integration model and workspace are asked, never defaulted
 
-The system SHALL ask the integration model (`pr-per-task` / `single-branch`) and SHALL NOT let it default; where the user has no opinion it SHALL say the field will be left undeclared and that the documented default applies until set, and SHALL then omit `integration=` from the tasks init; it SHALL put the tasks skill's workspace question verbatim (and its root question only when the answer is its own worktree) and pass the answers as `workspace=` / `worktree-root=`.
+The system SHALL ask the integration model (`pr-per-task` / `single-branch`) and SHALL NOT let it default; where the user has no opinion it SHALL say the field will be left undeclared and that the documented default applies until set, and SHALL then pass `integration=declined` to the tasks init, which records the declination, omitting `integration=` only when the question got no answer; it SHALL put the tasks skill's workspace question verbatim (and its root question only when the answer is its own worktree) and pass the answers as `workspace=` / `worktree-root=`.
 
 #### Scenario: No opinion on integration
 
 - **Given** the user answers the integration question with "don't care"
 - **When** `/tasks init` is chained
-- **Then** it is invoked without `integration=`, so the config is left without a live `integration:` key and the field is reported unresolved
+- **Then** it is invoked with `integration=declined`, so the config has no live `integration:` key and carries the dated declination marker
 
 #### Scenario: Worktree workspace chosen
 
@@ -423,13 +423,19 @@ The system SHALL settle each `(conditional)` row by the condition the row names 
 
 ### Requirement: Named declarations are probed by the survey and asked only when absent
 
-The system SHALL, for every present artifact whose row names a declaration (today `integration:` and `workspace:` in `tasks/.config.yml`), grep for a live, anchored, uncommented key (`^integration:`, `^workspace:`), treat a commented line as absent, report an outstanding declaration on the row as `present` with the gap named, carry it into the one round, and never re-ask one the file carries. `worktree-root:` is not a declaration it probes: under `workspace: worktree` an absent root is settled at adoption, because `pick` asks for it when the first task needs it.
+The system SHALL, for every present artifact whose row names a declaration (today `integration:` and `workspace:` in `tasks/.config.yml`), grep for a live, anchored, uncommented key (`^integration:`, `^workspace:`), treat a commented line as absent, treat an absent `integration:` with a dated `# integration: declined` marker as settled and not asked (reported as declined with its date), report an outstanding declaration on the row as `present` with the gap named, carry it into the one round, and never re-ask one the file carries. `worktree-root:` is not a declaration it probes: under `workspace: worktree` an absent root is settled at adoption, because `pick` asks for it when the first task needs it.
 
 #### Scenario: Commented example only
 
 - **Given** `tasks/.config.yml` contains `# integration: <pr-per-task|single-branch>` and no live key
 - **When** the survey probes the declaration
 - **Then** `integration:` is outstanding and is asked in step 2's round
+
+#### Scenario: A declined integration is not re-asked
+
+- **Given** `tasks/.config.yml` has no live `integration:` key and carries `# integration: declined 2026-11-05 — the pr-per-task default applies`
+- **When** step 1 surveys it
+- **Then** `integration:` is settled, reported declined 2026-11-05, and not asked in step 2's round
 
 #### Scenario: Declaration already carried
 

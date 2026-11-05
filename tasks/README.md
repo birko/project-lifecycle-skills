@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-05 12:21. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-05 12:57. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 53                  |
+| todo         | —                  | —                  | 52                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 271                 |
+| done         | 4                  | 13                 | 272                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 42× P2 · 11× P3.
+`todo` by priority: 41× P2 · 11× P3.
 
 ## In progress now
 
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (71/105 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (72/105 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -132,14 +132,14 @@ _None_
     - [x] TASK-341 `/tasks pick` calls a `verify` task "in review", cannot find the default branch with no remote, and flips the status before cutting the branch
     - [x] TASK-343 `/tasks new` leaves the shortened body question, a quoted description, and the FIELD-NNN scan to the reader
     - [x] TASK-344 A detached run of a judgement task does its judging instead of stopping
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (7/12 done)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (8/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
     - [x] TASK-028 The inference skip rule counts five subsections when one of them is conditional
     - [x] TASK-035 Nothing owns the `integration:` question — three rules each hand it to another
     - [ ] TASK-085 `LAYER.md`'s survey-state list has outgrown the shape it is written in
     - [x] TASK-086 Adoption cannot tell its own unlanded writes from the user's work in progress
-    - [ ] TASK-092 `/tasks init` cannot reach its own unresolved path, and cannot record a declination
+    - [x] TASK-092 `/tasks init` cannot reach its own unresolved path, and cannot record a declination
     - [x] TASK-110 The scaffolder still gates two conditional rows on a kind list the inventory replaced with a question
     - ~~TASK-136 Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently~~
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
