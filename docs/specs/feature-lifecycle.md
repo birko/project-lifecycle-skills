@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 9e4c7b662dd2bb4a994814c17cf56870a0749a28
+generated-at: 469296bc2bd92f29e1d9c6cb3f68d9ade87459a8
 generated-on: 2026-11-04
 sources:
   - skills/feature/SKILL.md
@@ -623,7 +623,7 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 
-The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
+The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text, and for a skipped or not-applicable one the recorded line with its reason, linking nothing — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
 
 #### Scenario: Single-feature run
 
@@ -645,7 +645,13 @@ The system SHALL, on `/feature status`, collect features and tasks through the r
 
 ### Requirement: Generated files are owned by status and are not hand-edited
 
-The system SHALL treat each feature's rollup and the features index as generated output owned by `/feature status`, marked as not to be hand-edited, and SHALL keep them current by re-running that verb automatically after decide, after decompose, after a task close that changes a feature-linked task, and after a surface-dependent revert; `new` and `prototype` SHALL also update their own feature's single index row so the index never lags a newly created feature or a newly built prototype.
+The system SHALL treat each feature's rollup and the features index as generated output owned by `/feature status`, marked as not to be hand-edited (the index headed with the project root directory's name, and its banner naming the verb, never a mode), its Prototype cell a link while the artifact stands and otherwise the recorded state (`pending`, `skipped`, `n/a`, `deleted`), and SHALL keep them current by re-running that verb automatically after decide, after decompose, after a task close that changes a feature-linked task, and after a surface-dependent revert; `new` and `prototype` SHALL also update their own feature's single index row so the index never lags a newly created feature or a newly built prototype.
+
+#### Scenario: Skipped prototype is not linked
+
+- **Given** a feature whose `## Prototype` line reads `Skipped — CLI command, nothing visual to show`
+- **When** `/feature status` renders it
+- **Then** the rollup states it was skipped, with that reason, and links no file, and the index's Prototype cell reads `skipped`
 
 #### Scenario: Decompose refreshes the rollup
 

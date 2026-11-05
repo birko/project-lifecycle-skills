@@ -51,7 +51,9 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 
 4. **Render** [templates/status.md](../templates/status.md) — fill decision counts by state, build progress, and:
    - `{{TESTABLE_SUMMARY}}` — the tasks whose Human test plan is filled and ready to run.
-   - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / `prototype-states.html` / the spike branch, or "none yet". A prototype already deleted renders as the `idea.md` line says (`built, then deleted — answered D<n>`), never as a link to a file that is gone.
+   - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / `prototype-states.html` / the spike branch, or "none yet". A prototype already deleted renders as the `idea.md` line says (`built, then deleted — answered D<n>`), never as a link to a file that is gone. A prototype recorded as
+     **Skipped** or **N/A** renders as the `idea.md` line says, reason included (`Skipped — headless logic, the
+     test suite is the proof`), and links nothing; **Pending** renders as "none yet".
    - `{{NEXT_STEP}}` — one concrete action, e.g. "PM to review 2 proposed decisions", "3 tasks in progress", "ready for /feature review".
    (The template is stakeholder-facing and carries no author comments — these hints live here.)
 
@@ -65,10 +67,14 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    the debt. A feature whose tasks are all `done` but unsigned prints as `review (awaiting
    sign-off)`, never `done`.
 
-7. **Regenerate the features index** (all-features mode only) — this verb **owns**
+7. **Regenerate the features index** (the whole file in all-features mode; one row otherwise) — this verb **owns**
    `docs/features/README.md`, the human entry-point index. From the same collection pass,
    render [templates/README.md.tmpl](../templates/README.md.tmpl): one row per feature (link ·
    title · derived phase · decision counts a/c/d/r/p · `done/total` tasks · prototype link),
+   where the Prototype cell links the artifact while it stands (`[html]`, `[md]`, `[playground]`, `[spike]`), and
+   otherwise holds the `idea.md` line's state in lower case (`pending` · `skipped` · `n/a` · `deleted`), never a
+   link. `{{PROJECT_NAME}}` is the name of the directory containing `docs/`, the project root this verb
+   resolved: a path any run derives the same way, where a README heading can be missing or say something else.
    the verification-debt note (lead with every debt feature, as SKILL.md § *Verification debt surfaces
    first* defines it, with its task count), and the drift note (reuse
    [[roadmap]]'s divergence check — don't re-derive it). Write `docs/features/README.md`
