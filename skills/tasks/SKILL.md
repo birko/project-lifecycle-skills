@@ -368,6 +368,30 @@ state, not "reviewed somewhere."
 commit-to-main repo from a squash-merge one. On `single-branch`, `pick` offers no branch and `close`
 skips step 8 — `done` still means *on the default branch*, only the mechanism changes.
 
+**The default branch is derived, never read off the checkout.** Every verb that says "the default branch"
+(`<default>`, `<default-branch>`) means this. Recompute it every run, in this order, and stop at the first answer:
+
+| Evidence | Default branch |
+|---|---|
+| a remote `<r>` whose `git symbolic-ref --short refs/remotes/<r>/HEAD` resolves (with several remotes, all that resolve must agree) | that ref minus `<r>/` |
+| a remote with no local `<r>/HEAD`, where `git ls-remote --symref <r> HEAD` answers | the branch it names (read-only: never `git remote set-head`, which writes) |
+| no remote answers, and exactly one local branch outside `task/*` and `record/*` | that branch |
+| an unborn repo (`git rev-parse HEAD` fails) | `git symbolic-ref --short HEAD`; `pick` step 7's unborn rule follows |
+| anything else: several candidate branches, or remotes that disagree | ask |
+
+The checked-out branch is not evidence, since during a task it is `task/TASK-NNN`, and `task/*` and `record/*`
+are excluded because this skill made them. Several candidates are only *consistent with* several answers, so
+the answer is asked for, never guessed. Put this question:
+
+> **Which branch is this repo's default branch, the one task branches are cut from and merged back into? Candidates: `<list>`.**
+
+**No answer, or nobody to ask:** record no default branch, and treat the run as *the main copy is not on the
+default branch*: `pick` step 7 cuts nothing, step 6b falls back where it would have used one, and the rest of
+the pick goes on in the current checkout (its status flip included, left uncommitted). Print
+`default branch: not determined — <n> candidate branches and no remote HEAD; no branch was cut and nothing was committed`.
+An answer applies to this run only and is never written down, since remembering it would record a decision
+nobody declared.
+
 **Where the work happens is declared too.** `workspace:` (`in-place` | `worktree`) says whether a task
 runs in the one working copy or in its own git worktree; `worktree-root:` says where those worktrees
 live, outside the repo, a relative path resolving against the repo root. Absent `workspace:` means

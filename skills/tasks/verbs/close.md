@@ -64,7 +64,8 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
        `cancelled` or `blocked:` is the normal output of `pick`, `cancel` and `block` on an in-place
        project, none of which commits. Reading past it would undo their work.
    - **Except an unmerged close**: the task branch's copy reads `done` (`git show task/TASK-NNN:<task file>`)
-     while the default branch's copy still reads otherwise (`git show <default>:<task file>`). Read both with
+     while the default branch's copy still reads otherwise (`git show <default>:<task file>`; `<default>` is
+     [SKILL.md](../SKILL.md) § *The default branch is derived*). Read both with
      `git show`, never by path: branches are shared by every tree, so it works from the worktree and from
      the main copy alike, and it never reaches into another tree. An earlier run committed `done` on the
      task branch and then failed at the merge. This is not a closed record, so go straight to step 8's

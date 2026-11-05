@@ -48,7 +48,8 @@ indistinguishable from a fresh one except by what's on disk, so look there: find
 - **the task branches too, on any project whose `pick` cuts them** (every `integration:` but
   `single-branch`). List local `task/*` branches
   (`git branch --list "task/*"`) and read each one's task file with `git show task/TASK-NNN:<task file>`.
-  With an upstream the default branch's copy of an in-progress task still reads `todo`, so the grep alone
+  With an upstream the default branch's copy (the default branch as [[tasks]] § *The default branch is derived*
+  defines it) of an in-progress task still reads `todo`, so the grep alone
   never finds it. Worse, the pool rule below hides it as taken, and a reset drain would start a second
   task and abandon the first. A branch copy counts only when it reads **`in-progress`** and is **not
   blocked**. Read the status in both forms ([[tasks]] § *Lifecycle* → *Reading a task's status*). A copy
@@ -263,7 +264,8 @@ over the same pool agree, and the line says that is all it is. It is not a pendi
   ride in 6b's pick commit**: with no upstream write them first, in the main copy, since 6b commits the pick
   on the default branch; with an upstream write them in the worktree, where 6b commits the pick on the task
   branch; on 6b's fallback with an upstream there is no worktree and no pick commit, so write them in the
-  checkout, where they stay uncommitted until `close` carries them with the work. Written anywhere else, a reset session would take this task for a human's)
+  checkout, where they stay uncommitted until `close` carries them with the work; in place with no worktree,
+  write them with step 7's flip, after its cut, so they ride uncommitted to `close`. Written anywhere else, a reset session would take this task for a human's)
 
 Every step below appends one line. The log is how step 0 resumes; a step that ran without a line is a
 step the next session will redo.

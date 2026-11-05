@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 2b7c279717d0225451369e2e214c8a20fe250cd6
+generated-at: 009fd07b724da8ae043ec737b855b150f1e572be
 generated-on: 2026-11-04
 sources:
   - skills/fix-next/SKILL.md
@@ -263,7 +263,7 @@ The system SHALL walk down the ranking to the first unblocked task, writing `ski
 
 ### Requirement: The pick is written to disk before any code is read
 
-The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task's frontmatter, append a progress log whose first line is `- step 2 — picked; ranked above <runner-up> because <reason>` — ending, after any tie note, `; inferred, not chosen: <fields>` when the task file carries the task tracker's inferred-values line — and move the task from `todo` to `in-progress`, cutting the task branch on a pull-request-per-task project; under worktree workspaces it SHALL always take the pick verb's blank-answer branch for the root question and SHALL write the two lines where they ride in the pick commit — the main copy with no upstream, the worktree with an upstream.
+The system SHALL, immediately on choosing, add `picked-by: fix-next` to the task's frontmatter, append a progress log whose first line is `- step 2 — picked; ranked above <runner-up> because <reason>` — ending, after any tie note, `; inferred, not chosen: <fields>` when the task file carries the task tracker's inferred-values line — and move the task from `todo` to `in-progress`, cutting the task branch on a pull-request-per-task project; under worktree workspaces it SHALL always take the pick verb's blank-answer branch for the root question and SHALL write the two lines where they ride in the pick commit — the main copy with no upstream, the worktree with an upstream — and, in place with no worktree, SHALL write them with the pick's status flip, after its branch cut, where they stay uncommitted until the close carries them.
 
 #### Scenario: Worktree pick with no upstream
 

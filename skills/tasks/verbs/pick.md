@@ -53,8 +53,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | Debt | Do |
    |---|---|
    | none | say nothing; go to step 3 |
-   | 1–2 | one line — `⚠ 2 in review awaiting sign-off: TASK-046, TASK-048` — then continue |
+   | 1–2 | one line — `⚠ verification debt: 2 at verify awaiting sign-off: TASK-046, TASK-048` — then continue |
    | 3 or more | the same line, then **ask**: *"Clear verification debt first?"* Default **yes**. The user may decline and pick anyway |
+
+   The line names the state `verify` even for a task whose file still reads the older `review`; both are the one
+   state ([SKILL.md](../SKILL.md) § *Lifecycle* → *Reading a task's status*).
 
    Count plus ids, not a full listing — the bare `/tasks` snapshot owns the readable version, and this
    is a nudge, not a second dashboard. Use its words: a `verify` task is **verification debt**, and it
@@ -205,7 +208,8 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      **Both sides absolute, always.** Without `--path-format=absolute`, git prints one path absolute and
      the other relative when run from a subfolder (`C:/…/.git` against `../.git`), so the plain comparison
      reports a linked worktree in the main copy.
-   - **Upstream or no upstream.** `git rev-parse --abbrev-ref <default-branch>@{upstream}` decides; recompute
+   - **Upstream or no upstream.** `<default-branch>` is [SKILL.md](../SKILL.md) § *The default branch is derived*.
+     `git rev-parse --abbrev-ref <default-branch>@{upstream}` decides; recompute
      it every run, never remember it. It fails → **no upstream**, everything below as written. It names an
      upstream → **upstream**. Nothing may be committed on the local default branch there, because nobody
      pushes it, and a local commit there diverges from the remote the moment a PR merges, and a protected
@@ -344,8 +348,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - no worktree: `workspace: no worktree holds task/TASK-NNN — continuing in place.`
    - leftover: `workspace: TASK-NNN already has <what was found> from an earlier pick — nothing was changed; resume it rather than pick it again.`
 
-7. **Flip status to in-progress**:
-   - Use Edit to change `status: todo` (or whatever current) → `status: in-progress`.
+7. **Cut the task branch, then flip status to in-progress**:
    - **Cut the task branch (git/PR projects).** The default integration model is PR-per-task —
      `pick` cuts the branch, `close` is the merge gate. If the project is
      a git repo on its default branch, offer to cut `task/TASK-NNN` so the work is isolated and
@@ -372,6 +375,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      no base to branch from or diff against. Offer to make the initial commit first
      (`chore: initial scaffold`, staging the current tree), then cut the task branch. Don't start
      work on an unborn branch — `close`'s diff/merge gate would have nothing to compare.
+   - **Then flip the status.** Use Edit to change `status: todo` (or whatever current) → `status: in-progress`,
+     in whatever checkout the cut left. Cut first so the flip is made where it stays: on the task branch,
+     uncommitted, until `close` commits it with the work. An edit made on the default branch and carried by
+     `git switch -c` lands in the same place but reads as if the default branch had been written. After step
+     6b's no-upstream fallback, 6b's pick commit already carries the flip, so this edit changes nothing.
    - **Offer to record a PR or commit that already exists.** Put this question:
 
      > **Is there already a PR or commit for TASK-NNN? Give its number or SHA to record in `pr:`, or leave it empty.**
@@ -382,10 +390,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 8. **Regenerate dashboard — only where the status flip landed on a default branch with no upstream.** The
    rule is [close.md](close.md) step 10's, for the same reasons; read it off where step 7 left the flip:
 
-   | Step 7's flip is… | Do |
+   | Where step 7 left the checkout | Do |
    |---|---|
-   | on the default branch (no task branch cut), with no upstream | chain to triage logic |
-   | on a task branch cut in place | **write nothing**: that checkout is the task branch, and a dashboard written there rides into its close commit, the per-task conflict step 6b's worktree avoids |
+   | the default branch (no cut: `single-branch`, cut declined, not a git repo), with no upstream | chain to triage logic |
+   | a branch that is not, or may not be, the default branch (no cut because of that, or the default branch not determined, [SKILL.md](../SKILL.md) § *The default branch is derived*) | **write nothing**: a dashboard written there would land on the wrong branch |
+   | a task branch cut in place, the flip uncommitted there or committed by 6b's fallback pick commit | **write nothing**: that checkout is the task branch, and a dashboard written there rides into its close commit, the per-task conflict step 6b's worktree avoids |
    | anywhere, with an upstream (`git rev-parse --abbrev-ref <default-branch>@{upstream}` succeeds) | **write nothing on the default branch**, which must stay a mirror of the remote. Print `TASK-NNN is now in-progress — dashboard not refreshed; run /tasks triage through a PR` |
    | in a worktree (step 6b entered one) | never reached here: with no upstream 6b runs the first row itself, on the default branch before the worktree exists; with one it writes no dashboard |
 
