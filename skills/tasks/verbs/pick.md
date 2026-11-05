@@ -53,7 +53,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | Debt | Do |
    |---|---|
    | none | say nothing; go to step 3 |
-   | 1–2 | one line — `⚠ verification debt: 2 at verify awaiting sign-off: TASK-046, TASK-048` — then continue |
+   | 1–2 | one line — `⚠ verification debt: <n> at verify awaiting sign-off: <ids, comma-separated>` (`… 1 at verify awaiting sign-off: TASK-046`, `… 2 at verify awaiting sign-off: TASK-046, TASK-048`) — then continue |
    | 3 or more | the same line, then **ask**: *"Clear verification debt first?"* Default **yes**. The user may decline and pick anyway |
 
    The line names the state `verify` even for a task whose file still reads the older `review`; both are the one
@@ -75,11 +75,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 3. **Collect candidates** — every TASK file whose frontmatter matches the filters, **less any task the
    [Collection pass](../SKILL.md#collection-pass) counts as taken** (its branch exists locally or on a
-   remote — another session or clone has it). Print them under the list —
-   `taken (hidden): TASK-NNN (<local | remote/<name>>), …` — because a stale branch hides a task silently
-   otherwise. **A local branch that a worktree here holds, and whose own copy reads `in-progress`**
+   remote — another session or clone has it). Print them on one line **under** the list —
+   `taken (hidden): TASK-NNN (<local | remote/<name>>), …`, where `<name>` is the remote's name as `git remote`
+   prints it (`remote/origin`), not the ref, and a branch both local and on a remote prints `local` — because a
+   stale branch hides a task silently otherwise. **A local branch that a worktree here holds, and whose own copy reads `in-progress`**
    (`git show task/TASK-NNN:<task file>`), is work in progress on this machine, not another clone's. Print
-   it apart: `in progress on this machine: TASK-NNN at <worktree path> — resume with /tasks pick TASK-NNN
+   it on its own line **before** the candidate list, after 2b's debt line if any (work already started here is
+   offered before new work, as debt is): `in progress on this machine: TASK-NNN at <worktree path> — resume with /tasks pick TASK-NNN
    (check no other session is working in it)`. Picking it by id takes step 6b's resume row. A worktree here
    may belong to another session, so the line invites a resume and never assumes one. A branch copy reading
    `review` (or `verify`) is reported by 2b as verification debt instead, and not on the in-progress line.
@@ -328,7 +330,9 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      so a failed push is reported by name: *in progress here, unseen elsewhere until pushed*. The
      dashboard is not regenerated in the worktree.
 
-   **Report lines** — fixed, one per outcome, never a shared line for two:
+   **Report lines** — fixed, one per outcome, never a shared line for two. A run that meets two outcomes prints
+   both lines, in the order the run reaches them: a worktree pick with an upstream prints *in a worktree*, then
+   *upstream*.
    - in a worktree: `workspace: in a worktree at <path> on task/TASK-NNN — proved: git rev-parse --show-toplevel = <path>`
    - fell back: `workspace: fell back to in-place — <reason>; continuing in the main copy at step 7`, the reason being `worktree-root undeclared`, `the main copy is not clean on <default-branch>`, `the move did not stick: expected <path>, got <toplevel>; worktree and branch removed`, or `git worktree add failed: <git message>`
    - no effect: `workspace: worktree has no effect under integration: single-branch — there is no task branch to put in a worktree; working in place. Neither setting was changed.`
@@ -508,7 +512,14 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 ## Edge cases
 
 - **No candidates match filters** — print empty result, suggest broadening (`--status todo,in-progress` or drop filters). Blocked tasks are already listed, marked, so there is no `blocked` status to add.
-- **Multiple in-progress by same assignee** — warn ("you already have N tasks in-progress; consider closing one first") but don't block.
+- **Multiple in-progress by same assignee** — after the choice, count the other tasks with the chosen task's
+  assignee that are in progress *here*: each whose own file reads `in-progress`, plus each on step 3's "in
+  progress on this machine" line (assignee read from its branch copy, the read step 3 already made). `agent`,
+  `unassigned` and the older `ai` count as one assignee, all three being work for this conversation (step 9).
+  A task under `taken (hidden)` never counts, because another session or clone holds it, though the
+  [Collection pass](../SKILL.md#collection-pass) shows it as in progress. A resume does not count the task it
+  resumes. With one or more, warn ("you already have <n> task(s) in progress: <ids>; consider closing one first", `1 task` for one)
+  but don't block.
 - **Task is blocked** (either form) — a blocked task cannot be started (FEATURE-003 D7). Put this question:
   > **TASK-NNN is blocked: "<reason>". Unblock it and start?**
   > · **Yes** — run [`unblock`](block.md), then continue this pick. · **No** — leave it blocked; pick something else.
