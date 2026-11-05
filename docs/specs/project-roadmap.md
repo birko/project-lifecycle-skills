@@ -1,6 +1,6 @@
 ---
 area: project-roadmap
-generated-at: 02910cef4c34305229d9c09d4e551e8d4a4e4c84
+generated-at: 3a2879cb1e7bf5bed8f9a3c4aff28adf3eb0e617
 generated-on: 2026-11-04
 sources:
   - skills/roadmap/SKILL.md
@@ -141,7 +141,7 @@ The system SHALL count unticked `- [ ]` lines in a story body only for stories u
 
 ### Requirement: Collect features
 
-The system SHALL, for every feature folder, read the coarse `status:` from the idea file's frontmatter (one of `idea | review | done | dropped | superseded`) and its heading title, count decision rows by state (`proposed | approved | changed | deferred | removed`), read the derived phase from the status file (one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded`), and read the recorded prototype line (Built / Skipped / N/A / Pending); it SHALL also read the feature index, when present, for each feature's source epic.
+The system SHALL, for every feature folder, read the coarse `status:` from the idea file's frontmatter (one of `idea | review | done | dropped | superseded`) and its heading title, count decision rows by state (`proposed | approved | changed | deferred | removed`), read the derived phase from the status file (one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded`), recording no phase when the status file is absent and never substituting the coarse status, and read the recorded prototype line (Built / Skipped / N/A / Pending); it SHALL also read the feature index, when present, for each feature's source epic.
 
 #### Scenario: Feature fully read
 
@@ -189,7 +189,7 @@ The system SHALL join a feature to the tasks carrying `feature: FEATURE-NNN` and
 
 ### Requirement: DV1 — feature frozen while work moved
 
-The system SHALL flag DV1 when a feature's phase is `idea` or all its decisions are `proposed`, yet at least one linked task is `in-progress` or `done`.
+The system SHALL flag DV1 when at least one linked task is `in-progress` or `done` and the feature's stored phase reads `idea` or it has no status file, naming the missing rollup and `/feature status` as the fix in that case; it SHALL NOT report DV1 on a feature where DV4 fires, whose fix refreshes the rollup too.
 
 #### Scenario: Idea with shipped work
 
@@ -197,9 +197,21 @@ The system SHALL flag DV1 when a feature's phase is `idea` or all its decisions 
 - **When** the audit runs
 - **Then** FEATURE-030 is flagged DV1
 
+#### Scenario: No rollup while work moved
+
+- **Given** two features, each with an approved decision, a `done` task, `idea.md` reading `idea`, and no `status.md`
+- **When** `/roadmap --check` runs
+- **Then** DV1 fires on both and names the missing rollup with `/feature status` as the fix, and neither DV2 nor DV6 fires
+
+#### Scenario: Undecided ledger reports DV4 alone
+
+- **Given** a feature whose decisions are all `proposed`, with a `done` task and no `status.md`
+- **When** `/roadmap --check` runs
+- **Then** only DV4 is reported for it
+
 ### Requirement: DV2 — shipped work never closed on the feature side
 
-The system SHALL flag DV2 when at least one task is linked, every linked task is `done`, the feature's coarse status is not `done`, and its phase is neither `done` nor `review` — except when an `approved` or `changed` row has no tasks or names tasks missing on disk, which is work not filed yet rather than shipped work left open.
+The system SHALL flag DV2 when at least one task is linked, every linked task is `done`, the feature's coarse status is not `done`, and its phase is neither `done` nor `review` (not evaluated at all when there is no status file, which DV1 reports) — except when an `approved` or `changed` row has no tasks or names tasks missing on disk, which is work not filed yet rather than shipped work left open.
 
 #### Scenario: All done, feature still building
 
@@ -237,13 +249,19 @@ The system SHALL flag DV3 when a task under a story or epic that slug-matches a 
 
 ### Requirement: DV4 — tasks without an approving decision
 
-The system SHALL flag DV4 when a feature has linked tasks but every one of its decisions is still `proposed`.
+The system SHALL flag DV4 when a feature has at least one linked task that is not `cancelled` and no `approved` or `changed` decision, including a ledger with no rows or only the template's placeholder row.
 
 #### Scenario: Decomposed before deciding
 
 - **Given** FEATURE-035 has decisions D1 and D2 both `proposed` and one linked task
 - **When** the audit runs
 - **Then** FEATURE-035 is flagged DV4
+
+#### Scenario: Empty ledger
+
+- **Given** a feature whose `decisions.md` has no rows and one linked `todo` task
+- **When** `/roadmap --check` runs
+- **Then** DV4 fires
 
 ### Requirement: DV5 — tracked in one tree only
 
@@ -275,7 +293,7 @@ The system SHALL flag DV5 for a feature with no matching epic, story or tasks un
 
 ### Requirement: DV6 — invalid lifecycle marker
 
-The system SHALL flag DV6 when a feature's coarse status is outside `idea | review | done | dropped | superseded`, or its phase is outside the derived set and its terminal mirrors.
+The system SHALL flag DV6 when a feature's coarse status is outside `idea | review | done | dropped | superseded`, or its status file exists and its phase is outside the derived set and its terminal mirrors; an absent status file is not DV6.
 
 #### Scenario: Unknown phase value
 
@@ -393,7 +411,7 @@ The system SHALL flag DV12 when a story under an epic with `kind: review-intake`
 
 ### Requirement: Full render with verification debt first
 
-The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase, tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
+The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase (`—` when it has no status file), tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
 
 #### Scenario: Review-phase feature leads
 
@@ -415,7 +433,7 @@ The system SHALL render the full view by listing verification-debt features firs
 
 ### Requirement: Compact slice for the task snapshot
 
-The system SHALL, when called for the task skill's bare snapshot, render only a feature count with one bucket per phase (zero-count buckets omitted, `dropped` and `superseded` appended when non-zero, so the buckets sum to the total), led by a count of verification-debt features as the feature skill defines them, kept outside the phase buckets and omitted at zero, a divergence line listing each finding or `✓ in sync`, a stale-spec count omitted when there are no specs or none are stale, and a pointer to `/roadmap` for the full view.
+The system SHALL, when called for the task skill's bare snapshot, render only a feature count with one bucket per phase (zero-count buckets omitted, `dropped`, `superseded` and `no rollup` (no status file) appended when non-zero, so the buckets sum to the total), led by a count of verification-debt features as the feature skill defines them, kept outside the phase buckets and omitted at zero, a divergence line listing each finding or `✓ in sync`, a stale-spec count omitted when there are no specs or none are stale, and a pointer to `/roadmap` for the full view.
 
 #### Scenario: Snapshot with drift
 

@@ -77,7 +77,8 @@ the STORY body — DV12 needs them, and no other rule does, so don't scan bodies
 Glob `docs/features/FEATURE-*/`. For each folder read:
 - `idea.md` frontmatter `status:` (**coarse marker** — exactly one of `idea | review | done | dropped | superseded`) and the `# Heading` title.
 - `decisions.md` table → count rows by `State` (`proposed | approved | changed | deferred | removed`).
-- `status.md` `**Phase:**` line (**derived display** — one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded` copied from the coarse marker for killed/re-homed features).
+- `status.md` `**Phase:**` line (**derived display** — one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded` copied from the coarse marker for killed/re-homed features). **Absent file ⇒ no phase**: record `phase: null`,
+  never `idea.md`'s coarse marker, which reads `idea` through every healthy build; DV1 reports the absence.
 - The `## Prototype` line in `idea.md` (recorded decision: Built / Skipped / N/A / Pending).
 
 Also read `docs/features/README.md` if present — its table maps each feature to a `Source`
@@ -110,12 +111,12 @@ Flag a feature (or task) when:
 
 | ID | Condition | The drift it catches |
 |----|-----------|----------------------|
-| **DV1** | Feature phase `idea` / all decisions `proposed`, but ≥1 linked task is `in-progress`/`done` | Feature docs frozen while work moved on (FEATURE-019 pre-fix) |
-| **DV2** | All linked tasks `done` (≥1 exists) but feature coarse `status` ≠ `done` and phase ∉ {`done`,`review`} — **except** when an `approved` or `changed` row is not decomposed (its `→ Tasks` cell is empty, or names a task not on disk: [[feature]] `pick`'s gate D) | Shipped work never closed out on the feature side (FEATURE-016 pre-fix). The exception is work not filed yet, such as a `changed` decision on a signed-off feature whose change is not built: its phase is `building`, the feature's own decompose offer covers it, and nothing has shipped that could be closed out |
+| **DV1** | ≥1 linked task is `in-progress`/`done`, and the stored phase reads `idea` or there is no `status.md` (the coarse marker never stands in). **Not reported when DV4 fires on the same feature**: DV4's fix, `/feature decide`, chains `/feature status`, which clears this too | Rollup frozen while work moved on (FEATURE-019 pre-fix). With no `status.md` the detail reads `no rollup — run /feature status FEATURE-NNN`: every `/feature new` opens this window. The old "all decisions `proposed`" arm was DV4's condition, so it was removed |
+| **DV2** | All linked tasks `done` (≥1 exists) but feature coarse `status` ≠ `done` and phase ∉ {`done`,`review`} (**DV2 is not evaluated at all when there is no `status.md`**: the phase it judges does not exist yet, DV1 reports the feature, and the `/feature status` that clears DV1 derives the phase DV2 then reads) — **except** when an `approved` or `changed` row is not decomposed (its `→ Tasks` cell is empty, or names a task not on disk: [[feature]] `pick`'s gate D) | Shipped work never closed out on the feature side (FEATURE-016 pre-fix). The exception is work not filed yet, such as a `changed` decision on a signed-off feature whose change is not built: its phase is `building`, the feature's own decompose offer covers it, and nothing has shipped that could be closed out |
 | **DV3** | A task whose story/epic slug-matches a feature has `feature:` null/missing | Broken back-link — feature can't see its own work |
-| **DV4** | Feature has linked tasks but every decision is still `proposed` | Tasks exist that no `approved`/`changed` decision generated |
+| **DV4** | Feature has ≥1 linked task that is not `cancelled`, and no `approved` or `changed` row, which includes a ledger with no rows or only the template's placeholder | Tasks exist that no `approved`/`changed` decision generated |
 | **DV5** | Feature with no matching epic/story/tasks (and not a shipped `done` backfill), **or** a story/epic with tasks but no feature folder — **except defect work, read from declared fields**: an epic stamped `kind: review-intake` and everything under it, and a story or epic whose every task carries a non-empty `findings:` list | A requirement tracked in only one tree. **Defect work has no feature by design**: a finding is a defect in behaviour some feature or rulebook already owns, not a new requirement, so reporting it here buries the real holes under correct structure. Nothing else needs a marker: chores and tree hygiene stay in `tasks/_loose/`, which this arm never sees (a loose task has no story or epic), and any other story or epic with tasks is planned work that should trace to a feature. Never exempt a story by its title |
-| **DV6** | `idea.md status` ∉ the coarse set, or `status.md` phase ∉ the derived set | Invalid/stale marker (the `in-progress` phase we hit on FEATURE-016) |
+| **DV6** | `idea.md status` ∉ the coarse set, or `status.md` exists and its phase ∉ the derived set. An absent `status.md` is not DV6: DV1 reports it, and only when work has moved | Invalid/stale marker (the `in-progress` phase we hit on FEATURE-016) |
 | **DV7** | A spec's `sources` changed since its baseline — `generated-at` for in-repo sources, the matching `source-commits` entry for each external repo — or a mapped area was never generated, or an external source has no baseline at all (from step 2b) | Stale behavioral map — code moved on, the spec is lying. **Report which repo drifted**, not just a total: in an aggregator the answer is usually a sibling, and "3 changed" without a repo name sends the reader to the wrong tree. An external source with no `source-commits` entry is reported as *unknown baseline* rather than fresh — the whole failure this rule exists to catch is a check that cannot fire quietly passing |
 | **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features), and **not raised at all against specs whose provenance was never derived** (see DV11) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way. **Report the area's `shaped-by-unresolved` count alongside the finding whenever it is non-zero** — `derived: true` is not a completeness claim, and a miss computed from a fraction of the trail is a weaker signal than one computed from all of it. Say which it is; don't let the reader assume the strong version. **A high count is often the project's commit trail, not its work**: regen refuses a commit that only *mentions* a task, and a task whose state says the work never landed ([[specs]] regen step 5a), so on a repo whose commits don't name tasks in their subjects most tasks resolve to nothing and this rule's miss is unproven either way |
 | **DV11** | A spec's `shaped-by-derived:` is `false` or absent (only when `docs/specs/.map.yml` exists) | Provenance was **never computed** for that area, so its `shaped-by: []` is unknown, not empty. Report it as its own finding and **suppress DV8 against those areas** — otherwise an unfilled field is indistinguishable from a genuine landing miss, and the audit reports a feature gap that is really a generator gap. Measured on Symbio 2026-08-01: all 31 areas carried `shaped-by: []` because `regen --all` resolved no `--feature` flag and, before that release, only flagged runs wrote the field at all. Fix: re-run `/specs regen <area>`, which now derives it |
@@ -124,7 +125,7 @@ Flag a feature (or task) when:
 | **DV12** | Under an EPIC stamped `kind: review-intake`, a STORY carries unticked checklist lines in its body but has **no open TASK** (all children `done`/`cancelled`, or none exist) | Findings filed but never scheduled. Only `status: todo` tasks are ranked by `pick`, the `Next up` snapshot, or [[fix-next]] — a finding left as a checklist bullet is invisible to all three, so the review reads as drained while part of it was never worked. Fix by decomposing the remaining lines with [`/tasks intake --epic`](../tasks/verbs/intake.md) or `/tasks new` |
 
 ### 5. Output model
-Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase,
+Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase (null when `status.md` is absent),
 decisions:{proposed,approved,changed,deferred,removed}, tasksDone, tasksTotal, backlinkOk,
 divergences:[DVx…] }], specs: [{ area, generatedAt, stale, shapedBy, shapedByDerived, shapedByUnresolved }] | null,
 divergences:[{id, target, rule, detail}] }`. Renderers consume this;
@@ -170,7 +171,7 @@ the ambiguity properly, because that verb can report `not-applicable` where DV10
 
 From the output model:
 
-1. **Lead with verification debt.** Every feature the [[feature]] skill's "verification debt surfaces first" rule counts as debt is listed first as outstanding work: phase `review` (built, sign-off pending), or any linked task awaiting sign-off whatever the phase. A line with waiting tasks names their count (`building · 2 tasks awaiting sign-off`). That rule owns the set; this render applies it.
+1. **Lead with verification debt.** Every feature the [[feature]] skill's "verification debt surfaces first" rule counts as debt is listed first as outstanding work: phase `review` (built, sign-off pending), or any linked task awaiting sign-off whatever the phase. A line with waiting tasks names their count (`building · 2 tasks awaiting sign-off`). That rule owns the set; this render applies it. A null phase never matches `review`, so only the task arm applies to a feature with no `status.md`.
 2. **Group by epic**, newest-active first; skip fully-`done`/`cancelled` epics into a collapsed tail. Per feature line:
    ```
    EPIC-012 Backend consolidation — in-progress (8/24 tasks)
@@ -178,8 +179,10 @@ From the output model:
      FEATURE-017 /kobold endpoint    building  0/5   ✓ synced
      FEATURE-016 Retire old stack    done      2/2   ✓ synced
      FEATURE-031 …                   idea      0/1   ⚠ DV4 tasks exist, decisions proposed
+     FEATURE-032 …                   —         1/1   ⚠ DV1 no rollup
    ```
-   Sync mark: `✓ synced` if no divergence, else `⚠ DV<n> <short reason>`.
+   Sync mark: `✓ synced` if no divergence, else `⚠ DV<n> <short reason>`. A feature with no `status.md` shows `—` in
+   the phase column, and its audit line names `/feature status FEATURE-NNN` as the fix.
 3. **Divergence audit** at the bottom — one line per finding with the rule id and the concrete fix path:
    ```
    Divergences (2):
@@ -199,7 +202,7 @@ features/  <F> features · idea <i> · prototyping <p> · deciding <de> · build
   specs: <n> stale                                [omit when docs/specs/ absent or all fresh]
 Run /roadmap for the full epic→feature→task view.
 ```
-Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros rule as the tasks snapshot), appending `dropped <x>` / `superseded <x>` when non-zero, so every feature lands in exactly one bucket and the counts sum to `<F>`. Lead the line with the count of debt features as the [[feature]] rule defines them (`⚠ sign-off <n>`,
+Enumerate **all** phases but **omit zero-count buckets** (same suppress-zeros rule as the tasks snapshot), appending `dropped <x>` / `superseded <x>` / `no rollup <x>` (a feature with no `status.md`, so no phase) when non-zero, so every feature lands in exactly one bucket and the counts sum to `<F>`. Lead the line with the count of debt features as the [[feature]] rule defines them (`⚠ sign-off <n>`,
 omitted at zero). It sits outside the phase buckets, because a debt feature can be in phase `building`,
 so the buckets still sum to `<F>`.
 
