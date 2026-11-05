@@ -55,7 +55,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
    | Verdict | When | What it means |
    |---|---|---|
    | `verified` | non-empty scan set, nothing left unmapped **after this step's reconciliation**, **and the map was blessed** (§ *Blessing*) | coverage was actually established |
-   | `not-applicable` | empty scan set **and** the repo genuinely has no behavioral code (see *No obvious behavioral code* under Edge cases) | there was nothing to cover; legitimate, and not a claim of coverage |
+   | `not-applicable` | the scan set is empty, measured **after `ignore`** (the tracked files left once `ignore` removes its matches, this step's own reconciliation entries included, [SKILL.md](../SKILL.md) § *The area map*), **and** the repo genuinely has no behavioral code, judged over every tracked file *including the ignored ones* (see *No obvious behavioral code* under Edge cases). The second half is what stops a wrongly broad `ignore` from claiming this verdict | there was nothing to cover; legitimate, and not a claim of coverage |
    | `unverified` | anything else | the run did not establish coverage |
 
    `unverified` is the catch-all deliberately, because the ways to fail are open-ended and the ways to succeed are not. It covers at least: **discovery returned nothing** while sources exist (wrong roots, an unrecognised stack, behaviour living where this scan did not look); a non-empty scan set with **unmapped files the user declined to map** *or left unanswered*; areas proposed as a **partial guess** because the source shape could not be resolved; and **areas that were never blessed** — nobody was present to bless them, or the question went unanswered (§ *Blessing*). Say which one, in one line.
@@ -68,7 +68,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
    **The classification is a judgement, so record the paths and not a tally.** The boundary cases are real and the text cannot settle them for you — a committed `appsettings.json` whose values are read by three existing areas is defensibly behavior *or* config, and whichever you choose, the next reader must be able to see what you chose. Writing a bare count states a judgement with the confidence of a measurement. If a classification was genuinely close, say which way you went and why in the run's output. **Measured 2026-09-01**: `Symbio` had 33 unmapped and `Latent` 42, all housekeeping; `WorkoutTracker` had 14, of which **6 were real source** that had shipped since the map was last touched and were invisible to every regen in between. Ranked by raw count those come out backwards — which is why the drifted files get named, not just tallied.
 
-   **Telling `not-applicable` from `unverified` takes one question** — *does this repo contain files a maintainer would call its source?* — and it is the whole check, because both come from an empty scan set and only one is an answer.
+   **Telling `not-applicable` from `unverified` takes one question** — *does this repo contain files a maintainer would call its source?* — and it is the whole check, because both come from an empty scan set and only one is an answer. Ask it of the whole tracked tree, not of the scan set: an `ignore` entry can empty the scan set, but it cannot make a source file stop being source.
 
    **On `unverified`, prefer fixing the discovery to writing a map.** Re-run the scan with corrected roots; that is the outcome worth having. But this is a preference, not a prohibition: `init` is chained by other skills, and a run that must produce the anchor file writes it with the verdict recorded (step 6) rather than silently writing nothing. What must never happen is writing a populated map that reads as blessed.
 
@@ -76,7 +76,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
 5. **Offer a grill** (optional, [[grill-me]]) — for a project with real architectural ambiguity, offer to grill the area boundaries before blessing ("is `auth-login` vs `auth-session` one capability or two?"). Skip silently for small/obvious projects. **Then obtain blessing** — § *Blessing* below defines what that is, the question it puts, and what an unblessed run writes. The order matters: a grill that moves a boundary changes the map on the table, and § *Blessing* is per-presentation, so blessing first would bless a map the grill then edits.
 
-6. **Write** `docs/specs/.map.yml` with the areas as § *Blessing* left them — blessed, or written unblessed and stamped `unverified` — and **always write step 4's three coverage keys** beside `areas:` — `coverage:`, `tracked-files-at-scan:` and `coverage-drift:` (a list of paths, `[]` when none).
+6. **Write** `docs/specs/.map.yml` with the areas as § *Blessing* left them — blessed, or written unblessed and stamped `unverified`; a `not-applicable` map has no areas, so it is written with `areas: []` and no blessing asked (§ *Blessing*) — and **always write step 4's three coverage keys** beside `areas:` — `coverage:`, `tracked-files-at-scan:` and `coverage-drift:` (a list of paths, `[]` when none).
 
    **On the render branch, `areas:` and `ignore:` are values this run supplies, not lines it copies.** The template ships `areas: []` and its `ignore:` line commented out, because a render establishes neither — so write step 3's proposed ignore list as a **live** key here, and leave the commented examples where they are. Carrying them forward instead is how a .NET/JS list reached a Python repo.
 
@@ -111,6 +111,13 @@ proceeded as if blessed rather than stop.
 > · **Change it** — say which areas to merge, split, rename or drop, then I'll re-present.
 > · **Don't write it** — leave `docs/specs/` as it is.
 
+**A map with no areas has nothing to bless.** When step 4's verdict is `not-applicable`, put no blessing
+question: write the map `not-applicable` and say so in the confirmation, *"no behavioural code found — wrote
+`areas: []`, `coverage: not-applicable`; ignored by this run: `<paths>`"*. Blessing confirms area boundaries,
+and there are none; its unanswered path (`unverified`, below) would otherwise turn the one verdict that needs
+no assent into a failure. The paths keep the run's own `ignore` calls visible, and step 2 re-checks the verdict
+on the next run.
+
 **Blessing is per-presentation, not per-session.** Change anything after a yes — an area's globs, its
 name, the `ignore` list — and the map on the table is no longer the map that was blessed, so present the
 amended table and ask again. Otherwise "blessed" degrades into "was approved at some point", which cannot
@@ -130,9 +137,9 @@ leave those callers with no `docs/specs/` at all and no record that the question
 danger the stamp defuses is the other one — a populated map that **reads as blessed** — and step 2 already
 turns an `unverified` map back into proposals to re-confirm on the next run, so the unanswered question
 comes back rather than being settled by default. What must never happen is `coverage: verified` on a map
-no one approved: **blessing is a precondition of `verified`, not merely of writing.**
+no one approved: **blessing is a precondition of `verified`, not merely of writing.** `not-applicable` needs none.
 
 ## Edge cases
 
-- **No obvious behavioral code** (docs-only, pure contracts/markers) — say so and write a minimal map (or nothing); don't invent areas for a project with no observable behavior.
+- **No obvious behavioral code** (docs-only, pure contracts/markers) — say so and write the map with `areas: []`, `coverage: not-applicable` and step 4's other two keys, with no blessing asked (§ *Blessing*); don't invent areas for a project with no observable behavior.
 - **Existing hand-written specs/docs** in `docs/specs/` — never overwrite; ask whether to adopt them as areas (add frontmatter + map entry) or leave them outside the map.

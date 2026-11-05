@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: 9abf3f76fead0e19a384b56b828ecfcfe1e215ef
+generated-at: 8f0c57be769951deb78576aab574beb564b3a509
 generated-on: 2026-11-04
 sources:
   - skills/specs/SKILL.md
@@ -182,7 +182,7 @@ The system SHALL present the proposed map as a table of area, title, globs and r
 
 ### Requirement: Init ends with exactly one coverage verdict
 
-The system SHALL end init's coverage step with exactly one verdict describing the map about to be written: `verified` when the scan set is non-empty, nothing is unmapped after reconciliation, and the map was blessed; `not-applicable` when the scan set is empty and the repository genuinely has no behavioural code; and `unverified` in every other case, stated with a one-line reason.
+The system SHALL end init's coverage step with exactly one verdict describing the map about to be written: `verified` when the scan set is non-empty, nothing is unmapped after reconciliation, and the map was blessed; `not-applicable` when the scan set, measured after `ignore` including this run's own reconciliation entries, is empty and no tracked file, ignored ones included, is behavioural code; and `unverified` in every other case, stated with a one-line reason.
 
 #### Scenario: Gap closed during the run
 
@@ -200,11 +200,17 @@ The system SHALL end init's coverage step with exactly one verdict describing th
 
 - **Given** a repository containing only documentation and no behavioural code
 - **When** the verdict is computed
-- **Then** it is `not-applicable`, and a minimal map (or none) is written without invented areas
+- **Then** it is `not-applicable`, and the map is written with `areas: []` and the three coverage keys, with no invented areas and no blessing asked
+
+#### Scenario: Sources swept into ignore
+
+- **Given** a repository whose only source file is matched by a broad `ignore` entry
+- **When** the verdict is computed
+- **Then** it is `unverified`, because the no-code test reads every tracked file, ignored ones included
 
 ### Requirement: Blessing gates writing a verified map
 
-The system SHALL, after an optional grill of area boundaries, ask "Here is the proposed capability map for `<project>` — `<N>` areas over `<M>` tracked files, coverage `<verdict>`. Shall I write it to `docs/specs/.map.yml`?" with the options bless, change, or don't write; SHALL re-ask after any change to the presented map; and, when no answer comes, SHALL write the map stamped `unverified` with the reason "areas proposed but never blessed" and say in the confirmation that the areas were written unblessed.
+The system SHALL, after an optional grill of area boundaries, ask "Here is the proposed capability map for `<project>` — `<N>` areas over `<M>` tracked files, coverage `<verdict>`. Shall I write it to `docs/specs/.map.yml`?" with the options bless, change, or don't write; SHALL re-ask after any change to the presented map; SHALL put no blessing question when the verdict is `not-applicable`, a map with no areas having nothing to bless, and say so naming the paths the run ignored; and, when no answer comes, SHALL write the map stamped `unverified` with the reason "areas proposed but never blessed" and say in the confirmation that the areas were written unblessed.
 
 #### Scenario: Unattended init
 

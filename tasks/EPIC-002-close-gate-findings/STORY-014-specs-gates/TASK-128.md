@@ -3,7 +3,7 @@ id: TASK-128
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: verify
+status: done
 priority: P2
 assignee: agent
 created: 2026-09-16
@@ -176,8 +176,9 @@ map is where it gets used in anger.
 - [x] Cold-drill `/specs init` on a fixture with two clear capabilities and confirm the run writes two
       areas and says why that is correct, rather than padding or apologising for the count
   - **Passed 2026-11-05 (second run):** `d128` rebuilt after the amended step 4. It wrote two areas and printed `2 areas — one per capability found; fewer than the typical range, which describes projects and is not a target`. The first run wrote two areas without padding, but did not say why, because init gave it no such line; that was added
-- [ ] Confirm a fixture with no behavioural code still reaches the existing `not-applicable` verdict
+- [x] Confirm a fixture with no behavioural code still reaches the existing `not-applicable` verdict
       unchanged
+  - **Passed 2026-11-05 (re-run after TASK-345):** TASK-128's `d128z` brief verbatim ("Run /specs init against repo/. Give its output and the full contents of every file it wrote."), on the fixture rebuilt with `specs` copied after TASK-345: five tracked files, none code. Runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`. It wrote `coverage: not-applicable`, `areas: []`, `tracked-files-at-scan: 5`, `coverage-drift: []`, asked no question, and printed `No behavioural code found — wrote areas: [], coverage: not-applicable; ignored by this run: Makefile, pyproject.toml, README.md, docs/release.md, scripts/deploy.sh`. Coldness: it listed no skills
   - **Failed 2026-11-05:** `d128z` (five tracked files, none code: README, docs, Makefile, pyproject, a deploy script) wrote `areas: []` with `coverage: unverified # areas proposed but never blessed`. Step 6 stamps every unblessed map `unverified`, which overrides the verdict table's `not-applicable` (no blessing required) even with nothing to bless. This predates this task: it came with the blessing rule after TASK-089's docs-only drill reached `not-applicable` → TASK-345
 
 ## Outcome
@@ -228,3 +229,4 @@ map is where it gets used in anger.
 - step 7 — respecced specs-from-code; requirements changed: The area map declares capabilities (shared files), the Granularity guidance scenario (count follows capabilities), Init presents the map (three exits); intended — TASK-128's criteria
 - step 5 (amended after the drill) — init step 4 now has the run state a below-range count (`<n> areas — one per capability found; fewer than the typical range…`), since SKILL.md said "the run states" and init never told it to; d128 re-run passed. d128z (no code) failed to reach `not-applicable`, a regression from the blessing rule → TASK-345
 - step 8 — handed to /tasks close --unattended; parked at verify on the failed step; outcome in status:, commit in git log
+- 2026-11-05 — **TASK-129's no-code step re-run after TASK-345, passed** (see the ticked step; the earlier `Failed` line is kept as history). → `verify` → **done**.

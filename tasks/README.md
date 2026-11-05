@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-05 10:25. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-05 11:08. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 55                  |
+| todo         | —                  | —                  | 54                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 2                   |
+| verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 268                 |
+| done         | 4                  | 13                 | 270                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 44× P2 · 11× P3.
+`todo` by priority: 43× P2 · 11× P3.
 
 ## In progress now
 
@@ -25,7 +25,6 @@ _None_
 ## Awaiting verification
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
-- [TASK-128](EPIC-002-close-gate-findings/STORY-014-specs-gates/TASK-128.md) — Step 4 offers two exits for an unmapped file and the paragraph below it defines a third (P2, agent)
 
 ## Tree
 
@@ -97,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (68/105 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (70/105 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -150,17 +149,17 @@ _None_
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [ ] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made
     - [x] TASK-207 DV1 cannot fire on a feature with no `status.md`, and its condition reads two ways
-  - STORY-014 `specs` — two gates that pass without checking — in-progress (3/10 done)
+  - STORY-014 `specs` — two gates that pass without checking — in-progress (5/10 done)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
     - [x] TASK-036 `/specs regen`'s state gate can read the commented enum instead of the status
     - [x] TASK-087 A re-discovery rewrites `.map.yml` and nothing says the human's prose survives
     - ~~TASK-088 Nothing says whether one source file may belong to two capability areas~~
     - [ ] TASK-089 `coverage: unverified` has never once been produced, across three drills
     - ~~TASK-111 regen.md quotes a status-comment format the task template no longer emits~~
-    - [ ] TASK-128 Step 4 offers two exits for an unmapped file and the paragraph below it defines a third 🔍 verify
+    - [x] TASK-128 Step 4 offers two exits for an unmapped file and the paragraph below it defines a third
     - ~~TASK-129 A project with fewer capabilities than the floor has no stated answer, so the guidance invites padding~~
     - ~~TASK-134 `/specs init` step 1's meta-root ask has no question text and no unattended path~~
-    - [ ] TASK-345 `/specs init` stamps a repo with no code `unverified` because nobody blessed its empty map
+    - [x] TASK-345 `/specs init` stamps a repo with no code `unverified` because nobody blessed its empty map
   - STORY-015 CI lint and install integrity — the repo's only gate, and what it cannot see — in-progress (12/15 done)
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-037 Nothing detects a `skills-pi/` stub shadowing a real built-in
