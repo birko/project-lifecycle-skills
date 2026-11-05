@@ -63,16 +63,23 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      exists: import reads only a `priority/P<n>` label, so it would read the field back and the round trip would
      change the value. `--dry-run` reads the metadata too and shows the field it would set.
    - **Assignee** (GH only) — if `assignee:` is `human` and a GH username is known, set it; otherwise skip.
-   - **Milestone** (GH only, a TASK only) — look for the parent epic's milestone in the repo by its title (the
-     format § *Exporting STORY or EPIC* gives) and pass that title as `--milestone`. When the repo has none,
+   - **Milestone** (GH only, a TASK only) — list the repo's milestones with
+     `gh api "repos/<repo>/milestones?state=all" --paginate` (`<repo>` as step 6 resolves it; `state=all`, since the
+     default lists open milestones only and a closed epic's would read as missing), find the parent epic's by its
+     title (the format § *Exporting STORY or EPIC* gives), and pass that title as `--milestone`. **Under
+     [migrate.md](migrate.md)'s `--dry-run`, look nothing up for a task whose epic is in that run's inventory**:
+     migrate step 6 creates that milestone, and a dry run skips it, so a lookup would report every task unlinked.
+     Show `would link to "<EPIC-ID> <epic title>"` instead. A task whose epic is not in the inventory is looked up
+     as usual, since the lookup is read-only. A `_loose/` task has no epic and gets no milestone line. When the repo has none,
      pass nothing and name the task in step 9: `TASK-NNN: no milestone for EPIC-NNN — not linked`. Never
      create a milestone from here: a task export does not create epic-level objects. [import.md](import.md)
      maps a milestone back to its EPIC, so an unlinked task loses its epic on the round trip, and that is why
      the line is printed.
 
 6. **Push**:
-   - **GitHub**: the repo is `external.repo` from `.config.yml`. Pass it as `--repo` every time, because a clone
-     need not have a remote that names it.
+   - **GitHub**: the repo is the caller's `--repo` when [migrate.md](migrate.md) step 6 runs this step, since
+     `external.repo` is written only by migrate step 7, after every push; on a direct call it is `external.repo`
+     from `.config.yml`. Pass it as `--repo` every time, because a clone need not have a remote that names it.
      - **Make sure every label exists first.** `gh issue create` refuses the whole issue when any one label is
        missing, and a repo has none of this skill's labels until something creates them. Measured: on a repo
        with only GitHub's default labels, the create failed on `priority/P3` and no issue was made. So list the
@@ -85,7 +92,7 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      Write the body to a temporary file and pass `--body-file`; a multi-line `--body` does not survive every
      shell. Delete the file afterwards.
      Capture the returned issue URL/number (parse with `--json` or stdout).
-   - **Jira**: use the Atlassian MCP `createIssue` (or equivalent) — search via ToolSearch first. Authenticate if needed. Capture the returned key.
+   - **Jira**: use the Atlassian MCP `createIssue` (or equivalent) — search via ToolSearch first. Authenticate if needed. Capture the returned key. The project is the caller's `--project` when migrate runs this step, else `external.project` from `.config.yml`; pass it as the issue's project key.
 
 7. **Write link back to frontmatter**:
    - GH: `github-issue: <num>`
@@ -102,6 +109,14 @@ Hybrid mode only. Pushes one local TASK (or STORY/EPIC) to the configured remote
      `TASK-NNN: Jira priority field left at the project default (<no matching priority | metadata unreadable | no priority field>); the label priority/<value> carries it`
 
 ## Exporting STORY or EPIC
+
+- **Payload** (what migrate's `--dry-run` prints for these): an EPIC as a milestone,
+  `milestone "<EPIC-ID> <epic title>" — exists | would create`; an EPIC as a parent issue (GitHub) or Epic (Jira),
+  title `<EPIC-ID> <epic title>`, body the file's sections below its heading plus step 5's footer, labels
+  `epic/<slug>` and `default-labels`; a STORY as a label, `label story/<slug> — exists | would create`; a STORY
+  as a Jira Story, title and body built as for an epic. `exists` comes from the read-only milestone list
+  (step 5's command) or label list (`gh label list --repo <repo> --limit 1000`). A list that cannot be read
+  gives `— not checked: <reason>`, never `would create`, since that would claim the item is missing.
 
 - **GitHub**:
   - STORY → create a parent issue with `kind/story` label, OR just a `story/<slug>` label that tasks reference. Default = label-only.

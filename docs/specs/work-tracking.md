@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 0a1498afaebdd2350b8b03e467d03468d04576c0
+generated-at: 6b3d431d113015eae5868cd8253d72266c7b62ec
 generated-on: 2026-11-04
 sources:
   - skills/tasks/SKILL.md
@@ -938,7 +938,7 @@ The system SHALL decompose a local notes file into a proposed epic, story and ta
 
 ### Requirement: Exporting a task
 
-The system SHALL, in hybrid mode only (a migration runs the payload and push steps itself before the switch), push one task, story or epic to the configured tracker, linking a GitHub task to its epic's milestone by the title `<EPIC-ID> <epic title>` when the repo has one and naming the task as not linked when it does not, never creating a milestone itself: title from the first heading after the frontmatter (never a frontmatter comment), body from the task's sections plus a footer pointing back to the local file, labels for priority (on Jira too, where the label is what carries the value back), assignee, epic, story and the configured defaults — creating any missing label first and naming it — plus a blocked marker and `Blocked:` comment for a blocked task; on Jira, a task's priority field SHALL be set by the inverse of the import mapping, to a priority named exactly the task's `P<n>` value or, where the project offers all five of Highest through Lowest, those for P0 through P4, and otherwise (no match, a value not of the form `P<n>`, unreadable metadata, no priority field) left as the project sets it, never set to a nearest name, with the confirmation naming the task and why; then write the returned id back to frontmatter. Re-exporting a linked item SHALL ask first, defaulting to abort, and a failed push SHALL leave frontmatter untouched.
+The system SHALL, in hybrid mode only (a migration runs the payload and push steps itself before the switch), push one task, story or epic to the configured tracker, linking a GitHub task to its epic's milestone by the title `<EPIC-ID> <epic title>`, found in the repo's open and closed milestones, when the repo has one and naming the task as not linked when it does not, never creating a milestone itself; under a migration the repo or project SHALL be the migration's own, since the configuration names none until the migration ends: title from the first heading after the frontmatter (never a frontmatter comment), body from the task's sections plus a footer pointing back to the local file, labels for priority (on Jira too, where the label is what carries the value back), assignee, epic, story and the configured defaults — creating any missing label first and naming it — plus a blocked marker and `Blocked:` comment for a blocked task; on Jira, a task's priority field SHALL be set by the inverse of the import mapping, to a priority named exactly the task's `P<n>` value or, where the project offers all five of Highest through Lowest, those for P0 through P4, and otherwise (no match, a value not of the form `P<n>`, unreadable metadata, no priority field) left as the project sets it, never set to a nearest name, with the confirmation naming the task and why; then write the returned id back to frontmatter. Re-exporting a linked item SHALL ask first, defaulting to abort, and a failed push SHALL leave frontmatter untouched.
 
 #### Scenario: Exported priority sets the Jira field
 
@@ -960,7 +960,7 @@ The system SHALL, in hybrid mode only (a migration runs the payload and push ste
 
 ### Requirement: Migrating to hybrid mode
 
-The system SHALL, from local mode only, inventory open epics, stories and every task not `done` or `cancelled` (awaiting-verification and blocked tasks included), show the plan and require an explicit `yes` — any other answer, or none, pushes nothing, writes nothing and reports that it did not migrate — run pre-flight checks, push in order writing each remote id back as it goes (finding an epic's milestone by its `<EPIC-ID> <epic title>` title before creating it, and pushing each task through the export payload and push steps with this run's provider, bypassing export's hybrid-mode check), stop on the first failure, and only after success flip the configuration to `hybrid` with the chosen provider. A re-run SHALL skip already-linked items. `--dry-run` SHALL print the plan and every payload, ask nothing, and change no file, `.config.yml` included.
+The system SHALL, from local mode only, inventory open epics, stories and every task not `done` or `cancelled` (awaiting-verification and blocked tasks included), show the plan and require an explicit `yes` — any other answer, or none, pushes nothing, writes nothing and reports that it did not migrate — run pre-flight checks, push in order writing each remote id back as it goes (finding an epic's milestone by its `<EPIC-ID> <epic title>` title before creating it, and pushing each task through the export payload and push steps with this run's provider, bypassing export's hybrid-mode check), stop on the first failure, and only after success flip the configuration to `hybrid` with the chosen provider. A re-run SHALL skip already-linked items. `--dry-run` SHALL print the plan, the pre-flight result and every payload in push order (epics and stories as export's container payloads, tasks as export's task payload, bodies by section name), with a task whose epic is in the run previewed as `would link to "<EPIC-ID> <epic title>"` rather than looked up, ask nothing, and change no file, `.config.yml` included. The plan's API-call total SHALL count one create per planned item. Epic milestones SHALL be looked up among open and closed milestones before being created.
 
 #### Scenario: Interrupted migration
 
@@ -972,7 +972,7 @@ The system SHALL, from local mode only, inventory open epics, stories and every 
 
 - **Given** a local-mode tree with open work
 - **When** `/tasks migrate --to github --repo example-org/shop --dry-run` runs with nobody present
-- **Then** the plan and payloads are printed, no question is put, and no task file or `.config.yml` changes
+- **Then** the plan and payloads are printed, each task under an epic in the run shows `would link to "<EPIC-ID> <epic title>"`, no question is put, and no task file or `.config.yml` changes
 
 #### Scenario: Confirmation unanswered
 

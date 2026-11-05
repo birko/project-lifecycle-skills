@@ -9,8 +9,12 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
 2. **Parse args**:
    - `--to github` or `--to jira` — required.
    - `--repo owner/name` (GH) or `--project KEY` (Jira) — overrides interactive prompt.
-   - `--dry-run` — run steps 1–5 (inventory, plan, the read-only pre-flight) and print, for every item,
-     the payload [export.md](export.md) step 5 builds, the Jira priority field included. **Skip steps 6–8**:
+   - `--dry-run` — run steps 1–5 (inventory, plan, the read-only pre-flight) and print, after step 4's plan and
+     step 5's pre-flight result and in step 6's push order (epics, stories, tasks), each item's payload: an epic's
+     or story's as [export.md](export.md) § *Exporting STORY or EPIC* defines it, a task's as export step 5 builds
+     it (title, labels, assignee, milestone line as `would link to "<EPIC-ID> <epic title>"`, Jira priority
+     field). Show a body as the section names it carries plus the footer line, not their text, which is the
+     file's unchanged. **Skip steps 6–8**:
      no push, no label or milestone created, no frontmatter written back, no `.config.yml` change, no
      dashboard regeneration. Step 4 puts no question. End with
      `Dry run — nothing pushed; task files and tasks/.config.yml unchanged.` A flag that promises no push
@@ -36,6 +40,8 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
      ...
    Total API calls: ~51
    ```
+   Total API calls counts one create per planned item (epic, story, task): 5 + 12 + 34 = 51 above. Lookups,
+   missing-label creates and `Blocked:` comments come on top, hence the `~`.
    Then put this question (never under `--dry-run`, which ends after printing the plan and payloads):
 
    > **Push these <N> items to <GitHub repo owner/name | Jira project KEY> and switch tasks/.config.yml to `mode: hybrid`? (yes/no)**
@@ -53,7 +59,7 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
 6. **Run push in order**, writing IDs back to frontmatter as we go (so the operation is resumable):
    - For each EPIC → create milestone (or parent issue); write `github-issue:` in the parent-issue case.
      **In the milestone case, look the milestone up by its title first** (the format
-     [export.md](export.md) § *Exporting STORY or EPIC* gives) with `gh api repos/<repo>/milestones --paginate`,
+     [export.md](export.md) § *Exporting STORY or EPIC* gives) with `gh api "repos/<repo>/milestones?state=all" --paginate` (open ones only otherwise, and a closed one would be created again),
      and create it only if it is missing. A milestone epic carries no id in its frontmatter, so without the
      lookup a resumed run creates a duplicate.
    - For each STORY → create label or Story (Jira) or just track the slug.
