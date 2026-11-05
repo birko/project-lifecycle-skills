@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: 701ccee2ce5caa51189213b733de6d7e6d0be148
+generated-at: 9abf3f76fead0e19a384b56b828ecfcfe1e215ef
 generated-on: 2026-11-04
 sources:
   - skills/specs/SKILL.md
@@ -58,7 +58,7 @@ The system SHALL, when the project has no area map or has one whose `areas:` lis
 
 ### Requirement: The area map declares capabilities, not classes
 
-The system SHALL keep a hand-editable area map in which each area has a kebab-case `name` (which names its spec file), a `title`, and a list of `sources` globs relative to the project root, alongside an optional `ignore` list, and SHALL treat that map as the only human-owned file among the specs; spec bodies are generated and are not hand-edited.
+The system SHALL keep a hand-editable area map in which each area has a kebab-case `name` (which names its spec file), a `title`, and a list of `sources` globs relative to the project root, alongside an optional `ignore` list; a file MAY sit in several areas' `sources` when it implements more than one capability (each area being a capability without it), in which case every sharing area's spec harvests it and every sharing area goes stale on one edit to it; and SHALL treat that map as the only human-owned file among the specs; spec bodies are generated and are not hand-edited.
 
 #### Scenario: Area name becomes the spec file
 
@@ -70,7 +70,7 @@ The system SHALL keep a hand-editable area map in which each area has a kebab-ca
 
 - **Given** a discovery pass proposing areas for a codebase
 - **When** the areas are drafted
-- **Then** each one is a capability a stakeholder would recognise, aiming at roughly five to twenty areas, never one per class
+- **Then** each one is a capability a stakeholder would recognise, never one per class, the count following the capabilities found (roughly five to twenty describes typical projects and is not a target), so a two-capability codebase gets two areas
 
 ### Requirement: Coverage keys record whether the map was checked
 
@@ -160,7 +160,7 @@ The system SHALL, on `init`, find the project root by the same walk the task tra
 
 ### Requirement: Init presents the map and reconciles coverage
 
-The system SHALL present the proposed map as a table of area, title, globs and rough file count, always report how many files the scan examined including zero, list every file matching neither an area nor `ignore` as unmapped, and either extend an area or add one; where reconciliation needs the user it SHALL ask once over the whole unmapped list whether each file is behaviour belonging in an area or not project source, and with no answer leave those files unmapped rather than sweeping them into `ignore`.
+The system SHALL present the proposed map as a table of area, title, globs and rough file count, always report how many files the scan examined including zero, list every file matching neither an area nor `ignore` as unmapped, and resolve each by extending an area, adding an area, or adding an `ignore` entry; where reconciliation needs the user it SHALL ask once over the whole unmapped list whether each file is behaviour belonging in an area or not project source, and with no answer leave those files unmapped rather than sweeping them into `ignore`.
 
 #### Scenario: Unanswered unmapped question
 

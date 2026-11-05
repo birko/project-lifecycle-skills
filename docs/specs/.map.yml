@@ -4,7 +4,7 @@
 #
 # Granularity: one area = one capability a consumer would recognize
 # (task-tracking, feature-lifecycle, spec-harvesting), not one file.
-# Healthy: ~5-20 areas.
+# The area count follows the capabilities, never the reverse — see the specs skill's SKILL.md.
 #
 # Discovered 2026-09-01 by /specs init (TASK-079), replacing the empty seed that had
 # stood since 2026-08-18. 14 areas over 63 tracked files (16 at first draft; the three

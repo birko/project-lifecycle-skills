@@ -3,7 +3,7 @@ id: TASK-128
 parent: STORY-014
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: verify
 priority: P2
 assignee: agent
 created: 2026-09-16
@@ -12,6 +12,7 @@ blocks: []
 # findings: ids this task remediates, from a review/audit/harvest/drill pass. Prefixes: see /tasks intake
 findings: [DRILL-109-3, DRILL-033-2, DRILL-109-4]
 pr: null
+picked-by: fix-next
 github-issue: null
 jira-key: null
 ---
@@ -105,35 +106,35 @@ thirty capabilities genuinely should reconsider its granularity, and nothing her
 
 ## Acceptance criteria
 
-- [ ] Step 4's unmapped-file sentence enumerates **every** exit the step's own prose defines, including
+- [x] Step 4's unmapped-file sentence enumerates **every** exit the step's own prose defines, including
       `ignore`, so no reader has to pick between two contradictory instructions
-- [ ] The fix names which side was wrong — the sentence or the paragraphs — rather than quietly editing both
+- [x] The fix names which side was wrong — the sentence or the paragraphs — rather than quietly editing both
       to meet in the middle
-- [ ] Step 6's expectation of *"any `ignore:` entries step 4's reconciliation added"* is reachable by
+- [x] Step 6's expectation of *"any `ignore:` entries step 4's reconciliation added"* is reachable by
       following step 4 literally
-- [ ] The `coverage-drift` / `ignore` distinction stays exactly as documented — this task fixes which exits
+- [x] The `coverage-drift` / `ignore` distinction stays exactly as documented — this task fixes which exits
       are listed, not what they mean
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-088:*
 
-- [ ] Whether a file may appear in more than one area's `sources:` is stated, with the test for when it should
-- [ ] The consequence for `regen` (one file harvested into several specs) is named, not left to be discovered
-- [ ] The consequence for `verify` (one edit marks several areas stale) is named
-- [ ] The existing deliberate instances are consistent with whatever is decided, or are called out as needing change — `ProgressEndpoints.cs`, `plans-segments.ts`, and Presenter's `appsettings.json` if that map is ever written
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Whether a file may appear in more than one area's `sources:` is stated, with the test for when it should
+- [x] The consequence for `regen` (one file harvested into several specs) is named, not left to be discovered
+- [x] The consequence for `verify` (one edit marks several areas stale) is named
+- [x] The existing deliberate instances are consistent with whatever is decided, or are called out as needing change — `ProgressEndpoints.cs`, `plans-segments.ts`, and Presenter's `appsettings.json` if that map is ever written
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-129:*
 
-- [ ] The granularity guidance states what a project **below** the range does, and says plainly that the
+- [x] The granularity guidance states what a project **below** the range does, and says plainly that the
       range is descriptive of typical projects rather than a target to reach
-- [ ] A two-capability project is a legitimate, recorded outcome — not an edge case handled by silence, and
+- [x] A two-capability project is a legitimate, recorded outcome — not an edge case handled by silence, and
       not conflated with the existing zero-behaviour edge case, which stays as it is
-- [ ] The wording cannot be read as licence to split by class to reach a count; the *"capability, not
+- [x] The wording cannot be read as licence to split by class to reach a count; the *"capability, not
       class"* rule stays the stronger of the two statements
-- [ ] Wherever the range is restated across the skill, it is reconciled — the fix does not leave one copy
+- [x] Wherever the range is restated across the skill, it is reconciled — the fix does not leave one copy
       saying "target" and another saying "typical"
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -158,9 +159,11 @@ thirty capabilities genuinely should reconsider its granularity, and nothing her
 
 ## Human test plan
 
-- [ ] Cold-drill `/specs init` on a fixture containing at least one clearly non-source tracked file, and
+- [x] Cold-drill `/specs init` on a fixture containing at least one clearly non-source tracked file, and
       confirm the run reaches `ignore` by following step 4 rather than against it
-- [ ] Confirm the run's reported `coverage-drift` still distinguishes housekeeping from real source
+  - **Passed 2026-11-05:** fixture `%LOCALAPPDATA%/Temp/d128`: a Python repo with two capabilities (`src/notes.py`, `src/export.py`) and five clearly non-source tracked files (README, `docs/release.md`, `Makefile`, `pyproject.toml`, `scripts/deploy.sh`), no map; skill `specs` copied after this fix. Runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep Edit Write < brief.txt`, brief "Run /specs init against repo/. Give its output and the full contents of every file it wrote." (shared preamble and closing asks; no expected outcome). It resolved all five non-source files into `ignore` by step 4's own list (build files, docs, deploy scripts), and mapped two areas for the two capabilities. Coldness: it listed no skills
+- [x] Confirm the run's reported `coverage-drift` still distinguishes housekeeping from real source
+  - **Passed 2026-11-05:** the same run wrote `coverage-drift: []`: no real source was unmapped, and the housekeeping went to `ignore`, not to drift
 
 *From TASK-088:*
 
@@ -170,11 +173,58 @@ map is where it gets used in anger.
 
 *From TASK-129:*
 
-- [ ] Cold-drill `/specs init` on a fixture with two clear capabilities and confirm the run writes two
+- [x] Cold-drill `/specs init` on a fixture with two clear capabilities and confirm the run writes two
       areas and says why that is correct, rather than padding or apologising for the count
+  - **Passed 2026-11-05 (second run):** `d128` rebuilt after the amended step 4. It wrote two areas and printed `2 areas — one per capability found; fewer than the typical range, which describes projects and is not a target`. The first run wrote two areas without padding, but did not say why, because init gave it no such line; that was added
 - [ ] Confirm a fixture with no behavioural code still reaches the existing `not-applicable` verdict
       unchanged
+  - **Failed 2026-11-05:** `d128z` (five tracked files, none code: README, docs, Makefile, pyproject, a deploy script) wrote `areas: []` with `coverage: unverified # areas proposed but never blessed`. Step 6 stamps every unblessed map `unverified`, which overrides the verdict table's `not-applicable` (no blessing required) even with nothing to bless. This predates this task: it came with the blessing rule after TASK-089's docs-only drill reached `not-applicable` → TASK-345
+
+## Outcome
+
+**What was fixed** (three merged findings, all in `/specs init` step 4 and the map's rules):
+- **TASK-128:** step 4's sentence offered two exits for an unmapped file while the step's own paragraphs and step 6 rely on a third, `ignore`. The sentence was the defect. It now lists extending an area, adding an area, or adding an `ignore` entry, and the paragraph keeps what each means.
+- **TASK-088:** a file may sit in several areas' `sources:` when it genuinely implements more than one capability. The test is that each area is a capability without it. Regen harvests it into each spec and verify stales each area on one edit, both named as intended.
+- **TASK-129:** the 5–20 range describes typical projects and is not a target. A project with two capabilities maps two areas, recorded by the map itself and stated by the run, and never splits by class to reach a count. SKILL.md owns the range; init, the template and this repo's map point at it.
+
+**Step-6 split:** 0/0, because this is prose and template comments only. Evidence is the drill, which passed on both test-plan steps. The lint passed, and the lint's own tests ran (see the log).
+
+**Judgement calls.**
+- **One owner for the range,** because identical wording in three places is how "target" and "healthy" drifted apart.
+- **The shared-file rule documents existing practice** rather than inventing one: the known deliberate instances fit it, except `plans-segments.ts`, which is WorkoutTracker's call.
+
+**Review (close step 5b, inline).** Adherence: one owner, pointers elsewhere, and the template claims nothing a render cannot make true. Fidelity: all fifteen criteria across the three blocks are met. Correctness: the quoted old phrase is gone too.
+
+**Parked at `verify`:** TASK-129's no-code step failed on a regression that predates this task → TASK-345. It leaves `verify` when TASK-345 lands and that step re-runs.
+
+**Flagged, not fixed.** When step 4's reconciliation "needs the user" is undefined, and the two paths give different maps. That is TASK-127's ask/blessing ground, out of scope here.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-128` — leave empty until then._
+### Decisions
+- **TASK-128: the two-way sentence was the defect.** The classification paragraph and step 6 both depend on an `ignore` exit, so they were right. The sentence now lists the three exits inline (extend an area, add an area, add an `ignore` entry), and the paragraph keeps what each means. The line quoting the old phrase is reworded too, or the two-exit reading would survive as a quote.
+- **TASK-088: a file may sit in several areas** when it genuinely implements more than one capability. The test: each sharing area must be a capability without that file. The consequences are named and intended: regen harvests the file into each spec, and verify stales each area on one edit. The rule lives once, in SKILL.md § *The area map*; init step 4 and the template's `sources:` comment point at it; regen and verify are unchanged, since their behaviour already gives both consequences.
+- **TASK-129: SKILL.md owns the range,** stated as typical, not a target. Fewer capabilities map exactly that many; a two-area map is the record, and the run states it. Never split by class to reach a count. Init's "Target granularity", the template comment and this repo's own map comment become pointers.
+
+### Steps
+1. init.md step 4: the sentence, the quoted phrase, and the granularity bullet.
+2. SKILL.md: the granularity bullet and the shared-file bullet.
+3. templates/map.yml: two comments. docs/specs/.map.yml: its comment.
+4. Spec `specs-from-code`: The area map (shared files), the Granularity guidance scenario, and Init presents the map (three exits).
+5. Lint and the lint tests; then the drill.
+
+### Instance check (TASK-088)
+- `ProgressEndpoints.cs` (two read models) and Presenter's `appsettings.json` (sections consumed by separate capabilities) are consistent with the rule.
+- `plans-segments.ts` is consistent only if the segment bar carries behaviour each area specifies; otherwise it belongs to one area. That call is WorkoutTracker's own work.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-028 because key 1: a reader following step 4's two-way sentence literally folds non-source files into behavioural areas and silently inflates coverage-drift, a wrong result; key 4: one step of one verb; key 5: drill-verified (TASK-109's B2); TASK-089 dropped below on key 4 (a research task), TASK-092 on key 4 (an undecided flag design)
+- step 3 — verified: held. init.md:42 "either extend an area or add one" omits the `ignore` exit that line 67 defines and step 6 expects; the merged TASK-088 (one file in several areas) and TASK-129 (projects below the 5–20 range) remain unaddressed in the file
+- step 3b — planned: /tasks plan --no-grill (fifteen criteria across three merged findings); no split signal; "recorded" read as the map listing exactly the areas found, with the run stating it, so no new map key
+- step 4 — layer: local
+- step 5 — fix in skills/specs/verbs/init.md (three exits; the quoted phrase; granularity points at SKILL.md), skills/specs/SKILL.md (range descriptive; fewer is legitimate; the shared-file rule with its test and consequences), skills/specs/templates/map.yml and docs/specs/.map.yml (comments point at SKILL.md); the two-way sentence was the defect, the paragraphs and step 6 were right; lint OK (20 skills)
+- step 6 — reverted fix: 0/0 failed — prose and template comments only; fix-dependent = none; contract pins = skills-lint.sh and skills-lint-test.sh; evidence = the Human test plan drill
+- step 7 — respecced specs-from-code; requirements changed: The area map declares capabilities (shared files), the Granularity guidance scenario (count follows capabilities), Init presents the map (three exits); intended — TASK-128's criteria
+- step 5 (amended after the drill) — init step 4 now has the run state a below-range count (`<n> areas — one per capability found; fewer than the typical range…`), since SKILL.md said "the run states" and init never told it to; d128 re-run passed. d128z (no code) failed to reach `not-applicable`, a regression from the blessing rule → TASK-345
+- step 8 — handed to /tasks close --unattended; parked at verify on the failed step; outcome in status:, commit in git log

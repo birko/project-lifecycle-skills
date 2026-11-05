@@ -61,7 +61,17 @@ ignore:                                 # never counts as unmapped
 
 Rules:
 - **Granularity = capability**, not class or file — `auth-session`, `lazy-initialization`,
-  `bulk-filter-updates`. A healthy project has ~5–20 areas.
+  `bulk-filter-updates`. Typical projects land at ~5–20 areas; that range describes them and is not a target. A
+  project with fewer capabilities maps exactly that many — two capabilities is two areas, a legitimate outcome
+  the map records by listing them and the [init](verbs/init.md) run states — and never splits by class or file
+  to reach the range. Well above it is the signal to revisit granularity. No behavioural code at all is a
+  different case, `not-applicable` ([init](verbs/init.md) § *Edge cases*), unchanged.
+- **A file may sit in more than one area's `sources:` when it genuinely implements more than one capability**
+  — one file hosting two read models, one config file whose sections separate capabilities consume. The test:
+  each sharing area must be a capability on its own, without that file; if the areas exist only because of how
+  files are split, redraw the areas instead. Two consequences follow and are intended: [regen](verbs/regen.md)
+  harvests the file into every sharing area's spec, so those specs may state overlapping requirements; and
+  [verify](verbs/verify.md) marks every sharing area stale on a single edit to it.
 - **`coverage:` and its two companions record whether the map was ever checked, how big the check was, and what real blindness it found.** Written by every [init](verbs/init.md) run; all three are overwritten each time, so a repo whose discovery is later fixed clears a stale verdict by itself.
 
   | Key | Value |

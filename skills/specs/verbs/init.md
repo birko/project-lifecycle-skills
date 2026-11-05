@@ -36,10 +36,10 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 3. **Discovery pass** — propose the capability map from the codebase:
    - Read the project's `CLAUDE.md` / `README.md` first — the architecture section usually names the capabilities already; prefer its vocabulary.
    - Survey structure: source folders, namespaces/modules, public surface. For a large codebase, fan out [[Explore]] agents (or the Workflow tool) — one per top-level source folder — each returning proposed areas + source globs.
-   - Target granularity: **capability, not class** — ~5–20 areas. Each area = a name a stakeholder would recognize (`auth-session`, `bulk-filter-updates`), with source globs that collectively cover the behavioral code.
+   - Granularity: **capability, not class** — how many areas that yields is set by [SKILL.md](../SKILL.md) § *The area map*, never by a count. When the map has fewer areas than that section's typical range, say so in the confirmation: `<n> areas — one per capability found; fewer than the typical range, which describes projects and is not a target`. Each area = a name a stakeholder would recognize (`auth-session`, `bulk-filter-updates`), with source globs that collectively cover the behavioral code.
    - Propose an `ignore` list: build output, tests, generated code, vendored deps.
 
-4. **Present the proposed map** as a table (area · title · globs · rough file count). Check coverage: any source file matching neither an area nor `ignore` → list as unmapped and either extend an area or add one. Where that reconciliation needs the user, put this question, once, over the whole unmapped list:
+4. **Present the proposed map** as a table (area · title · globs · rough file count). Check coverage: any source file matching neither an area nor `ignore` → list as unmapped and resolve each one by **extending an area**, **adding an area**, or **adding an `ignore` entry** — which of the three is a judgement, classified below; a file may join more than one area ([SKILL.md](../SKILL.md) § *The area map*). Where that reconciliation needs the user, put this question, once, over the whole unmapped list:
 
    > **`<N>` files match no area and no ignore rule: `<paths>`. For each, is it behaviour that belongs in a capability area, or not project source?**
 
@@ -60,7 +60,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
    `unverified` is the catch-all deliberately, because the ways to fail are open-ended and the ways to succeed are not. It covers at least: **discovery returned nothing** while sources exist (wrong roots, an unrecognised stack, behaviour living where this scan did not look); a non-empty scan set with **unmapped files the user declined to map** *or left unanswered*; areas proposed as a **partial guess** because the source shape could not be resolved; and **areas that were never blessed** — nobody was present to bless them, or the question went unanswered (§ *Blessing*). Say which one, in one line.
 
-   **The verdict describes the map you are about to write, not the map you found.** This step fixes what it finds — that is what *"extend an area or add one"* means — so grading before the fix would mark a run `unverified` on the strength of a gap it went on to close. The earlier moment is not discarded; it becomes `coverage-drift`, below.
+   **The verdict describes the map you are about to write, not the map you found.** This step fixes what it finds — that is what the reconciliation above is — so grading before the fix would mark a run `unverified` on the strength of a gap it went on to close. The earlier moment is not discarded; it becomes `coverage-drift`, below.
 
    **Classify every file that was unmapped at first scan, because the count alone ranks repos backwards.** Each one leaves the unmapped set in exactly one of two ways, and which one it was is the whole signal:
    - **Into a capability area** — it is behavior the map could not see. These are the paths `coverage-drift` lists.
