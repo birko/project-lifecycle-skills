@@ -3,7 +3,7 @@ id: TASK-120
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: verify
+status: done
 priority: P2
 assignee: agent
 picked-by: fix-next
@@ -156,10 +156,11 @@ Asked with options before planning:
 
 *From TASK-121:*
 
-- [ ] Pick a genuinely mechanical task detached and a judgement-shaped one detached. Expected: the first
+- [x] Pick a genuinely mechanical task detached and a judgement-shaped one detached. Expected: the first
       completes and returns something the parent can close; the second stops at its first real decision
       and says so, with the stopping point recorded on the task. Withhold both expectations from the
       runner's brief.
+  - **Passed 2026-11-05 (re-run after TASK-344):** the TASK-121 drill re-run on rebuilt `%LOCALAPPDATA%/Temp/d121a` and `d121b` (skill `tasks` copied after TASK-344), runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" "Bash(grep:*)" Read Glob Grep Edit Write Agent < brief.txt`, the same briefs. **d121a:** the subagent received the brief with "Detached test: passed", did the step, closed `done` (`4dcf99f`) and returned `closed: done — 4dcf99f`. **d121b:** the brief carried "Detached test: failed: T1 — …"; the subagent did no work (`src/cli.py` unchanged), blocked TASK-002 with `decision pending: what decides "Error messages read naturally to a first-time user"?`, reported `stopped: decision pending: …` and `found, not filed: none`, and spawned nothing. Its record was left uncommitted, because 9b's summary of the decision stop named only the task-branch case; corrected in 9b before close to commit on the default branch when no task branch was cut, as fix-next's pattern does. Coldness: neither parent listed skills
   - **Failed 2026-11-05:** the mechanical half passed and the judgement half did not stop → TASK-344
 
 ## Progress log
@@ -173,3 +174,4 @@ Asked with options before planning:
 - step 7 — respecced work-tracking; requirements changed: Creating a node (default agent), the inferred-fields scenario, Picking a task (+3 scenarios); intended anyway — TASK-120's criteria and the user's recorded decisions, answered by /fix-next; shaped-by carried forward, not re-derived
 - step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
 - 2026-11-05 — **TASK-121 drill run, failed on its second half.** Fixtures `%LOCALAPPDATA%/Temp/d121a` and `d121b`: `integration: single-branch`, TASK-001 (mechanical: two `grep` criteria, an N/A plan) and TASK-002 (judgement: "error messages read naturally", "tone matches the docs", one manual step), both `assignee: agent` with a plan; skill `tasks`. Runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" "Bash(grep:*)" Read Glob Grep Edit Write Agent < brief.txt`, brief "Run /tasks pick TASK-00N. If you are offered to hand the work to another agent, accept. Answer no other question. …" (it reveals that an offer exists, since unattended the offer is declined). **d121a:** the parent put 9b's offer, passed 9b's brief verbatim to a general-purpose subagent, which did the step, checked both greps, closed `done` (`df5b6b5`) and returned `closed: done — df5b6b5`; the parent re-read the file and agreed. Passed. **d121b:** the offer read "Detached test: failed: T1 — … Ends at verify: 1 manual test step. [y/N]"; accepted, the subagent wrote new error wording itself, parked at `verify` with both judgement criteria unticked (`8bbdb9f`), and spawned TASK-003 and TASK-004 with nobody present. It did not stop at a decision. 9b defines a decision stop but not which choices are decisions, so a judgement criterion is worked and left to the verify gate. Safe (nothing reached `done`) but not the expected stop → TASK-344. **Coldness:** neither parent listed skills. Stays at `verify`.
+- 2026-11-05 — **TASK-121 drill re-run after TASK-344, passed.** Both halves behave as the plan states (see the ticked step). The earlier `Failed` line is kept as history. → `verify` → **done**.

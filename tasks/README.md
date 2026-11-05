@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-05 08:53. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-05 09:10. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 57                  |
+| todo         | —                  | —                  | 56                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 2                   |
+| verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 265                 |
+| done         | 4                  | 13                 | 267                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 46× P2 · 11× P3.
+`todo` by priority: 45× P2 · 11× P3.
 
 ## In progress now
 
@@ -24,7 +24,6 @@ _None_
 
 ## Awaiting verification
 
-- [TASK-120](EPIC-002-close-gate-findings/STORY-011-tasks-skill-defects/TASK-120.md) — `pick`'s handoff branches on an `assignee:` value no task in the tree has (P2, agent)
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
 
 ## Tree
@@ -97,11 +96,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (65/104 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (67/104 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (22/31 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (24/31 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -115,7 +114,7 @@ _None_
     - [x] TASK-073 Should the task template stop carrying an enum comment that shadows its own field?
     - ~~TASK-083 `fix-next` step 8 states two different counts of the same event, one sentence apart~~
     - [ ] TASK-107 The acquisition-line rule will have no enforcement point, so a drill record can omit it silently
-    - [ ] TASK-120 `pick`'s handoff branches on an `assignee:` value no task in the tree has 🔍 verify
+    - [x] TASK-120 `pick`'s handoff branches on an `assignee:` value no task in the tree has
     - [x] TASK-135 `/fix-next` picks a task without ever offering the plan `/tasks pick` would have offered
     - ~~TASK-180 `/tasks init` contradicts two sibling verbs — when mode detection runs, and whether a re-run writes~~
     - [x] TASK-182 `/tasks pick` step 7's two questions carry no wording and no answer-less path
@@ -132,7 +131,7 @@ _None_
     - [x] TASK-340 The task template has no `{{FINDINGS}}` token for `new` to fill, and the N/A test-plan wording differs
     - [x] TASK-341 `/tasks pick` calls a `verify` task "in review", cannot find the default branch with no remote, and flips the status before cutting the branch
     - [x] TASK-343 `/tasks new` leaves the shortened body question, a quoted description, and the FIELD-NNN scan to the reader
-    - [ ] TASK-344 A detached run of a judgement task does its judging instead of stopping
+    - [x] TASK-344 A detached run of a judgement task does its judging instead of stopping
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (6/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed

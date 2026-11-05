@@ -451,30 +451,39 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
    Put this question, with `[Y/n]` when the test passes and `[y/N]` when it fails:
 
-   > **Run TASK-NNN in a subagent? It starts with a clean context, loads this project's guide and skills, and works from the task file alone; this conversation waits for its report. Detached test: <passed | failed: T<n> — "<the quoted item>">.<" Ends at verify: 1 manual test step." or " Ends at verify: N manual test steps." when T3 announces> [Y/n]**
+   > **Run TASK-NNN in a subagent? It starts with a clean context, loads this project's guide and skills, and works from the task file alone; this conversation waits for its report. Detached test: <passed | failed: T<n> — "<the quoted item>"; a detached run stops there>.<" Ends at verify: 1 manual test step." or " Ends at verify: N manual test steps." when T3 announces> [Y/n]**
 
    An empty reply takes the default. **No reply, or nobody to ask:** this conversation does the work. A
    detached run reports back to a person, and with nobody present a second unattended layer adds nothing.
 
    **The brief** is the task file's absolute path, the checkout path and branch from steps 6b–7, and this
    instruction: *the task file is your brief: its Acceptance criteria are the target, Out of scope is the
-   fence, the Implementation plan is the plan. Write tree changes only through the `tasks` verbs. Answer
+   fence, the Implementation plan is the plan. Detached test: <passed | failed: T<n> — "<the quoted item>">. If it
+   failed, do no work: take the decision stop at that item, with the question `what decides "<the quoted item>"?`
+   for T1, or the marker's own question for T2. Spawn nothing: list any work you find outside the criteria in
+   your report as `found, not filed:`, and add no bullet to `## Out of scope`. Write tree changes only through the `tasks` verbs. Answer
    every ask from the table in `pick.md` step 9b. Set `picked-by: tasks-pick` and append one `## Progress
    log` line per step as it happens. End with `/tasks close TASK-NNN --unattended`.* **The conversation is
    not handed over**, so anything this conversation knows that matters goes into the task file before the
    spawn, or it is lost.
 
-   **The report** starts with one of these lines, then lists every spawned id, every inferred field and
-   every unmet criterion:
+   **The report** starts with one of these lines, then lists every inferred field, every unmet criterion,
+   and one line per piece of work found and not filed, `found, not filed: <what> — <where it was seen>`, with
+   `; no feature decision covers it` added when that applies:
    `closed: done — <pr or sha>` · `parked: verify — <n> manual step(s)` (`1 manual step` for one) ·
    `stopped: decision pending: <the question> — kept on task/TASK-NNN` · `stopped: <the verb's own line>`.
    This conversation prints it, re-reads the task's `status:` and last log line, and says so when they
-   disagree with the report. The file wins.
+   disagree with the report. The file wins. A `found, not filed` line is the person's to file with
+   `/tasks spawn`, or to drop; the run's last log line repeats them, so the file keeps them too.
 
-   **A decision only a person can take stops the run**, by [[fix-next]]'s decision-pending pattern (its
+   **When the detached test failed, the failing item is the run's first decision**: the run stops before any
+   work, at the first criterion that failed T1 (or at T2's marker), and does no work beyond steps 1–8. A
+   failing test is the signal that the task needs a person, so judgement spent before the stop is spent on a
+   guess. **A decision only a person can take stops the run**, by [[fix-next]]'s decision-pending pattern (its
    § *Guardrails* and § *A run that ends without a fix* own it): the question goes into Context under
-   `Open decision`, `/tasks block TASK-NNN --reason "decision pending: <the question>"`, the
-   non-controversial work is committed on the task branch and the branch is kept, and the log ends
+   `Open decision`, `/tasks block TASK-NNN --reason "decision pending: <the question>"`, the record and any non-controversial work are committed as
+   that pattern says (on the task branch, which is kept, or on the default branch when no task branch was cut, as
+   `TASK-NNN: blocked — decision pending`), and the log ends
    `step <n> — blocked: decision pending: <the question>`. Never guess.
 
    **The detached contract table.** Every point that would ask the user has a row. An ask reachable in a
@@ -489,12 +498,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | step 9 `github-issue:` comments | fetched per mode | fetched by the subagent under the same rule |
    | entering the checkout | step 6b's proof | prove `git rev-parse --show-toplevel` is the brief's path; a mismatch stops and reports, never falls back, because the worktree holds the branch |
    | [plan.md](plan.md) 5b split offer, step 7 grill | asked | their own answer-less paths: not spawned and marked; grill not run |
-   | adjacent work found mid-task → [spawn](spawn.md) | offered | **spawned**, as `close` 5d does unattended; spawn and new take their answer-less paths, and the ids go in the report |
-   | a spawn no feature decision covers | new `proposed` row, user told | the same; the report says it needs `/feature decide` |
+   | the detached test failed | — | the decision stop above, before any work |
+   | adjacent work found mid-task → [spawn](spawn.md) | offered | **not spawned**: listed in the report as `found, not filed:` and kept out of `## Out of scope`, so the close does not spawn it |
    | scope escalation, shapes 1–2 ([spawn.md](spawn.md) § *Scope escalation*) | no ask | the same |
-   | scope escalation, shape 3 | steps 1–4, then ask | steps 1–4, then the decision stop above, in place of step 5 |
+   | scope escalation, shape 3 | steps 1–4, then ask | steps 1, 2 and 4, the residue listed as `found, not filed:` in place of step 3 and the criterion marked `⚠ NOT MET — residue found, not filed`, then the decision stop above in place of step 5 |
    | a decision only a person can take | asked | the decision stop above |
-   | the close | the user runs `/tasks close` | `/tasks close --unattended`; its own table governs, so manual steps park at `verify` |
+   | the close | the user runs `/tasks close` | `/tasks close --unattended`; its own table governs, so manual steps park at `verify`, and 5d spawns only the `## Out of scope` bullets the task's author wrote, since the run adds none |
 
 ## Edge cases
 
