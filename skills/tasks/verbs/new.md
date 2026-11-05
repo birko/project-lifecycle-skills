@@ -227,7 +227,8 @@ Interactive scaffold of a new task tree node.
     The chained `plan` prints no confirmation of its own: its step 8 lines go into step 13 below, so the run
     ends in one confirmation with one next-step hint.
 
-13. **Confirm** — print:
+13. **Confirm** — print the lines below. A verb that prints its own summary in place of this one relays
+    every one of them ([SKILL.md](../SKILL.md) § *Roll status up to parents*):
     - File path created
     - **The mark line**, when the file carries one, and any body section left unfilled (step 9)
     - **Each container step 10 reopened**, as `STORY-NNN reopened: <new id> is now <its status>`, and any
@@ -240,8 +241,7 @@ Interactive scaffold of a new task tree node.
       - task → "Start work with `/tasks pick {{ID}}`" (or "Plan was skipped — run `/tasks plan {{ID}}` later" if `--no-plan`)
     - **When step 12 ran `plan`, its step 8 lines** above the hint: whether grilling ran, each unspawned split
       signal, any heading demotion, or the plan failure. `plan`'s own hint is not printed; the one above
-      replaces it. A verb that prints its own summary in place of this one relays them
-      ([SKILL.md](../SKILL.md) § *Roll status up to parents*)
+      replaces it
     - **Any copy of the task tree the id scan could not read** (step 6 — [SKILL.md § ID generation](../SKILL.md#id-generation)),
       by path: the id may still collide there, and nobody else will say so.
     - **The minted `FIELD-NNN`, when `--from-field` was passed**, and what it bought: *"minted FIELD-003 — this

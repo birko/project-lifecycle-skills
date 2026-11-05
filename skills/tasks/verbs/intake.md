@@ -32,7 +32,8 @@ different source of work.
   path, a PR url, a commit). Optional; findings usually arrive in-conversation. Either way, the epic's
   `source:` names the pass too (step 5).
 - `--epic <EPIC-NNN>` — file into an existing `kind: review-intake` epic instead of creating one
-  (a second pass over the same scope, or a review split across sessions).
+  (a second pass over the same scope, or a review split across sessions). Step 5 says which stories are
+  reused and how the epic records the new pass.
 - `--adopt <EPIC-NNN>` — no new findings; stamp an existing hand-built review epic so it becomes
   drainable (see Edge cases). Runs steps 7–8 only. **Requires the epic to already own the tasks** — if the
   findings are filed but *loose*, re-home them first with [`move`](move.md); see the loose-backlog edge case.
@@ -127,14 +128,21 @@ different source of work.
      `{{KIND}}` = **`review-intake`** plus `{{SOURCE}}` = the provenance. **It names the pass, whatever
      else it carries**: the skill that ran it, as step 2's Source column names it (`code-review`,
      `specs regen`, `improve-architecture`), or the words that name it where no skill ran (`cold drill`,
-     `field use`), then a report path, a PR, a commit or a date. A list is fine when a second pass is
-     adopted into the same epic, each entry naming its own pass. A later pass finds its earlier runs by
+     `field use`), then a report path, a PR, a commit or a date. A pass filed with `--epic`, or adopted,
+     appends its own entry, so `source:` becomes a list, each entry naming its own pass; it also appends a
+     paragraph to `## Area of concern` opening with that entry and giving the same facts, and its dropped
+     findings join the epic's existing `### Findings dropped at intake` list, never a second heading. Nothing
+     already written there is edited. A later pass finds its earlier runs by
      this name, so a `source:` that is only a path files a pass nobody can find again. The `kind` stamp is the whole contract with [[fix-next]]: it is how
      the drain finds this backlog, so no epic id is ever hard-coded anywhere; `source` is what lets a
      reader six months later find what produced these tasks. Write the pass itself into
      `## Area of concern` — what was reviewed, by what, on which commit, how many findings, and the
      dropped list from step 3.
-   - **STORY per theme** — only for themes that actually got findings; don't scaffold empty ones. Use
+   - **STORY per theme** — only for themes that actually got findings; don't scaffold empty ones. **Under
+     `--epic`, a theme the epic already holds a story for reuses that story**, matched on `theme:`, never on
+     the title: a `done` story takes the tasks and reopens ([new.md](new.md) step 10); a `cancelled` one is not
+     reused, the theme gets a new story, and the report names the cancelled one; a story with no `theme:`
+     matches nothing. Use
      this ladder, and keep the order (it doubles as [[fix-next]]'s tie-breaker). **Pass the theme's
      slug as `{{THEME}}`** so the story records its ladder position in frontmatter: `fix-next` reads
      that field for the tie-break rather than inferring the theme from a title, which fails the moment
@@ -156,8 +164,13 @@ different source of work.
      remap them all with nothing to signal it. Adding a row is safe; the slugs stay stable.
 
    - **TASK per group** — chain [new.md](new.md) (`task`) with
-     `--from-review <ids> [--source <ref>] --no-plan`, parented to its theme story. Priority from
-     severity: theme 1–2 blockers → P0, other blockers → P1, warnings → P1/P2, suggestions → P2.
+     `--from-review <ids> [--source <ref>] --no-plan`, parented to its theme story, with the title, assignee
+     and priority below. **Intake sets all three, so `new` asks for none and marks none** (its § *Unanswered
+     questions*: a value the caller derives by its own rules). The title is the root cause step 4 grouped the
+     findings by, as a short noun phrase; for a single finding, its claim, shortened. The assignee is `agent`,
+     because the drain works these tasks unattended. Priority from severity: theme 1–2 blockers → P0, other
+     blockers → P1, theme 1–2 warnings → P1, other warnings → P2, suggestions → P2. **A group of mixed
+     severity takes the highest priority any one of its findings would get alone.**
      **`--no-plan` is deliberate: intake files, it does not plan.** A pass files many tasks at once, and a
      plan drafted now would plan against a finding nobody has re-verified yet; [[fix-next]] step 3 rescopes
      or rejects a real share of them. The plan is drafted when the work starts: [[fix-next]] step 3b, or
@@ -185,7 +198,8 @@ different source of work.
    ```
 
    Under the counts, print every container the [new.md](new.md) runs reopened and every `record/<ID>` line
-   their step 10 check produced, each once ([SKILL.md](../SKILL.md) § *Roll status up to parents*). This
+   their step 10 check produced, and every copy of the task tree an id scan could not read, by path, each once
+   ([SKILL.md](../SKILL.md) § *Roll status up to parents*). This
    report replaces `new`'s confirmation, so a line left out here is seen by nobody. A pass filed with
    `--epic` into a closed intake epic is exactly the run that reopens it.
 

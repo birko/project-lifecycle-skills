@@ -293,7 +293,8 @@ every mint and never cache a counter, since the answer changes whenever any tree
 new file straight after the scan**, which keeps the window for two simultaneous mints as short as it can be.
 **Say what the scan could not see.** A copy it could not read (a prunable worktree, or one the runtime
 refuses) and branches that exist only on a remote are unseen, so an id minted there may still collide. The
-verb's confirmation names the unreadable copies. A skipped number is harmless. A duplicated one is the
+verb's confirmation names the unreadable copies, or the summary that replaces it does (§ *Roll status up to
+parents*). A skipped number is harmless. A duplicated one is the
 defect.
 `FIELD-NNN` findings ids are minted the same way, over every copy's `findings:` lists (see
 [verbs/intake.md](verbs/intake.md)).
@@ -575,8 +576,8 @@ non-obvious rules travel with this:
     `record/<ID>, record/<ID> not checked: <reason>`. One line per child would bury the report under the same
     reason, and a reader skims past a flood of lines that all say the same thing.
   - **A verb that runs `new` and prints its own summary relays these lines.** That summary replaces `new`'s
-    step 13 confirmation, so every reopened container and every `record/<ID>` line the runs produced goes in
-    it, deduplicated as above. A line left out of it is seen by nobody. **So do the lines of a `plan` that
+    step 13 confirmation, so every reopened container, every `record/<ID>` line the runs produced and every copy
+    of the tree an id scan could not read (§ *ID generation*) goes in it, deduplicated as above. A line left out of it is seen by nobody. **So do the lines of a `plan` that
     `new` chained** (grilling not run, an unspawned split signal, a heading demotion, a plan failure), one
     set per task: `plan` prints none of its own when `new` chains it ([verbs/plan.md](verbs/plan.md) step 8).
   - **A `done` parent is never a reason to file new work elsewhere.** Epics and stories gain work over time, so
