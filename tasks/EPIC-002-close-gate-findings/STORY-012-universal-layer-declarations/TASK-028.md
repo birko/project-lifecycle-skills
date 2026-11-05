@@ -3,7 +3,7 @@ id: TASK-028
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-19
@@ -12,6 +12,7 @@ blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: [DRILL-035-4, DRILL-091-1]
 pr: null
+picked-by: fix-next
 github-issue: null
 jira-key: null
 ---
@@ -99,22 +100,22 @@ ambiguity but not for a **shallow** answer, which is a different thing from an a
 
 ## Acceptance criteria
 
-- [ ] The rule counts **applicable** subsections, not five — an inapplicable subsection is neither covered nor outstanding
-- [ ] A headless library whose rulebook answers its four applicable subsections **skips** the round, and says which subsection it dropped and why
-- [ ] A repo with a human-facing surface is unchanged: UI / UX still counts, and still runs when uncovered
-- [ ] The applicability test is stated where the count is made, so the two rules cannot be read separately again
-- [ ] Any arithmetic example in the file ("four of five") is restated in terms that survive a dropped subsection
-- [ ] `skills-lint` and `skills-lint-test` stay green
+- [x] The rule counts **applicable** subsections, not five — an inapplicable subsection is neither covered nor outstanding
+- [x] A headless library whose rulebook answers its four applicable subsections **skips** the round, and says which subsection it dropped and why
+- [x] A repo with a human-facing surface is unchanged: UI / UX still counts, and still runs when uncovered
+- [x] The applicability test is stated where the count is made, so the two rules cannot be read separately again
+- [x] Any arithmetic example in the file ("four of five") is restated in terms that survive a dropped subsection
+- [x] `skills-lint` and `skills-lint-test` stay green
 
 *From TASK-095:*
 
-- [ ] The thin/covered line is decidable well enough that two runs over one unchanged guide reach the same verdict, **or** the rule states plainly that the verdict is a judgement and always routes to the **offer** — either is acceptable, silence is not
-- [ ] If it stays a judgement, the offer becomes the *stated* default for the borderline case rather than something two runners each had to derive
-- [ ] The rule does not become a rule count, and says why not
-- [ ] The existing WorkoutTracker calibration point is kept or replaced with a better one, not deleted
-- [ ] **§ *Matching a guide's sections*' answer-depth verdict is covered too** (DRILL-091-1) — either by the same answer or by its own, and if by its own, the reason the two differ is stated
-- [ ] A **shallow** answer is distinguishable from an **ambiguous** one, since that section's existing *undetermined* route was written for the second and a shallow answer is not that
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The thin/covered line is decidable well enough that two runs over one unchanged guide reach the same verdict, **or** the rule states plainly that the verdict is a judgement and always routes to the **offer** — either is acceptable, silence is not
+- [x] If it stays a judgement, the offer becomes the *stated* default for the borderline case rather than something two runners each had to derive
+- [x] The rule does not become a rule count, and says why not
+- [x] The existing WorkoutTracker calibration point is kept or replaced with a better one, not deleted
+- [x] **§ *Matching a guide's sections*' answer-depth verdict is covered too** (DRILL-091-1) — either by the same answer or by its own, and if by its own, the reason the two differ is stated
+- [x] A **shallow** answer is distinguishable from an **ambiguous** one, since that section's existing *undetermined* route was written for the second and a shallow answer is not that
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -129,14 +130,55 @@ ambiguity but not for a **shallow** answer, which is a different thing from an a
 
 ## Human test plan
 
-- [ ] Run `/adopt-project` step 2 against a headless library whose guide answers framework, structure, naming and testing — confirm it skips and names the dropped subsection
-- [ ] Run it against a repo with a UI whose guide has no UI rules — confirm UI / UX is still proposed
-- [ ] Run it against a repo with a UI and a complete rulebook — confirm the skip still fires
+- [x] Run `/adopt-project` step 2 against a headless library whose guide answers framework, structure, naming and testing — confirm it skips and names the dropped subsection
+  - **Passed 2026-11-05:** `d028a` (a Python library; guide answers framework, structure, naming, testing; UI section `(none recorded)`): "Skipping convention proposals — your rulebook already answers every applicable subsection", with "UI / UX — dropped: no human-facing surface. There is no UI import and no view files". runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep < brief.txt`, brief "Run /adopt-project against repo/ up to and including its step 2, then stop. Change no file. Report what step 2 decided for each part of the conventions it considers, with the evidence, and what it would ask or offer." (shared preamble and closing asks; no expected outcome). Fixtures built by `build_028.py`: an adopted layer plus code, skills copied after this fix
+- [x] Run it against a repo with a UI whose guide has no UI rules — confirm UI / UX is still proposed
+  - **Passed 2026-11-05:** `d028b` (a React app; four subsections answered, no UI rules): "All five subsections apply… Not covered: UI / UX… The round is scoped to that subsection", proposing "Styling values come from src/theme/tokens.ts [4/4 files]" and an accessible-names rule. The first run counted and scoped UI / UX the same way but proposed nothing, because each UI pattern was in only 2 files, under the 3-file evidence bar; two components were added and it was re-run
+- [x] Run it against a repo with a UI and a complete rulebook — confirm the skip still fires
+  - **Passed 2026-11-05:** `d028c` (a React app; all five answered, UI included): proposals skipped for every covered subsection, UI / UX by its three rules. Code structure was judged thin on evidence the guide does not reach ("named exports only; no default exports [6/6 files]") and offered as a one-subsection round, not run: the thin rule, as written
 
 *From TASK-095:*
 
-- [ ] Two independent cold readers judge the same borderline guide (`Birko.Framework`'s `### Naming` is the measured case) and either reach the same verdict or both route it to the offer
+- [x] Two independent cold readers judge the same borderline guide (`Birko.Framework`'s `### Naming` is the measured case) and either reach the same verdict or both route it to the offer
+  - **Passed 2026-11-05:** `d028d1` and `d028d2` (a Python library whose `### Naming` has three rules while the code also shows `_private` helpers and `UPPER_SNAKE` constants): both judged Naming **covered**, the same verdict. d028d2 named the further shapes and set them below the evidence bar (2 files each). The criterion's first branch (same verdict) holds; the borderline offer default was not exercised, since neither reader found it borderline
+
+## Outcome
+
+**What was fixed** (two merged findings in `adopt-project`'s convention inference):
+- **The skip arithmetic counts applicable subsections, not five.** UI / UX applies only where a human-facing surface exists, by the evidence named; a dropped one is counted on neither side and named with its evidence. A headless library whose guide answers the other four now skips instead of running a pointless round or proposing UI rules. An undetermined surface counts as applicable.
+- **"Thin" is a stated judgement with its evidence, never a rule count, and the offer is the default for a borderline call.** Birko.Framework's `### Naming` is added beside WorkoutTracker as the borderline calibration.
+- **LAYER.md says a shallow guide section is `present`,** naming what it does not reach, not *undetermined*, and why that differs from INFER's offer.
+
+**Step-6 split:** 0/0, because this is prose only. Evidence is four drills over five runs, all passed; one was re-run on a larger fixture.
+
+**Judgement calls.**
+- **Undetermined applicability counts as applicable:** one extra item, against a hidden gap.
+- **The applicability test points at new-project's keep-or-drop rule,** adding only the adoption-time evidence.
+- **Not a rule count,** because counts reward padding.
+
+**Review (close step 5b, inline).** Adherence: cross-skill references use `[[new-project]]` and `[[adopt-project]]`, and no list is restated. Fidelity: all thirteen criteria across both blocks are met. Correctness: the skip-path paragraph's "answers all five" was restated too.
+
+**Flagged, not fixed.** The borderline offer default went unexercised, because both readers called the thin naming section covered. The rule is stated; a future drill on a genuinely contested section would exercise it.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-028` — leave empty until then._
+### Steps
+1. **INFER.md § When the rulebook already answers it** gains its first bullet, **Count applicable subsections, not five**. UI / UX applies only where a human-facing surface exists, by the same test [[new-project]] uses. The evidence that settles it is named. A dropped subsection is counted on neither side and named with its evidence. An undetermined one counts as applicable, since including it costs one item and dropping it on a guess hides a gap.
+2. **The arithmetic is restated in applicable terms:** "every applicable subsection covered → skip"; "one uncovered subsection is a one-subsection round, whether one of five or one of four"; "answers every applicable subsection". § What to read points at the count.
+3. **The thin bullet:** thin is a judgement with its evidence named, never a rule count (a count rewards padding and penalises one rule that settles a subsection). **The offer is the stated default for a borderline call.** WorkoutTracker stays the clear case, and Birko.Framework's `### Naming` (three real rules, two drills split) is added as the borderline case.
+4. **LAYER.md § Matching a guide's sections:** a shallow answer is `present`, naming what it does not reach, and does not go to *undetermined*, which stays for ambiguous meaning. Why it differs from INFER's offer: that row's only remedy is to append, which would create a second home.
+5. **Spec `project-baseline`:** the inference requirement (applicable count, thin as judgement, offer default; +1 scenario for a headless library), guide matching (shallow is present), and split findings (every applicable subsection).
+
+### Risks
+- Counting undetermined as applicable can bring back a near-empty UI round; the silent rows bound it.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-089 because key 1: on a headless library the skip arithmetic never reaches "all covered", so adopt-project runs a pointless round or proposes UI rules to a repo with no UI (a wrong result), where TASK-089 concerns a branch never observed; key 4: one file (INFER.md); key 5: two cold drills split on the thin line (TASK-095); key 6 ties
+- step 3 — verified: held. INFER.md § When the rulebook already answers it counts "all covered", "four of five" and "answers all five" over five subsections while § What to read makes UI/UX apply "only when a human-facing surface exists"; the thin bullet has one calibration point (WorkoutTracker) and no stated route for a borderline call; LAYER.md § Matching a guide's sections has only an *undetermined* route, written for ambiguous meaning, not for a shallow answer
+- step 3b — planned: /tasks plan --no-grill (thirteen criteria across two merged findings); no split signal; the Birko.Framework calibration checked against the drill record quoted in this file
+- step 4 — layer: local
+- step 5 — fix in skills/adopt-project/INFER.md (applicable count with its evidence and the undetermined rule; the arithmetic restated; thin as a judgement with the offer as the borderline default and a second calibration point) and skills/new-project/LAYER.md (shallow answers are present; why that differs from INFER's offer); lint OK (20 skills)
+- step 6 — reverted fix: 0/0 failed — prose only; fix-dependent = none; contract pins = skills-lint.sh; evidence = the four test-plan drills
+- step 7 — respecced project-baseline; requirements changed: Conventions are inferred (applicable count, thin as judgement, offer default, +1 scenario), Agent-guide sections are matched by meaning (shallow is present), Glossary candidates and split findings (every applicable subsection); intended — TASK-028's criteria
+- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log

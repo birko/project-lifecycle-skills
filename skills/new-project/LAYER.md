@@ -425,6 +425,16 @@ and whether `Ako pouzivat s AI agentom` answers the lifecycle section is a real 
 unsettled condition gets. A silent yes appends nothing and hides a gap; a silent no offers to append a
 section the guide may already answer, and neither is recoverable from the table.
 
+**A shallow answer is not an ambiguous one, and does not go to *undetermined*.** Ambiguous means it is unclear
+*whether* the guide answers the section's question; shallow means it plainly does, but reaches less than the
+seed (measured: `Symbio`'s `README.md` § *How we work* carries the flow and the altitude map, not the
+`/feature` verbs, the review gate or the task-first gate). Resolve a shallow answer as **`present`, naming
+what it does not reach**: depth is content, which the survey does not grade. **Why this differs from
+[[adopt-project]]'s `INFER.md` thin route, which offers a round:** a thin rulebook subsection has a remedy
+short of duplication, rules proposed into it and confirmed one by one, while this row's only remedy is to
+*append* a section, and appending beside one that already answers creates the second home the next
+paragraph forbids. `## Conventions` stays the exception: its depth is that thin check, not this table's.
+
 **A guide whose rules are woven through it rather than sectioned is not missing `## Conventions`.** That is
 the ladder's own rung 4, and it matters here because the row's remedy is to *append*: appending a
 `## Conventions` block to a guide that already states its rules elsewhere in itself creates a second home

@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: ed8ace03f5e06e5308d60ac51a8af80a7b960701
+generated-at: 3a6bdd7e471466427b560217f4f6bf4964c9675a
 generated-on: 2026-11-04
 sources:
   - skills/adopt-project/INFER.md
@@ -445,7 +445,7 @@ The system SHALL, for every present artifact whose row names a declaration (toda
 
 ### Requirement: Agent-guide sections are matched by meaning; the guide's rules are not surveyed
 
-The system SHALL read the seed guide's `##` headings and bodies as the section inventory on every run, judge whether a guide answers each by meaning rather than heading text, decide `## Conventions` by the verify-conventions rulebook ladder with rules reachable through a linked companion counting and rules woven through the guide counting, report a section whose content lives in another file as `present` saying where, name genuinely ambiguous matches as undetermined for the round, flag loudly a guide with no reachable conventions, and SHALL NOT diff the rules inside a present guide against the seed.
+The system SHALL read the seed guide's `##` headings and bodies as the section inventory on every run, judge whether a guide answers each by meaning rather than heading text, decide `## Conventions` by the verify-conventions rulebook ladder with rules reachable through a linked companion counting and rules woven through the guide counting, report a section whose content lives in another file as `present` saying where, name genuinely ambiguous matches as undetermined for the round, resolve a shallow answer (one that plainly answers but reaches less than the seed) as `present` naming what it does not reach, flag loudly a guide with no reachable conventions, and SHALL NOT diff the rules inside a present guide against the seed.
 
 #### Scenario: Slovak guide
 
@@ -503,7 +503,7 @@ The system SHALL resolve stack, component behaviour, declared kind, licensing po
 
 ### Requirement: Conventions are inferred from the code, proposed with evidence, and only where uncovered
 
-The system SHALL infer conventions per rulebook subsection (framework/stack, code structure, naming, testing, UI/UX only where a human surface exists) from the repo's own source, showing each proposal with a count and two or three representative paths; SHALL apply the first matching row of an ordered table — silent under 3 files, silent under roughly 20%, propose at roughly 80%+ and at least 5 files, ask at roughly 80%+ across 3 or 4 files, and ask for anything else (roughly 20–80%) — so every share and file count maps to exactly one treatment, the silent rows yielding to anything structural or security-relevant; SHALL drop any unconfirmed inference; and SHALL judge coverage per subsection, skipping proposals for covered ones, offering (not running) a round for a thinly answered one, never proposing beside an existing rule, and saying what it skipped and what covered it in this step and in the final report.
+The system SHALL infer conventions per rulebook subsection (framework/stack, code structure, naming, testing, UI/UX only where a human surface exists) from the repo's own source, showing each proposal with a count and two or three representative paths; SHALL apply the first matching row of an ordered table — silent under 3 files, silent under roughly 20%, propose at roughly 80%+ and at least 5 files, ask at roughly 80%+ across 3 or 4 files, and ask for anything else (roughly 20–80%) — so every share and file count maps to exactly one treatment, the silent rows yielding to anything structural or security-relevant; SHALL drop any unconfirmed inference; and SHALL count only applicable subsections (UI / UX applying only where a human-facing surface exists, an inapplicable one named as dropped and counted on neither side, an undetermined one counted as applicable), judge coverage per subsection, skip proposals for covered ones, offer (not run) a round for a thinly answered one — thinness being a stated judgement with its evidence, never a rule count, and the offer the default when the call is borderline — never proposing beside an existing rule, and saying what it skipped and what covered it in this step and in the final report.
 
 #### Scenario: Prevalent pattern
 
@@ -513,9 +513,15 @@ The system SHALL infer conventions per rulebook subsection (framework/stack, cod
 
 #### Scenario: Rulebook already covers everything
 
-- **Given** a guide whose flat rule list answers all five subsections
+- **Given** a guide whose flat rule list answers every applicable subsection
 - **When** step 2 runs
 - **Then** no proposals are made, the skip and its covering evidence are announced, and nothing is written for proposals
+
+#### Scenario: Headless library skips without UI rules
+
+- **Given** a library with no human-facing surface whose guide answers framework, structure, naming and testing
+- **When** step 2 runs
+- **Then** the round is skipped, and the announcement names UI / UX as dropped with its evidence
 
 #### Scenario: Too little code to infer
 
@@ -525,7 +531,7 @@ The system SHALL infer conventions per rulebook subsection (framework/stack, cod
 
 ### Requirement: Glossary candidates and split findings survive a skipped round
 
-The system SHALL collect recurring domain nouns and suspected synonyms as glossary candidates and hand them to `/domain`, appending confirmed terms through `/domain` when `docs/glossary.md` exists; it SHALL report glossary candidates and 20–80% split findings even when every subsection is covered — stated as findings, not asked — and SHALL record candidates in the guide's § Conventions › Naming, marked unresolved, only when a round runs and the user confirms the list — on the skip path, or when a round gets no answer, reporting them only — retiring that copy once the glossary exists.
+The system SHALL collect recurring domain nouns and suspected synonyms as glossary candidates and hand them to `/domain`, appending confirmed terms through `/domain` when `docs/glossary.md` exists; it SHALL report glossary candidates and 20–80% split findings even when every applicable subsection is covered — stated as findings, not asked — and SHALL record candidates in the guide's § Conventions › Naming, marked unresolved, only when a round runs and the user confirms the list — on the skip path, or when a round gets no answer, reporting them only — retiring that copy once the glossary exists.
 
 #### Scenario: Migration in flight on a covered repo
 

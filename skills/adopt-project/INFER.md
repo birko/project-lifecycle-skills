@@ -57,7 +57,7 @@ Mirror the agent guide's `## Conventions` subsections, so proposals land where t
 - **Code structure & patterns** — the folder layout itself; dependency direction (does the domain import the web layer, or only the reverse?); error handling (a result type, exceptions, error returns); how boundaries are crossed (repository, direct queries, a mix).
 - **Naming** — file naming (kebab, Pascal, snake), symbol casing per kind, test file naming, and any suffix convention (`*Handler`, `*Service`, `*Repository`) worth stating.
 - **Testing** — the runner actually present, where tests live relative to source, the file naming, and whether integration tests are separated. **What the repo runs beats what its docs claim.**
-- **UI / UX** — only when a human-facing surface exists. The component library actually imported, a design-token source, and whether accessibility attributes appear consistently. For a headless library, drop the subsection rather than filling it emptily.
+- **UI / UX** — only when a human-facing surface exists. The component library actually imported, a design-token source, and whether accessibility attributes appear consistently. Whether one exists, and how a subsection that does not apply is counted, is settled in § *When the rulebook already answers it*; where it does not apply, drop the subsection rather than filling it emptily.
 
 ## Glossary candidates
 
@@ -104,20 +104,35 @@ The opposite failure to the one below, and the more common one on a repo that ha
 while: proposing rules to a guide that already has better ones. **The unit of this step is the
 subsection, not the round.**
 
+- **Count applicable subsections, not five.** UI / UX applies only where a human-facing surface exists, the
+  same test [[new-project]] uses to keep or drop that subsection: a pure library or headless worker has none;
+  a CLI or TUI whose output people read has one, read as *Output / UX*. Evidence that settles it: a UI
+  framework or component library the source imports, view, template or markup files, or output formatted for
+  a reader → applies; none of these → dropped. A dropped subsection is **neither covered nor outstanding**: it
+  counts toward neither side, and the announcement names it with its evidence (`UI / UX — dropped: no
+  human-facing surface; no UI import, no view files`). Evidence that settles neither way → **count it as
+  applicable**, and say applicability was undetermined: including it costs one scoped item, while dropping it
+  on a guess hides a gap.
 - **Judge coverage per subsection** from § *What to read, per subsection* above, and propose only for
   the ones nothing answers.
 - **"Covered" means the guide carries normative content answering that subsection — wherever it
   sits.** Use [[verify-conventions]]'s ladder rather than a heading match, so the two skills agree on
-  what a rulebook is. A flat list of rules under one `## Conventions` heading can answer all five
-  subsections; five tidy headings can answer none. (Measured: WorkoutTracker's rulebook is ~24 flat
+  what a rulebook is. A flat list of rules under one `## Conventions` heading can answer every
+  subsection; five tidy headings can answer none. (Measured: WorkoutTracker's rulebook is ~24 flat
   bold rules with no subsections at all, covering testing, code structure, framework and UI.)
-- **All covered → skip the round.** Say so, name the subsections and the evidence that covered them,
-  and write nothing. A guide denser than the layer asks for is a *finished* guide.
-- **Some covered → run a round scoped to the rest.** Four of five covered is a one-subsection round —
+- **Every applicable subsection covered → skip the round.** Say so, name the covered subsections with the
+  evidence that covered them and any dropped subsection with its reason, and write nothing. A guide denser than the layer asks for is a *finished* guide.
+- **Some covered → run a round scoped to the rest.** One uncovered subsection is a one-subsection round, whether it is one of five or one of four —
   and it is worth more than a five-subsection one, because the user actually reads it.
 - **Covered means *answered*, not exhausted — and a thinly answered subsection is offered, not run.**
-  Where one rule answers a subsection the code could say much more about, name the thinness and
-  **offer** that single-subsection round rather than launching it. (Measured on WorkoutTracker:
+  Thin is a judgement, not a count: a subsection is thin when the code shows conventions in it that the
+  guide's answer does not reach. Name those conventions as the evidence every time, and **offer** that
+  single-subsection round rather than launching it. **When unsure whether it is thin or covered, offer**:
+  the offer is the stated default for the borderline case, so two runs that disagree on the word still put
+  the same question. **Deliberately not a rule count**: a count rewards padding and penalises one rule that
+  settles a subsection, and three vague rules can still be thin. (Measured, borderline: Birko.Framework's
+  `### Naming` carries three real rules — the `*All` suffix, the `Birko.{Project}` scheme, the GUID format —
+  and two 2026-09-01 drills split on calling it covered; under the default it is offered. Measured on WorkoutTracker:
   testing, structure, framework and UI are answered by a dozen rules each; naming is answered by one
   file-naming rule, `one <Entity>Endpoints.cs per resource`. Skipping silently hides a real gap;
   proposing unasked contradicts *propose, never assert*.)
@@ -132,7 +147,7 @@ complete rulebook does not answer them, and the densest guide in a fleet can car
 On the skip path they are **reported, not asked.** § *Convention or accident?* turns a 20–80% split
 into a question because a round is running and the answer shapes a proposal; when the round is
 skipped there is no proposal to shape, so the split is stated as a finding and left with the user.
-Announcing "skipping — your rulebook answers all five" and then opening a question round anyway is
+Announcing "skipping — your rulebook answers every applicable subsection" and then opening a question round anyway is
 the contradiction this paragraph exists to prevent.
 
 **This skip is over *this file's* proposals. It does not reach a declaration.** The two are separated in
