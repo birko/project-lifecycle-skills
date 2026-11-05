@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 009fd07b724da8ae043ec737b855b150f1e572be
+generated-at: 62ddcdb6ed988a1c34af545f9ee90dcba0fa53de
 generated-on: 2026-11-04
 sources:
   - skills/fix-next/SKILL.md
@@ -171,7 +171,7 @@ The system SHALL treat tasks at `verify` (or the older `review`) as outside the 
 
 ### Requirement: An empty pool stops the run without inventing scope
 
-The system SHALL, when the pool is empty, say so and stop without inventing defects; where review-looking epics exist that lack the `kind: review-intake` stamp it SHALL say exactly that and offer to adopt them with the intake verb rather than start working their tasks, where defect work is filed but every such task is `done`, `cancelled` or awaiting verification it SHALL report the backlog as drained, list any task awaiting verification, and offer nothing that creates scope; where every pool task is blocked it SHALL list each with its reason and stop, offering nothing; and otherwise SHALL direct the user to run a review pass and file it first.
+The system SHALL, when the pool is empty, say so and stop without inventing defects; where review-looking epics exist that lack the `kind: review-intake` stamp it SHALL say exactly that and offer to adopt them with the intake verb rather than start working their tasks, where defect work is filed but every such task is `done`, `cancelled` or awaiting verification it SHALL report the backlog as drained, saying "closed or awaiting verification" only when a task is at `verify` and "closed" otherwise, list any task awaiting verification, and offer nothing that creates scope; where every pool task is blocked it SHALL list each with its reason and stop, offering nothing; and otherwise SHALL direct the user to run a review pass and file it first. In every case the run SHALL still give the final report and the reset check, the report carrying the case's line, the verification debt, the blocked tasks and any unscheduled findings, and naming the next pick as none with the case.
 
 #### Scenario: No review was ever filed
 
@@ -184,6 +184,12 @@ The system SHALL, when the pool is empty, say so and stop without inventing defe
 - **Given** EPIC-960 holds `todo` tasks whose bodies cite findings but carries no review-intake stamp
 - **When** the pool is built
 - **Then** the run names EPIC-960, offers `/tasks intake --adopt EPIC-960`, and starts none of its tasks
+
+#### Scenario: Drained backlog with nothing awaiting verification
+
+- **Given** an intake epic whose tasks are all `done` or `cancelled`, none at `verify`
+- **When** `/fix-next` runs
+- **Then** it says the review backlog is drained with every filed finding closed, offers nothing, and its final report names the next pick as none — the backlog is drained
 
 #### Scenario: Every pool task is blocked
 

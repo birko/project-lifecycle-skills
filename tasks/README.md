@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-05 07:42. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-05 07:50. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 58                  |
+| todo         | —                  | —                  | 57                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 3                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 262                 |
+| done         | 4                  | 13                 | 263                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 45× P2 · 13× P3.
+`todo` by priority: 45× P2 · 12× P3.
 
 ## In progress now
 
@@ -211,14 +211,14 @@ _None_
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 
-- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (42/46 tasks done)
+- EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (43/46 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (3/5 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
     - [x] TASK-131 `fix-next` names an opt-in for hand-filed defects that has no key — a field-found bug cannot mint a finding id
     - [x] TASK-133 `spawn`'s pool rescue fires only for a review finding, so a field-shaped discovery still lands loose
     - ~~TASK-137 The `--from-field` door opens, but two of its edges are undefined — a cold runner reached both by inference~~
     - [ ] TASK-139 `nextUpTasks[]` sorts on two keys that routinely tie, and says nothing about the third
-  - (epic level) — 39/41 done
+  - (epic level) — 40/41 done
     - [x] TASK-161 A human test plan that ran and failed cannot be told from one that never ran
     - [x] TASK-190 pi refuses six skills: descriptions that are invalid YAML or over 1024 characters
     - [x] TASK-192 `export` and `pick` take a task's title from a `#` comment inside its frontmatter
@@ -255,7 +255,7 @@ _None_
     - [x] TASK-327 `/fix-next`'s empty-pool messages have no case for a backlog that has been fully drained
     - [x] TASK-328 `pick`'s proof-mismatch fallback never pushes the task branch with an upstream, so other clones see the task as free
     - [x] TASK-329 `/tasks pick TASK-NNN` by bare id skips the taken filter, so an in-place pick can take a task another clone holds
-    - [ ] TASK-333 `/fix-next`'s empty-pool branch miscounts its cases and leaves the final report undefined
+    - [x] TASK-333 `/fix-next`'s empty-pool branch miscounts its cases and leaves the final report undefined
     - [ ] TASK-334 `/feature status` templates leave a skipped prototype, the project name and the run mode undefined
     - [x] TASK-335 `/feature pick` names decompose as the next action while a sign-off waits, against the debt rule
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice

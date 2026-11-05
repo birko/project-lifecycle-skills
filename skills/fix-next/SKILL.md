@@ -158,7 +158,7 @@ once per invocation, not once per pick. It is not a pending question for step 9,
 waits on it.
 
 **Empty pool → say so and stop. Don't invent scope.** Inventing defects to look busy is the failure
-mode this branch exists to prevent. Two causes, two different offers:
+mode this branch exists to prevent. Say which case it is; each gets its own line:
 
 - **No review has been filed** → *"nothing to drain — run a review pass and `/tasks intake` first."*
 - **A review backlog exists but predates the stamp** — you can see epics that are obviously
@@ -170,13 +170,20 @@ mode this branch exists to prevent. Two causes, two different offers:
 - **The backlog has been drained** — defect work is filed (an epic stamped `kind: review-intake`, or a
   task carrying `findings:`), and none of it is `todo` or blocked any more: every such task is `done`,
   `cancelled`, or awaiting verification. Say *"the review backlog is drained — every filed finding is
-  closed or awaiting verification; nothing to fix"*, and list any task at `verify` as the verification
-  debt step 1 already reports. **Offer nothing that creates scope**: no review pass, no intake, no
+  closed; nothing to fix"*. When any of those tasks is at `verify`, say *"closed or awaiting verification"*
+  in place of *"closed"*, and list each task at `verify` as the verification debt step 1 already reports. **Offer nothing that creates scope**: no review pass, no intake, no
   adoption. The other two offers fit a backlog that was never filed or never stamped, and on a drained
   one they would tell the user to redo finished work. A drained backlog is the outcome this skill exists
   to produce, so report it as one.
 - **Every task in the pool is blocked** — found in step 2, which treats it as an empty pool. List each blocked
   task with its reason and stop. Offer nothing: unblocking is a person's decision (step 0).
+
+**An empty-pool stop still runs step 9**, on a bare invocation and under `--loop` alike, § *Verify the reset
+really is safe* included, because step 1's verification-debt rule sends its lines to that report and holds only
+if the report runs. Its items take this form: 1 is the case's line above; 2 is none; 3 is every
+`awaiting verification, not cleared: TASK-NNN` line, every blocked task with its reason, and every DV12 story
+found while building the pool; 4 is *"next pick: none — <the case>"*. Nothing was picked or closed, so there
+are no spawned ids and no inferred fields.
 
 ## Step 2 — Rank by blast radius, not by the `priority:` field
 
@@ -500,7 +507,8 @@ pending. **Two questions are pending in this sense:** a scope-escalation ask ([s
 § *Scope escalation*) and a decision only the user can make (§ *Guardrails*). Wait for that answer rather than
 taking new scope. The verification-debt offer (step 1), the tie question (step 2) and the cancelled-parent question
 a spawn can reach ([new.md](../tasks/verbs/new.md) step 4) never halt the loop, because each has an
-unattended outcome that needs no one. Either way, **name the next pick** so a reset resumes there.
+unattended outcome that needs no one. Either way, **name the next pick** so a reset resumes there (on an
+empty pool, `none` and the case, step 1).
 
 Final report, short:
 
@@ -513,7 +521,7 @@ Final report, short:
    is a file in the tree nobody knows to look for.
    Also **the picked task's inferred fields**, when step 2 logged any: a parent or priority nobody chose
    placed and ranked the work this run did, and the reader of this report is the first who can check them.
-4. **The next pick**, named.
+4. **The next pick**, named, or `none` with step 1's empty-pool case.
 
 ## Verify the reset really is safe
 
@@ -522,6 +530,9 @@ Before reporting, confirm all three:
 - `git status --short` is clean in every repo you touched.
 - The task file alone tells the whole story — acceptance, outcome, judgement calls, flags.
 - Nothing you learned this session lives only in the conversation.
+
+After an empty-pool stop no task was picked, so the second check has nothing to read; the first and third
+still apply.
 
 If any fails, fix it before finishing. **That is this skill's actual contract.**
 
