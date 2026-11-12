@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-12 15:38. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-12 15:56. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 43                  |
+| todo         | —                  | —                  | 42                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 2                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 288                 |
+| done         | 4                  | 13                 | 289                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 29× P2 · 14× P3.
+`todo` by priority: 28× P2 · 14× P3.
 
 ## In progress now
 
@@ -29,7 +29,7 @@ _None_
 
 ## Tree
 
-- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (48/57 tasks done)
+- EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (49/57 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — 1/1 done (done)
     - [x] TASK-002 Scaffold the universal layer onto this repo
   - STORY-002 `adopt-project` — the brownfield front door — 15/15 done (done)
@@ -266,7 +266,7 @@ _None_
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
     - [x] TASK-342 `/feature pick` words gate B's question twice
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (48/57 tasks done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (49/57 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (36/36 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
@@ -304,7 +304,7 @@ _None_
     - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
     - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
     - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (12/21 done)
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (13/21 done)
     - [x] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [x] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [x] TASK-226 Three references point at things that do not exist
@@ -320,7 +320,7 @@ _None_
     - [ ] TASK-251 `review-comments` miscounts its PATH rules and offers a range it has no syntax for
     - [ ] TASK-260 `grill-me`'s description has no Slovak triggers and predates the skill it describes
     - [x] TASK-271 Three shipped skills point at things a consumer install does not have
-    - [ ] TASK-274 `roll-changelog`: a dangling skeleton link, two definitions of its boundary, an undeclared flag, and an empty release
+    - [x] TASK-274 `roll-changelog`: a dangling skeleton link, two definitions of its boundary, an undeclared flag, and an empty release
     - [x] TASK-275 `domain` is told it audits ADR drift but has no pass for it, and two of its pointers are wrong
     - [ ] TASK-276 `handoff` has no trigger phrases, and never says where its document went
     - [ ] TASK-349 `/specs verify` and `show` leave three rendering details to the reader

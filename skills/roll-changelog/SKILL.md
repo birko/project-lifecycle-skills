@@ -13,17 +13,35 @@ This is the *code* changelog (what shipped). *Why* a choice was made lives in th
 
 Invoked as `/roll-changelog [args]`:
 
-- `/roll-changelog` — **roll** (default): gather work since the last recorded entry and fold it into `## [Unreleased]`, bucketed by change type.
-- `/roll-changelog release <version>` — **cut a release**: rename `## [Unreleased]` to `## [<version>] - <date>`, add a fresh empty `## [Unreleased]` on top, and update the compare links at the bottom.
-- `/roll-changelog release` — infer the next version from the Unreleased buckets (see [Version inference](#version-inference)) and confirm before cutting.
+- `/roll-changelog` — **roll** (default): gather work not yet recorded (§ *Roll*, step 1, owns the boundary) and fold it into `## [Unreleased]`, bucketed by change type.
+- `/roll-changelog release <version> [--date YYYY-MM-DD]` — **cut a release**: rename `## [Unreleased]` to `## [<version>] - <date>`, add a fresh empty `## [Unreleased]` on top, and update the compare links at the bottom.
+- `/roll-changelog release [--date YYYY-MM-DD]` — infer the next version from the Unreleased buckets (see [Version inference](#version-inference)) and confirm before cutting.
+- `--date YYYY-MM-DD` — the date the release section carries. This skill has no clock, so without it the date comes from the conversation or is asked (§ *Cut a release* step 1).
 
-If `CHANGELOG.md` doesn't exist, offer to seed one (the [Keep a Changelog](#file-shape) skeleton — the same stub [[new-project]] writes) before rolling:
+If `CHANGELOG.md` doesn't exist, offer to seed one (the skeleton in § *File shape* below, the one [[new-project]] and [[adopt-project]] seed too) before rolling:
 
 > **This repo has no `CHANGELOG.md`. Shall I create one from the Keep a Changelog skeleton and roll into it?**
 
 **No answer, or nobody to ask:** create nothing, roll nothing, and report `no CHANGELOG.md: not seeded, nothing rolled`.
 Every answer-less path in this skill ends this way, in a reported state and no write: a changelog is published
 text, and a line in it nobody confirmed reads as a statement of what shipped.
+
+## File shape
+
+The skeleton every seeder writes, defined here once. [[new-project]] and [[adopt-project]] (through
+`skills/new-project/LAYER.md`'s `CHANGELOG.md` row) point at this section rather than describing a stub of their own,
+so the three cannot write different files:
+
+```markdown
+# Changelog
+
+All notable changes to this project are recorded here, in the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
+
+## [Unreleased]
+```
+
+It claims no versioning scheme: the first release settles that (§ *Version inference*), and a seed that promised
+Semantic Versioning would state a policy nobody chose.
 
 ## Change-type buckets (Keep a Changelog)
 
@@ -44,9 +62,18 @@ Omit a heading entirely if it has no entries — never leave an empty `### Added
 
 The goal is **human-facing, not a commit dump**. One bullet per user-meaningful change, in plain language, not one per commit.
 
-1. **Find the boundary** — what's already recorded vs. new. In order of preference:
-   - The most recent `## [x.y.z]` release tag/date in `CHANGELOG.md` → gather work since then.
-   - If the repo is git-tracked: `git log <last-tag>..HEAD --no-merges` (or since the date of the top release section). Read commit subjects/bodies for intent.
+1. **Find the boundary** — what's already recorded vs. new. **One rule**: gather the work shipped after the most recent
+   release section (`## [x.y.z] - <date>`), then drop every item `## [Unreleased]` already describes. A second roll with
+   nothing new since the first adds nothing. An item you cannot tell is already there is left out and reported as
+   `not added, may already be recorded: <item>`: a duplicated bullet is published text stating a change twice, and a
+   missing one is recovered by the next roll. **A roll that keeps nothing** prints
+   `nothing rolled: everything since <the boundary> is already in [Unreleased]` and writes nothing.
+   **The boundary is a commit, never a date**: the release's tag `v<x.y.z>` when it exists, else the commit that wrote
+   that release section (`git log -1 --format=%H -S'## [<x.y.z>]' -- CHANGELOG.md`); the work is the commits after it.
+   A bare date is not used, because `git log --since=<date>` reads the current time of day into it, so a release commit
+   made on the release date is in or out depending on when the roll runs. The sources, in order of preference:
+   - The most recent `## [x.y.z]` release section in `CHANGELOG.md` → its boundary commit, as above.
+   - If the repo is git-tracked: `git log <boundary>..HEAD --no-merges`, where `<boundary>` is the commit above (the tag, or the commit that wrote the release section). Read commit subjects/bodies for intent.
    - If not git-tracked or history is thin: read `tasks/` for TASKs that moved to `done` and `docs/features/` for features that reached `done` since the last release. Only when those show nothing either, ask:
 
      > **Neither git history nor the trackers show anything shipped since <the boundary>. What shipped?**
@@ -55,11 +82,11 @@ The goal is **human-facing, not a commit dump**. One bullet per user-meaningful 
 2. **Translate to user language.** "Refactored `StoreResolver` to a strategy map" → *Changed: store backend resolution is now pluggable per-provider.* A reader of the changelog is a user or a future maintainer, not the author of the diff. Drop pure-internal churn (lint, formatting, test-only refactors) unless it changed observable behavior.
 3. **Bucket** each change into Added / Changed / Fixed / etc.
 4. **Cross-check the trackers** (don't double-count, don't miss): a feature that reached `done` in `docs/features/` and the TASKs under it are the *same* shipped work — record it once, as the user-facing capability. A `Security`/`Fixed` item that came from a Jira ticket can cite the key (`Fixed: … (SUP-1234)`) if the project links them.
-5. **Write into `## [Unreleased]`** — merge with what's already there (don't clobber existing Unreleased bullets); keep bullets terse and imperative.
+5. **Write into `## [Unreleased]`** — add only what step 1 kept, beside the bullets already there (never rewrite or drop one); keep bullets terse and imperative.
 
 ## Version inference
 
-When the user runs `release` without a version, suggest one by semver from the Unreleased buckets — and **confirm before writing** (never auto-bump), with the question:
+When the user runs `release` without a version, and `## [Unreleased]` holds at least one bullet (an empty one is refused, § *Cut a release* step 1), suggest one by semver from the Unreleased buckets — and **confirm before writing** (never auto-bump), with the question:
 
 > **`## [Unreleased]` holds <the non-empty buckets>, so I suggest <x.y.z>, a <major | minor | patch> bump from <previous>. Cut <x.y.z>?**
 
@@ -76,7 +103,10 @@ Respect a project that pins its own scheme (CalVer, 0.x where minor = breaking) 
 
 ## Cut a release
 
-1. Settle the version and the date. The version is the one passed to `release`, or the one confirmed under § Version inference; a version the user passed is their statement and needs no second confirm. The date comes from `--date` or the conversation, because this skill has no clock. With neither, ask:
+1. **An empty `## [Unreleased]` is never cut.** No bullet under any heading → cut nothing, and report
+   `release not cut: [Unreleased] is empty — nothing to release`. A release section with no entries states that a
+   version shipped with no changes, and its compare link points at nothing.
+   Otherwise settle the version and the date. The version is the one passed to `release`, or the one confirmed under § Version inference; a version the user passed is their statement and needs no second confirm. The date comes from `--date` or the conversation, because this skill has no clock. With neither, ask:
 
    > **Which date goes on <version>? (YYYY-MM-DD)**
 
