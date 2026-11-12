@@ -110,6 +110,10 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 
 6. **Unmapped check:** glob project sources not matched by any area or `ignore` entry; if any, list them and suggest `.map.yml` additions (don't auto-edit the map — it's the human-owned file).
 
+   **The scan set is every file git tracks** — in this repo, and in each external repo under the roots below
+   (`git -C <root> ls-files`), as [SKILL.md](../SKILL.md) § *What the scan covers* defines it. [verify](verify.md)
+   step 3 runs this same check and points here.
+
    **Glob the trees the map's own globs reach — not just the project root.** Derive the search roots from
    the `sources:` entries themselves (for `../Birko.Data.SQL/SQL/Connectors/X.cs`, the root is
    `../Birko.Data.SQL`), then report files under those roots that no glob matches. Two failure modes this

@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: 1913051c98ac5ec5a415c79c28f96cdcd6f447ea
+generated-at: b928881a599848bdf33daf14d874c302914cf7d0
 generated-on: 2026-11-12
 sources:
   - skills/specs/SKILL.md
@@ -462,7 +462,7 @@ The system SHALL write `shaped-by-derived: true` when the evidence pass ran and 
 
 ### Requirement: Regen reports unmapped files under every tree the map reaches
 
-The system SHALL, after writing, find files under the roots that the map's own source globs reach (not only the project root) that match no area and no ignore entry, list them with suggested map additions without editing the map, report the count in the confirmation even when it is zero, and end by suggesting the spec changes be committed with the related work without committing them.
+The system SHALL, after writing, find files git tracks — in this repository and under the roots that the map's own source globs reach outside it (not only the project root) — that match no area and no ignore entry, list them with suggested map additions without editing the map, report the count in the confirmation even when it is zero, and end by suggesting the spec changes be committed with the related work without committing them.
 
 #### Scenario: New sibling file in a mapped project
 
@@ -478,7 +478,7 @@ The system SHALL, after writing, find files under the roots that the map's own s
 
 ### Requirement: Staleness anchors on the later of stamp and spec commit
 
-The system SHALL, in `verify`, anchor each spec on the later by committer date of `generated-at` and the spec file's own last commit, considering the spec commit only when `generated-at` is its ancestor; it SHALL report the spec stale with a changed-file count when any in-repo source glob changed between that anchor and HEAD, stale with an unknown baseline when neither commit resolves, and never generated when the spec file is missing or its frontmatter unparseable.
+The system SHALL, in `verify`, anchor each spec on the later by committer date of `generated-at` and the spec file's own last commit (the spec commit on equal dates), considering the spec commit only when `generated-at` is its ancestor; it SHALL report the spec stale with a changed-file count when any in-repo source glob changed between that anchor and HEAD — not counting uncommitted edits, which a just-run regen leaves in the tree — stale with an unknown baseline when neither commit resolves, and never generated when the spec file is missing or its frontmatter unparseable.
 
 #### Scenario: Spec committed with its sources
 
@@ -528,7 +528,7 @@ The system SHALL check each external source glob against its own repository from
 
 ### Requirement: Verify renders a read-only summary
 
-The system SHALL, in `verify`, never write any file, also count files matching no area and no ignore entry, and render counts of fresh, stale, unknown-baseline, never-generated and unmapped with zero-count lines suppressed, collapsing to a single all-fresh line when everything is fresh and nothing is unmapped; when no map file exists it SHALL print `No docs/specs/.map.yml — run /specs init to bootstrap.` and exit.
+The system SHALL, in `verify`, never write any file, also count unmapped files over the same scan set and search roots as regen, and render counts of fresh, stale, unknown-baseline, never-generated and unmapped with zero-count lines suppressed, collapsing to a single all-fresh line when everything is fresh and nothing is unmapped; when no map file exists or its `areas:` list is empty it SHALL print `No usable spec map — run /specs init to bootstrap.` and exit.
 
 #### Scenario: Everything fresh
 
@@ -544,7 +544,7 @@ The system SHALL, in `verify`, never write any file, also count files matching n
 
 ### Requirement: Show prints one spec with honest provenance and freshness
 
-The system SHALL, in `show`, resolve the area by exact name then by unambiguous prefix or substring (listing the areas and stopping when ambiguous or unknown), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived)` when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check, and say so with a regen suggestion when the area has no spec file.
+The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (listing the areas and stopping when ambiguous or unknown), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived)` when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, and say so with a regen suggestion when the area has no spec file.
 
 #### Scenario: Never-derived provenance
 

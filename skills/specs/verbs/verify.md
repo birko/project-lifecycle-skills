@@ -11,9 +11,13 @@ A spec is **stale** when its `sources` changed since it was generated:
 3. **Resolve the in-repo anchor** — *not* `generated-at` on its own; see *The stamp predates its own spec* below:
    - `SPEC_COMMIT` = `git log -1 --format=%H -- docs/specs/<area>.md` (empty when the spec is untracked).
    - Only consider `SPEC_COMMIT` if the stamp is actually behind it in this history: `git merge-base --is-ancestor <generated-at> <SPEC_COMMIT>`. If it is not an ancestor — rewritten history, a cherry-pick, a spec restored from elsewhere — the two shas describe different lines and comparing their dates would be meaningless, so keep `generated-at`.
-   - Otherwise take whichever is **later by committer date** (`git log -1 --format=%ct <sha>`). Either being unresolvable just means the other wins.
+   - Otherwise take whichever is **later by committer date** (`git log -1 --format=%ct <sha>`). **Equal dates take `SPEC_COMMIT`**: the ancestor test above has just shown it descends from the stamp, and committer dates have one-second resolution, so a scripted regen-and-commit ties routinely. Either being unresolvable just means the other wins.
    - Neither resolves → **stale (unknown baseline)**.
 4. **In-repo sources:** `git diff --name-only <anchor>..HEAD -- ':(glob)<glob>' ...` — non-empty → **stale**, with the changed-file count. **The `:(glob)` prefix is not optional** — see *Pathspecs are not globs* below.
+   **Uncommitted source edits are not counted**, deliberately: right after a regen the working tree holds exactly the
+   uncommitted edits the spec was written from (regen stamps `generated-at` before the commit that carries them), and
+   nothing in the tree tells those apart from edits made since. Counting them would report every just-regenerated spec
+   stale. They surface once committed.
 5. **External sources:** resolve each against its own repo, per *External sources* below — non-empty → **stale**.
 6. Missing/unparseable frontmatter, or a mapped area with **no spec file at all** → **never generated** (worse than stale).
 
@@ -52,9 +56,7 @@ git diff c1..HEAD -- <caching sources>   -> empty                   => fresh    
 
 Note it takes an uncommitted source change at harvest time — which is the *normal* way this is used, since you regen after editing and commit the two together. If the fix had been committed before the harvest, `generated-at` would already name it and the stamp would be fine; that is why the defect is invisible when you reason about it from a clean tree.
 
-Non-git projects keep the mtime comparison below; there is no commit to anchor on.
-
-Non-git projects: compare file mtimes against `generated-on` (best-effort; say so in the output).
+Non-git projects: there is no commit to anchor on, so compare file mtimes against `generated-on` (best-effort; say so in the output).
 
 ### Pathspecs are not globs
 
@@ -92,15 +94,19 @@ Report external staleness **per repo**, not merged: *"3 changed in `../Birko.Dat
 
 ## Steps
 
-1. **Find project root + load `.map.yml`.** No map → `No docs/specs/.map.yml — run /specs init to bootstrap.` and exit.
+1. **Find project root + load `.map.yml`.** No map, **or a map whose `areas:` list is empty** (the scaffold seeds exactly
+   such an anchor) → `No usable spec map — run /specs init to bootstrap.` and exit. An empty map read as zero areas would
+   print an all-clear for a project nobody has mapped.
 2. **Per area**, apply the staleness definition above. Batch the reads; the git calls are cheap — run them per spec, don't re-read sources.
-3. **Unmapped check** (cheap glob): project sources matching no area and no `ignore` entry → count + a few example paths.
+3. **Unmapped check** — the same scan set and search roots as [regen](regen.md) step 6, which owns them: tracked files
+   matching no area and no `ignore` entry → count + a few example paths. Globbing only the project root reports nothing
+   unmapped on a polyrepo aggregator, forever; regen step 6 carries why.
 4. **Render:**
    ```
    docs/specs/  (<A> areas)
      fresh:            <n>
      stale:            <n>   (<area>: <k> changed sources, ...)
-     unknown baseline: <n>   (<area>: no source-commits entry for <repo>, ...)
+     unknown baseline: <n>   (<area>: no source-commits entry for <repo> | <area>: in-repo anchor unresolvable, ...)
      never generated:  <n>   (<area>, ...)
      unmapped sources: <n>   (<example paths> ...)
 
