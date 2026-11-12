@@ -1,7 +1,7 @@
 ---
 area: glossary-and-adrs
-generated-at: 5c2c8e458c82f59aaee913ce7f0dbe8bdf4966f8
-generated-on: 2026-10-12
+generated-at: 6038c94afd6bb36251cea2315bd3099473809d3f
+generated-on: 2026-11-12
 sources:
   - skills/domain/SKILL.md
 shaped-by: []
@@ -145,7 +145,7 @@ The system SHALL, where a term is already defined in a decision record or a feat
 
 ### Requirement: Store decision records under docs/adr/, titled "Decision record:"
 
-The system SHALL write decision records at `docs/adr/NNNN-slug.md`, never `docs/decisions/` (which would collide with per-feature `decisions.md` ledgers), SHALL title them "Decision record: …" in prose, and SHALL NOT move the path later. It SHALL treat an ADR (*why we chose it*, repo-wide) and a feature's `decisions.md` (*what was agreed*, per feature) as distinct records, neither superseding nor drafting the other, and SHALL defer which record is which to `AGENTS.md § The five records`.
+The system SHALL write decision records at `docs/adr/NNNN-slug.md`, never `docs/decisions/` (which would collide with per-feature `decisions.md` ledgers), SHALL title them "Decision record: …" in prose, and SHALL NOT move the path later. It SHALL treat an ADR (*why we chose it*, repo-wide) and a feature's `decisions.md` (*what was agreed*, per feature) as distinct records, neither superseding nor drafting the other, and SHALL settle which record is which by the question each answers, deferring to the project guide's own list of its written records where it has one.
 
 #### Scenario: Tidying the path
 
@@ -207,7 +207,7 @@ The system SHALL write each record with **Context** (what forced a choice), **De
 
 ### Requirement: A record that hardens into a rule gets a one-line pointer, and bullets are never trimmed to make room for a record
 
-The system SHALL, when a project decision with a record also becomes a standing rule, add a one-line entry to `AGENTS.md § Conventions` carrying the enforceable rule and a pointer to the record, with the trade-off and rejected alternatives living in the record. It SHALL keep a rule's brief *why* inline in either case, and SHALL NOT trim a convention bullet because it grew an argument or write a record so that a bullet can be shortened.
+The system SHALL, when a project decision with a record also becomes a standing rule, add a one-line entry to the project guide's § Conventions (in `CLAUDE.md` or `AGENTS.md`, whichever holds it) carrying the enforceable rule and a pointer to the record, with the trade-off and rejected alternatives living in the record. It SHALL keep a rule's brief *why* inline in either case, and SHALL NOT trim a convention bullet because it grew an argument or write a record so that a bullet can be shortened.
 
 #### Scenario: Project decision becomes a rule
 

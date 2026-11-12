@@ -234,8 +234,8 @@ A runner that fails either signal still produces a usable **negative**: if it co
 
 **Record how the runner was obtained**, wherever the drill is recorded — the command, the working directory,
 and the result of the coldness check. *"Was this reader cold?"* has to be answerable afterwards instead of
-assumed — the same reason `AGENTS.md` § *An owner verb reconciles; it does not assume* gives for every
-other artifact whose currency cannot be read off its existence.
+assumed. A record that exists is not thereby a record that answers the question, and nothing about the
+file shows which it is.
 Measured failure: a record reading *"given only the names and titles — no repo, no files"* describes the
 **brief** and is silent about the channel that actually decides, so its readers can no longer be classified
 at all — not by the author, not by anyone.

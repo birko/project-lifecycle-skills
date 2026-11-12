@@ -83,7 +83,8 @@ else entirely — a per-feature ledger of what stakeholders agreed. External ADR
 `docs/adr/`. Records are *titled* "Decision record: …" in prose, so the human-facing wording stays plain
 while the path stays conventional. **Don't tidy the path later**; the collision is the reason.
 
-**Which record is which** is settled by `AGENTS.md § The five records` — read it there. The short version:
+**Which record is which** is settled by the question each one answers; where the project's own guide lists
+its written records, that list wins. The short version:
 an ADR answers *why we chose it* (technical, repo-wide), a feature's `decisions.md` answers *what was
 agreed* (per feature, append-logged). Neither supersedes the other and one is not a draft of the other.
 
@@ -167,7 +168,8 @@ Four parts, and the third is the one people drop:
 
 ### When a record hardens into a standing rule
 
-It gets a **one-line entry in `AGENTS.md § Conventions` pointing back at the record**. The split is
+It gets a **one-line entry in the project guide's § Conventions** (in `CLAUDE.md` or `AGENTS.md`, whichever
+holds it) **pointing back at the record**. The split is
 load-bearing and easy to get backwards:
 
 | Half | Carries |
@@ -186,8 +188,8 @@ So: **never trim a bullet because it grew an argument.** Trim it only when the a
 decision that earned its own record. If you find yourself about to write a record so that a bullet can be
 shortened, you have the direction backwards.
 
-**Brief rationale stays inline either way.** `§ Output / prose rules` requires a non-obvious rule to state
-*why* it exists, briefly, and that never moves: a rule an agent does not understand is one it routes around.
+**Brief rationale stays inline either way.** A non-obvious rule states *why* it exists, briefly, and that
+never moves: a rule an agent does not understand is one it routes around.
 What moves out — and only when the bar passes — is the **trade-off**: the rejected alternatives and what was
 weighed against what. *Why this rule* stays; *why not the other options* goes to the record.
 

@@ -29,8 +29,9 @@ Hard rules:
 - **Exercise the real entry point the way the real consumer does.** For a browser
   app that means actually loading the page in a real or headless browser and
   **failing the check on any console error or failed network request** — not
-  curling the individual routes you happened to map. (The built-in `verify`/`run`
-  skills are the place to drive this; a green unit suite does NOT substitute for a
+  curling the individual routes you happened to map. (Claude Code's built-in `run`
+  skill drives this where the runtime ships it; elsewhere, use the project's own
+  browser harness; a green unit suite does NOT substitute for a
   real load.)
 - **Third-party dependencies have transitive behavior you don't control.** When
   you integrate a library — especially **ESM in a no-build setup** — verify its
