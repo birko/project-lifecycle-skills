@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: e4f0e5af1d7216b2513deb9d9a5659fa3399569c
+generated-at: 5746d7dd7854e21de6200f23c1218fc359af2a1f
 generated-on: 2026-11-12
 sources:
   - skills/feature/SKILL.md
@@ -207,7 +207,7 @@ The system SHALL, on `/feature prototype`, ask which form to build unless the us
 
 ### Requirement: Prototype records reactions and its own outcome
 
-The system SHALL record each stakeholder reaction as a History line in the ledger naming the row it bears on, quoting the reaction and naming the form that produced it; SHALL flag new or newly-wrong branches as `proposed` rows with a History note; SHALL rewrite the idea file's Prototype line to `Built` with a link; and SHALL refresh the feature's index row through `/feature status`, which shows the prototype link and the phase it computes, never a phase set by hand.
+The system SHALL record each stakeholder reaction as a History line in the ledger naming the row it bears on, quoting the reaction and naming the form that produced it; SHALL flag new or newly-wrong branches as `proposed` rows with a History note; SHALL rewrite the idea file's Prototype line to `Built` with a link; and SHALL refresh the feature's index row through `/feature status`, which shows the prototype link and the phase it computes, never a phase set by hand; and SHALL commit exactly the files it wrote as `chore: prototype FEATURE-NNN`, on a pushed `record/FEATURE-NNN` branch when the default branch has an upstream (the branch decide and review use, so the three never race), committing nothing with no git and naming each uncommitted file.
 
 #### Scenario: Reaction lands in the ledger
 
@@ -249,7 +249,7 @@ The system SHALL give every decision row exactly one of five states — `propose
 
 ### Requirement: Decide stamps verdicts with their required context
 
-The system SHALL, on `/feature decide`, walk every `proposed` row and any `deferred` row up for revisit, obtain a verdict for each (one at a time or as a dictated batch), and record state, rationale, date and decider, where `changed` additionally captures the delta from the original, `deferred` captures the unblock condition, and the decider is the stakeholder or role who decided rather than the agent; a decision with no clear owner SHALL be left with decider `—` and flagged in History as needing confirmation.
+The system SHALL, on `/feature decide`, walk every `proposed` row and any `deferred` row up for revisit, obtain a verdict for each (one at a time, by a stated question, or as a dictated batch) — leaving a row nobody answered exactly as it was and naming it as unanswered in the confirmation, never stamping it by inference — and record state, rationale, date and decider, where `changed` additionally captures the delta from the original, `deferred` captures the unblock condition, and the decider is the stakeholder or role who decided rather than the agent; a decision with no clear owner SHALL be left with decider `—` and flagged in History as needing confirmation.
 
 #### Scenario: Changed captures the delta
 
@@ -271,7 +271,7 @@ The system SHALL, on `/feature decide`, walk every `proposed` row and any `defer
 
 ### Requirement: Decide commits its own record
 
-The system SHALL, at the end of `/feature decide`, commit exactly the files that run wrote — the ledger, the idea file when its status changed, and for a revert the task files moved to `verify`, the containers they reopened, any file the ripple trace edited, the task dashboard, and the rollup and index — as one commit with the subject `chore: decide FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, so a decide and a review of one feature never race and the second stops until the first record lands; with no git, or a run that wrote nothing, it SHALL commit nothing. Its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path. When it pushed `record/FEATURE-NNN`, the main copy's ledger reads as it did before the run, so the confirmation SHALL NOT offer `/feature decompose` and SHALL instead say to land the branch first.
+The system SHALL, at the end of `/feature decide`, commit exactly the files that run wrote — the ledger, the idea file when its status changed, and for a revert the task files moved to `verify`, the containers they reopened, any file the ripple trace edited, the task dashboard, and the rollup and index — as one commit with the subject `chore: decide FEATURE-NNN` in a git repository whose default branch has no upstream. With an upstream it SHALL commit the same files under the same subject on a pushed `record/FEATURE-NNN` branch, by the record-branch rule a container close follows, so a decide and a review of one feature never race and the second stops until the first record lands; with no git, or a run that changed no row (which then also skips the rollup refresh), it SHALL commit nothing. Its confirmation SHALL name that commit, the pushed branch, or every file left uncommitted, by path. When it pushed `record/FEATURE-NNN`, the main copy's ledger reads as it did before the run, so the confirmation SHALL NOT offer `/feature decompose` and SHALL instead say to land the branch first.
 
 #### Scenario: A revert is committed whole
 

@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-12 14:55. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-12 15:07. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 45                  |
+| todo         | —                  | —                  | 44                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 285                 |
+| done         | 4                  | 13                 | 286                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 33× P2 · 12× P3.
+`todo` by priority: 32× P2 · 12× P3.
 
 ## In progress now
 
@@ -264,8 +264,8 @@ _None_
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
     - [x] TASK-342 `/feature pick` words gate B's question twice
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (45/56 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (35/36 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (46/56 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (36/36 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [x] TASK-222 `new` and Jira import offer only P0–P2
@@ -293,7 +293,7 @@ _None_
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
     - [x] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4
     - [x] TASK-279 `improve-architecture`'s records line cannot say what happened when filing fails or nothing is found
-    - [ ] TASK-350 `/feature decide`'s verdict question has no answer-less path, and nobody commits what `prototype` writes
+    - [x] TASK-350 `/feature decide`'s verdict question has no answer-less path, and nobody commits what `prototype` writes
     - [x] TASK-280 `improve-architecture`: the item 4 gate maps no result, and a held move whose ADR is gone has no outcome
     - [x] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
     - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit

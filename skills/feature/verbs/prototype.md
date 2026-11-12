@@ -68,11 +68,32 @@ Produce something a project manager or end user can look at and react to, so dec
    index must still never show `Prototype: —` for a feature whose prototype exists, and the chain is what guarantees
    it.
 
-4d. **On `--skip`**, the same chain as 4c, after the line is written, then print
-   `prototype skipped for FEATURE-NNN — recorded: Skipped — <reason>` and stop. Step 5 does not run: there is no
+4d. **On `--skip`**, the same chain as 4c, after the line is written, then step 4e, then print
+   `prototype skipped for FEATURE-NNN — recorded: Skipped — <reason>` and, on its own line, step 4e's outcome (the
+   commit, the pushed `record/FEATURE-NNN` branch, or every file left uncommitted, by path), and stop. Step 5 does not run: there is no
    artifact to show or react to.
 
+4e. **Commit what this run wrote.** Left uncommitted, a prototype and its recorded line sit in a dirty tree no step
+   owns, and `/feature decide`, which commits only its own writes, leaves them behind. The files are the ones this
+   run wrote: the artifact in the feature folder (`prototype.html`, `prototype.md`, `prototype-states.html`, or the
+   spike's pointer note), `idea.md` for the `## Prototype` line, `decisions.md` when step 4 added History lines or
+   `proposed` rows, and `status.md` and `docs/features/README.md` from the status chain. A spike's own commits stay on
+   its `spike/` branch; this step commits none of them.
+   - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails, `<default>` as [[tasks]]
+     § *The default branch is derived* defines it) → first `git add -- <each written file git does not track yet>`
+     (the artifact, and `status.md` on a first run), since `--only` refuses a path git has never seen, then
+     `git commit --only -m "chore: prototype FEATURE-NNN" -- <the files written>`. The
+     subject does not lead with a task id, so [[specs]] attributes no behaviour to it: a prototype changes no product
+     code. No `Co-Authored-By:` trailer.
+   - **With an upstream** → the same files on `record/FEATURE-NNN`, by the record-branch rule in [[tasks]] `close`
+     § *Closing a STORY / EPIC* step 5, with the subject above. It is the branch [decide](decide.md) and
+     [review](review.md) use, on purpose: all three write `decisions.md`, so they must not race, and that rule stops
+     the second with `record/FEATURE-NNN exists, land it first`.
+   - **No git** → commit nothing, and step 5 names each file as uncommitted.
+   - **Nothing else in the working tree is committed.**
+
 5. **Confirm + next step:**
+   - Name step 4e's commit, the `record/FEATURE-NNN` branch it pushed, or every file left uncommitted, by path.
    - HTML: "Open `docs/features/FEATURE-NNN-slug/prototype.html` in a browser and demo it."
    - "After the stakeholder reacts, stamp verdicts with `/feature decide FEATURE-NNN`."
 

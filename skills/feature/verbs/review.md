@@ -84,6 +84,8 @@ Three checks before a feature is called done: it's **complete** (every decision 
      Gate A stopping on open tasks, has nothing to commit.
    - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails) → commit exactly
      those files and nothing else from the index:
+     `git add -- <each written file git does not track yet>` (a first review's `status.md`, say), since `--only`
+     refuses a path git has never seen, then
      `git commit --only -m "chore: review FEATURE-NNN" -- <the files written>`. The subject does not lead
      with a task id, so [[specs]] attributes no behaviour to it: a review changes no code. No
      `Co-Authored-By:` trailer.

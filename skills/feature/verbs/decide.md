@@ -15,6 +15,16 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    | `deferred` | good, not now | the **unblock condition** (what must be true to revisit) |
    | `removed` | rejected / out of scope / out of budget | rationale |
 
+   Put this question, one row at a time:
+
+   > **D<n> — "<decision>" (<current state>). Verdict: approved, changed, deferred or removed? Give the line that
+   > state needs (rationale, the delta, or the unblock condition), and who decided.**
+
+   **No answer, or nobody to ask:** leave the row exactly as it is, state, date and `By` included, and name it in step
+   7 as `D<n> unanswered — still <state>`. `proposed` already means *nobody has decided*, so the row needs no marker,
+   and stamping one by inference is the verdict this gate exists to collect from a person. Write no History line for
+   it: History records changes, and nothing changed.
+
 3. **Record who decided** — `By` column: the stakeholder/role (PM, product owner, end user). If the user is relaying a stakeholder's call, capture the stakeholder, not "ai".
 
 4. **Update `decisions.md`:**
@@ -27,8 +37,9 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
      target. Step 5's chain then writes the index row. The scope is re-homed, not dropped (SKILL.md § *Never silently
      displace planned scope*).
 
-5. **Refresh the rollup** — chain `/feature status FEATURE-NNN` (single-feature mode) automatically to refresh
-   the rollup + index row — a suggestion the user can skip leaves the stakeholder view stale. A revert
+5. **Refresh the rollup** — when step 4 changed anything, chain `/feature status FEATURE-NNN` (single-feature mode)
+   automatically to refresh the rollup + index row — a suggestion the user can skip leaves the stakeholder view stale.
+   A run that changed no row skips this step: the rollup has nothing new to show. A revert
    (§ *Changing a closed feature* step 4) also chains [[tasks]] `triage`.
 
 6. **Commit what this run wrote.** Left uncommitted, the ledger sits in a dirty tree that no step owns. It
@@ -39,11 +50,12 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
      or History line changed, `idea.md` when its `status:` changed, and for a revert each task file it moved
      to `verify`, each `STORY.md` or `EPIC.md` it reopened, the owning feature's files a re-home touched,
      any file the ripple trace edited, `tasks/README.md` when `triage` ran, and `status.md` and
-     `docs/features/README.md` from step 5. A run where every verdict was skipped wrote nothing and commits
-     nothing.
+     `docs/features/README.md` from step 5. A run where every row went unanswered changed no row, so step 5 did
+     not run: it wrote nothing and commits nothing.
    - **Git repo, no upstream** (`git rev-parse --abbrev-ref <default>@{upstream}` fails) → commit exactly
      those files and nothing else from the index:
-     `git commit --only -m "chore: decide FEATURE-NNN" -- <the files written>`. The subject does not lead
+     `git commit --only -m "chore: decide FEATURE-NNN" -- <the files written>`, after `git add -- <each written file git
+     does not track yet>` (`status.md` on a first rollup, say), since `--only` refuses a path git has never seen. The subject does not lead
      with a task id, so [[specs]] attributes no behaviour to it: a verdict changes no code, and a reverted
      task's own behaviour is attributed when that task closes again. No `Co-Authored-By:` trailer.
    - **With an upstream** → commit the same files on `record/FEATURE-NNN`, by the record-branch rule in
@@ -55,10 +67,12 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
      uncommitted, even when it sits beside the ledger.
 
 7. **Confirm + next step:**
-   - Summarize counts (`3 approved, 1 changed, 1 deferred, 2 removed`).
+   - Summarize counts (`3 approved, 1 changed, 1 deferred, 2 removed`), then each step-2 `D<n> unanswered — still
+     <state>` line.
    - Name the commit from step 6, the `record/FEATURE-NNN` branch it pushed (`record/FEATURE-NNN pushed —
      open a PR to land it`), or, when the rule stopped or there is no git, its line and **every file left
-     uncommitted, by path**. A clean report over a dirty tree is the defect step 6 exists to remove.
+     uncommitted, by path**. A clean report over a dirty tree is the defect step 6 exists to remove. A run that changed
+     no row prints `nothing to commit — no row changed`.
    - If any `approved`/`changed` exist → "Decompose into tasks: `/feature decompose FEATURE-NNN`". A
      `changed` row that § *Changing a closed feature* step 4 found **built** does not count: its change is
      in the code, and its reverted task's re-run covers it. For each such row print
