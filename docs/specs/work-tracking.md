@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 8815b8bc556fe8c2a29099f17a25b4a08f7824a7
+generated-at: 0d263da2bdd05604bd89d7e7f70e2f9e2d40cb99
 generated-on: 2026-11-12
 sources:
   - skills/tasks/SKILL.md
@@ -978,7 +978,7 @@ The system SHALL, in hybrid mode only (a migration runs the payload and push ste
 
 ### Requirement: Migrating to hybrid mode
 
-The system SHALL, from local mode only, inventory open epics, stories and every task not `done` or `cancelled` (awaiting-verification and blocked tasks included), show the plan and require an explicit `yes` — any other answer, or none, pushes nothing, writes nothing and reports that it did not migrate — run pre-flight checks, push in order writing each remote id back as it goes (finding an epic's milestone by its `<EPIC-ID> <epic title>` title before creating it, and pushing each task through the export payload and push steps with this run's provider, bypassing export's hybrid-mode check), stop on the first failure, and only after success flip the configuration to `hybrid` with the chosen provider. A re-run SHALL skip already-linked items. `--dry-run` SHALL print the plan, the pre-flight result and every payload in push order (epics and stories as export's container payloads, tasks as export's task payload, bodies by section name), with a task whose epic is in the run previewed as `would link to "<EPIC-ID> <epic title>"` rather than looked up, ask nothing, and change no file, `.config.yml` included. The plan's API-call total SHALL count one create per planned item. Epic milestones SHALL be looked up among open and closed milestones before being created.
+The system SHALL, from local mode only, ask for the target repository or project when none was passed — with no answer pushing nothing, writing nothing and reporting that no target was given, never taking one from a git remote — then inventory open epics, stories and every task not `done` or `cancelled` (awaiting-verification and blocked tasks included), show the plan and require an explicit `yes` — any other answer, or none, pushes nothing, writes nothing and reports that it did not migrate — run pre-flight checks, push in order writing each remote id back as it goes (finding an epic's milestone by its `<EPIC-ID> <epic title>` title before creating it, and pushing each task through the export payload and push steps with this run's provider, bypassing export's hybrid-mode check), stop on the first failure, and only after success flip the configuration to `hybrid` with the chosen provider. A re-run SHALL skip already-linked items. `--dry-run` SHALL print the plan, the pre-flight result and every payload in push order (epics and stories as export's container payloads, tasks as export's task payload, bodies by section name), with a task whose epic is in the run previewed as `would link to "<EPIC-ID> <epic title>"` rather than looked up, ask nothing but that target question, and change no file, `.config.yml` included. The plan's API-call total SHALL count one create per planned item. Epic milestones SHALL be looked up among open and closed milestones before being created.
 
 #### Scenario: Interrupted migration
 

@@ -8,7 +8,17 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
 
 2. **Parse args**:
    - `--to github` or `--to jira` — required.
-   - `--repo owner/name` (GH) or `--project KEY` (Jira) — overrides interactive prompt.
+   - `--repo owner/name` (GH) or `--project KEY` (Jira) — the target. When it is absent, put this question
+     before step 3, `--dry-run` included, since step 4's plan and step 5's pre-flight both name the target:
+
+     > **Which GitHub repository should these tasks go to? Give it as owner/name.** (`--to github`)
+     >
+     > **Which Jira project should these tasks go to? Give its key.** (`--to jira`)
+
+     **No answer, or nobody to ask:** stop before step 3. Push nothing, write nothing, and print
+     `Not migrated — no target given (pass --repo owner/name or --project KEY); nothing pushed, tasks/.config.yml still mode: local.`
+     Never take the target from a git remote instead: a remote is evidence consistent with several trackers,
+     not a declaration of where issues belong, and a migration creates them in someone's tracker.
    - `--dry-run` — run steps 1–5 (inventory, plan, the read-only pre-flight) and print, after step 4's plan and
      step 5's pre-flight result and in step 6's push order (epics, stories, tasks), each item's payload: an epic's
      or story's as [export.md](export.md) § *Exporting STORY or EPIC* defines it, a task's as export step 5 builds
@@ -64,7 +74,8 @@ One-time bulk push of all open work to a remote tracker, then flip `.config.yml`
      lookup a resumed run creates a duplicate.
    - For each STORY → create label or Story (Jira) or just track the slug.
    - For each TASK not yet linked (`github-issue:`/`jira-key:` empty) → run [export.md](export.md) **steps 3–7**
-     for that ID, with this run's `--to` and `--repo`/`--project`. Skip export's step 1: its `mode: hybrid`
+     for that ID, with this run's `--to` and its target as `--repo`/`--project`, whether the flag or step 2's
+     answer named it. Skip export's step 1: its `mode: hybrid`
      check guards a direct call, and the config still reads `local` until step 7 here. Skip step 2: the
      provider and repo/project come from this run's args. Skip step 8: step 8 here regenerates the dashboard
      once. Skip step 9: step 9 here prints its lines for every task. Export step 5 links a task to its epic's
