@@ -4,6 +4,7 @@ created: {{CREATED}}
 owner: {{OWNER}}
 # status — one of: idea, review (built, sign-off pending), done, dropped, superseded
 status: {{STATUS}}
+# superseded-by: <FEATURE-NNN> — written by /feature decide when it supersedes this feature; absent otherwise
 ---
 
 # {{TITLE}}

@@ -21,6 +21,11 @@ Walk the `proposed` decisions (and revisit older ones) and record the stakeholde
    - Set each row's `State`, `Rationale`, `Date`, `By`.
    - For `changed`, write the delta into the Decision/Rationale cell so the new shape is unambiguous for `decompose`.
    - **Append a History log line** per change: `{{DATE}} — D3 proposed → removed (out of budget, per PM)`. Never overwrite history; append.
+   - **A verdict that moves this feature's entire scope into another feature supersedes it**, at any phase, and this
+     verb is the only one that does. Set `idea.md` `status: superseded`, add `superseded-by: FEATURE-NNN` below it,
+     rewrite the `## Prototype` line to `N/A — superseded by FEATURE-NNN`, and append a History line naming the
+     target. Step 5's chain then writes the index row. The scope is re-homed, not dropped (SKILL.md § *Never silently
+     displace planned scope*).
 
 5. **Refresh the rollup** — chain `/feature status FEATURE-NNN` (single-feature mode) automatically to refresh
    the rollup + index row — a suggestion the user can skip leaves the stakeholder view stale. A revert

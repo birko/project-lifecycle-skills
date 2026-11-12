@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: 469296bc2bd92f29e1d9c6cb3f68d9ade87459a8
-generated-on: 2026-11-04
+generated-at: e4f0e5af1d7216b2513deb9d9a5659fa3399569c
+generated-on: 2026-11-12
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -163,7 +163,7 @@ The system SHALL, when the captured idea is really a bug, say so and suggest fil
 
 ### Requirement: The prototype decision is always recorded
 
-The system SHALL keep a `## Prototype` line in every feature's idea file stating `Built` with a link, `Built, then deleted` with the decisions it answered and the last commit that held it, `Skipped` with a reason, or `Pending`/`N/A`; `new` SHALL write the pending form, and a missing line SHALL be treated as a defect rather than as a decision to skip.
+The system SHALL keep a `## Prototype` line in every feature's idea file stating `Built` with a link, `Built, then deleted` with the decisions it answered and the last commit that held it, `Skipped` with a reason, `Pending`, or `N/A` naming the successor of a superseded feature, each as the label, ` — `, then the detail with no emphasis; `new` SHALL write the pending form, `prototype` SHALL write the built form and, with `--skip`, the skipped form (with no reason given and nobody to ask, writing nothing and saying so), `decide` SHALL write the `N/A` form when it supersedes the feature, and a missing line SHALL be treated as a defect rather than as a decision to skip.
 
 #### Scenario: New writes pending
 
@@ -174,7 +174,7 @@ The system SHALL keep a `## Prototype` line in every feature's idea file stating
 #### Scenario: A skipped prototype carries its reason
 
 - **Given** a headless feature where the user declines a prototype
-- **When** the choice is recorded
+- **When** `/feature prototype FEATURE-014 --skip "headless engine; the test suite is the proof"` runs
 - **Then** the line reads `Skipped — <reason>`, never blank
 
 ### Requirement: Prototype builds a stakeholder artifact in a form chosen per feature
@@ -207,7 +207,7 @@ The system SHALL, on `/feature prototype`, ask which form to build unless the us
 
 ### Requirement: Prototype records reactions and its own outcome
 
-The system SHALL record each stakeholder reaction as a History line in the ledger naming the row it bears on, quoting the reaction and naming the form that produced it; SHALL flag new or newly-wrong branches as `proposed` rows with a History note; SHALL rewrite the idea file's Prototype line to `Built` with a link; and SHALL update the feature's index row to show the prototype link and phase `prototyping`.
+The system SHALL record each stakeholder reaction as a History line in the ledger naming the row it bears on, quoting the reaction and naming the form that produced it; SHALL flag new or newly-wrong branches as `proposed` rows with a History note; SHALL rewrite the idea file's Prototype line to `Built` with a link; and SHALL refresh the feature's index row through `/feature status`, which shows the prototype link and the phase it computes, never a phase set by hand.
 
 #### Scenario: Reaction lands in the ledger
 
@@ -219,7 +219,7 @@ The system SHALL record each stakeholder reaction as a History line in the ledge
 
 - **Given** a prototype file was just built
 - **When** the verb finishes
-- **Then** the feature's index row links the prototype and reads phase `prototyping`
+- **Then** the feature's index row links the prototype and reads the phase `/feature status` computes
 
 ### Requirement: A prototype is deleted once it has answered its question
 
@@ -523,7 +523,7 @@ The system SHALL, on `/feature show`, print the feature's title, phase, owner, d
 
 ### Requirement: Coarse status is stored, phase is derived
 
-The system SHALL store exactly one coarse status per feature with the values `idea`, `review`, `done`, `dropped` and `superseded` (a superseded feature also naming its successor and keeping its folder), and SHALL compute a displayed phase from the decisions, task progress and coarse status — `idea`, `prototyping`, `deciding`, `building`, `review`, `done` — with `dropped` and `superseded` shown as mirrors of the coarse status; phase SHALL never be stored or hand-maintained. The phase SHALL be the first of eight ordered rules that matches, so every feature gets exactly one: the stored status when it is `done`, `dropped` or `superseded`; `building` when any approved or changed row has no tasks or names tasks missing on disk, whatever else is stored or linked, so a change nobody has built never reads as awaiting sign-off; the stored status when it is `review`; `review` when at least one task is not cancelled and every such task is done or awaiting verification; `building` when any row is approved or changed; `prototyping` while the recorded prototype is built and still standing; `deciding` when any row is deferred or removed, or the prototype was skipped or built and then deleted; and `idea` otherwise. The prototype SHALL be read from the feature's recorded prototype line, not the folder. A feature with approved decisions and no tasks yet SHALL show phase `building` with `0/0` tasks and a next step of decompose; a feature whose every row is deferred or removed, without being dropped, SHALL show phase `deciding` with a next step of reopening a row or dropping the feature.
+The system SHALL store exactly one coarse status per feature with the values `idea`, `review`, `done`, `dropped` and `superseded` (a superseded feature also naming its successor in `superseded-by:` and keeping its folder, both written only by `/feature decide` when a verdict moves the feature's whole scope into another), and SHALL compute a displayed phase from the decisions, task progress and coarse status — `idea`, `prototyping`, `deciding`, `building`, `review`, `done` — with `dropped` and `superseded` shown as mirrors of the coarse status; phase SHALL never be stored or hand-maintained. The phase SHALL be the first of eight ordered rules that matches, so every feature gets exactly one: the stored status when it is `done`, `dropped` or `superseded`; `building` when any approved or changed row has no tasks or names tasks missing on disk, whatever else is stored or linked, so a change nobody has built never reads as awaiting sign-off; the stored status when it is `review`; `review` when at least one task is not cancelled and every such task is done or awaiting verification; `building` when any row is approved or changed; `prototyping` while the recorded prototype is built and still standing; `deciding` when any row is deferred or removed, or the prototype was skipped or built and then deleted; and `idea` otherwise. The prototype SHALL be read from the feature's recorded prototype line, not the folder. A feature with approved decisions and no tasks yet SHALL show phase `building` with `0/0` tasks and a next step of decompose; a feature whose every row is deferred or removed, without being dropped, SHALL show phase `deciding` with a next step of reopening a row or dropping the feature.
 
 #### Scenario: Freshly decided feature
 
@@ -645,7 +645,7 @@ The system SHALL, on `/feature status`, collect features and tasks through the r
 
 ### Requirement: Generated files are owned by status and are not hand-edited
 
-The system SHALL treat each feature's rollup and the features index as generated output owned by `/feature status`, marked as not to be hand-edited (the index headed with the project root directory's name, and its banner naming the verb, never a mode), its Prototype cell a link while the artifact stands and otherwise the recorded state (`pending`, `skipped`, `n/a`, `deleted`), and SHALL keep them current by re-running that verb automatically after decide, after decompose, after a task close that changes a feature-linked task, and after a surface-dependent revert; `new` and `prototype` SHALL also update their own feature's single index row so the index never lags a newly created feature or a newly built prototype.
+The system SHALL treat each feature's rollup and the features index as generated output owned by `/feature status`, marked as not to be hand-edited (the index headed with the project root directory's name, and its banner naming the verb, never a mode), its Prototype cell a link while the artifact stands and otherwise the recorded state (`pending`, `skipped`, `n/a`, `deleted`), and SHALL keep them current by re-running that verb automatically after decide, after decompose, after a task close that changes a feature-linked task, and after a surface-dependent revert; `new` and `prototype` SHALL also chain it for their own feature, so the index never lags a newly created feature or a newly built prototype, and no verb SHALL write an index row by hand.
 
 #### Scenario: Skipped prototype is not linked
 
@@ -663,7 +663,7 @@ The system SHALL treat each feature's rollup and the features index as generated
 
 - **Given** an existing index with four rows
 - **When** a fifth feature is created
-- **Then** the index gains its row with phase `idea`, `0/0` tasks and prototype pending
+- **Then** `/feature status` for the new feature runs, and the index gains its row with phase `idea`, `0/0` tasks and prototype pending
 
 ### Requirement: Review is a three-gate completeness check
 

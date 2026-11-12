@@ -6,6 +6,15 @@ Produce something a project manager or end user can look at and react to, so dec
 
 1. **Locate the feature** — `docs/features/FEATURE-NNN-slug/`. Read `idea.md` + `decisions.md` so the prototype reflects the proposed/approved decisions.
 
+   **`--skip "<reason>"` — record a deliberate skip instead of building.** This verb owns the prototype decision both
+   ways. Write the `## Prototype` line as `Skipped — <reason>`, run step 4d, and stop: no form question, no artifact.
+   With `--skip` and no reason, put this question:
+
+   > **Why skip the prototype for FEATURE-NNN? One line: it becomes the `Skipped — <reason>` line.**
+
+   **No answer, or nobody to ask:** write nothing, and report `prototype skip not recorded — no reason given; the line
+   still reads <its current value>`. A skip with no reason is the unrecorded choice the line exists to prevent.
+
 2. **Decide the form (per-feature — ask each time):** use `AskUserQuestion` with these options unless the user already named one:
 
    | Form | The question it answers | Produces | Best when |
@@ -47,17 +56,21 @@ Produce something a project manager or end user can look at and react to, so dec
    is deleted, which it will be.
 
 4b. **Update the `## Prototype` line in `idea.md`** — this verb *is* the prototype decision, so
-   record it: rewrite the line to `**Built** — <relative link to prototype.html / prototype.md / the
-   spike branch name>`. (For a regenerated v2, point at the latest and keep the prior per step's
+   record it: rewrite the line to `Built — <relative link to prototype.html / prototype.md / the
+   spike branch name>`, in the one format every writer uses (label, ` — `, detail, no emphasis). (For a regenerated v2, point at the latest and keep the prior per step's
    edge case.) Whether you prototype is an explicit, recorded choice — leaving the line at its
    template placeholder after building one makes an absent line read as an omission, not a
-   decision. If you (or the user) deliberately *skip* prototyping instead of running this verb,
-   that line is set to `Skipped — <reason>` at `/feature new`/`decide` time, not here.
+   decision. A deliberate skip is recorded by this verb too, with `--skip "<reason>"` (step 1).
 
-4c. **Update this feature's row in the index** — `docs/features/README.md`: fill the Prototype
-   column with the artifact link and let the Phase column read `prototyping`. Same single-row
-   pattern as new.md's 6b — full regeneration stays `/feature status`'s job, but the index must
-   never show `Prototype: —` for a feature whose prototype exists.
+4c. **Update this feature's row in the index** — chain `/feature status FEATURE-NNN` (single-feature mode), which
+   writes the row's Prototype link and the phase it computes. Never set the Phase column by hand: phase is derived by
+   `status`, and a feature with approved decisions beside a built prototype is not `prototyping` by its rules. The
+   index must still never show `Prototype: —` for a feature whose prototype exists, and the chain is what guarantees
+   it.
+
+4d. **On `--skip`**, the same chain as 4c, after the line is written, then print
+   `prototype skipped for FEATURE-NNN — recorded: Skipped — <reason>` and stop. Step 5 does not run: there is no
+   artifact to show or react to.
 
 5. **Confirm + next step:**
    - HTML: "Open `docs/features/FEATURE-NNN-slug/prototype.html` in a browser and demo it."

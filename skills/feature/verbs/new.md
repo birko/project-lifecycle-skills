@@ -51,20 +51,23 @@ Turn a raw idea into a feature folder whose decision ledger is ready to be stamp
 
    **The prototype step is a recorded decision, not a silent skip.** `idea.md` must carry a
    `## Prototype` line, exactly like the per-task Human test plan carries an explicit "N/A":
-   - **Built** → `Built — <prototype.html | .md | spike link>` (set by `/feature prototype`)
-   - **Skipped** → `Skipped — <reason>` (e.g. "headless engine; the test suite is the proof")
-   - **N/A / Pending** → for superseded features, or stubs not yet reached (what `new` writes)
+   - **Pending** → `Pending` — what `new` writes. The choice has not been made yet.
+   - **Built** → `Built — <prototype.html | .md | spike link>`, written by `/feature prototype`.
+   - **Skipped** → `Skipped — <reason>` (e.g. "headless engine; the test suite is the proof"), written by
+     `/feature prototype FEATURE-NNN --skip "<reason>"`.
+   - **N/A** → `N/A — superseded by FEATURE-NNN`, written by `/feature decide` when it supersedes the feature.
+
+   One format for every writer: the label, ` — `, then the detail, with no emphasis. `/feature status` reads the label.
 
    If the line is missing, that's the bug — an absent prototype reads as an omission, not a
    decision. Lean toward *building* one for pure look/UX features (a static mockup is cheap and
    prevents building the wrong feel); lean toward skipping for headless logic and small
    increments you validate by running.
 
-6b. **Add the index row** — append this feature's row to `docs/features/README.md` (the index,
-   [templates/README.md.tmpl](../templates/README.md.tmpl)): link · title · phase `idea` ·
-   decision counts · `0/0` tasks · prototype `pending`. If the index doesn't exist yet, render the
-   template fresh. (Full regeneration is `/feature status`'s job; `new` just adds its own row so
-   the index never lags a freshly-created feature.)
+6b. **Add the index row** — chain `/feature status FEATURE-NNN` (single-feature mode). It writes this feature's
+   row in `docs/features/README.md`, with the phase it computes, and renders the whole index when the file does not
+   exist yet. `new` writes no row itself: `status` owns the index, and a row written by hand is a second writer that
+   can disagree with it.
 
 7. **Confirm + next step** — print the folder path and:
    - "Build a stakeholder prototype: `/feature prototype FEATURE-NNN`"

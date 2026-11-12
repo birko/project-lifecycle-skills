@@ -45,9 +45,9 @@ bare `/feature` renders it live from them. Two standing obligations:
    feature folders — refresh them as part of every feature transition:
    - **`docs/features/README.md`** — the features *index* (the human entry point),
      rendered from [templates/README.md.tmpl](templates/README.md.tmpl). **`/feature status`
-     (all-features mode) owns full regeneration** (its step 7); `new` adds the row, and
-     `decide`/`review`/re-home update the affected row's phase/`superseded` marker (or just
-     re-run `/feature status` to regenerate). It's the committed counterpart to the computed
+     (all-features mode) owns full regeneration** (its step 7), and **every row write goes through it**:
+     `new`, `prototype`, `decide` (a supersede included) and `review` each chain `/feature status FEATURE-NNN`,
+     which writes that feature's row with the phase it computes. No verb writes a row by hand. It's the committed counterpart to the computed
      bare-`/feature` view — don't hand-maintain it freeform; it has a template and an owning verb
      now, like `status.md`.
    - **`docs/architecture.md`** — when a feature changes the system's structure
@@ -135,7 +135,7 @@ verb that owns stamping.
 | `review` | `review` (gate opened, code/tasks complete, human sign-off pending); `decide` (a built change to a `done` feature) | **built but NOT signed off** — verification debt; never call this "done" |
 | `done` | `review` (all gates pass + sign-off) | shipped and signed off |
 | `dropped` | `decide` (when every decision ends `removed`) | feature killed; no work generated |
-| `superseded` | when a feature is re-homed into another (scope moved, not killed) | requirement still lives, but tracked elsewhere; add `superseded-by: FEATURE-NNN` and keep the folder for the audit trail |
+| `superseded` | when a feature is re-homed into another (scope moved, not killed), by `/feature decide` step 4 | requirement still lives, but tracked elsewhere; add `superseded-by: FEATURE-NNN` and keep the folder for the audit trail |
 
 A feature whose code/tasks are complete but whose human/visual sign-off hasn't
 happened carries **`status: review`** — *not* `idea` (it's built, and `idea` claims nothing is) and

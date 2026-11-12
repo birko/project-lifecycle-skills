@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-12 14:42. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-12 14:55. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 44                  |
+| todo         | —                  | —                  | 45                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 284                 |
+| done         | 4                  | 13                 | 285                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 33× P2 · 11× P3.
+`todo` by priority: 33× P2 · 12× P3.
 
 ## In progress now
 
@@ -264,8 +264,8 @@ _None_
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
     - [x] TASK-342 `/feature pick` words gate B's question twice
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (44/54 tasks done)
-  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (35/35 done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (45/56 tasks done)
+  - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (35/36 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
     - [x] TASK-222 `new` and Jira import offer only P0–P2
@@ -293,6 +293,7 @@ _None_
     - [x] TASK-277 The installers report success for links they did not make, and the bash and PowerShell versions fail differently
     - [x] TASK-278 Lint check 1 passes descriptions pi will not load, and AGENTS.md overclaims checks 1 and 4
     - [x] TASK-279 `improve-architecture`'s records line cannot say what happened when filing fails or nothing is found
+    - [ ] TASK-350 `/feature decide`'s verdict question has no answer-less path, and nobody commits what `prototype` writes
     - [x] TASK-280 `improve-architecture`: the item 4 gate maps no result, and a held move whose ADR is gone has no outcome
     - [x] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
     - [x] TASK-284 `fix-next` step 0 cannot see a `close` interrupted between its status write and its commit
@@ -301,7 +302,7 @@ _None_
     - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
     - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
     - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (9/19 done)
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (10/20 done)
     - [x] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [x] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [x] TASK-226 Three references point at things that do not exist
@@ -309,7 +310,7 @@ _None_
     - [x] TASK-237 Three skills still advise a project-local skill that shadows them, which does not work
     - [x] TASK-238 `/specs verify` and `show` restate the router's and `regen`'s rules, and the copies have drifted
     - [x] TASK-239 The spec template emits a key `regen` says to omit, and `regen`'s steps run out of order
-    - [ ] TASK-240 Three `feature` records name no writer, or several: the prototype line, `superseded`, and the index row
+    - [x] TASK-240 Three `feature` records name no writer, or several: the prototype line, `superseded`, and the index row
     - [ ] TASK-241 Three stale words in `feature`: a count, a citation and a list of forms
     - [x] TASK-248 The seed templates describe a project that `new-project` does not build
     - [ ] TASK-249 The adopter's files cite rules a consumer does not have, and miscount their own buckets
@@ -321,6 +322,7 @@ _None_
     - [ ] TASK-275 `domain` is told it audits ADR drift but has no pass for it, and two of its pointers are wrong
     - [ ] TASK-276 `handoff` has no trigger phrases, and never says where its document went
     - [ ] TASK-349 `/specs verify` and `show` leave three rendering details to the reader
+    - [ ] TASK-351 `/feature status` in single-feature mode leaves four rendering details to the reader
 
 - EPIC-008 architecture — rung 2 review 2026-10 — planned (0/2 tasks done)
   - STORY-025 Changes that ripple across skill folders — planned (0/2 done)
