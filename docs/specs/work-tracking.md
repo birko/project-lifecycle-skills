@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 0d263da2bdd05604bd89d7e7f70e2f9e2d40cb99
+generated-at: 4f2779ccad24bdd104883de0d8446ba48127f55b
 generated-on: 2026-11-12
 sources:
   - skills/tasks/SKILL.md
@@ -872,7 +872,7 @@ The system SHALL set a task, story or epic to `cancelled` (confirming first when
 
 ### Requirement: Blocking and unblocking
 
-The system SHALL add a `blocked:` reason field to a task without changing its status, refusing `done` or `cancelled` tasks and warning when already blocked; it SHALL confirm an in-progress block (blocking anyway with no answer and saying nobody confirmed), merge `--on` ids into `depends-on`, append a `> Blocked <date> — <reason>` note — with no reason given, using `waiting on <ids>` when `--on` names them, otherwise asking a fixed question and, with no answer, blocking with `reason unknown` and a note that nobody gave one — mirror the block to a linked tracker as a label or flag plus a `Blocked:` comment without changing the issue's open state, and regenerate the dashboard. Unblock SHALL remove the field and leave status alone, append a `> Unblocked <date> — …` note, mirror the removal, and for an old-form blocked status recover the prior state from history or ask — falling back to `todo` with a note that nobody chose it, never leaving it blocked. Containers cannot be blocked.
+The system SHALL add a `blocked:` reason field to a task without changing its status, refusing `done` or `cancelled` tasks and warning and stopping when already blocked, before asking anything; it SHALL settle the reason before writing it, place the field directly below the template's `# blocked:` comment line when the file has one and otherwise after the `status:` line and its comment, confirm an in-progress block (blocking anyway with no answer and saying nobody confirmed), merge `--on` ids into `depends-on`, write a `> Blocked <date> — <reason>` note directly under the task's heading, above any earlier note — with no reason given, using `waiting on <ids>` when `--on` names them, otherwise asking a fixed question and, with no answer, blocking with `reason unknown` and a note that nobody gave one — mirror the block to a linked tracker as a label or flag plus a `Blocked:` comment without changing the issue's open state, and regenerate the dashboard. Unblock SHALL remove the field and leave status alone, write a `> Unblocked <date> — …` note in the same place, mirror the removal, and for an old-form blocked status recover the prior state from history or ask — falling back to `todo` with a note that nobody chose it, never leaving it blocked. Containers cannot be blocked.
 
 #### Scenario: Block keeps state
 
