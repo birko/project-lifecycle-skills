@@ -1,7 +1,7 @@
 ---
 area: specs-from-code
-generated-at: 8f0c57be769951deb78576aab574beb564b3a509
-generated-on: 2026-11-04
+generated-at: 1913051c98ac5ec5a415c79c28f96cdcd6f447ea
+generated-on: 2026-11-12
 sources:
   - skills/specs/SKILL.md
   - skills/specs/templates/map.yml
@@ -354,7 +354,7 @@ The system SHALL show each changed area's spec diff and classify every behaviour
 
 ### Requirement: Accepted specs are written with a provenance stamp
 
-The system SHALL write each accepted area's spec with frontmatter naming the area, `generated-at` as the HEAD commit at harvest time (omitted in a non-git project), `generated-on` as today's date, the resolved `sources`, `shaped-by`, `shaped-by-derived`, `shaped-by-unresolved`, and `source-commits` where applicable; `generated-at` SHALL be treated as a floor and never re-stamped after the spec is committed.
+The system SHALL write each accepted area's spec with frontmatter naming the area, `generated-at` as the HEAD commit at harvest time (omitted in a non-git project), `generated-on` as today's date, the resolved `sources`, `shaped-by`, `shaped-by-derived`, `shaped-by-unresolved` only when derivation ran, and `source-commits` only when a source is outside the repository; `generated-at` SHALL be treated as a floor and never re-stamped after the spec is committed.
 
 #### Scenario: Dirty working tree
 

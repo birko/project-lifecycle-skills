@@ -126,7 +126,7 @@ only what the code contradicts. The diff must mean "behavior changed", not
 
 ## Shape detection — where `docs/specs/` lives
 
-Identical to the [[tasks]] skill's project-root walk (`.config.yml` marker → solution
+Identical to the [[tasks]] skill's project-root walk (`tasks/.config.yml` marker → solution
 file → `.git`). Polyrepo note: when a repo family has an aggregator (see the [[tasks]]
 skill's shape-detection override), each sub-repo carries its **own** `docs/specs/` next
 to its CLAUDE.md; cross-cutting specs (contracts spanning projects) live at the

@@ -8,7 +8,7 @@ source-commits:   # omit entirely when every source is in-repo
   {{../SIBLING_REPO}}: {{SIBLING_HEAD_SHA}}
 shaped-by: []
 shaped-by-derived: {{true|false}}
-shaped-by-unresolved: {{N}}
+shaped-by-unresolved: {{N}}   # omit entirely when shaped-by-derived is false
 ---
 
 # {{Area Title}}
