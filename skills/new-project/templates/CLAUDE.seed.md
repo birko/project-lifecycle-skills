@@ -62,11 +62,11 @@ This section is the project's **canonical, living rulebook** — the rules every
 <!-- List approved libraries and any explicitly-disallowed ones. -->
 
 ### UI / UX rules
-<!-- For web/UI projects: design tokens (color/spacing/type scale), the component library, layout/spacing rules, the accessibility bar, interaction patterns. Delete this subsection for headless/library/CLI projects. For look/UX work, lean toward a prototype first (see the lifecycle above). -->
+<!-- For web/UI projects: design tokens (color/spacing/type scale), the component library, layout/spacing rules, the accessibility bar, interaction patterns. Delete this subsection only when nothing here has a human-facing surface (a pure library, a headless worker); a CLI/TUI whose output people read keeps it as Output / UX rules. For look/UX work, lean toward a prototype first (see the lifecycle above). -->
 - {{UI_UX_RULES}}
 
 ### Code structure & patterns
-<!-- Layering and folder layout, dependency direction, the patterns to follow and the anti-patterns to avoid, error-handling style. Keep this in step with ## Architecture below. -->
+<!-- Layering and folder layout, dependency direction, the patterns to follow and the anti-patterns to avoid, error-handling style. Keep this in step with ## Architecture above. -->
 - {{CODE_STRUCTURE_RULES}}
 
 ### Naming
@@ -79,11 +79,11 @@ This section is the project's **canonical, living rulebook** — the rules every
 
 **Verification is an attribute of the feature/task being built — not a separate parallel tree.** Don't grow a stand-alone, module-indexed test-checklist tree that's disconnected from `docs/features/` and `tasks/`; that's a third axis that drifts. Instead:
 
-- **Automated tests live in `tests/`** (unit / integration / E2E) — runnable, version-controlled, the single source of "proof it works". One organizing home, not scattered under `docs/`.
+- **Automated tests live where this stack keeps them** (unit / integration / E2E) — a `tests/` tree, tests beside their source, or a sibling test project, as the Tests line above records — runnable, version-controlled, the single source of "proof it works". One organizing home per project, not scattered under `docs/`.
 - **Layer automated coverage** (esp. for UI/web apps) — cheapest-first:
   1. **Generated smoke** — sweep *every* route/screen for "it renders + no console errors + no failed requests". Derive the route list from the app's own manifest/router so it's **self-maintaining** (new screens are covered automatically, zero per-screen authoring). This one layer covers the bulk of any "does the page load" checklist.
   2. **Authored happy-path flows** — a few hand-written E2E flows (create→…→delete) for the important entities, reusing shared page objects.
-  3. **Manual judgement** — only what a human must eye (copy reads naturally, layout/feel, visual polish). Keep these as a **coverage ledger** (each item tagged `[auto]` — naming the spec/layer that covers it — or `[manual]`) or as the task's `## Human test plan` — co-located with `tests/` or the task, **not** a free-floating doc tree.
+  3. **Manual judgement** — only what a human must eye (copy reads naturally, layout/feel, visual polish). Keep these as a **coverage ledger** (each item tagged `[auto]` — naming the spec/layer that covers it — or `[manual]`) or as the task's `## Human test plan` — co-located with the tests or the task, **not** a free-floating doc tree.
 - **Acceptance criteria belong on the feature** (`docs/features/FEATURE-NNN/`, authored at `/feature decompose`) and the task's Human test plan — that's how "what must be true" stays tied to "why we built it".
 - **Done-gate:** a task/feature is done only when **automated tests pass *and* its manual/acceptance checks were actually run** (see lifecycle step 7 — "automated tests passing ≠ the feature works"). The generated smoke is the floor, not the ceiling.
 

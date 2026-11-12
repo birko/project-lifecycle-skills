@@ -23,7 +23,7 @@ idea ─▶ prototype ─▶ decisions ─▶ tasks ─▶ human-test ─▶ rev
 
 - **Features** — `/feature new` captures an idea, prototypes it for stakeholders, and records decisions (approved / deferred / changed / removed) in `docs/features/`.
 - **Tasks** — approved decisions decompose into small, trackable tasks under `tasks/`; each carries a human test plan.
-- **Review** — `/feature review` gates on code review + manual-test verification + stakeholder sign-off.
+- **Review** — `/feature review` is a completeness gate: every decision built, every task merged (code was already reviewed per task at `/tasks close`), every human-test plan run, and stakeholder sign-off.
 
 See [`{{AGENT_GUIDE_FILE}}`]({{AGENT_GUIDE_FILE}}) for the full convention.
 
