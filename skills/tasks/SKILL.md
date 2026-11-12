@@ -36,13 +36,13 @@ If user types `/tasks help` → print the verb table above and exit.
 
 **`--across`** — widen a *reading* verb to the sibling projects of a polyrepo, per § *Collection pass*
 step 1b. Accepted by the bare `/tasks` snapshot, [`audit`](verbs/audit.md), and [[roadmap]].
-**Every other verb rejects it rather than ignoring it** — `show`, `new`, `close`, `move`, `spawn`,
-`intake`, `cancel`, `block`, `import`, `export`, `migrate`: print
+**Every other verb rejects it rather than ignoring it**: print
 `--across is not supported by this verb; it applies to /tasks, audit and roadmap.` and do nothing else.
-A flag silently swallowed by eleven verbs is the exact failure § *A flag that declares an absent
-capability* records — the caller reads the promise, not the scope — and a `show` invocation carrying the
-flag is both plausible and, given the measured id collisions, ambiguous by construction (which repo's
-`TASK-012`?).
+This is a blanket rule over every verb not named in the sentence above, a verb added later included, so no
+list of the refusing verbs is kept here to go stale. `pick` and `triage` also state their own reasons in
+their files. A flag a verb silently swallows is worse than one it never had, because the caller reads the
+promise, not the scope; and a `show` invocation carrying the flag is both plausible and, given the measured
+id collisions, ambiguous by construction (which repo's `TASK-012`?).
 
 **The rule lives here, once, rather than as a declaration in each of the eleven files.** That is
 deliberate: a twelfth verb added tomorrow is covered by a blanket rule and would be missed by a list.
