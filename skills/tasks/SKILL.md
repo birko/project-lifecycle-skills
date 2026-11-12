@@ -622,7 +622,7 @@ non-obvious rules travel with this:
 - For Jira, use the Atlassian MCP (`mcp__claude_ai_Atlassian__*` — search via ToolSearch before calling), or hand off to a `jira-task` skill, if one is installed, for the full ticket workflow.
 - PowerShell-compatible (no `2>/dev/null`, no inline `VAR=x cmd`).
 - **Parent files are part of "done".** Closing a task without rolling its STORY/EPIC status forward leaves the tree lying about itself — treat the parent rollup as a required step, not optional cleanup.
-- **The merge is part of "done".** Closing a task without merging `task/TASK-NNN` into the default branch leaves `done` meaning "committed somewhere, not integrated" — `tasks/README.md` and `docs/features/*/status.md` will reflect `done` while `main` doesn't carry the work. The close verb's step 8 enforces this as a hard stop; do not advance past it without the user's explicit go-ahead (or a captured deferral reason in `## Out of scope`).
+- **The merge is part of "done".** Closing a task without merging `task/TASK-NNN` into the default branch leaves `done` meaning "committed somewhere, not integrated" — `tasks/README.md` and `docs/features/*/status.md` will reflect `done` while `main` doesn't carry the work. The close verb's step 8 enforces this as a hard stop; do not advance past it without the user's explicit go-ahead (or a deferral, which `close` records as the task staying `in-progress` with a `blocked: 'merge deferred: …'` field, its steps 5c and 6).
 
 ## Related skills
 

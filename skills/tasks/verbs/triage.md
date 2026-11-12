@@ -29,7 +29,7 @@ dashboard is regenerated on the default branch when `close` merges.
    - [TASK-014](EPIC-001-auth/STORY-001-login/TASK-014-jwt.md) — JWT issuance on login (P1, ai)
    ```
 
-3b. **Build "Awaiting verification"** from `inReviewTasks[]`, same bullet shape. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task is in `review`.
+3b. **Build "Awaiting verification"** from `inReviewTasks[]`, same bullet shape. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task awaits verification (`verify`, or the older `review`).
 
 4. **Build the tree view** — group tasks under their parent story under their parent epic (use the `byParent` map from the collection pass). Skip epics that are `done` or `cancelled` (those go in the Completed section). For each story, show `done/total` task counts.
 
@@ -66,7 +66,7 @@ dashboard is regenerated on the default branch when `close` merges.
 7. **Render** [templates/README.md.tmpl](../templates/README.md.tmpl):
    - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`
    - `{{TIMESTAMP}}` — current date/time, e.g. `2026-05-28 14:32`
-   - counts placeholders — including `{{TK_REVIEW}}` (the `review` row is verification debt; never drop it from the table)
+   - counts placeholders — including `{{TK_REVIEW}}`, which fills the `verify` row from the Collection pass's `review` bucket (that row is verification debt; never drop it from the table)
    - `{{TODO_BY_PRIORITY}}` — the `todo` breakdown, as `` `todo` by priority: 4× P1 · 17× P2 · 1× P3. ``
      **One term per priority actually present**, in order, never a fixed set (see the Collection pass note).
      **Suppress zeros** — a priority with no tasks is omitted, not shown as `0×`, matching the stdout snapshot.
