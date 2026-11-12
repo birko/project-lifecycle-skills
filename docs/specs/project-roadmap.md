@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: 3a2879cb1e7bf5bed8f9a3c4aff28adf3eb0e617
-generated-on: 2026-11-04
+generated-at: 65cee7b35fefbd951bb0c6bb6d60c1c6e6c3ba75
+generated-on: 2026-11-12
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -141,13 +141,13 @@ The system SHALL count unticked `- [ ]` lines in a story body only for stories u
 
 ### Requirement: Collect features
 
-The system SHALL, for every feature folder, read the coarse `status:` from the idea file's frontmatter (one of `idea | review | done | dropped | superseded`) and its heading title, count decision rows by state (`proposed | approved | changed | deferred | removed`), read the derived phase from the status file (one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded`), recording no phase when the status file is absent and never substituting the coarse status, and read the recorded prototype line (Built / Skipped / N/A / Pending); it SHALL also read the feature index, when present, for each feature's source epic.
+The system SHALL, for every feature folder, read the coarse `status:` from the idea file's frontmatter (one of `idea | review | done | dropped | superseded`) and its heading title, count decision rows by state (`proposed | approved | changed | deferred | removed`), read the derived phase from the status file (one of `idea | prototyping | deciding | building | review | done`, or the terminal mirrors `dropped | superseded`), recording no phase when the status file is absent and never substituting the coarse status; it SHALL also read the feature index, when present, for each feature's source epic.
 
 #### Scenario: Feature fully read
 
-- **Given** FEATURE-014 with `status: review`, two `approved` and one `proposed` decision, phase `building` and prototype `Skipped`
+- **Given** FEATURE-014 with `status: review`, two `approved` and one `proposed` decision, phase `building`
 - **When** features are collected
-- **Then** FEATURE-014 is recorded with coarse status `review`, decisions approved 2 and proposed 1, phase `building`, and prototype `Skipped`
+- **Then** FEATURE-014 is recorded with coarse status `review`, decisions approved 2 and proposed 1, and phase `building`
 
 ### Requirement: Collect specs only from a real map
 
@@ -411,7 +411,7 @@ The system SHALL flag DV12 when a story under an epic with `kind: review-intake`
 
 ### Requirement: Full render with verification debt first
 
-The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase (`—` when it has no status file), tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
+The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line, each of them appearing again in its epic group; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase (`—` when it has no status file), tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
 
 #### Scenario: Review-phase feature leads
 
@@ -433,7 +433,7 @@ The system SHALL render the full view by listing verification-debt features firs
 
 ### Requirement: Compact slice for the task snapshot
 
-The system SHALL, when called for the task skill's bare snapshot, render only a feature count with one bucket per phase (zero-count buckets omitted, `dropped`, `superseded` and `no rollup` (no status file) appended when non-zero, so the buckets sum to the total), led by a count of verification-debt features as the feature skill defines them, kept outside the phase buckets and omitted at zero, a divergence line listing each finding or `✓ in sync`, a stale-spec count omitted when there are no specs or none are stale, and a pointer to `/roadmap` for the full view.
+The system SHALL, when called for the task skill's bare snapshot, render only a feature count with one bucket per phase (zero-count buckets omitted, `dropped`, `superseded` and `no rollup` (no status file) appended when non-zero, so the buckets sum to the total), led by a count of verification-debt features as the feature skill defines them, kept outside the phase buckets and omitted at zero, a divergence line listing each finding by its target and rule id (a feature, story, epic or task id, a spec as `specs/<area>`, or the map as `specs/.map.yml`, so no finding is dropped for not targeting a feature) or `✓ in sync`, a stale-spec count omitted when there are no specs or none are stale, and a pointer to `/roadmap` for the full view.
 
 #### Scenario: Snapshot with drift
 

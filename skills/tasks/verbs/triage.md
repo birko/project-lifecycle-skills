@@ -80,7 +80,9 @@ dashboard is regenerated on the default branch when `close` merges.
 8. **Write** the rendered output to `tasks/README.md` (overwrite existing).
 
 8b. **Feature drift check** — if `docs/features/` exists, apply the divergence rules from [[roadmap]] (§ *Cross-tree pass (shared engine)*) to the just-collected tasks + features. Reuse those rules; don't reinvent them. If any divergence is found, prepend a callout to `tasks/README.md` directly under the title:
-   `> ⚠ **Feature drift (<n>):** <FEATURE-NNN DV<x> short reason>, … — run \`/roadmap --check\`.`
+   `> ⚠ **Feature drift (<n>):** <target> DV<x> short reason, … — run \`/roadmap --check\`.`
+   Each `<target>` is the finding's target as [[roadmap]]'s compact slice prints it (a feature, story, epic or task id,
+   `specs/<area>`, or `specs/.map.yml`), so a finding whose target is not a feature is never dropped.
    Skip silently when the trees agree.
 
 9. **If invoked directly** (not chained), print one summary line: `Dashboard refreshed: <E> epics, <S> stories, <T> tasks (<N> in progress).` Append `; <n> feature divergence(s) — see /roadmap` when step 8b found any.
