@@ -95,7 +95,7 @@ result of a real trade-off**. Miss any one and skip it.
 
 | Test | Fails when | Example of a fail |
 |---|---|---|
-| Hard to reverse | nothing exists that reversing would leave behind | a rule that produced only its own wording — read the standing-rule paragraph below before applying this row |
+| Hard to reverse | nothing exists that reversing would leave behind | a rule that produced only its own wording — read the scope check below (*First, ask what kind of thing this is*) before applying this row |
 | Surprising without context | the next reader would have done the same | following a convention the guide already states |
 | The result of a real trade-off | there was no rejected alternative | the only option that worked |
 
@@ -152,8 +152,7 @@ docs/adr/0001-slug.md      # NNNN, zero-padded, allocated in order and never reu
 is deleted takes its number with it — so a reader meeting `0005, 0007` cannot tell whether `0006` was
 declined, deleted, or lost. That is the same *decline out loud* failure the bar guards against, one level up.
 Record a retirement where the directory itself will show it: a `0000-retired.md` ledger, one line per
-withdrawn number and why. (Live instance: `0006` was written and then withdrawn on 2026-08-22 for failing the
-hard-to-reverse test.)
+withdrawn number and why.
 
 Four parts, and the third is the one people drop:
 

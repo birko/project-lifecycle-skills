@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-12 15:16. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-12 15:24. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,10 +13,10 @@ _Generated 2026-11-12 15:16. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 287                 |
+| done         | 4                  | 13                 | 288                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 31× P2 · 12× P3.
+`todo` by priority: 30× P2 · 13× P3.
 
 ## In progress now
 
@@ -264,7 +264,7 @@ _None_
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
     - [x] TASK-342 `/feature pick` words gate B's question twice
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (47/56 tasks done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (48/57 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (36/36 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
@@ -302,7 +302,7 @@ _None_
     - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
     - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
     - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (11/20 done)
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (12/21 done)
     - [x] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [x] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [x] TASK-226 Three references point at things that do not exist
@@ -319,10 +319,11 @@ _None_
     - [ ] TASK-260 `grill-me`'s description has no Slovak triggers and predates the skill it describes
     - [x] TASK-271 Three shipped skills point at things a consumer install does not have
     - [ ] TASK-274 `roll-changelog`: a dangling skeleton link, two definitions of its boundary, an undeclared flag, and an empty release
-    - [ ] TASK-275 `domain` is told it audits ADR drift but has no pass for it, and two of its pointers are wrong
+    - [x] TASK-275 `domain` is told it audits ADR drift but has no pass for it, and two of its pointers are wrong
     - [ ] TASK-276 `handoff` has no trigger phrases, and never says where its document went
     - [ ] TASK-349 `/specs verify` and `show` leave three rendering details to the reader
     - [ ] TASK-351 `/feature status` in single-feature mode leaves four rendering details to the reader
+    - [ ] TASK-352 Decide whether `domain` gains a pass that checks decision records against the code
 
 - EPIC-008 architecture — rung 2 review 2026-10 — planned (0/2 tasks done)
   - STORY-025 Changes that ripple across skill folders — planned (0/2 done)
