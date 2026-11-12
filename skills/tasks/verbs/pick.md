@@ -40,10 +40,15 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
      taken: `pick: TASK-NNN is taken — task/TASK-NNN exists <locally | on <remote>>, and this session is not on it. Nothing was changed. If it is yours, switch to it (or enter its worktree) and pick again.`
 
-     **With an upstream, fetch first** (`git fetch --prune <remote>`), as 6b does: a stale remote list hides
-     another clone's newer branch, and keeps showing one deleted since. A failed fetch prints 6b's
-     **fetch-failed** line, and the check runs on what is known locally.
+     The check reads the remote branches as the fetch below left them.
      Without git there are no branches to read, and the check is skipped, as the Collection pass skips it.
+
+   **With an upstream, every pick fetches first** (`git fetch --prune <remote>`), once, before any taken check
+   reads a branch: the bare ID's check above and step 3's list and `taken (hidden)` line alike. *Upstream*
+   is step 6b's test (`<default-branch>@{upstream}` resolves). A stale remote list hides another clone's newer
+   branch and keeps showing one deleted since, in the list as much as for a named task. A failed fetch prints
+   6b's **fetch-failed** line, and the pick continues on what is known locally. 6b does not fetch again after
+   this one.
 
 2b. **Surface verification debt before offering anything.** Collect TASKs at `status: review` or `status: verify`, as the [Collection pass](../SKILL.md#collection-pass)'s `inReviewTasks[]` defines them (a worktree park's `verify` lives on its task branch) — code
    complete, sign-off pending — and report them **before** the candidate list. They are deliberately
@@ -98,7 +103,13 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    3. TASK-007 Bump .NET 9 (P1, human)
       [loose]
    ```
-   Ask user to pick by number (or accept a TASK-NNN ID directly).
+   Put this question:
+
+   > **Which task? Give its number from the list, or a TASK-NNN id.**
+
+   **No answer, or nobody to ask:** start nothing. Write nothing, and print
+   `pick: no task chosen — nothing was changed`. A pick writes a status and may cut a branch, so taking the
+   top of the list would start work nobody chose.
 
 5. **Read the chosen TASK file** in full.
 
@@ -109,6 +120,10 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    - `Y` → hand off to [verbs/plan.md](plan.md) for this TASK ID (which itself offers the
      `grill-me` pass), then resume `pick` from step 6b once it's done.
    - `n` → proceed unplanned. Legitimate for genuine one-liners; don't block, and don't nag twice.
+   - **No answer, or nobody to ask:** take the default. Hand off to [verbs/plan.md](plan.md) as `/tasks plan
+     TASK-NNN --no-grill`, since the grill is a conversation, and say in the hand-off
+     `plan drafted — the default; nobody chose it`. A missing answer is not a `n`: proceeding unplanned would
+     turn silence into a decline the prompt's default says nobody made.
    - **Recommend planning** whenever the task touches more than one file, has ≥3 acceptance
      criteria, carries a `feature:` link, or its Context names unknowns. Say which of those
      triggered the recommendation — a concrete reason beats a generic prompt.
@@ -216,9 +231,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      upstream → **upstream**. Nothing may be committed on the local default branch there, because nobody
      pushes it, and a local commit there diverges from the remote the moment a PR merges, and a protected
      branch refuses it anyway. So an upstream changes the steps below that are marked **upstream**.
-     Begin it with `git fetch --prune <remote>`. That shows other clones' task branches, and drops the
-     refs of branches deleted there, which would otherwise hide a task forever. A failed fetch (offline)
-     prints the **fetch-failed** line, and the run continues on what is known locally.
+     It begins with step 2's fetch (`git fetch --prune <remote>`): skip it only when this run already ran it
+     there. A caller that enters this step without passing through step 2, such as [[fix-next]], has not, so
+     it fetches here. The fetch shows other clones' task branches, and drops the refs of branches deleted
+     there, which would otherwise hide a task forever. A failed fetch (offline) prints the **fetch-failed**
+     line, and the run continues on what is known locally.
      **An upstream also needs a local default branch with nothing the remote lacks.**
      `git rev-list --count <upstream>..<default-branch>` above 0 means local commits nobody pushed →
      print the **local-ahead** line and stop, since those commits must reach the remote through a PR
@@ -320,8 +337,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      pushes it, as the *Create* paragraph above says for every fallback). A removal that fails
      → report what is left and stop. Expect a mismatch from an agent whose working directory was pinned
      at launch (a subagent): falling back there is correct.
-   - **Match** → print the **in-a-worktree** line and go to step 9. Steps 7 and 8 already ran inside the
-     pick commit; running them again in the worktree would only dirty it.
+   - **Match** → print the **in-a-worktree** line, put step 7's `pr:` question (its last bullet, with its
+     answer-less path), and go to step 9. Steps 7 and 8 otherwise already ran inside the pick commit; running
+     them again in the worktree would only dirty it. The `pr:` question is the one part of step 7 the pick
+     commit could not ask. With an upstream, put it after the pick commit and push below, so an answer stays out
+     of that commit. Either way an answer is written to the worktree's copy of the task file, uncommitted, and
+     rides to `close` with the work.
      **With an upstream**, the pick instead happens here, in the worktree. Bring in the carried files (above) and
      an answered root. Flip `status:` to `in-progress`, together with any caller's pick-time lines such as
      [[fix-next]]'s. Commit exactly those files as `TASK-NNN: pick` on the task branch, then run
@@ -496,7 +517,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
    | Point | Interactive | Detached |
    |---|---|---|
-   | step 2b debt, step 4 choice, blocked edge case, step 6 plan / replan, step 6b root, step 7 branch / `pr:` | asked | asked here, before the offer; never re-asked |
+   | step 2b debt, step 4 choice, blocked edge case, step 6 plan / replan, step 6b root, step 7 branch / `pr:` (on 6b's worktree path, `pr:` is put at its **Match**) | asked | asked here, before the offer; never re-asked |
    | step 9 inferred-values line | printed with ⚠ | recorded as `inferred, not chosen: <fields>` in the first log line and in the report; the line is never deleted |
    | step 9 `jira-key:` → `jira-task` | suggested | not invoked; named in the report |
    | step 9 `github-issue:` comments | fetched per mode | fetched by the subagent under the same rule |
