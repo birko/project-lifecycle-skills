@@ -3,7 +3,7 @@ id: TASK-065
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: verify
 priority: P2
 assignee: agent
 created: 2026-08-22
@@ -14,6 +14,7 @@ findings: [DRILL-053-7, DRILL-053-8, DRILL-063-1]
 pr: null
 github-issue: null
 jira-key: null
+picked-by: fix-next
 ---
 
 # `adopt-project` assumes every run is a full run
@@ -95,20 +96,20 @@ inventing a nineteenth row for something that belongs in the report's header.
 
 ## Acceptance criteria
 
-- [ ] Whether a scoped / read-only run is a supported mode is **stated**, either way
-- [ ] If supported: a present row whose owner verb was not invoked has a named state, distinct from `unknown` (a verb that answered with silence) and from plain `present`
-- [ ] If supported: the report contract says what § 4 owes when an earlier step did not run, so a scoped report is not defective by its own definition
-- [ ] If not supported: the passages that imply a partial run is possible are corrected, and `adopt-project` says a run is all-or-nothing
-- [ ] Either way, `SKILL.md:73-78`'s completeness rule still distinguishes *nothing missing* from *complete* — that distinction was right and the drill relied on it
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Whether a scoped / read-only run is a supported mode is **stated**, either way
+- [x] If supported: a present row whose owner verb was not invoked has a named state, distinct from `unknown` (a verb that answered with silence) and from plain `present`
+- [x] If supported: the report contract says what § 4 owes when an earlier step did not run, so a scoped report is not defective by its own definition
+- [x] If not supported: the passages that imply a partial run is possible are corrected, and `adopt-project` says a run is all-or-nothing — **not applicable: supported was chosen (2026-11-12, the user)**
+- [x] Either way, `SKILL.md:73-78`'s completeness rule still distinguishes *nothing missing* from *complete* — that distinction was right and the drill relied on it
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-090:*
 
-- [ ] The survey establishes whether the repo has been adopted before, from evidence it already collects — `docs/BRIEF.md`'s `## Origin` stamp is the obvious source, and the row already exists
-- [ ] The answer appears where a reader sees it before the table, not as a row inside it
-- [ ] A repo with no brief, or a brief with no origin stamp, yields an honest "cannot tell" rather than an assumption of first adoption
-- [ ] The distinction changes something concrete in the report — at minimum, how a `missing` row is worded on a re-run versus a first pass — or the task records why it is presentation-only
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] The survey establishes whether the repo has been adopted before, from evidence it already collects — `docs/BRIEF.md`'s `## Origin` stamp is the obvious source, and the row already exists
+- [x] The answer appears where a reader sees it before the table, not as a row inside it
+- [x] A repo with no brief, or a brief with no origin stamp, yields an honest "cannot tell" rather than an assumption of first adoption
+- [x] The distinction changes something concrete in the report — at minimum, how a `missing` row is worded on a re-run versus a first pass — or the task records why it is presentation-only
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -123,14 +124,90 @@ inventing a nineteenth row for something that belongs in the report's header.
 
 ## Human test plan
 
-- [ ] Run a scoped survey (§ 1 + § 4 only) against a repo with a present `tasks/` tree and confirm the row's state and the report both read correctly without the delegation having run
-- [ ] Confirm the report distinguishes *nothing is missing* from *the layer is complete* — the drill found that distinction load-bearing and it must survive
+- [x] Run a scoped survey (§ 1 + § 4 only) against a repo with a present `tasks/` tree and confirm the row's state and the report both read correctly without the delegation having run
+  - **Passed 2026-11-12:** fixture `%LOCALAPPDATA%/Temp/d065/adopted` (a git repo with `docs/BRIEF.md` stamped `## Origin` *Adopted 2026-08-18*, `tasks/.config.yml` declaring `mode: local` and `integration: single-branch`, `tasks/README.md`, a `CLAUDE.md` with one convention, `src/app.py`), the whole `skills/` tree copied to `skill/`. The brief (`brief.txt` there) asked for "/adopt-project — survey only, read-only" and withheld the expected states. Runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep < brief.txt`, cwd the fixture root. The `tasks/` row read `present, owner not asked` ("`/tasks init` would answer whether it is current"), quoting § *Scoped runs*. The report carried it in its own bucket as `present — currency not checked; /tasks init would answer (scoped run)`, and printed `step 2|3|3b|3c not run — scoped run`. Both repos were unchanged afterwards. Coldness: no skills listed, no Skill tool
+- [x] Confirm the report distinguishes *nothing is missing* from *the layer is complete* — the drill found that distinction load-bearing and it must survive
+  - **Passed 2026-11-12**, same run: neither repo was called complete. The runner quoted step 1's "A scoped run cannot meet that, so it reports *nothing missing*" and § *Scoped runs*' "never 'complete'", and reported "Not complete" with counts, since both repos had missing rows
 - [ ] Run a full pass on the same repo and confirm the scoped and full reports do not contradict each other
+  - **Not run 2026-11-12.** A full adoption delegates to `/tasks init`, `/specs init` and the other owners and writes files, so it needs a person or a longer drill than a defect run carries. The scoped report it compares against is kept at `%LOCALAPPDATA%/Temp/d065/report.md`
 
 *From TASK-090:*
 
-- [ ] Run the survey against a repo whose brief carries an adoption stamp and one that has never been adopted, and confirm a reader can tell the two runs apart without opening any file themselves
+- [x] Run the survey against a repo whose brief carries an adoption stamp and one that has never been adopted, and confirm a reader can tell the two runs apart without opening any file themselves
+  - **Passed 2026-11-12**, same run, second repo `d065/fresh` (README and `src/app.py` only): its report opened `run: cannot tell whether this repo was adopted before — no docs/BRIEF.md`, against `adopted/`'s `run: re-run — this repo was adopted 2026-08-18 (docs/BRIEF.md § Origin)`. Only the adopted repo's `missing` rows carried the re-run wording
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-065` — leave empty until then._
+Drafted 2026-11-12 by `/fix-next` (no grill: nobody to answer one). Triggers: two files, eleven criteria, an open
+decision.
+
+1. **TASK-090 half, independent of the decision** — `adopt-project` step 1 heads the survey table with a `run:` line
+   read from `docs/BRIEF.md`'s `## Origin` stamp: a dated re-run, or `cannot tell` (no brief, or no stamp), never an
+   assumed first adoption. On a re-run, a `missing` row reads as gained or removed since the adoption. Step 4's report
+   opens with the same line.
+2. **The decision** — put to the user, with supporting scoped runs recommended. **Answered 2026-11-12: support it.**
+3. **Scoped runs** — a `### Scoped runs` section in `adopt-project`: when a run is scoped, that it runs steps 1 and 4,
+   and what it owes (the new state, a `step <n> not run` line per skipped step, every unasked question, and *nothing
+   missing* never *complete*). A new survey state `present, owner not asked` goes in LAYER.md § *Detect what the repo
+   has*, the single inventory, and step 4 says what it owes. Hooks in step 1's version bullet and completeness rule.
+4. Respec `project-baseline`.
+
+## Outcome
+
+**The fix.**
+- **Run line:** `adopt-project`'s survey now heads its table with what kind of run this is, read from the adopted
+  brief's `## Origin` stamp. On a re-run, each `missing` row says the layer gained it or it was removed since the
+  adoption date. With no stamp, the run says it cannot tell, and never assumes a first adoption.
+- **Scoped runs:** on your decision, a survey-only, read-only run is now a supported mode. Its present rows whose owner
+  verb never ran read `present, owner not asked`, a new state in LAYER.md. Its report prints
+  `step <n> not run — scoped run` for each skipped step and lists the questions a full run would have put. It reports
+  *nothing missing*, never *complete*.
+
+**Step 6 split.** 6 of 6 assertions failed on HEAD's copies and pass on the fix, all fix-dependent: the mode stated, the
+named state, the per-step line, nothing-missing versus complete, the run line with its cannot-tell case, and the
+re-run wording of `missing`. Contract pin, **not evidence**: skills-lint passes on both. The unasked-questions bullet was
+added after the split, from the drill; its evidence is the drill reading that prompted it.
+
+**Judgement calls.**
+- **The decision was asked, not taken.** The task's own Context says "decide whether scoped runs are supported", and
+  the guardrail sends such a question to a person. The run line, independent of it, was built first. The user chose
+  *support it* (the recommendation): drills keep wanting this mode, and two cold runners each invented the missing
+  state.
+- **A new state, not a reused one.** `unknown` already means an owner that ran and gave no answer, and the drill's own
+  reasoning (kept in Context) rejected reusing it. `present` would claim a currency nobody checked.
+- **The run line is a header, not a row**, as the merged TASK-090 required. It is a property of the run, and a
+  nineteenth row would say an artifact is missing something.
+- **`cannot tell` covers a scaffolded repo too.** A repo `new-project` built has a verbatim brief and no `## Origin`.
+  Calling that a first adoption would be the assumption the criterion forbids.
+- **No flag.** The mode is taken from the request ("survey only", "read-only"). The Out of scope makes a flag
+  downstream of the decision, and none is needed for the stated behaviour.
+- **Layer parity:** the state lives in LAYER.md, the one inventory both front doors read. `new-project` scaffolds and
+  never surveys, so it gains nothing to change.
+- **Parked at `verify`**, not `done`: the full-pass comparison step was not run (Human test plan).
+- **Spec** `project-baseline`: four requirements updated (survey states, the table header, scoped runs, the report
+  contract). Restamped. `shaped-by` unchanged: the intervening commits (6eaa977 TASK-092, 80f52f9 TASK-248, be3e932
+  TASK-275) are not feature-linked.
+- **Close gate ran inline** on a ~70-line prose diff.
+  - Standards: the new state is defined once, in the shared inventory, and pointed at. The run line's three cases are a
+    table.
+  - Intent: every criterion met, the "if not supported" one moot by the decision.
+  - Correctness: the section heading was renamed to match its `§ *Scoped runs*` citations, and its item count corrected
+    after the fourth bullet.
+  - Security: not applicable.
+  - Comments: not applicable.
+
+**Flagged, not fixed.** Three pre-existing readings from the drill (LAYER.md and step 4 disagree on reporting a derived
+`not applicable`; an undeclared `workspace:` under `single-branch`; the next step on a repo without `tasks/`) →
+TASK-353, P3.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-274 because both leave a run without a defined result (key 1 wrong results), but `adopt-project`'s survey runs on every adoption and every upgrade re-run while `roll-changelog`'s empty-release case is reached only when a release is cut with nothing in it (key 2). Number 3 in the re-ranked order, after TASK-250 and TASK-275 (both closed). Key 4 counts against it: the scoped-run half needs a decision, and the guardrail's path is taken for that half (non-controversial work first, then ask)
+- step 3 — verified: held. DRILL-053-7: `adopt-project` step 1 defers currency to step 3's delegation, the completeness rule needs every owner to answer, and LAYER.md's `unknown` is for an owner that ran, so a scoped run has no state. DRILL-053-8: step 4 owes step 2's skip line and glossary candidates. TASK-090: nothing in step 1 reads the brief's `## Origin` stamp
+- step 3b — planned: drafted inline as `/tasks plan --no-grill` would (triggers: two files, eleven criteria, an open decision)
+- step 4 — layer: local
+- step <guardrail> — decision put to the user: support scoped runs (recommended) / all-or-nothing / decide later. Answered: support it
+- step 5 — fix in skills/adopt-project/SKILL.md (run line; § Scoped runs; step 1 and step 4 hooks), skills/new-project/LAYER.md (`present, owner not asked`); spawned TASK-353 for three pre-existing drill readings
+- step 6 — reverted fix (HEAD's copies): 6/6 assertions failed; fix-dependent = all six; contract pins = skills-lint (passes on both)
+- step 7 — respecced project-baseline (surgical); requirements changed: survey states, survey table header and scoped runs, report contract; intended — TASK-065's criteria and the user's decision. shaped-by unchanged: intervening commits are feature: null
+- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log

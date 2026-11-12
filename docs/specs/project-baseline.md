@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: 8a847ea96d9dd24b278c427055ee650d70342e7a
-generated-on: 2026-11-04
+generated-at: be3e9325db3bce897869540aa2f027ca876b6f72
+generated-on: 2026-11-12
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md
@@ -307,7 +307,7 @@ The system SHALL let adoption be re-run at any time, never overwriting and never
 
 ### Requirement: The survey classifies every row by evidence into a precise state
 
-The system SHALL survey every inventory row before writing anything, classify each into exactly one of `present`, `present, uncommitted`, `present, outdated`, `present, elsewhere`, `unknown`, `missing`, `missing, not offered`, `not applicable`, or `not applicable yet` (with `present, outdated` and `present, uncommitted` composable), detect by evidence rather than by path, report `unknown` rather than `missing` when in doubt, and report present-but-thin artifacts as `present` with the gap named; it SHALL claim `present, outdated` only for a row whose "already present?" cell names a verb to delegate to, using that verb's reported delta as the evidence, keeping a shape no verb owns at `present` with the gap named.
+The system SHALL survey every inventory row before writing anything, classify each into exactly one of `present`, `present, uncommitted`, `present, outdated`, `present, owner not asked` (a scoped run's present row whose owner verb was never invoked), `present, elsewhere`, `unknown`, `missing`, `missing, not offered`, `not applicable`, or `not applicable yet` (with `present, outdated` and `present, uncommitted` composable), detect by evidence rather than by path, report `unknown` rather than `missing` when in doubt, and report present-but-thin artifacts as `present` with the gap named; it SHALL claim `present, outdated` only for a row whose "already present?" cell names a verb to delegate to, using that verb's reported delta as the evidence, keeping a shape no verb owns at `present` with the gap named.
 
 #### Scenario: Tests in sibling projects
 
@@ -493,7 +493,7 @@ The system SHALL check that a present `.gitignore` covers `.env`, `.env.*` and a
 
 ### Requirement: The survey table prints before any write, and completeness waits for the owners
 
-The system SHALL resolve stack, component behaviour, declared kind, licensing posture, test runner, git remote, ancestor capture, uncommitted layer files and declaration probes before printing, SHALL print the survey as a table before anything is written, list defects beneath it rather than as rows, and treat the table as a barrier on writes rather than the end of the run; a "complete" table SHALL end the run only when no row names a verb to delegate to or every such verb has answered, and no defect is outstanding.
+The system SHALL resolve stack, component behaviour, declared kind, licensing posture, test runner, git remote, ancestor capture, uncommitted layer files and declaration probes before printing, SHALL print the survey as a table before anything is written, headed by a line saying whether the run is a re-run of a dated adoption (read from the brief's `## Origin` stamp, which also words each `missing` row as gained or removed since then) or cannot tell, never assuming a first adoption, list defects beneath it rather than as rows, and treat the table as a barrier on writes rather than the end of the run; a "complete" table SHALL end the run only when no row names a verb to delegate to or every such verb has answered, and no defect is outstanding. A scoped run (survey only, writing nothing) SHALL be supported: it runs the survey and the report, reports `nothing missing` rather than `complete` while any row is `present, owner not asked`, and prints `step <n> not run — scoped run` for each step it skipped in place of that step's output, and still reports every question a full run would have put, marked as not asked.
 
 #### Scenario: All rows present on an adopted repo
 
@@ -683,7 +683,7 @@ The system SHALL derive, from what this run touched — created, landed or amend
 
 ### Requirement: The adoption report states outcomes, per-state reasons and defects separately
 
-The system SHALL report outcomes under created, amended (with what changed inside), left alone (with why) and regenerated (naming file and verb, including declined or blocked ones); SHALL give each surveyed state not absorbed by those buckets its own bucket, owing today: where for `present, elsewhere`, the owner's delta and whether it was reconciled for `present, outdated`, each path and whether its offer was taken for `present, uncommitted`, which of `unknown`/`missing` and why (and which kind of unknown), the re-derived reason for `missing, not offered`, and that absence is correct for `not applicable yet`; SHALL list defects in their own section with task ids; SHALL treat content staleness as an aside; and SHALL end with `/feature new` and `/tasks new` as next steps.
+The system SHALL open with the survey's run line and report outcomes under created, amended (with what changed inside), left alone (with why) and regenerated (naming file and verb, including declined or blocked ones); SHALL give each surveyed state not absorbed by those buckets its own bucket, owing today: where for `present, elsewhere`, the owner's delta and whether it was reconciled for `present, outdated`, the owner that would have answered for `present, owner not asked`, each path and whether its offer was taken for `present, uncommitted`, which of `unknown`/`missing` and why (and which kind of unknown), the re-derived reason for `missing, not offered`, and that absence is correct for `not applicable yet`; SHALL list defects in their own section with task ids; SHALL treat content staleness as an aside; and SHALL end with `/feature new` and `/tasks new` as next steps.
 
 #### Scenario: Upgrade run
 

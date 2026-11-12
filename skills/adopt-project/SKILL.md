@@ -29,6 +29,27 @@ those shapes here is how the two versions drift.
 
 ## Process
 
+### Scoped runs
+
+A **scoped run is supported**: a pre-flight before touching anything, a re-survey to see whether a blocker has
+cleared, a read-only audit of a repo you will not write to. Take one when the request says so (*"survey only"*,
+*"read-only"*, *"just tell me what's missing"*); any other request is a full run, as before. A scoped run executes
+step 1 and step 4, writes nothing, and owes four things a full run does not:
+
+- **A present row whose owner verb would answer currency is `present, owner not asked`** ([LAYER.md](../new-project/LAYER.md)
+  § *Detect what the repo has*): step 3's delegation is what answers, and it did not run. Never `present`, which claims
+  currency nobody checked, and never `unknown`, which means an owner ran and gave no answer.
+- **One line per step that did not run**, in step 4's report: `step <n> not run — scoped run`. That line is the step's
+  output. Where this page says a step's result must also appear in step 4 (step 2's stated skip of the inference
+  round, the glossary candidates the `not applicable yet` bucket mentions), the line is what appears, so a scoped
+  report is not defective by this page's own rules.
+- **Every question step 2 would have put is still reported, marked unasked**: an `unknown` row's question, an
+  outstanding declaration's question, under `asked by a full run, not this one:`, each in the words step 2 would use.
+  A scoped run that drops them reports a repo as settled where a full run would have stopped to ask.
+- **"Nothing missing", never "complete"**, while any row reads `present, owner not asked`. A full run on the same repo
+  then asks those owners and settles them, and the two reports agree on every other row.
+
+
 ### 1. Survey — read before writing anything
 
 Walk [LAYER.md](../new-project/LAYER.md) and classify every artifact by the states its
@@ -46,7 +67,8 @@ These consequences decide behaviour:
 - **From outside you cannot see a version.** An artifact another skill owns may be present in an
   older shape than the layer now expects — a config written before a field existed looks complete
   from the outside. Where the artifact's row names a verb, step 3's delegation is what answers, so
-  leave the version question to it rather than guessing here; where no verb owns the shape, the
+  leave the version question to it rather than guessing here (on a scoped run, which reaches no step 3, the row is
+  `present, owner not asked`, per § *Scoped runs*); where no verb owns the shape, the
   thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
   § *Delegation follows the row, not the artifact's appearance*).
   - **This does not defer a declaration the row names.** *Is field X in file Y* is a grep, not a
@@ -94,6 +116,22 @@ missing something structural, when what is missing is an answer.
 
 **Print the survey as a table before anything is written.** The user sees the whole picture first.
 
+**Head the table with what kind of run this is — a property of the run, never a row.** Read it off
+`docs/BRIEF.md`, which the survey visits anyway, by *opening* it rather than checking it exists:
+
+| `docs/BRIEF.md` | Line above the table |
+|---|---|
+| carries an `## Origin` section stamping an adoption date | `run: re-run — this repo was adopted <date> (docs/BRIEF.md § Origin)` |
+| exists with no `## Origin` stamp | `run: cannot tell whether this repo was adopted before — docs/BRIEF.md has no § Origin stamp` |
+| is absent | `run: cannot tell whether this repo was adopted before — no docs/BRIEF.md` |
+
+**Never assume a first adoption.** A repo scaffolded by [[new-project]] carries a verbatim brief and no stamp, and a
+repo whose brief was deleted looks new; both read as `cannot tell`, which is the honest answer.
+**It changes how a `missing` row reads.** On a re-run, write each one as
+`missing — this repo was adopted <date>, so the layer gained it since or it was removed`, because a reader handed a
+table of bare `missing` rows reads a young repo being onboarded, not a mature one that drifted or a layer that grew.
+Under `cannot tell`, a `missing` row stays plain `missing`.
+
 **That is a barrier on *writes*, not the end of the run** — and it has to be said, because "stop" reads as
 both. A drill runner obeyed the earlier wording, nearly ended its run at the table with three real defects
 listed and unfiled, and recovered only by reading later paragraphs: *"a literal reading of 'stop' would
@@ -109,7 +147,7 @@ is outstanding.
 when nothing is left to ask — but *present* is not *current*, and for any row whose column names a
 verb to delegate to, the survey has not established completeness; only that verb can. So a
 "complete" table is the end of the run only when **no row names a verb to delegate to, or every such
-verb has already answered**. Otherwise continue: step 3's delegations are the rest of the survey, not
+verb has already answered**. A scoped run cannot meet that, so it reports *nothing missing* (§ *Scoped runs*). Otherwise continue: step 3's delegations are the rest of the survey, not
 extra work beyond it. (Skipping them on a repo whose artifacts are all present is how `Presenter`
 kept a `tasks/.config.yml` with no `integration:` field through a full pass that reported it
 complete.)
@@ -356,7 +394,7 @@ nobody reviews and one the user did not ask for.
 
 ### 4. Report what changed
 
-Report by outcome. Three buckets for what this run **did**:
+Open the report with step 1's `run:` line, unchanged. Then report by outcome. Three buckets for what this run **did**:
 
 | Bucket | Carries |
 |---|---|
@@ -373,6 +411,9 @@ exist today**, not a copy of the list — when that file gains a row, the rule a
 page does not need editing:
 
 - `present, elsewhere` — **where**: the paths or form actually found. Never offer to create a second one.
+- `present, owner not asked` — **which owner would have answered, and that this run did not ask it**: `present —
+  currency not checked; /<owner verb> would answer (scoped run)`. Never folded into *left alone*, which reads as
+  checked.
 - `present, outdated` — **what the owner's init reported as the delta, and whether it was reconciled.** "Brought up to date" and "nothing to do" are different outcomes; blurring them is how an old shape survives a pass that claims to reconcile it.
 - `present, uncommitted` — **each path, and whether its offer was taken** — not a count and not one line for the row. Silence loses the artifact at the next clone; a wholesale line loses which of them the user actually consented to. Where a path self-attributes to an earlier pass, say so; where adoption could not tell whose work it was, say that too.
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
