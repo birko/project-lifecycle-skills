@@ -40,8 +40,8 @@ defect tasks, pool = 2.** They were re-homed by hand because no verb could.
 
 5. **Update `parent:`** in the moved file's frontmatter, anchored to the field: match `^parent:` between
    the first two `---` fences. **Not an unanchored substring replace** — the frontmatter's own commented
-   enum lines contain the words a loose match will hit, which is a defect this repo has already had
-   twice (see `verbs/close.md` step 7's note and TASK-036).
+   enum lines contain the words a loose match will hit, and a write that hits one succeeds silently against
+   the comment, leaving the real field unchanged.
 
 6. **Roll up both sides, per SKILL.md § Roll status up to parents.** A move changes two child sets, and
    the *source* is the one that gets forgotten: a STORY that just lost its last open task may now be

@@ -29,7 +29,7 @@ Read-only inspection. Does **not** change status, does **not** regenerate the da
 
    **STORY** — print:
    - Header: `STORY-NNN — <title>` and parent (`EPIC-NNN <epic title>`)
-   - Status, created, owner
+   - Status, created, and `theme:` when the story carries one (review-intake stories only)
    - The STORY body (`## User story`, `## Behaviour`, whatever the template carries)
    - List of child TASKs: `TASK-NNN <title> (status, priority, assignee)`
 
