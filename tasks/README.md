@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-12 15:07. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-12 15:16. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 44                  |
+| todo         | —                  | —                  | 43                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 286                 |
+| done         | 4                  | 13                 | 287                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 32× P2 · 12× P3.
+`todo` by priority: 31× P2 · 12× P3.
 
 ## In progress now
 
@@ -264,7 +264,7 @@ _None_
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
     - [x] TASK-342 `/feature pick` words gate B's question twice
 
-- EPIC-007 First spec harvest review 2026-10 — in-progress (46/56 tasks done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (47/56 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (36/36 done)
     - [x] TASK-220 Two verbs leave a `blocked:` field behind that `audit` then reports
     - [x] TASK-221 `cancel` and container close disagree about cancelled work
@@ -302,7 +302,7 @@ _None_
     - [x] TASK-300 A task exported to Jira shows the project's default priority in Jira's own priority field
     - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
     - [x] TASK-302 A Jira priority someone edits after export is lost on re-import, because the export label still wins
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (10/20 done)
+  - STORY-024 Lists, labels and references that no longer match what they describe — planned (11/20 done)
     - [x] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [x] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [x] TASK-226 Three references point at things that do not exist
@@ -314,7 +314,7 @@ _None_
     - [ ] TASK-241 Three stale words in `feature`: a count, a citation and a list of forms
     - [x] TASK-248 The seed templates describe a project that `new-project` does not build
     - [ ] TASK-249 The adopter's files cite rules a consumer does not have, and miscount their own buckets
-    - [ ] TASK-250 The pi review fallbacks have drifted from the axes they stand in for
+    - [x] TASK-250 The pi review fallbacks have drifted from the axes they stand in for
     - [ ] TASK-251 `review-comments` miscounts its PATH rules and offers a range it has no syntax for
     - [ ] TASK-260 `grill-me`'s description has no Slovak triggers and predates the skill it describes
     - [x] TASK-271 Three shipped skills point at things a consumer install does not have

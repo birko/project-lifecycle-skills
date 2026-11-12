@@ -8,19 +8,14 @@ description: Review the current diff (working tree, staged, or a PR range) for c
 > **Pi-only stub.** This stub exists so pi resolves `[[code-review]]` instead of silently
 > skipping the gate. Do not install it into `~/.claude/skills`.
 >
-> Unlike its siblings, **Claude Code does not currently surface a `code-review` skill** — the
-> CLI binary carries one (strings `code-review`, `code-review-low-fast`, and a `ReportFindings`
-> tool built for it), but it is not in the session skill list as of CLI 2.1.220, so
-> `[[code-review]]` does *not* resolve there and the agent will say so. That is expected: the
-> callers' inline fallback covers it ([[tasks]] `close` step 5b — "if this runtime has no such
-> skill, do the pass inline … never skip the gate because the skill name didn't resolve"), and
-> this stub's Steps are that fallback. Installing it here anyway would silently shadow the
-> native pass with a thinner one the day Anthropic enables it — a downgrade for no gain over
-> the fallback. Aliasing it (`code-review-fallback`) is worse: the reference still wouldn't
-> resolve, and repointing the callers at the alias would prefer the stub permanently.
->
-> `review` and `security-review` **are** surfaced as Claude Code built-ins — their stubs' notes
-> hold as written, and installing those would shadow something that works.
+> **Claude Code ships `code-review` as a built-in**, as it ships `review` and `security-review`.
+> Installing this stub into `~/.claude/skills` would silently shadow that native pass
+> with a thinner one, a downgrade for no gain. Aliasing it (`code-review-fallback`) is worse: the
+> callers' `[[code-review]]` would not resolve to the alias, and repointing them at it would
+> prefer the stub permanently. pi ships none of the three, so there these Steps are the pass.
+> A runtime that has neither the built-in nor this stub still runs the gate: the callers carry an
+> inline fallback ([[tasks]] `close` step 5b — "never skip the gate because the skill name didn't
+> resolve").
 
 ## Steps
 

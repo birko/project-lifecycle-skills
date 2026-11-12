@@ -794,9 +794,8 @@ The rule that makes this safe either way: **a gate is never skipped because a sk
 resolve.** Every caller carries an inline fallback — `/tasks close` step 5b reads the diff for
 correctness itself when no `code-review` skill exists, `/feature review` does its cumulative
 pass inline — so the worst case of a missing skill is a less specialized review, never an
-unreviewed merge. (Currently load-bearing: Claude Code does *not* surface a `code-review` skill
-as of CLI 2.1.220 — the binary carries one, but it isn't in the session skill list, so that
-reference doesn't resolve there and the fallback is what actually runs.)
+unreviewed merge. Claude Code ships all three review skills; on pi the `skills-pi/` stubs are what
+resolve.
 
 ### This repo runs its own lifecycle
 

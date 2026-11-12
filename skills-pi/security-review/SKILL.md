@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review the current diff or PR range for security concerns — auth bypasses, injection, data exposure, secret leakage, risky dependencies. Use when the user says "/security-review", "security review", when [[tasks]] close (step 5b) hits a security-touching diff (auth/session, data access, user input, crypto, secrets/config, new dependencies, exposed endpoints), or when [[feature]] review runs the optional cumulative pass on a security-sensitive feature. This is the security half of the review gate — pair with [[code-review]] (correctness) and [[verify-conventions]] (adherence).
+description: Review the current diff or PR range for security concerns — auth bypasses, injection, data exposure, secret leakage, risky dependencies. Use when the user says "/security-review", "security review", when [[tasks]] close (step 5b) hits a security-touching diff (auth/session, data access, user input, file/path handling, crypto, secrets/config, new dependencies, exposed endpoints), or when [[feature]] review runs the optional cumulative pass on a security-sensitive feature. This is the security half of the review gate — pair with [[code-review]] (correctness) and [[verify-conventions]] (adherence).
 ---
 
 # security-review

@@ -1,7 +1,7 @@
 ---
 area: change-review
-generated-at: ec0a2c922d1ee33d802c950a1beec4e44230c7d9
-generated-on: 2026-10-11
+generated-at: 6e4df311db9f38e859523772f40e974774570a45
+generated-on: 2026-11-12
 sources:
   - skills-pi/code-review/SKILL.md
   - skills-pi/review/SKILL.md
@@ -390,7 +390,7 @@ The system SHALL route correctness and security findings by scope: in scope for 
 
 ### Requirement: PR-level review — the pi fallback for the merge-time pass
 
-The system SHALL, in the pi runtime, provide a fallback `review` skill never installed into Claude Code's skill root, which confirms a PR exists for the branch with a current head, reads the full PR diff, checks the aggregate for whether the combined changes satisfy the task's acceptance criteria and for cross-commit conflicts, merge artifacts, leftover debug or scaffolding, and integration issues between separately reviewed parts, without repeating per-hunk findings the working-tree reviews already made.
+The system SHALL, in the pi runtime, provide a fallback `review` skill never installed into Claude Code's skill root, which confirms a PR exists for the branch with a current head, reads the full PR diff, checks the aggregate for cross-commit conflicts, merge artifacts, leftover debug or scaffolding, and integration issues between separately reviewed parts — leaving whether the change built what was asked to the separate fidelity axis rather than answering it in its own verdict — without repeating per-hunk findings the working-tree reviews already made.
 
 #### Scenario: Leftover scaffolding across commits
 

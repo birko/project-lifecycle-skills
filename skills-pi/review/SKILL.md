@@ -16,11 +16,13 @@ the per-change passes can't see.
 ## Steps
 
 1. **Confirm the PR** exists for this branch and its head is current (`gh pr view`,
-   `gh pr status`); note the linked task's acceptance criteria.
+   `gh pr status`).
 2. **Read the full PR diff** — `gh pr diff <number>`.
-3. **Check the aggregate:** do the combined changes satisfy the task's acceptance criteria?
-   Any cross-commit conflicts, merge artifacts, leftover debug/scaffolding, or integration
-   issues between parts that were reviewed separately?
+3. **Check the aggregate for correctness:** cross-commit conflicts, merge artifacts, leftover
+   debug/scaffolding, or integration issues between parts that were reviewed separately.
+   **Whether the change built what the task asked is not this pass's question.** It is
+   [[verify-intent]]'s, which `close` step 5b runs as its own axis with its own verdict; answering
+   it here would fold one axis into another's severity list.
 4. **Post findings to the PR** as inline comments (`gh pr review --comment`), grouped by
    severity (🛑 Blocker / ⚠ Warning / 💡 Suggestion).
 5. **Verdict:** clean → approve (merge only with the user's go-ahead). Blockers → request
