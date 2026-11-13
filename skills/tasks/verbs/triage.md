@@ -43,6 +43,10 @@ dashboard is regenerated on the default branch when `close` merges.
      - STORY-002 OAuth login — planned (0/2)
    ```
 
+   **A tree row carries the id, the title and the markers below, nothing else.** Priority and assignee are printed
+   in "In progress now", "Awaiting verification" and the Loose section, where each task is listed with `(P1, agent)`.
+   The tree is a structure view, and repeating them there doubles every row's width for no new fact.
+
    Markers:
    - Task status `done` → `[x]`
    - Task status `in-progress` → `[ ] ... ← in-progress`
@@ -77,6 +81,8 @@ dashboard is regenerated on the default branch when `close` merges.
    - `{{LOOSE_SECTION}}` (entire section omitted if no loose tasks)
    - `{{COMPLETED_SECTION}}` (omitted if no completed epics)
 
+   **An omitted section takes the blank line before it with it.** Sections stay separated by exactly one blank line,
+   the file never carries two blank lines in a row where a section was left out, and it ends with a single newline.
 8. **Write** the rendered output to `tasks/README.md` (overwrite existing).
 
 8b. **Feature drift check** — if `docs/features/` exists, apply the divergence rules from [[roadmap]] (§ *Cross-tree pass (shared engine)*) to the just-collected tasks + features. Reuse those rules; don't reinvent them. If any divergence is found, prepend a callout to `tasks/README.md` directly under the title:
