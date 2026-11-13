@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-13 18:46. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 18:57. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,7 +13,7 @@ _Generated 2026-11-13 18:46. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 307                 |
+| done         | 4                  | 13                 | 308                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 26× P2 · 13× P3.
@@ -96,11 +96,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (93/122 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (94/123 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (33/38 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (34/39 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -138,7 +138,8 @@ _None_
     - [x] TASK-355 The bare `/tasks` snapshot template leaves three rendering details to the reader
     - [x] TASK-358 The `tasks/README.md` dashboard template leaves two rendering details to the reader
     - [x] TASK-366 The dashboard template leaves its column padding and its timestamp's time zone to the reader
-    - [ ] TASK-367 `block`'s uncommitted line and the generated files' project name leave their form to the reader
+    - [x] TASK-367 `block`'s uncommitted line and the generated files' project name leave their form to the reader
+    - [ ] TASK-368 `triage`'s tree never says what order a story's tasks are listed in
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (8/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed

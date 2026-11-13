@@ -10,6 +10,8 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 > how you hold work without cancelling it.
 
 **Neither direction commits.** The task file, and the dashboard step 6 regenerates, are left in the working tree.
+Step 7's `uncommitted: <files>` line names them as repo-relative paths separated by `, `
+(`uncommitted: tasks/EPIC-004-billing/STORY-009-invoices/TASK-031.md, tasks/README.md`).
 A block usually belongs with other work: the caller's own commit carries it, and [[fix-next]] commits its own
 blocks itself (its § *A run that ends without a fix*). Report the files left uncommitted.
 

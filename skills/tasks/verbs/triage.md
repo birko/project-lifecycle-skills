@@ -68,7 +68,9 @@ dashboard is regenerated on the default branch when `close` merges.
 6. **Build the Completed section** (collapsed via `<details><summary>...</summary>...</details>`). Include done/cancelled epics with their frozen task list. Stories that are done within an active epic stay in the tree but with `(done)` suffix.
 
 7. **Render** [templates/README.md.tmpl](../templates/README.md.tmpl):
-   - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`
+   - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`, even where a README or guide titles the project
+     differently. The folder name is the one every run derives the same way. A title read from a file can be
+     missing, or change wording, and the dashboard's heading would then move with it.
    - `{{TIMESTAMP}}` — current date/time in the machine's **local time, with no zone or offset**, e.g. `2026-05-28 14:32`.
      It records when the file was written for a person reading it, and nothing compares it, so a zone would add
      width and no information.
