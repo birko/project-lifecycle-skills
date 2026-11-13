@@ -1,6 +1,6 @@
 # Tasks — project-lifecycle-skills
 
-> Feature drift: none open · 2 accepted (EPIC-001 DV5, EPIC-010 DV5) — see `/roadmap --check`.
+> ⚠ **Feature drift (1):** EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
 _Generated 2026-11-13 20:04. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 

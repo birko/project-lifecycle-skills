@@ -5,7 +5,7 @@ status: in-progress
 created: 2026-08-18
 owner: František Bereň
 affects: skills/, docs/, tasks/, .github/
-accepted-divergence: ["DV5 2026-11-13 — this repo is task-only on purpose; its work is skill text for developers, with no stakeholder-facing feature to track (docs/features/ holds no FEATURE folders)"]
+accepted-divergence: ["DV5 2026-11-13 — this epic predates the feature tree (created 2026-08-18; the first FEATURE folder is 2026-09-18), so its work was tracked task-only before features existed"]
 ---
 
 # Adopt the yolobox skill ideas into the lifecycle set

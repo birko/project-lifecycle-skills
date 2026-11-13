@@ -4,7 +4,6 @@ id: EPIC-010
 status: done
 created: 2026-10-09
 owner: unassigned
-accepted-divergence: ["DV5 2026-11-13 — this repo is task-only on purpose; its work is skill text for developers, with no stakeholder-facing feature to track (docs/features/ holds no FEATURE folders)"]
 ---
 
 # Interaction-design (UX) guidance in the skill set

@@ -143,6 +143,17 @@ frontmatter.
 - **Security, comments:** not applicable.
 - **CI:** `ci: main green — 1 workflow read`.
 
+**Corrected 2026-11-13, after the close.** The acceptance reason first written on EPIC-001 and EPIC-010 ("this repo
+is task-only on purpose … docs/features/ holds no FEATURE folders") was false. This task's Context dates from
+2026-08, and the repo has had features since 2026-09-18 (FEATURE-001 to FEATURE-004). Found while picking TASK-067,
+whose quoted "deliberately task-only" line had already left the index. On the user's decision:
+- **EPIC-001** keeps its acceptance, with a true reason: it predates the feature tree.
+- **EPIC-010's acceptance is removed**, so its DV5 warns again until someone gives it a feature or an acceptance of
+  its own.
+
+The dashboard callout shows `EPIC-010 DV5` open. The mechanism and the drills are unaffected; only this repo's record
+was wrong.
+
 **Unblocks TASK-067**, whose criterion 3 deletes the `docs/features/README.md` stance line that this acceptance
 record now replaces.
 
