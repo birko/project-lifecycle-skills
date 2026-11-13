@@ -19,7 +19,7 @@ github-issue: null
 jira-key: null
 ---
 
-# A full adoption's fills leave five readings that several cold runners each settled differently
+# A full adoption's fills leave six readings that several cold runners each settled differently
 
 ## Context
 

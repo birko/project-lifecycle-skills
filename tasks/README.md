@@ -207,7 +207,7 @@ _None_
     - [x] TASK-353 `adopt-project`'s report has no stated place for a derived "not applicable", and two more readings are open
     - [x] TASK-354 A full `adopt-project` run writes three things the skill does not say it may write
     - [x] TASK-356 `adopt-project`'s survey and report leave seven readings that several cold runners each settled differently
-    - [ ] TASK-357 A full adoption's fills leave five readings that several cold runners each settled differently
+    - [ ] TASK-357 A full adoption's fills leave six readings that several cold runners each settled differently
     - [x] TASK-360 Adoption's one round can need more than five questions, and one of them depends on another's answer
     - [ ] TASK-361 `/specs init` inside an adoption cannot see the files the same run wrote
   - (epic level) — 6/10 done
