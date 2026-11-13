@@ -189,7 +189,7 @@ from every project at once to answer a question only occasionally asked.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, **plus every taken task** (below), each taken one
      carrying the branch that took it, sorted in **task order** (below)
-   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` with an upstream), and the debt would otherwise be invisible.
+   - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`, or `git show <remote>/task/TASK-NNN:<task file>` when the branch exists only on a remote, where there is no local ref to read). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` with an upstream), and the debt would otherwise be invisible.
    - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted in **task order**
    - **Task order: one total order, used by every list of tasks**, here and in any verb that lists tasks (`pick`
      points here). Three keys, in order:
@@ -209,7 +209,10 @@ from every project at once to answer a question only occasionally asked.
      tasks tie on priority and `created` and at least one of them is shown:
      `ordered by id where priority and created tie: TASK-012, TASK-013 (+2 not shown) — nobody ranked them`.
      List the tied tasks that are shown. Then count the tasks the cut left out that tie with a shown one: a
-     hidden pair that ties only with each other changes nothing a reader sees. A list that is not read as a
+     hidden pair that ties only with each other changes nothing a reader sees. **The cut** is the view's own
+     length limit (the snapshot's top 3). A task the view leaves out for another reason (taken, blocked, awaiting
+     verification) was never in the ranking, so it is not counted. A list with no length limit counts nothing,
+     and a list of one task has no tie to report. A list that is not read as a
      ranking (in progress, awaiting verification, the dashboard tree) uses the same order and prints no line.
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,

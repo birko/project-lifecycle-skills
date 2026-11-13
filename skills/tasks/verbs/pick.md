@@ -80,23 +80,27 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
 3. **Collect candidates** — every TASK file whose frontmatter matches the filters, **less any task the
    [Collection pass](../SKILL.md#collection-pass) counts as taken** (its branch exists locally or on a
-   remote — another session or clone has it). Print them on one line **under** the list —
+   remote — another session or clone has it). Print them on one line **under** step 4's list, after its tie line
+   if any and before its question —
    `taken (hidden): TASK-NNN (<local | remote/<name>>), …`, where `<name>` is the remote's name as `git remote`
    prints it (`remote/origin`), not the ref, and a branch both local and on a remote prints `local` — because a
    stale branch hides a task silently otherwise. **A local branch that a worktree here holds, and whose own copy reads `in-progress`**
    (`git show task/TASK-NNN:<task file>`), is work in progress on this machine, not another clone's. Print
    it on its own line **before** the candidate list, after 2b's debt line if any (work already started here is
    offered before new work, as debt is): `in progress on this machine: TASK-NNN at <worktree path> — resume with /tasks pick TASK-NNN
-   (check no other session is working in it)`. Picking it by id takes step 6b's resume row. A worktree here
+   (check no other session is working in it)`, where `<worktree path>` is the absolute path `git worktree list
+   --porcelain` prints for it, never the declared `worktree-root:` form. Picking it by id takes step 6b's resume row. A worktree here
    may belong to another session, so the line invites a resume and never assumes one. A branch copy reading
    `review` (or `verify`) is reported by 2b as verification debt instead, and not on the in-progress line.
    **Neither is also listed under `taken (hidden)`** — not a task on the in-progress line, and not a task 2b
    reports as debt. Listed there too, this machine's own work would read as another clone's. With an upstream this matters most: the
-   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), parent IDs (story + epic), priority, assignee, `created`, file path.
+   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), the parent story's and epic's ids **and titles** (step 4 prints both), priority, assignee, `created`, file path.
 
 4. **Present numbered list** in **task order** ([SKILL.md](../SKILL.md) § *Collection pass* step 5), so the
-   numbering is the same on every run. When that section's tie line applies, print it under the list. The
-   list's shape:
+   numbering is the same on every run. Under each task print its parents as `<EPIC-ID> <epic title> → <STORY-ID>
+   <story title>`, `<EPIC-ID> <epic title>` alone for a task parented to an epic, and `[loose]` for one in
+   `_loose/`. Under the list print, in order: that section's tie line when it applies, then step 3's
+   `taken (hidden)` line, then the question. The list's shape:
    ```
    1. TASK-001 JWT issuance on login (P1, agent)
       EPIC-001 Authentication → STORY-001 Password login
@@ -128,7 +132,12 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      turn silence into a decline the prompt's default says nobody made.
    - **Recommend planning** whenever the task touches more than one file, has ≥3 acceptance
      criteria, carries a `feature:` link, or its Context names unknowns. Say which of those
-     triggered the recommendation — a concrete reason beats a generic prompt.
+     triggered the recommendation — a concrete reason beats a generic prompt. **Judge every trigger
+     from the task file alone**, since no plan exists yet to read a file list from:
+     - *more than one file* — the task's Context, criteria and Out of scope together name two or more file
+       paths. A task that names none does not meet it;
+     - *Context names unknowns* — Context carries an `Open decision`, a sentence ending in `?`, or one of the
+       words *unknown*, *unclear*, *undecided* or *TBD*.
    - If a plan already exists, **read it as the work brief** and note its age. **The age is recomputed every
      run and never written down**: it is derived from git evidence the repo still holds. Read the copy of the
      task file step 5 read (on a worktree resume, the task branch's):
@@ -425,12 +434,16 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    | anywhere, with an upstream (`git rev-parse --abbrev-ref <default-branch>@{upstream}` succeeds) | **write nothing on the default branch**, which must stay a mirror of the remote. Print `TASK-NNN is now in-progress — dashboard not refreshed; run /tasks triage through a PR` |
    | in a worktree (step 6b entered one) | never reached here: with no upstream 6b runs the first row itself, on the default branch before the worktree exists; with one it writes no dashboard |
 
-9. **Hand off to work**:
+9. **Hand off to work**. Run the bullets below in the order written, except the **dispatch on `assignee:`**,
+   which runs **last**: its detached offer (step 9b) or its wait for a person ends what `pick` prints, so
+   anything after it would come after the hand-off.
    - **If the task file carries the inferred-values line** (`> Filed with nobody to answer — inferred, not
      chosen: <fields>.`, written by [new.md](new.md) § *Unanswered questions*) → print it first, as
      `⚠ TASK-NNN was filed with nobody to answer — <fields> inferred, not chosen. Check them before relying
      on them, and delete the line once they are confirmed.` A parent or priority nobody chose has already
      placed and ranked this task, so the person starting it is the first who can catch a wrong guess.
+   - **If step 6 chained [plan](plan.md)** → print the confirmation lines plan handed back (its step 8, less the
+     next-step hint).
    - **Dispatch on `assignee:`.** The values are the ones the template's `# assignee —` comment names
      ([templates/TASK.md](../templates/TASK.md)); a value something writes with no row here is a defect in
      this table, because a value that matches nothing falls through to whatever the reader guesses.
@@ -475,6 +488,10 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 
    Passing: *"`bash .github/workflows/skills-lint.sh` passes"* (a command decides it). Failing: *"the offer
    says when detached is the wrong choice"* (nothing named decides it; a reader must judge).
+   **Read T1 by the item's form, never by judging whether it could be checked.** An item passes only when it
+   carries, in backticks, a command, a file or path, a field, or a section name, or names a section with `§`.
+   *"The result is visible in the CLI output"* fails: it names no command and no file. That is what lets two
+   readers reach the same answer.
 
    Put this question, with `[Y/n]` when the test passes and `[y/N]` when it fails:
 
@@ -535,7 +552,7 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
 ## Edge cases
 
 - **No candidates match filters** — print empty result, suggest broadening (`--status todo,in-progress` or drop filters). Blocked tasks are already listed, marked, so there is no `blocked` status to add.
-- **Multiple in-progress by same assignee** — after the choice, count the other tasks with the chosen task's
+- **Multiple in-progress by same assignee** — right after the choice, before step 5 reads the file, count the other tasks with the chosen task's
   assignee that are in progress *here*: each whose own file reads `in-progress`, plus each on step 3's "in
   progress on this machine" line (assignee read from its branch copy, the read step 3 already made). `agent`,
   `unassigned` and the older `ai` count as one assignee, all three being work for this conversation (step 9).

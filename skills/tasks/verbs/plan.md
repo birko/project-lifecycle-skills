@@ -72,7 +72,8 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
 
 8. **Confirm** — print:
    - File path
-   - Whether grilling ran: `ran`, `declined`, or `not run — nobody answered`
+   - Whether grilling ran: `ran`, `declined`, `not run — nobody answered`, or `skipped — --no-grill` when
+     step 7 never asked
    - Every split signal step 5b left unspawned
    - `plan headings demoted by <N>`, when step 6 demoted them
    - Next-step hint: "Start work with `/tasks pick {{ID}}`"
@@ -80,6 +81,10 @@ Only operates on TASKs. EPICs and STORIES are containers — they don't get plan
    **Chained from [new](new.md) step 12:** print none of this here. Hand the lines, the failure line of
    § *Edge cases* included, to `new` step 13, which prints them in its one confirmation with the one
    next-step hint. Two confirmations for one request print two hints, in an order nothing states.
+
+   **Chained from [pick](pick.md) step 6:** print none of this either. Hand the lines, except the next-step
+   hint, to `pick` step 9, which prints them in its hand-off. The task is already being picked, so
+   "Start work with `/tasks pick`" would tell the user to repeat the command they are inside.
 
 ## Edge cases
 
