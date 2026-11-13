@@ -98,19 +98,19 @@ a single line, or the two front doors will describe one state in two different s
 - [ ] `new-project` and `adopt-project` both still resolve every state they reference (layer parity)
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
-*From TASK-112:*
+*From TASK-112* (the four entry criteria met by TASK-353, 2026-11-13: `adopt-project` step 4 gained the `not applicable` entry. Its lint line is this task's own):
 
-- [ ] The report list carries `not applicable` with its own line, distinct from `not applicable yet`
-- [ ] The distinction is visible in the wording, not just the label — a reader can tell settled from
+- [x] The report list carries `not applicable` with its own line, distinct from `not applicable yet`
+- [x] The distinction is visible in the wording, not just the label — a reader can tell settled from
       pending without consulting `LAYER.md`
-- [ ] The list and the paragraph that introduces it agree about which states exist
-- [ ] Nothing restates `LAYER.md`'s state definitions — the list points, it does not copy
+- [x] The list and the paragraph that introduces it agree about which states exist
+- [x] Nothing restates `LAYER.md`'s state definitions — the list points, it does not copy
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 *From SH-53 and SH-55:*
 
 - [ ] LAYER.md states no count of its survey states
-- [ ] LAYER.md § *Conditional rows* no longer points at the cancelled TASK-112
+- [x] LAYER.md § *Conditional rows* no longer points at the cancelled TASK-112 (met by TASK-353, 2026-11-13)
 
 ## Out of scope
 

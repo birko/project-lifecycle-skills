@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: b36aaf0055786eb6a187ba8c73c701f6b826d2af
+generated-at: 118e7f809cf93e37cae26f67cd2c5e6969150914
 generated-on: 2026-11-13
 sources:
   - skills/tasks/SKILL.md

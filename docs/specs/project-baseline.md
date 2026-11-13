@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: be3e9325db3bce897869540aa2f027ca876b6f72
-generated-on: 2026-11-12
+generated-at: 118e7f809cf93e37cae26f67cd2c5e6969150914
+generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md
@@ -423,7 +423,7 @@ The system SHALL settle each `(conditional)` row by the condition the row names 
 
 ### Requirement: Named declarations are probed by the survey and asked only when absent
 
-The system SHALL, for every present artifact whose row names a declaration (today `integration:` and `workspace:` in `tasks/.config.yml`), grep for a live, anchored, uncommented key (`^integration:`, `^workspace:`), treat a commented line as absent, treat an absent `integration:` with a dated `# integration: declined` marker as settled and not asked (reported as declined with its date), report an outstanding declaration on the row as `present` with the gap named, carry it into the one round, and never re-ask one the file carries. `worktree-root:` is not a declaration it probes: under `workspace: worktree` an absent root is settled at adoption, because `pick` asks for it when the first task needs it.
+The system SHALL, for every present artifact whose row names a declaration (today `integration:` and `workspace:` in `tasks/.config.yml`), grep for a live, anchored, uncommented key (`^integration:`, `^workspace:`), treat a commented line as absent, treat an absent `integration:` with a dated `# integration: declined` marker as settled and not asked (reported as declined with its date), treat an absent `workspace:` under `integration: single-branch` as settled and not asked (reported undeclared, naming single-branch as why it was not asked), report an outstanding declaration on the row as `present` with the gap named, carry it into the one round, and never re-ask one the file carries. `worktree-root:` is not a declaration it probes: under `workspace: worktree` an absent root is settled at adoption, because `pick` asks for it when the first task needs it.
 
 #### Scenario: Commented example only
 
@@ -683,7 +683,7 @@ The system SHALL derive, from what this run touched — created, landed or amend
 
 ### Requirement: The adoption report states outcomes, per-state reasons and defects separately
 
-The system SHALL open with the survey's run line and report outcomes under created, amended (with what changed inside), left alone (with why) and regenerated (naming file and verb, including declined or blocked ones); SHALL give each surveyed state not absorbed by those buckets its own bucket, owing today: where for `present, elsewhere`, the owner's delta and whether it was reconciled for `present, outdated`, the owner that would have answered for `present, owner not asked`, each path and whether its offer was taken for `present, uncommitted`, which of `unknown`/`missing` and why (and which kind of unknown), the re-derived reason for `missing, not offered`, and that absence is correct for `not applicable yet`; SHALL list defects in their own section with task ids; SHALL treat content staleness as an aside; and SHALL end with `/feature new` and `/tasks new` as next steps.
+The system SHALL open with the survey's run line and report outcomes under created, amended (with what changed inside), left alone (with why) and regenerated (naming file and verb, including declined or blocked ones); SHALL give each surveyed state not absorbed by those buckets its own bucket, owing today: where for `present, elsewhere`, the owner's delta and whether it was reconciled for `present, outdated`, the owner that would have answered for `present, owner not asked`, each path and whether its offer was taken for `present, uncommitted`, which of `unknown`/`missing` and why (and which kind of unknown), the re-derived reason for `missing, not offered`, what carried a derived No for `not applicable` (silent for a stated or declared No), and that absence is correct for `not applicable yet`; SHALL list defects in their own section with task ids; SHALL treat content staleness as an aside; and SHALL end with `/feature new` and `/tasks new` as next steps, or, when the run ends with no `tasks/`, with `/adopt-project` to fill the layer.
 
 #### Scenario: Upgrade run
 

@@ -419,6 +419,10 @@ page does not need editing:
 - `unknown` vs `missing` — **which of the two, and why**: "could not determine X", "needs a decision", "blocked on a remote". *"I could not tell"* and *"you don't have it"* are different claims, and collapsing them here re-introduces one layer later the defect the survey just avoided.
   - **And which kind of `unknown`** — evidence, or the rule (see [LAYER.md](../new-project/LAYER.md) § *Two things reach `unknown`*). An evidence one goes to step 2's round as it always has. A **rule** one also goes in *Defects found* as a finding **against these instructions**, naming the row, the evidence you gathered and the question the row leaves open — and it is the one defect that does **not** get filed into this repo's tracker by step 3b, because the row belongs upstream and nobody here can fix it. Claim it only with the enumeration; without it the state is plain `unknown`.
 - `missing, not offered` — **the reason**, re-derived this run rather than recalled from the last one (the survey and this report are stdout; nothing persists a verdict, and [LAYER.md](../new-project/LAYER.md) § *Detect what the repo has* explains why nothing needs to). Print it every run: the line is status, not a question, and the offer stays suppressed only while the evidence still holds. Where a task owns the blocker, name it here as information — a re-run re-reads the evidence, never that task's state.
+- `not applicable` — **for a No this run derived, what carried it**: one line per row, as
+  [LAYER.md](../new-project/LAYER.md) § *Conditional rows* words it (`.env.example — derived No: the only
+  component reads no environment variable`). A No the user stated, or the repo declares, stays silent, because it
+  was decided. Never under a heading that reads as a gap: it is settled, unlike `not applicable yet` below.
 - `not applicable yet` — **that the artifact is part of the layer, and that its absence is correct.** Never under a heading that reads as a gap, and never with an offer attached. Where the inference round's glossary-candidate pass turned up recurring nouns or suspected synonyms, they travel as a **finding handed to [[domain]]**, not as drift against this row: a candidate list is evidence about the code, not a missing artifact. Say this explicitly, because adoption *does* produce glossary input, and a reader who sees candidates plus an absent glossary will otherwise read the pair as a gap the pass declined to fill.
 
 **Defects found** get their own section, never a bucket. The buckets describe what this run did to
@@ -432,7 +436,10 @@ means step 3b was skipped.
 reported it. See [LAYER.md](../new-project/LAYER.md) § *Presence and shape, not content currency*
 for the line between them.
 
-Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit.
+Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit. **When `tasks/` does
+not exist when the run ends**, there is nothing for either to write into, so name the adoption instead:
+`/adopt-project` to fill the layer, beginning with `tasks/`. That happens when a scoped run found it missing, or
+when the user declined its fill. A run that found `tasks/` present prints the line above, scoped or not.
 
 The report is the deliverable as much as the files are. An adoption whose output is "done!" leaves
 the user unable to tell what was touched in their own repo.
