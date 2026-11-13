@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 118e7f809cf93e37cae26f67cd2c5e6969150914
+generated-at: 6c44e99140decd9ab77406e321029ad491798723
 generated-on: 2026-11-13
 sources:
   - skills/tasks/SKILL.md
@@ -214,7 +214,7 @@ The system SHALL accept `--across` only on the bare snapshot, `audit` and the ro
 
 ### Requirement: Generated dashboard owned by triage
 
-The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through, feature links tagged), a loose section and a collapsed completed section, and a feature-drift callout when the roadmap divergence rules find any. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
+The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through, feature links tagged), a loose section and a collapsed completed section, an empty tree rendering as `_None_`, and a feature-drift callout when the roadmap divergence rules find any. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
 
 #### Scenario: Chained from a worktree
 
@@ -1006,7 +1006,7 @@ The system SHALL, from local mode only, ask for the target repository or project
 
 ### Requirement: Initialising and reconciling the configuration
 
-The system SHALL create the task folder, configuration and initial dashboard, or reconcile an existing configuration by adding every field the template declares and the file lacks (carrying the template's comment, in the template's position, never re-adding an existing comment block) while never changing existing values or unknown keys. Values passed by a caller (mode, repo, project, integration, workspace, worktree root) SHALL be written and never re-asked. `integration:` SHALL be asked, with a third option for no opinion; with no answer it SHALL be left absent and reported unresolved, never defaulted, the same for every caller; a no-opinion answer or `integration=declined` SHALL write a dated `# integration: declined` marker and no live key, and a marker already present SHALL stop the question; mode detection SHALL run only when the configuration is absent, an existing file's mode being read; a second run SHALL leave the configuration and task files unchanged and regenerate only the dashboard; workspace questions are left to the front doors. A mode conflict SHALL keep the existing value when unanswered. The outcome SHALL be reported as created, already current or brought up to date, naming every field added and every field left unresolved.
+The system SHALL create the task folder, configuration and initial dashboard, or reconcile an existing configuration by adding every field the template declares and the file lacks, optional commented blocks included, while a field already live keeps its line and gains no comment (carrying the template's comment, in the template's position, never re-adding an existing comment block) while never changing existing values or unknown keys. Values passed by a caller (mode, repo, project, integration, workspace, worktree root) SHALL be written and never re-asked. `integration:` SHALL be asked, with a third option for no opinion; with no answer it SHALL be left absent and reported unresolved, never defaulted, the same for every caller; a no-opinion answer or `integration=declined` SHALL write a dated `# integration: declined` marker and no live key, and a marker already present SHALL stop the question; mode detection SHALL run only when the configuration is absent, an existing file's mode being read; a second run SHALL leave the configuration and task files unchanged and regenerate only the dashboard; workspace questions are left to the front doors. A mode conflict SHALL keep the existing value when unanswered. The outcome SHALL be reported as created, already current or brought up to date, naming every field added and every field left unresolved.
 
 #### Scenario: Older config missing integration
 

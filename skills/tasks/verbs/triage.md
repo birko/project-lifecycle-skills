@@ -73,7 +73,7 @@ dashboard is regenerated on the default branch when `close` merges.
      **Omit the whole line** when there are no `todo` tasks, rather than rendering an empty tail.
    - `{{INPROGRESS_LIST}}` (or "_None_" if empty)
    - `{{INREVIEW_SECTION}}` (entire section omitted if no `verify` tasks, old-form `review` included)
-   - `{{TREE_VIEW}}`
+   - `{{TREE_VIEW}}` (`_None_` when there are no epics, stories or tasks: the same form "In progress now" uses)
    - `{{LOOSE_SECTION}}` (entire section omitted if no loose tasks)
    - `{{COMPLETED_SECTION}}` (omitted if no completed epics)
 

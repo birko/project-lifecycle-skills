@@ -78,7 +78,9 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    the verification-debt note (lead with every debt feature, as SKILL.md § *Verification debt surfaces
    first* defines it, with its task count), and the drift note (reuse
    [[roadmap]]'s divergence check — don't re-derive it). Write `docs/features/README.md`
-   (overwrite; it's generated, like `status.md`). Single-feature runs update only that feature's
+   (overwrite; it's generated, like `status.md`). **With no features, `{{FEATURE_ROWS}}` is one line, `_None_`**,
+   the form `tasks` `triage` uses for an empty list. **The template's `<!-- … -->` comments are notes to you and are
+   never rendered**: drop each with its token, whether the token filled or was omitted. Single-feature runs update only that feature's
    `status.md` and **its row** in the index, not the whole file.
    **When the index does not exist, a single-feature run renders all of it**, exactly as all-features
    mode does, and reports `created docs/features/README.md — it was absent`. A row needs a file to hold

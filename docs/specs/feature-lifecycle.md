@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: 5746d7dd7854e21de6200f23c1218fc359af2a1f
-generated-on: 2026-11-12
+generated-at: 6c44e99140decd9ab77406e321029ad491798723
+generated-on: 2026-11-13
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -645,7 +645,7 @@ The system SHALL, on `/feature status`, collect features and tasks through the r
 
 ### Requirement: Generated files are owned by status and are not hand-edited
 
-The system SHALL treat each feature's rollup and the features index as generated output owned by `/feature status`, marked as not to be hand-edited (the index headed with the project root directory's name, and its banner naming the verb, never a mode), its Prototype cell a link while the artifact stands and otherwise the recorded state (`pending`, `skipped`, `n/a`, `deleted`), and SHALL keep them current by re-running that verb automatically after decide, after decompose, after a task close that changes a feature-linked task, and after a surface-dependent revert; `new` and `prototype` SHALL also chain it for their own feature, so the index never lags a newly created feature or a newly built prototype, and no verb SHALL write an index row by hand.
+The system SHALL treat each feature's rollup and the features index as generated output owned by `/feature status`, marked as not to be hand-edited (the index headed with the project root directory's name, and its banner naming the verb, never a mode), its Prototype cell a link while the artifact stands and otherwise the recorded state (`pending`, `skipped`, `n/a`, `deleted`), an index with no features rendering its rows as `_None_` and no template comment ever rendered, and SHALL keep them current by re-running that verb automatically after decide, after decompose, after a task close that changes a feature-linked task, and after a surface-dependent revert; `new` and `prototype` SHALL also chain it for their own feature, so the index never lags a newly created feature or a newly built prototype, and no verb SHALL write an index row by hand.
 
 #### Scenario: Skipped prototype is not linked
 

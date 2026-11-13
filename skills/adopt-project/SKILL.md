@@ -161,6 +161,10 @@ extra work beyond it. (Skipping them on a repo whose artifacts are all present i
 kept a `tasks/.config.yml` with no `integration:` field through a full pass that reported it
 complete.)
 
+**Every run ends its report with one verdict line**: `complete`; `nothing missing` (a scoped run with owners not
+asked); or `not complete: <n> missing, <n> unknown, <n> owner not asked`, listing only the counts that are not
+zero. A full run uses the same line as a scoped one, so two reports on one repo can be compared.
+
 ### 2. Infer the conventions, then confirm them
 
 This is the step that makes adoption worth doing. The repo has already answered most convention
@@ -458,7 +462,7 @@ disk, and branch:
 
 | The comparison shows | Do this |
 |---|---|
-| a pure no-op | **write nothing, and say nothing.** A re-run that finds nothing to do still writes nothing at all — that invariant outranks the tidiness of mentioning it. A landing or an amendment whose re-run turns out to be a no-op is this row too |
+| a pure no-op, including a re-render that differs from the file on disk **only in its `_Generated …_` timestamp line** (this governs 3c's own re-runs; an owner verb chained in step 3 regenerates by its own rules, as `/tasks init` rewrites its dashboard every run, and that write is reported under *regenerated* as the verb's) | **write nothing, and say nothing.** A re-run that finds nothing to do still writes nothing at all — that invariant outranks the tidiness of mentioning it. A landing or an amendment whose re-run turns out to be a no-op is this row too |
 | only added or updated **derivable** rows | regenerate, and report it under `regenerated` |
 | content the verb **cannot reproduce** would be removed | **stop.** Report what would be lost and where it belongs; offer, never assume |
 
