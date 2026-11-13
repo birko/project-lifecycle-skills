@@ -1,22 +1,22 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (1):** EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
+> ⚠ **Feature drift (17):** EPIC-010 DV5, STORY-028 DV5, specs/change-review DV7, specs/changelog-maintenance DV7, specs/code-shape-review DV7, specs/defect-draining DV7, specs/feature-lifecycle DV7, specs/glossary-and-adrs DV7, specs/idea-interrogation DV7, specs/installation DV7, specs/project-baseline DV7, specs/project-roadmap DV7, specs/session-handoff DV7, specs/skill-authoring-rules DV7, specs/specs-from-code DV7, specs/test-authoring DV7, specs/work-tracking DV7 — run `/roadmap --check`.
 
-_Generated 2026-11-13 20:04. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 20:41. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 34                  |
+| todo         | —                  | —                  | 36                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 314                 |
+| done         | 4                  | 13                 | 315                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 20× P2 · 14× P3.
+`todo` by priority: 20× P2 · 16× P3.
 
 ## In progress now
 
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (96/124 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (97/126 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -153,10 +153,11 @@ _None_
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
     - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
     - ~~TASK-150 The `docs/architecture.md` row names a state but no fill action, and the two doors disagree~~
-  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (3/4 done)
+  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (3/5 done)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [x] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made
     - [ ] TASK-369 DV10's "could not decide" has no output line, and triage's summary has no singular
+    - [ ] TASK-371 `/roadmap`'s DV7 measures staleness from `generated-at` alone, where `/specs verify` takes the spec's own commit
     - [x] TASK-207 DV1 cannot fire on a feature with no `status.md`, and its condition reads two ways
   - STORY-014 `specs` — two gates that pass without checking — in-progress (5/10 done)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
@@ -185,14 +186,14 @@ _None_
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (25/32 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (26/33 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
     - [x] TASK-065 `adopt-project` assumes every run is a full run
     - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
-    - [ ] TASK-067 Nobody says what the empty case looks like, so every agent invents one
+    - [x] TASK-067 Nobody says what the empty case looks like, so every agent invents one
     - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
     - [x] TASK-072 `populate-tests adopt` cannot wire a harness for a project with no package manager
     - ~~TASK-090 The survey cannot say whether this is a first adoption or a re-run~~
@@ -218,6 +219,7 @@ _None_
     - [x] TASK-363 Three more adoption readings that a second cold runner has now raised
     - [x] TASK-364 Two rules set today meet at the `## Commands` offer and at a runner's `.gitignore` line
     - [ ] TASK-365 Four more adoption readings that a second cold runner has now raised
+    - [ ] TASK-370 The seed's hint comments sit above their tokens, and `.gitignore` creation disagrees with its own check
   - (epic level) — 7/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
@@ -370,6 +372,7 @@ _None_
 - [x] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed (P3, unassigned)
 - [ ] TASK-261 Run the deletion test on the three `help` verb files, and keep or fold each one (P3, agent)
 - [ ] TASK-359 Regenerate the `test-authoring` spec, two commits behind its sources (P3, agent)
+- [ ] TASK-372 Respec four spec areas whose sources changed without a respec (P3, agent)
 
 <details>
 <summary><strong>Completed</strong> — 4 epics</summary>

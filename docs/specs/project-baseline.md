@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 4af49680d5ff757a98128fbf0f1c9627340f78cc
+generated-at: ae020d1d20a72fd3bd10ba3cbeea8a2f685606c2
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -175,7 +175,7 @@ The system SHALL seed the agent guide with a header naming stack, kind, task tra
 
 ### Requirement: Rulebook subsections are filled only where a token marks them
 
-The system SHALL fill only the `## Conventions` subsections that carry a token — framework/stack from the chosen stack, code structure and naming with the stack's idiomatic defaults, testing from the stack — and leave every untokened subsection exactly as written; it SHALL ask one targeted question for a UI kind's UI/UX subsection, delete that subsection only for kinds with no human-facing surface, and keep it retitled **Output / UX rules** for a CLI/TUI whose output humans read; no subsection SHALL ship a dangling token.
+The system SHALL fill only the `## Conventions` subsections that carry a token — framework/stack from the chosen stack, code structure and naming with the stack's idiomatic defaults, testing from the stack, and for a stack of "none yet / docs-only" a document repository's rules (no stack yet and adding one recorded, one topic per file with resolving relative links, kebab-case names and the layer's id forms, no test runner until a stack is picked) — and leave every untokened subsection exactly as written; it SHALL ask one targeted question for a UI kind's UI/UX subsection, delete that subsection only for kinds with no human-facing surface, and keep it retitled **Output / UX rules** for a CLI/TUI whose output humans read; no subsection SHALL ship a dangling token.
 
 #### Scenario: Python library
 

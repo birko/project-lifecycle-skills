@@ -94,6 +94,20 @@ Gather in one or two question batches:
     - **Code structure & patterns** and **Naming** — **seed the stack's idiomatic defaults** rather than leaving them blank (e.g. TS: feature-folder or layered `src/`, named exports, `camelCase`/`PascalCase`; Python: src-layout, `snake_case`, type hints; .NET: idiomatic conventions, or the ones a chained stack scaffolder documents; Go: package layout, `MixedCaps`). These are safe starting rules the team edits later — a sensible default beats an empty heading.
     - **UI/UX** — for a UI kind, this is the subsection most worth getting right, so **ask one targeted question** (alongside intake, not a full grill): the component library / design system, the token source (color/spacing/type scale), and the accessibility bar. Record the answers. **Delete the whole subsection only for kinds with no human-facing surface at all** (a pure library, a headless worker). A CLI/TUI whose output humans read — especially when the brief carries a readability/UX requirement — keeps it, retitled **Output / UX rules** (report structure, plain-language error style, loudness conventions), so [[verify-conventions]] has something to lint output changes against.
     - **Testing** — `{{TEST_CONVENTION}}` from the stack.
+    - **Stack "none yet / docs-only":** there are no idioms to seed, and deleting the subsections would leave
+      [[verify-conventions]] nothing to lint, which is the reason the rule above exists. So the project is documents,
+      and its rules are a document repo's:
+      - **Framework/stack:** *No stack yet; the repository is documents. Adding a language, a build tool or a
+        dependency is a recorded decision, and the change that picks a stack rewrites this subsection.*
+      - **Code structure & patterns:** *One topic per file; relative links between documents, and every link
+        resolves.*
+      - **Naming:** *File and folder names are `kebab-case`; ids use the forms the layer defines (`TASK-NNN`,
+        `FEATURE-NNN`, zero-padded).*
+      - **Testing**, filling `{{TEST_CONVENTION}}`: *none yet; there is no code to run. The rule below applies from the
+        change that picks a stack, which also wires a runner. Until then, a change is checked by reading it, and its
+        links by following them.* Written this way, the universal line after it reads as a rule waiting for code, not a
+        contradiction.
+      - **UI/UX:** removed. Documents read in an editor or a browser have no interface the project builds.
     - Fold in any scope-grill output. **Leave every subsection carrying no `{{…}}` token exactly as
       written** — those are universal rules rather than per-project ones, and the token is what marks the
       difference. Stated as a test rather than a list of names, because a list goes one short the moment

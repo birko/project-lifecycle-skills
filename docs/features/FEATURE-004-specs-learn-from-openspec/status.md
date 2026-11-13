@@ -1,6 +1,6 @@
 ---
 id: FEATURE-004
-generated: 2026-10-08
+generated: 2026-11-13 20:39
 ---
 
 # Specs learn from OpenSpec — reviewable regen diffs, checked spec files, and a watch on upstream — Status
@@ -24,7 +24,7 @@ generated: 2026-10-08
 0 / 7 tasks done.
 
 - TASK-285 — the review of a regenerated spec shows changes requirement by requirement, with renames marked (to do)
-- TASK-286 — the review names every worked example a regeneration dropped (to do; waits on TASK-285)
+- TASK-286 — the review names every worked example a regeneration dropped (to do)
 - TASK-287 — a requirement written or rewritten past about 500 characters is flagged (to do)
 - TASK-288 — a full regeneration saves each area as soon as its review is accepted (to do)
 - TASK-289 — a rewrite keeps the file's existing line endings (to do)
@@ -33,13 +33,12 @@ generated: 2026-10-08
 
 ## What can be tested now
 
-Nothing yet. Each task carries its own check: most are a real regeneration run, the build check is covered by
-automated cases, and the watcher is tried by running it once by hand on the real repository.
+These tasks have a written manual test plan that is ready to run: TASK-285, TASK-286, TASK-287, TASK-288, TASK-289, TASK-291. (TASK-290 needs no manual test — automated checks cover it.)
 
 ## Prototype
 
-Skipped — the change is to how a skill reviews and writes text files. Running a real regeneration is the proof.
+Skipped — the change is to how a skill reviews and writes text files. Running `/specs regen` on a real area is the proof, and each task's drill is where that happens.
 
 ## Next step
 
-Start the tasks with `/tasks pick --feature FEATURE-004`. TASK-285 comes first, because TASK-286 builds on it.
+7 tasks to do — start them with `/tasks pick --feature FEATURE-004`.
