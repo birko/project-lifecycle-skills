@@ -327,6 +327,10 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - **A move into a worktree is proved, never assumed — and it has one owner.** Any skill that puts a session
   in a worktree (today `pick`, `close`, [[fix-next]]) goes through `skills/tasks/verbs/pick.md` step 6b, which
   owns the enter-then-prove mechanics; the sites point there. Record: FEATURE-001 D4, D14.
+- **A divergence that is intended is accepted in the flagged item's own file, never silenced.** One rule on one target,
+  with a reason and a date: frontmatter for an epic, story or task, a `decisions.md` History line for a feature.
+  Accepted findings leave every warning and stay in every audit. Owner: [[roadmap]] § *Accepted divergences*. Record:
+  TASK-032.
 - **A pushed `task/TASK-NNN` branch means the task is taken, in every clone.** `pick` writes the signal when
   the default branch has an upstream, and [[tasks]]' Collection pass, `pick` and [[fix-next]] read it, recomputed from the branches,
   never stored. Detail: [[tasks]] § *Collection pass*. Record: FEATURE-001 D25.

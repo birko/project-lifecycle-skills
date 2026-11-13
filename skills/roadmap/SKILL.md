@@ -114,20 +114,46 @@ Flag a feature (or task) when:
 | **DV2** | All linked tasks `done` (≥1 exists) but feature coarse `status` ≠ `done` and phase ∉ {`done`,`review`} (**DV2 is not evaluated at all when there is no `status.md`**: the phase it judges does not exist yet, DV1 reports the feature, and the `/feature status` that clears DV1 derives the phase DV2 then reads) — **except** when an `approved` or `changed` row is not decomposed (its `→ Tasks` cell is empty, or names a task not on disk: [[feature]] `pick`'s gate D) | Shipped work never closed out on the feature side (FEATURE-016 pre-fix). The exception is work not filed yet, such as a `changed` decision on a signed-off feature whose change is not built: its phase is `building`, the feature's own decompose offer covers it, and nothing has shipped that could be closed out |
 | **DV3** | A task whose story/epic slug-matches a feature has `feature:` null/missing | Broken back-link — feature can't see its own work |
 | **DV4** | Feature has ≥1 linked task that is not `cancelled`, and no `approved` or `changed` row, which includes a ledger with no rows or only the template's placeholder | Tasks exist that no `approved`/`changed` decision generated |
-| **DV5** | Feature with no matching epic/story/tasks (and not a shipped `done` backfill), **or** a story/epic with tasks but no feature folder — **except defect work, read from declared fields**: an epic stamped `kind: review-intake` and everything under it, and a story or epic whose every task carries a non-empty `findings:` list | A requirement tracked in only one tree. **Defect work has no feature by design**: a finding is a defect in behaviour some feature or rulebook already owns, not a new requirement, so reporting it here buries the real holes under correct structure. Nothing else needs a marker: chores and tree hygiene stay in `tasks/_loose/`, which this arm never sees (a loose task has no story or epic), and any other story or epic with tasks is planned work that should trace to a feature. Never exempt a story by its title |
+| **DV5** | Feature with no matching epic/story/tasks (and not a shipped `done` backfill), **or** a story/epic with tasks but no feature folder — **except defect work, read from declared fields**: an epic stamped `kind: review-intake` and everything under it, and a story or epic whose every task carries a non-empty `findings:` list | A requirement tracked in only one tree. **Fix path:** `/feature new` for the work, or accept it in the item's own file (§ 4b) when the one-tree tracking is intended. **Defect work has no feature by design**: a finding is a defect in behaviour some feature or rulebook already owns, not a new requirement, so reporting it here buries the real holes under correct structure. Nothing else needs a marker: chores and tree hygiene stay in `tasks/_loose/`, which this arm never sees (a loose task has no story or epic), and any other story or epic with tasks is planned work that should trace to a feature. Never exempt a story by its title |
 | **DV6** | `idea.md status` ∉ the coarse set, or `status.md` exists and its phase ∉ the derived set. An absent `status.md` is not DV6: DV1 reports it, and only when work has moved | Invalid/stale marker (the `in-progress` phase we hit on FEATURE-016) |
 | **DV7** | A spec's `sources` changed since its baseline — `generated-at` for in-repo sources, the matching `source-commits` entry for each external repo — or a mapped area was never generated, or an external source has no baseline at all (from step 2b) | Stale behavioral map — code moved on, the spec is lying. **Report which repo drifted**, not just a total: in an aggregator the answer is usually a sibling, and "3 changed" without a repo name sends the reader to the wrong tree. An external source with no `source-commits` entry is reported as *unknown baseline* rather than fresh — the whole failure this rule exists to catch is a check that cannot fire quietly passing |
-| **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **suppressed** when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features), and **not raised at all against specs whose provenance was never derived** (see DV11) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way. **Report the area's `shaped-by-unresolved` count alongside the finding whenever it is non-zero** — `derived: true` is not a completeness claim, and a miss computed from a fraction of the trail is a weaker signal than one computed from all of it. Say which it is; don't let the reader assume the strong version. **A high count is often the project's commit trail, not its work**: regen refuses a commit that only *mentions* a task, and a task whose state says the work never landed ([[specs]] regen step 5a), so on a repo whose commits don't name tasks in their subjects most tasks resolve to nothing and this rule's miss is unproven either way |
+| **DV8** | Feature coarse `status: done` with ≥1 linked task, but no spec lists it in `shaped-by` (only when `docs/specs/.map.yml` exists) — **accepted** (§ 4b) when the feature's `decisions.md` History log contains a `no spec surface` line (the [[feature]] review carve-out for genuinely docs-only/internal features, and § 4b's older spelling of `accepted divergence DV8`), and **not raised at all against specs whose provenance was never derived** (see DV11) | A shipped feature whose behavioral change never landed in the specs — **advisory**: the fix path is `/specs regen --feature FEATURE-NNN`, whose diff review settles it either way. **Report the area's `shaped-by-unresolved` count alongside the finding whenever it is non-zero** — `derived: true` is not a completeness claim, and a miss computed from a fraction of the trail is a weaker signal than one computed from all of it. Say which it is; don't let the reader assume the strong version. **A high count is often the project's commit trail, not its work**: regen refuses a commit that only *mentions* a task, and a task whose state says the work never landed ([[specs]] regen step 5a), so on a repo whose commits don't name tasks in their subjects most tasks resolve to nothing and this rule's miss is unproven either way |
 | **DV9** | A task carries `feature: FEATURE-NNN` but no decision row in that feature's `decisions.md` lists it in the `→ Tasks` column | The ledger doesn't know about its own work — one of the three backfills (`/tasks new` step 10b, `/tasks spawn` step 6, `/feature decompose` step 4) was missed; fix by writing the ID into the owning decision's row. **Expect the inherited case**: a task created under an existing parent picks up its `feature:` without passing through any of the three, which is why this rule is an audit and not a redundancy — `new` step 10b now triggers on the link rather than on `--from-feature`, but only at creation time |
 | **DV10** | The repo has behaviour to spec — established by § *DV10: what counts as code* — but no `docs/specs/.map.yml`, **or the map's `areas:` list is empty** (the [[new-project]] scaffold seed that was never filled) and the map does not declare `coverage: not-applicable` | The whole spec layer is silently absent — every spec check (story-close regen offer, DV7/DV8, `/feature review`'s spec-landing gate) skips when the map is missing/empty, so nothing else will ever surface this — **advisory**: run `/specs init` to bootstrap |
 | **DV11** | A spec's `shaped-by-derived:` is `false` or absent (only when `docs/specs/.map.yml` exists) | Provenance was **never computed** for that area, so its `shaped-by: []` is unknown, not empty. Report it as its own finding and **suppress DV8 against those areas** — otherwise an unfilled field is indistinguishable from a genuine landing miss, and the audit reports a feature gap that is really a generator gap. Measured on Symbio 2026-08-01: all 31 areas carried `shaped-by: []` because `regen --all` resolved no `--feature` flag and, before that release, only flagged runs wrote the field at all. Fix: re-run `/specs regen <area>`, which now derives it |
 | **DV12** | Under an EPIC stamped `kind: review-intake`, a STORY carries unticked checklist lines in its body but has **no open TASK** (all children `done`/`cancelled`, or none exist) | Findings filed but never scheduled. Only `status: todo` tasks are ranked by `pick`, the `Next up` snapshot, or [[fix-next]] — a finding left as a checklist bullet is invisible to all three, so the review reads as drained while part of it was never worked. Fix by decomposing the remaining lines with [`/tasks intake --epic`](../tasks/verbs/intake.md) or `/tasks new` |
 
+### 4b. Accepted divergences
+
+A rule can fire on an arrangement somebody chose: a repo that is task-only on purpose trips DV5 on every epic. Left
+alone, the warning is always present and stops being read, so it devalues the real ones beside it. Skipped silently,
+it cannot be told from a check that never ran. So a finding can be **accepted**: recorded once, with a reason and a
+date, **in the flagged item's own hand-edited file**, never in a generated one.
+
+| Target | Where the acceptance is written |
+|---|---|
+| an epic, story or task | its frontmatter: `accepted-divergence: ["DV5 2026-11-13 — task-only on purpose; stakeholder work is not tracked here"]`, one string per accepted rule, as `DV<x> <date> — <reason>` |
+| a feature | a History line in its `decisions.md` containing `accepted divergence DV<x> — <reason>`. **`no spec surface` is DV8's older spelling of the same thing**, and is read as `accepted divergence DV8` |
+| a spec area or the map | not acceptable. Their fix is a regen or `/specs init`, which costs less than recording a reason |
+
+- **An acceptance covers one rule on one target, and an epic's covers the stories under it.** Accepting DV5 on
+  EPIC-001 suppresses DV5 on EPIC-001 and its stories, nothing on EPIC-010, and nothing but DV5. The epic scope
+  matches the reach of DV5's own defect exemption ("an epic … and everything under it"), and spares a task-only repo
+  a line per story. A story can carry its own acceptance where its epic has none. A new epic in the same task-only repo gets its own line, which is the point: each one is a fresh
+  decision.
+- **An accepted finding is suppressed from every warning** ([[tasks]] `triage`'s callout and the compact slice), and
+  **still listed** by the full render and `--check`, with its reason and date, so the audit stays complete.
+- **An acceptance whose rule no longer fires is reported** as `accepted DV<x> on <target> no longer fires — remove
+  the line`, so a stale reason does not outlive the arrangement it explained.
+- **The outcome of a check is one of three, and `--check` prints it as its first line:** `in sync`;
+  `in sync — <n> accepted`; or `<n> open divergence(s)`. The full render's `Divergences …` block and the `Accepted`
+  block follow it.
+
 ### 5. Output model
 Return `{ tasks: <collection>, features: [{ id, title, epic, coarseStatus, phase (null when `status.md` is absent),
 decisions:{proposed,approved,changed,deferred,removed}, tasksDone, tasksTotal, backlinkOk,
 divergences:[DVx…] }], specs: [{ area, generatedAt, stale, shapedBy, shapedByDerived, shapedByUnresolved }] | null,
-divergences:[{id, target, rule, detail}] }`. Renderers consume this;
+divergences:[{id, target, rule, detail, accepted: {date, reason} | null}] }`. Renderers consume this;
 they do not re-derive it.
 
 ### DV10: what counts as code
@@ -188,7 +214,14 @@ From the output model:
      FEATURE-031  DV4  tasks decomposed but D1–D2 still proposed → run /feature decide FEATURE-031
      specs/auth-session  DV7  stale — 3 sources changed since a1b2c3d → run /specs regen auth-session
    ```
-   If none: `Divergences: none — the two trees agree.`
+   If none: `Divergences: none — the two trees agree.` Accepted findings follow as their own block, never mixed into
+   the open ones (§ 4b):
+   ```
+   Accepted (2):
+     EPIC-001  DV5  2026-11-13 — task-only on purpose; stakeholder work is not tracked here
+     EPIC-010  DV5  2026-11-13 — task-only on purpose; stakeholder work is not tracked here
+   ```
+   With no open findings and some accepted, the line reads `Divergences: none open — 2 accepted (below).`
 4. **Untracked** — list DV5 items (one tree only) under a "Tracked in one tree only" heading; these are the real planning holes.
 5. Read-only. For `--fix`, append a "Proposed reconciliation" block (the edits), but apply nothing.
 
@@ -197,7 +230,7 @@ From the output model:
 When [[tasks]] calls this engine for its bare-`/tasks` snapshot, it renders only:
 ```
 features/  ⚠ sign-off <s> · <F> features · idea <i> · prototyping <p> · deciding <de> · building <b> · review <r> · done <d>
-  ⚠ divergence (<n>): <target> DV<x>, …          [or:  ✓ in sync]
+  ⚠ divergence (<n>): <target> DV<x>, …          [or:  ✓ in sync, or ✓ in sync · <a> accepted]
   specs: <n> stale                                [omit when docs/specs/ absent or all fresh]
 Run /roadmap for the full epic→feature→task view.
 ```
@@ -208,7 +241,8 @@ so the buckets still sum to `<F>`.
 Each divergence entry is the finding's `target` from the output model, printed as the full render's audit line
 prints it, then its rule id: a feature, story, epic or task id (`FEATURE-031 DV4`, `STORY-007 DV12`,
 `TASK-114 DV9`), `specs/<area>` for a spec (`specs/auth-session DV7`), or `specs/.map.yml` for the map itself
-(DV10). A finding is never dropped from this line because its target is not a feature.
+(DV10). A finding is never dropped from this line because its target is not a feature. An **accepted** finding is
+never on the `⚠` line; it counts only in `· <a> accepted` (§ 4b).
 
 ## Conventions
 

@@ -9,6 +9,7 @@ affects: {{AFFECTS}}
 kind: {{KIND}}
 # source: review-intake epics only — the pass that produced the findings, plus where they came from ("security-review <date>", "code-review <PR>")
 source: {{SOURCE}}
+# accepted-divergence: ["DV<x> <date> — <reason>"] — a roadmap rule this epic trips on purpose; see roadmap § Accepted divergences
 ---
 
 # {{TITLE}}

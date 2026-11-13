@@ -7,6 +7,7 @@ created: {{CREATED}}
 # theme: review-intake stories only — this story's slug on intake's subject ladder.
 # fix-next reads it as tie-break key 6; omit it on an ordinary story.
 theme: {{THEME}}
+# accepted-divergence: ["DV<x> <date> — <reason>"] — a roadmap rule this story trips on purpose; see roadmap § Accepted divergences
 ---
 
 # {{TITLE}}

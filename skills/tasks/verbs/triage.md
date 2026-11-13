@@ -98,7 +98,10 @@ dashboard is regenerated on the default branch when `close` merges.
    `> ⚠ **Feature drift (<n>):** <target> DV<x> short reason, … — run \`/roadmap --check\`.`
    Each `<target>` is the finding's target as [[roadmap]]'s compact slice prints it (a feature, story, epic or task id,
    `specs/<area>`, or `specs/.map.yml`), so a finding whose target is not a feature is never dropped.
-   Skip silently when the trees agree.
+   **An accepted finding is not in the callout** ([[roadmap]] § *Accepted divergences*). When every finding is
+   accepted, write one quiet line in its place instead, so the file shows the check ran:
+   `> Feature drift: none open · <a> accepted (<target> DV<x>, …) — see \`/roadmap --check\`.`
+   Skip silently only when the trees agree and nothing is accepted.
 
 9. **If invoked directly** (not chained), print one summary line: `Dashboard refreshed: <E> epics, <S> stories, <T> tasks (<N> in progress).` Append `; <n> feature divergence(s) — see /roadmap` when step 8b found any.
 

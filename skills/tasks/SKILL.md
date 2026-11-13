@@ -170,7 +170,7 @@ from every project at once to answer a question only occasionally asked.
    - `tasks/EPIC-*/STORY-*/TASK-*.md`
    - `tasks/EPIC-*/TASK-*.md`
    - `tasks/_loose/TASK-*.md`
-3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `theme` (stories, optional), `created`,
+3. **Read each file's frontmatter** (Read the whole file; parse the YAML head between `---` fences). Capture: `id`, `parent`, `feature` (tasks, optional — links to a `docs/features/FEATURE-NNN/`), `status`, `priority` (tasks), `assignee` (tasks), `findings` (tasks, optional), `affects` (epics, optional), `kind` (epics, optional), `theme` (stories, optional), `accepted-divergence` (epics, stories and tasks, optional — read by [[roadmap]] § *Accepted divergences*), `created`,
    `depends-on`, `blocks`, and `blocked` (tasks, optional — its parsed value, never the raw line, per
    § *Lifecycle* → *Writing a `blocked:` value*). Read the first `# Heading` line of the body for the human title.
 4. **Bucket** by level + status:

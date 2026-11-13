@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: 65cee7b35fefbd951bb0c6bb6d60c1c6e6c3ba75
-generated-on: 2026-11-12
+generated-at: 4e7580a9f5e664377f24a7b8a963d5a897a051e7
+generated-on: 2026-11-13
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -408,6 +408,22 @@ The system SHALL flag DV12 when a story under an epic with `kind: review-intake`
 - **Given** STORY-071 under a review-intake epic has unticked lines and one `todo` task
 - **When** the audit runs
 - **Then** DV12 is not raised
+
+### Requirement: Accepted divergences
+
+The system SHALL treat a finding as accepted when the flagged item's own hand-edited record names its rule with a date and a reason: an `accepted-divergence:` entry (`DV<x> <date> — <reason>`) in an epic's, story's or task's frontmatter, or an `accepted divergence DV<x>` History line in a feature's `decisions.md`, with `no spec surface` read as `accepted divergence DV8`; spec targets SHALL NOT be acceptable. An acceptance SHALL cover one rule on one target, an epic's covering the stories under it. An accepted finding SHALL be left out of every warning (the task dashboard's callout and the compact slice) and still listed, with its date and reason, by the full render and `--check`, whose outcome is `in sync`, `in sync — <n> accepted`, or open divergences followed by the accepted ones. An acceptance whose rule no longer fires SHALL be reported for removal.
+
+#### Scenario: One epic accepted, another not
+
+- **Given** EPIC-001 carries `accepted-divergence: ["DV5 2026-11-10 — internal tooling only"]` and EPIC-002 trips DV5 with no acceptance
+- **When** `/roadmap --check` runs
+- **Then** EPIC-002 DV5 is reported open, and EPIC-001 DV5 is listed under accepted with its date and reason
+
+#### Scenario: Only accepted findings remain
+
+- **Given** every finding on the tree is accepted
+- **When** `/tasks triage` regenerates the dashboard
+- **Then** no warning callout is written, and one line reads `Feature drift: none open · <n> accepted (…)`
 
 ### Requirement: Full render with verification debt first
 

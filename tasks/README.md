@@ -1,8 +1,8 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
+> Feature drift: none open · 2 accepted (EPIC-001 DV5, EPIC-010 DV5) — see `/roadmap --check`.
 
-_Generated 2026-11-13 19:41. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 20:04. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,10 +13,10 @@ _Generated 2026-11-13 19:41. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 313                 |
+| done         | 4                  | 13                 | 314                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 21× P2 · 13× P3.
+`todo` by priority: 20× P2 · 14× P3.
 
 ## In progress now
 
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (95/123 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (96/124 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -153,9 +153,10 @@ _None_
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
     - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
     - ~~TASK-150 The `docs/architecture.md` row names a state but no fill action, and the two doors disagree~~
-  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (2/3 done)
+  - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (3/4 done)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
-    - [ ] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made
+    - [x] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made
+    - [ ] TASK-369 DV10's "could not decide" has no output line, and triage's summary has no singular
     - [x] TASK-207 DV1 cannot fire on a feature with no `status.md`, and its condition reads two ways
   - STORY-014 `specs` — two gates that pass without checking — in-progress (5/10 done)
     - [x] TASK-033 `/specs init`'s coverage check can pass vacuously
