@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-13 15:15. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 15:37. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 41                  |
+| todo         | —                  | —                  | 40                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 299                 |
+| done         | 4                  | 13                 | 300                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 29× P2 · 12× P3.
+`todo` by priority: 28× P2 · 12× P3.
 
 ## In progress now
 
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (85/116 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (86/116 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -181,7 +181,7 @@ _None_
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (19/28 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (20/28 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -206,7 +206,7 @@ _None_
     - ~~TASK-112 The adopter's report list gained no entry for the `not applicable` state~~
     - [x] TASK-353 `adopt-project`'s report has no stated place for a derived "not applicable", and two more readings are open
     - [x] TASK-354 A full `adopt-project` run writes three things the skill does not say it may write
-    - [ ] TASK-356 `adopt-project`'s survey and report leave seven readings that several cold runners each settled differently
+    - [x] TASK-356 `adopt-project`'s survey and report leave seven readings that several cold runners each settled differently
     - [ ] TASK-357 A full adoption's fills leave five readings that several cold runners each settled differently
     - [x] TASK-360 Adoption's one round can need more than five questions, and one of them depends on another's answer
     - [ ] TASK-361 `/specs init` inside an adoption cannot see the files the same run wrote

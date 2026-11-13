@@ -40,14 +40,17 @@ step 1 and step 4, writes nothing, and owes four things a full run does not:
 - **A present row whose owner verb would answer currency is `present, owner not asked`** ([LAYER.md](../new-project/LAYER.md)
   § *Detect what the repo has*): step 3's delegation is what answers, and it did not run. Never `present`, which claims
   currency nobody checked, and never `unknown`, which means an owner ran and gave no answer.
-- **One line per step that did not run**, in step 4's report: `step <n> not run — scoped run`. That line is the step's
+- **One line per step that did not run**, in step 4's report: `step <n> not run — scoped run`, one each for steps
+  2, 3, 3b and 3c. That line is the step's
   output. Where this page says a step's result must also appear in step 4 (step 2's stated skip of the inference
   round, the glossary candidates the `not applicable yet` bucket mentions), the line is what appears, so a scoped
   report is not defective by this page's own rules.
 - **Every question step 2 would have put is still reported, marked unasked**: an `unknown` row's question, an
-  outstanding declaration's question, under `asked by a full run, not this one:`, each in the words step 2 would use.
+  outstanding declaration's question, any inference proposal step 2 would make, and step 2's fill item with its
+  lettered changes (the `.gitignore` lines among them), under `asked by a full run, not this one:`, each in the words step 2 would use.
   A scoped run that drops them reports a repo as settled where a full run would have stopped to ask.
-- **"Nothing missing", never "complete"**, while any row reads `present, owner not asked`. A full run on the same repo
+- **"Nothing missing", never "complete"**, while any row reads `present, owner not asked`. With rows still missing
+  or `unknown`, say `not complete: <n> missing, <n> unknown, <n> owner not asked`. A full run on the same repo
   then asks those owners and settles them, and the two reports agree on every other row.
 
 
@@ -139,8 +142,13 @@ listed and unfiled, and recovered only by reading later paragraphs: *"a literal 
 have ended this run at the table … which is the exact untracked outcome § 3b exists to prevent."* Steps 2
 and 3 follow; when the run may genuinely finish is settled below and at step 3b, not here.
 
+**Facts step 1 detected that are no row go in one `Detected:` block directly beneath the table**: the stack,
+each component and its run mode, the declared kind, the licensing posture, the git remote, an ancestor repo, and whether anything the
+layer owns is uncommitted. One line each, so a reader can check the evidence a row's state rests on without
+re-running the probes.
+
 **A defect the survey turns up does not belong in that table.** It is not a layer row, and the user
-needs to see it before deciding anything about the fill. List defects beneath the table and file them
+needs to see it before deciding anything about the fill. List defects beneath the `Detected:` block and file them
 per step 3b — **including when the table comes back complete**, which does not end the run if a defect
 is outstanding.
 
@@ -235,12 +243,28 @@ or a declaration out of the round. **No answer, or nobody to ask:** make none of
 under *left alone* as `offered, unanswered`. A change to someone's own file is never made by default.
 
 **The setup questions do not count toward the five.** These are the declarations listed above (task mode,
-integration model, task workspace, guide file, licence posture). Each is fixed-choice, and none is answered by default when nobody
-answers, so they go in as one short block that [[grill-me]]'s limit does not cover. The licence question is one
+integration model, task workspace, guide file, licence posture). Each is fixed-choice, and each has a stated no-answer outcome that
+records nobody chose it, so they go in as one short block that [[grill-me]]'s limit does not cover. The licence question is one
 of them even when it reaches the round through the `LICENSE` row's `unknown`. The limit
 protects attention for open questions: inference proposals, `unknown` rows and the fill item, which share the
 five. A first adoption of a bare repo needs every declaration at once, so counting them would push the fills out
 or split the setup over two rounds, the interrogation this round exists to prevent.
+
+Their words, so no run composes its own:
+- **Task mode:** [[tasks]] `new`'s mode-detection question, verbatim, with its suggestion. No answer: `/tasks init`
+  writes `mode: local` marked as defaulted. Pass `mode=` only when it was answered, so `init` does not ask again.
+- **Integration and workspace:** [[tasks]] `init`'s questions, verbatim, with workspace conditional (below).
+- **Guide file**, only when the guide is missing:
+
+  > **Which file should hold this repo's agent guide?** · **CLAUDE.md** — read by Claude Code. · **AGENTS.md**, with
+  > a one-line `CLAUDE.md` that imports it — for a repo other agent tools also work in.
+
+  No answer: `CLAUDE.md`, reported as `guide file: CLAUDE.md — the default; nobody chose it`.
+- **Licence**, only when the `LICENSE` row is `unknown`:
+
+  > **What licence is this repo under?** · **MIT** · **Apache-2.0** · **proprietary** — all rights reserved · **none**
+
+  No answer: write nothing, and the row stays `unknown`. A licence is a legal statement, never a default.
 
 **A question that depends on another answer in the same round is put conditionally.** Today that is the workspace
 question when integration is asked too, because [[tasks]] `init` skips workspace under `single-branch`. Prefix it

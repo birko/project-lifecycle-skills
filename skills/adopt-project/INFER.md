@@ -162,6 +162,7 @@ then either migrated into the fill or was guessed from `git log` after the pass.
 ## When nothing can be inferred
 
 A repo too small, too new, or too inconsistent to read rules from is a legitimate outcome. Say so,
-leave the subsections empty, and record that they are empty **pending a real decision** — do not
+leave the subsections empty, and record that they are empty **pending a real decision**, in step 4's report on the
+inference round's line, never in the guide: writing it there would amend the guide unasked — do not
 invent rules the project never agreed to. An empty subsection is honest; a fabricated one is a
 trap that `verify-conventions` will enforce against every future change.

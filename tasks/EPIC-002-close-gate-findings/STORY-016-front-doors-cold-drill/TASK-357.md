@@ -13,7 +13,7 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
-findings: [DRILL-102-8, DRILL-102-9, DRILL-102-10, DRILL-102-11, DRILL-102-12]
+findings: [DRILL-102-8, DRILL-102-9, DRILL-102-10, DRILL-102-11, DRILL-102-12, DRILL-102-13]
 pr: null
 github-issue: null
 jira-key: null
@@ -35,10 +35,11 @@ adoption writes during its fill (step 3) and its regeneration (step 3c), and the
 | DRILL-102-10 | LAYER.md's `docs/features/` row says "Create the folder + index if absent" and names no verb, while `/feature status` owns the index. Runners each picked a route | d354, d102b |
 | DRILL-102-11 | rendering an empty generated section: an empty tree in `tasks/README.md`, a features index with no rows, and whether the template's hint comments stay. Runners wrote `_No tasks yet._`, `_None_`, or dropped the section | d065b/full, d102, d102b |
 | DRILL-102-12 | "check for the negation wherever that row applies": whether the `.gitignore` offer includes `!.env.example` when the `.env.example` row is `not applicable`. One runner left it out, one put it in | d354, d102b |
+| DRILL-102-13 | the CI row offers "a minimal install→build→test workflow" to a repo with no tests yet. Its first run fails (`pytest` exits 5 when it collects nothing), so the offer would land a red gate. Nothing says whether to offer it, say so, or offer it without the test step (added 2026-11-13) | d072/a, d356/s |
 
 ## Acceptance criteria
 
-- [ ] DRILL-102-8 … 12 each have one stated answer, in the file that owns the rule (`adopt-project` step 3c,
+- [ ] DRILL-102-8 … 13 each have one stated answer, in the file that owns the rule (`adopt-project` step 3c,
       `tasks` `init` and `triage`, `feature` `status`, `LAYER.md`)
 - [ ] A rendered empty section reads the same in every generator that has one, or each states its own form
 - [ ] `bash .github/workflows/skills-lint.sh` passes
@@ -52,7 +53,7 @@ adoption writes during its fill (step 3) and its regeneration (step 3c), and the
 ## Human test plan
 
 - [ ] Re-run the `d065b` full brief on a fresh copy of `d065/adopted` and of `skills/` with a cold runner. Expected:
-      none of DRILL-102-8 … 12 in its "left undecided" section
+      none of DRILL-102-8 … 13 in its "left undecided" section
 
 ## Implementation plan
 
