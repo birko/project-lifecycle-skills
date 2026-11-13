@@ -23,9 +23,21 @@ tools differ.
 If the project has no test harness yet, scaffold it before authoring. Idempotent: if the test dir /
 runner config already exists, do nothing.
 
+**Pick the recipe by what the project already has.** Never reach for a package manager the project does
+not use:
+
+| The project has | Wire | Report |
+|---|---|---|
+| a package manager (a manifest: `package.json`, `*.csproj`, `pyproject.toml`, `requirements.txt`, `go.mod`, …) | the test dir, the runner config, and the runner **pinned as a dev-dependency in that manifest** | `harness wired: <runner> <version>, pinned in <manifest>` |
+| source code but **no** package manager (a script tree with no manifest) | the test dir and the runner config only. **Create no manifest.** Write the runner and its version into the test dir's README, a file this run creates, as a one-time prerequisite (`install pytest 8.x`). It reaches the guide's § Testing only through the § Testing question this skill already asks | `harness wired: <runner> <version> — pin documented, not enforced (no package manager)` |
+| no source code to test (docs or prose only) | nothing: an empty runner over nothing would claim a suite that does not exist | `nothing to test yet — no harness wired` |
+
+A project whose checks are a script its CI runs (a lint script, as this skill set's own repo has) already has
+a harness by the survey's evidence ladder, so `adopt` is not reached for it.
+
 - **Init the runner the stack expects** — e.g. `dotnet new xunit` + a project reference to the unit
   under test; a `vitest.config` + `tests/` for TS; a `tests/` package for pytest; a Playwright config
-  + a `tests/` dir for a web E2E suite. Pin the runner as a dev-dependency at a version the runtime
+  + a `tests/` dir for a web E2E suite. Pin it per the table above, at a version the runtime
   supports.
 - **Shared/in-house toolkit** — if `CLAUDE.md` § Testing names one, the project layer (its scaffolder
   skill) owns the exact wiring; follow that doc rather than reinventing it here. Typical pieces such a

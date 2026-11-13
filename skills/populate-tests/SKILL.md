@@ -38,8 +38,9 @@ in real source.
 `/populate-tests [adopt|survey|populate|verify|ledger] [scope]` (bare = survey).
 
 - **adopt** — **wire the test harness** if the project doesn't have one yet (idempotent). Detect the
-  stack, then scaffold what `populate` needs: the test dir, the runner config, and a pinned dev-dep on
-  the runner. If the project's `CLAUDE.md` § Testing names a **shared/in-house test toolkit**, follow
+  stack, then scaffold what `populate` needs. What that is depends on whether the project has a package
+  manager. [REFERENCE.md](REFERENCE.md) § Adopt gives the recipe for each case, including the project with
+  nothing to test yet. If the project's `CLAUDE.md` § Testing names a **shared/in-house test toolkit**, follow
   that toolkit's own adoption doc to wire it (the project layer owns those specifics — keep this skill
   stack-agnostic). Re-running is a no-op when the harness already exists. **Read [REFERENCE.md](REFERENCE.md)
   § Adopt before wiring** — it carries the harness invariants (single runner instance, supported runtime,

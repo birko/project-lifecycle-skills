@@ -2,7 +2,7 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-13 13:34. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 14:35. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -13,7 +13,7 @@ _Generated 2026-11-13 13:34. Run `/tasks triage` to refresh. **Do not hand-edit*
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 297                 |
+| done         | 4                  | 13                 | 298                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
 `todo` by priority: 29× P2 · 12× P3.
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (83/114 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (84/115 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -181,7 +181,7 @@ _None_
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (17/26 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (18/27 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -190,7 +190,7 @@ _None_
     - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] TASK-067 Nobody says what the empty case looks like, so every agent invents one
     - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
-    - [ ] TASK-072 `populate-tests adopt` cannot wire a harness for a project with no package manager
+    - [x] TASK-072 `populate-tests adopt` cannot wire a harness for a project with no package manager
     - ~~TASK-090 The survey cannot say whether this is a first adoption or a re-run~~
     - [x] TASK-091 Two artifact shapes the row definitions do not cover
     - [x] TASK-093 The guide row demands a diff against a section list no surveyed file carries
@@ -208,6 +208,7 @@ _None_
     - [x] TASK-354 A full `adopt-project` run writes three things the skill does not say it may write
     - [ ] TASK-356 `adopt-project`'s survey and report leave seven readings that several cold runners each settled differently
     - [ ] TASK-357 A full adoption's fills leave five readings that several cold runners each settled differently
+    - [ ] TASK-360 Adoption's one round can need more than five questions, and one of them depends on another's answer
   - (epic level) — 6/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
