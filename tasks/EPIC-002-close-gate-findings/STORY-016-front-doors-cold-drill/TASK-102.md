@@ -64,6 +64,22 @@ all be known before step 3 begins — and some cannot, since what needs creating
 answered — then the rule has to say which offers are foreseeable at step 2 and what happens to the rest.
 That is the interesting part and it should not be waved through.
 
+### Two more instances, 2026-11-13 (TASK-065's full-pass drill)
+
+`%LOCALAPPDATA%/Temp/d065b/full`, one cold runner, a full run with nobody present:
+
+- **Questions raised inside delegations.** `populate-tests adopt` asked its § Testing question, and `/specs init`
+  asked its blessing question, both inside step 3, after step 2's round had closed. The runner quoted step 2's "pass
+  them from here, so the question stays in this round instead of surfacing inside step 3's delegation" and could not
+  apply it: those two questions only exist once the delegation runs. These are the same offers that "cannot be known
+  until the round has been answered" that the criteria below ask about.
+- **Creating a missing artifact: offer or write?** The runner created `.gitattributes`, `.editorconfig` and the
+  `CHANGELOG.md` skeleton without asking, reading "Ask about an artifact the survey found missing" as covering choices
+  only. The step-3 list above names "create each missing artifact" as an offer.
+- **The scoped side of the same question.** A scoped run owes "every question step 2 would have put". In
+  `d065b/scoped` that report carried the `.gitignore` and CI offers but not the README "How we work" pointer, and its
+  README row read plain `present`. Whether a fill offer counts as a step-2 question decides whether that is an omission.
+
 ## Acceptance criteria
 
 - [ ] Where a step-3 fill offer is asked is stated — in step 2's round, or at the fill, or a stated split — and the reason is given

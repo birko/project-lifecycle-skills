@@ -3,7 +3,7 @@ id: TASK-065
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: verify
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-22
@@ -128,8 +128,35 @@ inventing a nineteenth row for something that belongs in the report's header.
   - **Passed 2026-11-12:** fixture `%LOCALAPPDATA%/Temp/d065/adopted` (a git repo with `docs/BRIEF.md` stamped `## Origin` *Adopted 2026-08-18*, `tasks/.config.yml` declaring `mode: local` and `integration: single-branch`, `tasks/README.md`, a `CLAUDE.md` with one convention, `src/app.py`), the whole `skills/` tree copied to `skill/`. The brief (`brief.txt` there) asked for "/adopt-project — survey only, read-only" and withheld the expected states. Runner `claude -p --disable-slash-commands --permission-mode acceptEdits --allowedTools "Bash(git:*)" "Bash(cd:*)" "Bash(ls:*)" Read Glob Grep < brief.txt`, cwd the fixture root. The `tasks/` row read `present, owner not asked` ("`/tasks init` would answer whether it is current"), quoting § *Scoped runs*. The report carried it in its own bucket as `present — currency not checked; /tasks init would answer (scoped run)`, and printed `step 2|3|3b|3c not run — scoped run`. Both repos were unchanged afterwards. Coldness: no skills listed, no Skill tool
 - [x] Confirm the report distinguishes *nothing is missing* from *the layer is complete* — the drill found that distinction load-bearing and it must survive
   - **Passed 2026-11-12**, same run: neither repo was called complete. The runner quoted step 1's "A scoped run cannot meet that, so it reports *nothing missing*" and § *Scoped runs*' "never 'complete'", and reported "Not complete" with counts, since both repos had missing rows
-- [ ] Run a full pass on the same repo and confirm the scoped and full reports do not contradict each other
+- [x] Run a full pass on the same repo and confirm the scoped and full reports do not contradict each other
   - **Not run 2026-11-12.** A full adoption delegates to `/tasks init`, `/specs init` and the other owners and writes files, so it needs a person or a longer drill than a defect run carries. The scoped report it compares against is kept at `%LOCALAPPDATA%/Temp/d065/report.md`
+  - **Passed 2026-11-13**, run at the user's request. Both sides were redone against `skills/` at `0bc573d`, since the
+    11-12 copy predated the unasked-questions bullet. Fixture `%LOCALAPPDATA%/Temp/d065b/{scoped,full}`: each got its own
+    copy of `d065/adopted` and of `skills/`, and its own cold runner. The command was 11-12's, run with cwd at that
+    fixture's root. The full runner was also allowed `Bash(mkdir:*)`, `Write` and `Edit`. Briefs and reports are kept
+    there as `brief.txt` and `report.md`.
+    - **Coldness:** both runners listed no skills and had no Skill tool.
+    - **Repo state after:** the scoped repo was left unchanged. The full run wrote 12 files and committed nothing.
+    - **No contradictions.** Before anything was written, the two runs gave every row the same state:
+      - Both printed the same `run: re-run — … adopted 2026-08-18` line.
+      - The same seven rows were `missing`, worded for a re-run.
+      - `LICENSE` was `unknown`.
+      - `.env.example` and `Dockerfile` were a derived `not applicable`.
+      - The glossary and ADR rows were `not applicable yet`.
+      - The `.gitignore` gap on `.env.*` was named.
+    - **The rows that differ, differ only where the scoped run said why:**
+      - The scoped `tasks/` row read `present, owner not asked` ("/tasks init would answer"). In the full run `/tasks
+        init` did answer, *brought up to date*, and the row went to **amended**.
+      - The scoped run's one `asked by a full run, not this one:` question, the licence posture, is the full run's
+        question 1, nearly word for word.
+      - The scoped run said CI "would be offered by a full run", and the full run offered it.
+    - **Neither run called the layer complete:** the scoped run said "not complete — 7 rows missing, 1 present with its
+      owner not asked, 1 unknown", and the full run left `docs/architecture.md`, the CI gate and `LICENSE` open.
+    - **One gap, and it is not a contradiction.** Of the full run's other offers, the scoped report carries the
+      `.gitignore` and CI ones but not the README "How we work" pointer, and its README row reads plain `present`. A
+      scoped run owes every *question* step 2 would put, and whether a fill offer is one of those is TASK-102's open
+      question. Recorded there.
+    - **New readings, not about scoped runs:** filed as TASK-354.
 
 *From TASK-090:*
 
@@ -198,7 +225,12 @@ added after the split, from the drill; its evidence is the drill reading that pr
 
 **Flagged, not fixed.** Three pre-existing readings from the drill (LAYER.md and step 4 disagree on reporting a derived
 `not applicable`; an undeclared `workspace:` under `single-branch`; the next step on a repo without `tasks/`) →
-TASK-353, P3.
+TASK-353, P3. The 2026-11-13 full-pass drill raised three more about a full run (guide sections written without
+consent, `## Commands` stale on arrival, `populate-tests adopt`'s `.gitignore` lines) → TASK-354, P3. Two more
+instances of fill offers and delegated questions outside step 2's round → added to TASK-102.
+
+**Closed `verify → done` 2026-11-13**, after the full-pass step passed. That close changed only task files, so the
+review passes were not re-run. The diff they judged is the one they reviewed at the first close.
 
 ## Progress log
 

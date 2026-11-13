@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-12 15:56. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 08:22. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 42                  |
+| todo         | —                  | —                  | 43                  |
 | in-progress  | 4                  | 10                 | 0                   |
-| verify       | —                  | —                  | 2                   |
+| verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 289                 |
+| done         | 4                  | 13                 | 290                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 28× P2 · 14× P3.
+`todo` by priority: 28× P2 · 15× P3.
 
 ## In progress now
 
@@ -25,7 +25,6 @@ _None_
 ## Awaiting verification
 
 - [TASK-124](EPIC-001-adopt-yolobox-ideas/STORY-006-slicing-doctrine/TASK-124.md) — `/feature prototype` gains a fourth form — "does this state model feel right?" (P2, agent) ⚠ blocked: deferred by the owner — waiting for a tester who does not know this codebase
-- [TASK-065](EPIC-002-close-gate-findings/STORY-016-front-doors-cold-drill/TASK-065.md) — `adopt-project` assumes every run is a full run (P2, agent)
 
 ## Tree
 
@@ -97,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (76/109 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (77/110 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -180,12 +179,12 @@ _None_
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (13/23 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (14/24 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
     - [x] TASK-064 What a minimal repo gets: step 3 and the templates disagree, and one token has no source
-    - [ ] TASK-065 `adopt-project` assumes every run is a full run 🔍 verify
+    - [x] TASK-065 `adopt-project` assumes every run is a full run
     - [x] TASK-066 Land it or regenerate it: two rules point opposite ways at the same file
     - [ ] TASK-067 Nobody says what the empty case looks like, so every agent invents one
     - [x] TASK-069 The ADR bar contradicts the split rule, and `close.md` contradicts the axis rule
@@ -204,6 +203,7 @@ _None_
     - [ ] TASK-102 Nothing says whether a step-3 fill offer joins step 2's round or comes after it
     - ~~TASK-112 The adopter's report list gained no entry for the `not applicable` state~~
     - [ ] TASK-353 `adopt-project`'s report has no stated place for a derived "not applicable", and two more readings are open
+    - [ ] TASK-354 A full `adopt-project` run writes three things the skill does not say it may write
   - (epic level) — 6/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
