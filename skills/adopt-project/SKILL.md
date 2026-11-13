@@ -496,7 +496,7 @@ nobody reviews and one the user did not ask for.
 
 ### 4. Report what changed
 
-Open the report with step 1's `run:` line, unchanged. Then report by outcome. Three buckets for what this run **did**:
+Open the report with step 1's `run:` line, unchanged. Then report by outcome. Four buckets for what this run **did**:
 
 | Bucket | Carries |
 |---|---|
@@ -505,7 +505,7 @@ Open the report with step 1's `run:` line, unchanged. Then report by outcome. Th
 | **left alone** | why — "present already", "you declined", `offered, unanswered` (step 2's fill item got no answer), `offered, not asked — found after the round` (an offer a delegation turned up) |
 | **regenerated** | a generated file this run re-derived because it touched one of its inputs (step 3c) — name the file *and* the verb that produced it. It needs its own name because the user did not write these files and should not have to work out why they moved; folding them into `amended` says they changed someone's own work, which is the opposite of true. **Report a declined or blocked regeneration here too** — silence reads as "nothing needed" |
 
-Then **one bucket per surveyed state the three above do not already absorb** — `present` is
+Then **one bucket per surveyed state the four above do not already absorb** — `present` is
 *left alone*, and a `missing` row you filled is *created*. [LAYER.md](../new-project/LAYER.md) owns
 the state list, so a state added there that no outcome bucket absorbs gets a bucket here named after
 it, whether or not this page mentions it. What follows is **what the report owes for the states that

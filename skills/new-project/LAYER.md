@@ -96,8 +96,8 @@ that answered the question months ago gets asked again, on every re-run.
 
 **Carries means a live, uncommented key — a commented example is the question, not an answer.** The probe
 is a grep, so it sees text rather than meaning, and the templates deliberately ship the field **commented
-out** so that a render cannot mint a declaration nobody made (`AGENTS.md` § *A template ships nothing a
-render cannot make true*). Those two facts collide unless this is stated: `# integration:
+out** so that a render cannot mint a declaration nobody made: a live value in a template is reproduced
+faithfully by every correct render, so it becomes a fact nobody chose. Those two facts collide unless this is stated: `# integration:
 <pr-per-task|single-branch>` is in every config the skills create, so a probe matching the bare word
 reports **settled** on a repo where nobody has chosen, the frontier round never asks, and the backfill
 never fires — turning a defect that used to reach only configs written before the field existed into one
@@ -272,7 +272,7 @@ aggregate."* It was deciding, not reading.
 that does not run can read runtime config, and nothing without an entry point is deployed — so the
 evidence **determines** the answer rather than merely being consistent with several. That is the same
 test § *Classify each component from what this repo holds* states above, at the other altitude, and it
-is § *A derived state must never be cached as a decision* in the consuming project's guide. Do not read
+is why a derived state is recomputed every run, never cached as a decision. Do not read
 "no source to inspect" as "cannot tell": that is the route by which an aggregator's correct
 `not applicable` would become an `unknown` and a question nobody can answer.
 
@@ -299,15 +299,14 @@ reconstruct is a rule that is not written down, and the fourth is the one who re
 
 **Kind is evidence toward that question, and a declaration beats a signal.** Read the kind where the repo
 states it: `new-project` knows it because intake asked, and a repo already carrying an agent guide often
-declares it outright — which is the consuming project's own *read the declaration, never infer it* rule
-applying here. Only where nothing declares it do you fall back on signals: a listening port and an entry
+declares it outright, and a declaration is read, never re-inferred from signals that only fit it. Only where nothing declares it do you fall back on signals: a listening port and an entry
 point say service; a console entry point or a `bin` mapping with no server binding says CLI; a published
 package manifest with no host says library; a long-running entry point with neither says worker; a
 windowing/UI toolkit dependency with no server binding says desktop.
 
 **Treat signals as evidence, never as an answer.** They are *consistent with* several readings — a library
-shipping a sample server, a CLI that also serves — which by § *A derived state must never be cached as a
-decision* in the consuming project's guide is the shape that **had to be declared**. So where they conflict
+shipping a sample server, a CLI that also serves — which is the shape that **had to be declared**: evidence merely
+consistent with an answer cannot settle it. So where they conflict
 or run out, the state is **unknown**, the row names the fact that was missing, and step 2's question round
 settles it alongside the other choices. Do not default to *not applicable*: that is the reading which makes
 a real gap disappear. Measured on the same three repos — one had no licence evidence in any direction and
@@ -582,7 +581,7 @@ grows as real repos turn up conditions it cannot yet express:
 - **present, elsewhere** — found at another **path**, under another **name**, or inside another **file**. **Say where.** Never silently relocate it, and never offer to create a second one. **Any deviation from the row's canonical path or name lands here** — see § *Location is orthogonal too*, which also settles that this composes with every row rather than only the ones whose cells mention it.
 - **unknown** — you could not determine it. Honest, and it stops the fill. **Name what was missing, and say which kind of missing** — evidence, or the rule itself. See § *Two things reach `unknown`*.
 - **missing** — you actively looked and it is genuinely absent.
-- **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire — which is this rule's own mirror of § *Read the declaration, never infer it* in the consuming project's guide.
+- **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire. It is the mirror of the declaration rule: a fact the evidence determines is recomputed, and a fact it merely fits is declared.
 
 - **not applicable** — a **conditional** row (§ *Conditional rows*) whose condition does not hold for this project: a `Dockerfile` in a CLI, an `.env.example` in a library, a `LICENSE` in a proprietary repo. **Settled, not pending** — unlike the state below, nothing will change it, so it suppresses the fill, the offer, and any later re-ask. Claimable only where the row declares itself conditional **and** its condition was actually settled by evidence; where the evidence ran out the state is `unknown`, naming what was missing, because defaulting to this one is how a real gap is laundered into a design choice.
 - **not applicable yet** — a **lazy** row (§ *Lazily-created rows*) with no instance, in a repo that has nothing to record. **This is not a gap and is never reported as drift.** It suppresses both the fill *and the offer*: asking *"shall I create a glossary?"* is how the empty file the lazy rule exists to prevent arrives **with** the user's consent instead of without it, so the offer is the defect here, not the fill. **Claimable only where the row declares itself lazy** — an absent artifact whose row creates it is `missing`, and relabelling it here would launder a real gap into a design choice, which is the false-`present` failure pointing the other way. Distinct from `missing, not offered`: that is a genuine gap *adjudicated* unfillable for now, so its offer returns when the evidence changes; this one has nothing to fill and no evidence that could change.

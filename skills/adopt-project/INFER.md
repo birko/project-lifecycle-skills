@@ -76,8 +76,8 @@ question a project cannot answer from the inside.
 vocabulary. Nothing else writes them: on the skip path (§ *When the rulebook already answers it*) and when a
 round gets no answer, they are **reported only**. Writing them unconfirmed would assert vocabulary nobody
 agreed to, which is what *propose, never assert* forbids. **Retire that copy the moment
-`docs/glossary.md` exists** — two records of one vocabulary is exactly the rot AGENTS.md § *The five
-records* exists to prevent, and nothing else will prompt the removal. Naming the subsection matters
+`docs/glossary.md` exists** — two records of one vocabulary drift apart silently, each read as current,
+and nothing else will prompt the removal. Naming the subsection matters
 because two adoptions of one repo must land the list in the same place for `domain` to find it later.
 
 The layer now carries the glossary as a **lazy** row — see
