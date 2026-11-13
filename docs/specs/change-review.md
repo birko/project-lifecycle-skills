@@ -1,7 +1,7 @@
 ---
 area: change-review
-generated-at: 6e4df311db9f38e859523772f40e974774570a45
-generated-on: 2026-11-12
+generated-at: b567230a98f6eb1b7f1ebde9cdabb314604cb947
+generated-on: 2026-11-13
 sources:
   - skills-pi/code-review/SKILL.md
   - skills-pi/review/SKILL.md
@@ -470,9 +470,9 @@ The system SHALL, on the universal floor, prefix every finding `universal:` and 
 - **When** the comment axis reports
 - **Then** the finding reads `universal:` at ⚠, never 🛑, and the report ends with the recommendation to record a rule
 
-### Requirement: Comment axis — three scopes, and conflicting flags are refused by name
+### Requirement: Comment axis — four scopes, and conflicting flags are refused by name
 
-The system SHALL accept three scopes — the current diff (default), `PATH …` swept in full without consulting the diff, and `--all` over every tracked file — and SHALL refuse `--batch` without `--all` with *"`--batch` applies to `--all` only; any other scope prints in full"*, and `PATH` together with `--all` with *"`--all` is the whole repository; drop the paths, or drop `--all`"*, doing neither.
+The system SHALL accept four scopes — the current diff (default), `--range A..B` over that range's diff, `PATH …` swept in full without consulting the diff, and `--all` over every tracked file — SHALL refuse a positional containing `..` that names no tracked path with a suggestion to use `--range`, SHALL refuse `--range` together with `PATH` or `--all`, and SHALL refuse `--batch` without `--all` with *"`--batch` applies to `--all` only; any other scope prints in full"*, and `PATH` together with `--all` with *"`--all` is the whole repository; drop the paths, or drop `--all`"*, doing neither.
 
 #### Scenario: --batch on a diff run
 

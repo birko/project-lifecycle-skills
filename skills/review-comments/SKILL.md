@@ -23,12 +23,20 @@ re-derive a cap, which is the one failure this whole check was built to avoid.
 
 ```
 /review-comments                 the current diff (default)
+/review-comments --range A..B    the diff of a branch or PR range
 /review-comments PATH …          those paths in full, ignoring the diff
 /review-comments --all           the whole repository
 /review-comments --all --batch N print batch N of the same ordering
 ```
 
 - `PATH …` — sweep the named files **in full**, whatever the diff says. Step 2 owns the scope.
+- `--range A..B` — the diff scope over `git diff A..B` in place of the working tree. A branch, a tag or a PR's
+  base..head all fit. A range named in words ("check the comments on this branch") is passed as this flag, so
+  every range run has one form and one `Scope:` line.
+- **A positional that contains `..` and names no tracked path is refused**, never swept as a path: *"`main..HEAD` is
+  not a tracked path; did you mean `--range main..HEAD`?"* Read as a path it would match nothing and print a clean
+  pass over a scope nobody asked for.
+- **`--range` with `PATH` or with `--all` is refused by name**, for the reason below: they are different scopes.
 - `--all` — widen from the diff to every tracked file.
 - `--batch` — which page of an `--all` run to print. Defaults to 1.
 - **`--batch` without `--all` is refused by name**: neither a diff-scoped nor a path-scoped run is paged,
@@ -82,7 +90,7 @@ this root, and the remedy is re-running an installer.
 ## Step 2 — Pick the scope
 
 **Default: the current diff.** Prefer staged (`git diff --cached`); fall back to the working tree
-(`git diff`); use a branch or PR range only if the user names one; not git-tracked → ask:
+(`git diff`); use a range only when `--range` names one; not git-tracked → ask:
 
 > **This folder is not a git repository, so there is no diff to read. Which files should I check? Give paths, or "none".**
 
@@ -104,7 +112,7 @@ A diff gives you changed *lines*; this check needs whole *blocks*. Two rules fol
 
 **`PATH …`** sweeps the named paths **in full, and does not consult the diff at all.** This is the scope
 for *"check the comments in the file I am about to work in"* — the question neither other scope answers,
-since the diff sees only what changed and `--all` drowns one file in a census. Four rules, and each one
+since the diff sees only what changed and `--all` drowns one file in a census. Five rules, and each one
 is a question a reader would otherwise have to improvise:
 
 - **Membership is `git ls-files`, exactly as `--all` does it and for the identical reason.** A path
@@ -217,7 +225,11 @@ Scope:        staged — 3 files, 1 carrying comments in range.
 ✅ No comment carries content that lives somewhere else.
 ```
 
-**The `Scope:` line names which of the three scopes ran, and a path run must not render like an empty
+**The `Scope:` line names which of the four scopes ran (staged or working tree, a range, paths, `--all`).** A range
+run reads `Scope:        range main..HEAD — 6 changed files, 4 carrying comments in range.`, the diff shape with the
+range in place of *staged* or *working tree*.
+
+**Of those, a path run must not render like an empty
 diff run.** Those two are the pair a reader cannot otherwise tell apart — both print a small number and a
 clean verdict — and the whole-file sweep is exactly the case someone runs *because* the tree is clean.
 
