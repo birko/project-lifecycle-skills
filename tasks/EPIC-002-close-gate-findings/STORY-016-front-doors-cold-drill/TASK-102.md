@@ -206,6 +206,8 @@ where every question it can put goes:
 
 **Flagged, not fixed.** The twelve one-runner readings under the Human test plan.
 
+Filed 2026-11-13, after comparing all six adoption drills: the readings here that a second runner also raised are TASK-356 and TASK-357. Pinning with no manifest is TASK-072.
+
 ## Progress log
 
 - step 2 — picked; ranked first among the remaining STORY-016 tasks (correctness-invariants, key 6 inert) because three drills on 2026-11-13 (d065b/full, d353, d354) each raised it again, so it now sits under more open readings than any other task in the pool (keys 1–2). Key 4 counts against it: the answer is a rule to design, so the guardrail path is taken (non-controversial work, then ask)

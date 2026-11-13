@@ -143,6 +143,8 @@ names the shape. It places the offer in step 2's round only because the guide's 
   test-authoring` would bring it current. Not run here: outside this task.
 - **The one-runner readings** listed under the Human test plan.
 
+Filed 2026-11-13, after comparing all six adoption drills: the readings here that a second runner also raised are TASK-356 (`architecture.md`, empty Conventions subsections, the Dockerfile row) and TASK-357 (timestamp-only regeneration, template fields, `docs/features/`, empty renders, the negation). The stale spec is TASK-359.
+
 ## Progress log
 
 - step 2 — picked; ranked above TASK-099 and TASK-102 (same story, correctness-invariants, key 6 inert) because each of its three readings is a write a full adoption makes without stated permission or at the wrong time (key 1, wrong results in a user's repo), while TASK-099 and TASK-102 are readings about what a survey reports or when it asks (key 4: each asks for a rule to be designed)

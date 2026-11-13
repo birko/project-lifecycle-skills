@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-13 13:27. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 13:34. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 37                  |
+| todo         | —                  | —                  | 41                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
 | done         | 4                  | 13                 | 297                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 27× P2 · 10× P3.
+`todo` by priority: 29× P2 · 12× P3.
 
 ## In progress now
 
@@ -96,11 +96,11 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (83/111 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (83/114 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
-  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (31/35 done)
+  - STORY-011 The `tasks` skill's own defects — templates, pick, close, triage, intake — in-progress (31/36 done)
     - [ ] TASK-001 STORY.md cannot express dependency edges
     - [x] TASK-010 /tasks pick walks past verification debt without mentioning it
     - [x] TASK-015 `close` step 5d needs an unattended path — fix-next drives close with no user to take the offer
@@ -136,6 +136,7 @@ _None_
     - [x] TASK-347 `/tasks pick` leaves eight more readings open in its list, its hand-off and its plan offer
     - [x] TASK-348 `/tasks block`'s confirmation and the dashboard it chains leave six readings open
     - [x] TASK-355 The bare `/tasks` snapshot template leaves three rendering details to the reader
+    - [ ] TASK-358 The `tasks/README.md` dashboard template leaves two rendering details to the reader
   - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (8/12 done)
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -180,7 +181,7 @@ _None_
     - [x] TASK-252 CI has been red on Linux since 2026-09-19 while the lint suite passes locally
     - [x] TASK-253 `/tasks close` trusts a local test run where the project's CI runs elsewhere
     - [x] TASK-282 The `.ps1` installers do not parse under Windows PowerShell 5.1, the default `.ps1` host on Windows
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (17/24 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (17/26 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -205,6 +206,8 @@ _None_
     - ~~TASK-112 The adopter's report list gained no entry for the `not applicable` state~~
     - [x] TASK-353 `adopt-project`'s report has no stated place for a derived "not applicable", and two more readings are open
     - [x] TASK-354 A full `adopt-project` run writes three things the skill does not say it may write
+    - [ ] TASK-356 `adopt-project`'s survey and report leave seven readings that several cold runners each settled differently
+    - [ ] TASK-357 A full adoption's fills leave five readings that several cold runners each settled differently
   - (epic level) — 6/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
@@ -356,6 +359,7 @@ _None_
 - ~~TASK-121 `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice~~ (P2, agent)
 - [x] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed (P3, unassigned)
 - [ ] TASK-261 Run the deletion test on the three `help` verb files, and keep or fold each one (P3, agent)
+- [ ] TASK-359 Regenerate the `test-authoring` spec, two commits behind its sources (P3, agent)
 
 <details>
 <summary><strong>Completed</strong> — 4 epics</summary>

@@ -132,6 +132,8 @@ SH-55 line are ticked there with a pointer here.
 
 **Flagged, not fixed.** Five one-runner readings, listed under the Human test plan.
 
+Filed 2026-11-13, after comparing all six adoption drills: the readings here that a second runner also raised are TASK-356 (licence and guide-choice wording, the scoped `.gitignore` offer, step 1 facts, not-run lines).
+
 ## Progress log
 
 - step 2 — picked; ranked above TASK-354, TASK-099 and TASK-102 (all correctness-invariants in STORY-016, key 6 inert) because two of its three readings were raised again by the TASK-065 full-pass drill runners on 2026-11-13, so they meet the two-runner bar (key 5), and each has a short stated answer (key 4). TASK-099 and TASK-102 each ask for a rule to be designed

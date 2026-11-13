@@ -124,6 +124,8 @@ and none is filed:
 - whether tree rows show priority;
 - the time zone of the timestamp.
 
+Filed 2026-11-13, after comparing the two drill reports: blank lines around an omitted section and priority in tree rows were raised by both d348 runners, and are TASK-358.
+
 ## Progress log
 
 - step 2 — picked; ranked above TASK-099 and TASK-102 because it is a group of drill readings in one verb that writes status (`block`), with the readings two runners raised at the agreement bar (key 5) and no open design question (key 4), while TASK-099 and TASK-102 each ask for a rule to be designed. All correctness-invariants (key 6 inert)
