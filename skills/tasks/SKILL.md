@@ -61,11 +61,14 @@ crossing a repo boundary — which a blanket sentence cannot carry.
 Compact terminal view — counts, what's active, what's next. Renders to stdout only; does not touch `tasks/README.md` (that's `triage`'s job).
 
 1. Run the [Collection pass](#collection-pass) to enumerate everything and bucket by status.
-2. Render:
+2. Render. **Reading the template:** print each line as shown with its `<…>` slots filled. Text after `←` is a
+   note to you and is never printed. A `...` line stands for more rows of the same shape. The "Next up" heading
+   is printed whole, parenthetical included. Fields in a row are separated by two spaces and never padded into
+   columns. When a row of the count tree is omitted, the last row printed takes `└─`:
    ```
    tasks/  (<mode>[: <provider details>])
 
-   <E> epics · <S> stories · <T> tasks
+   <E> epics · <S> stories · <T> tasks          ← singular for a count of exactly 1: "1 epic · 1 story · 1 task"
      ├─ todo:        <n>   (<n>× P1, <n>× P2, …)      ← one term per priority present, in order
      ├─ in-progress: <n>
      ├─ verify:      <n>
@@ -96,7 +99,10 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
    declaration produces. It is tempting to add one helpful line, and that line is a change to the default
    view of every project in the family; the promise that the default is untouched is the whole thing
    protecting projects that are already correct. Someone who wants the wider view asks for it.
-3. Append the `features/` slice — its shape and divergence rules are owned by [[roadmap]] (§ *Render — compact slice*); render that slice, don't re-derive the join here. Tasks awaiting verification are verification debt — surface them, don't bury them. Omit the `verify:` line and the "Awaiting verification" section when no task awaits verification; omit the whole `features/` block when `docs/features/` doesn't exist. Suppress trailing zeros in the priority breakdown.
+3. Append the `features/` slice — its shape and divergence rules are owned by [[roadmap]] (§ *Render — compact slice*); render that slice, don't re-derive the join here. Tasks awaiting verification are verification debt — surface them, don't bury them. Omit the `verify:` line and the "Awaiting verification" section when no task awaits verification; omit the whole `features/` block when `docs/features/` doesn't exist.
+   **Zeros:** the `todo` breakdown has one term per priority that has at least one task, so a priority with none
+   gets no term. When `todo` is 0, drop the parenthetical too. Every other status row is printed with its count,
+   zero included. Only `verify:` has a rule that omits it, above. `cancelled` has no row in this view.
 
 ## Collection pass
 
