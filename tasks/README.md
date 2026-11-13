@@ -1,8 +1,8 @@
 # Tasks — project-lifecycle-skills
 
-> ⚠ **Feature drift (17):** EPIC-010 DV5, STORY-028 DV5, specs/change-review DV7, specs/changelog-maintenance DV7, specs/code-shape-review DV7, specs/defect-draining DV7, specs/feature-lifecycle DV7, specs/glossary-and-adrs DV7, specs/idea-interrogation DV7, specs/installation DV7, specs/project-baseline DV7, specs/project-roadmap DV7, specs/session-handoff DV7, specs/skill-authoring-rules DV7, specs/specs-from-code DV7, specs/test-authoring DV7, specs/work-tracking DV7 — run `/roadmap --check`.
+> ⚠ **Feature drift (16):** FEATURE-005 DV8, specs/change-review DV7, specs/changelog-maintenance DV7, specs/code-shape-review DV7, specs/defect-draining DV7, specs/feature-lifecycle DV7, specs/glossary-and-adrs DV7, specs/idea-interrogation DV7, specs/installation DV7, specs/project-baseline DV7, specs/project-roadmap DV7, specs/session-handoff DV7, specs/skill-authoring-rules DV7, specs/specs-from-code DV7, specs/test-authoring DV7, specs/work-tracking DV7 — run `/roadmap --check`.
 
-_Generated 2026-11-13 20:41. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 20:57. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
@@ -454,6 +454,6 @@ _None_
 
 - EPIC-010 Interaction-design (UX) guidance in the skill set — done (1/1 tasks done)
   - STORY-028 A UX baseline that the review and prototype skills read — 1/1 done (done)
-    - [x] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory
+    - [x] TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory · FEATURE-005
 
 </details>

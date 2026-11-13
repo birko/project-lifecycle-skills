@@ -35,6 +35,11 @@ that did **not** also change the spec:
 
 `test-authoring` is the fifth, and is TASK-359's.
 
+**Added 2026-11-13: FEATURE-005's DV8.** FEATURE-005 (UX baseline) was created as a backfill for TASK-293, and no spec
+lists it in `shaped-by`, because TASK-293's commits predate the `feature:` link. `/specs regen --feature FEATURE-005`
+is DV8's own fix path, and recomputes the provenance of the areas TASK-293 changed (`change-review` for
+`verify-conventions`, `feature-lifecycle` for `feature prototype`).
+
 Some of these changes are wording the spec may not state at all, so the regen may produce no diff. That is a valid
 outcome, and it moves the stamp honestly.
 
@@ -42,7 +47,7 @@ outcome, and it moves the stamp honestly.
 
 ## Acceptance criteria
 
-- [ ] `/specs regen` has run for each of the four areas, each diff reviewed as "was this change intended?", and each
+- [ ] `/specs regen` has run for each of the four areas, and `--feature FEATURE-005` so DV8 no longer fires for it, each diff reviewed as "was this change intended?", and each
       stamp names the commit it was regenerated at
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 

@@ -1,6 +1,6 @@
 ---
 id: FEATURE-004
-generated: 2026-11-13 20:39
+generated: 2026-11-13 20:56
 ---
 
 # Specs learn from OpenSpec — reviewable regen diffs, checked spec files, and a watch on upstream — Status
