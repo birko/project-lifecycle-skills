@@ -297,9 +297,11 @@ single-branch)`, or `(integration unanswered)`.
   before the verb has run, and each carries its own no-answer outcome (the map written `unverified`;
   nothing added to the guide), which the run takes when nobody answers. This is the one exception to
   the round, and it is narrow: a **declaration** an owner needs is still passed from here (above), never
-  left for its verb to ask. An offer that turns up only inside a delegation, such as `populate-tests`'
-  `.gitignore` lines, is not asked late either. Report it under *left alone* as `offered, not asked —
-  found after the round`.
+  left for its verb to ask. An offer that turns up only inside a delegation is not asked late either. Report it
+  under *left alone* as `offered, not asked — found after the round`. **Foresee what you can:** when step 1 knows the
+  stack and finds the test harness missing, the runner's output directories (`.pytest_cache/`, `coverage/`) are
+  foreseeable, so they join the fill item's `.gitignore` letter. Only a line step 1 could not predict, such as one
+  for a runner chosen on a stack step 1 left undetermined, is the late case.
 
 ### 3. Fill the gaps, in dependency order
 
