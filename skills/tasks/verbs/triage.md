@@ -22,7 +22,7 @@ dashboard is regenerated on the default branch when `close` merges.
 
 1. **Run the [Collection pass](../SKILL.md#collection-pass)** — gives you the file list, parsed frontmatter, status buckets, `inProgressTasks[]`, `byParent` map, and mode/provider info. Don't duplicate the enumeration here. **Always single-repo** — see § Args.
 
-2. **Build the counts table** from the buckets (the `blocked` row counts blocked tasks across states, as the Collection pass buckets them) — epics × statuses, stories × statuses, tasks × statuses. Use `—` for status/level pairs that don't apply (e.g. epics have no `todo` or `blocked`).
+2. **Build the counts table** from the buckets (the `blocked` row counts blocked tasks across states, as the Collection pass buckets them) — epics × statuses, stories × statuses, tasks × statuses. Use `—` for status/level pairs that don't apply (e.g. epics have no `todo` or `blocked`), and `0` for a pair that applies and has no items, never a blank. **The `blocked` cell carries its overlap note inside the cell, after the count**, since the template has no other slot for it: `1 (1 also counted in its own state)`, `3 (2 also counted in their own state)`, with `its` for one task and `their` for more. A count with no overlap is the bare number.
 
 3. **Build "In progress now"** from `inProgressTasks[]`. One bullet per task; a blocked one ends with `⚠ blocked: <reason>`, so stalled work does not read as active, and a taken one ([SKILL.md](../SKILL.md) § *Collection pass*) ends with `taken: <branch>`, because its file still reads `todo`:
    ```

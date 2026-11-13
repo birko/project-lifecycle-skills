@@ -9,6 +9,10 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 > so it is never forgotten; it cannot be started or finished until it is unblocked. Blocking is
 > how you hold work without cancelling it.
 
+**Neither direction commits.** The task file, and the dashboard step 6 regenerates, are left in the working tree.
+A block usually belongs with other work: the caller's own commit carries it, and [[fix-next]] commits its own
+blocks itself (its § *A run that ends without a fix*). Report the files left uncommitted.
+
 ## block — `/tasks block <ID>`
 
 1. **Find task root**; locate the TASK file by ID (Grep `^id: TASK-NNN[[:space:]]*$`).
@@ -37,9 +41,11 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
 
      > **Why is TASK-NNN blocked? One line: it becomes the `blocked:` value and the body note.**
 
-     **No answer, or nobody to ask:** block it anyway, with `blocked: reason unknown` and the note
-     `> Blocked {{today}} — reason unknown; nobody gave one when it was blocked.` (step 5), and say so in step 7:
-     `blocked: reason unknown added (no reason given, nobody chose one) — status stays <state>`. The
+     **No answer, or nobody to ask:** block it anyway, with `blocked: reason unknown`. Step 5 then writes
+     `> Blocked {{today}} — reason unknown; nobody gave one when it was blocked.`, and step 7 prints
+     `blocked: reason unknown added (no reason given, nobody chose one) — status stays <state>`. Each one
+     **replaces** that step's usual line, never sits beside it: it is the same line with the fact that nobody
+     chose the reason added. The
      invocation itself asked for the block, as in step 3. A block's reason is never empty (SKILL.md
      § *Writing a `blocked:` value*), so the fallback is written and marked as nobody's choice. Not
      blocking would replace the person's explicit act with the run's own decision. The `;` keeps every
@@ -52,8 +58,8 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
      splits one comment in two. Then **leave `status:` as it is**, so the task keeps
      the state its work is in — blocked is a flag beside the state, never a state of its own.
    - If `--on` given, merge the IDs into `depends-on: [...]` (validate each exists; warn on a missing/cancelled target).
-5. **Record the reason** — write a body note: `> Blocked {{today}} — <reason>` (runtime date), the reason step 3b
-   settled, never in its YAML quotes — quoting belongs to the frontmatter value alone. **Where:** directly under the
+5. **Record the reason** — write a body note: `> Blocked {{today}} — <reason>` (runtime date, and step 3b's fallback
+   note in its place when 3b fell back), the reason step 3b settled, never in its YAML quotes — quoting belongs to the frontmatter value alone. **Where:** directly under the
    task's `# Heading` line, above any earlier `>` note there, with a blank line on each side. That keeps it outside
    every `##` section (a note after the last section reads as part of it, usually the plan), and puts the newest
    note first.
@@ -68,7 +74,7 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
    from the newest comment starting with it. A failed remote call is reported by name and does not undo the
    local block, because the file is the record and the tracker mirrors it.
 6. **Regenerate dashboard** ([triage](triage.md)) — blocked tasks render `⚠ blocked` and drop out of "Next up".
-7. **Confirm** — print `blocked: <reason> added — status stays <state>`, any `depends-on` added, and the remote outcome when step 5b ran.
+7. **Confirm** — print `blocked: <reason> added — status stays <state>` (or step 3b's fallback form in its place), any `depends-on` added, the remote outcome when step 5b ran, and `uncommitted: <files>`.
 
 ## unblock — `/tasks unblock <ID>`
 
@@ -84,7 +90,7 @@ two directions: `/tasks block <ID>` and `/tasks unblock <ID>`.
    **Hybrid mode, no link** → say `no remote issue linked — nothing synced`, so a local unblock is never
    mistaken for a synced one. The same line applies to `block`'s step 5b.
 6. **Regenerate dashboard**.
-7. **Confirm** — print `blocked: <reason> removed — status stays <state>` (or, for the old form, `status: blocked → <state> (from history | answered | fallback, unchosen)`) and the note.
+7. **Confirm** — print `blocked: <reason> removed — status stays <state>` (or, for the old form, `status: blocked → <state> (from history | answered | fallback, unchosen)`), the note, and `uncommitted: <files>`.
 
 ## Edge cases
 
