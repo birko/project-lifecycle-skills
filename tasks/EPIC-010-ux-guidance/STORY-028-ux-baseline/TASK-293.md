@@ -1,7 +1,7 @@
 ---
 id: TASK-293
 parent: STORY-028
-feature: null
+feature: FEATURE-005
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
 status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
