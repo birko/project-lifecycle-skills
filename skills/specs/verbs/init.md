@@ -39,7 +39,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
    - Granularity: **capability, not class** — how many areas that yields is set by [SKILL.md](../SKILL.md) § *The area map*, never by a count. When the map has fewer areas than that section's typical range, say so in the confirmation: `<n> areas — one per capability found; fewer than the typical range, which describes projects and is not a target`. Each area = a name a stakeholder would recognize (`auth-session`, `bulk-filter-updates`), with source globs that collectively cover the behavioral code.
    - Propose an `ignore` list: build output, tests, generated code, vendored deps.
 
-4. **Present the proposed map** as a table (area · title · globs · rough file count). Check coverage: any source file matching neither an area nor `ignore` → list as unmapped and resolve each one by **extending an area**, **adding an area**, or **adding an `ignore` entry** — which of the three is a judgement, classified below; a file may join more than one area ([SKILL.md](../SKILL.md) § *The area map*). Where that reconciliation needs the user, put this question, once, over the whole unmapped list:
+4. **Present the proposed map** as a table (area · title · globs · rough file count). Check coverage: any source file matching neither an area nor `ignore` → list as unmapped and resolve each one by **extending an area**, **adding an area**, or **adding an `ignore` entry** — which of the three is a judgement, classified below; a file may join more than one area ([SKILL.md](../SKILL.md) § *The area map*). **A file that was never project source** (the categories step 4's classification names: build files, docs, deploy scripts, committed harness config, and a layer's own tracking files) **goes to `ignore` without a question**, and is listed in that classification. **The user is needed only for a file that may be behaviour**: source no area covers, or a close call the classification below names. Put this question, once, over those files alone:
 
    > **`<N>` files match no area and no ignore rule: `<paths>`. For each, is it behaviour that belongs in a capability area, or not project source?**
 
@@ -99,7 +99,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
    Note that `coverage: unverified` and an empty `areas:` list are different states: [SKILL.md](../SKILL.md) already treats an empty list as *absent* everywhere, so it cannot pose as validated. The key exists for the dangerous shape — a map that **looks** populated and blessed while nothing checked it.
 
-7. **Offer the first harvest** — suggest `/specs regen --all` (don't auto-run; the first regen on N areas is a real token spend the user should opt into).
+7. **Offer the first harvest** — suggest `/specs regen --all` (don't auto-run; the first regen on N areas is a real token spend the user should opt into). **Chained from an adoption, do not put it:** hand it back, and the adoption names `/specs regen --all` among its closing next steps. A question here would come after adoption's one round.
 
 ## Blessing
 

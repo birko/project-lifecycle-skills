@@ -71,7 +71,8 @@ These consequences decide behaviour:
 - **From outside you cannot see a version.** An artifact another skill owns may be present in an
   older shape than the layer now expects — a config written before a field existed looks complete
   from the outside. Where the artifact's row names a verb, step 3's delegation is what answers, so
-  leave the version question to it rather than guessing here (on a scoped run, which reaches no step 3, the row is
+  leave the version question to it rather than guessing here. In a full run's table such a row reads `present — <verb>
+  answers in step 3`, and the report carries what it answered (on a scoped run, which reaches no step 3, the row is
   `present, owner not asked`, per § *Scoped runs*); where no verb owns the shape, the
   thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
   § *Delegation follows the row, not the artifact's appearance*).
@@ -533,7 +534,8 @@ means step 3b was skipped.
 reported it. See [LAYER.md](../new-project/LAYER.md) § *Presence and shape, not content currency*
 for the line between them.
 
-Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit. **When `tasks/` does
+Then the next step: `/feature new` for stakeholder-facing work, `/tasks new` for a defined unit, and `/specs regen
+--all` when this run wrote a spec map (its first harvest, which `/specs init` hands back rather than asking). **When `tasks/` does
 not exist when the run ends**, there is nothing for either to write into, so name the adoption instead:
 `/adopt-project` to fill the layer, beginning with `tasks/`. That happens when a scoped run found it missing, or
 when the user declined its fill. A run that found `tasks/` present prints the line above, scoped or not.

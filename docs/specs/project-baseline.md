@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: f54d4309ada8536fdbf76347b68673587da467a1
+generated-at: 9b716b7f9278f41ef991483f27e6b3a657ad4355
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -683,7 +683,7 @@ The system SHALL derive, from what this run touched — created, landed or amend
 
 ### Requirement: The adoption report states outcomes, per-state reasons and defects separately
 
-The system SHALL open with the survey's run line and report outcomes under created, amended (with what changed inside), left alone (with why) and regenerated (naming file and verb, including declined or blocked ones); SHALL give each surveyed state not absorbed by those buckets its own bucket, owing today: where for `present, elsewhere`, the owner's delta and whether it was reconciled for `present, outdated`, the owner that would have answered for `present, owner not asked`, each path and whether its offer was taken for `present, uncommitted`, which of `unknown`/`missing` and why (and which kind of unknown), the re-derived reason for `missing, not offered`, what carried a derived No for `not applicable` (silent for a stated or declared No), and that absence is correct for `not applicable yet`; SHALL list defects in their own section with task ids; SHALL treat content staleness as an aside; and SHALL end with `/feature new` and `/tasks new` as next steps, or, when the run ends with no `tasks/`, with `/adopt-project` to fill the layer.
+The system SHALL open with the survey's run line and report outcomes under created, amended (with what changed inside), left alone (with why) and regenerated (naming file and verb, including declined or blocked ones); SHALL give each surveyed state not absorbed by those buckets its own bucket, owing today: where for `present, elsewhere`, the owner's delta and whether it was reconciled for `present, outdated`, the owner that would have answered for `present, owner not asked`, each path and whether its offer was taken for `present, uncommitted`, which of `unknown`/`missing` and why (and which kind of unknown), the re-derived reason for `missing, not offered`, what carried a derived No for `not applicable` (silent for a stated or declared No), and that absence is correct for `not applicable yet`; SHALL list defects in their own section with task ids; SHALL treat content staleness as an aside; and SHALL end with `/feature new` and `/tasks new` as next steps (plus `/specs regen --all` when it wrote a spec map), or, when the run ends with no `tasks/`, with `/adopt-project` to fill the layer.
 
 #### Scenario: Upgrade run
 

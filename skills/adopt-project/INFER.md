@@ -108,7 +108,11 @@ subsection, not the round.**
   same test [[new-project]] uses to keep or drop that subsection: a pure library or headless worker has none;
   a CLI or TUI whose output people read has one, read as *Output / UX*. Evidence that settles it: a UI
   framework or component library the source imports, view, template or markup files, or output formatted for
-  a reader → applies; none of these → dropped. A dropped subsection is **neither covered nor outstanding**: it
+  a reader → applies; none of these → dropped.
+  **A program that prints for a person to read has a surface, however plain its lines**, as [[new-project]] keeps
+  Output / UX for any CLI whose output humans read. So a `print` to the console settles it as applying, read as
+  *Output / UX*. Only output nobody reads directly (a log file, machine output piped to another program) leaves it
+  dropped. A dropped subsection is **neither covered nor outstanding**: it
   counts toward neither side, and the announcement names it with its evidence (`UI / UX — dropped: no
   human-facing surface; no UI import, no view files`). Evidence that settles neither way → **count it as
   applicable**, and say applicability was undetermined: including it costs one scoped item, while dropping it
