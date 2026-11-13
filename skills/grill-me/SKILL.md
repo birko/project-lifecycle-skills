@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: Interview the user relentlessly about a plan or design until reaching shared understanding, resolving each branch of the decision tree. Use when user wants to stress-test a plan, get grilled on their design, or mentions "grill me".
+description: Interview the user about a plan or design until every branch of its decision tree is resolved — in rounds of at most five numbered questions, each with a recommended answer, looking facts up rather than asking them. Use when the user wants to stress-test a plan, get grilled on a design, or says "grill me", "grill this plan", "poke holes in this", "grilni ma", "vyspovedaj ma z toho plánu", "prever mi ten plán", "rozober so mnou ten návrh". Works on any plan. Distinct from [[feature]] `new`, which captures an idea and runs this grill as one of its steps.
 ---
 
 Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving the dependencies between decisions. For each question, provide your recommended answer.
