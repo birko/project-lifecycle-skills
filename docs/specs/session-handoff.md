@@ -1,7 +1,7 @@
 ---
 area: session-handoff
-generated-at: 20c038b36b869ce21fee8cdd7d30bd0a8bcdfae9
-generated-on: 2026-10-06
+generated-at: 1648d29ee977f2ffbe3b1f8d5f38d05870bdc6b6
+generated-on: 2026-11-13
 sources:
   - skills/handoff/SKILL.md
 shaped-by: []
@@ -27,9 +27,9 @@ The system SHALL, when invoked, write a document that summarises the current con
 - **When** the handoff skill is invoked
 - **Then** a handoff document is written that summarises the conversation in enough detail for an agent without this session's context to continue the work
 
-### Requirement: Save the document to the OS temporary directory, never the workspace
+### Requirement: Save the document to the OS temporary directory under a stated name, and print its path
 
-The system SHALL save the handoff document to the temporary directory of the user's operating system and SHALL NOT save it in the current workspace. No file name, naming pattern or sub-folder is prescribed, and nothing is said about reporting the saved path back to the user.
+The system SHALL save the handoff document to the temporary directory of the user's operating system as `handoff-<YYYYMMDD-HHMM>-<slug>.md`, the slug naming the work in two to four words, SHALL NOT save it in the current workspace, and SHALL end by printing `handoff saved: <absolute path>`.
 
 #### Scenario: Invoked inside a project repository
 
@@ -37,11 +37,11 @@ The system SHALL save the handoff document to the temporary directory of the use
 - **When** the handoff document is saved
 - **Then** it is written under the OS temporary directory (for example `%TEMP%` on Windows, `/tmp` on Linux) and no file is added to the repository
 
-#### Scenario: The file name is left to the agent
+#### Scenario: Two handoffs, and the path reported
 
-- **Given** two handoffs are written from different sessions
+- **Given** two handoffs are written from different sessions on one day
 - **When** each is saved
-- **Then** each agent chooses its own file name, because the skill defines none
+- **Then** each is named `handoff-<date-time>-<slug>.md`, so they do not collide, and each run's last line is `handoff saved: <absolute path>`
 
 ### Requirement: Include a suggested-skills section
 
