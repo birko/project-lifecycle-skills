@@ -1,7 +1,7 @@
 ---
 area: specs-from-code
-generated-at: b928881a599848bdf33daf14d874c302914cf7d0
-generated-on: 2026-11-12
+generated-at: f54d4309ada8536fdbf76347b68673587da467a1
+generated-on: 2026-11-13
 sources:
   - skills/specs/SKILL.md
   - skills/specs/templates/map.yml
@@ -96,7 +96,7 @@ The system SHALL carry three coverage keys in the map — `coverage` (one of `ve
 
 ### Requirement: The scan universe is every file git tracks
 
-The system SHALL take the set of files to cover as every file git tracks, with `ignore` removing what does not belong; untracked files are out of scope.
+The system SHALL take the set of files to cover as every file git tracks, with `ignore` removing what does not belong; untracked files are out of scope, except paths a caller that just wrote them names to `init` (today an adoption, which commits nothing until its closing offer), which `init` counts and reports as written this run.
 
 #### Scenario: Untracked build artefact
 

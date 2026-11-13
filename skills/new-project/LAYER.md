@@ -841,8 +841,12 @@ way. Where a task does own the blocker, name it in the status line as informatio
 ## Ordering
 
 Ground truth and the agent guide first (later steps read them), then **`docs/features/`**, then
-`tasks init`, then `specs init` — the spec map wants the guide's architecture vocabulary, and
-`/tasks init` may need the task mode the guide records.
+`tasks init`, then every other fill, then `specs init` — the spec map wants the guide's architecture vocabulary,
+and `/tasks init` may need the task mode the guide records.
+
+**`specs init` comes after the other fills** because its map must cover the files they create. The adopter hands it
+the paths this run wrote (§ *The area map*'s exception in [[specs]]), since none of them is committed yet. Mapped
+before them, the map would report the run's own files as drift on the first commit.
 
 **Except the guide's `## Commands` section, which comes last.** Its token reads the build and test commands
 (§ *Filling a seed section's tokens*), and the test harness ([[populate-tests]] `adopt`) and the CI stub are

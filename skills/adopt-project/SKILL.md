@@ -163,7 +163,7 @@ complete.)
 
 **Every run ends its report with one verdict line**: `complete`; `nothing missing` (a scoped run with owners not
 asked); or `not complete: <n> missing, <n> unknown, <n> owner not asked`, listing only the counts that are not
-zero. A full run uses the same line as a scoped one, so two reports on one repo can be compared.
+zero. A `missing, not offered` row counts under *missing*: the artifact is still absent, whatever the reason. A full run uses the same line as a scoped one, so two reports on one repo can be compared.
 
 ### 2. Infer the conventions, then confirm them
 
@@ -307,6 +307,9 @@ its **"already present?"** column in the same file.
 The rules that bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
+- **Hand `/specs init` the paths this run created**, all of them untracked (a tracked file this run changed is
+  already in its scan), so its scan covers the repo the adoption
+  commit will make. [LAYER.md](../new-project/LAYER.md) § *Ordering* puts it after the other fills so the list is complete.
 - **A verb this step chains writes nothing into another file the repo owns.** Its own artifact is its to write.
   Lines it would add elsewhere come back as an offer and are reported with that file's row, under the same
   consent rule as every other amendment. Today the case is [[populate-tests]] `adopt`'s `.gitignore` entries for
@@ -449,7 +452,9 @@ go silently wrong the day the layer gains a row. Today's real edges: creating `d
 `tasks/README.md`'s feature slice and drift callout renderable, so [[tasks]] `triage` is re-run; landing an
 untracked task file adds a task the dashboard does not list, so `triage` is re-run too; `CHANGELOG.md` and
 `.gitignore` feed nothing, so landing or amending them puts nothing in the set; and `docs/specs/.map.yml`
-feeds the spec **bodies**, which stay an offer rather than a tail step — `/specs regen` is real token spend.
+feeds the spec **bodies**, which stay an offer rather than a tail step — `/specs regen` is real token spend. It also
+feeds both dashboards' drift callouts ([[roadmap]] reads the map), and `specs init` runs after the other fills, so a
+new or changed map re-runs `triage` and `/feature status` too.
 
 **Land before you regenerate.** A file in this set may also be `present, uncommitted`, and then the
 commit goes first — step 3's *landed, not rewritten* bullet owns that ordering and the reason it is not

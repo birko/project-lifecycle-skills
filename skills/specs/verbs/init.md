@@ -48,6 +48,11 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
    The verdict below already has the slot for this outcome, and taking it is how an unanswered question
    stays visible instead of becoming a clean-looking map.
 
+   **Chained with the paths a caller just wrote** ([SKILL.md](../SKILL.md) § *The area map*'s one exception), add them
+   to the tracked files before anything else, and say so in step 4's coverage line: `scan: <n> tracked + <m> written
+   this run by <caller>`, and count them in `tracked-files-at-scan`, which is the scan universe's size. Their mapping
+   follows the same rules as any file: mapped, ignored, or reported unmapped.
+
    **Resolve the scan set by the shared rules before counting anything** — [SKILL.md](../SKILL.md) § *The area map* owns all three, and they are not restated here: the scan is **every file git tracks**; every glob is matched as a git pathspec with **`:(glob)`**; and a **dot-prefixed path is an ordinary member**, not implicit noise. A count taken under any other reading is not reproducible, and an unreproducible count makes the verdict below worthless. Two independent drills each had to invent an answer to the first of these before they could count at all.
 
    **Always report how many files the scan examined — including zero — and end this step with exactly one `coverage:` verdict, the tree size, and the drift list.** *Zero files discovered* and *zero files unmapped* render identically, and only the second means anything, so the count is what separates them. The verdict is **total**: every run produces one, later steps branch on it, and there is no fourth outcome to improvise.
