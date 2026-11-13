@@ -14,8 +14,9 @@ that same layer — see [LAYER.md](../new-project/LAYER.md), the single definiti
 - *"We have code and none of this."* — first adoption.
 - *"We adopted this months ago and the layer has grown since."* — the same run, fewer gaps.
 
-So it is **idempotent by design**: re-run it any time. Nothing is ever overwritten and nothing is
-written unasked — but *idempotent* is not *read-only*: a repo with nothing **missing** can still have
+So it is **idempotent by design**: re-run it any time. Nothing is ever overwritten, and nothing the repo
+already owns is changed unasked. An artifact the layer lacks is created, because creating it is what the
+invocation asked for (step 3). *Idempotent* is not *read-only*: a repo with nothing **missing** can still have
 an artifact landed (present on disk, never committed) or reconciled by its owner (present in an older
 shape). A re-run that finds neither writes nothing at all.
 
@@ -199,7 +200,8 @@ here**: for a choice about an artifact the survey found missing, the missing row
 for one that lives *inside* a present artifact — today `integration:` and `workspace:`, and their row
 in [LAYER.md](../new-project/LAYER.md) is what names them — the declaration probe is.
 
-Ask about an artifact the survey found **missing**, or about **a declaration step 1 reported
+Ask the choice an artifact the survey found **missing** needs (which guide file, which licence), never
+whether to create it, or about **a declaration step 1 reported
 outstanding** — a repo that already has a guide is not asked which guide it wants, but a repo whose
 `tasks/.config.yml` predates the `integration:` field *is* asked for it, because nothing in the repo
 answers and the alternative is guessing from `git log`. **Step 1 is what establishes which of the two
@@ -211,6 +213,48 @@ surfacing inside step 3's delegation, which is the one-round rule below breaking
 Put the inferences and the choices in **one frontier round** ([[grill-me]]'s shape), not a queue of
 single questions. A 15-rule proposal asked one at a time becomes an interrogation, and the answers
 stop being considered somewhere around round six.
+
+**The fill offers join that round as one item.** Every offer to change a file the repo already owns
+that step 1 can foresee goes in. Today these are:
+- a guide section to append;
+- the README pointer;
+- `.gitignore` lines;
+- the `## Amendments` heading;
+- the paths of a `present, uncommitted` row to land;
+- any other offer a [LAYER.md](../new-project/LAYER.md) row's cell makes, such as the CI workflow or a
+  changelog backfill.
+
+Put them as a single itemised question:
+
+> **Shall I make any of these changes? Answer with the letters you want, or none.**
+> a) <the change, and the file it changes>
+> b) …
+
+It counts as **one** question toward [[grill-me]]'s limit of five, so the fills never push an inference
+or a declaration out of the round. **No answer, or nobody to ask:** make none of them, and report each
+under *left alone* as `offered, unanswered`. A change to someone's own file is never made by default.
+
+**Three kinds of question are not this round's, and each is stated rather than left to the run:**
+- **Creating an artifact the survey found missing is not an offer.** Running `/adopt-project` asked for
+  the layer, and a new file touches nothing the user wrote. Where the row's cell says to create it, create
+  it (step 3), report it as *created*, and leave committing to the adoption commit offer. **The row's cell
+  still decides what happens:** a cell that says *offer* stays an offer, in the item above, and a cell that
+  says *leave it* or *report* (`docs/architecture.md`) is left and reported, never created.
+- **The adoption commit offer is the run's closing question, after the report**, never in this round. It is
+  about what this run wrote, which does not exist yet when the round is put:
+
+  > **Shall I commit what this adoption wrote and changed as one commit? <the files>**
+
+  No answer, or nobody to ask: commit nothing, and end the report with `adoption commit: offered,
+  unanswered — nothing committed`.
+- **A question a delegated verb puts itself is asked at that delegation**, after this round. Today these
+  are [[specs]] `init`'s blessing and [[populate-tests]] `adopt`'s § Testing question. They cannot exist
+  before the verb has run, and each carries its own no-answer outcome (the map written `unverified`;
+  nothing added to the guide), which the run takes when nobody answers. This is the one exception to
+  the round, and it is narrow: a **declaration** an owner needs is still passed from here (above), never
+  left for its verb to ask. An offer that turns up only inside a delegation, such as `populate-tests`'
+  `.gitignore` lines, is not asked late either. Report it under *left alone* as `offered, not asked —
+  found after the round`.
 
 ### 3. Fill the gaps, in dependency order
 
@@ -406,7 +450,7 @@ Open the report with step 1's `run:` line, unchanged. Then report by outcome. Th
 |---|---|
 | **created** | what was written |
 | **amended** | a file the repo already owned, changed with the user's consent — and *what* changed inside it: a section appended, a section replaced, lines added. **Never report an amendment as a creation**; on the upgrade path amendment is the normal outcome, so this is the busiest bucket, not an exotic one |
-| **left alone** | why — "present already", "you declined" |
+| **left alone** | why — "present already", "you declined", `offered, unanswered` (step 2's fill item got no answer), `offered, not asked — found after the round` (an offer a delegation turned up) |
 | **regenerated** | a generated file this run re-derived because it touched one of its inputs (step 3c) — name the file *and* the verb that produced it. It needs its own name because the user did not write these files and should not have to work out why they moved; folding them into `amended` says they changed someone's own work, which is the opposite of true. **Report a declined or blocked regeneration here too** — silence reads as "nothing needed" |
 
 Then **one bucket per surveyed state the three above do not already absorb** — `present` is

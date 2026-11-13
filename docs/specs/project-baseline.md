@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: b5b35209126673931caa0caaca951075f2adabaf
+generated-at: 1c489ef8dd58b2de1252579cd70a2732890752cd
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -553,7 +553,7 @@ The system SHALL collect recurring domain nouns and suspected synonyms as glossa
 
 ### Requirement: Inferences and declarations go to the user in one frontier round
 
-The system SHALL put proposals, outstanding declarations (task-tracking mode, integration model, task workspace via the tasks init's verbatim question, canonical guide file, licence posture — each only when the survey found its artifact missing or its declaration outstanding), unresolved `unknown` conditions, undetermined guide sections and the empty `## Amendments` offer into one numbered round with recommended answers, never asking what reading the code would answer, and SHALL pass the answers to the owning verb (`/tasks init mode= integration= workspace= worktree-root=`) so nothing is asked twice; a skipped proposal round with one outstanding declaration SHALL still produce a one-question round.
+The system SHALL put proposals, outstanding declarations (task-tracking mode, integration model, task workspace via the tasks init's verbatim question, canonical guide file, licence posture — each only when the survey found its artifact missing or its declaration outstanding), unresolved `unknown` conditions, undetermined guide sections and the empty `## Amendments` offer into one numbered round with recommended answers, never asking what reading the code would answer, and SHALL pass the answers to the owning verb (`/tasks init mode= integration= workspace= worktree-root=`) so nothing is asked twice; a skipped proposal round with one outstanding declaration SHALL still produce a one-question round. Every foreseeable offer to change a file the repo owns SHALL join that round as one itemised question counting as one toward the five-question limit, none made and each reported `offered, unanswered` when nobody answers; creating an absent layer artifact SHALL need no offer; a question a delegated verb puts itself (the specs blessing, the testing-convention question) SHALL be asked at that delegation with its own no-answer outcome, and an offer found only there SHALL be reported, never asked late.
 
 #### Scenario: Dense rulebook, missing integration
 

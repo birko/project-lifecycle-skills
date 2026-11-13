@@ -3,7 +3,7 @@ id: TASK-102
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-09-01
@@ -14,6 +14,7 @@ findings: [DRILL-098-2, DRILL-098-3]
 pr: null
 github-issue: null
 jira-key: null
+picked-by: fix-next
 ---
 
 # Nothing says whether a step-3 fill offer joins step 2's round or comes after it
@@ -92,12 +93,12 @@ That is the interesting part and it should not be waved through.
 
 ## Acceptance criteria
 
-- [ ] Where a step-3 fill offer is asked is stated — in step 2's round, or at the fill, or a stated split — and the reason is given
-- [ ] The answer covers offers that **cannot** be known until the round has been answered, rather than assuming all are foreseeable
-- [ ] No second round is introduced, and the one-round rule's failure mode is not reachable by asking step 3's offers serially
-- [ ] Consistent with TASK-035's rule that a declaration is passed from step 2 rather than surfacing inside step 3's delegation
-- [ ] The measured instances both resolve without a runner having to reason it out: the `## Amendments` offer and the `present, uncommitted` landing offer
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Where a step-3 fill offer is asked is stated — in step 2's round, or at the fill, or a stated split — and the reason is given
+- [x] The answer covers offers that **cannot** be known until the round has been answered, rather than assuming all are foreseeable
+- [x] No second round is introduced, and the one-round rule's failure mode is not reachable by asking step 3's offers serially
+- [x] Consistent with TASK-035's rule that a declaration is passed from step 2 rather than surfacing inside step 3's delegation
+- [x] The measured instances both resolve without a runner having to reason it out: the `## Amendments` offer and the `present, uncommitted` landing offer
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -107,9 +108,112 @@ That is the interesting part and it should not be waved through.
 
 ## Human test plan
 
-- [ ] Cold-drill a repo with at least two step-3 offers available, expected answers withheld, and confirm the runner does not list offer placement among the things it had to decide
-- [ ] Confirm the run still produces one round, not two
+- [x] Cold-drill a repo with at least two step-3 offers available, expected answers withheld, and confirm the runner does not list offer placement among the things it had to decide
+- [x] Confirm the run still produces one round, not two
+  - **Both passed 2026-11-13.** Two cold full-adoption runs on fresh copies of `d065/adopted`, using the d065b full
+    brief and runner command, with `skills/` at this fix. Both left `CLAUDE.md` and `.gitignore` untouched and
+    committed nothing.
+    - **Coldness:** no skills listed and no Skill tool, both runs.
+    - **First run, `%LOCALAPPDATA%/Temp/d102`.**
+      - The round was one round, two items: the licence question and the a–g fill item.
+      - The specs blessing and the § Testing question were asked at their delegations.
+      - `.pytest_cache/` was reported as `offered, not asked — found after the round`.
+      - It still raised two placement points, both from this task's own wording. "Create it" collided with
+        `docs/architecture.md`'s *leave it* row, and the adoption commit offer had no stated place. Both were fixed.
+    - **Second run, `%LOCALAPPDATA%/Temp/d102b`, on the fixed text.**
+      - It left `docs/architecture.md` and reported it ("Row says leave and report").
+      - It ended with `adoption commit: offered, unanswered — nothing committed`.
+      - **None of its twelve undecided points is about where a question or offer goes.**
+    - **New one-runner readings, recorded here and not filed:**
+      - `.gitattributes` and `.editorconfig` content with no template;
+      - the `!.env.example` negation with that row not applicable;
+      - pinning with no manifest;
+      - the `## Commands` token's source column naming CI and manifests but not a runner config such as `pytest.ini`,
+        which TASK-354's ordering text implies;
+      - `architecture.md` `missing` versus `missing, not offered`;
+      - where empty Conventions subsections are recorded;
+      - timestamp-only regeneration;
+      - creating `docs/features/`;
+      - rendering empty generated sections;
+      - commented template blocks as fields;
+      - the specs scan set seeing nothing uncommitted;
+      - the "nothing at risk" phrasing.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-102` — leave empty until then._
+Written 2026-11-13 by `/fix-next` after the user's decision (Progress log). All changes are in `skills/adopt-project/SKILL.md`.
+
+1. **Step 2 — fill offers join the round as one item.** Every foreseeable offer to change an owned file is one
+   itemised question with a stated wording, counting as one toward grill-me's five. With no answer, none is made,
+   and each is reported as `offered, unanswered`.
+2. **Step 2 — creating is not an offer.** An absent layer artifact is created, because the invocation asked for it.
+   A row whose cell says *offer* stays an offer. The "Ask about an artifact the survey found missing" sentence is
+   narrowed to the *choice* such an artifact needs (which guide file, which licence).
+3. **Step 2 — the one exception.** A question a delegated verb puts itself (the specs blessing, populate-tests'
+   § Testing) is asked at that delegation, with its own no-answer outcome. Declarations stay passed from step 2.
+   An offer found only inside a delegation is reported as `offered, not asked — found after the round`, never asked
+   late.
+4. **The opening's promise** reads "nothing the repo already owns is changed unasked", and says absent artifacts
+   are created.
+5. **Step 4's *left alone* reasons** gain the two `offered …` values.
+6. **Respec `project-baseline`** for the round requirement.
+
+## Outcome
+
+**The fix (the user's decision, 2026-11-13: the recommendation on all three questions).** `/adopt-project` now says
+where every question it can put goes:
+- **Every foreseeable offer to change a file the user already owns** goes in the opening round as one itemised
+  question, "Shall I make any of these changes? a) … b) …". The guide sections, the README pointer, `.gitignore`
+  lines, the Amendments heading, landing uncommitted paths, CI and a backfill are all in it. It counts as one
+  question toward grill-me's five, and with no answer none is made.
+- **Creating a layer file that does not exist needs no question**, because running adoption asked for it. The row's
+  own cell still decides: *offer* rows are offers, and *leave it* rows (`docs/architecture.md`) are left.
+- **Three things are stated as outside the round:**
+  - questions a delegated skill puts itself (the spec-map blessing, the Testing section), asked when it runs, each
+    with its own safe no-answer outcome;
+  - offers that only appear inside a delegation, reported but not asked;
+  - the adoption commit, the closing question, with its wording and its no-answer outcome.
+
+**Step-6 split.**
+- **Text assertions:** 8 of 8 fail on `HEAD`'s copy and pass on the fix, all fix-dependent: the one item, it counting
+  as one, creating not being an offer, the delegation exception, late offers reported, the choice-not-creation
+  sentence, the row deciding creation, and the commit offer's place and wording. The script is
+  `task102-check.sh` in the session scratchpad.
+- **Behaviour:**
+  - **Before:** on the old text, three runners (d065b/full, d353, d354) each listed offer placement as undecided.
+  - **After:** the d102b runner did not.
+- **Contract pin, not evidence:** skills-lint.
+
+**Judgement calls.**
+- **The decision was asked, not taken.** It is the "convention that isn't settled" case the guardrail names. It was
+  put in plain language, one question per open point, with a recommendation each, and the user took all three.
+- **The cap is met by grouping, not by a second round.** The fills are one item, so the round keeps its five for
+  inferences and declarations. Two rounds is what this task's Context calls "the interrogation split in half".
+- **The delegation exception is narrow on purpose.** Declarations are still passed from step 2, as TASK-035 ruled.
+  Only questions that cannot exist before their verb runs are excepted, and each already has a stated no-answer path.
+- **An offer found after the round is reported, not asked**, so the one-round rule has no back door.
+
+**Close gate (inline, about 45 lines of prose in one file):**
+- **Standards:** every new ask-step states its question and its no-answer path, per § *An ask-step carries the
+  question it puts*. The row inventory stays in LAYER.md, and the fill list names its members as "today", pointing at
+  the rows' cells for the rest.
+- **Intent:** criteria met, including the two measured instances: the `## Amendments` offer and the
+  `present, uncommitted` landing are both items in the round.
+- **Correctness:** two problems this change introduced were found by the drill and fixed: the creation rule
+  colliding with *leave it* rows, and the commit offer's placement.
+- **Security, comments:** not applicable.
+- **CI:** `ci: main green — 1 workflow read`.
+
+**Flagged, not fixed.** The twelve one-runner readings under the Human test plan.
+
+## Progress log
+
+- step 2 — picked; ranked first among the remaining STORY-016 tasks (correctness-invariants, key 6 inert) because three drills on 2026-11-13 (d065b/full, d353, d354) each raised it again, so it now sits under more open readings than any other task in the pool (keys 1–2). Key 4 counts against it: the answer is a rule to design, so the guardrail path is taken (non-controversial work, then ask)
+- step 3 — verified: held, and wider than filed. Four open questions: where foreseeable offers to amend an owned file go; whether creating an absent layer file needs an offer at all (runners split); questions that exist only inside a delegation (specs blessing, populate-tests § Testing); grill-me's five-question cap against the one round
+- step <guardrail> — decision put to the user (2026-11-13), three questions, recommendation taken on each: (1) every foreseeable offer to change an owned file goes in step 2's round as one itemised item; (2) creating an absent layer file needs no offer — the invocation asked for it; (3) questions that exist only inside a delegation (specs blessing, populate-tests § Testing) are asked there, as a stated exception, each with its own no-answer outcome
+- step 3b — planned: written after the decision (one file, five criteria)
+- step 4 — layer: local
+- step 5 — fix in skills/adopt-project/SKILL.md (opening, step 2 fill item and its two exceptions, the missing-artifact sentence, step 4 left-alone reasons)
+- step 6 — reverted fix (HEAD copy): 8/8 assertions failed; fix-dependent = F1–F8; contract pins = skills-lint. Behaviour: three runners raised offer placement on the old text; d102b (fixed) did not
+- step 7 — respecced project-baseline (Inferences and declarations go to the user in one frontier round), surgical, restamped; intended — the user's decision
+- step 8 — handed to /tasks close --unattended; outcome in status:, commit in git log
