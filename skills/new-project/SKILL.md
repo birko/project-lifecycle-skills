@@ -159,7 +159,7 @@ no-op.) This makes the CI gate and the lifecycle's **PROVE** leg
 (`/populate-tests populate`) have something to run. Skip for docs-only.
 
 **CI stub** — **whether to offer one at all is [LAYER.md](LAYER.md)'s CI row, not this step's call.** Read that row and its § *CI a repo cannot pass*: they carry the condition, the check and the reason. Obey them; never write a workflow they forbid, and do not re-argue the case here.
-- **Run that check *after* the stack scaffolder, not before.** A brand-new repo has no manifests to inspect at intake, but the scaffolder above has already written them by the time you reach this bullet — a `$(BirkoSrc)`-style import, a Cargo `path =`, an npm `file:` — so this is a manifest read here exactly as it is on the adoption side, **not** a question to put to the user.
+- **Run that check *after* the stack scaffolder, not before.** A brand-new repo has no manifests to inspect at intake, but the scaffolder above has already written them by the time you reach this bullet — a `$(SharedSrc)`-style import, a Cargo `path =`, an npm `file:` — so this is a manifest read here exactly as it is on the adoption side, **not** a question to put to the user.
 - **When the check forbids it, skip the stub** — and don't announce it here. Step 6's checklist owns that line; a workflow plus an apology is the outcome to avoid, and so is silence.
 - **When the check allows it**, the creation detail is this step's: a minimal `.github/workflows/ci.yml` (or the host's equivalent) running **install → build → test** on push/PR, matched to the stack — `dotnet restore/build/test`, `npm ci && npm run build && npm test`, `uv sync && pytest`, `cargo build && cargo test`, `go build ./... && go test ./...`. Keep it to one job; the user expands it later. Skip for docs-only, and ask before assuming a non-GitHub CI host.
 
@@ -206,7 +206,7 @@ no-op.) This makes the CI gate and the lifecycle's **PROVE** leg
     suppresses the fill, the offer and any re-ask — and it is the only place a reader can catch a
     component that was classified wrongly. Naming the evidence costs one line and is the only check
     there is; see [LAYER.md](LAYER.md) § *Conditional rows*, the No-direction table.
-  - **If the CI stub was skipped under [LAYER.md](LAYER.md)'s isolation rule, state it here — once — with the offending dependency named** (*"no CI workflow: the build imports `$(BirkoSrc)`, which a runner cannot obtain"*), so the absence reads as a decision rather than an oversight. This is the greenfield counterpart of the `missing, not offered` row [[adopt-project]] reports, and it exists for the same reason: an unexplained gap gets "fixed" by the next person, who reintroduces the permanently-red workflow.
+  - **If the CI stub was skipped under [LAYER.md](LAYER.md)'s isolation rule, state it here — once — with the offending dependency named** (*"no CI workflow: the build imports `$(SharedSrc)`, which a runner cannot obtain"*), so the absence reads as a decision rather than an oversight. This is the greenfield counterpart of the `missing, not offered` row [[adopt-project]] reports, and it exists for the same reason: an unexplained gap gets "fixed" by the next person, who reintroduces the permanently-red workflow.
 
 ## What it deliberately does NOT do
 

@@ -788,7 +788,7 @@ path blocks CI only when nothing in the repo would put the target on the runner:
 |---|---|---|
 | `$(NuGetPackageRoot)…` | yes — `dotnet restore`, which is the workflow's own first step | **no** |
 | `$(MSBuildExtensionsPath*)`, `$(MSBuildThisFileDirectory)`, `$(MSBuildProjectDirectory)`, `$(MSBuildSDKsPath)` | yes — the SDK defines them | **no** |
-| `$(BirkoSrc)`, `%SOME_SRC%` — a sibling source tree named by an env var | no | **yes** |
+| `$(SharedSrc)`, `%SOME_SRC%` — a sibling source tree named by an env var | no | **yes** |
 | a relative path resolving outside the repo root | no | **yes** |
 
 Judge an unfamiliar variable by the question, not by whether it appears above. **And never scan `obj/`

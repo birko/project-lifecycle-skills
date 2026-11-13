@@ -255,6 +255,15 @@ that justified itself with three named repos disqualified all three as fixtures 
 measurement fingerprinted its fixture so precisely (*"holds only `docs/` and `tasks/`… 343 projects"*) that
 the runner recognised itself.
 
+**And an example in skill text is invented, never copied from a repo the skill is drilled on.** The same
+contamination arrives through the instructions: a runner that meets the example's line in the fixture copies the
+example's output instead of applying the rule, so the drill passes whether the rule works or not, and nothing shows
+it was compromised. Invent the paths, names and values (`../Acme.Data.Sql`, `$(SharedSrc)`, a 2031 date).
+**What stays is evidence:** a real repo cited as the reason for a rule (a count, a measured outcome, *"all 31 areas
+carried `shaped-by: []`"*) is not an example, because it gives a runner no line to match and no answer to copy.
+Measured: a drill's runner reported that a skill's example path *"even matched this repo's path"*. It had been
+lifted from that drill's own fixture.
+
 Three corollaries, each measured:
 
 - **Contamination is per *question*, not per repo.** A repo named for its guide can still drill an unrelated

@@ -2,21 +2,21 @@
 
 > ⚠ **Feature drift (2):** EPIC-001, EPIC-010 DV5 — tasks tracked in one tree only, with no feature folder and no `feature:` link — run `/roadmap --check`.
 
-_Generated 2026-11-13 18:57. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-13 19:06. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
 | planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 39                  |
+| todo         | —                  | —                  | 38                  |
 | in-progress  | 4                  | 10                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 308                 |
+| done         | 4                  | 13                 | 309                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 26× P2 · 13× P3.
+`todo` by priority: 25× P2 · 13× P3.
 
 ## In progress now
 
@@ -96,7 +96,7 @@ _None_
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
 
-- EPIC-002 Close-gate findings on the skill set — in-progress (94/123 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (95/123 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — 2/2 done (done)
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
@@ -217,7 +217,7 @@ _None_
     - [x] TASK-363 Three more adoption readings that a second cold runner has now raised
     - [x] TASK-364 Two rules set today meet at the `## Commands` offer and at a runner's `.gitignore` line
     - [ ] TASK-365 Four more adoption readings that a second cold runner has now raised
-  - (epic level) — 6/10 done
+  - (epic level) — 7/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
@@ -225,7 +225,7 @@ _None_
     - [x] TASK-126 Sweep every template for a shipped value its own skill says must be declared or derived
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [ ] TASK-132 Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
-    - [ ] TASK-210 Examples in skill text are invented, never lifted from a repo the skill is drilled on
+    - [x] TASK-210 Examples in skill text are invented, never lifted from a repo the skill is drilled on
     - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
     - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 

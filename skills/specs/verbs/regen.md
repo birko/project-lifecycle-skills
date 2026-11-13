@@ -115,8 +115,8 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    step 3 runs this same check and points here.
 
    **Glob the trees the map's own globs reach — not just the project root.** Derive the search roots from
-   the `sources:` entries themselves (for `../Birko.Data.SQL/SQL/Connectors/X.cs`, the root is
-   `../Birko.Data.SQL`), then report files under those roots that no glob matches. Two failure modes this
+   the `sources:` entries themselves (for `../Acme.Data.Sql/Sql/Connectors/X.cs`, the root is
+   `../Acme.Data.Sql`), then report files under those roots that no glob matches. Two failure modes this
    closes, both measured on a real project:
    - **A polyrepo aggregator has no sources of its own.** Globbing the project root there finds **zero**
      files, so the check reports "nothing unmapped" on every run, forever — a silent pass that reads as

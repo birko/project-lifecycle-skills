@@ -60,7 +60,7 @@ Non-git projects: there is no commit to anchor on, so compare file mtimes agains
 
 ### Pathspecs are not globs
 
-`.map.yml` sources are written as globs — `src/**/*.cs`, `../Birko.Data.SQL/**/*.cs` — and a git **pathspec** is not a glob unless you say so. By default git matches it with `*` crossing `/`, so `src/**/*.cs` requires a literal `/` after `src/` and **silently fails to match a file sitting directly in `src/`**:
+`.map.yml` sources are written as globs — `src/**/*.cs`, `../Acme.Data.Sql/**/*.cs` — and a git **pathspec** is not a glob unless you say so. By default git matches it with `*` crossing `/`, so `src/**/*.cs` requires a literal `/` after `src/` and **silently fails to match a file sitting directly in `src/`**:
 
 ```
 src/Stores/Store.cs    matched by  src/**/*.cs          ✓  (nested — looks like it works)
@@ -78,8 +78,8 @@ So each external repo carries its own baseline, in an optional frontmatter map k
 
 ```yaml
 source-commits:
-  ../Birko.Data.SQL: d8c2f40
-  ../Birko.Data.MongoDB: 88f96ee
+  ../Acme.Data.Sql: d8c2f40
+  ../Acme.Data.Mongo: 88f96ee
 ```
 
 Per external source glob:
@@ -88,7 +88,7 @@ Per external source glob:
 2. Look that prefix up in `source-commits`. **Absent → stale (unknown baseline)** for that repo, named as such. Do *not* fall back to `generated-at`: a sha from another repo either fails to resolve or, far worse, resolves to an unrelated commit.
 3. `git -C <repo-root> diff --name-only <sha>..HEAD -- ':(glob)<glob relative to that root>' ...` — non-empty → **stale**. Same `:(glob)` requirement as step 4.
 
-Report external staleness **per repo**, not merged: *"3 changed in `../Birko.Data.SQL`, 1 in `../Birko.Data.MongoDB`"* tells you where to look; a single total does not.
+Report external staleness **per repo**, not merged: *"3 changed in `../Acme.Data.Sql`, 1 in `../Acme.Data.Mongo`"* tells you where to look; a single total does not.
 
 **Backwards-compatible by construction.** A project whose sources are all in-repo never reaches step 5 and behaves exactly as before, so `source-commits` is absent from most specs and that is correct — flag its absence only for areas that actually have external sources.
 

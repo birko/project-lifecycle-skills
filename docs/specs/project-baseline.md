@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 2deb103cf3003a9170e06d85c64324a22063d20e
+generated-at: 4af49680d5ff757a98128fbf0f1c9627340f78cc
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -231,9 +231,9 @@ The system SHALL invoke a confirmed stack scaffolder and let its layout win (no 
 
 #### Scenario: Scaffolder imports a sibling tree
 
-- **Given** the chained stack scaffolder writes a project importing `$(BirkoSrc)\Birko.Helpers\Birko.Helpers.projitems`
+- **Given** the chained stack scaffolder writes a project importing `$(SharedSrc)\Shared.Helpers\Shared.Helpers.projitems`
 - **When** the CI bullet is reached
-- **Then** no workflow is written, and the closing checklist says once that CI was skipped because the build imports `$(BirkoSrc)`
+- **Then** no workflow is written, and the closing checklist says once that CI was skipped because the build imports `$(SharedSrc)`
 
 #### Scenario: Go project
 
@@ -627,7 +627,7 @@ The system SHALL offer a minimal install → build → test workflow to a repo w
 
 #### Scenario: Blocker later fixed
 
-- **Given** a previous run reported `missing, not offered` for `$(BirkoSrc)` and the team has since vendored the framework
+- **Given** a previous run reported `missing, not offered` for `$(SharedSrc)` and the team has since vendored the framework
 - **When** adoption is re-run
 - **Then** the paths resolve inside the root and the CI offer returns without anything having been recorded
 
