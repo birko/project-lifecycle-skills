@@ -75,9 +75,10 @@ Compact terminal view — counts, what's active, what's next. Renders to stdout 
    In progress: <list or "(none)">          ← a blocked one carries "⚠ blocked: <reason>", a taken one "taken: <branch>"
    Awaiting verification: <list or "(none)">
 
-   Next up (top 3 by priority, blocked excluded):
+   Next up (top 3 in task order, blocked excluded):
      TASK-NNN  <title>  <priority>  <assignee>
      ...
+     ordered by id where priority and created tie: <ids> (+<n> not shown) — nobody ranked them   ← only on a tie, § Collection pass
    ```
 2b. **In `--across` mode**, the header names the declared root and how many projects participated, and
    every id in the body is rendered `<repo>/TASK-NNN`. A project without a `tasks/` tree is counted in
@@ -181,9 +182,29 @@ from every project at once to answer a question only occasionally asked.
      this repo, which has a `P3` todo task, so a three-bucket breakdown would have counted 21 of 22.
 5. **Build indexes** other steps need:
    - `inProgressTasks[]` — TASKs with `status: in-progress`, **plus every taken task** (below), each taken one
-     carrying the branch that took it, sorted by priority then created
+     carrying the branch that took it, sorted in **task order** (below)
    - `inReviewTasks[]` — TASKs with `status: review` or `status: verify` (code done, awaiting sign-off). **Under `workspace: worktree`, also any task whose own branch copy reads `verify` or `review`** (`git show task/TASK-NNN:<task file>`). A close parked in a worktree writes `verify` on the task branch only, so the default branch's copy still reads `in-progress` (or `todo` with an upstream), and the debt would otherwise be invisible.
-   - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted P0→P1→P2 then created asc
+   - `nextUpTasks[]` — TASKs with `status: todo` (NOT blocked by either form, NOT taken — below), sorted in **task order**
+   - **Task order: one total order, used by every list of tasks**, here and in any verb that lists tasks (`pick`
+     points here). Three keys, in order:
+
+     | Key | Order |
+     |---|---|
+     | `priority` | P0 first, then every other value present in its natural order (P0→P1→P2→P3→…), with no priority last. Never a fixed set: the step-4 rule above, for the same reason |
+     | `created` | oldest first |
+     | id | the number, lowest first, so `TASK-9` comes before `TASK-10`. Under `--across`, ties on the number break by repo name, since ids collide across repos and only `<repo>/TASK-NNN` is unique |
+
+     **The id key always settles a tie, and that is why it is there.** `created` is a date with no time, and
+     `/tasks intake` files a whole pass on one date, so priority and date tie routinely. Without a final key a
+     list is not ordered at all, and two runs over one tree show a different "Next up". The id carries no
+     judgement: it makes runs agree, nothing more.
+     **So a ranked view says when the id decided something a reader can see.** A view that a person reads as a
+     ranking (the snapshot's "Next up", `pick`'s numbered list) prints one line under the list whenever two
+     tasks tie on priority and `created` and at least one of them is shown:
+     `ordered by id where priority and created tie: TASK-012, TASK-013 (+2 not shown) — nobody ranked them`.
+     List the tied tasks that are shown. Then count the tasks the cut left out that tie with a shown one: a
+     hidden pair that ties only with each other changes nothing a reader sees. A list that is not read as a
+     ranking (in progress, awaiting verification, the dashboard tree) uses the same order and prints no line.
    - **Taken** — a `todo` TASK whose `task/TASK-NNN` branch exists, locally (`git branch --list`) or on a
      remote (`git branch -r --list "*/task/TASK-NNN"`). In a project whose default branch tracks a remote,
      another clone's pick shows only as that pushed branch: the default branch's file still reads `todo`

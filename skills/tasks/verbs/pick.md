@@ -92,9 +92,11 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
    `review` (or `verify`) is reported by 2b as verification debt instead, and not on the in-progress line.
    **Neither is also listed under `taken (hidden)`** — not a task on the in-progress line, and not a task 2b
    reports as debt. Listed there too, this machine's own work would read as another clone's. With an upstream this matters most: the
-   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), parent IDs (story + epic), priority, assignee, file path.
+   default branch's copy still reads `todo`, so the task looks free and would otherwise be listed as taken. For each, capture: id, title (first `# Heading` after the frontmatter — never a `# …` comment inside it), parent IDs (story + epic), priority, assignee, `created`, file path.
 
-4. **Present numbered list** ordered by priority (P0 first), then created date:
+4. **Present numbered list** in **task order** ([SKILL.md](../SKILL.md) § *Collection pass* step 5), so the
+   numbering is the same on every run. When that section's tie line applies, print it under the list. The
+   list's shape:
    ```
    1. TASK-001 JWT issuance on login (P1, agent)
       EPIC-001 Authentication → STORY-001 Password login
