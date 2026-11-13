@@ -18,7 +18,7 @@ for adoption — **what to do when the repo already has one**.
 | Artifact | Owner | Already present? |
 |---|---|---|
 | `README.md` | — | **Leave it.** Offer to append a short "How we work" pointer at the end; never rewrite a human's README. |
-| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Add missing `##` sections, rendered per § *Filling a seed section's tokens*; never touch an existing one's content. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** **A companion the guide links (`CLAUDE-*.md` and the like) is part of this one artifact** — not a separate row, not `present, elsewhere` — and is classified by **existence and role only** — its prose is content, not shape. See § *Location is orthogonal too*. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
+| Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Offer the missing `##` sections, rendered per § *Filling a seed section's tokens*; never touch an existing one's content. **Adding a section amends a file the repo owns, so it is offered, never written unasked:** one itemised offer naming each missing section, a subset acceptable, put in [[adopt-project]] step 2's round, since step 1 already knows which sections are missing. No answer, or nobody to ask → append nothing, and report each section under *left alone* as `offered, unanswered`. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** **A companion the guide links (`CLAUDE-*.md` and the like) is part of this one artifact** — not a separate row, not `present, elsewhere` — and is classified by **existence and role only** — its prose is content, not shape. See § *Location is orthogonal too*. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
 | `docs/architecture.md` | — | Leave it; report if absent. |
 | `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
@@ -836,6 +836,11 @@ way. Where a task does own the blocker, name it in the status line as informatio
 Ground truth and the agent guide first (later steps read them), then **`docs/features/`**, then
 `tasks init`, then `specs init` — the spec map wants the guide's architecture vocabulary, and
 `/tasks init` may need the task mode the guide records.
+
+**Except the guide's `## Commands` section, which comes last.** Its token reads the build and test commands
+(§ *Filling a seed section's tokens*), and the test harness ([[populate-tests]] `adopt`) and the CI stub are
+fills that create them. Rendered with the rest of the guide, it says *None found* on the same run that goes on to
+write `pytest.ini` and a workflow. So render it after every fill, from what the repo holds by then.
 
 **`docs/features/` before `tasks init`, not after**, because `tasks/README.md`'s content depends on it:
 [[tasks]] `triage` renders a feature-aware slice and a drift callout **only when `docs/features/`

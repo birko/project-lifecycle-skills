@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 118e7f809cf93e37cae26f67cd2c5e6969150914
+generated-at: b5b35209126673931caa0caaca951075f2adabaf
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -569,7 +569,7 @@ The system SHALL put proposals, outstanding declarations (task-tracking mode, in
 
 ### Requirement: Gaps are filled in dependency order by delegation, never overwriting
 
-The system SHALL fill in the inventory's order — brief and agent guide, then `docs/features/`, then `/tasks init`, then `/specs init`; SHALL never overwrite a file the repo owns, reporting the conflict instead; SHALL not fill an `unknown` row; SHALL always delegate where a row names a verb regardless of presence, unless the row's own cell states a terminating condition (a working test runner is already adopted); SHALL suppress a prescribed action when the repo already carries what it would produce, reporting the suppression, while firing it when unsure; and SHALL map the owner's answer to the report — already current → `present`, brought up to date → `amended`, created → created, declined or impossible → stays `present, outdated`, unable to tell → `unknown` naming the verb.
+The system SHALL fill in the inventory's order — brief and agent guide, then `docs/features/`, then `/tasks init`, then `/specs init`, with the guide's `## Commands` section rendered after every fill so it reads the harness and CI those fills create; SHALL never overwrite a file the repo owns, reporting the conflict instead; SHALL offer a missing guide section rather than append it, appending nothing with no answer and reporting each as offered and unanswered; SHALL let no chained verb write into another file the repo owns, taking such lines back as an offer; SHALL not fill an `unknown` row; SHALL always delegate where a row names a verb regardless of presence, unless the row's own cell states a terminating condition (a working test runner is already adopted); SHALL suppress a prescribed action when the repo already carries what it would produce, reporting the suppression, while firing it when unsure; and SHALL map the owner's answer to the report — already current → `present`, brought up to date → `amended`, created → created, declined or impossible → stays `present, outdated`, unable to tell → `unknown` naming the verb.
 
 #### Scenario: README already has the pointer
 

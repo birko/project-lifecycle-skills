@@ -212,7 +212,7 @@ The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [
 
 ### Requirement: Adopt wires the harness idempotently
 
-The system SHALL, in `adopt`, detect the stack and scaffold the test directory, the runner config, and a pinned dev-dependency on the runner. Where § Testing names a shared or in-house toolkit, it SHALL follow that toolkit's own adoption doc. If the test directory or runner config already exists, it SHALL do nothing. Whatever the stack, the harness SHALL honour these invariants: one runner instance (injected into any source-linked helper), a runtime the runner supports, a module mode compatible with the runner, and the runner's output directories added to `.gitignore`. One-time prerequisites SHALL be documented in the test directory's README.
+The system SHALL, in `adopt`, detect the stack and scaffold the test directory, the runner config, and a pinned dev-dependency on the runner. Where § Testing names a shared or in-house toolkit, it SHALL follow that toolkit's own adoption doc. If the test directory or runner config already exists, it SHALL do nothing. Whatever the stack, the harness SHALL honour these invariants: one runner instance (injected into any source-linked helper), a runtime the runner supports, a module mode compatible with the runner, and the runner's output directories added to `.gitignore`, offered rather than written when the run was chained from adoption. One-time prerequisites SHALL be documented in the test directory's README.
 
 #### Scenario: Re-running adopt
 

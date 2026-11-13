@@ -80,6 +80,16 @@ That is the interesting part and it should not be waved through.
   `d065b/scoped` that report carried the `.gitignore` and CI offers but not the README "How we work" pointer, and its
   README row read plain `present`. Whether a fill offer counts as a step-2 question decides whether that is an omission.
 
+### One more instance, 2026-11-13 (TASK-354's full-pass re-drill, `%LOCALAPPDATA%/Temp/d354`)
+
+- **The round's size limit.** [[grill-me]] says "**At most five questions in a round.**", and adoption puts every
+  inference and choice in one round. With the guide-section offer now pinned to step 2 (TASK-354), the runner kept
+  only inferences and declarations in the round, three items. It moved every other row offer (the README pointer,
+  `.gitignore`, the CHANGELOG backfill, CI) to step 3, citing that limit. Whatever this task decides has to say what
+  happens when the round would exceed five.
+- The same runner again raised questions arising inside delegations (the specs blessing, populate-tests' § Testing),
+  and step 3's "Create if absent" rows against "nothing is written unasked".
+
 ## Acceptance criteria
 
 - [ ] Where a step-3 fill offer is asked is stated — in step 2's round, or at the fill, or a stated split — and the reason is given

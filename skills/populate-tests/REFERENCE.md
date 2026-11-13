@@ -41,7 +41,9 @@ Whatever the stack, the harness MUST honor the invariants below (they're what tu
 - **Runner-compatible module mode** — don't force a module mode that breaks the runner's own transform
   (e.g. a pure-ESM test package can break named imports from a CJS runner).
 - **Ignore generated dirs** — add the runner's output dirs (results/report/auth-state/`node_modules`)
-  to `.gitignore`.
+  to `.gitignore`. **Chained from [[adopt-project]], offer the lines instead of writing them**: adoption writes
+  nothing into a file the repo owns unasked (its step 3), so hand the lines back to it to offer with its
+  `.gitignore` row.
 
 Document the project's own one-time pre-reqs (install deps, install the browser/SDK) in its test dir's
 README so a fresh checkout can run the suite.

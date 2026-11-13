@@ -221,6 +221,12 @@ its **"already present?"** column in the same file.
 The rules that bind the whole step:
 
 - **Never overwrite a file the repo already owns.** Report the conflict; let the user resolve it.
+- **A verb this step chains writes nothing into another file the repo owns.** Its own artifact is its to write.
+  Lines it would add elsewhere come back as an offer and are reported with that file's row, under the same
+  consent rule as every other amendment. Today the case is [[populate-tests]] `adopt`'s `.gitignore` entries for
+  the runner's output. Writing them would make a delegation the one path that amends a user's file unasked.
+- **A missing guide section is offered, not appended** — [LAYER.md](../new-project/LAYER.md)'s agent-guide row
+  owns the offer and its no-answer outcome.
 - **A row's action does not fire when the repo already carries what it would produce** — and the report says it was suppressed and why. See [LAYER.md](../new-project/LAYER.md) § *A prescribed action is suppressed when the repo has already done it*. Where you cannot tell, it fires: an unnecessary offer costs one *no*, a suppressed necessary one costs the artifact.
 - **A seed section this run adds to the guide is rendered, never copied raw.** Fill each `{{…}}` from the
   adopter's column of [LAYER.md](../new-project/LAYER.md) § *Filling a seed section's tokens*, write its
