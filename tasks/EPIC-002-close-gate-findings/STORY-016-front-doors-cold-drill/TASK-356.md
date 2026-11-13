@@ -45,6 +45,10 @@ because all of them are about what the survey decides or where the report puts i
 | DRILL-102-6 | a scoped run prints "one line per step that did not run". Whether 3b and 3c count as steps is unstated | d065b/scoped, d353 |
 | DRILL-102-7 | the `.gitignore` row says to offer the lines. A scoped run writes nothing, and whether it still names the offer is unstated | d065b/scoped, d353 |
 
+**Added 2026-11-13 from TASK-360's drill (`%LOCALAPPDATA%/Temp/d360`, point 1):** DRILL-102-3's missing wording
+covers the **task mode** question too, when adoption puts it in its own round. Its runner borrowed wording from
+`tasks`' mode-detection flow and from `new-project`'s intake.
+
 ## Acceptance criteria
 
 - [ ] DRILL-102-1 … 7 each have one stated answer, in the file that owns the rule (`LAYER.md` for a row's state,

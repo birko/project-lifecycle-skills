@@ -214,8 +214,8 @@ Put the inferences and the choices in **one frontier round** ([[grill-me]]'s sha
 single questions. A 15-rule proposal asked one at a time becomes an interrogation, and the answers
 stop being considered somewhere around round six.
 
-**The fill offers join that round as one item.** Every offer to change a file the repo already owns
-that step 1 can foresee goes in. Today these are:
+**The fill offers join that round as one item.** Every offer that step 1 can foresee goes in: each change to
+a file the repo already owns, and each offer a row's cell makes about a file this run creates. Today these are:
 - a guide section to append;
 - the README pointer;
 - `.gitignore` lines;
@@ -233,6 +233,20 @@ Put them as a single itemised question:
 It counts as **one** question toward [[grill-me]]'s limit of five, so the fills never push an inference
 or a declaration out of the round. **No answer, or nobody to ask:** make none of them, and report each
 under *left alone* as `offered, unanswered`. A change to someone's own file is never made by default.
+
+**The setup questions do not count toward the five.** These are the declarations listed above (task mode,
+integration model, task workspace, guide file, licence posture). Each is fixed-choice, and none is answered by default when nobody
+answers, so they go in as one short block that [[grill-me]]'s limit does not cover. The licence question is one
+of them even when it reaches the round through the `LICENSE` row's `unknown`. The limit
+protects attention for open questions: inference proposals, `unknown` rows and the fill item, which share the
+five. A first adoption of a bare repo needs every declaration at once, so counting them would push the fills out
+or split the setup over two rounds, the interrogation this round exists to prevent.
+
+**A question that depends on another answer in the same round is put conditionally.** Today that is the workspace
+question when integration is asked too, because [[tasks]] `init` skips workspace under `single-branch`. Prefix it
+`If you chose pr-per-task:`. Use its answer only when integration ends up `pr-per-task`, answered now or already
+declared. Otherwise write nothing for it, and report `workspace undeclared — tasks work in place (not asked:
+single-branch)`, or `(integration unanswered)`.
 
 **Three kinds of question are not this round's, and each is stated rather than left to the run:**
 - **Creating an artifact the survey found missing is not an offer.** Running `/adopt-project` asked for

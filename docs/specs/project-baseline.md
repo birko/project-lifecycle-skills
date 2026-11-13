@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 131a28dc4fc9c21716bc0ae5f263b5aabee55587
+generated-at: 12f9f91c6354754b3efc0ad80e3546ed0e571572
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -553,7 +553,7 @@ The system SHALL collect recurring domain nouns and suspected synonyms as glossa
 
 ### Requirement: Inferences and declarations go to the user in one frontier round
 
-The system SHALL put proposals, outstanding declarations (task-tracking mode, integration model, task workspace via the tasks init's verbatim question, canonical guide file, licence posture — each only when the survey found its artifact missing or its declaration outstanding), unresolved `unknown` conditions, undetermined guide sections and the empty `## Amendments` offer into one numbered round with recommended answers, never asking what reading the code would answer, and SHALL pass the answers to the owning verb (`/tasks init mode= integration= workspace= worktree-root=`) so nothing is asked twice; a skipped proposal round with one outstanding declaration SHALL still produce a one-question round. Every foreseeable offer to change a file the repo owns SHALL join that round as one itemised question counting as one toward the five-question limit, none made and each reported `offered, unanswered` when nobody answers; creating an absent layer artifact SHALL need no offer; a question a delegated verb puts itself (the specs blessing, the testing-convention question) SHALL be asked at that delegation with its own no-answer outcome, and an offer found only there SHALL be reported, never asked late.
+The system SHALL put proposals, outstanding declarations (task-tracking mode, integration model, task workspace via the tasks init's verbatim question, canonical guide file, licence posture — each only when the survey found its artifact missing or its declaration outstanding), unresolved `unknown` conditions, undetermined guide sections and the empty `## Amendments` offer into one numbered round with recommended answers, never asking what reading the code would answer, and SHALL pass the answers to the owning verb (`/tasks init mode= integration= workspace= worktree-root=`) so nothing is asked twice; a skipped proposal round with one outstanding declaration SHALL still produce a one-question round. The setup declarations SHALL NOT count toward that limit, and a question that depends on another answer in the same round (workspace on integration) SHALL be put conditionally and used only when its condition holds. Every foreseeable offer to change a file the repo owns SHALL join that round as one itemised question counting as one toward the five-question limit, none made and each reported `offered, unanswered` when nobody answers; creating an absent layer artifact SHALL need no offer; a question a delegated verb puts itself (the specs blessing, the testing-convention question) SHALL be asked at that delegation with its own no-answer outcome, and an offer found only there SHALL be reported, never asked late.
 
 #### Scenario: Dense rulebook, missing integration
 
