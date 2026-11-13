@@ -17,6 +17,9 @@ from the repo and offer to seed the convention first (use the [[new-project]] te
 > **This project's `CLAUDE.md` has no § Testing. I read the stack as <stack>, with tests in <path>. Shall I add the
 > testing convention from the [[new-project]] template before going on?**
 
+`<path>` is where the tests are, or where `adopt` will put them when none exist yet. With nothing to test (`adopt`'s
+*nothing to test yet* case), write `with no tests yet — nothing to test`.
+
 **No answer, or nobody to ask:** seed nothing, because the convention is the project's rulebook and nobody approved
 its content. Carry on with the inferred stack, and open the report with `§ Testing: absent, not seeded; stack
 inferred as <stack>, nobody confirmed it`. **Never author

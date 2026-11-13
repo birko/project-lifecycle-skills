@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 9b716b7f9278f41ef991483f27e6b3a657ad4355
+generated-at: b3721c5c139b24a260dea73082b2a59159884e2c
 generated-on: 2026-11-13
 sources:
   - skills/adopt-project/INFER.md
@@ -493,7 +493,7 @@ The system SHALL check that a present `.gitignore` covers `.env`, `.env.*` and a
 
 ### Requirement: The survey table prints before any write, and completeness waits for the owners
 
-The system SHALL resolve stack, component behaviour, declared kind, licensing posture, test runner, git remote, ancestor capture, uncommitted layer files and declaration probes before printing, SHALL print the survey as a table before anything is written, headed by a line saying whether the run is a re-run of a dated adoption (read from the brief's `## Origin` stamp, which also words each `missing` row as gained or removed since then) or cannot tell, never assuming a first adoption, print the detected facts that are no row (stack, components and run modes, kind, remote, ancestor, uncommitted state) as one `Detected:` block beneath it, list defects beneath that rather than as rows, and treat the table as a barrier on writes rather than the end of the run; a "complete" table SHALL end the run only when no row names a verb to delegate to or every such verb has answered, and no defect is outstanding. A scoped run (survey only, writing nothing) SHALL be supported: it runs the survey and the report, reports `nothing missing` rather than `complete` while any row is `present, owner not asked`, and prints `step <n> not run — scoped run` for each of steps 2, 3, 3b and 3c in place of that step's output, and still reports every question a full run would have put, the fill item included, marked as not asked.
+The system SHALL resolve stack, component behaviour, declared kind, licensing posture, test runner, git remote, ancestor capture, uncommitted layer files and declaration probes before printing, SHALL print the survey as a table before anything is written, headed by a line saying whether the run is a re-run of a dated adoption (read from the brief's `## Origin` stamp, which also words each `missing` row, `missing, not offered` included with its reason after, as gained or removed since then) or cannot tell, never assuming a first adoption, print the detected facts that are no row (stack, components and run modes, kind, remote, ancestor, uncommitted state) as one `Detected:` block beneath it, list defects beneath that rather than as rows, and treat the table as a barrier on writes rather than the end of the run; a "complete" table SHALL end the run only when no row names a verb to delegate to or every such verb has answered, and no defect is outstanding. A scoped run (survey only, writing nothing) SHALL be supported: it runs the survey and the report, reports `nothing missing` rather than `complete` while any row is `present, owner not asked`, and prints `step <n> not run — scoped run` for each of steps 2, 3, 3b and 3c in place of that step's output, and still reports every question a full run would have put, the fill item included, marked as not asked.
 
 #### Scenario: All rows present on an adopted repo
 

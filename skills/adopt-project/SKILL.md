@@ -135,7 +135,9 @@ repo whose brief was deleted looks new; both read as `cannot tell`, which is the
 **It changes how a `missing` row reads.** On a re-run, write each one as
 `missing — this repo was adopted <date>, so the layer gained it since or it was removed`, because a reader handed a
 table of bare `missing` rows reads a young repo being onboarded, not a mature one that drifted or a layer that grew.
-Under `cannot tell`, a `missing` row stays plain `missing`.
+Under `cannot tell`, a `missing` row stays plain `missing`. **`missing, not offered` takes the same wording**, with its
+reason after it (`missing, not offered — this repo was adopted <date>, …; <reason>`): the artifact is just as absent,
+and the reason says why nothing is offered.
 
 **That is a barrier on *writes*, not the end of the run** — and it has to be said, because "stop" reads as
 both. A drill runner obeyed the earlier wording, nearly ended its run at the table with three real defects

@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 6c44e99140decd9ab77406e321029ad491798723
+generated-at: b3721c5c139b24a260dea73082b2a59159884e2c
 generated-on: 2026-11-13
 sources:
   - skills/feature/SKILL.md
@@ -623,7 +623,7 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 
-The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text, and for a skipped or not-applicable one the recorded line with its reason, linking nothing — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes; a single-feature run SHALL update only that feature's rollup and its index row, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
+The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text, and for a skipped or not-applicable one the recorded line with its reason, linking nothing — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes, the drift note carrying every finding the roadmap check reports, spec-layer targets included; a single-feature run SHALL update only that feature's rollup and its index row, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
 
 #### Scenario: Single-feature run
 
