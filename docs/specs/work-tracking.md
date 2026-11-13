@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: db1ef06d3b86044fbec7804efd881f0bf500a29e
+generated-at: ae676cee8d2572086c1b0501e868fd75c43d2669
 generated-on: 2026-11-13
 sources:
   - skills/tasks/SKILL.md
@@ -214,7 +214,7 @@ The system SHALL accept `--across` only on the bare snapshot, `audit` and the ro
 
 ### Requirement: Generated dashboard owned by triage
 
-The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through, feature links tagged), a loose section and a collapsed completed section, an empty tree rendering as `_None_`, tree rows carrying only id, title and markers, and an omitted section taking one blank line with it, and a feature-drift callout when the roadmap divergence rules find any. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
+The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through, feature links tagged), a loose section and a collapsed completed section, an empty tree rendering as `_None_`, tree rows carrying only id, title and markers, an omitted section taking the blank line before it, counts-table cells padded to the template's column width, and a local-time timestamp with no zone, and a feature-drift callout when the roadmap divergence rules find any. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
 
 #### Scenario: Chained from a worktree
 

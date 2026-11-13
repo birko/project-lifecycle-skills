@@ -73,7 +73,7 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    title · derived phase · decision counts a/c/d/r/p · `done/total` tasks · prototype link),
    where the Prototype cell links the artifact while it stands (`[html]`, `[md]`, `[playground]`, `[spike]`), and
    otherwise holds the `idea.md` line's state in lower case (`pending` · `skipped` · `n/a` · `deleted`), never a
-   link. `{{PROJECT_NAME}}` is the name of the directory containing `docs/`, the project root this verb
+   link. `{{TIMESTAMP}}` takes [[tasks]] `triage`'s form: local time, no zone. `{{PROJECT_NAME}}` is the name of the directory containing `docs/`, the project root this verb
    resolved: a path any run derives the same way, where a README heading can be missing or say something else.
    the verification-debt note (lead with every debt feature, as SKILL.md § *Verification debt surfaces
    first* defines it, with its task count), and the drift note (reuse

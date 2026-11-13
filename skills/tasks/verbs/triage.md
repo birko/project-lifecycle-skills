@@ -69,7 +69,14 @@ dashboard is regenerated on the default branch when `close` merges.
 
 7. **Render** [templates/README.md.tmpl](../templates/README.md.tmpl):
    - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`
-   - `{{TIMESTAMP}}` — current date/time, e.g. `2026-05-28 14:32`
+   - `{{TIMESTAMP}}` — current date/time in the machine's **local time, with no zone or offset**, e.g. `2026-05-28 14:32`.
+     It records when the file was written for a person reading it, and nothing compares it, so a zone would add
+     width and no information.
+   - **Counts-table cells:** fill each placeholder in place and pad the cell to the template's column width, so
+     unchanged rows keep their alignment and a diff shows only the cells that moved. A value longer than its column
+     runs past it, and no other row is realigned. Markdown renders the table the same either way. (The stdout
+     snapshot never pads, [SKILL.md](../SKILL.md) § *Status snapshot*: that is a plain-text view, and this is a file
+     people diff.)
    - counts placeholders — including `{{TK_REVIEW}}`, which fills the `verify` row from the Collection pass's `review` bucket (that row is verification debt; never drop it from the table)
    - `{{TODO_BY_PRIORITY}}` — the `todo` breakdown, as `` `todo` by priority: 4× P1 · 17× P2 · 1× P3. ``
      **One term per priority actually present**, in order, never a fixed set (see the Collection pass note).
