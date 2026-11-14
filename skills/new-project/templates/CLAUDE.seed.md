@@ -62,19 +62,20 @@ This section is the project's **canonical, living rulebook** — the rules every
 <!-- List approved libraries and any explicitly-disallowed ones. -->
 
 ### UI / UX rules
-<!-- For web/UI projects: design tokens (color/spacing/type scale), the component library, layout/spacing rules, the accessibility bar, interaction patterns. Delete this subsection only when nothing here has a human-facing surface (a pure library, a headless worker); a CLI/TUI whose output people read keeps it as Output / UX rules. For look/UX work, lean toward a prototype first (see the lifecycle above). -->
 - {{UI_UX_RULES}}
+<!-- For web/UI projects: design tokens (color/spacing/type scale), the component library, layout/spacing rules, the accessibility bar, interaction patterns. Delete this subsection only when nothing here has a human-facing surface (a pure library, a headless worker); a CLI/TUI whose output people read keeps it as Output / UX rules. For look/UX work, lean toward a prototype first (see the lifecycle above). -->
 
 ### Code structure & patterns
-<!-- Layering and folder layout, dependency direction, the patterns to follow and the anti-patterns to avoid, error-handling style. Keep this in step with ## Architecture above. -->
 - {{CODE_STRUCTURE_RULES}}
+<!-- Layering and folder layout, dependency direction, the patterns to follow and the anti-patterns to avoid, error-handling style. Keep this in step with ## Architecture above. -->
 
 ### Naming
-<!-- File / type / symbol naming conventions. -->
 - {{NAMING_RULES}}
+<!-- File / type / symbol naming conventions. -->
 
 ### Testing
-- Tests: {{TEST_CONVENTION}} <!-- e.g. xUnit + FluentAssertions for .NET; vitest for TS; pytest for Python -->
+- Tests: {{TEST_CONVENTION}}
+<!-- e.g. xUnit + FluentAssertions for .NET; vitest for TS; pytest for Python -->
 - Every new public capability gets tests; UI/UX and integration behaviour gets a Human test plan on its task.
 
 **Verification is an attribute of the feature/task being built — not a separate parallel tree.** Don't grow a stand-alone, module-indexed test-checklist tree that's disconnected from `docs/features/` and `tasks/`; that's a third axis that drifts. Instead:

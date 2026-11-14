@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: 09cbf58ec95fa92e938a52ae2cd03664e9b84d24
+generated-at: 1a912fa7404d69651dc514a3ab6c820ba1ba204d
 generated-on: 2026-11-14
 sources:
   - skills/adopt-project/INFER.md
@@ -121,7 +121,7 @@ The system SHALL always create `docs/BRIEF.md` before any paraphrase, capturing 
 
 ### Requirement: Templates are copied and only their tokens change
 
-The system SHALL create the README and agent guide by copying their templates and changing only lines that carry a `{{…}}` token (deleting the hint comment beneath a token as it is filled), SHALL fill the four tokens that describe the skeleton — getting-started commands, layout tree, build/run commands, architecture notes — only after the skeleton step, from the skeleton and the scope grill, or with a one-line statement that there is no source, SHALL grep both files for `{{` before the git step and leave none, SHALL set the README's agent-guide link to whichever file is canonical, and SHALL set the stakeholders token from the brief or intake, defaulting to `project managers, end users`; it SHALL write the assembled guide to `CLAUDE.md` by default, or to `AGENTS.md` with `CLAUDE.md` containing exactly the one-line import `@AGENTS.md` when canonical-AGENTS was chosen, never duplicating the content into both and never using a symlink.
+The system SHALL create the README and agent guide by copying their templates and changing only lines that carry a `{{…}}` token (deleting the hint comment beneath a token as it is filled; every hint in the templates sits beneath its token, so a faithful render leaves none in the guide), SHALL fill the four tokens that describe the skeleton — getting-started commands, layout tree, build/run commands, architecture notes — only after the skeleton step, from the skeleton and the scope grill, or with a one-line statement that there is no source, SHALL grep both files for `{{` before the git step and leave none, SHALL set the README's agent-guide link to whichever file is canonical, and SHALL set the stakeholders token from the brief or intake, defaulting to `project managers, end users`; it SHALL write the assembled guide to `CLAUDE.md` by default, or to `AGENTS.md` with `CLAUDE.md` containing exactly the one-line import `@AGENTS.md` when canonical-AGENTS was chosen, never duplicating the content into both and never using a symlink.
 
 #### Scenario: AGENTS.md canonical
 
@@ -191,13 +191,19 @@ The system SHALL fill only the `## Conventions` subsections that carry a token �
 
 ### Requirement: The remaining always-created scaffold artifacts
 
-The system SHALL scaffold a stack-appropriate `.gitignore` that always includes every entry the inventory's `.gitignore` row checks for — `.env` and `.env.*` followed by `!.env.example`, and agent-tool local state — so a fresh scaffold passes its first adoption survey; a `.gitattributes` with `* text=auto eol=lf`; an `.editorconfig`; a Keep a Changelog `CHANGELOG.md` stub with `## [Unreleased]`; `docs/features/` with a README index rendered from the feature skill's template (one `idea` row per seeded stub, otherwise empty); `docs/specs/.map.yml` from the specs template with `ignore:` globs written for the chosen stack; a short but real `docs/architecture.md` marked living; and, when MIT or Apache-2.0 was chosen, a full `LICENSE` text with the current year and a holder derived from `git config user.name`, asking only if that is empty.
+The system SHALL scaffold a stack-appropriate `.gitignore` that always includes every entry the inventory's `.gitignore` row checks for — `.env`, `.env.*` and agent-tool local state, plus a following `!.env.example` only where the `.env.example` row applies (never when it is `not applicable` or `unknown`) — so a fresh scaffold passes its first adoption survey and holds no line that survey would not offer; a `.gitattributes` with `* text=auto eol=lf`; an `.editorconfig`; a Keep a Changelog `CHANGELOG.md` stub with `## [Unreleased]`; `docs/features/` with a README index rendered from the feature skill's template (one `idea` row per seeded stub, otherwise empty); `docs/specs/.map.yml` from the specs template with `ignore:` globs written for the chosen stack; a short but real `docs/architecture.md` marked living; and, when MIT or Apache-2.0 was chosen, a full `LICENSE` text with the current year and a holder derived from `git config user.name`, asking only if that is empty.
 
 #### Scenario: Node project
 
 - **Given** the stack is TypeScript/Node
 - **When** `.gitignore` is written
 - **Then** it contains `node_modules/`, `dist/`, `.env`, `.env.*` and, after them, `!.env.example`, and `.claude/settings.local.json`
+
+#### Scenario: Docs-only project with no environment variables
+
+- **Given** a docs-only project whose `.env.example` row is `not applicable`
+- **When** `.gitignore` is written
+- **Then** it contains `.env`, `.env.*` and `.claude/settings.local.json`, and no `!.env.example`
 
 #### Scenario: Proprietary license
 
