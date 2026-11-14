@@ -29,7 +29,7 @@ dashboard is regenerated on the default branch when `close` merges.
    - [TASK-014](EPIC-001-auth/STORY-001-login/TASK-014-jwt.md) — JWT issuance on login (P1, ai)
    ```
 
-3b. **Build "Awaiting verification"** from `inReviewTasks[]`, same bullet shape. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task awaits verification (`verify`, or the older `review`).
+3b. **Build "Awaiting verification"** from `inReviewTasks[]`, under the heading `## Awaiting verification`, same bullet shape, a blocked one ending `⚠ blocked: <reason>` as in step 3. These are verification debt — the persisted dashboard must surface them, exactly like the stdout snapshot does. Omit the whole section when no task awaits verification (`verify`, or the older `review`).
 
 4. **Build the tree view** — group tasks under their parent story under their parent epic (use the `byParent` map from the collection pass). Skip epics that are `done` or `cancelled` (those go in the Completed section). For each story, show `done/total` task counts.
 
@@ -78,7 +78,9 @@ dashboard is regenerated on the default branch when `close` merges.
 4b. **Check every parent against its children.** A container's status is derived from its children ([SKILL.md](../SKILL.md)
    § *Roll status up to parents*), so one that disagrees with them is reported. This step **reports and names the
    verb; it never changes a status**, because a status changes only through its verb, and `close` alone carries the
-   gates a container close needs. So it asks nothing. Four cases, over every epic and story, Completed ones included:
+   gates a container close needs. So it asks nothing. Four cases, over every epic and story, Completed ones included.
+   A story's children are its tasks; an epic's are its stories and any task parented to it directly, each read by its
+   own status:
 
    | The parent | Its children | Line | Fix (the callout prints the text before the dash) |
    |---|---|---|---|
@@ -91,7 +93,9 @@ dashboard is regenerated on the default branch when `close` merges.
    `> Parents out of step (<n>): <line> → <fix>; <line> → <fix>.` Omit it, and its blank line, when there are none.
    A container with no children is not a case, and child counts leave cancelled tasks out, as step 4's do.
 
-5. **Build the Loose section** if `_loose/` has any tasks:
+5. **Build the Loose section** if `_loose/` has any tasks. It lists **every** loose task, closed ones included, in
+   [SKILL.md](../SKILL.md) § *Collection pass*'s task order, with step 4's markers and `(priority, assignee)`. A loose
+   task has no epic whose Completed entry could hold it, so hiding a closed one would drop it from the file entirely:
    ```
    ## Loose tasks
    - [ ] TASK-007 Bump .NET 9 (P1, human)
@@ -138,7 +142,8 @@ dashboard is regenerated on the default branch when `close` merges.
    `> Feature drift: none open · <a> accepted (<target> DV<x>, …) — see \`/roadmap --check\`.`
    Skip silently only when the trees agree and nothing is accepted.
 
-9. **If invoked directly** (not chained), print one summary line: `Dashboard refreshed: <E> epics, <S> stories, <T> tasks (<N> in progress).` Append `; <n> feature divergence(s) — see /roadmap` when step 8b found any. Append `; <n> parent(s) out of step` when step 4b found any.
+9. **If invoked directly** (not chained), print one summary line: `Dashboard refreshed: <E> epics, <S> stories, <T> tasks (<N> in progress)<suffixes>.`, each suffix
+   below going before the closing period. Append `; <n> feature divergences — see /roadmap` when step 8b found an **open** one; an accepted finding is not counted here, since the file's quiet line already shows it. Append `; <n> parents out of step` when step 4b found any. Every count noun takes the singular for a count of exactly 1 (`1 epic`, `1 story`, `1 feature divergence`), the rule the `/tasks` snapshot uses. DV10's *could not decide* ([[roadmap]] § *DV10: what counts as code*) is not a finding, so it is in neither the callout nor this line.
 
 ## When NOT to chain triage
 

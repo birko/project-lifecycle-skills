@@ -3,7 +3,8 @@ id: TASK-376
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
+picked-by: fix-next
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: P3
 # assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
@@ -38,8 +39,8 @@ same way, so the dashboard does not vary today, but by convergence rather than b
 
 ## Acceptance criteria
 
-- [ ] `triage.md` states each of the three, in one sentence each
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `triage.md` states each of the three, in one sentence each
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -48,5 +49,39 @@ same way, so the dashboard does not vary today, but by convergence rather than b
 
 ## Human test plan
 
-- [ ] Run `/tasks triage` with a cold runner on a fresh clone of this repo with `skills/` at the fix. Expected: none
+- [x] Run `/tasks triage` with a cold runner on a fresh clone of this repo with `skills/` at the fix. Expected: none
       of the three is reported undecided
+  - **Passed 2026-11-14**, cold drill `%LOCALAPPDATA%/Temp/d376`: `/tasks triage` on a fresh clone of this repo,
+    `skills/` at the fix, the runner listing no skills. None of the three came back: the file has
+    `## Awaiting verification`, a Loose section listing every loose task with its markers, and the summary
+    `Dashboard refreshed: 10 epics, 28 stories, 377 tasks (0 in progress); 4 parents out of step`, with no divergence
+    suffix for the accepted-only drift.
+
+## Outcome
+
+**The fix (`triage.md`).** Step 3b names the heading `## Awaiting verification` and carries step 3's blocked suffix;
+step 5 lists every loose task, closed ones included, in the task order with step 4's markers, because a loose task has
+no Completed entry to fall into; step 9 counts open divergences only, an accepted one already having the file's quiet
+line.
+
+**Two readings on this session's own text, fixed before the close:**
+- **Where the suffixes go** on the summary line: before the closing period. Raised by d376 point 1 and d375b point 3.
+- **What an epic's children are** in step 4b: its stories and any task parented to it directly, each by its own
+  status. Raised by d376 point 2.
+
+**Step-6 split.** Behavioural: d376. Text: the stated heading and the Loose rule absent at HEAD, present at the fix.
+
+**Close gate (inline, worked with its sibling task; two skill files plus two specs):**
+- **Standards:** each choice is stated in the verb that renders it; the singular rule points at the snapshot's.
+- **Intent:** all criteria met.
+- **Correctness:** checked by d369 and d376; the readings they raised on this change are fixed (below).
+- **Security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+
+## Progress log
+
+- step 2 — picked together with TASK-369, as its Context asks: both settle `triage`'s remaining rendering choices in one file
+- step 5 — fix in skills/tasks/verbs/triage.md (steps 3b, 5, 9) and skills/roadmap/SKILL.md (DV10 step 4, render step 3)
+- step 6 — behavioural: d376 (none of the three returned). Text: heading and Loose rule 0 → 1
+- step 7 — respecced work-tracking (the dashboard requirement states the heading, the Loose contents and the summary line), restamped
+- step 8 — closed inline; commit in git log

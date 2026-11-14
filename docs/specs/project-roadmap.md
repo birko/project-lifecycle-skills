@@ -1,6 +1,6 @@
 ---
 area: project-roadmap
-generated-at: ed69fd4db2e5ac46aa80508596d7af3f99754e64
+generated-at: 05e47240995488a23e4e4c00225ccf36d6155735
 generated-on: 2026-11-14
 sources:
   - skills/roadmap/SKILL.md
@@ -373,7 +373,7 @@ The system SHALL flag DV10 (advisory, fix `/specs init`) when the repository has
 
 ### Requirement: DV10 — what counts as code
 
-The system SHALL decide whether a repository has behaviour to specify by asking, in order and stopping at the first that answers: the spec map's own `ignore:` list (tracked files it does not exclude); what the repository's own gate runs over (a CI workflow or task-runner target's inputs); a source tree or a build manifest. When none answers, it SHALL stay silent and say the check could not decide, never raising a finding.
+The system SHALL decide whether a repository has behaviour to specify by asking, in order and stopping at the first that answers: the spec map's own `ignore:` list (tracked files it does not exclude); what the repository's own gate runs over (a CI workflow or task-runner target's inputs); a source tree or a build manifest. When none answers, it SHALL raise no finding — nothing in the divergence list, the compact slice or the dashboard callout — and SHALL print one `Not checked: DV10 — …; /specs init settles it` line after the divergence and accepted blocks of the full render and `--check`.
 
 #### Scenario: Markdown project answered by its gate
 
@@ -391,7 +391,7 @@ The system SHALL decide whether a repository has behaviour to specify by asking,
 
 - **Given** a notes repository with no spec map, no gate, no source tree and no manifest
 - **When** the audit runs
-- **Then** no DV10 finding is raised and the output says the check could not decide
+- **Then** no DV10 finding is raised, and the full render and `--check` end with a `Not checked: DV10` line naming `/specs init`
 
 ### Requirement: DV12 — findings filed but never scheduled
 
@@ -411,7 +411,7 @@ The system SHALL flag DV12 when a story under an epic with `kind: review-intake`
 
 ### Requirement: Accepted divergences
 
-The system SHALL treat a finding as accepted when the flagged item's own hand-edited record names its rule with a date and a reason: an `accepted-divergence:` entry (`DV<x> <date> — <reason>`) in an epic's, story's or task's frontmatter, or an `accepted divergence DV<x>` History line in a feature's `decisions.md`, with `no spec surface` read as `accepted divergence DV8`; spec targets SHALL NOT be acceptable. An acceptance SHALL cover one rule on one target, an epic's covering the stories under it. An accepted finding SHALL be left out of every warning (the task dashboard's callout and the compact slice) and still listed, with its date and reason, by the full render and `--check`, whose outcome is `in sync`, `in sync — <n> accepted`, or open divergences followed by the accepted ones. An acceptance whose rule no longer fires SHALL be reported for removal.
+The system SHALL treat a finding as accepted when the flagged item's own hand-edited record names its rule with a date and a reason: an `accepted-divergence:` entry (`DV<x> <date> — <reason>`) in an epic's, story's or task's frontmatter, or an `accepted divergence DV<x>` History line in a feature's `decisions.md`, with `no spec surface` read as `accepted divergence DV8`; spec targets SHALL NOT be acceptable. An acceptance SHALL cover one rule on one target, an epic's covering the stories under it. An accepted finding SHALL be left out of every warning (the task dashboard's callout and the compact slice) and still listed, with its date and reason, by the full render and `--check`, whose outcome is `in sync`, `in sync — <n> accepted`, or `<n> open divergences` (singular for one) followed by the accepted ones. An acceptance whose rule no longer fires SHALL be reported for removal.
 
 #### Scenario: One epic accepted, another not
 

@@ -148,7 +148,7 @@ date, **in the flagged item's own hand-edited file**, never in a generated one.
 - **An acceptance whose rule no longer fires is reported** as `accepted DV<x> on <target> no longer fires — remove
   the line`, so a stale reason does not outlive the arrangement it explained.
 - **The outcome of a check is one of three, and `--check` prints it as its first line:** `in sync`;
-  `in sync — <n> accepted`; or `<n> open divergence(s)`. The full render's `Divergences …` block and the `Accepted`
+  `in sync — <n> accepted`; or `<n> open divergences`, singular for exactly 1 (`1 open divergence`). The full render's `Divergences …` block and the `Accepted`
   block follow it.
 
 ### 5. Output model
@@ -179,8 +179,11 @@ absent, on the repo that ships it.
    same generalisation is what makes this rule portable.
 3. **A `src/` tree or a build manifest** — the original test, kept last rather than deleted, so a
    conventional project behaves exactly as before.
-4. **Nothing answered ⇒ stay silent, and say the check could not decide.** An undetermined repo is not a
-   finding. Firing here is what would make DV10 ignorable: a notes vault, an ADR archive or a fresh
+4. **Nothing answered ⇒ no finding, and one line saying the check could not decide.** An undetermined repo is not a
+   finding, so it is never in the divergence list, the compact slice or `triage`'s callout. The full render and
+   `--check` print, after the divergence and accepted blocks:
+   `Not checked: DV10 — nothing here says what the source is (no spec map, no gate inputs, no src/ or manifest); /specs init settles it`.
+   Without it a run that could not decide reads the same as one that found the spec layer in order. Firing here is what would make DV10 ignorable: a notes vault, an ADR archive or a fresh
    scaffold carrying nothing but the layer would each get a permanent false gap, and a check that cries
    wolf on correct repos is worth what an unrun one is.
 
@@ -220,10 +223,11 @@ From the output model:
    the open ones (§ 4b):
    ```
    Accepted (2):
-     EPIC-001  DV5  2026-11-13 — task-only on purpose; stakeholder work is not tracked here
-     EPIC-010  DV5  2026-11-13 — task-only on purpose; stakeholder work is not tracked here
+     EPIC-004  DV5  2031-02-10 — internal tooling; no stakeholder-facing work to track
+     EPIC-009  DV5  2031-02-10 — internal tooling; no stakeholder-facing work to track
    ```
    With no open findings and some accepted, the line reads `Divergences: none open — 2 accepted (below).`
+   A DV10 the ladder could not decide adds its `Not checked` line after both blocks (§ *DV10: what counts as code*).
 4. **Untracked** — list DV5 items (one tree only) under a "Tracked in one tree only" heading; these are the real planning holes.
 5. Read-only. For `--fix`, append a "Proposed reconciliation" block (the edits), but apply nothing.
 

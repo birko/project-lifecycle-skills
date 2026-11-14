@@ -3,7 +3,8 @@ id: TASK-369
 parent: STORY-013
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
+picked-by: fix-next
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: P3
 # assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
@@ -37,10 +38,10 @@ TASK-032 and meet FEATURE-002 D10's bar.
 
 ## Acceptance criteria
 
-- [ ] DV10's undecided case has stated wording and a stated place in `--check` and the full render, and `triage`
+- [x] DV10's undecided case has stated wording and a stated place in `--check` and the full render, and `triage`
       says whether its callout carries it
-- [ ] `triage` step 9's summary states its singular forms, consistent with the snapshot's rule
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `triage` step 9's summary states its singular forms, consistent with the snapshot's rule
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -48,9 +49,49 @@ TASK-032 and meet FEATURE-002 D10's bar.
 
 ## Human test plan
 
-- [ ] Re-run the `d032` brief on a fresh clone of `%LOCALAPPDATA%/Temp/d032/repo` with `skills/` at the fix, using a
+- [x] Re-run the `d032` brief on a fresh clone of `%LOCALAPPDATA%/Temp/d032/repo` with `skills/` at the fix, using a
       cold runner. Expected: neither reading in its "left undecided" section
+  - **Passed 2026-11-14**, cold drill `%LOCALAPPDATA%/Temp/d369`: the `d032` brief on a fresh clone of its fixture,
+    `skills/` at the fix, the runner listing no skills. Neither reading came back. `--check` ended with the stated
+    `Not checked: DV10 — nothing here says what the source is …; /specs init settles it`, and `triage` printed
+    `Dashboard refreshed: 2 epics, 1 story, 2 tasks (0 in progress); 1 feature divergence — see /roadmap`.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-369` — leave empty until then._
+Inline, together with its sibling task: state each rendering choice in the verb that renders it.
+
+## Outcome
+
+**The fix.**
+- **DV10's undecided case** ([[roadmap]] § *DV10: what counts as code*, step 4) is never a finding: it is in neither
+  the divergence list, the compact slice nor `triage`'s callout. The full render and `--check` print one stated line
+  after the divergence and accepted blocks, `Not checked: DV10 — …; /specs init settles it`.
+- **`triage`'s summary line** takes the snapshot's singular rule for every count noun, counts open divergences only,
+  and puts each suffix before the closing period.
+- **`--check`'s first line** takes the same singular (`1 open divergence`); d369's runner raised it.
+
+**Found in passing, fixed:** the full render's `Accepted` example quoted this repo's own EPIC-001 and EPIC-010 with
+the "task-only on purpose" reason corrected in ae020d1, a copy of a drill target that TASK-210's rule forbids. It now
+uses invented ids and an invented reason.
+
+**Step-6 split.** Behavioural: d369 (the original brief, at the fix). Text: the `Not checked` line absent at HEAD,
+present at the fix.
+
+**Close gate (inline, worked with its sibling task; two skill files plus two specs):**
+- **Standards:** each choice is stated in the verb that renders it; the singular rule points at the snapshot's.
+- **Intent:** all criteria met.
+- **Correctness:** checked by d369 and d376; the readings they raised on this change are fixed (below).
+- **Security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+
+**One-runner readings, recorded:** d369 — whether `--check` includes the "Tracked in one tree only" section, whether
+an epic's acceptance folds its stories into one accepted entry in the count, and no rule for the file when open and
+accepted findings mix.
+
+## Progress log
+
+- step 2 — picked together with TASK-376, as its Context asks: both settle `triage`'s remaining rendering choices in one file
+- step 5 — fix in skills/tasks/verbs/triage.md (steps 3b, 5, 9) and skills/roadmap/SKILL.md (DV10 step 4, render step 3)
+- step 6 — behavioural: d369 (the d032 brief at the fix; neither reading returned). Text: `Not checked` 0 → 1
+- step 7 — respecced project-roadmap (DV10's undecided output, the outcome line's singular) and work-tracking (the summary line), restamped
+- step 8 — closed inline; commit in git log
