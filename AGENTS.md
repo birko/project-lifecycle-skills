@@ -390,7 +390,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
   - **A row asks a question about the artifact, not "what kind is this repo".** Kind labels run out and
     repos are compound: measured 2026-09-01, all three consumer repos surveyed were two or three kinds at
     once, and one declares a kind (*desktop app*) the intake enum does not offer. So a row asks *does
-    anything here read runtime config from the environment?* and any component answering yes settles it.
+    anything here require an environment variable to run?* and any component answering yes settles it.
     Kind is **evidence** toward that answer, and a kind the repo **declares** outranks one inferred from
     signals — the same precedence § *Read the declaration, never infer it* sets everywhere else.
   - **`not applicable` is not `(lazy)`'s `not applicable yet`** — a library does not acquire a `Dockerfile` by

@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: ae020d1d20a72fd3bd10ba3cbeea8a2f685606c2
-generated-on: 2026-11-13
+generated-at: 09cbf58ec95fa92e938a52ae2cd03664e9b84d24
+generated-on: 2026-11-14
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md
@@ -333,6 +333,12 @@ The system SHALL survey every inventory row before writing anything, classify ea
 - **When** it is surveyed
 - **Then** it is `present` with the missing section named, not `present, outdated`
 
+#### Scenario: No architecture document
+
+- **Given** an existing repo with no `docs/architecture.md`
+- **When** it is adopted
+- **Then** the row is `missing`, and the file is neither created nor offered, because its content is the project's own account of its structure
+
 ### Requirement: Uncommitted layer artifacts are detected by the porcelain rule
 
 The system SHALL report `present, uncommitted` when the artifact is on disk and `git status --porcelain --untracked-files=all -- <path>` prints anything, staged or unstaged, except deletions (`D ` / ` D`) and unmerged paths (any `U`, or `AA`); SHALL treat git-ignored paths as plain `present`; and SHALL not claim the state when `git rev-parse --show-toplevel` resolves to an ancestor rather than the adopted directory.
@@ -357,7 +363,7 @@ The system SHALL report `present, uncommitted` when the artifact is on disk and 
 
 ### Requirement: Location deviations compose with every row
 
-The system SHALL report an artifact found at another path, under another name, or with its purpose served inside another file as `present, elsewhere`, saying where, never relocating it and never offering a second; prose that merely mentions what an artifact would contain SHALL leave the row `missing` with the documenting location named; files the agent guide links are part of the one guide artifact, and a same-prefix file nothing links is not.
+The system SHALL report an artifact found at another path, under another name, or with its purpose served inside another file as `present, elsewhere`, saying where, never relocating it and never offering a second; prose that merely mentions what an artifact would contain SHALL leave the row `missing` with the documenting location named; files the agent guide links are part of the one guide artifact, and a same-prefix file nothing links is not. A companion a row names in parentheses SHALL take no state of its own: the row reports one state, decided by the artifact outside the parentheses, and the companion is looked for where its tooling reads it (a per-Dockerfile ignore file beside an off-root `Dockerfile`), or as members of the directory the row names, whose tracking is probed over the whole directory; such a row SHALL never be split into two.
 
 #### Scenario: Licence under another name
 
@@ -376,6 +382,18 @@ The system SHALL report an artifact found at another path, under another name, o
 - **Given** `CLAUDE-prompt.md` sits beside the guide and nothing links it
 - **When** the guide row is surveyed
 - **Then** that file is neither folded into the guide nor reported as a gap
+
+#### Scenario: Dockerfile and its ignore file off the root
+
+- **Given** a deployed service whose only Dockerfile is `svc/Dockerfile`, with `svc/Dockerfile.dockerignore` beside it and no root `.dockerignore`
+- **When** the Dockerfile row is surveyed
+- **Then** it is one `present, elsewhere` row naming both files, and no `.dockerignore` is reported missing or offered
+
+#### Scenario: A modified file inside the task tree
+
+- **Given** `tasks/.config.yml` and `tasks/README.md` are clean, and a task file under `tasks/` is modified
+- **When** the `tasks/` row is surveyed
+- **Then** it is `present, uncommitted`
 
 ### Requirement: Lazy rows are never created and report `not applicable yet`
 

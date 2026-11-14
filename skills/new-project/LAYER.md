@@ -13,14 +13,15 @@ copies: add an artifact here, describe how to fill it there.
 point of the file existing.
 
 Each row states what the artifact is, which skill owns its shape, and — the part that only matters
-for adoption — **what to do when the repo already has one**.
+for adoption — **what to do when the repo already has one**. An owner of `—` means no skill owns the shape: the
+file is the project's own, and the row says only what each front door does with it.
 
 | Artifact | Owner | Already present? |
 |---|---|---|
 | `README.md` | — | **Leave it.** Offer to append a short "How we work" pointer at the end; never rewrite a human's README. |
 | Agent guide (`CLAUDE.md`, or `AGENTS.md` + one-line `@AGENTS.md` bridge) | [[new-project]] seed | **Merge by section.** Offer the missing `##` sections, rendered per § *Filling a seed section's tokens*; never touch an existing one's content. **Adding a section amends a file the repo owns, so it is offered, never written unasked:** one itemised offer naming each missing section, a subset acceptable, put in [[adopt-project]] step 2's round, since step 1 already knows which sections are missing. **`## Commands` is offered by name**, because § *Ordering* renders it after every fill: `add ## Commands to <guide> — filled in at the end of this run from what the repo then has`. The person approves the section, not its text, and the report shows the text written. No answer, or nobody to ask → append nothing, and report each section under *left alone* as `offered, unanswered`. **The section inventory is [templates/CLAUDE.seed.md](templates/CLAUDE.seed.md)'s own `##` headings — read them off it, and match by meaning per § *Matching a guide's sections*.** **A companion the guide links (`CLAUDE-*.md` and the like) is part of this one artifact** — not a separate row, not `present, elsewhere` — and is classified by **existence and role only** — its prose is content, not shape. See § *Location is orthogonal too*. A guide with no `## Conventions` block is the highest-value gap in an adoption — flag it loudly. **The rules *inside* a present section are content, and this row does not survey them** — see § *A guide's vintage is not surveyable*. |
 | `docs/BRIEF.md` | [[new-project]] | **Never reconstruct.** See *The adopted-repo brief* below. |
-| `docs/architecture.md` | — | Leave it; report if absent. **Absent is `missing`, worded for a re-run like any other missing row, never created and never offered**: its content is the project's own account of its structure, which adoption cannot write. So nothing will ever offer it, and `missing, not offered` (an offer suppressed while evidence holds) does not fit. |
+| `docs/architecture.md` | — | Leave it; report if absent. **Absent is `missing`, worded for a re-run like any other missing row, never created and never offered**: its content is the project's own account of its structure, which adoption cannot write. So nothing will ever offer it, and `missing, not offered` (an offer suppressed while evidence holds) does not fit. **[[new-project]] differs on purpose**: it writes the file at birth from the scope grill's resolved decisions, an account the project gives in that same run. |
 | `docs/glossary.md` **(lazy)** | [[domain]] | **Never create.** The layer includes a glossary; the file appears on the first term worth recording — see § *Lazily-created rows*. Absent → **not applicable yet**. Present → **leave it, and it is current**: the shape is free prose, so there is nothing an owner could find out of date. Whether its *content* still matches the code is `/domain`'s cross-reference pass — a content audit, offered, never run by a fill. |
 | `docs/adr/` **(lazy)** | [[domain]] | **Never create the directory.** It appears with its first record, and only [[domain]]'s three-part bar can justify one. Absent → **not applicable yet**: nothing observable at scaffold or adoption time can decide that a past decision *owed* a record — that is a judgement, not a probe. Present → **leave it.** Each record's four parts are checked when that record is written, so adoption has no shape to reconcile and runs no sweep. **That is a narrower claim than "current"**: a record can carry all four parts and still cite a rule that has since changed, or state a decision the code no longer matches — drift a parts-check cannot see, because nothing is missing. Adoption does not audit that (it is content, not shape — see § *Presence and shape, not content currency*), and **no skill audits it today**: [[domain]]'s cross-reference pass reads the glossary against the code, not records. It is found only by someone reading the records. Measured 2026-08-22: a cold read of seven records found three such drifts, none of them a missing part. |
 | `docs/features/` + `README.md` index | [[feature]] | Create the folder if absent, then render the index by running `/feature status`, which owns the file and renders it whole when it is absent (its step 7). Rendering [[feature]]'s own template with the same rules is the same thing. Never compose the index in other words, new or existing. |
@@ -196,7 +197,7 @@ classification and are not:
   is the worse half. That call is equally consistent with a batch job that returns and a consumer that
   blocks forever, so the correct state was `unknown` for both rows.
 - **Naming a component is not classifying it.** A README line — *"`feedsync` — feed reconciliation"* — says
-  what a component is for. What it is for does not say whether it runs as a service or reads env vars.
+  what a component is for. What it is for does not say whether it runs as a service or requires env vars.
 
 **The test is the same one applied to the repo as a whole below** (§ *A repo with no components of its
 own*), and to a derived state anywhere: does the evidence **determine** the answer, or is it merely
@@ -269,7 +270,7 @@ reached the right states, and said *"nothing in the instructions settles whether
 aggregate."* It was deciding, not reading.
 
 **A repo with no components of its own answers *no*, and that is settled rather than `unknown`.** Nothing
-that does not run can read runtime config, and nothing without an entry point is deployed — so the
+that does not run can require an environment variable, and nothing without an entry point is deployed — so the
 evidence **determines** the answer rather than merely being consistent with several. That is the same
 test § *Classify each component from what this repo holds* states above, at the other altitude, and it
 is why a derived state is recomputed every run, never cached as a decision. Do not read
@@ -650,6 +651,22 @@ because of its filename would have the survey judging a document the guide never
 absence of a link as a defect would invent a requirement nobody stated. **This branch is stated because the
 rule above is otherwise silent on it**, and silence is how the fourth file stayed unclassified while the
 other three were resolved.
+
+**A companion in parentheses is part of its row, never a row of its own.** Two rows name one —
+`Dockerfile` (+ `.dockerignore`) and `tasks/` (`.config.yml` + `README.md`) — and each reports **one** state,
+decided by the artifact outside the parentheses. The parenthesis says what that artifact's shape includes. What
+differs between companions is only **where to look**, and the tooling or the link decides that, never the survey:
+
+| Companion | Found | Example |
+|---|---|---|
+| **a sibling the tooling pairs by name** (`.dockerignore`) | wherever the tooling reads it, under any name it accepts. Docker takes `<Dockerfile>.dockerignore` beside the Dockerfile over the context root's `.dockerignore` | `docker/api/Dockerfile` with `docker/api/Dockerfile.dockerignore` is one `present, elsewhere` row naming both files, **never** a missing root `.dockerignore`: offering one would add an ignore file the build does not read |
+| **members of a directory the row names** (`.config.yml`, `README.md`) | inside that directory. Presence asks for the named members; tracking (`present, uncommitted`) probes the whole directory | a clean `.config.yml` and `README.md` beside a modified task file is `present, uncommitted` |
+| **a file the entry point links** (the agent guide's companions, above) | by following the entry point's links | `CLAUDE-ui.md`, linked from the guide's routing table |
+
+With the primary present and the paired companion found nowhere the tooling looks, the row keeps the primary's
+state and notes `<companion> absent` on it, never a separate `missing`: *Present → leave it* covers the pair.
+**Never split such a row into two.** One concern would then report two states for one decision, and a conditional
+marker would have to be copied to both and kept in sync, the restated-list defect at row granularity.
 
 **Two things reach `unknown`, and only one of them is ignorance.**
 

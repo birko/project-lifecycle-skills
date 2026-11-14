@@ -3,7 +3,8 @@ id: TASK-099
 parent: STORY-016
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
+picked-by: fix-next
 priority: P2
 assignee: agent
 created: 2026-09-01
@@ -154,29 +155,29 @@ the count from 2-vs-1 to 3-vs-2. That is a reason to fix it, not a reason to hav
 
 ## Acceptance criteria
 
-- [ ] Whether a parenthesised companion carries its own state is stated once, where a reader of any such row will find it — not per row
-- [ ] The measured case resolves without a false gap: `deploy/Dockerfile` + `deploy/Dockerfile.dockerignore` must not produce a missing root `.dockerignore`
-- [ ] The answer says how a **convention-bound** companion (a filename the tooling pairs) differs from a **linked** one (an agent-guide companion), or states that they take the same treatment and why
-- [ ] The row is not split into two, and the reason is recorded
-- [ ] Layer parity: the rule lands in `LAYER.md`, which both front doors read
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Whether a parenthesised companion carries its own state is stated once, where a reader of any such row will find it — not per row
+- [x] The measured case resolves without a false gap: `deploy/Dockerfile` + `deploy/Dockerfile.dockerignore` must not produce a missing root `.dockerignore`
+- [x] The answer says how a **convention-bound** companion (a filename the tooling pairs) differs from a **linked** one (an agent-guide companion), or states that they take the same treatment and why
+- [x] The row is not split into two, and the reason is recorded
+- [x] Layer parity: the rule lands in `LAYER.md`, which both front doors read
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-150:*
 
-- [ ] The row states what the adopter does when `docs/architecture.md` is absent: report only, offer, or create — one of the three, not a sentence that admits two.
-- [ ] Whichever is chosen, `new-project`'s behaviour and the adopter's are consistent with each other, or the row says plainly why they differ.
-- [ ] If the adopter may create or offer it, the row says what the file may and may not assert — a run mode or a deployment claim must not be written where the underlying question reached `unknown` (TASK-149's states).
-- [ ] The empty middle column is filled or its emptiness is explained.
-- [ ] `bash .github/workflows/skills-lint.sh` passes.
+- [x] The row states what the adopter does when `docs/architecture.md` is absent: report only, offer, or create — one of the three, not a sentence that admits two.
+- [x] Whichever is chosen, `new-project`'s behaviour and the adopter's are consistent with each other, or the row says plainly why they differ.
+- [x] If the adopter may create or offer it, the row says what the file may and may not assert — a run mode or a deployment claim must not be written where the underlying question reached `unknown` (TASK-149's states).
+- [x] The empty middle column is filled or its emptiness is explained.
+- [x] `bash .github/workflows/skills-lint.sh` passes.
 
 *From TASK-136:*
 
-- [ ] All five sites state the same condition, and it is the one `LAYER.md:206` settles (*requires*)
-- [ ] `AGENTS.md:291`'s pointer matches, since § Conventions is what `/verify-conventions` lints against
-- [ ] `adopt-project/SKILL.md:77`'s detection list matches — it is the line a survey actually executes
-- [ ] The *"any component answering yes settles it"* clause survives: the fix narrows **which** question is
+- [x] All five sites state the same condition, and it is the one `LAYER.md:206` settles (*requires*)
+- [x] `AGENTS.md:291`'s pointer matches, since § Conventions is what `/verify-conventions` lints against
+- [x] `adopt-project/SKILL.md:77`'s detection list matches — it is the line a survey actually executes
+- [x] The *"any component answering yes settles it"* clause survives: the fix narrows **which** question is
       asked, not the rule that one component is enough
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -197,7 +198,15 @@ the count from 2-vs-1 to 3-vs-2. That is a reason to fix it, not a reason to hav
 
 ## Human test plan
 
-- [ ] Cold-drill a repo whose `Dockerfile` and its ignore file both sit off the canonical path, expected answers withheld, and confirm the runner reports one state without listing the companion under what it had to decide
+- [x] Cold-drill a repo whose `Dockerfile` and its ignore file both sit off the canonical path, expected answers withheld, and confirm the runner reports one state without listing the companion under what it had to decide
+  - **Passed 2026-11-14**, cold drill `%LOCALAPPDATA%/Temp/d099` (`claude -p --disable-slash-commands`; the runner listed
+    no skills). Fixture `shopfront`: a listening Node service deployed by `ops/deploy.yml`, with `ops/web/Dockerfile` and
+    `ops/web/Dockerfile.dockerignore`, and a committed `tasks/` with one task file modified.
+    - **Dockerfile row:** one `present, elsewhere` naming both files; no `.dockerignore` gap, and none of its twelve
+      undecided points is about the companion.
+    - **`tasks/` row:** `present, uncommitted` from the modified task file, `.config.yml` and `README.md` clean.
+    - **`docs/architecture.md`:** `missing — not created and not offered`.
+    - **`.env.example`:** `not applicable`, derived from *requires* (the server reads no environment variable).
 
 *From TASK-150:*
 
@@ -213,3 +222,51 @@ the count from 2-vs-1 to 3-vs-2. That is a reason to fix it, not a reason to hav
 ## Implementation plan
 
 _Populated by `/tasks plan TASK-099` — leave empty until then._
+
+## Outcome
+
+**The fix (all three merged parts).**
+- **Companions (TASK-099):** `LAYER.md` § *Location is orthogonal* now states that a companion in parentheses takes no
+  state of its own. The row reports one state from the artifact outside the parentheses; a table says where each kind
+  of companion is found — a sibling the tooling pairs by name (Docker's `<Dockerfile>.dockerignore`), members of a
+  directory the row names (tracking probed over the whole directory), a file the entry point links. With the primary
+  present and the companion found nowhere, the row notes `<companion> absent`. Rows are never split, with the reason.
+- **`docs/architecture.md` (TASK-150):** the absent case was already settled earlier as `missing`, never created or
+  offered. The row now says why [[new-project]] differs (it writes the file at birth from the scope grill), and the
+  inventory explains once that an owner of `—` means no skill owns the shape.
+- **reads → requires (TASK-136):** `AGENTS.md` § Conventions, `adopt-project`'s survey line and two `LAYER.md`
+  sentences now ask *requires an environment variable to run*, the calibration `LAYER.md` settled. The
+  *any component answering yes settles it* clause is untouched.
+
+**Step-6 split.** Text: the companion paragraph is absent at HEAD and present at the fix; `AGENTS.md`'s *read runtime
+config* phrasing is present at HEAD and absent at the fix. Behavioural: the d099 drill under Human test plan.
+
+**Judgement calls.**
+- **An absent companion beside a present primary is a note, not an offer.** *Present → leave it* already covers the
+  pair, and offering a lone `.dockerignore` reopens the false-`missing` direction this task exists to close.
+- **The examples in the new table are invented** (`docker/api/…`, `CLAUDE-ui.md`), per TASK-210, and the drill fixture
+  uses a third set of paths, so the runner could not pass by matching an example.
+
+**Close gate (inline, four files of prose):**
+- **Standards:** layer parity holds (the rule is in `LAYER.md`, which both front doors read), and the companion rule is
+  stated once, not per row.
+- **Intent:** all sixteen criteria across the three merged parts are met.
+- **Correctness:** checked by the drill.
+- **Security, comments:** not applicable.
+- **CI:** the local lint passes; main is unpushed, so CI has not run.
+
+**One-runner readings, recorded rather than filed** (d099 § 3): creating a missing guide, seed placeholders with no
+adopter source, empty Conventions headings, the universal-block splice under adoption, the test-runner version, CI
+for a manifest with no build, the dashboard's `_None_` tree with a loose task, and what the verdict counts. Point 10
+(two state phrasings on one row) is TASK-365's DRILL-364-1.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-089 because a false `missing` (and an offer to create a second `.dockerignore`) is a plausible wrong answer reachable on any repo with an off-root Dockerfile, while TASK-089 is a research task with no defect behaviour yet
+- step 3 — verified: no rule for a parenthesised companion anywhere in LAYER.md; TASK-150's half largely landed earlier (absent `docs/architecture.md` is `missing`, never offered) but the new-project difference and the `—` owner were unexplained; TASK-136's *reads* survived at AGENTS.md § Conventions, adopt-project § survey, and two LAYER.md sentences
+- step 3b — planned inline: one LAYER.md paragraph and table for companions (sibling paired by name, directory members, linked file); the architecture row says why new-project differs; `—` owner explained once; *reads* → *requires* at four sites
+- step 4 — layer: universal (LAYER.md, read by both front doors) plus adopt-project and AGENTS.md
+- step 5 — fix in skills/new-project/LAYER.md, skills/adopt-project/SKILL.md, AGENTS.md
+- step 6 — text: companion rule 0 → 1, AGENTS.md *read runtime config* 1 → 0; behavioural: d099 (one Dockerfile row, no companion gap; tasks/ uncommitted by directory)
+- step 7 — respecced project-baseline: the location requirement states the companion rule with two scenarios, and an architecture scenario under the survey requirement; restamped
+- step 8 — closed inline; commit in git log
