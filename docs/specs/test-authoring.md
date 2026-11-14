@@ -1,7 +1,7 @@
 ---
 area: test-authoring
-generated-at: 222c36d591ea60911e53aeca76314a0ec43c77b6
-generated-on: 2026-10-12
+generated-at: 7f5c5a1b309b1e10887af23dd79549d0d17af4f0
+generated-on: 2026-11-14
 sources:
   - skills/populate-tests/REFERENCE.md
   - skills/populate-tests/SKILL.md
@@ -176,7 +176,7 @@ The system SHALL, when about to commit to an interface that has only one drafted
 
 ### Requirement: Read the testing convention before authoring
 
-The system SHALL read the project's `CLAUDE.md` § Testing first, to learn the stack, the test framework, where tests live, the layers and the done-gate. If that section is missing, it SHALL infer the stack from the repo and offer to seed the convention from the new-project template. With no answer it SHALL seed nothing, carry on with the inferred stack, and open its report with `§ Testing: absent, not seeded`, naming the inferred stack as unconfirmed. It SHALL never write tests for code it has not read, and SHALL ground every selector, API and field in real source.
+The system SHALL read the project's `CLAUDE.md` § Testing first, to learn the stack, the test framework, where tests live, the layers and the done-gate. If that section is missing, it SHALL infer the stack from the repo and offer to seed the convention from the new-project template, naming in the offer where the tests are, or where `adopt` will put them when none exist yet, or, with nothing to test, that there are no tests yet. With no answer it SHALL seed nothing, carry on with the inferred stack, and open its report with `§ Testing: absent, not seeded`, naming the inferred stack as unconfirmed. It SHALL never write tests for code it has not read, and SHALL ground every selector, API and field in real source.
 
 #### Scenario: No § Testing section
 
@@ -384,7 +384,7 @@ The system SHALL acquire the drill reader outside both the project guide and use
 
 ### Requirement: Drill targets must not have adjudicated the case, and are left as found
 
-The system SHALL NOT drill a rule on a repo that the rule itself names. Contamination is judged per question, and the affected part of the report is discounted. Real targets SHALL be preferred over built fixtures, and an A/B run on one unchanged target is the strongest form. A drill that changes the tree SHALL use a clone or worktree. When the target's `tasks/.config.yml` declares `worktree-root:`, the worktree goes at `<worktree-root>/<repo-name>-drill-<label>`. Otherwise it goes in the reader's scratch directory, never inside the target. The drill that made the checkout SHALL remove it at the end, without `--force`; a dirty checkout is reported by its path. Read-only drills SHALL be told so in the brief. When a drill is about uncommitted state, the brief SHALL say that the checkout is a clone or worktree, and that any missing in-flight work is an artefact of how it was made.
+The system SHALL NOT drill a rule on a repo that the rule itself names. An example in skill text SHALL be invented, never copied from a repo the skill is drilled on, so a reader cannot pass by matching the example's line instead of applying the rule; a real repo cited as evidence for a rule (a count, a measured outcome) is not an example and may stay. Contamination is judged per question, and the affected part of the report is discounted. Real targets SHALL be preferred over built fixtures, and an A/B run on one unchanged target is the strongest form. A drill that changes the tree SHALL use a clone or worktree. When the target's `tasks/.config.yml` declares `worktree-root:`, the worktree goes at `<worktree-root>/<repo-name>-drill-<label>`. Otherwise it goes in the reader's scratch directory, never inside the target. The drill that made the checkout SHALL remove it at the end, without `--force`; a dirty checkout is reported by its path. Read-only drills SHALL be told so in the brief. When a drill is about uncommitted state, the brief SHALL say that the checkout is a clone or worktree, and that any missing in-flight work is an artefact of how it was made.
 
 #### Scenario: The checkout is left dirty
 
@@ -397,6 +397,12 @@ The system SHALL NOT drill a rule on a repo that the rule itself names. Contamin
 - **Given** a target whose `tasks/.config.yml` declares no `worktree-root:`
 - **When** a drill needs to change files
 - **Then** the clone is made in the reader's scratch directory, outside the target
+
+#### Scenario: A skill's example matches the fixture
+
+- **Given** a skill whose example path is a real path in the repo it is about to be drilled on
+- **When** the drill is prepared
+- **Then** the example is replaced with an invented path first, because a reader copying it would pass whether the rule works or not
 
 ### Requirement: A drill is run only where a careful reader could diverge
 
