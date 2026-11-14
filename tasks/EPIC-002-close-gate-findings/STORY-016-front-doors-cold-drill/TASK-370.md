@@ -29,7 +29,7 @@ earlier ones. Both readings now meet FEATURE-002 D10's two-runner bar.
 - **DRILL-067-1 — hint comments above the token.** The seed rule removes "the hint comment (`<!-- … -->`) directly
   beneath" a filled token. In `templates/CLAUDE.seed.md` the Code structure, Naming and UI/UX hints sit **above**
   their tokens, so a faithful render leaves them in the consumer's rulebook. Raised by d360 (point 7) and d067
-  (point 2).
+  (point 2), and a third time by d132 (2026-11-14, a Python scaffold, point 7: it kept the hints above their tokens).
 - **DRILL-067-2 — `.gitignore`, creation against check.** LAYER.md's `.gitignore` row creates an absent file "with
   the same entries the Present check looks for … the `!.env.example` negation" unconditionally. Its check offers the
   negation only where the `.env.example` row applies (TASK-357). A file created for a repo whose `.env.example` row
