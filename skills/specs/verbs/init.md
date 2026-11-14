@@ -118,6 +118,9 @@ proceeded as if blessed rather than stop.
 > · **Change it** — say which areas to merge, split, rename or drop, then I'll re-present.
 > · **Don't write it** — leave `docs/specs/` as it is.
 
+`<N> areas` and `<M> tracked files` take [verify](verify.md) step 4's count rule, singular for exactly 1
+(`1 area`), here and in every line this verb prints.
+
 **A map with no areas has nothing to bless.** When step 4's verdict is `not-applicable`, put no blessing
 question: write the map `not-applicable` and say so in the confirmation, *"no behavioural code found — wrote
 `areas: []`, `coverage: not-applicable`; ignored by this run: `<paths>`"*. Blessing confirms area boundaries,

@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: d26b1e31997558c4d5dd4424b589f78a7ba7b21b
+generated-at: cbeb51b8cd5c4ced8026f2cf59e81ef5a035fbb9
 generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
