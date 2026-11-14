@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 2cdf238f55c9328a4f5a432453644c46e1fcd88b
+generated-at: 4865e64edcf0e27e3b37271c86e452992750be94
 generated-on: 2026-11-14
 sources:
   - skills/feature/SKILL.md
@@ -179,7 +179,7 @@ The system SHALL keep a `## Prototype` line in every feature's idea file stating
 
 ### Requirement: Prototype builds a stakeholder artifact in a form chosen per feature
 
-The system SHALL, on `/feature prototype`, ask which form to build unless the user named one — an HTML mockup, a markdown wireframe, a code spike on an unmerged flagged branch, or a state-model playground — and build it from the current proposed and approved decisions; an HTML mockup or playground SHALL be one self-contained file that opens in a browser with nothing installed and is labelled as a prototype; a playground SHALL carry both free play over the transitions and guided walkthroughs chosen for difficulty, each naming the decision row it exercises; every form a stakeholder drives SHALL open by saying what it models, what to do and what answer is wanted; and an HTML mockup or markdown wireframe SHALL be checked against the shared UX baseline before it is shown, with a rule the project recorded winning over the baseline and a baseline question whose answer is not obvious shown as a choice and raised in the decision ledger rather than built in as a default.
+The system SHALL, on `/feature prototype`, ask which form to build unless the user named one — an HTML mockup, a markdown wireframe, a code spike on an unmerged flagged branch, or a state-model playground — and build it from the current proposed and approved decisions; an HTML mockup or playground SHALL be one self-contained file that opens in a browser with nothing installed and is labelled as a prototype; a playground SHALL carry both free play over the transitions and guided walkthroughs chosen for difficulty, each naming the decision row it exercises, and SHALL be published as a private link only when this session's tools include one that publishes a page only the user can see, decided from those tools and never from the runtime's name, with no such tool or a failed publish leaving the file in the feature folder as the output; every form a stakeholder drives SHALL open by saying what it models, what to do and what answer is wanted; and an HTML mockup or markdown wireframe SHALL be checked against the shared UX baseline before it is shown, with a rule the project recorded winning over the baseline and a baseline question whose answer is not obvious shown as a choice and raised in the decision ledger rather than built in as a default.
 
 #### Scenario: Form is asked each time
 
