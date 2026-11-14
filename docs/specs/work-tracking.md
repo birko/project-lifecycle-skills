@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: 4e7580a9f5e664377f24a7b8a963d5a897a051e7
-generated-on: 2026-11-13
+generated-at: 73241d2b0a7c2ed4316cb56b00532b4477385263
+generated-on: 2026-11-14
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -214,13 +214,19 @@ The system SHALL accept `--across` only on the bare snapshot, `audit` and the ro
 
 ### Requirement: Generated dashboard owned by triage
 
-The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through, feature links tagged), a loose section and a collapsed completed section, an empty tree rendering as `_None_`, tree rows carrying only id, title and markers, an omitted section taking the blank line before it, counts-table cells padded to the template's column width, and a local-time timestamp with no zone, and a feature-drift callout when the roadmap divergence rules find an open divergence, an accepted one left out of it, and a single quiet `Feature drift: none open · <n> accepted (…)` line when every finding is accepted. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
+The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through with no checkbox and any tag after the strike, feature links tagged), ordered epics and stories by id and tasks by the shared task order, tasks parented straight to an epic under one `(epic level)` line after its stories, every story line in one form `— <state> (<d>/<t> done)` with `todo` shown as `planned` and cancelled tasks counted in neither number, done stories keeping their tasks, a loose section, and a completed section that is one `<details>` block summarised `Completed (<n> epics)`, an empty tree rendering as `_None_`, tree rows carrying only id, title and markers, an omitted section taking the blank line before it, counts-table cells padded to the template's column width, and a local-time timestamp with no zone, and a feature-drift callout when the roadmap divergence rules find an open divergence, an accepted one left out of it, and a single quiet `Feature drift: none open · <n> accepted (…)` line when every finding is accepted. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
 
 #### Scenario: Chained from a worktree
 
 - **Given** a session inside the linked worktree of `TASK-020`
 - **When** `block` chains `triage`
 - **Then** the dashboard is not written and one line says why
+
+#### Scenario: Two runs over one tree
+
+- **Given** a tree with a done story holding a cancelled task, and tasks parented directly to an epic
+- **When** the dashboard is regenerated twice with no change in between
+- **Then** the two files differ only in the timestamp, the done story reads `— done (n/n done)` with its tasks listed, and the epic's own tasks sit under its `(epic level)` line
 
 #### Scenario: Drift found
 

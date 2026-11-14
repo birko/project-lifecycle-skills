@@ -30,6 +30,8 @@ convergence rather than by rule. The next runner may not converge.
 
 - **DRILL-371-1 — cancelled tasks in `done/total`.** "Compute `done/total`." does not say whether a cancelled
   task counts. All three counted it (FEATURE-002 28/29). Raised by all three runners.
+- **Note 2026-11-14 on DRILL-371-1:** `triage` now leaves cancelled tasks out of both numbers (TASK-368); take the
+  same rule here, or say why a feature total differs.
 - **DRILL-371-2 — the digest's order and decision part.** "Order the digest with debt features first" leaves
   the rest unordered, and the example `(4/7 tasks, 3 approved / 1 deferred)` does not say which states appear
   or in what order. All three used id order and the non-zero states only. Raised by all three runners.

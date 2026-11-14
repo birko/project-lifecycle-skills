@@ -33,14 +33,29 @@ dashboard is regenerated on the default branch when `close` merges.
 
 4. **Build the tree view** — group tasks under their parent story under their parent epic (use the `byParent` map from the collection pass). Skip epics that are `done` or `cancelled` (those go in the Completed section). For each story, show `done/total` task counts.
 
+   **Three things the tree fixes, so two runs over one tree print the same file:**
+   - **Order.** Epics by id, and each epic's stories by id. The tasks under a story, and under the epic-level line
+     below, follow [SKILL.md](../SKILL.md) § *Collection pass*'s task order, the one every list of tasks uses.
+   - **Tasks parented straight to an epic** go under one line, `(epic level) — <d>/<t> done`, after that epic's
+     stories, at a story's indent. An epic with no such task has no such line. Every child of an epic line is then
+     a story-shaped line, so a reader never has to tell a story's tasks from the epic's by indent alone.
+   - **One story-line form for every state:** `STORY-NNN <title> — <state> (<d>/<t> done)`, where `<state>` is the
+     story's status, `todo` printed as `planned`. A done story reads `— done (3/3 done)`; that is step 6's `(done)`.
+     **`<d>/<t>` leaves cancelled tasks out of both numbers**, and the epic line's count takes the same rule: a
+     cancelled task stays in the tree, struck through, but a story whose other tasks are all done reads `n/n`, not
+     `5/8`, which would look unfinished.
+
    Example shape:
    ```
    - EPIC-001 Authentication — in-progress (5/8 tasks done)
      - STORY-001 Password login — in-progress (2/3 done)
-       - [x] TASK-002 Password hashing
        - [ ] TASK-001 JWT issuance ← in-progress
+       - [x] TASK-002 Password hashing
        - [ ] TASK-003 Rate limit
-     - STORY-002 OAuth login — planned (0/2)
+     - STORY-002 OAuth login — planned (0/2 done)
+     - STORY-004 Session expiry — done (2/2 done)
+     - (epic level) — 1/1 done
+       - [x] TASK-009 Audit the login copy
    ```
 
    **A tree row carries the id, the title and the markers below, nothing else.** Priority and assignee are printed
@@ -55,7 +70,8 @@ dashboard is regenerated on the default branch when `close` merges.
    - Task blocked by either form ([SKILL.md](../SKILL.md) § *Lifecycle*) → `[ ] ... ⚠ blocked: <reason>` after
      its own state's marker; an old-form `status: blocked` has no other state to show, so it renders
      `[ ] ... ⚠ blocked`
-   - Task status `cancelled` → render struck-through `~~TASK-NNN ...~~`
+   - Task status `cancelled` → render struck-through, with no checkbox: `- ~~TASK-NNN ...~~`. Anything that follows
+     the title, such as the feature tag below, goes after the closing `~~`
    - Otherwise → `[ ]`
    - **Feature link** — if a task has `feature: FEATURE-NNN`, append a trailing tag `· FEATURE-NNN` so devs can jump to its stakeholder context in `docs/features/`.
 
@@ -65,7 +81,10 @@ dashboard is regenerated on the default branch when `close` merges.
    - [ ] TASK-007 Bump .NET 9 (P1, human)
    ```
 
-6. **Build the Completed section** (collapsed via `<details><summary>...</summary>...</details>`). Include done/cancelled epics with their frozen task list. Stories that are done within an active epic stay in the tree but with `(done)` suffix.
+6. **Build the Completed section**: no heading of its own, one `<details>` block whose summary is
+   `<summary>Completed (<n> epics)</summary>`, holding the done and cancelled epics in step 4's tree form, each with
+   its stories and their tasks. Stories that are done within an active epic stay in the tree **with their tasks**;
+   only their line changes, to step 4's story-line form (`— done (<n>/<n> done)`).
 
 7. **Render** [templates/README.md.tmpl](../templates/README.md.tmpl):
    - `{{PROJECT_NAME}}` — name of the directory containing `tasks/`, even where a README or guide titles the project
