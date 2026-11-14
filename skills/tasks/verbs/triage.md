@@ -75,6 +75,22 @@ dashboard is regenerated on the default branch when `close` merges.
    - Otherwise → `[ ]`
    - **Feature link** — if a task has `feature: FEATURE-NNN`, append a trailing tag `· FEATURE-NNN` so devs can jump to its stakeholder context in `docs/features/`.
 
+4b. **Check every parent against its children.** A container's status is derived from its children ([SKILL.md](../SKILL.md)
+   § *Roll status up to parents*), so one that disagrees with them is reported. This step **reports and names the
+   verb; it never changes a status**, because a status changes only through its verb, and `close` alone carries the
+   gates a container close needs. So it asks nothing. Four cases, over every epic and story, Completed ones included:
+
+   | The parent | Its children | Line | Fix (the callout prints the text before the dash) |
+   |---|---|---|---|
+   | reads `planned` or `in-progress` | at least one, and every one `done` or `cancelled` | `<ID> <status>, every child closed` | `/tasks close <ID>`, or keep it open — `close` step 11 lets an area of concern stay open on purpose |
+   | reads `planned` | at least one `in-progress`, `verify` or `done` | `<ID> planned, <n> of <t> children started` | no verb yet — none moves a container to `in-progress` today |
+   | reads `done` or `cancelled` | at least one open | `<ID> <status>, open child <child id>` | file it with `/tasks new` — a verb skipped the reopen § *Roll status up to parents* requires |
+   | an epic whose body names a `STORY-NNN` | that story has no file | `<ID> names <STORY-NNN>, which does not exist` | edit the epic body — it is hand-owned |
+
+   Write them as one callout directly under `## Tree`, above the tree, ordered by id:
+   `> Parents out of step (<n>): <line> → <fix>; <line> → <fix>.` Omit it, and its blank line, when there are none.
+   A container with no children is not a case, and child counts leave cancelled tasks out, as step 4's do.
+
 5. **Build the Loose section** if `_loose/` has any tasks:
    ```
    ## Loose tasks
@@ -105,7 +121,7 @@ dashboard is regenerated on the default branch when `close` merges.
      **Omit the whole line** when there are no `todo` tasks, rather than rendering an empty tail.
    - `{{INPROGRESS_LIST}}` (or "_None_" if empty)
    - `{{INREVIEW_SECTION}}` (entire section omitted if no `verify` tasks, old-form `review` included)
-   - `{{TREE_VIEW}}` (`_None_` when there are no epics, stories or tasks: the same form "In progress now" uses)
+   - `{{TREE_VIEW}}` (`_None_` when there are no epics, stories or tasks: the same form "In progress now" uses; step 4b's callout, when there is one, comes first)
    - `{{LOOSE_SECTION}}` (entire section omitted if no loose tasks)
    - `{{COMPLETED_SECTION}}` (omitted if no completed epics)
 
@@ -122,7 +138,7 @@ dashboard is regenerated on the default branch when `close` merges.
    `> Feature drift: none open · <a> accepted (<target> DV<x>, …) — see \`/roadmap --check\`.`
    Skip silently only when the trees agree and nothing is accepted.
 
-9. **If invoked directly** (not chained), print one summary line: `Dashboard refreshed: <E> epics, <S> stories, <T> tasks (<N> in progress).` Append `; <n> feature divergence(s) — see /roadmap` when step 8b found any.
+9. **If invoked directly** (not chained), print one summary line: `Dashboard refreshed: <E> epics, <S> stories, <T> tasks (<N> in progress).` Append `; <n> feature divergence(s) — see /roadmap` when step 8b found any. Append `; <n> parent(s) out of step` when step 4b found any.
 
 ## When NOT to chain triage
 

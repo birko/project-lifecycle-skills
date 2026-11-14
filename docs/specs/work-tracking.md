@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 73241d2b0a7c2ed4316cb56b00532b4477385263
+generated-at: 01fc2268d2fabb64d609b8a2d94dc2df33a7a404
 generated-on: 2026-11-14
 sources:
   - skills/tasks/SKILL.md
@@ -214,7 +214,7 @@ The system SHALL accept `--across` only on the bare snapshot, `audit` and the ro
 
 ### Requirement: Generated dashboard owned by triage
 
-The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through with no checkbox and any tag after the strike, feature links tagged), ordered epics and stories by id and tasks by the shared task order, tasks parented straight to an epic under one `(epic level)` line after its stories, every story line in one form `— <state> (<d>/<t> done)` with `todo` shown as `planned` and cancelled tasks counted in neither number, done stories keeping their tasks, a loose section, and a completed section that is one `<details>` block summarised `Completed (<n> epics)`, an empty tree rendering as `_None_`, tree rows carrying only id, title and markers, an omitted section taking the blank line before it, counts-table cells padded to the template's column width, and a local-time timestamp with no zone, and a feature-drift callout when the roadmap divergence rules find an open divergence, an accepted one left out of it, and a single quiet `Feature drift: none open · <n> accepted (…)` line when every finding is accepted. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
+The system SHALL regenerate the dashboard file only through `triage` (chained by the verbs that change the tree), rebuilding it entirely from the collection pass with counts (`—` for a pair that does not apply, `0` for one that applies and is empty, and the blocked count's overlap note inside its own cell, singular for one), a todo-by-priority line, "In progress now", an "Awaiting verification" section, a tree with per-story done counts and status markers (blocked tasks marked with their reason, cancelled ones struck through with no checkbox and any tag after the strike, feature links tagged), ordered epics and stories by id and tasks by the shared task order, tasks parented straight to an epic under one `(epic level)` line after its stories, every story line in one form `— <state> (<d>/<t> done)` with `todo` shown as `planned` and cancelled tasks counted in neither number, done stories keeping their tasks, a loose section, and a completed section that is one `<details>` block summarised `Completed (<n> epics)`, an empty tree rendering as `_None_`, tree rows carrying only id, title and markers, an omitted section taking the blank line before it, counts-table cells padded to the template's column width, and a local-time timestamp with no zone, and a feature-drift callout when the roadmap divergence rules find an open divergence, an accepted one left out of it, and a single quiet `Feature drift: none open · <n> accepted (…)` line when every finding is accepted. It SHALL check every epic and story against its children and report, in one callout above the tree and as a count on the summary line, each that disagrees — open with every child closed, `planned` with work started, `done` or `cancelled` with an open child, or an epic body naming a story that does not exist — naming the verb that fixes it, and SHALL never change a status itself. It SHALL never write the dashboard inside a task's linked worktree, saying so in one line, and SHALL refuse `--across`, pointing at the read-only snapshot.
 
 #### Scenario: Chained from a worktree
 
@@ -227,6 +227,12 @@ The system SHALL regenerate the dashboard file only through `triage` (chained by
 - **Given** a tree with a done story holding a cancelled task, and tasks parented directly to an epic
 - **When** the dashboard is regenerated twice with no change in between
 - **Then** the two files differ only in the timestamp, the done story reads `— done (n/n done)` with its tasks listed, and the epic's own tasks sit under its `(epic level)` line
+
+#### Scenario: A story left open over closed tasks
+
+- **Given** a story reading `in-progress` whose every task is `done`
+- **When** the dashboard is regenerated
+- **Then** a `Parents out of step` callout above the tree names the story and `/tasks close` for it, and the story's status is unchanged
 
 #### Scenario: Drift found
 

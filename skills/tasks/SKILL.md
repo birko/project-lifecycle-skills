@@ -643,7 +643,7 @@ non-obvious rules travel with this:
     reopening on that inference would override a decision nobody revisited. `move` reopens without asking
     because the person named the target. A `done` parent never asks: no decision stands behind it, since its
     status is derived from its children.
-- `triage` / `audit`: flag any parent whose status contradicts its children (e.g. all-children-done under an `in-progress` story, or a story listed in an EPIC body that no longer exists), and offer to reconcile.
+- `triage` flags any parent whose status contradicts its children and names the verb that fixes it, changing nothing itself ([verbs/triage.md](verbs/triage.md) step 4b owns the cases).
 
 ## Conventions
 
