@@ -1,6 +1,6 @@
 ---
 id: FEATURE-002
-generated: 2026-11-14 12:04
+generated: 2026-11-14 16:40
 ---
 
 # Comment discipline — keep the source free of everything that belongs elsewhere — Status

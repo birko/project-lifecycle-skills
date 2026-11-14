@@ -1,6 +1,6 @@
 ---
 id: FEATURE-001
-generated: 2026-11-14 12:04
+generated: 2026-11-14 16:40
 ---
 
 # Task worktrees — run a task in its own checkout — Status

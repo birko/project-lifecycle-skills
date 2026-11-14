@@ -1,6 +1,6 @@
 ---
 id: FEATURE-003
-generated: 2026-11-14 12:04
+generated: 2026-11-14 16:40
 ---
 
 # Task states follow common practice — "blocked" becomes a flag — Status

@@ -1,6 +1,6 @@
 ---
 id: FEATURE-005
-generated: 2026-11-14 12:04
+generated: 2026-11-14 16:40
 ---
 
 # UX baseline for UI review and prototypes — Status

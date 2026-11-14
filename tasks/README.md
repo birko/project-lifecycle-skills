@@ -2,21 +2,21 @@
 
 > Feature drift: none open · 1 accepted (EPIC-001 DV5) — see `/roadmap --check`.
 
-_Generated 2026-11-14 12:04. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
+_Generated 2026-11-14 16:40. Run `/tasks triage` to refresh. **Do not hand-edit** — changes will be overwritten._
 
 ## Counts
 
 | Status       | Epics              | Stories            | Tasks               |
 |--------------|--------------------|--------------------|---------------------|
-| planned      | 2                  | 5                  | —                   |
-| todo         | —                  | —                  | 28                  |
-| in-progress  | 4                  | 10                 | 0                   |
+| planned      | 1                  | 3                  | —                   |
+| todo         | —                  | —                  | 20                  |
+| in-progress  | 5                  | 12                 | 0                   |
 | verify       | —                  | —                  | 1                   |
 | blocked      | —                  | —                  | 1 (1 also counted in its own state) |
-| done         | 4                  | 13                 | 328                 |
+| done         | 4                  | 13                 | 339                 |
 | cancelled    | 0                  | 0                  | 20                  |
 
-`todo` by priority: 16× P2 · 12× P3.
+`todo` by priority: 14× P2 · 6× P3.
 
 ## In progress now
 
@@ -28,7 +28,7 @@ _None_
 
 ## Tree
 
-> Parents out of step (5): STORY-013 in-progress, every child closed → `/tasks close STORY-013`, or keep it open; STORY-014 in-progress, every child closed → `/tasks close STORY-014`, or keep it open; STORY-017 in-progress, every child closed → `/tasks close STORY-017`, or keep it open; STORY-023 in-progress, every child closed → `/tasks close STORY-023`, or keep it open; STORY-024 planned, 18 of 21 children started → `/tasks pick` of one of its open tasks.
+> Parents out of step (5): STORY-013 in-progress, every child closed → `/tasks close STORY-013`, or keep it open; STORY-014 in-progress, every child closed → `/tasks close STORY-014`, or keep it open; STORY-017 in-progress, every child closed → `/tasks close STORY-017`, or keep it open; STORY-023 in-progress, every child closed → `/tasks close STORY-023`, or keep it open; STORY-025 in-progress, every child closed → `/tasks close STORY-025`, or keep it open.
 
 - EPIC-001 Adopt the yolobox skill ideas into the lifecycle set — in-progress (48/52 tasks done)
   - STORY-001 Bootstrap the universal layer on this repo — done (1/1 done)
@@ -97,7 +97,7 @@ _None_
     - [ ] TASK-281 Three specs omit behaviour their sources state
   - STORY-009 Multi-repo adoption — one layer over many repositories — planned (0/1 done)
     - [ ] TASK-059 Reconcile the already-adopted repos against the grown layer
-- EPIC-002 Close-gate findings on the skill set — in-progress (107/118 tasks done)
+- EPIC-002 Close-gate findings on the skill set — in-progress (112/119 tasks done)
   - STORY-010 `verify-conventions` — what the lint skips and what it fails to say — done (2/2 done)
     - [x] TASK-013 verify-conventions must say which sections it read — the output format has no slot for it
     - [x] TASK-009 verify-conventions has no rule about generated and vendored files
@@ -145,7 +145,7 @@ _None_
     - [x] TASK-375 `triage` is told to flag a parent that contradicts its children, and its verb file has no step for it
     - [x] TASK-376 `triage` leaves three dashboard sections to the runner: the verification heading, the Loose section's contents, and the summary with only accepted drift
     - [x] TASK-377 No verb moves a `planned` story or epic to `in-progress` when its first child starts
-  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (8/10 done)
+  - STORY-012 The universal layer — declarations that nobody owns, owner verbs that cannot reconcile — in-progress (9/10 done)
     - [x] TASK-149 Row 3 has no admission test — a plausible classification is taken for a determined one
     - [ ] TASK-024 The other owner verbs still cannot say whether an artifact is current
     - [x] TASK-027 `present, uncommitted` is blind to work that was staged but never committed
@@ -157,7 +157,7 @@ _None_
     - ~~TASK-136 Three files state the `.env.example` condition as *reads*, two as *requires* — and the two answer differently~~
     - [x] TASK-138 A conditional row says what settles **Yes** and never what settles **No** — and a wrong No is the one state nothing reports
     - ~~TASK-150 The `docs/architecture.md` row names a state but no fill action, and the two doors disagree~~
-    - [ ] TASK-085 `LAYER.md`'s survey-state list has outgrown the shape it is written in
+    - [x] TASK-085 `LAYER.md`'s survey-state list has outgrown the shape it is written in
   - STORY-013 The drift audit — a check that cannot see prose, and a finding that cannot be accepted — in-progress (5/5 done)
     - [x] TASK-025 DV10's "real code" test cannot see a repo whose code is prose
     - [x] TASK-032 A divergence cannot be recorded as accepted, so triage nags about a decision already made
@@ -191,7 +191,7 @@ _None_
     - [ ] TASK-029 The lint's own coverage grew 16 to 25 cases with nothing recording what the nine pin
     - [x] TASK-043 The wikilink contract is only enforced inside `skills/`, and cannot naively be widened
     - [x] TASK-171 `docs/architecture.md` still calls install-root drift "check 4"
-  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (27/29 done)
+  - STORY-016 The front doors under a cold drill — what the prose says versus what it does — in-progress (29/30 done)
     - [x] TASK-061 `LAYER.md` calls itself the whole layer while `new-project` creates three artifacts it never lists
     - [x] TASK-062 The test-harness ladder reports `missing` on the repo that ships it
     - [x] TASK-063 The upgrade path's headline case has no state and no remedy
@@ -223,9 +223,10 @@ _None_
     - [x] TASK-362 Five more adoption readings that a second cold runner has now raised
     - [x] TASK-363 Three more adoption readings that a second cold runner has now raised
     - [x] TASK-364 Two rules set today meet at the `## Commands` offer and at a runner's `.gitignore` line
-    - [ ] TASK-365 Four more adoption readings that a second cold runner has now raised
-    - [ ] TASK-370 The seed's hint comments sit above their tokens, and `.gitignore` creation disagrees with its own check
-  - (epic level) — 8/10 done
+    - [x] TASK-365 Four more adoption readings that a second cold runner has now raised
+    - [x] TASK-370 The seed's hint comments sit above their tokens, and `.gitignore` creation disagrees with its own check
+    - [ ] TASK-379 Five adoption readings that two or more cold runners left undecided
+  - (epic level) — 10/10 done
     - [x] TASK-060 Triage the cold-drill findings on both front doors
     - [x] TASK-068 The cold drill — write down the one test method that works on prose
     - [x] TASK-106 A subagent spawned in this repo is never a cold reader, so the drill method cannot be run as written
@@ -234,8 +235,8 @@ _None_
     - [x] TASK-127 Four steps say "ask the user" and none of them says what to ask, or what happens when nobody answers
     - [x] TASK-132 Cold-drill the two render instructions TASK-126 wrote, because a faithful renderer is exactly what they address
     - [x] TASK-210 Examples in skill text are invented, never lifted from a repo the skill is drilled on
-    - [ ] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
-    - [ ] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
+    - [x] TASK-216 Two cross-skill rules in use are missing from AGENTS.md § Conventions
+    - [x] TASK-264 `feature prototype` decides whether it can publish from "the runtime", not from the session's tools
 - EPIC-003 Defects found by using the skills, not by reviewing them — in-progress (45/45 tasks done)
   - STORY-017 Work that is filed correctly and reachable by nothing — in-progress (4/4 done)
     - [x] TASK-130 `/tasks` prescribes a polyrepo split it cannot then collect — sub-repo tasks are invisible from the aggregator
@@ -285,7 +286,7 @@ _None_
     - [x] TASK-334 `/feature status` templates leave a skipped prototype, the project name and the run mode undefined
     - [x] TASK-336 `/feature pick` has no rule for an idea.md with no open-questions section, and words gate D's question twice
     - [x] TASK-342 `/feature pick` words gate B's question twice
-- EPIC-007 First spec harvest review 2026-10 — in-progress (54/57 tasks done)
+- EPIC-007 First spec harvest review 2026-10 — in-progress (57/59 tasks done)
   - STORY-023 Behaviour that leaves the task tree contradicting itself — in-progress (36/36 done)
     - [x] TASK-242 `new-project`'s fill steps can ship unrendered tokens, and run a remote command before the repo exists
     - [x] TASK-243 Two `LAYER.md` rows disagree with the front door that implements them
@@ -323,7 +324,7 @@ _None_
     - [x] TASK-350 `/feature decide`'s verdict question has no answer-less path, and nobody commits what `prototype` writes
     - [x] TASK-283 `/populate-tests verify` and `ledger` never say what they do when there is no harness
     - [x] TASK-301 `improve-architecture`'s `since <commit>` lines never say which commit they name
-  - STORY-024 Lists, labels and references that no longer match what they describe — planned (18/21 done)
+  - STORY-024 Lists, labels and references that no longer match what they describe — in-progress (21/23 done)
     - [x] TASK-224 Two restated lists of verbs have drifted from the verbs
     - [x] TASK-225 Two sentences still describe the task states before FEATURE-003
     - [x] TASK-226 Three references point at things that do not exist
@@ -341,14 +342,16 @@ _None_
     - [x] TASK-274 `roll-changelog`: a dangling skeleton link, two definitions of its boundary, an undeclared flag, and an empty release
     - [x] TASK-275 `domain` is told it audits ADR drift but has no pass for it, and two of its pointers are wrong
     - [x] TASK-276 `handoff` has no trigger phrases, and never says where its document went
-    - [ ] TASK-241 Three stale words in `feature`: a count, a citation and a list of forms
-    - [ ] TASK-349 `/specs verify`, `show` and `init` leave four rendering details to the reader
+    - [x] TASK-241 Three stale words in `feature`: a count, a citation and a list of forms
+    - [x] TASK-349 `/specs verify`, `show` and `init` leave four rendering details to the reader
     - [x] TASK-351 `/feature status` in single-feature mode leaves four rendering details to the reader
     - [ ] TASK-352 Decide whether `domain` gains a pass that checks decision records against the code
-- EPIC-008 architecture — rung 2 review 2026-10 — planned (0/2 tasks done)
-  - STORY-025 Changes that ripple across skill folders — planned (0/2 done)
-    - [ ] TASK-268 A change to a cross-skill contract ripples through up to 21 files in six skill folders
-    - [ ] TASK-269 `adopt-project` changes with `new-project`'s LAYER.md in 19 commits, and both keep needing fixes
+    - [x] TASK-378 `/specs init`'s blessing question and unblessed confirmation print "1 areas"
+    - [ ] TASK-380 `/specs show`'s one-line header: field names or values
+- EPIC-008 architecture — rung 2 review 2026-10 — in-progress (2/2 tasks done)
+  - STORY-025 Changes that ripple across skill folders — in-progress (2/2 done)
+    - [x] TASK-268 A change to a cross-skill contract ripples through up to 21 files in six skill folders
+    - [x] TASK-269 `adopt-project` changes with `new-project`'s LAYER.md in 19 commits, and both keep needing fixes
 - EPIC-009 Specs learn from OpenSpec — planned (0/7 tasks done)
   - STORY-026 The regen review reads one requirement at a time, and loses nothing silently — planned (0/5 done)
     - [ ] TASK-285 `/specs regen`'s review lists changes per requirement, with renames shown FROM → TO · FEATURE-004
@@ -371,7 +374,7 @@ _None_
 - [x] TASK-034 `tasks/README.md` holds narrative its own template cannot regenerate (P2, agent)
 - ~~TASK-121 `/tasks pick` should offer to run the task in a subagent, and say when that is the wrong choice~~ (P2, agent)
 - [x] TASK-191 Re-measure the § Comments table for the two lint scripts TASK-190 changed (P3, unassigned)
-- [ ] TASK-261 Run the deletion test on the three `help` verb files, and keep or fold each one (P3, agent)
+- [x] TASK-261 Run the deletion test on the three `help` verb files, and keep or fold each one (P3, agent)
 - [x] TASK-359 Regenerate the `test-authoring` spec, two commits behind its sources (P3, agent)
 - [x] TASK-372 Respec four spec areas whose sources changed without a respec (P3, agent)
 - [ ] TASK-374 Retire FEATURE-003's state-model playground once TASK-124's test no longer needs it (P3, human)
