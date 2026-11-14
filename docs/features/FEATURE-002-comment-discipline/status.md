@@ -1,6 +1,6 @@
 ---
 id: FEATURE-002
-generated: 2026-11-13 20:56
+generated: 2026-11-14 08:15
 ---
 
 # Comment discipline — keep the source free of everything that belongs elsewhere — Status
@@ -25,41 +25,41 @@ generated: 2026-11-13 20:56
 
 - TASK-140 — add the comment rule to the rulebook every new project starts with (done)
 - TASK-141 — follow the rule in this project too, with a measurement of its own scripts (done)
-- TASK-142 — build the comment-checking command (done)
+- TASK-142 — build the comment-checking command: the check and the two scopes it runs on (done)
 - TASK-143 — never delete the only record of something: move it first, then delete (done)
-- TASK-144 — run the comment check as its own separate verdict when work is closed (done)
-- TASK-145 — stop the project-setup tool from dropping the new rule (cancelled)
-- TASK-146 — an automatic check keeps the rule's two copies identical (done)
+- TASK-145 — stop the project-setup tool's "leave as-is" list falling one short (cancelled)
 - TASK-147 — the project-setup tool copies the shared rules word for word instead of rewording them (done)
-- TASK-148 — one install script's header repeated two decision records instead of pointing at them (done)
-- TASK-151 — the measurement of this project's scripts was taken the wrong way; redo it and fix what it found (done)
+- TASK-144 — the comment check runs as its own separate verdict when work is closed (done)
+- TASK-146 — an automatic check keeps the rule's two copies identical (done)
+- TASK-151 — the measurement of this project's comments was under-evidenced; redo it and fix what it found (done)
 - TASK-152 — the command promised a way to check named files and never defined it (done)
+- TASK-157 — six more comment findings in the main check script (done)
+- TASK-159 — the rule gains a place for content that belongs in the project's own rulebook (done)
+- TASK-160 — the eight places that rulebook change made reportable (done)
+- TASK-162 — the check script's test suite had never been reviewed, and held nine findings (done)
+- TASK-166 — clear the three findings every pair of readers agreed on (done)
+- TASK-167 — the text describing the closing checks still counted one check too few (done)
+- TASK-168 — the new command is now listed everywhere the tools are listed (done)
+- TASK-169 — the measurement now says how to repeat it (done)
+- TASK-172 — three things the review gate's second run found in the fixes themselves (done)
+- TASK-148 — one install script's header repeated two decision records instead of pointing at them (done)
 - TASK-153 — a fifth copy of one measurement, inside the test that guards it (done)
 - TASK-154 — two check headers repeated reasoning the rulebook already holds (done)
 - TASK-155 — one reader in six rated a finding less severe than the rules say (done)
 - TASK-156 — two loose ends in checking named files (done)
-- TASK-157 — six more comment findings in the main check script (done)
 - TASK-158 — four more repetitions in the main check script, and two comments that should exist and did not (done)
-- TASK-159 — the rule had no place for content that belongs in the project's own rulebook (done)
-- TASK-160 — the eight places that rulebook change made reportable (done)
-- TASK-162 — the test script had never been checked, and held nine findings (done)
-- TASK-163 — further findings surfaced by that check, outside its nine (done)
+- TASK-163 — further comment findings a review surfaced beyond its first nine (done)
 - TASK-164 — two borderline findings raised by only one reader (done)
 - TASK-165 — three comments that repeat the line beside them (done)
-- TASK-166 — clear the three findings every pair of readers agreed on (done)
-- TASK-167 — the text describing the closing checks still counted one check too few (done)
-- TASK-168 — the new command was missing from every place that lists the tools (done)
-- TASK-169 — the measurement did not say how to repeat it (done)
 - TASK-170 — content belonging in the project's rulebook had nowhere to be moved (done)
-- TASK-172 — three wording mistakes found in the review's own fixes (done)
 
 ## What can be tested now
 
-These tasks have a written manual test plan that is ready to run: TASK-140, TASK-141, TASK-142, TASK-143, TASK-144, TASK-145 (cancelled), TASK-146, TASK-147, TASK-151, TASK-152, TASK-153, TASK-154, TASK-155, TASK-156, TASK-157, TASK-158, TASK-159, TASK-160, TASK-162, TASK-163, TASK-164, TASK-165, TASK-167, TASK-169, TASK-170. (TASK-148, TASK-166, TASK-168 and TASK-172 need no manual test.)
+These tasks have a written manual test plan that is ready to run: TASK-140, TASK-141, TASK-142, TASK-143, TASK-147, TASK-144, TASK-146, TASK-151, TASK-152, TASK-157, TASK-159, TASK-160, TASK-162, TASK-167, TASK-169, TASK-153, TASK-154, TASK-155, TASK-156, TASK-158, TASK-163, TASK-164, TASK-165, TASK-170. (TASK-148, TASK-166, TASK-168 and TASK-172 need no manual test; TASK-145 was cancelled.)
 
 ## Prototype
 
-Skipped — settled 2026-09-24 at `/feature review` by František Bereň. A mock-up of the command's report was considered; instead the report itself was tested directly — independent readers ran the command on sample projects, and each run checked what a mock-up would have shown (TASK-142, TASK-152, TASK-155, TASK-156). The rule half needs no prototype — it is prose in a template.
+Skipped — settled 2026-09-24 at `/feature review` by František Bereň. The leaning had been a markdown wireframe of the command's report, the only user surface. It was not built because the report itself was tested directly instead: cold runners on real fixtures produced it, and each drill checked the two things a wireframe would have predicted — that a finding names *which row of the test caught it* and *what it would do*, before anything is changed (TASK-142, TASK-152, TASK-155, TASK-156). The rule half needs no prototype — it is prose in a template.
 
 ## Next step
 

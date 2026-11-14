@@ -1,6 +1,6 @@
 ---
 id: FEATURE-005
-generated: 2026-11-13 20:56
+generated: 2026-11-14 08:15
 ---
 
 # UX baseline for UI review and prototypes — Status
@@ -23,7 +23,7 @@ generated: 2026-11-13 20:56
 
 1 / 1 tasks done.
 
-- TASK-293 — a short list of interface good-practice checks that the review and mock-up tools use when a project has no rule of its own (done)
+- TASK-293 — a short list of interface good-practice checks that the convention review and the mock-up tools read, the way they read the list of code smells (done)
 
 ## What can be tested now
 

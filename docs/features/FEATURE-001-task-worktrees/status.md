@@ -1,6 +1,6 @@
 ---
 id: FEATURE-001
-generated: 2026-11-13 20:56
+generated: 2026-11-14 08:15
 ---
 
 # Task worktrees — run a task in its own checkout — Status
@@ -23,28 +23,28 @@ generated: 2026-11-13 20:56
 
 18 / 18 tasks done.
 
-- TASK-173 — record, per project, whether tasks get their own folder and where those folders live (done)
-- TASK-174 — create the folder when a task is picked, asking where it should go if nobody has said (done)
-- TASK-175 — check the tool really moved into the new folder, and step back safely if it did not (done)
-- TASK-176 — when a task is finished, fold its work back in and remove its folder, in a safe order (done)
-- TASK-177 — teach both project-setup tools about the new setting (done)
-- TASK-178 — give test runs a known place for their throwaway copies, and a rule for cleaning up (done)
-- TASK-179 — try the whole thing end to end on a real project (done)
-- TASK-181 — carry on with a task in a new session, back inside its own folder (done)
-- TASK-183 — support projects that merge through a shared online copy (done)
-- TASK-184 — stop two parallel tasks from giving new work the same number (done)
-- TASK-185 — the same for new feature numbers (done)
-- TASK-186 — an interrupted automated run finds its own task again (done)
-- TASK-187 — the "am I in a task folder" check works from any subfolder (done)
-- TASK-188 — tasks waiting for sign-off inside a task folder are counted (done)
-- TASK-189 — the project rulebook and architecture notes record the new patterns (done)
-- TASK-193 — one phrase, "local mode", meant two different settings; give one of them a clearer name (done)
-- TASK-194 — make two sentences in the task-picking step say plainly what they mean (done)
-- TASK-296 — closing a story and reviewing a feature save their record on a branch of its own for someone to merge, instead of leaving the files lying around (done)
+- TASK-173 — record, per project, where a task's work happens and where its separate copies live (done)
+- TASK-174 — picking a task creates its own separate copy of the project, asking where to put it if nobody has said (done)
+- TASK-175 — picking a task checks it really moved into that copy, and falls back safely when it cannot (done)
+- TASK-176 — finishing a task folds its work back in and removes its copy, in a fixed order (done)
+- TASK-177 — both project-setup tools, for new and for existing projects, offer the new settings (done)
+- TASK-179 — try the whole thing end to end on a real project: pick, work and finish a task in its own copy (done)
+- TASK-181 — carrying on with a task goes back into the copy that holds its work (done)
+- TASK-186 — with a shared online copy, a session's own task in progress is no longer hidden from its lists (done)
+- TASK-187 — one consistent "am I inside a task's copy" check, with no false alarm from a subfolder (done)
+- TASK-178 — trial runs get a known home for their throwaway copies, and a rule for cleaning up (done)
+- TASK-183 — task copies for projects whose main line is shared through an online copy (done)
+- TASK-184 — tasks created in parallel copies can no longer get the same number (done)
+- TASK-188 — a task waiting for sign-off inside a copy is no longer invisible, and a fallback no longer leaves a stray branch behind (done)
+- TASK-189 — record the new rules the feature introduced, and point a copied list at its single owner (done)
+- TASK-193 — two unrelated settings that were both called "local mode" are told apart (done)
+- TASK-185 — features numbered in parallel copies can no longer get the same number either (done)
+- TASK-194 — two unclear points in picking a task are settled: whether this machine's own tasks show as taken, and a step that called an online service in the wrong mode (done)
+- TASK-296 — with a shared online copy, two review steps no longer leave their record unsaved (done)
 
 ## What can be tested now
 
-These tasks have a written manual test plan that is ready to run: TASK-173, TASK-174, TASK-175, TASK-176, TASK-177, TASK-178, TASK-179, TASK-181, TASK-183, TASK-184, TASK-185, TASK-186, TASK-187, TASK-188, TASK-193, TASK-194, TASK-296. (TASK-189 needs no manual test.)
+These tasks have a written manual test plan that is ready to run: TASK-173, TASK-174, TASK-175, TASK-176, TASK-177, TASK-179, TASK-181, TASK-186, TASK-187, TASK-178, TASK-183, TASK-184, TASK-188, TASK-193, TASK-185, TASK-194, TASK-296. (TASK-189 needs no manual test.)
 
 ## Prototype
 
