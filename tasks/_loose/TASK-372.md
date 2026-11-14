@@ -3,7 +3,8 @@ id: TASK-372
 parent: null
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
+picked-by: fix-next
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: P3
 # assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
@@ -47,9 +48,9 @@ outcome, and it moves the stamp honestly.
 
 ## Acceptance criteria
 
-- [ ] `/specs regen` has run for each of the four areas, and `--feature FEATURE-005` so DV8 no longer fires for it, each diff reviewed as "was this change intended?", and each
+- [x] `/specs regen` has run for each of the four areas, and `--feature FEATURE-005` so DV8 no longer fires for it, each diff reviewed as "was this change intended?", and each
       stamp names the commit it was regenerated at
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -62,4 +63,30 @@ N/A — the regen's own diff review is the check.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-372` — leave empty until then._
+Inline: read each unspecced commit, check whether its spec states the changed text, regenerate scoped, then `--feature FEATURE-005`'s provenance and expected-change check.
+
+## Outcome
+
+**The regen, area by area (each diff reviewed as "was this change intended?"):**
+- **`feature-lifecycle`, `specs-from-code`, `idea-interrogation`, `glossary-and-adrs`:** no body change. None of them
+  states the text their unspecced commits changed (a timestamp form, example paths, a skill description, a record
+  history and a pointer), so the stamp moves and the requirements stay verbatim, per the stable-wording rule.
+- **`--feature FEATURE-005`:**
+  - **`change-review` had an expected change missing.** D2 (approved) puts the UX baseline into `/verify-conventions`, and
+    the smell-baseline requirement still described one inventory. It now names both inventories and what each applies
+    to, with a scenario for a confirmation guarding a reversible action. **Matches an approved decision** (D2), so clean.
+  - **`feature-lifecycle`** already specs D3 (the prototype check), so only provenance changed.
+  - **`shaped-by` gains FEATURE-005 on both areas**, from TASK-293's two subject-led commits (c9f705a, b2729b1), which
+    touched `skills/verify-conventions/**` and `skills/feature/**`. Both resolved, so `shaped-by-unresolved` is unchanged.
+- **Stamps:** all five name the commit they were regenerated at.
+
+**Result.** By `/specs verify`'s rule, the only stale area left is `test-authoring` (TASK-359), and FEATURE-005's DV8
+no longer fires.
+
+## Progress log
+
+- step 2 — picked by the user's go-ahead on the named next pick; loose (tree maintenance), so outside the ranked pool, recorded rather than ranked
+- step 3 — verified: the four areas each had exactly one unspecced source commit; FEATURE-005 in no `shaped-by`
+- step 5 — scoped regen of five spec areas: one requirement and one scenario in change-review, FEATURE-005 provenance on two areas, five restamps
+- step 6 — check: staleness under verify's anchor leaves only test-authoring; lint passes
+- step 8 — closed inline; commit in git log

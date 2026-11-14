@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: b3721c5c139b24a260dea73082b2a59159884e2c
-generated-on: 2026-11-13
+generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-on: 2026-11-14
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -18,7 +18,7 @@ sources:
   - skills/feature/verbs/review.md
   - skills/feature/verbs/show.md
   - skills/feature/verbs/status.md
-shaped-by: [FEATURE-001, FEATURE-003]
+shaped-by: [FEATURE-001, FEATURE-003, FEATURE-005]
 shaped-by-derived: true
 shaped-by-unresolved: 5
 ---

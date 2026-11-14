@@ -1,7 +1,7 @@
 ---
 area: change-review
-generated-at: b567230a98f6eb1b7f1ebde9cdabb314604cb947
-generated-on: 2026-11-13
+generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-on: 2026-11-14
 sources:
   - skills-pi/code-review/SKILL.md
   - skills-pi/review/SKILL.md
@@ -9,7 +9,7 @@ sources:
   - skills/review-comments/SKILL.md
   - skills/verify-conventions/SKILL.md
   - skills/verify-intent/SKILL.md
-shaped-by: [FEATURE-002]
+shaped-by: [FEATURE-002, FEATURE-005]
 shaped-by-derived: true
 shaped-by-unresolved: 7
 ---
@@ -200,7 +200,7 @@ The system SHALL flag a change that alters structure (a new module, engine, prot
 
 ### Requirement: Rules axis — the smell baseline is a labelled floor that the repo overrides
 
-The system SHALL read the code-smell inventory from the `tdd` skill's refactor-candidates file rather than a copy, SHALL run it after the rulebook sweep with its findings separated below the rule findings, SHALL prefix each with `smell:` at ⚠ or 💡 and never 🛑, SHALL suppress any smell that conflicts with a documented rule outright, and SHALL skip anything the repo's linter, formatter, compiler or analyzer already reports.
+The system SHALL read two inventories rather than copies — the code-smell inventory from the `tdd` skill's refactor-candidates file, applied to every changed source file, and the interaction-design inventory from this skill's own UX baseline file, applied to changed files a human sees (components, pages, templates, forms, dialogs, user-facing messages and output), so a user-interface file gets both — SHALL run it after the rulebook sweep with its findings separated below the rule findings, SHALL prefix each with `smell:` at ⚠ or 💡 and never 🛑, SHALL suppress any smell that conflicts with a documented rule outright, and SHALL skip anything the repo's linter, formatter, compiler or analyzer already reports.
 
 #### Scenario: Duplication is the documented design
 
@@ -219,6 +219,12 @@ The system SHALL read the code-smell inventory from the `tdd` skill's refactor-c
 - **Given** an analyzer configured to error on unused parameters
 - **When** the smell baseline sees an unused parameter
 - **Then** it does not report it
+
+#### Scenario: A confirmation guards a reversible action
+
+- **Given** a guide whose UI section says nothing about confirmation, and a page diff that asks `confirm('Archive this order?')` before an archive the API can reverse
+- **When** the smell baseline runs
+- **Then** it reports `⚠ smell: confirm guarding a reversible action`, labelled a judgement call from the UX baseline, suggesting the action happen at once with an undo
 
 ### Requirement: Intent axis — the intent sources and their precedence
 

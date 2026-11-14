@@ -1,7 +1,7 @@
 ---
 area: specs-from-code
-generated-at: 9b716b7f9278f41ef991483f27e6b3a657ad4355
-generated-on: 2026-11-13
+generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
   - skills/specs/templates/map.yml

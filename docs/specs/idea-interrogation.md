@@ -1,7 +1,7 @@
 ---
 area: idea-interrogation
-generated-at: 3d062e713bf85444423590e371de2ec49cdc6d5e
-generated-on: 2026-10-12
+generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-on: 2026-11-14
 sources:
   - skills/grill-me/SKILL.md
 shaped-by: []

@@ -1,7 +1,7 @@
 ---
 area: glossary-and-adrs
-generated-at: 6038c94afd6bb36251cea2315bd3099473809d3f
-generated-on: 2026-11-12
+generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-on: 2026-11-14
 sources:
   - skills/domain/SKILL.md
 shaped-by: []
