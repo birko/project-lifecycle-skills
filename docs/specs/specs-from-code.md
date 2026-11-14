@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: a6f5155cd24eba2aa1a947fa26203f58b9cfb91a
+generated-at: ed9bb0f7bd87784b959d6daa7f1f80129e8176c2
 generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
@@ -74,7 +74,7 @@ The system SHALL keep a hand-editable area map in which each area has a kebab-ca
 
 ### Requirement: Coverage keys record whether the map was checked
 
-The system SHALL carry three coverage keys in the map — `coverage` (one of `verified`, `not-applicable`, `unverified`), `tracked-files-at-scan` (the number of files git tracked when the scan ran, never a coverage numerator), and `coverage-drift` (a list of paths, never a count) — and SHALL read an absent `coverage` as `unverified` and absent companions as not computed rather than as zero or empty.
+The system SHALL carry three coverage keys in the map — `coverage` (one of `verified`, `not-applicable`, `unverified`), `tracked-files-at-scan` (the number of files git tracked when the scan ran, the three dotfiles skipped from mapping counted like any other, never a coverage numerator), and `coverage-drift` (a list of paths, never a count) — and SHALL read an absent `coverage` as `unverified` and absent companions as not computed rather than as zero or empty.
 
 #### Scenario: Map predating the keys
 

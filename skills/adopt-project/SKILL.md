@@ -73,7 +73,10 @@ These consequences decide behaviour:
   from the outside. Where the artifact's row names a verb, step 3's delegation is what answers, so
   leave the version question to it rather than guessing here. In a full run's table such a row reads `present — <verb>
   answers in step 3`, and the report carries what it answered (on a scoped run, which reaches no step 3, the row is
-  `present, owner not asked`, per § *Scoped runs*); where no verb owns the shape, the
+  `present, owner not asked`, per § *Scoped runs*). **Every missing row whose cell has a verb create it** (`docs/specs/.map.yml` by `/specs init`,
+  and any other row whose cell names its creating verb) reads `missing — <verb> creates it in step 3` in the same
+  table, and the report carries the verb's outcome the same way. On a re-run the dated wording below comes first and
+  this clause follows it after `; `, as a `not offered` reason does; where no verb owns the shape, the
   thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
   § *Delegation follows the row, not the artifact's appearance*).
   - **This does not defer a declaration the row names.** *Is field X in file Y* is a grep, not a
@@ -277,7 +280,8 @@ Their words, so no run composes its own:
 question when integration is asked too, because [[tasks]] `init` skips workspace under `single-branch`. Prefix it
 `If you chose pr-per-task:`. Use its answer only when integration ends up `pr-per-task`, answered now or already
 declared. Otherwise write nothing for it, and report `workspace undeclared — tasks work in place (not asked:
-single-branch)`, or `(integration unanswered)`.
+single-branch)`, or `(integration unanswered)`. **That is the one line for the fact**: it is [[tasks]] `init`'s own
+wording, so the report prints it once, never beside a second wording of the same skip.
 
 **Three kinds of question are not this round's, and each is stated rather than left to the run:**
 - **Creating an artifact the survey found missing is not an offer.** Running `/adopt-project` asked for
