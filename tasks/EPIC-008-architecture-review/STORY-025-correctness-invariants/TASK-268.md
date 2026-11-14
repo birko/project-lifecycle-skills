@@ -3,9 +3,10 @@ id: TASK-268
 parent: STORY-025
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
+picked-by: fix-next
 assignee: agent
 created: 2026-10-06
 depends-on: []
@@ -41,9 +42,9 @@ Candidate key: 4:skills/feature/SKILL.md — IA-1
 
 ## Acceptance criteria
 
-- [ ] Each contract restated in two or more of these skills is listed in this task with its owning file, and every restatement is classified as contract (both sides must state it, per AGENTS.md § *A format one skill reads is a contract*) or copy
-- [ ] Every restatement classified as a copy is replaced by a pointer to its owning file, so a grep for the contract's defining sentence finds it in the owner only
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Each contract restated in two or more of these skills is listed in this task with its owning file, and every restatement is classified as contract (both sides must state it, per AGENTS.md § *A format one skill reads is a contract*) or copy
+- [x] Every restatement classified as a copy is replaced by a pointer to its owning file, so a grep for the contract's defining sentence finds it in the owner only
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 > Criteria rewritten 2026-10-06, before work started: a cold reader found the original "a later run shows fewer folders per change" uncheckable at merge time (TASK-078's test plan).
 
@@ -57,4 +58,44 @@ N/A: a prose restructuring verified by the lint and by a later `/improve-archite
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-268` — leave empty until then._
+Inline: for each contract the finding names, find its owner and every statement of it in `skills/` and the rulebook, classify each, and point every copy at the owner.
+
+## Outcome
+
+**The four contracts the finding names, their owners, and every statement of them outside the owner.**
+
+| Contract | Owner (the only full statement) | Statements elsewhere | Class | Done |
+|---|---|---|---|---|
+| **Task status vocabulary**, two forms read everywhere (`verify` / older `review`; `blocked:` field / old `status: blocked`) | `skills/tasks/SKILL.md` § *Lifecycle* → *Reading a task's status* | `feature` SKILL.md, `review`, `status`; `roadmap`; `fix-next` (two places); `tasks` `close`, `init`, `migrate`, `pick`, `triage` | **contract**: each reader must accept both forms, so each names them, and all but one already pointed at the owner | `fix-next`'s *Verification debt comes first* named the older form with no pointer; it now points |
+| **The review passes a close runs** | `skills/tasks/verbs/close.md` step 5b (which passes, which are conditional) | `AGENTS.md` § Working rules; `new-project/templates/CONVENTIONS-universal.md`; `review-comments` SKILL.md | **copy**: each listed the passes ("adherence, fidelity and correctness always…", "beside standards, fidelity and correctness"), which go stale when an axis is added, the case AGENTS.md § *Independent review axes* already warns about | all three now name `close` step 5b and list nothing |
+| **The `blocked:` field and how it is written** | `skills/tasks/SKILL.md` § *Lifecycle* → *Writing a `blocked:` value* | `tasks` `block`, `cancel`, `close`, `audit`, `export`, `import`, `init`, `pick`, `show`, `spawn`, `triage`; `fix-next`; `roadmap`; `slicing.md`; the `TASK.md` template; `CONVENTIONS-universal.md` | **contract**: writers (`block`, `close`, `import`, `init`) and readers each act on the field and point at the owner for how to write it; the template's comment is the field's documentation, per § *A template ships nothing a render cannot make true* | none needed |
+| **The dropped-finding entry** (`### Findings dropped at intake`) | the writer, `skills/tasks/verbs/intake.md` steps 3 and 5 | `improve-architecture` SKILL.md (the reader); `AGENTS.md` | **contract**: AGENTS.md § *A format one skill reads is a contract the writing skill must state too* requires both sides to state it, by name | none |
+
+**Criterion 2, checked by grep:** each contract's defining sentence is found in its owner only. *Two forms, both read
+everywhere* and *one rule for every writer* are in `tasks/SKILL.md` alone. The pass list (*fidelity and correctness
+run unconditionally*) is in `close.md` alone. No other file in `skills/` or `AGENTS.md` lists the passes.
+
+**What this does not measure:** the finding's co-change figures. Those come from a later `/improve-architecture` run,
+as the plan says; nothing here claims the median of 3 files per change has moved. Most of the co-change the finding
+saw is the contract rule working, the tension its context named.
+
+**Human test plan:** N/A as filed.
+
+**Close gate (inline; four files plus three restamps):**
+- **Standards:** § *Defer to a shared inventory* and § *Independent review axes*.
+- **Intent:** all criteria met.
+- **Correctness:** by grep and by reading; the consumer template's changed line sits outside its byte-checked
+  `comment-rule` block, and the lint passes.
+- **Security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+- **Specs:** change-review, defect-draining and project-baseline restamped with no content change. Work-tracking's
+  close requirement, which names the passes, describes the owner and is right where it is.
+
+## Progress log
+
+- step 2 — picked; the last task in the pool not waiting on a person or a decision; STORY-025 already in-progress
+- step 3 — re-verified: the pass list copied in three places; one status-form mention without a pointer
+- step 5 — four statements pointed at their owners
+- step 6 — by grep (each defining sentence in its owner only) and the lint; plan N/A
+- step 7 — change-review, defect-draining, project-baseline restamped, no content change
+- step 8 — closed inline; commit in git log

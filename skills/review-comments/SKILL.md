@@ -357,7 +357,7 @@ differ by whether anything gets relocated at all. **`PATH …` is the scope this
 ## Where this runs
 
 - **Standalone, any time** — before a commit (the default diff), or pointed at an area you are about to work in (`PATH …`, which is what that phrase means mechanically).
-- **At a review gate, as its own axis** — reported beside standards, fidelity and correctness, with its own
+- **At a review gate, as its own axis** — reported beside the other passes [[tasks]] `close` step 5b runs, with its own
   severity ordering and nothing sorted across them. A comment finding and a correctness blocker are not the
   same quantity, and one ranked list makes them look like it.
 

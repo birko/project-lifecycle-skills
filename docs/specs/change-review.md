@@ -1,6 +1,6 @@
 ---
 area: change-review
-generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-at: cd4060129f6fc89fd60d3f8db3171ca500ec3295
 generated-on: 2026-11-14
 sources:
   - skills-pi/code-review/SKILL.md

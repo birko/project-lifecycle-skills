@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: b2013ee4f26db56e5f8ed021400030d163eb0274
+generated-at: cd4060129f6fc89fd60d3f8db3171ca500ec3295
 generated-on: 2026-11-14
 sources:
   - skills/fix-next/SKILL.md

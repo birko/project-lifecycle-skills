@@ -576,7 +576,7 @@ stay byte-identical; TASK-146 makes the lint enforce it.*
 - **Plan before implementing.** A non-trivial task gets its `## Implementation plan` before work starts.
 - **New scope discovered mid-work gets its own task** — offer `/tasks spawn` unprompted. Never widen the task in hand.
 - **A task outside a pool is filed but unranked.** A review finding belongs in a `kind: review-intake` epic or carries its `findings:` id; anything else and only `priority:` ranks it, which sinks a P2/P3 defect permanently. Measured here: 17 correct defect tasks sat in `tasks/_loose/` and `/fix-next` saw 2. **The second arm is not a loophole** — tree hygiene and meta-work about the tree *should* stay loose, because filing them into an intake epic makes that pool misreport how much of a review is left. Rule and both arms live in [[tasks]] § *A task outside a pool*; this is the pointer.
-- Before flipping a non-trivial task to `done`, run the review passes `/tasks close` step 5b lists — adherence, fidelity and correctness always, and the conditional ones when the diff reaches them — then address or record the findings. This `/tasks close` step **is** the merge gate; `done` means merged.
+- Before flipping a non-trivial task to `done`, run the review passes `/tasks close` step 5b lists, which say which always run and which only when the diff reaches them, then address or record the findings. This `/tasks close` step **is** the merge gate; `done` means merged.
 - **Nothing goes in a generated file that its verb cannot derive.** The rule above says who *owns* a
   generated file; this says what may go *in* one. If a sentence cannot be recomputed from the inputs, it
   does not belong in the output — it belongs in one of three hand-owned homes: commentary about **one
