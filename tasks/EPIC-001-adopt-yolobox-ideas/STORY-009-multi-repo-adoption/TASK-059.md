@@ -7,7 +7,7 @@ status: todo
 priority: P2
 assignee: agent
 created: 2026-08-22
-depends-on: [TASK-053]
+depends-on: [TASK-053, TASK-024]
 blocks: []
 # findings: ids this task remediates, from a review/audit/spec-harvest pass (CR-* SEC-* SH-* VC-*)
 findings: []

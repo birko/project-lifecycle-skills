@@ -8,7 +8,7 @@ priority: P2
 assignee: agent
 created: 2026-08-18
 depends-on: []
-blocks: []
+blocks: [TASK-059]
 findings: [SH-89]
 pr: null
 github-issue: null
