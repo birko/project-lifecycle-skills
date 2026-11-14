@@ -62,12 +62,12 @@ check per row. The states are deliberately **not** listed here: the list grows w
 turns up a condition it could not express (it has grown twice already), and a copy here goes wrong
 silently the next time, with nothing to signal it.
 
-These consequences decide behaviour:
+**Pick each state from that section's table, never from a rule restated here.** Its *suppresses* and *claim it
+only where* columns are what this run obeys: they settle when a doubt is reported rather than read as an absence,
+when a thin artifact is still present, and how a **(lazy)** or **(conditional)** row's absence reads. The rows
+carry their own markers and conditions, so read those off the row too. What this skill adds is how a row it hands
+to an owner verb reads before that verb answers:
 
-- **When in doubt, `unknown` — never `missing`.** A false "missing" invites a fill that writes over
-  a working setup, which defeats the never-overwrite rule from underneath instead of breaking it.
-- **Present but thin is `present`, with the gap named** — an agent guide with no `## Conventions`
-  block, a `tasks/` tree with no `.config.yml`. The artifact is there; report what it lacks.
 - **From outside you cannot see a version.** An artifact another skill owns may be present in an
   older shape than the layer now expects — a config written before a field existed looks complete
   from the outside. Where the artifact's row names a verb, step 3's delegation is what answers, so
@@ -76,33 +76,15 @@ These consequences decide behaviour:
   `present, owner not asked`, per § *Scoped runs*). **Every missing row whose cell has a verb create it** (`docs/specs/.map.yml` by `/specs init`,
   and any other row whose cell names its creating verb) reads `missing — <verb> creates it in step 3` in the same
   table, and the report carries the verb's outcome the same way. On a re-run the dated wording below comes first and
-  this clause follows it after `; `, as a `not offered` reason does; where no verb owns the shape, the
-  thin-but-present rule above is the whole answer (see [LAYER.md](../new-project/LAYER.md)
-  § *Delegation follows the row, not the artifact's appearance*).
+  this clause follows it after `; `, as a `not offered` reason does; where no verb owns the shape,
+  the artifact is `present` with its gap named, [LAYER.md](../new-project/LAYER.md)'s `present, outdated` guard, and that
+  is the whole answer (see its § *Delegation follows the row, not the artifact's appearance*).
   - **This does not defer a declaration the row names.** *Is field X in file Y* is a grep, not a
     version judgement, and this step owns it — see [LAYER.md](../new-project/LAYER.md) § *A named
     declaration is not a version*. Deferring it is how `integration:` ended up with no owner: step 2
     was told to ask for it, step 1 was read as forbidden to look, so the question migrated into the
     fill or was guessed from `git log` afterwards.
-- **A lazy row's absence is not a gap.** Where the row declares itself **(lazy)**, an absent artifact
-  is `not applicable yet`: report it as part of the layer and move on. Do not fill it, do not offer
-  to, and never count it toward what the repo is missing. Stated here because the first bullet —
-  *when in doubt, `unknown`, never `missing`* — is otherwise the only absence guidance on this page,
-  and for these rows it points the wrong way: there is no doubt to resolve.
-- **A conditional row's absence depends on that row's own condition.** Where the row declares itself
-  **(conditional)**, it names the condition and the evidence that settles it — read them off the row;
-  do not keep a list of which rows are conditional here, because a row added tomorrow would not be on it.
-  An absent artifact is `missing` when the condition holds and `not applicable` when it does not, and the
-  two are not interchangeable: a missing `Dockerfile` reported on a CLI is the false gap that teaches a
-  reader to skim the survey, while `not applicable` on a service that genuinely lacks one hides a real
-  gap. **Where the evidence does not settle the condition, the state is `unknown`**, naming the fact that
-  was missing, and step 2's round resolves it — never `not applicable`, which launders the gap away.
-  [LAYER.md](../new-project/LAYER.md) § *Conditional rows* owns the rule and the reasoning; this bullet
-  exists because the absence guidance on this page would otherwise point the wrong way, exactly as it
-  would for a lazy row.
-
-**Resolve these before the table prints, not after** — three rows above are conditional and cannot be
-stated without them, so detecting them late means printing `unknown` on every run and calling it a survey.
+**Resolve these before the table prints, not after** — the conditional rows cannot be stated without them, so detecting them late means printing `unknown` on every run and calling it a survey.
 Detect the stack (manifests, source layout); **what the repo's components do** — whether anything listens,
 is deployed, requires an environment variable to run, or ships as a package, which is what the conditional rows actually ask;
 **read a declared kind off the agent guide where the repo states one**, and fall back on
@@ -119,7 +101,7 @@ owner needs, probe whether the file actually carries it** — read the declarati
 list here. An outstanding one is a choice nobody has made, so it is step 2's to ask; a carried one is
 settled and must not be asked again, which is the half a blind round gets wrong. **It is not a new
 survey state**: report it on the row it belongs to as `present`, with the outstanding declaration named
-as the gap, exactly as the thin-but-present rule above does. A row of its own would say the artifact is
+as the gap, exactly as [LAYER.md](../new-project/LAYER.md)'s `present, outdated` guard reports a thin artifact. A row of its own would say the artifact is
 missing something structural, when what is missing is an answer.
 
 **Print the survey as a table before anything is written.** The user sees the whole picture first.
@@ -333,7 +315,8 @@ The rules that bind the whole step:
   defect, fixed before the report. An adopted repo already has code, so a token
   left raw here had a real source and nobody read it.
 - **Never reconstruct `docs/BRIEF.md`** from an existing README. Stamp the adoption instead (see [LAYER.md](../new-project/LAYER.md) § The adopted-repo brief).
-- **An `unknown` row is not filled — ask instead.** The survey never established that artifact was
+- **An `unknown` row is not filled — ask instead**, the fill its row in [LAYER.md](../new-project/LAYER.md)'s state
+  table suppresses. The survey never established that artifact was
   absent, so writing it is a guess aimed at the user's own files: the false-missing defect with one
   extra step.
 - **Never skip a delegation because the artifact looks right.** Presence decides whether to
@@ -516,7 +499,8 @@ it, whether or not this page mentions it. What follows is **what the report owes
 exist today**, not a copy of the list — when that file gains a row, the rule above covers it and this
 page does not need editing:
 
-- `present, elsewhere` — **where**: the paths or form actually found. Never offer to create a second one.
+- `present, elsewhere` — **where**: the paths or form actually found, since [LAYER.md](../new-project/LAYER.md)'s guard
+  on that state forbids offering a second one.
 - `present, owner not asked` — **which owner would have answered, and that this run did not ask it**: `present —
   currency not checked; /<owner verb> would answer (scoped run)`. Never folded into *left alone*, which reads as
   checked.

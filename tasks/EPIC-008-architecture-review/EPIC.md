@@ -4,7 +4,7 @@ parent: null
 kind: review-intake
 source: improve-architecture 30f9716 2026-10-06 — report: https://claude.ai/artifact/TZrbBBvu9jhHfCum6aB737 (private; author run, TASK-078)
 # status — one of: planned, in-progress, done, cancelled
-status: planned
+status: in-progress
 owner: human
 affects: []
 created: 2026-10-06
