@@ -13,13 +13,13 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
-findings: [DRILL-367-1]
+findings: [DRILL-367-1, DRILL-375-1, DRILL-375-2]
 pr: null
 github-issue: null
 jira-key: null
 ---
 
-# `triage`'s tree never says what order a story's tasks are listed in
+# `triage`'s tree never says what order a story's tasks are listed in, where storyless tasks go, or how a story line reads
 
 ## Context
 
@@ -29,10 +29,20 @@ tasks under a story. Both applied `SKILL.md` § *Collection pass*'s "Task order:
 of tasks" (TASK-139) on their own. The rule covers the tree, but `triage` never points at it, so a reader has to
 find it. Two runners meets FEATURE-002 D10's bar.
 
+**Added 2026-11-14 from the dashboard refresh (`%LOCALAPPDATA%/Temp/d375`, `report-run1.md` and `report-run2.md`).**
+The two runs agreed on every count and diverged on layout, each naming these as undecided:
+- **DRILL-375-1 — tasks with no story.** Step 4's "group tasks under their parent story under their parent epic" has
+  no slot for a task parented to an epic. Run 1 kept an `(epic level) — n/m done` group; run 2 listed them flat at
+  story indentation after the stories (run 1 point 2, run 2 point 12).
+- **DRILL-375-2 — the story line.** The example `— in-progress (2/3 done)`, the planned example `(0/2)` and the
+  `(done)` suffix leave a planned story with done tasks open. Run 1 wrote `planned (17/21 done)`, run 2
+  `planned (17/21)` (run 1 point 4, run 2 point 11).
+
 ## Acceptance criteria
 
 - [ ] `triage` step 4 states the order of epics, stories and tasks in the tree, by pointing at § *Collection pass*'s
       task order for tasks rather than restating it
+- [ ] Step 4 gives tasks parented directly to an epic one stated place, and one story-line form for every story state
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope

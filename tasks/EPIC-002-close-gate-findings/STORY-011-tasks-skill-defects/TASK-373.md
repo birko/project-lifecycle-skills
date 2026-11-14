@@ -13,13 +13,13 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
-findings: [DRILL-371-1, DRILL-371-2, DRILL-371-3, DRILL-371-4, DRILL-371-5, DRILL-371-6, DRILL-371-7]
+findings: [DRILL-371-1, DRILL-371-2, DRILL-371-3, DRILL-371-4, DRILL-371-5, DRILL-371-6, DRILL-371-7, DRILL-375-3, DRILL-375-4]
 pr: null
 github-issue: null
 jira-key: null
 ---
 
-# `/feature status` leaves seven rendering choices to the runner
+# `/feature status` leaves nine rendering choices to the runner
 
 ## Context
 
@@ -47,10 +47,16 @@ convergence rather than by rule. The next runner may not converge.
 - **DRILL-371-7 — the Prototype and Next step lines of a `done` feature.** "One concrete action" has none for a
   signed-off feature, so each runner invented a line or kept the old one. Raised by d067r run 1 (point 10), run 2
   (point 8) and d371 (point 10).
+- **DRILL-375-3 — "ready to run" and unbuilt tasks.** "mark which ones are ready to run (filled, not `N/A`)" read
+  literally lists a filled plan whose task is not built, or cannot run yet. d375 run 1 listed TASK-374 (which waits on
+  TASK-124), run 2 listed FEATURE-004's seven unbuilt tasks (run 1 point 9, run 2 point 5).
+- **DRILL-375-4 — the order of a rollup's task lists.** "List each task with its id and title" gives no order. d375 run 1
+  used id order, run 2 the tasks skill's total order, so the "ready to run" lines of three rollups differed between
+  two runs over the same tree (run 2 point 3; run 1's output shows the other order).
 
 ## Acceptance criteria
 
-- [ ] Each of the seven is decided in `skills/feature/verbs/status.md` or its templates, in one sentence each
+- [ ] Each of the nine is decided in `skills/feature/verbs/status.md` or its templates, in one sentence each
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
@@ -60,4 +66,4 @@ convergence rather than by rule. The next runner may not converge.
 ## Human test plan
 
 - [ ] Re-run `/feature status` (all features) on a fresh clone of this repo with `skills/` at the fix, using a cold
-      runner. Expected: none of the seven is reported undecided, and a second run changes only timestamps
+      runner. Expected: none of the nine is reported undecided, and a second run changes only timestamps
