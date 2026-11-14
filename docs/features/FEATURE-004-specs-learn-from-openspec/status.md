@@ -1,6 +1,6 @@
 ---
 id: FEATURE-004
-generated: 2026-11-14 08:15
+generated: 2026-11-14 12:04
 ---
 
 # Specs learn from OpenSpec — reviewable regen diffs, checked spec files, and a watch on upstream — Status
@@ -23,17 +23,17 @@ generated: 2026-11-14 08:15
 
 0 / 7 tasks done.
 
-- TASK-285 — the review of a regenerated spec shows changes requirement by requirement, with renames shown old → new (to do)
-- TASK-286 — the review names every worked example a regeneration dropped (to do)
-- TASK-287 — a requirement written or rewritten past about 500 characters is flagged (to do)
-- TASK-288 — a full regeneration saves each area as soon as its review is accepted (to do)
-- TASK-289 — rewriting a spec keeps the file's existing line endings (to do)
-- TASK-290 — the project's automatic check fails a spec file with a broken structure (to do)
-- TASK-291 — a weekly job opens one labelled issue for each new OpenSpec release (to do)
+- TASK-285 `/specs regen`'s review lists changes per requirement, with renames shown FROM → TO — todo
+- TASK-286 `/specs regen` names every scenario a regeneration dropped — todo
+- TASK-287 `/specs regen` flags a requirement it writes or rewrites past ~500 characters — todo
+- TASK-288 `/specs regen --all` writes each area as soon as its review is accepted — todo
+- TASK-289 `/specs regen` keeps a spec file's existing line endings — todo
+- TASK-290 `skills-lint.sh` fails a structurally broken spec file — todo
+- TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release — todo
 
 ## What can be tested now
 
-These tasks have a written manual test plan that is ready to run: TASK-285, TASK-286, TASK-287, TASK-288, TASK-289, TASK-291. (TASK-290 needs no manual test — automated checks cover it.) None of the seven is built yet, so each plan runs once its task is done.
+Nothing to test yet.
 
 ## Prototype
 
@@ -41,4 +41,4 @@ Skipped — the change is to how a skill reviews and writes text files. Running 
 
 ## Next step
 
-7 tasks to do, none started — start them with `/tasks pick --feature FEATURE-004`.
+7 tasks to do.

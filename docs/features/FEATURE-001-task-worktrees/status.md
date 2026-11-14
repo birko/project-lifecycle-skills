@@ -1,6 +1,6 @@
 ---
 id: FEATURE-001
-generated: 2026-11-14 08:15
+generated: 2026-11-14 12:04
 ---
 
 # Task worktrees — run a task in its own checkout — Status
@@ -23,33 +23,33 @@ generated: 2026-11-14 08:15
 
 18 / 18 tasks done.
 
-- TASK-173 — record, per project, where a task's work happens and where its separate copies live (done)
-- TASK-174 — picking a task creates its own separate copy of the project, asking where to put it if nobody has said (done)
-- TASK-175 — picking a task checks it really moved into that copy, and falls back safely when it cannot (done)
-- TASK-176 — finishing a task folds its work back in and removes its copy, in a fixed order (done)
-- TASK-177 — both project-setup tools, for new and for existing projects, offer the new settings (done)
-- TASK-179 — try the whole thing end to end on a real project: pick, work and finish a task in its own copy (done)
-- TASK-181 — carrying on with a task goes back into the copy that holds its work (done)
-- TASK-186 — with a shared online copy, a session's own task in progress is no longer hidden from its lists (done)
-- TASK-187 — one consistent "am I inside a task's copy" check, with no false alarm from a subfolder (done)
-- TASK-178 — trial runs get a known home for their throwaway copies, and a rule for cleaning up (done)
-- TASK-183 — task copies for projects whose main line is shared through an online copy (done)
-- TASK-184 — tasks created in parallel copies can no longer get the same number (done)
-- TASK-188 — a task waiting for sign-off inside a copy is no longer invisible, and a fallback no longer leaves a stray branch behind (done)
-- TASK-189 — record the new rules the feature introduced, and point a copied list at its single owner (done)
-- TASK-193 — two unrelated settings that were both called "local mode" are told apart (done)
-- TASK-185 — features numbered in parallel copies can no longer get the same number either (done)
-- TASK-194 — two unclear points in picking a task are settled: whether this machine's own tasks show as taken, and a step that called an online service in the wrong mode (done)
-- TASK-296 — with a shared online copy, two review steps no longer leave their record unsaved (done)
+- TASK-173 Declare `workspace:` and `worktree-root:` in the tasks config — done
+- TASK-174 `/tasks pick` creates the task worktree, asking for the root when undeclared — done
+- TASK-175 `/tasks pick` proves the move into the worktree, and falls back when it cannot — done
+- TASK-176 `/tasks close` merges from the worktree and removes it in a fixed order — done
+- TASK-177 Ship `workspace:` / `worktree-root:` through both front doors — done
+- TASK-179 End-to-end drill: pick → work → close in a worktree on a real consumer — done
+- TASK-181 Resuming a task re-enters the worktree that holds its branch — done
+- TASK-186 Remote mode hides a session's own in-progress task from `fix-next` step 0 and from the `pick` list — done
+- TASK-187 The linked-worktree probe differs across verbs and gives a false positive from a subfolder; one report line is orphaned — done
+- TASK-178 Give drill checkouts a declared home and a cleanup rule — done
+- TASK-183 Worktree mode for projects whose default branch tracks a remote — done
+- TASK-184 Tasks created in parallel worktrees can mint the same id — done
+- TASK-188 A worktree-parked `review` task is invisible to verification-debt surfacing; a remote-mode in-place fallback leaves its remote branch — done
+- TASK-189 Register what FEATURE-001 introduced, and point the copied id-scope list at its owner — done
+- TASK-193 "Local mode" names two unrelated settings, and a cold runner read one as the other — done
+- TASK-185 `FEATURE-NNN` minted in parallel worktrees can collide too — done
+- TASK-194 `pick` step 3 leaves open whether this machine's tasks also appear as `taken`, and step 9 calls `gh` in local mode — done
+- TASK-296 With an upstream, two gates leave their record uncommitted and nothing has measured where it goes next — done
 
 ## What can be tested now
 
-These tasks have a written manual test plan that is ready to run: TASK-173, TASK-174, TASK-175, TASK-176, TASK-177, TASK-179, TASK-181, TASK-186, TASK-187, TASK-178, TASK-183, TASK-184, TASK-188, TASK-193, TASK-185, TASK-194, TASK-296. (TASK-189 needs no manual test.)
+Ready to test: TASK-173, TASK-174, TASK-175, TASK-176, TASK-177, TASK-179, TASK-181, TASK-186, TASK-187, TASK-178, TASK-183, TASK-184, TASK-188, TASK-193, TASK-185, TASK-194, TASK-296. No manual test: TASK-189.
 
 ## Prototype
 
-Skipped (2026-09-24) — there is no visual or UX surface here, and the proof is a drill (install the changed skills, run `pick` → `close` on a real project and watch the folder appear and disappear — TASK-179). The one place a person is spoken to, the undeclared-path question (D6), has its wording pinned verbatim in TASK-174 instead of a mock-up.
+**Skipped** (2026-09-24) — there is no visual or UX surface here, and the proof is a drill (install the changed skills, run `pick` → `close` on a real project and watch the folder appear and disappear — TASK-179). The one place a person is spoken to, the undeclared-path question (D6), has its wording pinned verbatim in TASK-174 instead of a mock-up.
 
 ## Next step
 
-Nothing — the feature is signed off and done.
+Nothing — the feature is signed off.

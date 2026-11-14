@@ -1,6 +1,6 @@
 ---
 id: FEATURE-003
-generated: 2026-11-14 08:15
+generated: 2026-11-14 12:04
 ---
 
 # Task states follow common practice — "blocked" becomes a flag — Status
@@ -23,33 +23,33 @@ generated: 2026-11-14 08:15
 
 18 / 18 tasks done.
 
-- TASK-196 — the task tracker reads both the old and the new way of writing states (done)
-- TASK-197 — the feature overview reads the new states (done)
-- TASK-198 — the cross-check between features and tasks reads the new states (done)
-- TASK-199 — the automatic defect-fixing run reads the new states and skips a blocked task it would have ranked first (done)
-- TASK-201 — new and adopted projects start with the new states (done)
-- TASK-203 — a one-time tool that converts existing task files (done)
-- TASK-204 — everything starts writing the new states (done)
-- TASK-205 — the conversion is run on this project and every project that uses these skills (done)
-- TASK-208 — the conversion keeps a block reason the file already states in its own words (done)
-- TASK-209 — smaller edge cases in how a blocked task is written (done)
-- TASK-213 — the old wording that still shipped in several places is removed (done)
-- TASK-214 — finishing a task refuses a blocked one, as decided (done)
-- TASK-215 — a block reason is written safely everywhere, so it reads back exactly (done)
-- TASK-217 — moving a project to GitHub or Jira includes tasks that are waiting for a check (done)
-- TASK-200 — generated specifications read the new states (done)
-- TASK-202 — GitHub and Jira show a blocked task with their own marker (done)
-- TASK-211 — the last project, Presenter, is converted once its local work is shared (done)
-- TASK-219 — a task held up by another task stays on the automatic run's list, marked; the last old labels are renamed (done)
+- TASK-196 Expand: the `tasks` skill reads both the old and the new status forms — done
+- TASK-197 Migrate: the `feature` skill reads `verify` and the blocked flag — done
+- TASK-198 Migrate: `roadmap`'s cross-tree pass reads `verify` and the blocked flag — done
+- TASK-199 Migrate: `fix-next` reads the new form and skips a blocked task it ranks first — done
+- TASK-201 Migrate: both front doors ship the new status vocabulary — done
+- TASK-203 Migrate: a one-time migration that rewrites old-form task files — done
+- TASK-204 Contract: every writer switches to the new form — done
+- TASK-205 Run the migration on this repo and every consumer repo — done
+- TASK-208 The migration writes "reason unknown" over a block reason the file already states — done
+- TASK-209 Edge cases in the blocked-field writers that predate the reason ladder — done
+- TASK-213 The old `review` and `blocked` wording still ships in writers, front doors and the `block` intro — done
+- TASK-214 `/tasks close` finishes a blocked task, against FEATURE-003 D7 — done
+- TASK-215 The `blocked:` writers do not quote their value, and two readers of the block note are undeclared — done
+- TASK-217 `/tasks migrate` never exports a task awaiting verification — done
+- TASK-200 Migrate: `specs regen`'s state gate reads `verify` — done
+- TASK-202 Migrate: tracker sync maps the blocked flag to a GitHub label and Jira's Flagged field — done
+- TASK-211 Migrate Presenter's task tree once its local work reaches origin — done
+- TASK-219 A task blocked on another task drops out of `fix-next`, and a few labels still say `review` — done
 
 ## What can be tested now
 
-These tasks have a written manual test plan that is ready to run: TASK-196, TASK-197, TASK-198, TASK-199, TASK-201, TASK-203, TASK-204, TASK-205, TASK-208, TASK-209, TASK-213, TASK-214, TASK-215, TASK-217, TASK-202, TASK-211, TASK-219. (TASK-200 needs no manual test.)
+Ready to test: TASK-196, TASK-197, TASK-198, TASK-199, TASK-201, TASK-203, TASK-204, TASK-205, TASK-208, TASK-209, TASK-213, TASK-214, TASK-215, TASK-217, TASK-202, TASK-211, TASK-219. No manual test: TASK-200.
 
 ## Prototype
 
-[The state-model playground](https://claude.ai/artifact/GHk9TKVgAHws8snCjj2KaY) — built; version 5 shows today's model and the proposed one side by side. It answered D1, D2 and D3.
+[playground](https://claude.ai/artifact/GHk9TKVgAHws8snCjj2KaY)
 
 ## Next step
 
-Nothing — the feature is signed off and done.
+Nothing — the feature is signed off.

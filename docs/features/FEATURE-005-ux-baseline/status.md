@@ -1,6 +1,6 @@
 ---
 id: FEATURE-005
-generated: 2026-11-14 08:15
+generated: 2026-11-14 12:04
 ---
 
 # UX baseline for UI review and prototypes — Status
@@ -23,11 +23,11 @@ generated: 2026-11-14 08:15
 
 1 / 1 tasks done.
 
-- TASK-293 — a short list of interface good-practice checks that the convention review and the mock-up tools read, the way they read the list of code smells (done)
+- TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory — done
 
 ## What can be tested now
 
-These tasks have a written manual test plan that is ready to run: TASK-293.
+Ready to test: TASK-293.
 
 ## Prototype
 
@@ -35,4 +35,4 @@ Skipped — the work shipped before this feature was recorded, and the baseline 
 
 ## Next step
 
-Nothing — the feature is signed off and done.
+Nothing — the feature is signed off.
