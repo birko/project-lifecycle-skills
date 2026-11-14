@@ -30,7 +30,11 @@ text, and a line in it nobody confirmed reads as a statement of what shipped.
 
 The skeleton every seeder writes, defined here once. [[new-project]] and [[adopt-project]] (through
 `skills/new-project/LAYER.md`'s `CHANGELOG.md` row) point at this section rather than describing a stub of their own,
-so the three cannot write different files:
+so the three cannot write different files.
+**The skeleton is for a file that does not exist yet.** A `CHANGELOG.md` already present is the repo's own history,
+whatever shape it was kept in, so no verb is asked whether it is current and none brings it up to date: the layer's
+row says *leave it*.
+
 
 ```markdown
 # Changelog

@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: cbeb51b8cd5c4ced8026f2cf59e81ef5a035fbb9
+generated-at: 6b7e45c0ed50329493b6b3ffcd529d73e2b47fbb
 generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
@@ -238,7 +238,7 @@ The system SHALL, after an optional grill of area boundaries, ask "Here is the p
 
 ### Requirement: Re-discovery edits the existing map in place
 
-The system SHALL, when a map file already exists (including one with an empty `areas:` list), treat init as an edit: show a delta rather than a fresh map, apply only the blessed changes, added ignore entries and the three coverage keys, and preserve every other line including comments and ordering; it SHALL render the template only when no map file exists, writing the proposed ignore list as a live key.
+The system SHALL, when a map file already exists (including one with an empty `areas:` list), treat init as an edit: show a delta rather than a fresh map, apply only the blessed changes, added ignore entries and the three coverage keys, and preserve every other line including comments and ordering; it SHALL render the template only when no map file exists, writing the proposed ignore list as a live key; and it SHALL report the outcome as created, already current (no area, ignore, coverage or drift change, a refreshed tree size named but not counted as a change), brought up to date (naming each area, ignore entry and coverage key changed) or declined (naming the delta not written).
 
 #### Scenario: Seeded map with comments
 

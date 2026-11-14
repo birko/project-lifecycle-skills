@@ -17,6 +17,14 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
 
 2. **Already initialized?** If `docs/specs/.map.yml` exists, this becomes a *re-discovery*: propose additions/renames against the existing map, never drop an existing area without asking. Show the delta, not a fresh map.
 
+   **Report the re-discovery as one of three outcomes**, the words a caller maps onto a state ([[adopt-project]] step 3):
+   **already current** when it proposes no area or `ignore` change and `coverage:` and `coverage-drift:` stand as they
+   are, even when `tracked-files-at-scan` moves: that key is the tree's size at this scan, so any added file changes it,
+   and the line names the refresh (`already current — tree size 13 → 14`); **brought up to date**, naming each area,
+   `ignore` entry and coverage key changed, when such a delta is written; **declined**, naming the delta,
+   when one was proposed and not written. A first run with no map reports **created**. One line for every case would
+   leave a caller unable to tell a current map from one this run never checked.
+
    The removal ask is part of blessing, and carries its own question — one per area, because a blanket
    *"accept these removals?"* gets answered once for a list whose entries are not alike:
 

@@ -21,7 +21,11 @@ tools differ.
 ## Adopt — wire the harness (idempotent)
 
 If the project has no test harness yet, scaffold it before authoring. Idempotent: if the test dir /
-runner config already exists, do nothing.
+runner config already exists, write nothing, and check it against the invariants below by reading its files
+(nothing is built or run). Report **already current** (`harness already adopted: <runner>`) when it visibly meets
+them all. Otherwise report it **left as it is**, one line per invariant it visibly misses (`does not meet: <invariant> —
+<the file and line that shows it>`): a caller reads that as a reconciliation declined, never as a defect fixed. **Never
+rewrite an existing harness**: it is the repo's own setup, and changing it re-decides choices its owners made.
 
 **Pick the recipe by what the project already has.** Never reach for a package manager the project does
 not use:

@@ -1,7 +1,7 @@
 ---
 area: changelog-maintenance
-generated-at: 7fd9cd6e65788873d24daa93fe74003a295483df
-generated-on: 2026-11-12
+generated-at: 6b7e45c0ed50329493b6b3ffcd529d73e2b47fbb
+generated-on: 2026-11-14
 sources:
   - skills/roll-changelog/SKILL.md
 shaped-by: []
@@ -41,7 +41,7 @@ The system SHALL treat `/roll-changelog` with no arguments as a roll into `## [U
 
 ### Requirement: Offer to seed a missing changelog before rolling
 
-The system SHALL, when `CHANGELOG.md` does not exist, offer to seed the skeleton its own file-shape section defines (a title, a one-line statement of the Keep a Changelog format, and an empty `## [Unreleased]`, claiming no versioning scheme), the one skeleton the scaffolder and the adopter also seed, before rolling. It SHALL NOT create the file unasked: with no answer it SHALL create nothing, roll nothing, and report `no CHANGELOG.md: not seeded, nothing rolled`.
+The system SHALL, when `CHANGELOG.md` does not exist, offer to seed the skeleton its own file-shape section defines (a title, a one-line statement of the Keep a Changelog format, and an empty `## [Unreleased]`, claiming no versioning scheme), the one skeleton the scaffolder and the adopter also seed, before rolling. A `CHANGELOG.md` already present SHALL be left as the repo kept it, with no currency check and nothing brought up to date. It SHALL NOT create the file unasked: with no answer it SHALL create nothing, roll nothing, and report `no CHANGELOG.md: not seeded, nothing rolled`.
 
 #### Scenario: No changelog yet
 

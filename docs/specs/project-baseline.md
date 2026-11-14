@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: cd4060129f6fc89fd60d3f8db3171ca500ec3295
+generated-at: 6b7e45c0ed50329493b6b3ffcd529d73e2b47fbb
 generated-on: 2026-11-14
 sources:
   - skills/adopt-project/INFER.md
