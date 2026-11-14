@@ -134,7 +134,7 @@ date, **in the flagged item's own hand-edited file**, never in a generated one.
 
 | Target | Where the acceptance is written |
 |---|---|
-| an epic, story or task | its frontmatter: `accepted-divergence: ["DV5 2026-11-13 — task-only on purpose; stakeholder work is not tracked here"]`, one string per accepted rule, as `DV<x> <date> — <reason>` |
+| an epic, story or task | its frontmatter: `accepted-divergence: ["DV5 2031-02-10 — internal tooling; no stakeholder-facing work to track"]`, one string per accepted rule, as `DV<x> <date> — <reason>` |
 | a feature | a History line in its `decisions.md` containing `accepted divergence DV<x> — <reason>`. **`no spec surface` is DV8's older spelling of the same thing**, and is read as `accepted divergence DV8` |
 | a spec area or the map | not acceptable. Their fix is a regen or `/specs init`, which costs less than recording a reason |
 
@@ -143,6 +143,10 @@ date, **in the flagged item's own hand-edited file**, never in a generated one.
   matches the reach of DV5's own defect exemption ("an epic … and everything under it"), and spares a task-only repo
   a line per story. A story can carry its own acceptance where its epic has none. A new epic in the same task-only repo gets its own line, which is the point: each one is a fresh
   decision.
+- **One acceptance line is one accepted finding, wherever a count is printed.** The stories an epic's line covers are
+  not counted again: every `<a> accepted` (the `--check` outcome, the compact slice, `triage`'s and the features
+  index's quiet lines) counts lines, and those quiet lines name the epic alone. The full render and `--check` still
+  list each covered story, under the epic as `STORY-NNN DV5 (covered by EPIC-NNN)`, so the audit stays complete.
 - **An accepted finding is suppressed from every warning** ([[tasks]] `triage`'s callout and the compact slice), and
   **still listed** by the full render and `--check`, with its reason and date, so the audit stays complete.
 - **An acceptance whose rule no longer fires is reported** as `accepted DV<x> on <target> no longer fires — remove

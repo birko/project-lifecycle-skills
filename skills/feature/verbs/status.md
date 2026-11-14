@@ -45,16 +45,41 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 
 3. **Cross-reference tasks** — take the feature's tasks from step 1's model: ids, titles and statuses, bucketed
    there. Don't grep `tasks/` again, because two collections of one fact can disagree, for example on a task taken
-   on a branch. Compute `done/total`. List each task with its id and title.
-   The model does not carry test plans, so read each listed task's file for its `## Human test plan`, and mark
-   which ones are ready to run (filled, not `N/A`) for the "what can be tested now" section.
+   on a branch. Compute `done/total` **leaving cancelled tasks out of both numbers**, the rule [[tasks]] `triage`
+   uses, so a finished feature reads `n/n`. List every task, cancelled ones included, in [[tasks]] § *Collection
+   pass*'s task order, one per line as `- TASK-NNN <title> — <status>`: the title verbatim from the task file and the
+   status as the file reads it. **Never reword a title**: a paraphrase is a line no input can recompute, so two runs
+   write two files.
+   The model does not carry test plans, so read each listed task's file for its `## Human test plan`. A task is
+   **ready to test** when its plan is filled (not `N/A`) **and** the work is built: it reads `done`, or awaits
+   verification. A `todo`, `in-progress` or `cancelled` task is never on that list, whatever its plan says, because
+   there is nothing to run the plan against yet.
 
 4. **Render** [templates/status.md](../templates/status.md) — fill decision counts by state, build progress, and:
-   - `{{TESTABLE_SUMMARY}}` — the tasks whose Human test plan is filled and ready to run.
+   - `{{TIMESTAMP}}` — [[tasks]] `triage`'s form: local time, no zone.
+   - `{{TASK_LIST}}` — step 3's lines; `_None_` when the feature has no linked task.
+   - `{{TESTABLE_SUMMARY}}` — `Ready to test: TASK-NNN, TASK-NNN.` in task order, then, when any built task's plan is
+     `N/A`, `No manual test: TASK-NNN.`; `Nothing to test yet.` when no task is ready.
    - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / `prototype-states.html` / the spike branch, or "none yet". A prototype already deleted renders as the `idea.md` line says (`built, then deleted — answered D<n>`), never as a link to a file that is gone. A prototype recorded as
      **Skipped** or **N/A** renders as the `idea.md` line says, reason included (`Skipped — headless logic, the
-     test suite is the proof`), and links nothing; **Pending** renders as "none yet".
-   - `{{NEXT_STEP}}` — one concrete action, e.g. "PM to review 2 proposed decisions", "3 tasks in progress", "ready for /feature review".
+     test suite is the proof`), and links nothing; **Pending** renders as "none yet". A standing prototype renders
+     as one link, `[<label>](<target>)`, with the label from step 7's table, and nothing else on the line.
+   - `{{NEXT_STEP}}` — one line, chosen by phase, so two runs agree:
+
+     | Phase | Next step |
+     |---|---|
+     | `idea` | `Grill the idea with /feature new, or build a prototype with /feature prototype.` |
+     | `prototyping` | `Stakeholders try the prototype; then record the verdicts with /feature decide.` |
+     | `deciding`, a `proposed` row left | `Decide <n> proposed decisions with /feature decide.` |
+     | `deciding`, none left | the sentence step 2 gives: reopen a row with `/feature decide`, or drop the feature |
+     | `building`, no task yet | `Break the approved decisions into tasks with /feature decompose.` |
+     | `building`, tasks | `<n> tasks to do, <m> in progress.` (a zero term left out) |
+     | `review` | `Run each ready test plan, then sign off with /feature review.` |
+     | `done` | `Nothing — the feature is signed off.`, plus ` Still open: TASK-NNN.` when a linked task is |
+     | `dropped` | `Nothing — the feature was dropped.` |
+     | `superseded` | `Nothing — superseded by <superseded-by>.` |
+
+     Every count noun is singular for a count of exactly 1.
    (The template is stakeholder-facing and carries no author comments — these hints live here.)
 
 5. **Write** `docs/features/FEATURE-NNN-slug/status.md` (overwrite).
@@ -66,22 +91,41 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    next action, ahead of everything else. Never headline "all shipped" while one exists — that buries
    the debt. A feature whose tasks are all `done` but unsigned prints as `review (awaiting
    sign-off)`, never `done`.
+   **The rest follow in id order**, and so do debt features among themselves. **The decision part** lists only the
+   non-zero states, as `<n> <state>`, in the ledger's order (approved / changed / deferred / removed / proposed),
+   joined by ` / `; a feature with no stamped row prints `no decisions`. The task part is step 3's `done/total`.
 
 7. **Regenerate the features index** (the whole file in all-features mode; one row otherwise) — this verb **owns**
    `docs/features/README.md`, the human entry-point index. From the same collection pass,
    render [templates/README.md.tmpl](../templates/README.md.tmpl): one row per feature (link ·
    title · derived phase · decision counts a/c/d/r/p · `done/total` tasks · prototype link),
-   where the Prototype cell links the artifact while it stands (`[html]`, `[md]`, `[playground]`, `[spike]`), and
-   otherwise holds the `idea.md` line's state in lower case (`pending` · `skipped` · `n/a` · `deleted`), never a
-   link. `{{TIMESTAMP}}` takes [[tasks]] `triage`'s form: local time, no zone. `{{PROJECT_NAME}}` is the name of the directory containing `docs/`, the project root this verb
+   where the Prototype cell links the artifact while it stands, and otherwise holds the `idea.md` line's state in
+   lower case (`pending` · `skipped` · `n/a` · `deleted`), never a link. **The label is the prototype's form as the
+   `idea.md` line names it**, never the file extension or the host, so a playground published as a hosted page is
+   still `[playground]`:
+
+   | Form | Label |
+   |---|---|
+   | HTML mockup | `[html]` |
+   | markdown wireframe | `[md]` |
+   | state-model playground | `[playground]` |
+   | code spike | `[spike]` |
+ `{{TIMESTAMP}}` takes [[tasks]] `triage`'s form: local time, no zone. `{{PROJECT_NAME}}` is the name of the directory containing `docs/`, the project root this verb
    resolved: a path any run derives the same way, where a README heading can be missing or say something else.
    the verification-debt note (lead with every debt feature, as SKILL.md § *Verification debt surfaces
    first* defines it, with its task count), and the drift note (reuse
-   [[roadmap]]'s divergence check — don't re-derive it). Write `docs/features/README.md`
+   [[roadmap]]'s divergence check — don't re-derive it). **The drift note carries open findings only**, as
+   [[tasks]] `triage`'s callout does: an accepted one ([[roadmap]] § *Accepted divergences*) stays out, and when every
+   finding is accepted the note is one quiet line, `> Drift: none open · <a> accepted (<target> DV<x>, …) — see
+   /roadmap --check.`. With nothing found and nothing accepted it is omitted. Write `docs/features/README.md`
    (overwrite; it's generated, like `status.md`). **With no features, `{{FEATURE_ROWS}}` is one table row whose first cell is `_None_` and
    whose other cells are empty**, so the table stays well-formed and reads like `tasks` `triage`'s empty lists. **The template's `<!-- … -->` comments are notes to you and are
    never rendered**: drop each with its token, whether the token filled or was omitted. Single-feature runs update only that feature's
-   `status.md` and **its row** in the index, not the whole file.
+   `status.md` and **its row** in the index, not the whole file. **They leave the header's timestamp alone**: it
+   dates the last full render, which is what the notes under the table were computed from, and a row-only run
+   recomputes neither note. **A single-feature run prints its feature's open findings** to stdout, one line,
+   `drift: <target> DV<x> <reason> — run /roadmap --check`, since `status.md` has no slot for them and the index's
+   note is not rewritten; nothing when there are none.
    **When the index does not exist, a single-feature run renders all of it**, exactly as all-features
    mode does, and reports `created docs/features/README.md — it was absent`. A row needs a file to hold
    it, and this verb owns that file. Every line in it is derived from the collection pass, so rendering
@@ -90,7 +134,9 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
 
 ## Notes
 
-- `status.md` is **stakeholder-facing**: plain language, no code identifiers in prose. The task list may cite `TASK-NNN` but describe each in human terms.
+- `status.md` is **stakeholder-facing**: the template's own prose is plain language. The task lines carry each
+  task's title verbatim (step 3), because a rollup holds only what its inputs determine; a title that reads badly to
+  a stakeholder is fixed in the task file, where the next render picks it up.
 - This verb never changes decisions or tasks — read-only aggregation + write of the rollup file.
 - Chain this automatically after `decide` and `decompose`, and after a `/tasks close` that changes a feature-linked task's status — those verbs each carry the chain instruction on their side, so the rollup never goes stale.
 - **Also chain it after a surface-dependent revert** (a `changed` decision that reverts a

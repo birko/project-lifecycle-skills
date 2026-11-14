@@ -1,6 +1,6 @@
 ---
 area: project-roadmap
-generated-at: 05e47240995488a23e4e4c00225ccf36d6155735
+generated-at: 2cdf238f55c9328a4f5a432453644c46e1fcd88b
 generated-on: 2026-11-14
 sources:
   - skills/roadmap/SKILL.md
@@ -411,7 +411,7 @@ The system SHALL flag DV12 when a story under an epic with `kind: review-intake`
 
 ### Requirement: Accepted divergences
 
-The system SHALL treat a finding as accepted when the flagged item's own hand-edited record names its rule with a date and a reason: an `accepted-divergence:` entry (`DV<x> <date> — <reason>`) in an epic's, story's or task's frontmatter, or an `accepted divergence DV<x>` History line in a feature's `decisions.md`, with `no spec surface` read as `accepted divergence DV8`; spec targets SHALL NOT be acceptable. An acceptance SHALL cover one rule on one target, an epic's covering the stories under it. An accepted finding SHALL be left out of every warning (the task dashboard's callout and the compact slice) and still listed, with its date and reason, by the full render and `--check`, whose outcome is `in sync`, `in sync — <n> accepted`, or `<n> open divergences` (singular for one) followed by the accepted ones. An acceptance whose rule no longer fires SHALL be reported for removal.
+The system SHALL treat a finding as accepted when the flagged item's own hand-edited record names its rule with a date and a reason: an `accepted-divergence:` entry (`DV<x> <date> — <reason>`) in an epic's, story's or task's frontmatter, or an `accepted divergence DV<x>` History line in a feature's `decisions.md`, with `no spec surface` read as `accepted divergence DV8`; spec targets SHALL NOT be acceptable. An acceptance SHALL cover one rule on one target, an epic's covering the stories under it. An accepted finding SHALL be left out of every warning (the task dashboard's callout and the compact slice) and still listed, with its date and reason, by the full render and `--check`, whose outcome is `in sync`, `in sync — <n> accepted`, or `<n> open divergences` (singular for one) followed by the accepted ones. An acceptance whose rule no longer fires SHALL be reported for removal. It SHALL count one acceptance line as one accepted finding wherever a count is printed, never counting again the stories an epic's line covers, and SHALL still list each covered story in the full render and `--check` as covered by its epic.
 
 #### Scenario: One epic accepted, another not
 

@@ -3,7 +3,8 @@ id: TASK-373
 parent: STORY-011
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
+picked-by: fix-next
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: P3
 # assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
@@ -58,8 +59,8 @@ convergence rather than by rule. The next runner may not converge.
 
 ## Acceptance criteria
 
-- [ ] Each of the nine is decided in `skills/feature/verbs/status.md` or its templates, in one sentence each
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Each of the nine is decided in `skills/feature/verbs/status.md` or its templates, in one sentence each
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -67,5 +68,52 @@ convergence rather than by rule. The next runner may not converge.
 
 ## Human test plan
 
-- [ ] Re-run `/feature status` (all features) on a fresh clone of this repo with `skills/` at the fix, using a cold
+- [x] Re-run `/feature status` (all features) on a fresh clone of this repo with `skills/` at the fix, using a cold
       runner. Expected: none of the nine is reported undecided, and a second run changes only timestamps
+  - **Passed 2026-11-14**, cold drill `%LOCALAPPDATA%/Temp/d373` (`claude -p --disable-slash-commands`, each runner
+    listing no skills) on a fresh clone of this repo with `skills/` at the fix: two all-features runs, the second over
+    the first's output, then one `FEATURE-004` run.
+    - **Runs 1 and 2:** every `status.md` identical but for the timestamp. The index differed only in its drift note:
+      run 1 reported 20 open DV5 findings because it read no epic as carrying `kind:` (EPIC-002 and EPIC-007 carry
+      `kind: review-intake`), a misread of the files; run 2 read them and printed the quiet accepted line.
+    - **Run 3 (single feature):** only FEATURE-004's `status.md` changed, and only its timestamp; the index header was
+      left alone, as now stated.
+
+## Outcome
+
+**The fix (`skills/feature/verbs/status.md`).** Each of the nine is now stated:
+- **DRILL-371-1:** `done/total` leaves cancelled tasks out of both numbers, as `triage` does.
+- **DRILL-371-2:** the digest puts debt first, the rest in id order; its decision part lists non-zero states in ledger
+  order, `no decisions` when none.
+- **DRILL-371-3 and DRILL-375-3:** a task is ready to test only when built (`done` or awaiting verification) and its
+  plan is filled; unbuilt and cancelled tasks never are. `{{TESTABLE_SUMMARY}}` has a stated form.
+- **DRILL-371-4:** the index drift note carries open findings only, with `triage`'s quiet line when all are accepted.
+- **DRILL-371-5:** the prototype label is the form the `idea.md` line names, never the file or the host.
+- **DRILL-371-6:** each task line is `TASK-NNN <title> — <status>`, the title verbatim; the Notes' "describe in human
+  terms", which no input can recompute, is gone.
+- **DRILL-371-7:** `{{NEXT_STEP}}` has one sentence per phase, `done` included.
+- **DRILL-375-4:** task lists follow the Collection pass's task order.
+
+**Also fixed, found by this task's drill:** run 2 counted EPIC-001's acceptance as 10 (the epic and its nine
+stories) where `triage` runs count 1, and d369's runner had raised the same question. [[roadmap]] § 4b now states that
+one acceptance line is one accepted finding wherever a count is printed, covered stories listed but not counted. The
+§ 4b example also quoted this repo's corrected "task-only on purpose" reason, replaced by an invented one.
+
+**Step-6 split.** Behavioural: d373. Text: the cancelled rule, the ready-to-test rule and the next-step table absent at
+HEAD, present at the fix.
+
+**Close gate (inline, worked with its sibling task; three skill files plus two specs):**
+- **Standards:** every rule is in the verb that renders it, and what `triage` already settled is pointed at.
+- **Intent:** all criteria met.
+- **Correctness:** checked by d373; the one variance it found is outside `status.md` and is fixed (below).
+- **Security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+
+## Progress log
+
+- step 2 — picked together with TASK-351: both settle `/feature status`'s rendering choices in one file; ranked first among the P3 defects because the committed rollups are not reproducible (d375's two runs differed on wording and order)
+- step 3b — planned inline with the sibling task: state each rendering choice in `status.md` (counts without cancelled tasks, task order, verbatim titles, ready-to-test meaning built, the TESTABLE and NEXT_STEP forms, empty lists, the digest's order and decision part, prototype labels by form, open-only drift note, single-feature timestamp and drift), and drop "describe in human terms", which no input can recompute
+- step 5 — fix in skills/feature/verbs/status.md (steps 3, 4, 6, 7, Notes) and the index template's comments
+- step 6 — behavioural: d373 runs 1-3 (status.md files identical but for timestamps; index variance traced to a runner misread and to the accepted count, fixed in roadmap § 4b)
+- step 7 — respecced feature-lifecycle (the status requirement, with a two-runs scenario) and project-roadmap (the accepted count), restamped
+- step 8 — closed inline; commit in git log

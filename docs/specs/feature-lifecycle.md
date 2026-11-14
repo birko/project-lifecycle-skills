@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-at: 2cdf238f55c9328a4f5a432453644c46e1fcd88b
 generated-on: 2026-11-14
 sources:
   - skills/feature/SKILL.md
@@ -623,13 +623,19 @@ The system SHALL keep the feature's own coarse `review` marker distinct from tas
 
 ### Requirement: Status regenerates the rollup and the index, read-only on everything else
 
-The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress with tasks described in human terms, which tasks have a filled human test plan ready to run, the prototype link — or for a deleted prototype the recorded "built, then deleted" text, and for a skipped or not-applicable one the recorded line with its reason, linking nothing — and one concrete next step), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest and overwrite the features index with one row per feature plus the verification-debt and drift notes, the drift note carrying every finding the roadmap check reports, spec-layer targets included; a single-feature run SHALL update only that feature's rollup and its index row, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
+The system SHALL, on `/feature status`, collect features and tasks through the roadmap's shared cross-tree pass and read each feature's tasks from that collection rather than searching the task tree again, derive each phase, overwrite each target feature's plain-language rollup (phase, decision counts by state, build progress counting `done/total` with cancelled tasks left out of both, every task listed in the shared task order with its title verbatim and its status, the tasks ready to test — built (`done` or awaiting verification) with a filled human test plan, never an unbuilt or cancelled one —, the prototype link — or for a deleted prototype the recorded "built, then deleted" text, and for a skipped or not-applicable one the recorded line with its reason, linking nothing — and one next step whose sentence is fixed by the phase, with stated wording for an empty task list and for nothing to test), and change no decision or task. In all-features mode it SHALL also print a one-line-per-feature digest, debt features first and the rest in id order, its decision part listing only non-zero states in ledger order, and overwrite the features index with one row per feature plus the verification-debt and drift notes, the drift note carrying every open finding the roadmap check reports, spec-layer targets included, and one quiet line when every finding is accepted, and the prototype cell labelled by the prototype's form, never by its file or host; a single-feature run SHALL update only that feature's rollup and its index row, leave the index header's timestamp dating the last full render, and print the feature's open findings in one line, except that when the index does not exist it SHALL render the whole index as all-features mode does and report that it created it.
 
 #### Scenario: Single-feature run
 
 - **Given** FEATURE-012 and FEATURE-013 both exist
 - **When** `/feature status FEATURE-012` runs
 - **Then** only FEATURE-012's rollup and its index row change
+
+#### Scenario: Two full runs over one tree
+
+- **Given** a feature tree with a done feature holding a cancelled task and an unbuilt feature whose tasks have filled test plans
+- **When** `/feature status` runs twice with no change in between
+- **Then** the two outputs differ only in their timestamps, the done feature reads `n/n` tasks done, and none of the unbuilt feature's tasks is listed as ready to test
 
 #### Scenario: Single-feature run with no index
 
