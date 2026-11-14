@@ -83,7 +83,7 @@ dashboard is regenerated on the default branch when `close` merges.
    | The parent | Its children | Line | Fix (the callout prints the text before the dash) |
    |---|---|---|---|
    | reads `planned` or `in-progress` | at least one, and every one `done` or `cancelled` | `<ID> <status>, every child closed` | `/tasks close <ID>`, or keep it open — `close` step 11 lets an area of concern stay open on purpose |
-   | reads `planned` | at least one `in-progress`, `verify` or `done` | `<ID> planned, <n> of <t> children started` | no verb yet — none moves a container to `in-progress` today |
+   | reads `planned` | at least one `in-progress`, `verify` or `done` | `<ID> planned, <n> of <t> children started` | `/tasks pick` of one of its open tasks — starting a task moves its `planned` parents to `in-progress` |
    | reads `done` or `cancelled` | at least one open | `<ID> <status>, open child <child id>` | file it with `/tasks new` — a verb skipped the reopen § *Roll status up to parents* requires |
    | an epic whose body names a `STORY-NNN` | that story has no file | `<ID> names <STORY-NNN>, which does not exist` | edit the epic body — it is hand-owned |
 

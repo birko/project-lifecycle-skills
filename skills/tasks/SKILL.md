@@ -593,6 +593,11 @@ non-obvious rules travel with this:
 
 **Roll status up to parents — don't leave them stale.** A child changing status is not done until its parents reflect reality:
 - `close` (and any status change): after updating a TASK, re-evaluate its parent STORY, then that STORY's EPIC. A STORY whose every TASK is done should not still read `in-progress`; a container whose children are all `cancelled` is `cancelled`, and a mix of `done` and `cancelled` is `done` (`close --story`/`--epic` and `cancel` both apply this); an EPIC's body/status and any requirement→feature table it carries must match its children. Update the parent files, not just the leaf + the dashboard. (Real failure this guards: leaves and the dashboard were kept current but `EPIC.md` sat at `in-progress` with a stale prose story list and an obsolete roadmap line.)
+- **Starting a task rolls up too.** A task leaving `todo` for `in-progress` (`pick`, and [[fix-next]]'s pick) moves
+  its parent STORY to `in-progress` when the story reads `planned`, then the EPIC above it the same way, or the EPIC
+  the task is parented to directly. Without it a story reads `planned` while most of its tasks are done. Edit the
+  parent files in the same checkout as the task's own flip, so they ride in the same commit, and report
+  `<STORY-NNN | EPIC-NNN> started: TASK-NNN is in progress` for each one moved. A parent already `in-progress` is left alone.
 - **The rule runs the other way too.** A child that stops being `done` or `cancelled` (parked `done → verify`,
   parked at `verify` by a `close` that reopened it, an open task moved in by `move`, or a new open child **created** under it by the `new` flow, directly
   or through any verb that runs it) reopens its parent to `in-progress` when that parent

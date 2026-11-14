@@ -356,7 +356,8 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      rides to `close` with the work.
      **With an upstream**, the pick instead happens here, in the worktree. Bring in the carried files (above) and
      an answered root. Flip `status:` to `in-progress`, together with any caller's pick-time lines such as
-     [[fix-next]]'s. Commit exactly those files as `TASK-NNN: pick` on the task branch, then run
+     [[fix-next]]'s, and roll a `planned` parent up with it (step 7). Commit exactly those files, the parents
+     included, as `TASK-NNN: pick` on the task branch, then run
      `git push -u <remote> task/TASK-NNN`. **The pushed branch is how every other session
      and clone knows the task is taken** — the default branch's copy still reads `todo` until the merge —
      so a failed push is reported by name: *in progress here, unseen elsewhere until pushed*. The
@@ -416,6 +417,9 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
      uncommitted, until `close` commits it with the work. An edit made on the default branch and carried by
      `git switch -c` lands in the same place but reads as if the default branch had been written. After step
      6b's no-upstream fallback, 6b's pick commit already carries the flip, so this edit changes nothing.
+     **Roll the start up with it**: a `planned` parent story, and the epic above it, move to `in-progress` beside the
+     flip, in the same checkout and the same commit ([SKILL.md](../SKILL.md) § *Roll status up to parents*, its
+     starting direction).
    - **Offer to record a PR or commit that already exists.** Put this question:
 
      > **Is there already a PR or commit for TASK-NNN? Give its number or SHA to record in `pr:`, or leave it empty.**

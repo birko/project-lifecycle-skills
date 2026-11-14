@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: 01fc2268d2fabb64d609b8a2d94dc2df33a7a404
+generated-at: b2013ee4f26db56e5f8ed021400030d163eb0274
 generated-on: 2026-11-14
 sources:
   - skills/tasks/SKILL.md
@@ -818,13 +818,19 @@ The system SHALL close a story or epic only when every child task (and, for an e
 
 ### Requirement: Parents rolled up after child changes
 
-The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` and `audit` SHALL flag a parent that does. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked. The check SHALL run once per run, not once per child: each container is checked at most once and each distinct `record/<ID>` line printed once, naming every open child it found; a container created in the same run SHALL NOT be checked; and after the first failure to reach the remote the run SHALL ask it nothing more and print one not-checked line naming every container left unchecked. An open child moved in or created SHALL be checked against its parent and the epic above a parent story whatever they read, since a container closed on an unlanded record branch still reads open in the main copy. A re-close that parks a previously `done` or `cancelled` task at `verify` SHALL reopen its parent and the epic above a story parent at the park, writing them into the park commit when it lands on the default branch with no upstream, writing them uncommitted and naming them when the close commits nothing, and otherwise writing nothing and reporting each as not reopened; a re-close that ends `done` SHALL reopen nothing. Move, creation (including a spawn, an intake, an import and a feature decompose, each of which prints in its place), a decide revert, a review park and a re-close park SHALL each carry these lines, each reopened container, and each copy of the tree an id scan could not read, in their own report.
+The system SHALL, after any child status or placement change, or the creation of a child, re-evaluate the parent story and then its epic and update their files so no container asserts a state its children contradict; `triage` SHALL flag a parent that does. Starting a task SHALL move a `planned` parent story, and then its epic, to `in-progress` in the same checkout and commit as the task's own flip, reporting each move. Rollup hints never auto-close a container. When a child stops being `done` or `cancelled` and the default branch has an upstream, it SHALL check each container it would reopen for an unlanded `record/<ID>` branch on the upstream's remote, recomputed every run, and report each one found as a record that must not be landed as is, writing nothing to it; a check that cannot reach the remote SHALL be reported as not checked. The check SHALL run once per run, not once per child: each container is checked at most once and each distinct `record/<ID>` line printed once, naming every open child it found; a container created in the same run SHALL NOT be checked; and after the first failure to reach the remote the run SHALL ask it nothing more and print one not-checked line naming every container left unchecked. An open child moved in or created SHALL be checked against its parent and the epic above a parent story whatever they read, since a container closed on an unlanded record branch still reads open in the main copy. A re-close that parks a previously `done` or `cancelled` task at `verify` SHALL reopen its parent and the epic above a story parent at the park, writing them into the park commit when it lands on the default branch with no upstream, writing them uncommitted and naming them when the close commits nothing, and otherwise writing nothing and reporting each as not reopened; a re-close that ends `done` SHALL reopen nothing. Move, creation (including a spawn, an intake, an import and a feature decompose, each of which prints in its place), a decide revert, a review park and a re-close park SHALL each carry these lines, each reopened container, and each copy of the tree an id scan could not read, in their own report.
 
 #### Scenario: Last task cancelled
 
 - **Given** a story whose other tasks are `done`
 - **When** its last open task is cancelled
 - **Then** the story is reconciled to `done`
+
+#### Scenario: Starting the first task of a planned story
+
+- **Given** a `planned` epic and story over a `todo` task, on a single-branch project
+- **When** the task is picked
+- **Then** the task, the story and the epic all read `in-progress`, and the run reports `STORY-NNN started` and `EPIC-NNN started`
 
 #### Scenario: A child leaving done reopens its story
 

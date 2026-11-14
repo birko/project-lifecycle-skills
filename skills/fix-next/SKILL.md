@@ -265,7 +265,7 @@ over the same pool agree, and the line says that is all it is. It is not a pendi
   `; inferred, not chosen: <fields>` when the task file carries the inferred-values line
   ([[tasks]] `new.md` § *Unanswered questions*). A run with nobody present cannot confirm those values, so
   it records them, and step 9's report repeats them
-- `status: todo` → `in-progress` (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project —
+- `status: todo` → `in-progress`, rolling a `planned` parent up with it per [[tasks]] § *Roll status up to parents* (and cut the task branch, per [[tasks]] `pick`, on a PR-per-task project —
   including its step 6b when the project declares `workspace: worktree`. This skill never answers
   6b's root question: it takes the blank-answer branch every time). **Write the two lines above so they
   ride in 6b's pick commit**: with no upstream write them first, in the main copy, since 6b commits the pick
