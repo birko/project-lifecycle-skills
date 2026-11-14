@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
+generated-at: a6f5155cd24eba2aa1a947fa26203f58b9cfb91a
 generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
@@ -182,7 +182,7 @@ The system SHALL present the proposed map as a table of area, title, globs and r
 
 ### Requirement: Init ends with exactly one coverage verdict
 
-The system SHALL end init's coverage step with exactly one verdict describing the map about to be written: `verified` when the scan set is non-empty, nothing is unmapped after reconciliation, and the map was blessed; `not-applicable` when the scan set, measured after `ignore` including this run's own reconciliation entries, is empty and no tracked file, ignored ones included, is behavioural code; and `unverified` in every other case, stated with a one-line reason.
+The system SHALL end init's coverage step with exactly one verdict describing the map about to be written: `verified` when the scan set is non-empty, nothing is unmapped after reconciliation, and the map was blessed; `not-applicable` when the scan set, measured after `ignore` including this run's own reconciliation entries, is empty and no tracked file, ignored ones included, is behavioural code; and `unverified` in every other case, stated with a one-line reason that names each cause when more than one applies. Because the scan is every tracked file, the system SHALL treat source missing from discovery as source outside the tracked tree, and SHALL never count an uninitialised submodule's gitlink as covered by an area, leaving it unmapped and naming the submodule.
 
 #### Scenario: Gap closed during the run
 
@@ -195,6 +195,18 @@ The system SHALL end init's coverage step with exactly one verdict describing th
 - **Given** a repository with source files that the scan failed to discover
 - **When** the verdict is computed
 - **Then** it is `unverified` with a one-line reason, and fixing the discovery is preferred over writing the map
+
+#### Scenario: Behaviour lives in an uninitialised submodule
+
+- **Given** a repository whose only behaviour is in a submodule that is not checked out, so git tracks it as one gitlink entry
+- **When** the verdict is computed, even with the map blessed
+- **Then** it is `unverified`, naming the submodule; the gitlink stays unmapped rather than being matched by an area glob, and the verdict is never `not-applicable`
+
+#### Scenario: An unfamiliar stack is still discovered
+
+- **Given** a small tool whose sources are tracked files with an extension no stack table names, and a README saying what they are
+- **When** the map is blessed
+- **Then** the verdict is `verified`
 
 #### Scenario: Docs-only repository
 

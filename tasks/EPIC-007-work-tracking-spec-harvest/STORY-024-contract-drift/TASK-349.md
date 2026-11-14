@@ -13,13 +13,13 @@ depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary
 # field use with no pass behind it at all. Prefixes: see /tasks intake
-findings: [DRILL-238-2, DRILL-238-3, DRILL-238-4]
+findings: [DRILL-238-2, DRILL-238-3, DRILL-238-4, DRILL-089-1]
 pr: null
 github-issue: null
 jira-key: null
 ---
 
-# `/specs verify` and `show` leave three rendering details to the reader
+# `/specs verify`, `show` and `init` leave four rendering details to the reader
 
 ## Context
 
@@ -34,10 +34,15 @@ dates, no tie rule), was fixed inside TASK-238. It is a group: three small rende
   no wording and no place (header line, footer, or a line of its own).
 - **DRILL-238-4:** `show`'s footer `<anchor short sha>` gives no length. git's default abbreviation varies with the size
   of the repository, so two runs can print different lengths for one sha.
+- **DRILL-089-1 (added 2026-11-14):** `init`'s confirmation line `<n> areas — one per capability found; fewer than the
+  typical range…` has the same fixed noun, and reads oddly at 0. Raised by both TASK-089 runners
+  (`%LOCALAPPDATA%/Temp/d089a` point 7, `d089b` point 12), and it is DRILL-238-2's class in a third verb, so one
+  inflection rule for every `/specs` count line closes both.
 
 ## Acceptance criteria
 
 - [ ] Each of DRILL-238-2 … 4 is either confirmed by a second cold runner and then answered in `verify.md` or `show.md`, or recorded here as not reproduced
+- [ ] DRILL-089-1: `init`'s count lines inflect for one and read correctly at zero, by the same rule as `verify`'s
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
