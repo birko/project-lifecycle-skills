@@ -362,6 +362,17 @@ The skills *are* the product, so their prose is the user interface. This subsect
   a verdict, a prototype or a review record. Recorded on the reading side alone, the writing side changes it without ever seeing the consequence, and the reader degrades silently instead of failing. The same holds for [[improve-architecture]], which reads an
   earlier run's `### Findings dropped at intake` entries and finds that run by its `source:`, so `/tasks intake`
   steps 3 and 5 state both shapes.
+- **A renamed value is read in both forms permanently; only writers switch.** Where a stored value changes its
+  spelling — today task status `review` → `verify` — every reader accepts the old and the new form for good, and only
+  the verbs that write it move to the new one. Files written before the rename are never migrated by a sweep, and a
+  reader that knew only the new form would misread every one of them silently. The sequencing is [[tasks]]
+  `slicing.md` § *Wide refactors* (expand on the read side, then switch the writer; the read-side alias is permanent
+  wherever some copies are out of reach, as files in consumer repos always are); the forms in force are tabled once, in `skills/tasks/SKILL.md` § *Lifecycle* → *Reading a task's
+  status*. This entry is the pointer. Measured: FEATURE-003 applied it across five skills and 14 files.
+- **Every `^id:` pattern ends `[[:space:]]*$`, never a bare `$`.** Task files may carry CRLF endings, and a bare `$`
+  misses the `\r` in ripgrep and `git grep`, so an id scan silently undercounts and the next id minted reuses a
+  number. Owner of the measurement and of why `\r?` is not the fix: `skills/tasks/SKILL.md` § *ID generation*;
+  lint check 7 enforces it (TASK-206).
 - **A layer artifact that would lie when empty is declared `(lazy)`, and nothing creates it.** Most of the
   universal layer is created on sight, so the exception needs saying: where an empty instance would make a
   **claim** rather than hold a place — an empty `docs/glossary.md` asserts the vocabulary was examined and
@@ -436,7 +447,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - Artifacts use `EPIC-NNN` / `STORY-NNN` / `TASK-NNN` / `FEATURE-NNN`, zero-padded to three digits.
 
 ### Testing
-- Tests: **`.github/workflows/skills-lint.sh`**, run by CI — validates frontmatter, resolves every `[[link]]`, and checks that files referenced by a `SKILL.md` exist. Run it locally with `bash .github/workflows/skills-lint.sh`.
+- Tests: **`.github/workflows/skills-lint.sh`**, run by CI — nine numbered checks: frontmatter (1), every `[[link]]` resolves (2), files a `SKILL.md` references exist (3), cross-skill flags (4), the two universal-conventions copies match (5), install roots (6, advisory), `^id:` patterns survive CRLF (7), shell scripts stored as LF (8), and `.ps1` files ASCII or BOM-marked (9). The script's `== N.` headers are the list; this line names them so a reader knows a check exists. Run it locally with `bash .github/workflows/skills-lint.sh`.
 - **The lint may carry *advisory* sections; they never change its exit code.** A check whose remedy
   lives **outside the repo** — today check 6, install-root drift, fixed by re-running an installer —
   cannot be a blocker: no diff can clear it, and the roots do not exist on the CI runner, so making it
