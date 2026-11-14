@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: ed9bb0f7bd87784b959d6daa7f1f80129e8176c2
+generated-at: b89c6a1b086d68a0678f9e763bbb63bc16082138
 generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
@@ -540,7 +540,7 @@ The system SHALL check each external source glob against its own repository from
 
 ### Requirement: Verify renders a read-only summary
 
-The system SHALL, in `verify`, never write any file, also count unmapped files over the same scan set and search roots as regen, and render counts of fresh, stale, unknown-baseline, never-generated and unmapped with zero-count lines suppressed, collapsing to a single all-fresh line when everything is fresh and nothing is unmapped; when no map file exists or its `areas:` list is empty it SHALL print `No usable spec map — run /specs init to bootstrap.` and exit.
+The system SHALL, in `verify`, never write any file, also count unmapped files over the same scan set and search roots as regen, and render counts of fresh, stale, unknown-baseline, never-generated and unmapped with zero-count lines suppressed, collapsing to a single all-fresh line when everything is fresh and nothing is unmapped, every count noun in it and in every other `/specs` count line singular for exactly one and plural otherwise, zero included; when no map file exists or its `areas:` list is empty it SHALL print `No usable spec map — run /specs init to bootstrap.` and exit.
 
 #### Scenario: Everything fresh
 
@@ -556,13 +556,13 @@ The system SHALL, in `verify`, never write any file, also count unmapped files o
 
 ### Requirement: Show prints one spec with honest provenance and freshness
 
-The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (listing the areas and stopping when ambiguous or unknown), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived)` when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, and say so with a regen suggestion when the area has no spec file.
+The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (listing the areas and stopping when ambiguous or unknown), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived — /specs regen <area> fills it)` in that header line when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, abbreviated to exactly seven characters, and say so with a regen suggestion when the area has no spec file.
 
 #### Scenario: Never-derived provenance
 
 - **Given** a spec with `shaped-by: []` and no `shaped-by-derived` key
 - **When** it is shown
-- **Then** the header reads `shaped-by: (never derived)` and a regen is suggested
+- **Then** the header reads `shaped-by: (never derived — /specs regen core fills it)`, and no other line suggests a regen for it
 
 #### Scenario: Partial derivation
 

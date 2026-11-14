@@ -113,5 +113,8 @@ Report external staleness **per repo**, not merged: *"3 changed in `../Acme.Data
    Run /specs regen <area> to refresh, /specs init to fix the map.
    ```
    Suppress zero-count lines. All fresh and nothing unmapped → one line: `docs/specs/ — <A> areas, all fresh ✓`.
+   **Every count noun is singular for a count of exactly 1 and plural otherwise, 0 included**: `1 area`,
+   `1 changed source`, `0 areas`. The same rule holds for every count line a `/specs` verb prints, so two runs over
+   one tree print one line.
 
 **Summary mode** (bare `/specs` routes here): render only the counts block, skip the per-area detail unless something is stale.

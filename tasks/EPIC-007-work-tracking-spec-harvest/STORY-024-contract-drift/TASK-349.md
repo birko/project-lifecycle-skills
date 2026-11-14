@@ -3,11 +3,12 @@ id: TASK-349
 parent: STORY-024
 feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: todo
+status: done
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
 priority: P3
 # assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
 assignee: agent
+picked-by: fix-next
 created: 2026-11-12
 depends-on: []
 blocks: []
@@ -41,9 +42,9 @@ dates, no tie rule), was fixed inside TASK-238. It is a group: three small rende
 
 ## Acceptance criteria
 
-- [ ] Each of DRILL-238-2 … 4 is either confirmed by a second cold runner and then answered in `verify.md` or `show.md`, or recorded here as not reproduced
-- [ ] DRILL-089-1: `init`'s count lines inflect for one and read correctly at zero, by the same rule as `verify`'s
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] Each of DRILL-238-2 … 4 is either confirmed by a second cold runner and then answered in `verify.md` or `show.md`, or recorded here as not reproduced
+- [x] DRILL-089-1: `init`'s count lines inflect for one and read correctly at zero, by the same rule as `verify`'s
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -51,8 +52,45 @@ dates, no tie rule), was fixed inside TASK-238. It is a group: three small rende
 
 ## Human test plan
 
-- [ ] Re-run TASK-238's brief (in `%LOCALAPPDATA%/Temp/d238/brief.txt`, fixture recipe on TASK-238) with a cold runner. Expected: none of the confirmed findings in its "left undecided" section
+- [x] Re-run TASK-238's brief (in `%LOCALAPPDATA%/Temp/d238/brief.txt`, fixture recipe on TASK-238) with a cold runner. Expected: none of the confirmed findings in its "left undecided" section
+  - **Passed 2026-11-14**, cold drill `%LOCALAPPDATA%/Temp/d349` (`claude -p --disable-slash-commands`, cwd holding only
+    `skill/` at the fix, TASK-238's brief and fresh copies of its `empty/` and `mapped/` repos; the runner listed no
+    skills). None of the four in its § 3: verify printed `(1 area)` and `core: 1 changed source`; show's header read
+    `shaped-by: (never derived — /specs regen core fills it)` with no other suggestion; the footer read `1 source
+    changed since ef4347b`, seven characters.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-349` — leave empty until then._
+Inline: one stated answer per reading, in the verb that renders it.
+
+## Outcome
+
+**Answered without a separate confirming run.** DRILL-238-2 was confirmed by DRILL-089-1's two runners (the same fixed-noun
+class in `init`). DRILL-238-3 and 4 had one runner each; answering them cost one sentence apiece, less than a confirming
+drill, and d349 then found nothing undecided in their place.
+- **DRILL-238-2 and DRILL-089-1 (`verify.md`, `init.md`):** every `/specs` count noun is singular for exactly 1 and plural
+  otherwise, 0 included. `init`'s fewer-than-typical line is never printed at zero, because a map with no areas is the
+  `not-applicable` verdict and has its own confirmation line.
+- **DRILL-238-3 (`show.md`):** the regen suggestion sits in the header line, `shaped-by: (never derived — /specs regen
+  <area> fills it)`, and nowhere else.
+- **DRILL-238-4 (`show.md`):** the footer's anchor is always its first 7 characters (`git rev-parse --short=7`).
+
+**One-runner readings left unfiled** (FEATURE-002 D10): d349 § 3 points 1-8, of which point 1 (`verify` step 4's `<glob>`:
+the map's globs or the spec's resolved `sources:` list, which differ once a new matching file is added) is the one worth
+watching for a second runner.
+
+**Close gate (inline; three skill files plus one spec):**
+- **Standards:** the count rule lives once, in `verify.md`, and `init.md` points at it.
+- **Intent:** all criteria met.
+- **Correctness:** d349.
+- **Security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-216 because it is the last open P3 drill-reading batch with a two-runner reading in it (DRILL-089-1), where the rest of the P3 pool is single-reading or design-shaped; STORY-024 started
+- step 3 — re-verified: none of the four has a stated answer at HEAD
+- step 5 — fixed in verify.md, show.md and init.md
+- step 6 — behavioural: d349 (none of the four undecided)
+- step 7 — respecced specs-from-code (count nouns, header suggestion, seven-character anchor), restamped
+- step 8 — closed inline; commit in git log

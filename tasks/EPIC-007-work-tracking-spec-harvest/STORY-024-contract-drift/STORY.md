@@ -5,7 +5,7 @@ parent: EPIC-007
 # fix-next reads it as tie-break key 6; omit it on an ordinary story.
 theme: contract-drift
 # status — one of: planned, in-progress, done, cancelled
-status: planned
+status: in-progress
 created: 2026-10-03
 ---
 
