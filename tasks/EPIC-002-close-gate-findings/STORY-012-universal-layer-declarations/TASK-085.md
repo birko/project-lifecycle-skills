@@ -3,9 +3,10 @@ id: TASK-085
 parent: STORY-012
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P3
 assignee: agent
+picked-by: fix-next
 created: 2026-08-31
 depends-on: []
 blocks: []
@@ -92,11 +93,11 @@ a single line, or the two front doors will describe one state in two different s
 
 ## Acceptance criteria
 
-- [ ] An agent can determine which state applies to an artifact without reading a paragraph per state
-- [ ] Every guard, suppression rule and claimability restriction currently attached to a state survives verbatim in meaning — enumerate them before and after and show none was dropped
-- [ ] The rationale is still present, not deleted for brevity — the *why* is what stops a state being claimed wrongly
-- [ ] `new-project` and `adopt-project` both still resolve every state they reference (layer parity)
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] An agent can determine which state applies to an artifact without reading a paragraph per state
+- [x] Every guard, suppression rule and claimability restriction currently attached to a state survives verbatim in meaning — enumerate them before and after and show none was dropped
+- [x] The rationale is still present, not deleted for brevity — the *why* is what stops a state being claimed wrongly
+- [x] `new-project` and `adopt-project` both still resolve every state they reference (layer parity)
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-112* (the four entry criteria met by TASK-353, 2026-11-13: `adopt-project` step 4 gained the `not applicable` entry. Its lint line is this task's own):
 
@@ -105,11 +106,11 @@ a single line, or the two front doors will describe one state in two different s
       pending without consulting `LAYER.md`
 - [x] The list and the paragraph that introduces it agree about which states exist
 - [x] Nothing restates `LAYER.md`'s state definitions — the list points, it does not copy
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From SH-53 and SH-55:*
 
-- [ ] LAYER.md states no count of its survey states
+- [x] LAYER.md states no count of its survey states
 - [x] LAYER.md § *Conditional rows* no longer points at the cancelled TASK-112 (met by TASK-353, 2026-11-13)
 
 ## Out of scope
@@ -124,15 +125,65 @@ a single line, or the two front doors will describe one state in two different s
 
 ## Human test plan
 
-- [ ] Hand the reshaped section to a reader who has not seen it and ask them to classify three artifacts (one present, one staged-but-uncommitted, one lazy-and-absent); confirm they reach the right state without reading the whole section
-- [ ] Diff the guard inventory before and after and confirm it is unchanged
+- [x] Hand the reshaped section to a reader who has not seen it and ask them to classify three artifacts (one present, one staged-but-uncommitted, one lazy-and-absent); confirm they reach the right state without reading the whole section
+  - **Passed 2026-11-14**, cold drill `%LOCALAPPDATA%/Temp/d085` (`claude -p --disable-slash-commands`, cwd holding only
+    `skill/` at the fix and `brief.txt`; the runner listed no skills). All three right: `present` and `not applicable yet`
+    from the table alone, `present, uncommitted` (`A  tasks/.config.yml`) from the table, confirmed in one subsection.
+- [x] Diff the guard inventory before and after and confirm it is unchanged
+  - **Passed 2026-11-14**: 26 guards enumerated across the ten states (the claimability limits, the suppressions,
+    the carve-outs, the composition) and each searched for in HEAD's and the fix's text. All 26 are present in both,
+    one differing only in the capital letter its subsection now opens with. A scripted check also confirmed every
+    state's full text survives word for word, in order.
 
 *From TASK-112:*
 
-- [ ] Run the adopter's survey over a library with no `Dockerfile` and read the report. Expected: the
+- [x] Run the adopter's survey over a library with no `Dockerfile` and read the report. Expected: the
       row reports `not applicable`, and the report's own legend explains it without sending the reader
       elsewhere.
+  - **Passed 2026-11-14**, as d085's case 4, by the classification rather than a full adoption run: the runner reached
+    `not applicable` from the table and one subsection, and from `adopt-project` step 4's list printed a derived-No
+    line, `Dockerfile — derived No: a library, one package, no entry point, nothing deployed`, under no gap heading.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-085` — leave empty until then._
+Inline: a decision table at the head of the list, each bullet becomes a subsection under its state's name with its text unchanged, and the count goes.
+
+## Outcome
+
+**The shape (`skills/new-project/LAYER.md` § *Detect what the repo has*).**
+- **The table.** *Report the state precisely* now opens with a decision table: state, applies when, what it suppresses
+  or adds, and claim it only where. An agent picks its row there.
+- **The subsections.** Each former bullet is a `### <state>` subsection beneath the table, its text kept word for word
+  (only the first letter capitalised), and the table says a subsection wins wherever the table is shorter.
+- **The paragraphs that follow** sit under a new `### Reading the states together` heading, so they no longer read as
+  part of the last state.
+- **Unchanged:** every `§ *Detect what the repo has*` link still resolves, since the states are subsections of it.
+
+**Not a table of 350-word cells.** The table carries only what the branch needs; the probe, the measured cases and the
+reasons stay in prose under each state, as the task's context warned.
+
+**SH-53:** the count is gone: "not a ninth state" now reads "not another state", and "already eight states" became
+"states". **SH-55 and the TASK-112 criteria** were met by TASK-353.
+
+**One-runner reading left unfiled** (FEATURE-002 D10): d085 case 4 asked whether a README calling the repo "a library"
+is the repo *declaring* the No (silent) or evidence for a derived one (a line). `adopt-project` step 4 does not define
+"the repo declares".
+
+**Close gate (inline; one skill file plus a restamp):**
+- **Standards:** a table for the branch and prose for the why, per *Tables and short lists beat paragraphs*.
+- **Intent:** all criteria met; no state was added, removed or redefined.
+- **Correctness:** d085, and the guard inventory.
+- **Layer parity:** `new-project` and `adopt-project` reference states by name and the section by its heading, and
+  both still resolve.
+- **Security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+- **Specs:** project-baseline is restamped with no content change, since no requirement moved.
+
+## Progress log
+
+- step 2 — picked; ranked above TASK-261 because every consumer of both front doors reads this section to classify every artifact, where TASK-261 weighs folding three help files; STORY-012 already in-progress
+- step 3 — re-verified: ten states as prose bullets, the longest several hundred words; "eight states" and "a ninth state" still in the text; TASK-112's criteria met by TASK-353
+- step 5 — reshaped: decision table plus one subsection per state, text unchanged; count dropped
+- step 6 — behavioural: d085 (four cases right, two from the table alone); guard inventory 26/26
+- step 7 — project-baseline restamped, no content change
+- step 8 — closed inline; commit in git log

@@ -554,38 +554,83 @@ project whose checks are invoked rather than named — shell suites, `Makefile` 
 scripts, a compiled test binary called from CI. Adding `*-test.sh` to the glob list would have fixed this
 repo and left the next non-conventional stack to rediscover it.
 
-**Report the state precisely.** The distinctions matter, the number of them does not — this list
-grows as real repos turn up conditions it cannot yet express:
+**Report the state precisely.** The distinctions matter, the number of them does not: the list grows as real
+repos turn up conditions it cannot yet express. **Pick the state from the table; its subsection below carries the
+probe, the guards and the reasons, and wins wherever the table is shorter.** Each artifact gets one state, except
+that `present, outdated` composes with `present, uncommitted` and the report says both.
 
-- **present** — found where expected, and (in a git work tree) fully tracked.
-- **present, uncommitted** — found on disk, but git does not have all of it. **Only meaningful inside a git work tree**: in a directory with no repo yet every path is untracked, which is what the `git init` offer is for, not this state. Probe with `git status --porcelain --untracked-files=all -- <path>` (`--untracked-files=all` matters: plain `--porcelain` collapses an untracked directory to `?? docs/specs/` without naming the member, and the member is the thing you have to offer to land).
+| State | Applies when | What it suppresses or adds | Claim it only where |
+|---|---|---|---|
+| `present` | found where expected, and (in a git work tree) fully tracked | nothing | — |
+| `present, uncommitted` | on disk, and the porcelain probe prints anything for it that is neither a deletion nor an unmerged path | adds one itemised offer to land it, on top of the row's own content action; claims nothing about whose work it is | inside a git work tree whose top level is the directory being adopted, never an ancestor's |
+| `present, outdated` | there, in an earlier version of its own shape | nothing; the owner verb's delta is the finding | the row names a verb that can tell you; otherwise `present` with the gap named |
+| `present, owner not asked` | there, its row names an owner verb, and this run did not invoke it | the word *complete*: such a table is *nothing missing* at most | a scoped run |
+| `present, elsewhere` | found at another path, under another name, or inside another file | relocating it, and any offer of a second one | say where |
+| `unknown` | the survey could not determine it | the fill | name what was missing, and whether evidence or the rule ran out |
+| `missing` | genuinely absent | nothing | you actively looked |
+| `missing, not offered` | genuinely absent, and the skill decided not to offer it | the offer, never the check or the status line; re-derived from its evidence every run | the reason travels with the state |
+| `not applicable` | a conditional row whose condition does not hold | the fill, the offer and any later re-ask | the row declares itself conditional and evidence settled it; else `unknown` |
+| `not applicable yet` | a lazy row with no instance, in a repo with nothing to record | the fill and the offer; never reported as drift | the row declares itself lazy; else `missing` |
 
-  **Read the result as a rule, never as a list of line prefixes: the artifact is on disk *and* the probe prints anything ⇒ this state.** Porcelain is two columns — **XY**, X the index and Y the work tree — so every *list of shapes* written here has been one column short: `??` (untracked) and ` M` (tracked, modified, unstaged) are the *unstaged* half only, while a pass that wrote the layer **and staged it** prints `A ` for a new file and `M ` for an amendment, matches neither, and is reported plain `present`. Measured 2026-08-31: `A  tasks/config.yml`, `M  README.md`. (A staged **rename** shows as `R  old -> new` when the pathspec is the *directory*; probed by the new member's own path it is an ordinary `A `. Which one you see is a property of the pathspec, not of the change.)
+### `present`
 
-  **Two output kinds are *not* this state, and both must be excluded by name** — this is what the presence conjunct above is for, and dropping it is how a widened rule turns destructive:
+Found where expected, and (in a git work tree) fully tracked.
 
-  | Output | Why it is not `present, uncommitted` |
-  |---|---|
-  | a **deletion** — `D ` (staged) or ` D` (unstaged) | the path is going away, not sitting unlanded. For a *directory* artifact a staged member deletion prints `D  tasks/.config.yml` while `tasks/` itself is still on disk, so without the conjunct the row reads `present, uncommitted` and the offer to land **commits the removal** — under a message claiming to protect an artifact the next clone would not have. Verified 2026-08-31. |
-  | an **unmerged** path — any `U` in either column (`UU`, `AA`, `DU`, …) | a conflict in progress. Nothing should offer to commit one, and the user is mid-operation |
+### `present, uncommitted`
 
-  The shapes stay worth knowing as **illustrations, never as the rule** — the untracked member is what matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind; the tracked-but-uncommitted amendment is the more common one on the upgrade path, since a pass that appended `## Conventions` to an already-tracked guide leaves nothing untracked at all. (`git ls-files -- <path>` answers "is any of it tracked", a different and useless question here; `git ls-files --others` sees that amended guide as a clean repo and loses the work just as quietly.)
+Found on disk, but git does not have all of it. **Only meaningful inside a git work tree**: in a directory with no repo yet every path is untracked, which is what the `git init` offer is for, not this state. Probe with `git status --porcelain --untracked-files=all -- <path>` (`--untracked-files=all` matters: plain `--porcelain` collapses an untracked directory to `?? docs/specs/` without naming the member, and the member is the thing you have to offer to land).
 
-  **The git-ignored carve-out holds for free**: an ignored path produces *no* output, so it falls through to plain `present` with no exception written for it. **The no-repo carve-out does not, and must be checked explicitly.** It is tempting to say the probe simply fails outside a work tree — it does in a bare directory, printing nothing to stdout — but the case this pair actually meets is a directory **captured by an ancestor repo**, where `git rev-parse --is-inside-work-tree` says `true` and the probe happily prints `?? subproject/CLAUDE.md` for every layer artifact. Reported as this state, adoption would offer to land the whole layer **into the ancestor's** history. So compare `git rev-parse --show-toplevel` with the directory being adopted: equal ⇒ this state is meaningful; an ancestor ⇒ it is not, and [[adopt-project]]'s surface-the-resolved-ancestor offer owns the case, because only the user knows whether that ancestor is intended. Verified 2026-08-31. This state is **often** an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. **But the probe cannot see provenance, so the state must not claim any** — see § *`present, uncommitted` says nothing about whose work it is*. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
-- **present, outdated** — there, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
-- **present, owner not asked** — there, its row names an owner verb whose answer decides whether it is current, and
-  this run did not invoke that verb: a scoped run ([[adopt-project]] § *Scoped runs*). **It certifies presence and
-  nothing else.** Distinct from `present, outdated`, which is what the owner answered, and from an `unknown` that came
-  from a verb's silence, which is an owner that ran and gave no answer: this one was never asked, and printing one
-  word for both situations is the collapse this list exists to prevent. A table carrying any row in this state may be
-  reported as *nothing missing*, never as *complete*.
-- **present, elsewhere** — found at another **path**, under another **name**, or inside another **file**. **Say where.** Never silently relocate it, and never offer to create a second one. **Any deviation from the row's canonical path or name lands here** — see § *Location is orthogonal too*, which also settles that this composes with every row rather than only the ones whose cells mention it.
-- **unknown** — you could not determine it. Honest, and it stops the fill. **Name what was missing, and say which kind of missing** — evidence, or the rule itself. See § *Two things reach `unknown`*.
-- **missing** — you actively looked and it is genuinely absent.
-- **missing, not offered** — genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire. It is the mirror of the declaration rule: a fact the evidence determines is recomputed, and a fact it merely fits is declared.
+**Read the result as a rule, never as a list of line prefixes: the artifact is on disk *and* the probe prints anything ⇒ this state.** Porcelain is two columns — **XY**, X the index and Y the work tree — so every *list of shapes* written here has been one column short: `??` (untracked) and ` M` (tracked, modified, unstaged) are the *unstaged* half only, while a pass that wrote the layer **and staged it** prints `A ` for a new file and `M ` for an amendment, matches neither, and is reported plain `present`. Measured 2026-08-31: `A  tasks/config.yml`, `M  README.md`. (A staged **rename** shows as `R  old -> new` when the pathspec is the *directory*; probed by the new member's own path it is an ordinary `A `. Which one you see is a property of the pathspec, not of the change.)
 
-- **not applicable** — a **conditional** row (§ *Conditional rows*) whose condition does not hold for this project: a `Dockerfile` in a CLI, an `.env.example` in a library, a `LICENSE` in a proprietary repo. **Settled, not pending** — unlike the state below, nothing will change it, so it suppresses the fill, the offer, and any later re-ask. Claimable only where the row declares itself conditional **and** its condition was actually settled by evidence; where the evidence ran out the state is `unknown`, naming what was missing, because defaulting to this one is how a real gap is laundered into a design choice.
-- **not applicable yet** — a **lazy** row (§ *Lazily-created rows*) with no instance, in a repo that has nothing to record. **This is not a gap and is never reported as drift.** It suppresses both the fill *and the offer*: asking *"shall I create a glossary?"* is how the empty file the lazy rule exists to prevent arrives **with** the user's consent instead of without it, so the offer is the defect here, not the fill. **Claimable only where the row declares itself lazy** — an absent artifact whose row creates it is `missing`, and relabelling it here would launder a real gap into a design choice, which is the false-`present` failure pointing the other way. Distinct from `missing, not offered`: that is a genuine gap *adjudicated* unfillable for now, so its offer returns when the evidence changes; this one has nothing to fill and no evidence that could change.
+**Two output kinds are *not* this state, and both must be excluded by name** — this is what the presence conjunct above is for, and dropping it is how a widened rule turns destructive:
+
+| Output | Why it is not `present, uncommitted` |
+|---|---|
+| a **deletion** — `D ` (staged) or ` D` (unstaged) | the path is going away, not sitting unlanded. For a *directory* artifact a staged member deletion prints `D  tasks/.config.yml` while `tasks/` itself is still on disk, so without the conjunct the row reads `present, uncommitted` and the offer to land **commits the removal** — under a message claiming to protect an artifact the next clone would not have. Verified 2026-08-31. |
+| an **unmerged** path — any `U` in either column (`UU`, `AA`, `DU`, …) | a conflict in progress. Nothing should offer to commit one, and the user is mid-operation |
+
+The shapes stay worth knowing as **illustrations, never as the rule** — the untracked member is what matters most for the layer's *directory* artifacts, where a pass may have committed `tasks/README.md` and left `tasks/.config.yml` behind; the tracked-but-uncommitted amendment is the more common one on the upgrade path, since a pass that appended `## Conventions` to an already-tracked guide leaves nothing untracked at all. (`git ls-files -- <path>` answers "is any of it tracked", a different and useless question here; `git ls-files --others` sees that amended guide as a clean repo and loses the work just as quietly.)
+
+**The git-ignored carve-out holds for free**: an ignored path produces *no* output, so it falls through to plain `present` with no exception written for it. **The no-repo carve-out does not, and must be checked explicitly.** It is tempting to say the probe simply fails outside a work tree — it does in a bare directory, printing nothing to stdout — but the case this pair actually meets is a directory **captured by an ancestor repo**, where `git rev-parse --is-inside-work-tree` says `true` and the probe happily prints `?? subproject/CLAUDE.md` for every layer artifact. Reported as this state, adoption would offer to land the whole layer **into the ancestor's** history. So compare `git rev-parse --show-toplevel` with the directory being adopted: equal ⇒ this state is meaningful; an ancestor ⇒ it is not, and [[adopt-project]]'s surface-the-resolved-ancestor offer owns the case, because only the user knows whether that ancestor is intended. Verified 2026-08-31. This state is **often** an earlier adoption pass that wrote files and stopped before committing — *the* reason someone re-runs an idempotent adoption, so it belongs on the main path. **But the probe cannot see provenance, so the state must not claim any** — see § *`present, uncommitted` says nothing about whose work it is*. Reported as plain `present` it hides an artifact the next clone will not have and the next pass will write over, so **offer to land it** instead of counting it done.
+
+### `present, outdated`
+
+There, but in an earlier version of its own shape: a config missing a field the current template has. **Claim it only where something can tell you** — a row whose *already present?* column names a verb, whose delta then *is* the evidence. Where nothing can answer (an agent guide missing a section, whose shape no init owns), the honest label stays `present` with the gap named: reading a schema and judging someone's prose are not the same act. It **composes** with `present, uncommitted` rather than competing — a config that predates a field *and* was never committed is both, and the report says both. Observed in `Presenter`, whose `tasks/.config.yml` predates the `integration:` field: surveyed `present` from the outside, skipped as "already skill-shaped", and the missing field then inferred from `git log` instead — see § *Delegation follows the row, not the artifact's appearance*.
+
+### `present, owner not asked`
+
+There, its row names an owner verb whose answer decides whether it is current, and
+this run did not invoke that verb: a scoped run ([[adopt-project]] § *Scoped runs*). **It certifies presence and
+nothing else.** Distinct from `present, outdated`, which is what the owner answered, and from an `unknown` that came
+from a verb's silence, which is an owner that ran and gave no answer: this one was never asked, and printing one
+word for both situations is the collapse this list exists to prevent. A table carrying any row in this state may be
+reported as *nothing missing*, never as *complete*.
+
+### `present, elsewhere`
+
+Found at another **path**, under another **name**, or inside another **file**. **Say where.** Never silently relocate it, and never offer to create a second one. **Any deviation from the row's canonical path or name lands here** — see § *Location is orthogonal too*, which also settles that this composes with every row rather than only the ones whose cells mention it.
+
+### `unknown`
+
+You could not determine it. Honest, and it stops the fill. **Name what was missing, and say which kind of missing** — evidence, or the rule itself. See § *Two things reach `unknown`*.
+
+### `missing`
+
+You actively looked and it is genuinely absent.
+
+### `missing, not offered`
+
+Genuinely absent, and the skill has decided **not** to offer it; the reason travels as part of the state (the CI case below is the standing example). Distinct from plain `missing` because the absence is *adjudicated* rather than merely observed. **The adjudication is re-derived from its evidence on every run, never remembered** — nothing persists it and nothing needs to: the survey and the report are stdout, and the evidence (below) is cheap to re-read. So the moment the evidence changes, the offer comes back on its own, with no bookkeeping. What the state suppresses is the **offer**, not the check and not the status line: re-deriving costs nothing, printing one line of status is not a question, and re-asking *"shall I add this?"* every run is the only thing that was ever the annoyance. A derived state cached as a decision can never expire. It is the mirror of the declaration rule: a fact the evidence determines is recomputed, and a fact it merely fits is declared.
+
+### `not applicable`
+
+A **conditional** row (§ *Conditional rows*) whose condition does not hold for this project: a `Dockerfile` in a CLI, an `.env.example` in a library, a `LICENSE` in a proprietary repo. **Settled, not pending** — unlike the state below, nothing will change it, so it suppresses the fill, the offer, and any later re-ask. Claimable only where the row declares itself conditional **and** its condition was actually settled by evidence; where the evidence ran out the state is `unknown`, naming what was missing, because defaulting to this one is how a real gap is laundered into a design choice.
+
+### `not applicable yet`
+
+A **lazy** row (§ *Lazily-created rows*) with no instance, in a repo that has nothing to record. **This is not a gap and is never reported as drift.** It suppresses both the fill *and the offer*: asking *"shall I create a glossary?"* is how the empty file the lazy rule exists to prevent arrives **with** the user's consent instead of without it, so the offer is the defect here, not the fill. **Claimable only where the row declares itself lazy** — an absent artifact whose row creates it is `missing`, and relabelling it here would launder a real gap into a design choice, which is the false-`present` failure pointing the other way. Distinct from `missing, not offered`: that is a genuine gap *adjudicated* unfillable for now, so its offer returns when the evidence changes; this one has nothing to fill and no evidence that could change.
+
+### Reading the states together
 
 *"I could not tell"* is a legitimate answer; *"you don't have it"* when you merely failed to look
 properly is a lie that invites a destructive fill. When in doubt, report **unknown** and ask.
@@ -676,9 +721,9 @@ marker would have to be copied to both and kept in sync, the restated-list defec
 | Who can resolve it | the **user**, in step 2's round | **nobody in this repo** — the row needs amending |
 | What the report owes | the fact that was missing | the facts you *did* gather, and what the row fails to decide about them |
 
-**They are the same state and different findings, which is why this is a reporting rule and not a ninth
+**They are the same state and different findings, which is why this is a reporting rule and not another
 state.** The artifact's condition is identical in both — the survey cannot say — and a state describes the
-artifact, not who can fix it. The list is already eight states an agent picks exactly one from, and adding a
+artifact, not who can fix it. The list is states an agent picks exactly one from, and adding a
 label that does not describe the artifact would make that branch worse while answering a question about
 routing. `unknown` already requires naming what is missing; this only says that when the named-missing-thing
 is **the row itself**, the finding goes somewhere else as well.
