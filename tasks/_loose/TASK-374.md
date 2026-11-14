@@ -1,7 +1,7 @@
 ---
 id: TASK-374
 parent: null
-feature: FEATURE-003
+feature: null
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
 status: todo
 # blocked: <reason> — set by /tasks block, never by hand; status stays as it is; /tasks unblock removes it
