@@ -1,6 +1,6 @@
 # /specs help
 
-Print this and exit:
+Print the text inside the code block below, without its fence lines, and exit. No file is read, a map included.
 
 ```
 /specs — capability specs harvested from code, reviewed as diffs

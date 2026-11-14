@@ -72,10 +72,10 @@ User invokes as `/feature <verb> [args]`. Read **only** the verb file matching t
 | `review` | Completeness gate: all decisions built + tasks merged + human-test verification + stakeholder sign-off (code already reviewed per-task at `/tasks close`) | [verbs/review.md](verbs/review.md) |
 | `pick` | Choose a feature and enter it at the right stage — routes to the verb that unblocks it (most often `decompose`), then hands off to `/tasks pick` | [verbs/pick.md](verbs/pick.md) |
 | `show` | Read-only view of a feature by ID | [verbs/show.md](verbs/show.md) |
-| `help` | Print this verb table | [verbs/help.md](verbs/help.md) |
+| `help` | Print the fixed menu its file holds | [verbs/help.md](verbs/help.md) |
 
 If user types `/feature` with no verb → list all features with their decision counts + task progress (the [Collection pass](#collection-pass) rendered to stdout).
-If user types `/feature help` → print the verb table and exit.
+If user types `/feature help` → print the menu in [verbs/help.md](verbs/help.md) and exit.
 
 ## File layout
 

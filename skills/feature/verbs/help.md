@@ -1,6 +1,6 @@
 # /feature help — print the verb table
 
-Print the verb table from [SKILL.md](../SKILL.md#verbs-router) and the one-line lifecycle, then exit. Do nothing else.
+Print the text inside the code block below exactly as written, without its fence lines, and exit. Do nothing else: no file is read and no feature is collected. The menu is a short form of [SKILL.md](../SKILL.md#verbs-router)'s verb table; when a verb is added there, add its line here.
 
 ```
 /feature <verb> [FEATURE-NNN]

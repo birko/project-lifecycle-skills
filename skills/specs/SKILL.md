@@ -24,10 +24,10 @@ User invokes as `/specs <verb> [args]`. Read **only** the verb file matching the
 | `regen` | Harvest area(s) from code → rewrite spec(s) → **diff review** → stamp provenance | [verbs/regen.md](verbs/regen.md) |
 | `verify` | Read-only staleness check — which specs' sources changed since `generated-at` | [verbs/verify.md](verbs/verify.md) |
 | `show` | Print one area's spec + its freshness | [verbs/show.md](verbs/show.md) |
-| `help` | Print the verb table | [verbs/help.md](verbs/help.md) |
+| `help` | Print the fixed menu its file holds | [verbs/help.md](verbs/help.md) |
 
 Bare `/specs` → run [verify](verbs/verify.md) in summary mode (the fastest "where do specs stand" answer).
-No `docs/specs/.map.yml` in the project, **or one whose `areas:` list is empty** (the [[new-project]] scaffold seeds exactly such an anchor at birth) → print `No usable spec map — run /specs init to bootstrap.` and exit (except for `init` itself, which treats an empty-areas map as a fresh discovery, not a re-discovery).
+No `docs/specs/.map.yml` in the project, **or one whose `areas:` list is empty** (the [[new-project]] scaffold seeds exactly such an anchor at birth) → print `No usable spec map — run /specs init to bootstrap.` and exit (except for `init` itself, which treats an empty-areas map as a fresh discovery, not a re-discovery, and for `help`, which reads no map and prints its menu wherever it runs: the menu is how a user without a map learns that `init` exists).
 
 ## File layout (per project)
 

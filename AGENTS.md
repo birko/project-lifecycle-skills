@@ -443,7 +443,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 ### Naming
 - Skill folders are **kebab-case** and match their frontmatter `name`.
 - **Verb-noun for action skills** (`verify-conventions`, `verify-intent`, `review-comments`, `populate-tests`, `roll-changelog`, `fix-next`, `new-project`, `adopt-project`, `improve-architecture`); **bare noun for disciplines and trees** (`tasks`, `feature`, `specs`, `roadmap`, `tdd`, `domain`).
-- Verb files are named for the verb (`verbs/close.md` corresponds to `/tasks close`).
+- Verb files are named for the verb (`verbs/close.md` corresponds to `/tasks close`). **A verb whose whole behaviour fits its router row has no file** (today `/tasks help`): the File cell reads `— (this row is the whole verb)` and the row states everything the verb does. Keep a file wherever it holds text that lives nowhere else, such as a fixed menu (`/specs help`, `/feature help`); folding that only moves it (TASK-261).
 - Artifacts use `EPIC-NNN` / `STORY-NNN` / `TASK-NNN` / `FEATURE-NNN`, zero-padded to three digits.
 
 ### Testing

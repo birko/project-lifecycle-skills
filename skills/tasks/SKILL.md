@@ -29,10 +29,10 @@ User invokes as `/tasks <verb> [args]`. Read **only** the verb file matching the
 | `import` | Import from file / GH issue / Jira ticket | [verbs/import.md](verbs/import.md) |
 | `export` | Push local task to GH/Jira (hybrid only) | [verbs/export.md](verbs/export.md) |
 | `migrate` | Bulk export + switch to hybrid mode | [verbs/migrate.md](verbs/migrate.md) |
-| `help` | Print the verb table | [verbs/help.md](verbs/help.md) |
+| `help` | Print the table above as a plain list, one `<verb> — <what it does>` line per row with this row left out, then the line `Bare /tasks shows the status snapshot.`, and exit: no file I/O, no project-root search, no collection pass | — (this row is the whole verb) |
 
 If user types `/tasks` with no verb → render the **status snapshot** (see below).
-If user types `/tasks help` → print the verb table above and exit.
+If user types `/tasks help` → do what its row says.
 
 **`--across`** — widen a *reading* verb to the sibling projects of a polyrepo, per § *Collection pass*
 step 1b. Accepted by the bare `/tasks` snapshot, [`audit`](verbs/audit.md), and [[roadmap]].

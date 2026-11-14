@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: b89c6a1b086d68a0678f9e763bbb63bc16082138
+generated-at: d26b1e31997558c4d5dd4424b589f78a7ba7b21b
 generated-on: 2026-11-14
 sources:
   - skills/specs/SKILL.md
@@ -36,13 +36,13 @@ The system SHALL accept `init`, `regen`, `verify`, `show` and `help` as verbs, r
 
 #### Scenario: Help prints the verb table and exits
 
-- **Given** any project
+- **Given** any project, including one with no area map
 - **When** the user runs the help verb
 - **Then** a fixed listing of every verb and the regen flags (`--all`, `--story`, `--feature`) is printed and nothing else happens
 
 ### Requirement: No usable map stops every verb except init
 
-The system SHALL, when the project has no area map or has one whose `areas:` list is empty, print `No usable spec map — run /specs init to bootstrap.` and exit, except for `init`, which treats an empty-areas map as a fresh discovery.
+The system SHALL, when the project has no area map or has one whose `areas:` list is empty, print `No usable spec map — run /specs init to bootstrap.` and exit, except for `init`, which treats an empty-areas map as a fresh discovery, and `help`, which reads no map and prints its menu wherever it runs.
 
 #### Scenario: Scaffolded empty map
 

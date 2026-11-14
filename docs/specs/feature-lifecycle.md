@@ -1,6 +1,6 @@
 ---
 area: feature-lifecycle
-generated-at: 4865e64edcf0e27e3b37271c86e452992750be94
+generated-at: d26b1e31997558c4d5dd4424b589f78a7ba7b21b
 generated-on: 2026-11-14
 sources:
   - skills/feature/SKILL.md
@@ -49,7 +49,7 @@ The system SHALL accept `/feature <verb>` for the verbs `new`, `prototype`, `dec
 
 ### Requirement: Help prints the verb table and nothing else
 
-The system SHALL, on `/feature help`, print the verb table, the one-line lifecycle, the meaning of bare `/feature`, and a pointer that `/feature pick` is the entry for an existing feature, and then exit without doing anything else.
+The system SHALL, on `/feature help`, print its fixed menu exactly as written — a short form of the verb table, the one-line lifecycle, the meaning of bare `/feature`, and a pointer that `/feature pick` is the entry for an existing feature, and then exit without doing anything else.
 
 #### Scenario: Help is inert
 

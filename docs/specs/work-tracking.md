@@ -1,6 +1,6 @@
 ---
 area: work-tracking
-generated-at: ed9bb0f7bd87784b959d6daa7f1f80129e8176c2
+generated-at: d26b1e31997558c4d5dd4424b589f78a7ba7b21b
 generated-on: 2026-11-14
 sources:
   - skills/tasks/SKILL.md
@@ -15,7 +15,6 @@ sources:
   - skills/tasks/verbs/cancel.md
   - skills/tasks/verbs/close.md
   - skills/tasks/verbs/export.md
-  - skills/tasks/verbs/help.md
   - skills/tasks/verbs/import.md
   - skills/tasks/verbs/init.md
   - skills/tasks/verbs/intake.md
