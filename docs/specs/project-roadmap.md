@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: 4e7580a9f5e664377f24a7b8a963d5a897a051e7
-generated-on: 2026-11-13
+generated-at: ed69fd4db2e5ac46aa80508596d7af3f99754e64
+generated-on: 2026-11-14
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -151,7 +151,7 @@ The system SHALL, for every feature folder, read the coarse `status:` from the i
 
 ### Requirement: Collect specs only from a real map
 
-The system SHALL collect spec areas only when the spec map exists with a non-empty `areas:` list, reading each area spec's area, baseline commit, sources, external source baselines (absent means none), provenance list, provenance-derived flag (absent means `false`) and unresolved count (absent means unknown), and SHALL compute staleness exactly as the specs skill's verify verb defines it — including resolving external sources against their own repository's baseline and treating an unknown commit, a missing spec file, or an external source with no baseline as stale rather than fresh. An absent map or an empty `areas: []` SHALL never be collected as a working spec layer with zero areas.
+The system SHALL collect spec areas only when the spec map exists with a non-empty `areas:` list, reading each area spec's area, baseline commit, sources, external source baselines (absent means none), provenance list, provenance-derived flag (absent means `false`) and unresolved count (absent means unknown), and SHALL compute staleness exactly as the specs skill's verify verb defines it — including its in-repo anchor, so a spec committed after its baseline commit is measured from its own commit and a spec updated in the same commit as its sources is not reported stale, and resolving external sources against their own repository's baseline and treating an unknown commit, a missing spec file, or an external source with no baseline as stale rather than fresh. An absent map or an empty `areas: []` SHALL never be collected as a working spec layer with zero areas.
 
 #### Scenario: Empty scaffold map is not a spec layer
 
