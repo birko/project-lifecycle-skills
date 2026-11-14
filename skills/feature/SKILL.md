@@ -29,7 +29,7 @@ that's the task-first gate. See [verbs/pick.md](verbs/pick.md).
 ## The feature list is a living artifact — keep it complete and current
 
 The set of `docs/features/FEATURE-*/` folders **is** the project's feature list;
-bare `/feature` renders it live from them. Two standing obligations:
+bare `/feature` renders it live from them. Three standing obligations:
 
 1. **Completeness.** Every committed requirement must exist as a `FEATURE-*`
    folder (even a one-line `idea.md` stub with `status: idea`). A requirement that

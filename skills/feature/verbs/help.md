@@ -6,7 +6,7 @@ Print the verb table from [SKILL.md](../SKILL.md#verbs-router) and the one-line 
 /feature <verb> [FEATURE-NNN]
 
   new         capture an idea; grill it into a decision tree; create the feature folder
-  prototype   build an interactive prototype for stakeholders (HTML / wireframe / spike)
+  prototype   build an interactive prototype for stakeholders (HTML / wireframe / state-model playground / spike)
   decide      stamp each decision: approved / deferred / changed / removed (+ rationale)
   decompose   turn approved decisions into tracked tasks (/tasks new --from-feature)
   status      regenerate the stakeholder-facing status rollup
