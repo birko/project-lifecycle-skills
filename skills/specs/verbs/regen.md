@@ -43,6 +43,15 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
        that task's criteria is still asked, and unanswered it is still **Unexplained**. A story-close chain made
        no change in this run, so it does not answer.
      - **Unexplained** — a behavioral change nobody decided → a **finding**. Offer `/tasks new` (regression or follow-up) or, if it invalidates a `deferred`/`removed` decision, `/feature decide` to reopen it. Record the outcome; don't just shrug past it.
+   - **Flag a long requirement this diff writes.** For each requirement the diff adds, or whose statement it changes,
+     measure its statement: the text between its `### Requirement:` heading and its first `#### Scenario:`. Past
+     **500 characters**, report `long requirement: "<name>" — <n> characters; consider splitting into <the parts it
+     joins>` beside the review. The flag informs; it never blocks acceptance and never splits anything itself. **Never
+     flag a requirement the diff leaves untouched**: the stable-wording rule keeps its text as it is, and a flag on it
+     would push the next regen to rewrite what nobody changed. Why 500: past it a statement usually joins several
+     behaviours a reader cannot check one at a time, and it is the threshold OpenSpec settled on (v1.14.1); measured
+     2026-10-08, 131 of this repo's 383 requirements already exceed it, which is why only new and changed ones are
+     flagged (FEATURE-004 D1).
    - **Expected-but-missing:** in `--feature` context, an approved decision whose change does NOT appear in the diff means the feature isn't done — report it back to the caller ([[feature]] review treats it as a failed completeness check).
    - Suspected bugs found while harvesting: raise them here (offer `/tasks new`), spec the behavior as-is.
    - User rejects the regen → discard the new body, write nothing.

@@ -326,6 +326,16 @@ The system SHALL, when an existing spec is regenerated, change only what the cod
 - **When** it is regenerated
 - **Then** the full spec is written and shown for a skim without a diff classification
 
+### Requirement: A long requirement the diff writes is flagged, an untouched one never
+
+The system SHALL, in a regen's review, measure the statement of every requirement the diff adds or whose statement it changes — the text between its heading and its first scenario — and report each past 500 characters as a long requirement with its length and a suggested split, without blocking acceptance or splitting it; it SHALL never flag a requirement the diff leaves untouched.
+
+#### Scenario: A new long requirement beside an old one
+
+- **Given** a spec whose untouched `Division` requirement runs 600 characters, and a regen that adds a 550-character `Clamp` requirement
+- **When** the review is shown
+- **Then** `Clamp` is flagged with its length and a suggested split, and `Division` is not mentioned
+
 ### Requirement: Fan-out harvests in parallel and reviews serially
 
 The system SHALL, under `--all`, harvest areas in parallel with one agent per area and then run the diff reviews one at a time.
