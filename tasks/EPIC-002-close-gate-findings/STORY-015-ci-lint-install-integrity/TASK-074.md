@@ -3,7 +3,7 @@ id: TASK-074
 parent: STORY-015
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-23
@@ -14,6 +14,7 @@ findings: []
 pr: null
 github-issue: null
 jira-key: null
+picked-by: fix-next
 ---
 
 # A skill cannot reference a skill that does not exist yet
@@ -53,14 +54,29 @@ is the same shape as the defect TASK-043 just fixed one level up.
 introduces a declaration that can outlive its reason. A check that the forward reference is *still* forward —
 i.e. fails when the named skill now exists — is probably the load-bearing half.
 
+## Decision (2026-11-15, the user)
+
+Accepted as proposed: **option 4, the plain-text workaround, documented, plus the rule that closes its gap.** A skill
+not built yet is named in plain text; the task that builds it carries the upgrade of every such mention to a
+`[[link]]`. No lint change.
+
+- **Why:** the workaround's measured cost was never the plain text itself but that nothing prompted the upgrade. The
+  task that builds the skill already has to exist, and one grep for the name finds every mention, so the prompt costs
+  nothing and dies with the work.
+- **Rejected:** a planned-skills list, a `[[name?]]` syntax and a frontmatter declaration. Each adds a declaration that
+  can outlive its reason, plus a staleness check and test cases to police it, for a case measured once in the repo's
+  history (`domain`, three days) and absent today.
+- **Where:** `AGENTS.md` alone, beside the cross-skill reference rule and on the new-skill testing bullet. Not in
+  `/tasks new`: that verb serves every consumer repo, and "a task that builds a skill" is this repo's kind of work.
+
 ## Acceptance criteria
 
-- [ ] A forward reference to a not-yet-built skill can be written **inside `skills/`** without failing the lint, or the task records that the plain-text workaround is the accepted answer and why
-- [ ] If a mechanism lands, it **detects its own staleness**: once the named skill exists, the declaration is reported so the reference gets upgraded to an ordinary link
-- [ ] Exercised against a **fixture**, not a real forward reference — there is no live instance today, and the outcome says so plainly rather than implying one was found
-- [ ] The choice among the options above is stated with the rejected alternatives, per this repo's own bar for a recorded decision
-- [ ] `skills-lint.sh` change carries a `skills-lint-test.sh` case that **fails without it**, and the negative assertions require the section to have run
-- [ ] `skills-lint` and `skills-lint-test` both green
+- [x] A forward reference to a not-yet-built skill can be written **inside `skills/`** without failing the lint, or the task records that the plain-text workaround is the accepted answer and why — the plain-text workaround is the accepted answer, with the upgrade rule; why: § Decision
+- [x] If a mechanism lands, it **detects its own staleness**: once the named skill exists, the declaration is reported so the reference gets upgraded to an ordinary link — no mechanism landed; the building task's upgrade criterion takes staleness's place (d074)
+- [x] Exercised against a **fixture**, not a real forward reference — there is no live instance today, and the outcome says so plainly rather than implying one was found — d074, an invented skill library; no live forward reference exists in `skills/` today
+- [x] The choice among the options above is stated with the rejected alternatives, per this repo's own bar for a recorded decision — § Decision, and the `AGENTS.md` entry
+- [x] `skills-lint.sh` change carries a `skills-lint-test.sh` case that **fails without it**, and the negative assertions require the section to have run — not applicable: no lint change, by decision
+- [x] `skills-lint` and `skills-lint-test` both green
 
 ## Out of scope
 
@@ -70,10 +86,49 @@ i.e. fails when the named skill now exists — is probably the load-bearing half
 
 ## Human test plan
 
-- [ ] Write a forward reference into a fixture skill and confirm the lint's behaviour matches whatever was chosen — accepted, or rejected with a message that names the fix
-- [ ] Create the named skill in the fixture and confirm the staleness check fires, so a shipped skill cannot sit behind a forward-reference declaration forever
-- [ ] Confirm an ordinary dangling wikilink — a typo, not a declared forward reference — still fails, since that is the defect check 2 exists to catch
+- [x] Write a forward reference into a fixture skill and confirm the lint's behaviour matches whatever was chosen — accepted, or rejected with a message that names the fix
+  - **Passed 2026-11-15**, cold runner: `claude -p --disable-slash-commands --permission-mode acceptEdits` in
+    `%LOCALAPPDATA%/Temp/d074`, the cwd holding only `brief.txt` and an invented repo (this `AGENTS.md`, two skills
+    naming a planned `term-keeper` in plain text, a task to build it whose criteria do not mention links); the
+    coldness probe listed no skills. The brief said only "do TASK-007 and whatever the repo's rules require".
+    The plain-text form is accepted (check 2 reads only `[[…]]`); the linked form is rejected `no such skill`,
+    a message that does not name the plain-text fix — recorded in the Outcome, not changed.
+- [x] Create the named skill in the fixture and confirm the staleness check fires, so a shipped skill cannot sit behind a forward-reference declaration forever
+  - **Passed 2026-11-15, as the rule chosen replaces it:** there is no declaration to go stale. Building
+    `term-keeper`, d074's runner added the criterion *every plain-text mention … is a `[[term-keeper]]` link*,
+    citing the rule, and upgraded both mentions; its "left undecided" section raised nothing about them.
+- [x] Confirm an ordinary dangling wikilink — a typo, not a declared forward reference — still fails, since that is the defect check 2 exists to catch
+  - **Passed 2026-11-15:** check 2 is unchanged and `skills-lint-test.sh`'s `unknown wikilink` case (`m_bogus`, `[[no-such-skill]]`)
+    still fails it.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-074` — leave empty until then._
+Inline, from the decision above: one rule in `AGENTS.md`, pointed at from the new-skill testing bullet.
+
+## Outcome
+
+- **`AGENTS.md` § *Framework / stack*, cross-skill references:** a skill not built yet is named in plain text, and the
+  task that builds it upgrades every mention to a `[[link]]`, found by one grep. The three mechanisms are named as
+  rejected, with why.
+- **§ *Testing*, the new-skill bullet:** points at that rule, so a task building a skill meets it where it already looks.
+- **No lint change.** No live forward reference exists in `skills/` today; d074 used an invented one.
+
+**A gap, recorded rather than changed:** check 2 rejects a link to an unbuilt skill as `no such skill`, which does
+not name the plain-text fix. Changing the message is a lint change, which the decision ruled out.
+
+**Close gate (inline; `AGENTS.md` only):**
+- **Standards:** the rule beside the one it qualifies; the testing bullet a pointer, not a copy.
+- **Intent:** criteria met, the mechanism criteria by the decision's answer.
+- **Correctness:** d074; check 2 untouched and its `m_bogus` case passing.
+- **Layer parity, security, comments:** not applicable.
+- **CI:** `skills-lint` and `skills-lint-test` pass locally; main is unpushed.
+- **Specs:** none affected: no skill file changed.
+
+## Progress log
+
+- step 2 — picked; a decision task, taken by the user's choice of order (TASK-024, then this)
+- step 4 — decided by the user 2026-11-15: option 4 with the upgrade rule
+- step 5 — the rule in `AGENTS.md`, with the testing bullet's pointer
+- step 6 — behavioural: d074 (the runner upgraded both mentions unprompted); lint and lint tests green
+- step 7 — no spec affected
+- step 8 — closed inline; commit in git log
