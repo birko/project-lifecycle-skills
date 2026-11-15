@@ -454,7 +454,7 @@ The skills *are* the product, so their prose is the user interface. This subsect
 - Artifacts use `EPIC-NNN` / `STORY-NNN` / `TASK-NNN` / `FEATURE-NNN`, zero-padded to three digits.
 
 ### Testing
-- Tests: **`.github/workflows/skills-lint.sh`**, run by CI — nine numbered checks: frontmatter (1), every `[[link]]` resolves (2), files a `SKILL.md` references exist (3), cross-skill flags (4), the two universal-conventions copies match (5), install roots (6, advisory), `^id:` patterns survive CRLF (7), shell scripts stored as LF (8), and `.ps1` files ASCII or BOM-marked (9). The script's `== N.` headers are the list; this line names them so a reader knows a check exists. Run it locally with `bash .github/workflows/skills-lint.sh`.
+- Tests: **`.github/workflows/skills-lint.sh`**, run by CI — ten numbered checks: frontmatter (1), every `[[link]]` resolves (2), files a `SKILL.md` references exist (3), cross-skill flags (4), the two universal-conventions copies match (5), install roots (6, advisory), `^id:` patterns survive CRLF (7), shell scripts stored as LF (8), `.ps1` files ASCII or BOM-marked (9), and `docs/specs/` files well formed (10, FEATURE-004 D4). The script's `== N.` headers are the list; this line names them so a reader knows a check exists. Run it locally with `bash .github/workflows/skills-lint.sh`.
 - **The lint may carry *advisory* sections; they never change its exit code.** A check whose remedy
   lives **outside the repo** — today check 6, install-root drift, fixed by re-running an installer —
   cannot be a blocker: no diff can clear it, and the roots do not exist on the CI runner, so making it
@@ -544,8 +544,8 @@ is what separates a finding from a taste (FEATURE-002 D10). Obtaining a reader t
 
 | File | Verdict under the destination search | Lines | Comment lines | Longest run |
 |---|---|---|---|---|
-| `.github/workflows/skills-lint.sh` | **passes** — TASK-252's last reader pair agreed on nothing here; checks 8 and 9 added since, and TASK-278's two check-1 comments (mechanism, and a pointer to the measurement) not yet walked by a pair | 373 | 120 (32%) | 22 |
-| `.github/workflows/skills-lint-test.sh` | **passes** — TASK-252's last reader pair agreed on one comment (its own check-8 note), cut to a pointer; two more cut by the pair before; TASK-278's two case-group comments and TASK-029's one not yet walked by a pair | 463 | 73 (15%) | 7 |
+| `.github/workflows/skills-lint.sh` | **passes** — TASK-252's last reader pair agreed on nothing here; checks 8, 9 and 10 added since, and TASK-278's two check-1 comments (mechanism, and a pointer to the measurement) and TASK-290's check-10 pointer not yet walked by a pair | 373 | 120 (32%) | 22 |
+| `.github/workflows/skills-lint-test.sh` | **passes** — TASK-252's last reader pair agreed on one comment (its own check-8 note), cut to a pointer; two more cut by the pair before; TASK-278's two case-group comments, TASK-029's one and TASK-290's one not yet walked by a pair | 463 | 73 (15%) | 7 |
 | `pi-install.sh` | **passes** — mechanism and pointers only; the restated line removed by TASK-166 | 49 | 6 (12%) | 5 |
 | `pi-install.ps1` | **passes** — same shape as `pi-install.sh`; TASK-277's `Resolve-Real` comment is mechanism | 61 | 5 (8%) | 4 |
 | `install.sh` | **passes** — mechanism and pointer only (TASK-148); TASK-277's Git Bash line is mechanism too | 46 | 6 (13%) | 5 |

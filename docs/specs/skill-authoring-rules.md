@@ -1,6 +1,6 @@
 ---
 area: skill-authoring-rules
-generated-at: 680d4def53cf1f7d9525c7f8235a416db9ca9985
+generated-at: da03b9015c948ae42a588aeaa7e92bde48076a5e
 generated-on: 2026-11-15
 sources:
   - .github/workflows/skills-lint-test.sh
@@ -14,7 +14,7 @@ shaped-by-unresolved: 5
 
 ## Purpose
 
-A skill in this repo is a folder of Markdown that an agent reads at runtime, so the only thing standing between a malformed skill and every project that has it installed is the repository lint, `skills-lint.sh`. It runs eight numbered checks over the `skills/` and `skills-pi/` trees. Seven can fail the run: frontmatter shape, wikilinks, relative file links, cross-skill flags, the two copies of the comment rule, CRLF-tolerant id patterns, and shell-script line endings. The eighth, install-root drift, only advises. The lint has its own regression suite, `skills-lint-test.sh`, which runs 71 cases against a throwaway two-tree fixture. Anyone authoring or editing a skill depends on this gate. So does anyone installing one, because a skill that passes here can still fail to load in pi if the lint misses the defect.
+A skill in this repo is a folder of Markdown that an agent reads at runtime, so the only thing standing between a malformed skill and every project that has it installed is the repository lint, `skills-lint.sh`. It runs eight numbered checks over the `skills/` and `skills-pi/` trees. Seven can fail the run: frontmatter shape, wikilinks, relative file links, cross-skill flags, the two copies of the comment rule, CRLF-tolerant id patterns, and shell-script line endings. The eighth, install-root drift, only advises. The lint has its own regression suite, `skills-lint-test.sh`, which runs its cases, each labelled with the check it pins, against a throwaway two-tree fixture. Anyone authoring or editing a skill depends on this gate. So does anyone installing one, because a skill that passes here can still fail to load in pi if the lint misses the defect.
 
 ## Requirements
 
@@ -370,4 +370,20 @@ The test suite SHALL build a fresh fixture for every case: a copy of the lint pl
 
 - **Given** a developer with skills installed under `~/.claude/skills`
 - **When** the suite runs
-- **Then** every case other than the install-root cases sees the roots as absent, and the total is 71 cases
+- **Then** every case other than the install-root cases sees the roots as absent
+
+### Requirement: Spec files are well formed
+
+The system SHALL check every `docs/specs/*.md`, ignoring frontmatter, fenced blocks and HTML comment blocks, and SHALL fail the run naming the file and line when: `## Purpose` is empty or holds a `{{` placeholder; a scenario lacks a Given or When line, or a Then line; two requirement names in one spec differ only in case; a heading has no space after its `#` run; a heading is not one of the title, `## Purpose`, `## Requirements`, `### Requirement:` or `#### Scenario:` under a requirement; or prose sits between `## Requirements` and the first requirement. A closing `#` run SHALL be read as the plain heading. With no `docs/specs/` it SHALL say there is nothing to check.
+
+#### Scenario: A scenario with no outcome
+
+- **Given** a spec whose only scenario has a Given line and nothing else
+- **When** the lint runs
+- **Then** it fails, naming the file, the line and the scenario
+
+#### Scenario: A closed heading
+
+- **Given** a spec whose Purpose heading reads `## Purpose ##`
+- **When** the lint runs
+- **Then** the heading is read as `## Purpose` and nothing is reported

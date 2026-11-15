@@ -475,5 +475,148 @@ case_fails_saying "[pre] no skill folders at all"             m_noskills  "no sk
 case_is           "[2] a runtime-provided skill name resolves" 0 m_runtimeref
 case_is           "[3] external, anchor-only and mailto links" 0 m_extlinks
 
+# check 10 — spec files (FEATURE-004 D4). One well-formed spec, then one defect per case.
+spec_is() { mkdir -p "$1/docs/specs"; printf '%s\n' "$2" > "$1/docs/specs/core.md"; }
+SPEC_HEAD='---
+area: core
+---
+
+# Core'
+SPEC_REQ='## Requirements
+
+### Requirement: Addition
+
+The system SHALL add two integers.
+
+#### Scenario: Add
+
+- **Given** 2 and 3
+- **When** added
+- **Then** the result is 5'
+m_specok()      { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+$SPEC_REQ"; }
+m_specpurpose() { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+$SPEC_REQ"; }
+m_specplace()   { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+{{One short paragraph}}
+
+$SPEC_REQ"; }
+m_specsteps()   { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+## Requirements
+
+### Requirement: Addition
+
+The system SHALL add two integers.
+
+#### Scenario: Add
+
+- **Given** 2 and 3"; }
+m_specwhen()    { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+## Requirements
+
+### Requirement: Addition
+
+The system SHALL add two integers.
+
+#### Scenario: Add
+
+- **When** 2 and 3 are added
+- **Then** the result is 5"; }
+m_speccase()    { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+$SPEC_REQ
+
+### Requirement: ADDITION
+
+The system SHALL add again.
+
+#### Scenario: Add again
+
+- **When** added
+- **Then** it is added"; }
+m_specunspaced(){ spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+$SPEC_REQ
+
+###Requirement: Subtraction
+
+The system SHALL subtract."; }
+m_specclosed()  { spec_is "$1" "$SPEC_HEAD
+
+## Purpose ##
+
+Integer arithmetic.
+
+$SPEC_REQ"; }
+m_specunknown() { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+$SPEC_REQ
+
+## Notes
+
+Remember to add division."; }
+m_specprose()   { spec_is "$1" "$SPEC_HEAD
+
+## Purpose
+
+Integer arithmetic.
+
+## Requirements
+
+These are the arithmetic rules.
+
+### Requirement: Addition
+
+The system SHALL add two integers.
+
+#### Scenario: Add
+
+- **When** added
+- **Then** the sum"; }
+case_is           "[10] a well-formed spec"                     0 m_specok
+case_says         "[10] no docs/specs is stated, not silent"     m_noop        "no docs/specs"
+case_fails_saying "[10] an empty Purpose"                        m_specpurpose "Purpose is empty"
+case_fails_saying "[10] a placeholder Purpose"                   m_specplace   "Purpose is empty or a template placeholder"
+case_fails_saying "[10] a scenario with no When or Then"         m_specsteps   "needs a Given or When line and a Then line"
+case_is           "[10] a scenario with When and Then, no Given" 0 m_specwhen
+case_fails_saying "[10] requirement names differing in case"     m_speccase    "differing only in case"
+case_fails_saying "[10] a heading with no space after #"         m_specunspaced "no space after its # run"
+case_is           "[10] a closed heading reads as plain"        0 m_specclosed
+case_fails_saying "[10] an unrecognised section"                 m_specunknown "unrecognised section"
+case_fails_saying "[10] prose before the first requirement"      m_specprose   "prose before the first requirement"
+
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]

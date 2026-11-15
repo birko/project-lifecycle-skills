@@ -363,6 +363,57 @@ while IFS= read -r s; do
 done < <(find . -name '*.ps1' -not -path './.git/*' | sort)
 [ "$ps_bad" -eq 0 ] && printf '  every PowerShell script is ASCII or carries a BOM\n'
 
+printf '== 10. spec files are well formed ==\n'
+# The rules and why each exists: FEATURE-004 D4 (decisions.md), after OpenSpec's validator.
+spec_bad=0
+if [ -d docs/specs ]; then
+  while IFS= read -r f; do
+    while IFS=$'\t' read -r ln msg; do
+      err "$f:$ln $msg"; spec_bad=1
+    done < <(strip_noise "$f" | tr -d '\r' | awk '
+      function endscen() {
+        if (st == "scen" && !((g || w) && t))
+          printf "%d\tscenario \"%s\" needs a Given or When line and a Then line\n", sl, sn
+      }
+      function endpurpose() {
+        if (st == "purpose" && !(pt && !ph))
+          printf "%d\t## Purpose is empty or a template placeholder\n", pl
+      }
+      /SKILLS_LINT_UNBALANCED_FENCE/ { next }
+      inc { if (/-->/) inc = 0; next }
+      /^[ \t]*<!--/ { if (!/-->/) inc = 1; next }
+      /^#+[^# \t]/ { printf "%d\theading has no space after its # run: %s\n", NR, $0; next }
+      /^#+[ \t]/ {
+        endscen(); endpurpose()
+        h = $0; sub(/[ \t]+#+[ \t]*$/, "", h)
+        lvl = match(h, /[^#]/) - 1; txt = substr(h, lvl + 1); sub(/^[ \t]+/, "", txt)
+        if (lvl == 1) { st = "h1" }
+        else if (lvl == 2 && txt == "Purpose") { st = "purpose"; pl = NR; pt = 0; ph = 0 }
+        else if (lvl == 2 && txt == "Requirements") { st = "reqs" }
+        else if (lvl == 3 && txt ~ /^Requirement: /) {
+          n = tolower(substr(txt, 14))
+          if (n in seen) printf "%d\trequirement \"%s\" repeats line %d, differing only in case\n", NR, substr(txt, 14), seen[n]
+          else seen[n] = NR
+          st = "req"
+        }
+        else if (lvl == 4 && txt ~ /^Scenario: / && (st == "req" || st == "scen")) {
+          st = "scen"; sl = NR; sn = substr(txt, 11); g = 0; w = 0; t = 0
+        }
+        else { printf "%d\tunrecognised section: %s\n", NR, $0; st = "unknown" }
+        next
+      }
+      /^[ \t]*$/ { next }
+      st == "purpose" { pt = 1; if (/\{\{/) ph = 1; next }
+      st == "reqs" { printf "%d\tprose before the first requirement: %s\n", NR, substr($0, 1, 60); next }
+      st == "scen" { if (/\*\*Given\*\*/) g = 1; if (/\*\*When\*\*/) w = 1; if (/\*\*Then\*\*/) t = 1; next }
+      END { endscen(); endpurpose() }
+    ')
+  done < <(find docs/specs -maxdepth 1 -name '*.md' | sort)
+  [ "$spec_bad" -eq 0 ] && printf '  every spec file is well formed\n'
+else
+  printf '  no docs/specs — nothing to check\n'
+fi
+
 [ -s "$FAILFILE" ] && fail=1
 if [ "$fail" -eq 0 ]; then
   printf '\nskills-lint: OK (%s skills)\n' "$n_skills"
