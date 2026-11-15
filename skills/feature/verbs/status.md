@@ -124,7 +124,8 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    resolved: a path any run derives the same way, where a README heading can be missing or say something else.
    the verification-debt note (lead with every debt feature, as SKILL.md § *Verification debt surfaces
    first* defines it, with its task count), and the drift note (reuse
-   [[roadmap]]'s divergence check — don't re-derive it). **The drift note carries open findings only**, as
+   [[roadmap]]'s divergence check — don't re-derive it; each finding reads `<target> DV<x> <short reason>`, the reason
+   verbatim from [[roadmap]]'s rule table). **The drift note carries open findings only**, as
    [[tasks]] `triage`'s callout does: an accepted one ([[roadmap]] § *Accepted divergences*) stays out, and when every
    finding is accepted the note is one quiet line, `> Drift: none open · <a> accepted (<target> DV<x>, …) — see
    /roadmap --check.`. With nothing found and nothing accepted it is omitted. Write `docs/features/README.md`
@@ -134,7 +135,7 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    `status.md` and **its row** in the index, not the whole file. **They leave the header's timestamp alone**: it
    dates the last full render, which is what the notes under the table were computed from, and a row-only run
    recomputes neither note. **A single-feature run prints its feature's open findings** to stdout, one line,
-   `drift: <target> DV<x> <reason> — run /roadmap --check`, since `status.md` has no slot for them and the index's
+   `drift: <target> DV<x> <short reason> — run /roadmap --check` (the reason verbatim from [[roadmap]]'s rule table), since `status.md` has no slot for them and the index's
    note is not rewritten; nothing when there are none.
    **When the index does not exist, a single-feature run renders all of it**, exactly as all-features
    mode does, and reports `created docs/features/README.md — it was absent`. A row needs a file to hold

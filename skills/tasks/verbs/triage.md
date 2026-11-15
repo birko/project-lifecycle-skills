@@ -136,7 +136,8 @@ dashboard is regenerated on the default branch when `close` merges.
 8b. **Feature drift check** — if `docs/features/` exists, apply the divergence rules from [[roadmap]] (§ *Cross-tree pass (shared engine)*) to the just-collected tasks + features. Reuse those rules; don't reinvent them. If any divergence is found, prepend a callout to `tasks/README.md` directly under the title, **above the template's
    `_Generated …_` line**, with one blank line on each side (the quiet `Feature drift: none open` line below takes the
    same place):
-   `> ⚠ **Feature drift (<n>):** <target> DV<x> short reason, … — run \`/roadmap --check\`.`
+   `> ⚠ **Feature drift (<n>):** <target> DV<x> <short reason>, … — run \`/roadmap --check\`.`, each `<short reason>`
+   verbatim from [[roadmap]]'s rule table
    Each `<target>` is the finding's target as [[roadmap]]'s compact slice prints it (a feature, story, epic or task id,
    `specs/<area>`, or `specs/.map.yml`), so a finding whose target is not a feature is never dropped.
    **An accepted finding is not in the callout** ([[roadmap]] § *Accepted divergences*). When every finding is

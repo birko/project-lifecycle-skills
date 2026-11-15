@@ -75,9 +75,13 @@ to an owner verb reads before that verb answers:
   from the outside. Where the artifact's row names a verb, step 3's delegation is what answers, so
   leave the version question to it rather than guessing here. In a full run's table such a row reads `present — <verb>
   answers in step 3`, and the report carries what it answered (on a scoped run, which reaches no step 3, the row is
-  `present, owner not asked`, per § *Scoped runs*). **Every missing row whose cell has a verb create it** (`docs/specs/.map.yml` by `/specs init`,
-  and any other row whose cell names its creating verb) reads `missing — <verb> creates it in step 3` in the same
-  table, and the report carries the verb's outcome the same way. On a re-run the dated wording below comes first and
+  `present, owner not asked`, per § *Scoped runs*). **Every missing row whose cell has a verb create it, wholly or in part** (`docs/specs/.map.yml` by `/specs init`,
+  and any other row whose cell names a verb that writes the artifact, a delegation that scaffolds it included) reads
+  `missing — <verb> creates it in step 3` in the same table, naming the part when the verb writes only part of it
+  (`missing — /feature status creates its index in step 3`, the folder being this run's own write). In the report the
+  part this run writes is *created* and the part the verb renders keeps the verb's own outcome, so a new `docs/features/`
+  reads the folder *created* and its index *regenerated*, the outcome that row always has.
+  The report carries every other verb's outcome the same way. On a re-run the dated wording below comes first and
   this clause follows it after `; `, as a `not offered` reason does; where no verb owns the shape,
   the artifact is `present` with its gap named, [LAYER.md](../new-project/LAYER.md)'s `present, outdated` guard, and that
   is the whole answer (see its § *Delegation follows the row, not the artifact's appearance*).
@@ -153,7 +157,9 @@ complete.)
 
 **Every run ends its report with one verdict line**: `complete`; `nothing missing` (a scoped run with owners not
 asked); or `not complete: <n> missing, <n> unknown, <n> owner not asked`, listing only the counts that are not
-zero. A `missing, not offered` row counts under *missing*: the artifact is still absent, whatever the reason. A full run uses the same line as a scoped one, so two reports on one repo can be compared.
+zero. **It counts the rows as this run leaves them**, after step 3's fills, never the survey's states: a row filled
+this run is no longer missing, and the verdict says whether the layer is complete now. A `missing, not offered` row
+counts under *missing*: the artifact is still absent, whatever the reason. A full run uses the same line as a scoped one, so two reports on one repo can be compared.
 
 ### 2. Infer the conventions, then confirm them
 

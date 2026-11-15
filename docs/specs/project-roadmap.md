@@ -1,7 +1,7 @@
 ---
 area: project-roadmap
-generated-at: 2cdf238f55c9328a4f5a432453644c46e1fcd88b
-generated-on: 2026-11-14
+generated-at: db4237af8a1d4a6be9e2f55fe3b89cb0f30b8cc4
+generated-on: 2026-11-15
 sources:
   - skills/roadmap/SKILL.md
 shaped-by: [FEATURE-003]
@@ -427,7 +427,7 @@ The system SHALL treat a finding as accepted when the flagged item's own hand-ed
 
 ### Requirement: Full render with verification debt first
 
-The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line, each of them appearing again in its epic group; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase (`—` when it has no status file), tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
+The system SHALL render the full view by listing verification-debt features first — phase `review`, or any linked task awaiting sign-off whatever the phase, with the waiting count on the line, each of them appearing again in its epic group; then grouping by epic, newest-active first, with fully `done`/`cancelled` epics collapsed into a tail, each feature on one line with its phase (`—` when it has no status file), tasks done over total and a sync mark (`✓ synced`, or `⚠ DV<n> <short reason>`, the reason the rule's own fixed short reason, which every other view of a finding reuses verbatim); then a divergence audit with one line per finding naming the rule and its concrete fix path, or `Divergences: none — the two trees agree.`; then the DV5 items under a "Tracked in one tree only" heading.
 
 #### Scenario: Review-phase feature leads
 

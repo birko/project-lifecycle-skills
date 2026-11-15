@@ -1,6 +1,6 @@
 ---
 area: test-authoring
-generated-at: a662a1882d3cc236dd596b7d096ad0c6d949e4c7
+generated-at: db4237af8a1d4a6be9e2f55fe3b89cb0f30b8cc4
 generated-on: 2026-11-15
 sources:
   - skills/populate-tests/REFERENCE.md

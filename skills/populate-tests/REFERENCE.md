@@ -43,7 +43,8 @@ a harness by the survey's evidence ladder, so `adopt` takes the existing-harness
 writes nothing.
 
 - **Init the runner the stack expects** — e.g. `dotnet new xunit` + a project reference to the unit
-  under test; a `vitest.config` + `tests/` for TS; a `tests/` package for pytest; a Playwright config
+  under test; a `vitest.config` + `tests/` for TS; a `tests/` directory and a `pytest.ini` (or `[tool.pytest.ini_options]`) for pytest, with no `__init__.py`, which
+  pytest's discovery does not need; a Playwright config
   + a `tests/` dir for a web E2E suite. Pin it per the table above, at a version the runtime
   supports.
 - **Shared/in-house toolkit** — if `CLAUDE.md` § Testing names one, the project layer (its scaffolder
