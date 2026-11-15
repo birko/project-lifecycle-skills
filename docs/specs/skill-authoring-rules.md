@@ -1,7 +1,7 @@
 ---
 area: skill-authoring-rules
-generated-at: d2e9efba50f605f8c56e0e4cc8df7d63c74c5fea
-generated-on: 2026-10-08
+generated-at: 680d4def53cf1f7d9525c7f8235a416db9ca9985
+generated-on: 2026-11-15
 sources:
   - .github/workflows/skills-lint-test.sh
   - .github/workflows/skills-lint.sh
@@ -70,7 +70,7 @@ The system SHALL fail the run when the frontmatter `name:` is missing, does not 
 
 - **Given** a skill whose folder and name are 65 lowercase letters
 - **When** the lint runs
-- **Then** it reports that the name is 65 characters and the limit is 64 (no case in the test suite pins this branch)
+- **Then** it reports that the name is 65 characters and the limit is 64
 
 ### Requirement: A skill name exists in only one tree
 

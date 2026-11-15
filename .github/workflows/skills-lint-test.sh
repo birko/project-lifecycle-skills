@@ -238,69 +238,69 @@ m_nested()    { printf '\n%s%s%s%smd\n%s%s%s\nSee [x](inside.md) and [[nope-skil
 m_template()  { mkdir -p "$1/skills/alpha/templates"; printf '# seed\n\nSee [t](tasks/README.md).\n' > "$1/skills/alpha/templates/seed.md"; }
 
 printf 'A clean fixture must pass\n'
-case_is "clean fixture"                    0 m_noop
+case_is "[all] clean fixture"                    0 m_noop
 # --- check 7: id patterns survive CRLF (TASK-206: a bare `$` found 35 of 75 ids on a mixed-ending tree) ---
 m_idbare()  { printf '\nLocate it: Grep %s^id: TASK-NNN$%s.\n' "$bt" "$bt" >> "$1/skills/alpha/SKILL.md"; }
 m_idquote() { printf '\nRun git grep -E "^id: (EPIC|TASK)-[0-9]+$" over the branches.\n' >> "$1/skills/alpha/SKILL.md"; }
 m_idok()    { printf '\nLocate it: Grep %s^id: TASK-NNN[[:space:]]*$%s.\n' "$bt" "$bt" >> "$1/skills/alpha/SKILL.md"; }
-case_fails_saying "bare \$ id pattern in backticks"  m_idbare  "ends in a bare"
-case_fails_saying "bare \$ id pattern in quotes"     m_idquote "ends in a bare"
-case_is "CRLF-tolerant id pattern"            0 m_idok
-case_fails_saying "bare \$ id pattern ends the run FAILED" m_idbare "skills-lint: FAILED"
+case_fails_saying "[7] bare \$ id pattern in backticks"  m_idbare  "ends in a bare"
+case_fails_saying "[7] bare \$ id pattern in quotes"     m_idquote "ends in a bare"
+case_is "[7] CRLF-tolerant id pattern"            0 m_idok
+case_fails_saying "[7] bare \$ id pattern ends the run FAILED" m_idbare "skills-lint: FAILED"
 printf 'Broken input must fail\n'
-case_is "mis-cased wikilink"               1 m_miscased
-case_is "underscore wikilink"              1 m_underscore
-case_is "unknown wikilink"                 1 m_bogus
-case_is "name does not match folder"       1 m_mismatch
-case_is "name only inside a fenced block"  1 m_fencename
-case_is "missing description"              1 m_nodesc
-case_is "unquoted description with ': '"   1 m_desccolon
-case_is "unquoted description with ' #'"   1 m_deschash
-case_is "description over 1024 chars"      1 m_desclong
-case_is "quoted description with ': ' #"   0 m_descquote
-case_is "empty description"                1 m_descempty
-case_is "quoted empty description"         1 m_descqempty
-case_is "description '~'"                  1 m_desctilde
-case_is "description ending in ':'"        1 m_descend
-case_is "description starting with '*'"    1 m_descstar
-case_is "description starting with '['"    1 m_descbrack
-case_is "description starting with '@'"    1 m_descat
-case_is "description starting with '- '"   1 m_descdash
-case_is "description starting with '&'"    1 m_descamp
-case_is "description '|x'"                 1 m_descbar
-case_is "description 'true'"               1 m_descbool
-case_is "description '42'"                 1 m_descnum
-case_is "description starting '-v'"        0 m_descdashw
-case_is "block-scalar description"         0 m_descblock
-case_is "description on indented lines"    0 m_desccont
-case_is "name with uppercase/underscore"   1 m_nameshape
-case_is "name with a doubled hyphen"       1 m_namedash
-case_is "same name in both trees"          1 m_nametwice
-case_is "skill folder with no SKILL.md"    1 m_noskill
-case_is "broken link in a companion doc"   1 m_badlink
-case_is "a whole skill tree is missing"    1 m_notree
+case_is "[2] mis-cased wikilink"               1 m_miscased
+case_is "[2] underscore wikilink"              1 m_underscore
+case_is "[2] unknown wikilink"                 1 m_bogus
+case_is "[1] name does not match folder"       1 m_mismatch
+case_is "[1] name only inside a fenced block"  1 m_fencename
+case_is "[1] missing description"              1 m_nodesc
+case_is "[1] unquoted description with ': '"   1 m_desccolon
+case_is "[1] unquoted description with ' #'"   1 m_deschash
+case_is "[1] description over 1024 chars"      1 m_desclong
+case_is "[1] quoted description with ': ' #"   0 m_descquote
+case_is "[1] empty description"                1 m_descempty
+case_is "[1] quoted empty description"         1 m_descqempty
+case_is "[1] description '~'"                  1 m_desctilde
+case_is "[1] description ending in ':'"        1 m_descend
+case_is "[1] description starting with '*'"    1 m_descstar
+case_is "[1] description starting with '['"    1 m_descbrack
+case_is "[1] description starting with '@'"    1 m_descat
+case_is "[1] description starting with '- '"   1 m_descdash
+case_is "[1] description starting with '&'"    1 m_descamp
+case_is "[1] description '|x'"                 1 m_descbar
+case_is "[1] description 'true'"               1 m_descbool
+case_is "[1] description '42'"                 1 m_descnum
+case_is "[1] description starting '-v'"        0 m_descdashw
+case_is "[1] block-scalar description"         0 m_descblock
+case_is "[1] description on indented lines"    0 m_desccont
+case_is "[1] name with uppercase/underscore"   1 m_nameshape
+case_is "[1] name with a doubled hyphen"       1 m_namedash
+case_is "[1] same name in both trees"          1 m_nametwice
+case_is "[1] skill folder with no SKILL.md"    1 m_noskill
+case_is "[3] broken link in a companion doc"   1 m_badlink
+case_fails_saying "[pre] a whole skill tree is missing" m_notree "the lint would pass vacuously"
 
 printf 'Check 4 — cross-skill flags
 '
-case_is   "flag not declared in receiving verb"  1 m_flagbad
-case_is   "flag declared in receiving verb"      0 m_flagok
-case_is   "receiver declares flags in a table"   0 m_flagtable
-case_is   "flag aimed at a non-skill path"       0 m_flagforeign
-case_is   "flag is a prefix of a declared flag"  1 m_flagprefix
-case_is   "arg between verb and flag, undeclared" 1 m_flagargbad
-case_is   "arg between verb and flag, declared"   0 m_flagargok
-case_is   "second flag on one invocation"         1 m_flagsecond
-case_is   "prose between verb and distant flag"   0 m_flagprose
-case_is   "template naming a real skill is checked" 1 m_flagtemplatereal
-case_is   "invocation in a non-.md template file"  1 m_flagtmplext
+case_is   "[4] flag not declared in receiving verb"  1 m_flagbad
+case_is   "[4] flag declared in receiving verb"      0 m_flagok
+case_is   "[4] receiver declares flags in a table"   0 m_flagtable
+case_is   "[4] flag aimed at a non-skill path"       0 m_flagforeign
+case_is   "[4] flag is a prefix of a declared flag"  1 m_flagprefix
+case_is   "[4] arg between verb and flag, undeclared" 1 m_flagargbad
+case_is   "[4] arg between verb and flag, declared"   0 m_flagargok
+case_is   "[4] second flag on one invocation"         1 m_flagsecond
+case_is   "[4] prose between verb and distant flag"   0 m_flagprose
+case_is   "[4] template naming a real skill is checked" 1 m_flagtemplatereal
+case_is   "[4] invocation in a non-.md template file"  1 m_flagtmplext
 
 printf 'Legitimate content must not false-positive\n'
-case_is "link with a title"                0 m_titled
-case_is "link with an anchor"              0 m_anchor
-case_is "wikilink inside a fence"          0 m_fencelink
-case_is "link inside an inline code span"  0 m_codespan
-case_is "nested fences"                    0 m_nested
-case_is "link inside templates/"           0 m_template
+case_is "[3] link with a title"                0 m_titled
+case_is "[3] link with an anchor"              0 m_anchor
+case_is "[2] wikilink inside a fence"          0 m_fencelink
+case_is "[3] link inside an inline code span"  0 m_codespan
+case_is "[2,3] nested fences"                    0 m_nested
+case_is "[3] link inside templates/"           0 m_template
 
 m_regexlink() { printf '\nSee [[al.ha]].\n' >> "$1/skills/alpha/SKILL.md"; }
 m_unbalanced(){ printf '\n%s%s%s\nSee [[definitely-not-a-skill]] and [x](nope.md).\n' "$bt" "$bt" "$bt" >> "$1/skills/alpha/companion.md"; }
@@ -313,15 +313,15 @@ m_miscasefil(){ printf '\nSee [x](SKILL.MD).\n' >> "$1/skills/alpha/companion.md
 m_sentinel()  { printf 'x' > "$1/.lint-fail"; }
 
 printf 'Regressions from the second review pass\n'
-case_is "wikilink with a regex metachar"   1 m_regexlink
-case_is "unbalanced code fence"            1 m_unbalanced
-case_is "aliased link to a missing skill"  1 m_aliasbad
-case_is "mis-cased file link"              1 m_miscasefil
-case_is "aliased link to a real skill"     0 m_aliasok
-case_is "double-backtick code span"        0 m_dblspan
-case_is "tilde fence"                      0 m_tilde
-case_is "root-relative link"               0 m_rootrel
-case_is "stale .lint-fail in the repo"     0 m_sentinel
+case_is "[2] wikilink with a regex metachar"   1 m_regexlink
+case_is "[2] unbalanced code fence"            1 m_unbalanced
+case_is "[2] aliased link to a missing skill"  1 m_aliasbad
+case_is "[3] mis-cased file link"              1 m_miscasefil
+case_is "[2] aliased link to a real skill"     0 m_aliasok
+case_is "[2] double-backtick code span"        0 m_dblspan
+case_is "[2] tilde fence"                      0 m_tilde
+case_is "[3] root-relative link"               0 m_rootrel
+case_is "[all] stale .lint-fail in the repo"     0 m_sentinel
 
 
 # --- check 5: universal-conventions copies ---
@@ -354,17 +354,17 @@ u_no_agents()   { mk_new_project "$1"
 u_no_template() { printf -- '# guide\n\n## Conventions\n\n' > "$1/AGENTS.md"
                   mk_rule_block "$1/AGENTS.md" 'Write the comment the code cannot carry.'; }
 
-case_is   "identical rule blocks pass"              0 u_pair
-case_is   "one word of drift fails"                 1 u_drifted
-case_is   "template has the block, AGENTS.md does not" 1 u_no_agents
-case_is   "AGENTS.md has the block, template does not" 1 u_no_template
+case_is   "[5] identical rule blocks pass"              0 u_pair
+case_is   "[5] one word of drift fails"                 1 u_drifted
+case_is   "[5] template has the block, AGENTS.md does not" 1 u_no_agents
+case_is   "[5] AGENTS.md has the block, template does not" 1 u_no_template
 # Naming the missing side is the point (AGENTS.md § "Where the same prose must exist in two files").
-case_fails_saying "missing AGENTS.md side is named"    u_no_agents   "AGENTS.md does not"
-case_fails_saying "missing template side is named"     u_no_template "consumers would receive nothing"
-case_fails_saying "drift names both files"             u_drifted     "differs between AGENTS.md"
+case_fails_saying "[5] missing AGENTS.md side is named"    u_no_agents   "AGENTS.md does not"
+case_fails_saying "[5] missing template side is named"     u_no_template "consumers would receive nothing"
+case_fails_saying "[5] drift names both files"             u_drifted     "differs between AGENTS.md"
 # A repo with neither file must pass — but VISIBLY, so assert the message, not only the exit code
 # (the vacuous pass `case_silent` guards against).
-case_says "no pair present says so rather than passing in silence" m_noop "nothing to compare"
+case_says "[5] no pair present says so rather than passing in silence" m_noop "nothing to compare"
 # A file that DOCUMENTS the convention mentions the marker in prose above the block it describes.
 # Matching the marker as a substring starts the capture there and reports two identical copies as
 # differing.
@@ -373,7 +373,7 @@ u_prose_mention() { u_pair "$1"
 
 '                       '<!-- comment-rule:start -->' '<!-- comment-rule:end -->' > "$1/tmp.md"
                     cat "$1/AGENTS.md" >> "$1/tmp.md"; mv "$1/tmp.md" "$1/AGENTS.md"; }
-case_is   "prose mentioning the marker is not mistaken for the block" 0 u_prose_mention
+case_is   "[5] prose mentioning the marker is not mistaken for the block" 0 u_prose_mention
 
 # --- check 6: install roots (advisory) ---
 r_absent()  { :; }                                    # roots/ is never created
@@ -419,24 +419,24 @@ r_foreign() { mkdir -p "$1/roots/claude" "$1/roots/pi" "$WORK/other-repo/skills/
               rm -rf "$WORK/other-repo/skills/foreign"; }   # dangling, but not ours
 
 printf 'Install-root drift (advisory — asserted on output; exit must stay 0)\n'
-case_says   "absent root is stated, not silent"   r_absent  "skipped"
-case_says   "empty root collapses to one line"     r_empty   "exists but nothing is linked into it"
-case_says   "one drifted skill is named"          r_partial "beta is not linked into"
-case_says   "junction whose source is gone"       r_stale   "stale junction"
-case_silent "a link into another repo is ignored" r_foreign "stale junction"
-case_silent "skills-pi absent from claude root"   r_linked  "gamma is not linked into"
-case_says   "skills-pi shadowing the claude root" r_shadow  "never linked into this root"
+case_says   "[6] absent root is stated, not silent"   r_absent  "skipped"
+case_says   "[6] empty root collapses to one line"     r_empty   "exists but nothing is linked into it"
+case_says   "[6] one drifted skill is named"          r_partial "beta is not linked into"
+case_says   "[6] junction whose source is gone"       r_stale   "stale junction"
+case_silent "[6] a link into another repo is ignored" r_foreign "stale junction"
+case_silent "[6] skills-pi absent from claude root"   r_linked  "gamma is not linked into"
+case_says   "[6] skills-pi shadowing the claude root" r_shadow  "never linked into this root"
 # The false-positive direction, as a POSITIVE assertion (see `case_silent`): `roots/pi is in sync`
 # can only print if the loop ran AND cleared every legitimate skills-pi link in the pi root — which
 # is the whole real-world install.
-case_says   "legit skills-pi link in the pi root"  r_linked  "roots/pi is in sync"
+case_says   "[6] legit skills-pi link in the pi root"  r_linked  "roots/pi is in sync"
 # A root holding only a shadow is not an empty root; the two advisories must not contradict.
-case_silent "shadow root is not called empty"      r_shadow  "nothing is linked into it"
+case_silent "[6] shadow root is not called empty"      r_shadow  "nothing is linked into it"
 # A root holding ONLY shadows still collapses to one line — gating the collapse on shadow==0 printed
 # one advisory per skill instead, the wall of text the collapse was measured to remove.
-case_says   "shadow-only root collapses, precisely"  r_shadow  "only shadow junctions"
+case_says   "[6] shadow-only root collapses, precisely"  r_shadow  "only shadow junctions"
 # The repo name repeating as an ancestor component must not turn every in-repo link into a shadow.
-case_says   "repo name repeated in the target path" r_nested  "roots/claude is in sync"
+case_says   "[6] repo name repeated in the target path" r_nested  "roots/claude is in sync"
 
 # check 8 — TASK-252 (AGENTS.md § Testing).
 s_lonecr()  { printf 'echo a\rb\n' > "$1/tool.sh"; }
@@ -444,20 +444,36 @@ s_crlf()    { printf 'echo a\r\necho b\r\n' > "$1/tool.sh"; }
 s_git()     { git -C "$1" init -q && git -C "$1" config core.autocrlf false && printf '%s\n' "$2" > "$1/.gitattributes"; }
 s_stored()  { s_git "$1" '*.sh -text'; s_crlf "$1"; git -C "$1" add tool.sh; }
 s_binary()  { s_git "$1" '* text=auto eol=lf'; printf 'echo a\r\n# [ \t\r]\r\n' > "$1/tool.sh"; git -C "$1" add tool.sh; }
-case_fails_saying "CR inside a line of a shell script"  s_lonecr "carriage return inside a line"
-case_is           "CRLF working copy alone is fine"  0  s_crlf
-case_fails_saying "shell script stored as CRLF"         s_stored "stored as crlf"
-case_fails_saying "shell script git classes as binary"  s_binary "stored as -text"
+case_fails_saying "[8] CR inside a line of a shell script"  s_lonecr "carriage return inside a line"
+case_is           "[8] CRLF working copy alone is fine"  0  s_crlf
+case_fails_saying "[8] shell script stored as CRLF"         s_stored "stored as crlf"
+case_fails_saying "[8] shell script git classes as binary"  s_binary "stored as -text"
 
 # check 9 — TASK-282 (AGENTS.md § Testing).
 p_nobom() { printf 'Write-Host "a \xe2\x80\x94 b"\n' > "$1/tool.ps1"; }
 p_bom()   { printf '\xef\xbb\xbfWrite-Host "a \xe2\x80\x94 b"\n' > "$1/tool.ps1"; }
 p_ascii() { printf 'Write-Host "a - b"\n' > "$1/tool.ps1"; }
 p_utf16() { printf '\xff\xfeW\x00\n\x00' > "$1/tool.ps1"; }
-case_fails_saying "non-ASCII .ps1 with no BOM"  p_nobom "no UTF-8 BOM"
-case_is           "non-ASCII .ps1 with a BOM"  0 p_bom
-case_is           "ASCII-only .ps1"            0 p_ascii
-case_is           "UTF-16 .ps1 with its BOM"   0 p_utf16
+case_fails_saying "[9] non-ASCII .ps1 with no BOM"  p_nobom "no UTF-8 BOM"
+case_is           "[9] non-ASCII .ps1 with a BOM"  0 p_bom
+case_is           "[9] ASCII-only .ps1"            0 p_ascii
+case_is           "[9] UTF-16 .ps1 with its BOM"   0 p_utf16
+
+# Branches that had no case until TASK-029 (SH-117 named the first five). Each fails without its branch.
+m_nofm()      { printf -- 'name: beta\ndescription: d\n\nBeta.\n' > "$1/skills/beta/SKILL.md"; }
+m_namelong()  { local n; n=$(printf 'b%.0s' $(seq 65)); mv "$1/skills/beta" "$1/skills/$n"; sed -i "s/^name: beta/name: $n/" "$1/skills/$n/SKILL.md"; sed -i "s/\[\[beta\]\]/[[$n]]/" "$1/skills/alpha/SKILL.md"; }
+m_deshashst() { desc_is "$1" '#draft Review the diff'; }
+m_descpipe()  { printf -- '---\nname: beta\ndescription: |\n  Review the diff: all of it\n---\n\nBeta.\n' > "$1/skills/beta/SKILL.md"; }
+m_noskills()  { rm -rf "$1"/skills/* "$1"/skills-pi/*; }
+m_runtimeref(){ printf '\nSee [[init]].\n' >> "$1/skills/alpha/SKILL.md"; }
+m_extlinks()  { printf '\nSee [x](https://example.com), [y](#a-section) and [z](mailto:a@example.com).\n' >> "$1/skills/alpha/companion.md"; }
+case_fails_saying "[1] SKILL.md not starting with frontmatter" m_nofm      "does not start with frontmatter"
+case_fails_saying "[1] name over 64 characters"               m_namelong  "the limit is 64"
+case_fails_saying "[1] description starting with '#'"         m_deshashst "starts with '#'"
+case_is           "[1] literal block-scalar description"      0 m_descpipe
+case_fails_saying "[pre] no skill folders at all"             m_noskills  "no skill folders found"
+case_is           "[2] a runtime-provided skill name resolves" 0 m_runtimeref
+case_is           "[3] external, anchor-only and mailto links" 0 m_extlinks
 
 printf '\nskills-lint-test: %s passed, %s failed\n' "$pass" "$fail"
 [ "$fail" -eq 0 ]
