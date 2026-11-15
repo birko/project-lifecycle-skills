@@ -3,7 +3,7 @@ id: TASK-291
 parent: STORY-027
 feature: FEATURE-004
 # status — one of: todo, in-progress, verify (code done, sign-off pending), done, cancelled
-status: verify
+status: done
 # blocked: <reason> — add this line while the task is blocked, keeping its status; /tasks unblock removes it
 priority: P2
 assignee: unassigned
@@ -39,7 +39,10 @@ FEATURE-004 D7 and D10. The owner asked for a GitHub watcher on OpenSpec, and ch
 
 ## Human test plan
 
-- [ ] Run the workflow by manual dispatch on the real repo. Exactly one issue appears, for the newest release, with the label; a second run files nothing
+- [x] Run the workflow by manual dispatch on the real repo. Exactly one issue appears, for the newest release, with the label; a second run files nothing
+  - **Passed 2026-11-15**, run by the owner's go-ahead: dispatch 1 (run 43717484128) created the label and filed
+    issue #1, *OpenSpec v2.0.0 — v2.0.0 - Skills in .agents/skills, /opsx commands removed*, labelled
+    `upstream: openspec`, no assignee; dispatch 2 printed `no new OpenSpec release` and filed nothing.
 
 ## Implementation plan
 
@@ -61,8 +64,7 @@ filed, v1.17.0 and v2.0.0; with v2.0.0 filed, `no new OpenSpec release`; with v1
 - Prereleases and drafts are skipped: a beta is not a release to adopt from.
 - Seen releases come from issue titles, the only state the workflow reads, so closing an issue never re-files it.
 
-**Parked at `verify`:** the test plan's manual dispatch creates a real issue on the repo, so it waits for the
-owner's go-ahead.
+**Verified 2026-11-15** by two real dispatches, after the owner's go-ahead (the test plan).
 
 **Close gate (inline; one workflow, the map):** standards and intent met; correctness by the dry runs; security:
 `issues: write` only, the default token, nothing executed from release text; layer parity and comments not
@@ -72,3 +74,4 @@ applicable; local lint passes; no spec affected (the file is ignored by the map)
 
 - picked 2026-11-15 in FEATURE-004's build, the last task
 - built the workflow; dry-run five paths; parked at verify pending the real dispatch
+- 2026-11-15 — owner approved the real dispatch; run 1 filed issue #1, run 2 filed nothing; verify → done
