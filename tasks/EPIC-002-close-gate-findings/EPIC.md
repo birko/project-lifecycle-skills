@@ -1,7 +1,7 @@
 ---
 id: EPIC-002
 # status — one of: planned, in-progress, done, cancelled
-status: in-progress
+status: done
 created: 2026-08-20
 owner: František Bereň
 affects: skills/, .github/
