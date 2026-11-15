@@ -227,6 +227,8 @@ ignore:
   - "tasks/**"
   # Config, not behaviour — the two shell scripts beside it are mapped above.
   - ".github/workflows/ci.yml"
+  # The OpenSpec watcher (FEATURE-004 D7): this repo's own automation, not a capability the skills provide.
+  - ".github/workflows/openspec-watch.yml"
   # The file shapes skills write. Data the skill emits, not logic: each template's owning
   # skill is mapped, and its spec describes the shape. Revisit if a template ever carries
   # behaviour its skill's prose does not state.

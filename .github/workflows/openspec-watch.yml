@@ -1,0 +1,62 @@
+name: OpenSpec watch
+
+# FEATURE-004 D7 and D10: one issue per new OpenSpec release, labelled and assigned to nobody.
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      UPSTREAM: Fission-AI/OpenSpec
+      LABEL: "upstream: openspec"
+      # A tag here makes the first run file every release after it; empty files the newest only.
+      START_AFTER: ""
+    steps:
+      - name: File new releases
+        run: |
+          set -euo pipefail
+          if ! gh label list --limit 200 --json name -q '.[].name' | grep -qxF "$LABEL"; then
+            if [ "${DRY_RUN:-}" = 1 ]; then echo "would create label: $LABEL"
+            else gh label create "$LABEL" --color 5319e7 --description "A new OpenSpec release to read"; fi
+          fi
+
+          # Seen releases come from the labelled issues themselves, open or closed, never from stored state.
+          seen=$(gh issue list --label "$LABEL" --state all --limit 1000 --json title -q '.[].title' |
+            sed -n 's/^OpenSpec \([^ ]*\) .*/\1/p')
+
+          # Published, non-draft, non-prerelease releases, oldest first.
+          gh api "repos/$UPSTREAM/releases" --paginate \
+            -q '.[] | select(.draft | not) | select(.prerelease | not) | [.tag_name, .published_at[0:10], .html_url, .name] | @tsv' |
+            sort -t$'\t' -k2,2 > releases.tsv
+
+          if [ -n "$seen" ]; then
+            last=$(grep -F -x -f <(printf '%s\n' $seen) <(cut -f1 releases.tsv) | tail -1)
+            todo=$(awk -F'\t' -v l="$last" 'p {print $1} $1 == l {p = 1}' releases.tsv)
+          elif [ -n "$START_AFTER" ]; then
+            todo=$(awk -F'\t' -v l="$START_AFTER" 'p {print $1} $1 == l {p = 1}' releases.tsv)
+          else
+            todo=$(tail -1 releases.tsv | cut -f1)
+          fi
+
+          for tag in $todo; do
+            printf '%s\n' $seen | grep -qxF "$tag" && continue
+            IFS=$'\t' read -r _ date url name < <(grep -P "^\Q$tag\E\t" releases.tsv)
+            gh api "repos/$UPSTREAM/releases/tags/$tag" -q .body > notes.md
+            { printf 'OpenSpec %s was released on %s: %s\n\n' "$tag" "$date" "$url"
+              printf 'Read it for anything worth adopting into `/specs` (FEATURE-004). This issue changes nothing by itself.\n\n---\n\n'
+              cat notes.md; } > body.md
+            if [ "${DRY_RUN:-}" = 1 ]; then
+              echo "would file: OpenSpec $tag — $name ($date)"
+            else
+              gh issue create --title "OpenSpec $tag — $name" --label "$LABEL" --body-file body.md
+            fi
+          done
+          [ -n "$todo" ] || echo "no new OpenSpec release"
