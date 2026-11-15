@@ -42,6 +42,19 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
      reworded does not match, so it shows as one removal and one addition, which is what happened to it. A block
      unchanged in name and text is not listed. Changes outside the requirements (the Purpose, a stamp) follow in one
      line each; the frontmatter stamps are never presented as behaviour.
+   - **Name every scenario a surviving requirement lost.** For each **changed** or **renamed** requirement, compare
+     the `#### Scenario:` names under it before and after (a renamed one against the scenarios under its old name).
+     Each old scenario with no same-named scenario in the new block is listed under its requirement as
+     `lost scenario: "<requirement>" / "<scenario>"`. Settle each one before anything is written, by reading the code,
+     never by leaving it out quietly:
+     - **The code still behaves as the scenario says** → the harvest dropped it: restore it to the new body word for
+       word. A restored scenario is not a change.
+     - **The code no longer does** → the behaviour is really gone: it is a change like any other, classified below
+       (asked; unanswered, **Unexplained**).
+
+     A scenario lost with a requirement removed whole is not listed separately: the removal is the change. This is
+     the one comparison a whole-file diff never made, so a dropped example used to pass review unless a reader
+     happened to spot it (FEATURE-004 D3).
    - Classify each entry above that changes behaviour, one requirement at a time. A rename whose statement and
      scenarios are otherwise unchanged changes none: it is listed, and not classified.
      - **Matches an approved decision** — when `--story`/`--feature` context resolves to features, check the diff against their `decisions.md` `approved`/`changed` rows. Match → clean.

@@ -348,7 +348,7 @@ The system SHALL, under `--all`, harvest areas in parallel with one agent per ar
 
 ### Requirement: Every behavioural change in a spec diff is classified
 
-The system SHALL present a regen's diff one requirement at a time, never as a whole-file diff: requirement blocks are paired by exact name; a pair that differs is shown as changed with only its changed lines; an old and a new block left unpaired whose statements are identical once whitespace is collapsed are shown as renamed, old name to new name, and never paired because their names look alike; any other new block is shown as added with its full text, and any other old block as removed with its full statement; unchanged blocks are not listed, and frontmatter stamps are never presented as behaviour. The system SHALL show each changed area's spec diff and classify every behavioural change as matching an approved decision (checked against the approved and changed rows of features resolved from story or feature context), intended anyway (confirmed by the user in answer to a fixed question, or by the verb that made the change in the same run — today the defect-draining run respeccing its own fix — answering from that task's acceptance criteria and named in the classification), or unexplained — a finding for which it offers a new task or reopening a deferred or removed decision; in feature context it SHALL report an approved decision absent from the diff as an incomplete feature, and when the user rejects the regeneration it SHALL write nothing.
+The system SHALL present a regen's diff one requirement at a time, never as a whole-file diff: requirement blocks are paired by exact name; a pair that differs is shown as changed with only its changed lines; an old and a new block left unpaired whose statements are identical once whitespace is collapsed are shown as renamed, old name to new name, and never paired because their names look alike; any other new block is shown as added with its full text, and any other old block as removed with its full statement; unchanged blocks are not listed, and frontmatter stamps are never presented as behaviour. For each changed or renamed requirement it SHALL compare the scenario names before and after, a renamed one against the scenarios under its old name, and SHALL name every scenario lost; before writing, a lost scenario whose behaviour the code still shows SHALL be restored word for word, and one whose behaviour is gone SHALL be classified as a change. A pure rename SHALL be listed and not classified. The system SHALL show each changed area's spec diff and classify every behavioural change as matching an approved decision (checked against the approved and changed rows of features resolved from story or feature context), intended anyway (confirmed by the user in answer to a fixed question, or by the verb that made the change in the same run — today the defect-draining run respeccing its own fix — answering from that task's acceptance criteria and named in the classification), or unexplained — a finding for which it offers a new task or reopening a deferred or removed decision; in feature context it SHALL report an approved decision absent from the diff as an incomplete feature, and when the user rejects the regeneration it SHALL write nothing.
 
 #### Scenario: Unexplained change
 
@@ -373,6 +373,12 @@ The system SHALL present a regen's diff one requirement at a time, never as a wh
 - **Given** a reviewed diff the user rejects
 - **When** the review ends
 - **Then** the new body is discarded and the spec file is left as it was
+
+#### Scenario: A harvest drops a scenario the code still honours
+
+- **Given** a `Division` requirement whose old scenarios include `Divide by zero panics`, a harvest that omits it, and code that still panics on a zero divisor
+- **When** the review runs
+- **Then** it lists `lost scenario: "Division" / "Divide by zero panics"` and restores the scenario before writing
 
 #### Scenario: A replacement borrows its predecessor's name
 
