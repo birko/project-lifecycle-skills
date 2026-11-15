@@ -82,7 +82,7 @@ dashboard is regenerated on the default branch when `close` merges.
    A story's children are its tasks; an epic's are its stories and any task parented to it directly, each read by its
    own status:
 
-   | The parent | Its children | Line | Fix (the callout prints the text before the dash) |
+   | The parent | Its children | Line | Fix (the callout prints everything before the ` — `, whole: for the first row, `` `/tasks close <ID>`, or keep it open ``) |
    |---|---|---|---|
    | reads `planned` or `in-progress` | at least one, and every one `done` or `cancelled` | `<ID> <status>, every child closed` | `/tasks close <ID>`, or keep it open — `close` step 11 lets an area of concern stay open on purpose |
    | reads `planned` | at least one `in-progress`, `verify` or `done` | `<ID> planned, <n> of <t> children started` | `/tasks pick` of one of its open tasks — starting a task moves its `planned` parents to `in-progress` |
@@ -133,7 +133,9 @@ dashboard is regenerated on the default branch when `close` merges.
    the file never carries two blank lines in a row where a section was left out, and it ends with a single newline.
 8. **Write** the rendered output to `tasks/README.md` (overwrite existing).
 
-8b. **Feature drift check** — if `docs/features/` exists, apply the divergence rules from [[roadmap]] (§ *Cross-tree pass (shared engine)*) to the just-collected tasks + features. Reuse those rules; don't reinvent them. If any divergence is found, prepend a callout to `tasks/README.md` directly under the title:
+8b. **Feature drift check** — if `docs/features/` exists, apply the divergence rules from [[roadmap]] (§ *Cross-tree pass (shared engine)*) to the just-collected tasks + features. Reuse those rules; don't reinvent them. If any divergence is found, prepend a callout to `tasks/README.md` directly under the title, **above the template's
+   `_Generated …_` line**, with one blank line on each side (the quiet `Feature drift: none open` line below takes the
+   same place):
    `> ⚠ **Feature drift (<n>):** <target> DV<x> short reason, … — run \`/roadmap --check\`.`
    Each `<target>` is the finding's target as [[roadmap]]'s compact slice prints it (a feature, story, epic or task id,
    `specs/<area>`, or `specs/.map.yml`), so a finding whose target is not a feature is never dropped.

@@ -60,6 +60,12 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
    - `{{TASK_LIST}}` — step 3's lines; `_None_` when the feature has no linked task.
    - `{{TESTABLE_SUMMARY}}` — `Ready to test: TASK-NNN, TASK-NNN.` in task order, then, when any built task's plan is
      `N/A`, `No manual test: TASK-NNN.`; `Nothing to test yet.` when no task is ready.
+   - **Which part of `idea.md`'s `## Prototype` section is "the line".** The section can hold several paragraphs: an
+     italic placeholder hint, the state, and later notes. The state is the **first paragraph that opens with a state
+     word**, bold or plain: `Built`, `Skipped`, `N/A`, `Pending`, or the deleted form (`Built — …` and `**Skipped**
+     (2026-09-24) — …` both open with one). Render that paragraph
+     alone, its lines joined into one, and nothing else from the section: the hint and any later note are for the
+     feature's authors, and the rollup is stakeholder-facing. No such paragraph → "none yet", as **Pending**.
    - `{{PROTOTYPE_LINK}}` — link to `prototype.html` / `prototype.md` / `prototype-states.html` / the spike branch, or "none yet". A prototype already deleted renders as the `idea.md` line says (`built, then deleted — answered D<n>`), never as a link to a file that is gone. A prototype recorded as
      **Skipped** or **N/A** renders as the `idea.md` line says, reason included (`Skipped — headless logic, the
      test suite is the proof`), and links nothing; **Pending** renders as "none yet". A standing prototype renders
@@ -79,12 +85,16 @@ Rebuild `status.md` for a feature (or all features) so a PM or other non-technic
      | `dropped` | `Nothing — the feature was dropped.` |
      | `superseded` | `Nothing — superseded by <superseded-by>.` |
 
-     Every count noun is singular for a count of exactly 1.
+   - **Every count noun this verb prints is singular for a count of exactly 1**, in the next-step line above, in the
+     template's fixed lines and in step 6's digest alike. The template's `tasks done.` agrees with the total, so a
+     feature with one task reads `1 / 1 task done.`; the digest's `(<done>/<total> tasks, …)` and `<n> tasks awaiting
+     sign-off` follow the same rule (`(1/1 task, …)`, `1 task awaiting sign-off`).
    (The template is stakeholder-facing and carries no author comments — these hints live here.)
 
 5. **Write** `docs/features/FEATURE-NNN-slug/status.md` (overwrite).
 
-6. **If invoked for all features** — also print a one-line-per-feature digest to stdout:
+6. **If invoked for all features** — also print a one-line-per-feature digest to stdout (its counts follow step 4's
+   singular rule):
    `FEATURE-012 Checkout redesign — building · 2 tasks awaiting sign-off (4/7 tasks, 3 approved / 1 deferred)`.
    **Order the digest with debt features first**, per [SKILL.md](../SKILL.md) § *Verification debt
    surfaces first*: phase `review`, or any task awaiting sign-off, whatever the phase. They are the
