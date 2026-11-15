@@ -26,6 +26,7 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      | 4 (uncommitted `done`/`verify`) | read `HEAD`'s status and run the close again, gate included | **the same.** It is not the closed record the row above refuses |
      | 4 (blocked) | ask "Unblock it and close?" | **refuse and report** (`not closed: … is blocked`), write nothing. Never clear a block nobody asked to clear |
      | 5 | unfilled plan → "confirm it's `N/A` or fill it", user proceeds or pauses | **resolve it**: write the steps, or `N/A` with the reason. Ask nothing about whether a step ran: real manual steps not run, or failed, ⇒ `verify`, never `done` |
+     | 5 (a drill pass with no acquisition line) | ask how the runner was obtained | **untick it, add the `Incomplete` line, and park at `verify`.** Never write an acquisition line nobody gave: a guessed one is the false record the check cannot catch |
      | 5 (`verify` park) | offer to push and open the PR "awaiting sign-off" | **push and open it.** And run **5d before parking** |
      | 5a | prints the `ci:` line; a red one never holds the close | **the same.** Listed although it never asks, because a red result looks like a reason to stop, and an unattended run must not invent a hold or a question |
      | 5c | ask "merge as part of this close?" | **merge.** See the note in 5c for why, and what was rejected |
@@ -200,6 +201,22 @@ Flip a TASK to `done` — or to `verify` when its Human test plan hasn't been ru
      `verify — human test failed: "<step>" (<date>); findings → <task ids>` and park as below. A `Failed`
      line that names no task is work nobody owns: `/tasks spawn` it and add the id to the line before
      parking (`--unattended` does the same). The task leaves `verify` when a re-run passes and ticks the box.
+   - **A drill step's pass counts only with its acquisition line.** A ticked step that was passed by a cold
+     drill (the step or its `Passed` line says a drill or a cold runner ran it) must name, in its `Passed`
+     line or the lines nested under it, **the command, the working directory and the result of the coldness
+     check** — the record [[populate-tests]] § *The cold drill* requires (*Record how the runner was
+     obtained*); the rule lives there, and this is the point that consumes it. This is the moment it matters:
+     after it the task is `done` and the record is never read again by a gate. When one of the three is
+     missing, put this question:
+
+     > **The drill step "<step>" is ticked passed, but its record does not name <the missing parts>. How was
+     > the runner obtained?**
+
+     An answer is written into the step's record and the step stays passed. **No answer, or nobody to ask:**
+     untick it and append `**Incomplete YYYY-MM-DD:** drill record names no <missing parts> — add them and
+     re-close`; it now reads *not run*, so the close parks at `verify`, never `done`. **What this catches and
+     what it does not:** it tells a record that omits the line from one that has it; it cannot tell a true line
+     from a false one, which only the record's reader can judge.
    - If it has real steps that are not run, **don't close to `done`** — the manual/visual sign-off hasn't happened. Ask, once per such step: *"Did you run "<step>"? Answer passed, failed and what you saw, or not run."* **Passed** → tick it. **Failed** → leave it unticked, append the `Failed` line with what the user saw, and treat it as the failed case above. **Not run, or no answer** → leave it as it is. `--unattended` asks nothing and leaves every such step not run. Then: every step passed → proceed to `done`. Otherwise set **`status: verify`** (code complete, awaiting sign-off), then **park the work properly before skipping ahead**:
      - **Roll the park up first when the task read `done` or `cancelled` before this close** (step 4's reopen
        and re-close). Only that park takes a task out of a closed status; every other close starts from an open

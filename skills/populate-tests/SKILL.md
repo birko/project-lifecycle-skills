@@ -240,6 +240,8 @@ A runner that fails either signal still produces a usable **negative**: if it co
 and the result of the coldness check. *"Was this reader cold?"* has to be answerable afterwards instead of
 assumed. A record that exists is not thereby a record that answers the question, and nothing about the
 file shows which it is.
+[[tasks]] `close` step 5 is where it is checked: a drill step ticked passed without the three is asked about, or
+counted as not run. That check sees whether the line is there, never whether it is true.
 Measured failure: a record reading *"given only the names and titles — no repo, no files"* describes the
 **brief** and is silent about the channel that actually decides, so its readers can no longer be classified
 at all — not by the author, not by anyone.

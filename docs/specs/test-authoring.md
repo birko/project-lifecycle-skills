@@ -1,6 +1,6 @@
 ---
 area: test-authoring
-generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-at: 45b978e92986171de3ea461180aa7761be6d5ba4
 generated-on: 2026-11-15
 sources:
   - skills/populate-tests/REFERENCE.md
@@ -374,7 +374,7 @@ The brief SHALL also bar any lookup of diffs, history, task notes or planning do
 
 ### Requirement: Coldness is acquired outside both loaders and confirmed
 
-The system SHALL acquire the drill reader outside both the project guide and user-level installed instructions. A different working directory alone is not enough. Each brief SHALL open by asking the reader to list the instruction files and skills it has loaded. The report SHALL be scanned for any term from the subject's own vocabulary that the brief did not supply, and one such term is enough to count. A reader that fails either check still produces a usable negative result, but not a pass. The drill record SHALL name the command, the working directory and the result of the coldness check.
+The system SHALL acquire the drill reader outside both the project guide and user-level installed instructions. A different working directory alone is not enough. Each brief SHALL open by asking the reader to list the instruction files and skills it has loaded. The report SHALL be scanned for any term from the subject's own vocabulary that the brief did not supply, and one such term is enough to count. A reader that fails either check still produces a usable negative result, but not a pass. The drill record SHALL name the command, the working directory and the result of the coldness check, and a task close SHALL count a drill pass only when it does.
 
 #### Scenario: A session started in an unrelated repo
 

@@ -42,7 +42,7 @@ What this task does and why it exists. Include enough background that an AI agen
 
 _For behaviour that unit/AI tests can't fully cover (UI/UX, edge cases, system integrations, manual verification). A human or agent runs these steps at `/tasks close` time and when `/feature review` checks the feature._
 
-_State the expected outcome here — that is what makes a step checkable. **If these steps will be run by a cold reader, the brief they get is a different document that withholds it**: see [[populate-tests]] § *The cold drill*, which also says when that is worth doing and when it is over-ceremony._
+_State the expected outcome here — that is what makes a step checkable. **If these steps will be run by a cold reader, the brief they get is a different document that withholds it**: see [[populate-tests]] § *The cold drill*, which also says when that is worth doing and when it is over-ceremony. A drill step's `Passed` line records how its runner was obtained (the command, the working directory, the coldness check's result), as that section requires: `/tasks close` counts the pass only with it. This line is a reminder, and verifies nothing._
 
 - [ ] Step a tester can follow without re-discovery — exact action + expected result
 - [ ] Edge case / boundary to exercise by hand
