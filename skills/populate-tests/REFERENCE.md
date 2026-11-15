@@ -24,7 +24,9 @@ If the project has no test harness yet, scaffold it before authoring. Idempotent
 runner config already exists, write nothing, and check it against the invariants below by reading its files
 (nothing is built or run). Report **already current** (`harness already adopted: <runner>`) when it visibly meets
 them all. Otherwise report it **left as it is**, one line per invariant it visibly misses (`does not meet: <invariant> —
-<the file and line that shows it>`): a caller reads that as a reconciliation declined, never as a defect fixed. **Never
+<the file and line that shows it>`): a caller reads that as a reconciliation declined, never as a defect fixed. A
+missed *Ignore generated dirs* is the one miss handed back as lines, by the rule under that invariant below: chained
+from [[adopt-project]], name the lines for its `.gitignore` offer, and write none. **Never
 rewrite an existing harness**: it is the repo's own setup, and changing it re-decides choices its owners made.
 
 **Pick the recipe by what the project already has.** Never reach for a package manager the project does
@@ -37,7 +39,8 @@ not use:
 | no source code to test (docs or prose only) | nothing: an empty runner over nothing would claim a suite that does not exist | `nothing to test yet — no harness wired` |
 
 A project whose checks are a script its CI runs (a lint script, as this skill set's own repo has) already has
-a harness by the survey's evidence ladder, so `adopt` is not reached for it.
+a harness by the survey's evidence ladder, so `adopt` takes the existing-harness path above for it: it reads, and
+writes nothing.
 
 - **Init the runner the stack expects** — e.g. `dotnet new xunit` + a project reference to the unit
   under test; a `vitest.config` + `tests/` for TS; a `tests/` package for pytest; a Playwright config

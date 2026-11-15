@@ -1,6 +1,6 @@
 ---
 area: test-authoring
-generated-at: 45b978e92986171de3ea461180aa7761be6d5ba4
+generated-at: a662a1882d3cc236dd596b7d096ad0c6d949e4c7
 generated-on: 2026-11-15
 sources:
   - skills/populate-tests/REFERENCE.md
@@ -212,7 +212,7 @@ The system SHALL accept `/populate-tests [adopt|survey|populate|verify|ledger] [
 
 ### Requirement: Adopt wires the harness idempotently
 
-The system SHALL, in `adopt`, detect the stack and pick the recipe by what the project has: with a package manager, scaffold the test directory, the runner config, and the runner pinned as a dev-dependency in that manifest; with source but no package manager, scaffold the test directory and runner config, create no manifest, and document the runner and its version in the test directory's README as a prerequisite, reported as documented, not enforced; with no source to test, wire nothing and report `nothing to test yet`. Where § Testing names a shared or in-house toolkit, it SHALL follow that toolkit's own adoption doc. If the test directory or runner config already exists, it SHALL write nothing, SHALL check the harness against its invariants by reading its files, and SHALL report it already current when it visibly meets them all, or left as it is with one line per invariant it visibly misses, never rewriting it. Whatever the stack, the harness SHALL honour these invariants: one runner instance (injected into any source-linked helper), a runtime the runner supports, a module mode compatible with the runner, and the runner's output directories added to `.gitignore`, offered rather than written when the run was chained from adoption. One-time prerequisites SHALL be documented in the test directory's README.
+The system SHALL, in `adopt`, detect the stack and pick the recipe by what the project has: with a package manager, scaffold the test directory, the runner config, and the runner pinned as a dev-dependency in that manifest; with source but no package manager, scaffold the test directory and runner config, create no manifest, and document the runner and its version in the test directory's README as a prerequisite, reported as documented, not enforced; with no source to test, wire nothing and report `nothing to test yet`. Where § Testing names a shared or in-house toolkit, it SHALL follow that toolkit's own adoption doc. If the test directory or runner config already exists, it SHALL write nothing, SHALL check the harness against its invariants by reading its files, and SHALL report it already current when it visibly meets them all, or left as it is with one line per invariant it visibly misses, never rewriting it; a missed generated-dirs ignore SHALL be handed back to an adopting caller as lines to offer, never written, and a harness that is a script CI runs SHALL take this same read-only path. Whatever the stack, the harness SHALL honour these invariants: one runner instance (injected into any source-linked helper), a runtime the runner supports, a module mode compatible with the runner, and the runner's output directories added to `.gitignore`, offered rather than written when the run was chained from adoption. One-time prerequisites SHALL be documented in the test directory's README.
 
 #### Scenario: Re-running adopt
 

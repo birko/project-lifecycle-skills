@@ -287,8 +287,10 @@ wording, so the report prints it once, never beside a second wording of the same
   the round, and it is narrow: a **declaration** an owner needs is still passed from here (above), never
   left for its verb to ask. An offer that turns up only inside a delegation is not asked late either. Report it
   under *left alone* as `offered, not asked — found after the round`. **Foresee what you can:** when step 1 knows the
-  stack and finds the test harness missing, the runner's output directories (`.pytest_cache/`, `coverage/`) are
-  foreseeable, so they join the fill item's `.gitignore` letter. Only a line step 1 could not predict, such as one
+  runner, whether it found the test harness missing (the runner this run will wire) or present (the runner already
+  there), that runner's output directories (`.pytest_cache/`, `coverage/`) that the repo's `.gitignore` does not
+  cover are foreseeable, so they join the fill item's `.gitignore` letter. `populate-tests` `adopt` then names the
+  same miss on an existing harness, and the report points at the letter rather than offering the line twice. Only a line step 1 could not predict, such as one
   for a runner chosen on a stack step 1 left undetermined, is the late case.
 
 ### 3. Fill the gaps, in dependency order
