@@ -1,6 +1,6 @@
 ---
 area: project-baseline
-generated-at: c74e8d03c8c25bbd547b970bb073b364f36014c1
+generated-at: bff912b478ba0becd9d61a2ebf5807d9bdbb5b6f
 generated-on: 2026-11-15
 sources:
   - skills/adopt-project/INFER.md
@@ -297,13 +297,13 @@ The system SHALL print a next-step checklist naming `/feature new`, `/tasks new`
 
 ### Requirement: Adoption is idempotent and writes nothing when nothing is owed
 
-The system SHALL let adoption be re-run at any time, never overwriting and never writing unasked; a re-run that finds nothing missing, nothing `present, uncommitted` and no owner reconciliation SHALL write nothing at all, while a repo with nothing missing MAY still have an artifact landed or reconciled.
+The system SHALL let adoption be re-run at any time, never overwriting and never writing unasked; a re-run that finds nothing missing, nothing `present, uncommitted` and no owner reconciliation SHALL write nothing of its own — the owner verbs it chains still regenerate their generated files by their own rules, reported as regenerated — while a repo with nothing missing MAY still have an artifact landed or reconciled.
 
 #### Scenario: Fully current repo
 
 - **Given** every row is present, committed and every delegated owner reports already current
 - **When** adoption is re-run
-- **Then** no file changes and no commit is offered
+- **Then** no file changes but the generated files the chained owner verbs re-render, and no commit is offered
 
 #### Scenario: Earlier pass left a file uncommitted
 
@@ -593,7 +593,7 @@ The system SHALL put proposals, outstanding declarations (task-tracking mode, in
 
 ### Requirement: Gaps are filled in dependency order by delegation, never overwriting
 
-The system SHALL fill in the inventory's order — brief and agent guide, then `docs/features/`, then `/tasks init`, then every other fill, then `/specs init` handed the paths this run wrote, with the guide's `## Commands` section rendered after every fill so it reads the harness and CI those fills create; SHALL never overwrite a file the repo owns, reporting the conflict instead; SHALL offer a missing guide section rather than append it (`## Commands` by name, its text rendered at the end of the run, with a runner config counting as a source of its commands), appending nothing with no answer and reporting each as offered and unanswered; SHALL let no chained verb write into another file the repo owns, taking such lines back as an offer; SHALL render the features index only through `/feature status` or its template's rules; SHALL offer the `!.env.example` negation only where that row applies; SHALL offer no CI step the repo cannot pass today, leaving the test step out while there are no tests and saying so; SHALL not fill an `unknown` row; SHALL always delegate where a row names a verb regardless of presence, unless the row's own cell states a terminating condition (a working test runner is already adopted, where working means any rung of the harness evidence ladder, with nothing built or run, and is answered separately from whether CI can build in isolation; a ladder that cannot tell makes the row `unknown`, asked in the round and never wired without an answer; a repo with no source to test is `missing, not offered: nothing to test yet`); SHALL suppress a prescribed action when the repo already carries what it would produce, reporting the suppression, while firing it when unsure; and SHALL map the owner's answer to the report — already current → `present`, brought up to date → `amended`, created → created, declined or impossible → stays `present, outdated`, unable to tell → `unknown` naming the verb.
+The system SHALL fill in the inventory's order — brief and agent guide, then `docs/features/`, then `/tasks init`, then every other fill, then `/specs init` handed the paths this run wrote, with the guide's `## Commands` section rendered after every fill so it reads the harness and CI those fills create; SHALL never overwrite a file the repo owns, reporting the conflict instead; SHALL offer a missing guide section rather than append it (`## Commands` by name, its text rendered at the end of the run, with a runner config counting as a source of its commands), appending nothing with no answer and reporting each as offered and unanswered; SHALL let no chained verb write into another file the repo owns, taking such lines back as an offer; SHALL render the features index only through `/feature status` or its template's rules; SHALL offer the `!.env.example` negation only where that row applies; SHALL offer no CI step the repo cannot pass today, leaving the test step out while the repo holds no test file its runner would collect, whatever the test-harness row says, and saying so; SHALL not fill an `unknown` row; SHALL always delegate where a row names a verb regardless of presence, unless the row's own cell states a terminating condition, which no row does today (the test-harness row delegates with a working runner too, where working means any rung of the harness evidence ladder, and `populate-tests` there builds, runs and writes nothing, checking the harness by reading and answering already current or left as it is with each miss named; whether CI can build in isolation is answered separately; a ladder that cannot tell makes the row `unknown`, asked in the round and never wired without an answer; a repo with no source to test is `missing, not offered: nothing to test yet`); SHALL suppress a prescribed action when the repo already carries what it would produce, reporting the suppression, while firing it when unsure; and SHALL map the owner's answer to the report — already current → `present`, brought up to date → `amended`, created → created, declined or impossible → stays `present, outdated`, unable to tell → `unknown` naming the verb.
 
 #### Scenario: README already has the pointer
 
@@ -605,7 +605,7 @@ The system SHALL fill in the inventory's order — brief and agent guide, then `
 
 - **Given** a repo whose CI runs `dotnet test` successfully
 - **When** the test-harness row is filled
-- **Then** `/populate-tests adopt` is not run and the row reports the repo already adopted
+- **Then** `/populate-tests adopt` runs, reads the harness without building, running or writing anything, and the row reports `present` when it is already current, or `present, outdated` naming each invariant it visibly misses
 
 #### Scenario: Owner cannot tell
 

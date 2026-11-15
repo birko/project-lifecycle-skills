@@ -18,7 +18,9 @@ So it is **idempotent by design**: re-run it any time. Nothing is ever overwritt
 already owns is changed unasked. An artifact the layer lacks is created, because creating it is what the
 invocation asked for (step 3). *Idempotent* is not *read-only*: a repo with nothing **missing** can still have
 an artifact landed (present on disk, never committed) or reconciled by its owner (present in an older
-shape). A re-run that finds neither writes nothing at all.
+shape). A re-run that finds neither writes nothing of its own. The owner verbs it chains still regenerate their
+generated files by their own rules (a dashboard's `_Generated …_` timestamp), and the report lists those under
+*regenerated*, as the verb's write, never as an adoption change.
 
 ## What it does not do
 
@@ -459,7 +461,7 @@ disk, and branch:
 
 | The comparison shows | Do this |
 |---|---|
-| a pure no-op, including a re-render that differs from the file on disk **only in its `_Generated …_` timestamp line** (this governs 3c's own re-runs; an owner verb chained in step 3 regenerates by its own rules, as `/tasks init` rewrites its dashboard every run, and that write is reported under *regenerated* as the verb's) | **write nothing, and say nothing.** A re-run that finds nothing to do still writes nothing at all — that invariant outranks the tidiness of mentioning it. A landing or an amendment whose re-run turns out to be a no-op is this row too |
+| a pure no-op, including a re-render that differs from the file on disk **only in its `_Generated …_` timestamp line** (this governs 3c's own re-runs; an owner verb chained in step 3 regenerates by its own rules, as `/tasks init` rewrites its dashboard every run, and that write is reported under *regenerated* as the verb's) | **write nothing, and say nothing.** A re-run that finds nothing to do writes nothing of its own — that invariant outranks the tidiness of mentioning it. A landing or an amendment whose re-run turns out to be a no-op is this row too |
 | only added or updated **derivable** rows | regenerate, and report it under `regenerated` |
 | content the verb **cannot reproduce** would be removed | **stop.** Report what would be lost and where it belongs; offer, never assume |
 

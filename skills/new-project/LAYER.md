@@ -33,7 +33,7 @@ file is the project's own, and the row says only what each front door does with 
 | `.env.example` **(conditional — does anything here *require* an environment variable to run?)** | [[new-project]] seed | Yes → absent is **missing**; it is the documented, valueless template of required env vars, and the real `.env` stays ignored *except for this file* (see the `.gitignore` row). No → **not applicable** — *typically* a library, a CLI or a desktop app, but **read those as evidence, not as the answer**: a CLI that will not start without an API key is a Yes, and answering from the kind is the defect § *Conditional rows* opens on. Cannot tell → **unknown**, resolved in step 2's round. **A build-time variable is not a Yes, and "here" stops at this repo** — § *Conditional rows* owns both, with `BIRKO_SRC` as the worked example. Present → **leave it**; whether it still lists the right variables is content, not shape. |
 | `Dockerfile` (+ `.dockerignore`) **(conditional — is anything here deployed as a running service?)** | [[new-project]] seed | Yes → absent is **missing**, offered and never forced. No → **not applicable** — *typically* a library, a CLI or a desktop app, but **read those as evidence, not as the answer**: a CLI shipped as a hosted container job is a Yes. Cannot tell → **unknown**, resolved in step 2's round. **A container job is a Yes only on evidence of one** (a job or scheduler manifest, a deploy workflow, a container reference in CI). Without such evidence, a component whose entry point does its work and exits is a derived No, by the run-mode rule in § *Conditional rows*. Present → **leave it.** Where a stack scaffolder documents its own Docker pattern, that pattern owns the shape and this row only asks whether one exists. |
 | `.gitattributes`, `.editorconfig` | — | Create if absent; leave if present. **Content:** [[new-project]]'s step 3 bullets for each, the one shape both doors write (`* text=auto eol=lf`, plus binary markers the stack needs; UTF-8, a final newline, the stack's idiomatic indent). |
-| Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode. A repo with a working runner is already adopted — say so and move on. **Working means the repo already uses a runner, read off § *Detect what the repo has*'s evidence ladder for this row: any rung present is a working runner.** Nothing is built or run to decide it. Whether the build succeeds on a clean machine is a different question, and the CI gate row answers it (§ *CI a repo cannot pass*), so a repo can be `present` here and `missing, not offered` there with no contradiction. **When the ladder cannot tell** (test files with no config, no manifest runner and no step that runs them), the row is `unknown`, and step 2's round asks **"Does this repo already run its tests? If so, how?"**. With no answer, wire nothing. This reverses the usual *when you cannot tell, the action fires*, on purpose: the action here wires a second runner, which is harder to undo than one question. **A repo with no source code to test** (docs or prose only, and no checks script) is `missing, not offered`, with the reason `nothing to test yet`, re-derived every run. |
+| Test harness | [[populate-tests]] | Delegate to `populate-tests` in `adopt` mode, **with a working runner too**: there it builds and runs nothing and writes nothing, and checks the harness against its invariants by reading, answering *already current* (→ `present`) or *left as it is* with each visible miss named (→ `present, outdated`). Stopping at "a runner exists" would report the harness current with nobody having looked (TASK-382). **Working means the repo already uses a runner, read off § *Detect what the repo has*'s evidence ladder for this row: any rung present is a working runner.** Nothing is built or run to decide it. Whether the build succeeds on a clean machine is a different question, and the CI gate row answers it (§ *CI a repo cannot pass*), so a repo can be `present` here and `missing, not offered` there with no contradiction. **When the ladder cannot tell** (test files with no config, no manifest runner and no step that runs them), the row is `unknown`, and step 2's round asks **"Does this repo already run its tests? If so, how?"**. With no answer, wire nothing. This reverses the usual *when you cannot tell, the action fires*, on purpose: the action here wires a second runner, which is harder to undo than one question. **A repo with no source code to test** (docs or prose only, and no checks script) is `missing, not offered`, with the reason `nothing to test yet`, re-derived every run. |
 | CI gate | — | Present → leave. Absent → offer a minimal install→build→test workflow for the detected stack — **but only if the repo can build in isolation**; see *CI a repo cannot pass* below. |
 
 ## Delegation follows the row, not the artifact's appearance
@@ -44,10 +44,10 @@ only the owner knows its own current shape — `/tasks init` and `/specs init` a
 work this way today.
 
 Read the *whole* cell, though, because a cell can name a verb **and** state its own terminating
-condition, and then that condition wins. The test-harness row does exactly this: it delegates to
-`populate-tests` in `adopt` mode *and* says a repo with a working runner is already adopted. Both
-sentences are the row talking — the second tells you what the delegation would have reported, so
-honour it and move on rather than running the verb to be told the same thing.
+condition, and then that condition wins: honour it rather than running the verb. No row does that
+today. The test-harness row did ("a repo with a working runner is already adopted — move on") until
+TASK-382, which found it meant the harness was reported current with nobody having looked, so the row
+now delegates in that case too and the verb reads the harness.
 
 Two kinds of row are **not** delegations at all:
 
@@ -824,9 +824,10 @@ suppressed necessary one costs them the artifact.
 
 ## CI a repo cannot pass
 
-**Never offer a workflow step the repo cannot pass today.** A repo with no tests yet (the test-harness row
-`missing`, or wired this run with no test file) gets a workflow whose test step is left out, and the offer says
-so: `CI offered without a test step — no tests yet; add it with the first test`. A test runner that collects
+**Never offer a workflow step the repo cannot pass today.** A repo with no tests yet gets a workflow whose test step is left out, and the offer says
+so: `CI offered without a test step — no tests yet; add it with the first test`. **No tests yet** means the repo
+holds no test file its runner would collect, whatever the test-harness row says: `missing`, wired this run, or
+`present` because a runner is configured with nothing to run. A test runner that collects
 nothing fails (`pytest` exits 5), so including the step would land a red gate on its first run. A repo with
 nothing to build and no tests is `missing, not offered: nothing to run yet`, re-derived every run. **Nothing to
 build** means the stack needs no compile or package step: an interpreted script with no manifest has none.
