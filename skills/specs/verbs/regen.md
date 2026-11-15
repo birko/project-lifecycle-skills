@@ -106,6 +106,12 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 
 5d. **Write + stamp** (accepted areas only): write `docs/specs/<area>.md` with frontmatter — `generated-at:` current `git rev-parse HEAD` (or omit sha in a non-git project and rely on `generated-on:`), `generated-on:` today, `sources:` the resolved file list, `shaped-by:` per step 5a, `shaped-by-derived:` per step 5b and `shaped-by-unresolved:` per step 5b (absent when derivation did not run), and **`source-commits:` per step 5c** (absent when every source is in-repo).
 
+   **Keep the file's line endings.** A spec that exists is rewritten with the endings it already has: CRLF when its
+   first line ends in `\r\n`, LF otherwise. A new spec takes the endings the repo declares for its path
+   (`git check-attr eol -- docs/specs/<area>.md` printing `lf` or `crlf`), and LF when nothing is declared or the
+   project has no git. A rewrite that flips them turns the review into a whole-file diff and buries the requirement
+   that changed (FEATURE-004 D6).
+
    > `generated-at` is a **floor, not the staleness anchor.** It records what HEAD was when the harvest read the tree, and the spec is committed after that — usually alongside the very sources it was written from. [verify](verify.md) therefore anchors on the later of this stamp and the spec's own last commit. **Do not try to make the stamp exact by re-stamping after the commit**: it needs an amend or a second commit, neither of which works on a dirty tree or in a non-git project, and the stamp would still be wrong for anyone who commits differently. The stamp stays honest about what it knows; the reader resolves the rest.
 
 6. **Unmapped check:** glob project sources not matched by any area or `ignore` entry; if any, list them and suggest `.map.yml` additions (don't auto-edit the map — it's the human-owned file).

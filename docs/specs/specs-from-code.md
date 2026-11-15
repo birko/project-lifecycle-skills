@@ -366,7 +366,7 @@ The system SHALL show each changed area's spec diff and classify every behaviour
 
 ### Requirement: Accepted specs are written with a provenance stamp
 
-The system SHALL write each accepted area's spec with frontmatter naming the area, `generated-at` as the HEAD commit at harvest time (omitted in a non-git project), `generated-on` as today's date, the resolved `sources`, `shaped-by`, `shaped-by-derived`, `shaped-by-unresolved` only when derivation ran, and `source-commits` only when a source is outside the repository; `generated-at` SHALL be treated as a floor and never re-stamped after the spec is committed.
+The system SHALL write each accepted area's spec with frontmatter naming the area, `generated-at` as the HEAD commit at harvest time (omitted in a non-git project), `generated-on` as today's date, the resolved `sources`, `shaped-by`, `shaped-by-derived`, `shaped-by-unresolved` only when derivation ran, and `source-commits` only when a source is outside the repository; `generated-at` SHALL be treated as a floor and never re-stamped after the spec is committed. It SHALL rewrite an existing spec with the line endings it already has, CRLF when its first line ends in CRLF and LF otherwise, and SHALL write a new spec with the endings the repository declares for its path, LF when none is declared.
 
 #### Scenario: Dirty working tree
 
