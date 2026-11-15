@@ -1,6 +1,6 @@
 # Features — project-lifecycle-skills
 
-_Generated 2026-11-14 16:40 by `/feature status`. **Do not hand-edit** — re-run the verb. The human entry point to the stakeholder-facing feature tree; each row links to a feature folder._
+_Generated 2026-11-15 10:32 by `/feature status`. **Do not hand-edit** — re-run the verb. The human entry point to the stakeholder-facing feature tree; each row links to a feature folder._
 
 ## Features
 
