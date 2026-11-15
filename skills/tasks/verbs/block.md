@@ -19,9 +19,9 @@ blocks itself (its § *A run that ends without a fix*). Report the files left un
 
 1. **Find task root**; locate the TASK file by ID (Grep `^id: TASK-NNN[[:space:]]*$`).
 2. **Parse args**:
-   - `<ID>` — required (tasks only — EPIC/STORY don't carry `blocked`).
+   - `<ID>` — required (tasks only — EPIC/STORY don't carry `blocked`; a story's work is held by blocking its tasks, and a task waiting on a whole story names it with `--on`).
    - `--reason "<text>"` — recommended (why it's blocked).
-   - `--on <TASK-NNN[,TASK-NNN…]>` — optional: the task(s) this is waiting on. Adds them to `depends-on` (deduped) so the block is *structural*, not just a status flag.
+   - `--on <ID[,ID…]>` — optional: the task(s) or story(ies) this is waiting on (`TASK-NNN` or `STORY-NNN`, [slicing.md](../slicing.md) § *Where the edges live*). Adds them to `depends-on` (deduped) so the block is *structural*, not just a status flag.
 3. **Read current status**:
    - `done`/`cancelled` → refuse ("can't block finished work").
    - Already blocked by either form → warn ("already blocked: <reason>") and stop, before step 3b asks anything.
@@ -37,7 +37,7 @@ blocks itself (its § *A run that ends without a fix*). Report the files left un
 3b. **Settle the reason, before anything is written.** Steps 4 and 5 both write it, so it is fixed here.
    With `--reason` given and not empty, it is that text.
    **When `--reason` is omitted or empty:**
-   - **With `--on`**, the reason is `waiting on <TASK-NNN>[, <TASK-NNN>…]`, and nothing is asked. The caller
+   - **With `--on`**, the reason is `waiting on <ID>[, <ID>…]` (a task or story id), and nothing is asked. The caller
      named what the task waits on, which is the reason. [spawn](spawn.md) blocks its origin this way.
    - **Without `--on`**, put this question:
 

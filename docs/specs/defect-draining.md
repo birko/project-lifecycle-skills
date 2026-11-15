@@ -1,6 +1,6 @@
 ---
 area: defect-draining
-generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-at: b92f2ed1dcdc5ebc0013350c05861a23e5d6ec64
 generated-on: 2026-11-15
 sources:
   - skills/fix-next/SKILL.md
@@ -117,7 +117,7 @@ The system SHALL keep a blocked task in the pool — whether `todo` with a `bloc
 
 ### Requirement: Unmet dependencies and decision tasks are excluded
 
-The system SHALL exclude from the pool any task with an unmet `depends-on`, except a blocked task, which stays even when its block is one of those dependencies; and SHALL exclude any task whose acceptance is to decide something, surfacing such decision tasks in the closing report instead.
+The system SHALL exclude from the pool any task with an unmet `depends-on` — a task or a story not yet done — except a blocked task, which stays even when its block is one of those dependencies; and SHALL exclude any task whose acceptance is to decide something, surfacing such decision tasks in the closing report instead.
 
 #### Scenario: A plain unmet dependency
 

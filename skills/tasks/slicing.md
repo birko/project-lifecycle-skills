@@ -97,9 +97,20 @@ how bad a defect is. Measure it this way:
 ## Where the edges live
 
 Edges go on **task frontmatter, on both sides**: `blocks:` on the earlier task, `depends-on:` on the
-later one. If the sequence has no parent yet, creating it comes first. `STORY.md` has no edge fields,
-so keep the whole sequence under one parent (give the same story at `new`'s parent step for every
-task) and let the task files carry the order.
+later one. If the sequence has no parent yet, creating it comes first. Keep a wide refactor's whole
+sequence under one parent (give the same story at `new`'s parent step for every task) and let the task
+files carry the order.
+
+**A task's `depends-on:` may also name a story**: the task waits until that story is `done` or
+`cancelled`. That is how one story waits on another. `STORY.md` and `EPIC.md` carry **no edge fields of their
+own**, because order matters only where there is work to pick, and that is always a task: a story with no tasks
+has nothing to start out of turn. So the story that waits records it on its tasks, from the first one created
+under it (`depends-on: [STORY-NNN]`). Three limits travel with it:
+- **One side only.** A story has no `blocks:` field, so nothing is written on the story waited on.
+- **Tasks and stories only.** An epic id in `depends-on:` is a broken link: name the story inside it that the
+  work actually waits for.
+- **Never the task's own parent story.** It cannot finish before the task does, so the edge is a cycle, and
+  `audit` reports it as one.
 
 - Create each task with `/tasks new task --no-plan` (add `--from-feature FEATURE-NNN` from `decompose`), then write the edges in the same change.
 - **Do not use `/tasks block --on`** to record order: it also marks blocked (the `blocked:` field) a task that is

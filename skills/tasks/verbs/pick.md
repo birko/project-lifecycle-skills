@@ -572,4 +572,4 @@ Filter open tasks, present them, mark the chosen one in-progress, present its bo
   blocked: <reason>` and stop. Starting blocked work, or clearing someone's block unasked, overrides a
   decision a person made.
 - **Task is `done` or `cancelled`** — error; suggest `/tasks new` if user wants to redo work.
-- **Dependencies not met** — if `depends-on:` lists tasks that aren't `done`, warn but don't block. Print which dependencies are still open.
+- **Dependencies not met** — if `depends-on:` lists a task or a story that isn't `done` ([slicing.md](../slicing.md) § *Where the edges live*), warn but don't block. Print which dependencies are still open, naming a story as `STORY-NNN (story, <status>)`.

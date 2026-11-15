@@ -9,6 +9,7 @@ priority: {{PRIORITY}}
 # assignee — one of: agent (default), unassigned, human, or an installed agent type's name; ai is read as agent, never written
 assignee: {{ASSIGNEE}}
 created: {{CREATED}}
+# depends-on: task or story ids this task waits for — see the tasks skill's slicing.md § Where the edges live
 depends-on: []
 blocks: []
 # findings: ids this task remediates — from a review/audit/harvest/drill pass, or from ordinary

@@ -59,7 +59,9 @@ _This epic owns the brief-level requirements. No status column — status is rea
 
 ## Sequence
 
-The STORY template carries no `blocked-by` field, so the dependency edges live here.
+Kept as narrative (TASK-001, 2026-11-15). Stories carry no edge fields by design: when a waiting story is decomposed,
+its first task carries the edge as `depends-on: [STORY-NNN]`, which `pick` and `audit` read. Until then the
+order lives here, because a story with no tasks has nothing to start out of turn.
 
 | Story | Blocked by | Why |
 |---|---|---|

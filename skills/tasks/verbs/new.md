@@ -180,6 +180,12 @@ Interactive scaffold of a new task tree node.
      **Unless a caller set it or the request states it.** **No answer, or nobody to ask:** write `[]` and mark `affects` (§ *Unanswered questions*). The template
      always renders the line, and a bare `[]` reads as "affects nothing". An answer of `none` writes `[]`, unmarked.
    - `{{TITLE}}` — the title from step 3
+   - `depends-on:` (not a token; the task template renders `[]`) — left as `[]` unless the request names what the new
+     item waits on, and **never asked for**: an unstated wait is no wait. For a **task**, write the named task or
+     story ids, and add this task's id to the `blocks:` of each **task** named (a story has no `blocks:`). A
+     **story** or **epic** carries no edge field: write the wait as one line under its `# Heading` (`Waits on STORY-NNN.`), and step 13's
+     confirmation says its first task will carry `depends-on: [<id>]` ([slicing.md](../slicing.md) § *Where the
+     edges live*)
 
 9. **For task: offer to draft body sections** (Context / Acceptance / Out-of-scope / **Human test plan**) using any context already in the conversation. User reviews/edits before writing. If you can't draft confidently, leave the templates' placeholder copy and tell the user to fill it in.
    Put this question, naming only the sections no step-0 flag drafted, in this order: Context, Acceptance
@@ -246,6 +252,8 @@ Interactive scaffold of a new task tree node.
       cancelled parent step 4 declined to reopen, and any cancelled epic step 10 left over open work, each
       with its report line
     - **Every `record/<ID> is unlanded …` or `record/<ID> not checked: <reason>` line** step 10's check produced
+    - **A wait step 8 recorded**: `depends-on: <ids>` for a task (and each task whose `blocks:` gained it); for a
+      story, `waits on <id> — its first task carries depends-on: [<id>]`
     - Next-step hint depending on level:
       - epic → "Add stories with `/tasks new story`"
       - story → "Add tasks with `/tasks new task`"

@@ -44,8 +44,9 @@ Analyze every task and report duplicates, mergeable/splittable items, stale work
    | `old-form` | a task written in the old status vocabulary | `status: review` or `status: blocked` ([SKILL.md](../SKILL.md) § *Lifecycle*). Read correctly as it is; `/tasks init` step 3b rewrites it. Report the count and point there, never fix it here | ⚪ |
    | `contradiction` | a status two fields disagree on | a `blocked:` field on a `done` or `cancelled` task ([SKILL.md](../SKILL.md) § *Lifecycle*) | 🟡 |
    | `stale` | abandoned work | `status: todo`/`in-progress`, `created` far in the past (>~60 days as a default heuristic — compare to today's date), no `pr`/movement | 🟡 |
-   | `broken-links` | dangling references | `depends-on`/`blocks`/`parent`/`feature:` pointing at an ID that doesn't exist, or `depends-on` a task already `done`/`cancelled` (→ a satisfied dependency; also an unblock candidate when the task carries `blocked:`) | 🔴 |
-   | `cycles` | circular deps | walk `depends-on` graph; report any A→…→A cycle | 🔴 |
+   | `broken-links` | dangling references | `depends-on`/`blocks`/`parent`/`feature:` pointing at an ID that doesn't exist; a `depends-on` naming an epic (edges name tasks or stories, [slicing.md](../slicing.md) § *Where the edges live*); or `depends-on` a task or story already `done`/`cancelled` (→ a satisfied dependency; also an unblock candidate when the task carries `blocked:`) | 🔴 |
+   | `cycles` | circular deps | walk `depends-on` graph; report any A→…→A cycle. A task naming its own parent story is one: the story cannot finish before the task does. An epic id is reported under `broken-links` alone, never here as well | 🔴 |
+   | `out-of-order` | work started before what it waits on | a task `in-progress`, `verify` (or `review`) or `done` whose `depends-on` names a task or story that is neither `done` nor `cancelled`. Report it; the order may have been overtaken on purpose, so never edit either side | 🟡 |
    | `incomplete` | not pick-ready | empty/placeholder Acceptance criteria, or `## Human test plan` still holding the template placeholder text (neither real steps nor an explicit `N/A`) | 🟡 |
    | `orphans` | structural gaps | task in `_loose/` that clearly belongs under an existing epic/story; `feature:` set but no such `docs/features/FEATURE-NNN/` | ⚪ |
 
