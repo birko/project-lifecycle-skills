@@ -31,7 +31,7 @@ A good entry survives a rewrite of the code it describes. If it wouldn't, it is 
 ## Invoked cold (`/domain`)
 
 The four behaviours below are keyed on signals that occur mid-conversation, so a cold invocation has no
-signal to react to. It gets one job — **behaviour 4 over what already exists**: read `docs/glossary.md`,
+signal to react to. It gets two jobs. The first is **behaviour 4 over what already exists**: read `docs/glossary.md`,
 cross-reference every entry against the code's type, table and module names, and report the
 contradictions. No glossary yet? Say so, and offer to start one from the terms that are *actually*
 ambiguous in this repo — never from a list of obvious nouns:
@@ -42,6 +42,19 @@ ambiguous in this repo — never from a list of obvious nouns:
 Found no ambiguous term? Say that, and do not offer: a glossary started from nothing is the padded list the
 introduction warns about. **No answer, or nobody to ask:** write no file, and report
 `glossary not started, nobody asked for it: <terms>`. A glossary nobody requested claims the vocabulary was examined.
+
+The second is **a list of decision records whose cited paths changed after the record was written** — facts, never
+a verdict. For each record in `docs/adr/`, skipping the retirement ledger (`0000-retired.md`) and any record that is
+superseded (§ *A record the code has moved past*):
+1. Find the commit that added it: `git log --diff-filter=A --format=%h -1 -- <record>`.
+2. Take every repo path the record names (in backticks or a link) that exists today.
+3. Count the commits since then that touched each one: `git log --format=%h <added>..HEAD -- <path>`.
+
+Report one line per record with any such commit, `ADR NNNN — <title>: <path> changed in <n> commits since <added>`,
+then one line naming the records that cite no path, which this list cannot check. **A path that changed is a
+reason to read the record, not evidence that it drifted**, so the list carries no judgement and asks nothing; the
+reader opens the record, and the live check below applies when they do. No `docs/adr/`, or no git history: say so
+in one line.
 
 That is the whole of the cold path. It is deliberately narrow: the value of this skill is in the other
 three behaviours, and those need a conversation to be applied to.
@@ -87,6 +100,27 @@ while the path stays conventional. **Don't tidy the path later**; the collision 
 its written records, that list wins. The short version:
 an ADR answers *why we chose it* (technical, repo-wide), a feature's `decisions.md` answers *what was
 agreed* (per feature, append-logged). Neither supersedes the other and one is not a draft of the other.
+
+### A record the code has moved past
+
+**Signal:** a grill or a design touches what a record decides (its *Decision* names the area, or the work would
+reinstate one of its *Rejected alternatives*), or the cold path's list sent the reader here. Re-read the record
+against the code it describes, and when the two disagree, put this question:
+
+> **ADR NNNN (<title>) says <its decision>, but <file and what it now does>. Is the record still right, or should
+> a new record supersede it?**
+
+- **Still right:** the code is what moved. Say so; the record stays, and the code is the project's call.
+- **Supersede it:** write a new record under § *The bar*, with `Supersedes: ADR NNNN` under its title, and add one
+  line under the old record's title, `Superseded by ADR MMMM (YYYY-MM-DD).` **Never rewrite the old record's
+  Decision**: its reasoning is the history the new record answers. A record carrying that line, or named by
+  another's `Supersedes:`, is superseded; [[improve-architecture]] reads the same two marks.
+- **No answer, or nobody to ask:** change nothing and report `unresolved: ADR NNNN may no longer hold — <the
+  evidence>`.
+
+This is the only check of a record's content, and it runs on touch, never as a sweep: whether a record still
+matches the code is a judgement over prose, and a sweep making that judgement everywhere raises more false alarms
+than findings and gets ignored (SH-93, TASK-352).
 
 ### The bar is a conjunction — all three, or no record
 

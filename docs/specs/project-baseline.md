@@ -1,7 +1,7 @@
 ---
 area: project-baseline
-generated-at: 6b7e45c0ed50329493b6b3ffcd529d73e2b47fbb
-generated-on: 2026-11-14
+generated-at: c74e8d03c8c25bbd547b970bb073b364f36014c1
+generated-on: 2026-11-15
 sources:
   - skills/adopt-project/INFER.md
   - skills/adopt-project/SKILL.md

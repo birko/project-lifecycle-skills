@@ -1,6 +1,6 @@
 ---
 area: glossary-and-adrs
-generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-at: c74e8d03c8c25bbd547b970bb073b364f36014c1
 generated-on: 2026-11-15
 sources:
   - skills/domain/SKILL.md
@@ -49,9 +49,9 @@ The system SHALL keep out of the glossary any definition that names a file, clas
 - **When** someone proposes adding it to the glossary
 - **Then** it stays a question in the feature's `idea.md` rather than becoming an entry
 
-### Requirement: A cold invocation cross-references the existing glossary against the code and nothing else
+### Requirement: A cold invocation cross-references the glossary and lists records whose cited paths changed
 
-The system SHALL, when invoked as `/domain` without a mid-conversation signal, read `docs/glossary.md`, cross-reference every entry against the code's type, table and module names, and report the contradictions; when no glossary exists it SHALL say so and offer to start one only from terms that are actually ambiguous in the repo, never from a list of obvious nouns. Finding no such term, it SHALL say so and not offer. With no answer to the offer it SHALL write no file and report the candidate terms as `glossary not started`. The cold path SHALL do nothing beyond this — in particular it does not read `docs/adr/`.
+The system SHALL, when invoked as `/domain` without a mid-conversation signal, read `docs/glossary.md`, cross-reference every entry against the code's type, table and module names, and report the contradictions; when no glossary exists it SHALL say so and offer to start one only from terms that are actually ambiguous in the repo, never from a list of obvious nouns. Finding no such term, it SHALL say so and not offer. With no answer to the offer it SHALL write no file and report the candidate terms as `glossary not started`. It SHALL also list, for each decision record that is neither the retirement ledger nor superseded, every path the record names that changed in commits after the commit that added the record, one line per record, and name the records that cite no path; the list SHALL carry no verdict and ask nothing. The cold path SHALL do nothing beyond these two.
 
 #### Scenario: Glossary disagrees with a type name
 
@@ -64,6 +64,12 @@ The system SHALL, when invoked as `/domain` without a mid-conversation signal, r
 - **Given** a repo with no `docs/glossary.md`
 - **When** the user runs `/domain`
 - **Then** the run says there is no glossary and offers to start one from the repo's genuinely ambiguous terms, not from a list of common nouns
+
+#### Scenario: A record whose cited path changed
+
+- **Given** `docs/adr/0002-queue.md`, added in commit `a1b2c3d`, names `src/queue.ts`, which three later commits changed
+- **When** the user runs `/domain`
+- **Then** the run prints `ADR 0002 — <title>: src/queue.ts changed in 3 commits since a1b2c3d`, and judges nothing
 
 ### Requirement: Challenge a defined term used to mean something else, at the moment it happens
 
@@ -194,6 +200,16 @@ The system SHALL number records `NNNN`, zero-padded, allocated in order and neve
 - **Given** records `0005`, `0006` and `0007`, and `0006` is withdrawn
 - **When** it is deleted
 - **Then** `0006` is never reused and `0000-retired.md` gains one line naming `0006` and why it was withdrawn
+
+### Requirement: A record the work touches is re-read, and superseded rather than rewritten
+
+The system SHALL, when a grill or design touches what a decision record decides, re-read the record against the code it describes and, where they disagree, ask whether the record still holds or a new record should supersede it. Superseding SHALL write a new record carrying `Supersedes: ADR NNNN` and add one `Superseded by ADR MMMM (date).` line under the old record's title, never rewriting its Decision; with no answer it SHALL change nothing and report the record as possibly no longer holding, with the evidence. It SHALL NOT sweep the records for a verdict.
+
+#### Scenario: A cited rule has changed
+
+- **Given** ADR 0003 decides that sessions expire after 30 minutes, and the session module now sets 8 hours
+- **When** a design that touches session handling is grilled with no one answering
+- **Then** the run reports `unresolved: ADR 0003 may no longer hold` with the module and its value, and neither file changes
 
 ### Requirement: Every decision record carries four parts
 
