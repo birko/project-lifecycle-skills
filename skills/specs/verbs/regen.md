@@ -23,6 +23,14 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    - **Stable-wording rule:** change only what the code contradicts; keep untouched requirements verbatim so the diff means "behavior changed", not "rephrased". First-ever harvest of an area writes the full spec (no diff review — nothing to compare; just present the new spec for a skim).
 
 3. **`--all` fan-out:** harvest areas in parallel via the Workflow tool (one agent per area, each returning the new spec body); then run the diff reviews **serially** — review is a human conversation, not a fan-out.
+   - **Write each area as soon as its review is accepted.** Carry an accepted area through step 5 (derive, stamp,
+     write) before the next review starts, so an interrupted run keeps every area already accepted; a run that wrote
+     nothing until the last review loses them all (FEATURE-004 D5, after OpenSpec v1.14.1).
+   - **A re-run skips what an earlier run already wrote.** Before harvesting, run [verify](verify.md)'s staleness
+     check for each area. An area that is fresh, and whose resolved file list equals its spec's `sources:`, is
+     reported `already current — <area> written by an earlier run, its sources unchanged since` and is neither
+     harvested nor reviewed. Any other area is harvested as usual. The file-list comparison is what catches a map
+     whose globs changed while no source file did.
 
 4. **Diff review (per changed area):**
    - **Show the diff one requirement at a time**, never as a whole-file diff, where a renamed or reworded requirement
@@ -181,7 +189,7 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
    Report the count in step 7 even when it is zero — a check whose output is invisible when it passes is
    indistinguishable from one that never ran.
 
-7. **Confirm:** per area — regenerated / unchanged / rejected; findings raised; unmapped count; and the two provenance numbers from step 5b (`shaped-by-derived`, `shaped-by-unresolved`) plus how many tasks the state gate rejected while a commit led its subject with their id — that last count is a trail contradiction someone should fix at the source, and it is invisible unless this step prints it. Suggest committing the spec changes with the related work (don't auto-commit).
+7. **Confirm:** per area — regenerated / unchanged / rejected / already current (step 3's skip on a re-run); findings raised; unmapped count; and the two provenance numbers from step 5b (`shaped-by-derived`, `shaped-by-unresolved`) plus how many tasks the state gate rejected while a commit led its subject with their id — that last count is a trail contradiction someone should fix at the source, and it is invisible unless this step prints it. Suggest committing the spec changes with the related work (don't auto-commit).
 
 ## Edge cases
 

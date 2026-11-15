@@ -338,7 +338,7 @@ The system SHALL, in a regen's review, measure the statement of every requiremen
 
 ### Requirement: Fan-out harvests in parallel and reviews serially
 
-The system SHALL, under `--all`, harvest areas in parallel with one agent per area and then run the diff reviews one at a time.
+The system SHALL, under `--all`, harvest areas in parallel with one agent per area and then run the diff reviews one at a time. Under `--all` each accepted area SHALL be written before the next review starts, so an interrupted run keeps every area already accepted; a re-run SHALL report an area `already current` and neither harvest nor review it when its spec is fresh and its resolved file list equals the spec's `sources`.
 
 #### Scenario: Many areas
 
