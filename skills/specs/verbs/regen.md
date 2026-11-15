@@ -25,8 +25,25 @@ Regenerate spec(s) from code, present the spec diff as a behavioral-change revie
 3. **`--all` fan-out:** harvest areas in parallel via the Workflow tool (one agent per area, each returning the new spec body); then run the diff reviews **serially** — review is a human conversation, not a fan-out.
 
 4. **Diff review (per changed area):**
-   - Show the spec diff (old vs new — `git diff` if the old spec was committed, otherwise render both).
-   - Classify each behavioral change in the diff:
+   - **Show the diff one requirement at a time**, never as a whole-file diff, where a renamed or reworded requirement
+     reads as a large change and hides the one clause that moved. Pair the old spec's `### Requirement:` blocks with
+     the new one's, then list each entry under one class:
+
+     | Class | When | Shown |
+     |---|---|---|
+     | **changed** | the same name in both, with any line of its statement or scenarios different | the name, then only the lines that changed, old and new |
+     | **renamed** | an old block and a new block left unpaired by name whose **statements match** (identical once whitespace is collapsed) | `renamed: "<old name>" → "<new name>"`, plus any scenario lines that changed |
+     | **added** | a new block still unpaired | its full text |
+     | **removed** | an old block still unpaired | its full statement, so the reviewer sees what behaviour is said to be gone |
+
+     **A rename is recognised by its text, never by its name.** Two names that look alike are not evidence: a
+     replacement requirement often borrows its predecessor's name, and pairing on that hides a removal and an
+     addition behind one rename (FEATURE-004 D2, after OpenSpec v1.15.0). A renamed block whose statement was also
+     reworded does not match, so it shows as one removal and one addition, which is what happened to it. A block
+     unchanged in name and text is not listed. Changes outside the requirements (the Purpose, a stamp) follow in one
+     line each; the frontmatter stamps are never presented as behaviour.
+   - Classify each entry above that changes behaviour, one requirement at a time. A rename whose statement and
+     scenarios are otherwise unchanged changes none: it is listed, and not classified.
      - **Matches an approved decision** — when `--story`/`--feature` context resolves to features, check the diff against their `decisions.md` `approved`/`changed` rows. Match → clean.
      - **Intended anyway** — user confirms it's expected (e.g. covered by task acceptance criteria). Ask, once per change:
        > **This spec change has no approved decision behind it: <the change, one line>. Was it intended? Answer yes (and why, for example the task whose criteria cover it) or no.**
