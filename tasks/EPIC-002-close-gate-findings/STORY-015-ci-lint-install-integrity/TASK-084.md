@@ -3,7 +3,7 @@ id: TASK-084
 parent: STORY-015
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-08-31
@@ -14,6 +14,7 @@ findings: [CR-027-1]
 pr: null
 github-issue: null
 jira-key: null
+picked-by: fix-next
 ---
 
 # A documented probe-and-read rule has nothing that can pin it, and this one has been wrong twice
@@ -76,13 +77,24 @@ and worth naming precisely: *a skill instruction that names a shell command and 
 output*. Most skill prose is judgement and cannot be pinned; this kind can, and conflating the two is how
 the task becomes unshippable.
 
+## Decision (2026-11-15, the user)
+
+**No CI check; the reason recorded; and a rule aimed at the pattern all three instances share.**
+- **Why not CI:** the rule is prose an agent reads, and CI cannot run prose. A script (option A) would test its own
+  shell copy of the rule and stay green while `LAYER.md` regressed. A lint tripwire on the sentence (option B) would
+  catch a literal revert but fail every legitimate rewording. A command-plus-reading-rule instruction is pinned by
+  a cold drill against its recorded cases, and for the porcelain rule those are the seven in the table above.
+- **The rule that targets the pattern:** a rule fixed in one verb is searched for in its siblings in the same change.
+  The `init` floor and the `:(glob)` rule were each fixed in one verb and missing from its siblings, and the
+  porcelain rule was fixed one part at a time.
+
 ## Acceptance criteria
 
-- [ ] The seven-case classification is executable and runs in CI, or a **stated, reasoned decision** records why it should not be — silence is not an outcome
-- [ ] If it runs: it fails when the reading rule is reverted to a prefix list (the split above is the acceptance evidence, not a nice-to-have)
-- [ ] The category it covers is defined narrowly enough that the next reader knows what does **not** belong in it
-- [ ] Whatever is chosen, `AGENTS.md` § Testing says it exists — a second test entry point nobody records is a gate nobody runs
-- [ ] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass
+- [x] The seven-case classification is executable and runs in CI, or a **stated, reasoned decision** records why it should not be — silence is not an outcome — the stated, reasoned decision above: not in CI
+- [x] If it runs: it fails when the reading rule is reverted to a prefix list (the split above is the acceptance evidence, not a nice-to-have) — not applicable: nothing runs in CI, by decision
+- [x] The category it covers is defined narrowly enough that the next reader knows what does **not** belong in it — `AGENTS.md` § Testing: an instruction naming a shell command and a rule for reading its output, *not skill prose in general*
+- [x] Whatever is chosen, `AGENTS.md` § Testing says it exists — a second test entry point nobody records is a gate nobody runs — it does, and names the seven cases as the porcelain rule's drill
+- [x] `bash .github/workflows/skills-lint.sh` and `skills-lint-test.sh` both pass — lint OK (20 skills), lint tests 90/90
 
 ## Out of scope
 
@@ -92,9 +104,43 @@ the task becomes unshippable.
 
 ## Human test plan
 
-- [ ] Revert `LAYER.md`'s reading rule to the prefix list and confirm whatever was built goes red
-- [ ] Confirm it stays green with the rule as it stands
+_Rewritten 2026-11-15 by the Decision. The two steps it replaces ("revert the rule and confirm what was built goes
+red", "confirm it stays green") tested a CI mechanism, and none was built._
+
+- [x] Give a cold runner a task fixing a rule in one verb, in a repo where the same rule sits in sibling verbs, and
+      confirm it finds and fixes them
+  - **Passed 2026-11-15**, cold runner: `claude -p --disable-slash-commands --permission-mode acceptEdits` in
+    `%LOCALAPPDATA%/Temp/d084`, the cwd holding only `brief.txt` and an invented repo (this `AGENTS.md`; a `digest`
+    skill whose `daily` and `weekly` verbs, and a separate `standup` skill, all count commits by a `feat:`/`fix:`
+    prefix; a task naming `daily` alone); the coldness probe listed no skills. It fixed all three, citing the rule.
+    Its one reading, that the rule pulls against *never widen the task in hand*, was settled in the same change: a
+    sibling fix is the same fix, named in the task's Outcome.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-084` — leave empty until then._
+Inline, from the decision above.
+
+## Outcome
+
+- **`AGENTS.md` § Working rules:** *a rule fixed in one verb is searched for in its siblings, in the same change*,
+  with the three measured instances, and the line saying it does not widen the task.
+- **`AGENTS.md` § Testing:** a command-plus-reading-rule instruction is pinned by a cold drill, never by CI, with why,
+  and with this task's seven cases as the porcelain rule's drill.
+- **No CI change, no skill file changed.**
+
+**Close gate (inline; `AGENTS.md` only):**
+- **Standards:** two rulebook entries, each with its reason inline.
+- **Intent:** all criteria met, two by the decision.
+- **Correctness:** d084.
+- **Layer parity, security, comments:** not applicable.
+- **CI:** lint and lint tests pass locally; main is unpushed.
+- **Specs:** none affected.
+
+## Progress log
+
+- step 2 — picked; a decision task, in the user's order (after TASK-001)
+- step 4 — decided by the user 2026-11-15: option C
+- step 5 — two AGENTS.md entries
+- step 6 — behavioural: d084 (the scope tension settled after it); lint and lint tests green
+- step 7 — no spec affected
+- step 8 — closed inline; commit in git log

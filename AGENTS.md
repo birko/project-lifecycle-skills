@@ -479,6 +479,13 @@ The skills *are* the product, so their prose is the user interface. This subsect
   the tree that has non-ASCII bytes and no BOM (UTF-8 or UTF-16). Prefer plain ASCII: an editor that does not preserve a BOM drops it
   silently, and the check then fires on the next commit rather than on the machine of the next installer.
 - **The lint has its own tests** — `.github/workflows/skills-lint-test.sh`, **90** cases over a throwaway fixture, run by CI *before* the lint. (The count has moved twelve times — 16 → 25 → 36 → 40 → 43 → 47 → 63 → 66 → 67 → 71 → 75 → 90 — which is TASK-029's whole argument: nothing records what any of them pin, so a case deleted in a refactor is indistinguishable from one that never existed.) It is the repo's only gate, so a silent regression in it disables checking entirely with no signal. A change to `skills-lint.sh` is not done until a case here fails without it.
+- **A skill instruction that names a shell command and a rule for reading its output is pinned by a cold drill,
+  never by CI.** The category is narrow on purpose: a command plus a reading rule (`LAYER.md`'s porcelain probe is
+  the instance), not skill prose in general, which is judgement. CI cannot run the prose an agent reads, so a
+  script would test its own shell copy of the rule and stay green while the prose regressed; a lint tripwire on the
+  sentence would fail every legitimate rewording instead. So a change to such an instruction is drilled against its
+  recorded cases — for the porcelain rule, the seven in TASK-084's table, where the old prefix-list reading scores
+  4/7 and the rule 7/7 (TASK-084).
 - **The lint is the floor, not the ceiling.** A skill's real test is a **drill**: install it and run it end-to-end against a real repo. Every non-trivial skill change carries that drill as its `## Human test plan`. **What a drill is, and when it is worth its cost, is `skills/populate-tests/SKILL.md` § *The cold drill*** — this repo's product is prose an agent reads, so the reader must be **cold** and the brief must withhold the plan's expected answer, or the test degrades into a confirmation. That section also owns the fixture rule that bites here constantly: **a change justified by naming a repo cannot be drilled on that repo**, and its twin, **a skill's examples are invented, never copied from a repo it is drilled on**, and this repo's habit of measured justification disqualifies fixtures faster than any other. Pointer, not a second copy.
 - Every new skill gets at least one lint-visible invariant (resolvable links, present frontmatter) and a drill recorded on its task. Its task also upgrades every plain-text mention of the new skill in `skills/` to a `[[link]]` (§ *Framework / stack*, cross-skill references).
 - **A drill record names how its runner was obtained** — the command, the working directory, and the result of the coldness check. *Cold* is two conditions, not one: the brief withholds the change, **and** the runner's context does not already hold the subject. The second is not controlled by the brief and is not closed by changing repository — this repo's own skills are installed at user level, so every agent on the machine holds them. `skills/populate-tests/SKILL.md` § *Acquiring a cold runner* owns the channels, the confirmation signals and the measured instance; this is the pointer. Recording only the brief is what made TASK-079's first two readers permanently unclassifiable.
@@ -581,6 +588,15 @@ stay byte-identical; TASK-146 makes the lint enforce it.*
 ### Working rules
 - **Task-first gate (hard rule):** for non-trivial work the task exists (`status: todo`, with acceptance criteria) **before any editing**, and work starts by picking it (`/tasks pick`). Editing before the task is a lifecycle violation, not a style choice. If you catch edits already made without a task, **stop**: backfill the task with honest status, then continue.
 - **Plan before implementing.** A non-trivial task gets its `## Implementation plan` before work starts.
+- **A rule fixed in one verb is searched for in its siblings, in the same change.** Before closing a fix to a
+  rule (a command and how to read its output, a floor on a scan, how a glob matches), grep the other verbs and
+  skills that do the same job for the same command or rule, and fix each one that has the old form, or say in the
+  task why it differs. Measured three times on TASK-084: `/specs init` lacked the empty-scan floor `regen` had been
+  given with evidence; `init` and `regen` lacked the `:(glob)` rule `verify` owned; and `LAYER.md`'s porcelain
+  rule was fixed one column at a time (TASK-018, then TASK-027). Nothing mechanical notices a sibling left behind,
+  so the search is the fixer's. **This does not widen the task:** the same defect in another place is the same fix,
+  so the rule below on new scope does not apply to it. Name each sibling fixed in the task's Outcome, so the diff
+  beyond the files its criteria named is accounted for.
 - **New scope discovered mid-work gets its own task** — offer `/tasks spawn` unprompted. Never widen the task in hand.
 - **A task outside a pool is filed but unranked.** A review finding belongs in a `kind: review-intake` epic or carries its `findings:` id; anything else and only `priority:` ranks it, which sinks a P2/P3 defect permanently. Measured here: 17 correct defect tasks sat in `tasks/_loose/` and `/fix-next` saw 2. **The second arm is not a loophole** — tree hygiene and meta-work about the tree *should* stay loose, because filing them into an intake epic makes that pool misreport how much of a review is left. Rule and both arms live in [[tasks]] § *A task outside a pool*; this is the pointer.
 - Before flipping a non-trivial task to `done`, run the review passes `/tasks close` step 5b lists, which say which always run and which only when the diff reaches them, then address or record the findings. This `/tasks close` step **is** the merge gate; `done` means merged.
