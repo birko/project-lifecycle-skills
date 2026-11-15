@@ -26,6 +26,8 @@ FEATURE-004 D2. `skills/specs/verbs/regen.md` step 4 shows the spec diff as a wh
 
 ## Acceptance criteria
 
+- [ ] A removal and an addition are shown as a rename only when their text matches, never because their names look alike (D2, changed 2026-11-15)
+
 - [ ] Step 4 presents the diff per `### Requirement:` block, each classed as added, removed, renamed or changed, and shows only the changed lines of a changed one
 - [ ] A rename is detected and shown FROM → TO, not as one removal plus one addition, and the verb states how a rename is recognised
 - [ ] Each change is still classified (matches a decision, intended anyway, or unexplained), now per requirement

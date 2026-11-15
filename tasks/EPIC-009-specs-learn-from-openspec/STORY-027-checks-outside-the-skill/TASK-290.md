@@ -27,9 +27,11 @@ FEATURE-004 D4. Nothing checks `docs/specs/*.md`. OpenSpec's validator (v1.9.0 t
 ## Acceptance criteria
 
 - [ ] A new lint check fails a spec whose `## Purpose` is empty or a placeholder
-- [ ] It fails a `#### Scenario:` with no Given/When/Then lines
+- [ ] It fails a `#### Scenario:` without a Given or When line **and** a Then line (D4, changed 2026-11-15)
+- [ ] It fails a heading with no space after its `#` run (`###Requirement:`), and reads a closing `#` run (`## Purpose ##`) as the plain heading
+- [ ] It fails text under a section it does not recognise, and prose between `## Requirements` and the first requirement
 - [ ] It fails two `### Requirement:` names in one spec that differ only in case
-- [ ] Each of these has a case in `skills-lint-test.sh` that fails without the change, and AGENTS.md § Testing and its test count are updated
+- [ ] Each of these has a case in `skills-lint-test.sh`, labelled with its check, that fails without the change, and AGENTS.md § Testing names the new check
 - [ ] Every current spec passes, or each failure is fixed by `/specs regen` within this task
 - [ ] `bash .github/workflows/skills-lint.sh` passes
 
