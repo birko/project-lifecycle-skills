@@ -1,6 +1,6 @@
 ---
 id: FEATURE-005
-generated: 2026-11-15 10:32
+generated: 2026-11-15 12:51
 ---
 
 # UX baseline for UI review and prototypes — Status
@@ -21,7 +21,7 @@ generated: 2026-11-15 10:32
 
 ## Build progress
 
-1 / 1 tasks done.
+1 / 1 task done.
 
 - TASK-293 A UX baseline that `/verify-conventions` and `/feature prototype` read, the way they read the smell inventory — done
 

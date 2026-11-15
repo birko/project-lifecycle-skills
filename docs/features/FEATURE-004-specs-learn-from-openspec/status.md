@@ -1,6 +1,6 @@
 ---
 id: FEATURE-004
-generated: 2026-11-15 10:32
+generated: 2026-11-15 12:51
 ---
 
 # Specs learn from OpenSpec — reviewable regen diffs, checked spec files, and a watch on upstream — Status
@@ -13,27 +13,27 @@ generated: 2026-11-15 10:32
 
 | State | Count |
 |-------|-------|
-| ✅ approved | 8 |
-| ✏️ changed | 0 |
+| ✅ approved | 6 |
+| ✏️ changed | 2 |
 | ⏸️ deferred | 0 |
 | ❌ removed | 2 |
 | 💭 proposed (undecided) | 0 |
 
 ## Build progress
 
-0 / 7 tasks done.
+2 / 7 tasks done.
 
 - TASK-285 `/specs regen`'s review lists changes per requirement, with renames shown FROM → TO — todo
 - TASK-286 `/specs regen` names every scenario a regeneration dropped — todo
-- TASK-287 `/specs regen` flags a requirement it writes or rewrites past ~500 characters — todo
+- TASK-287 `/specs regen` flags a requirement it writes or rewrites past ~500 characters — done
 - TASK-288 `/specs regen --all` writes each area as soon as its review is accepted — todo
-- TASK-289 `/specs regen` keeps a spec file's existing line endings — todo
+- TASK-289 `/specs regen` keeps a spec file's existing line endings — done
 - TASK-290 `skills-lint.sh` fails a structurally broken spec file — todo
 - TASK-291 A weekly workflow opens one labelled issue per new OpenSpec release — todo
 
 ## What can be tested now
 
-Nothing to test yet.
+Ready to test: TASK-287, TASK-289.
 
 ## Prototype
 
@@ -41,4 +41,4 @@ Skipped — the change is to how a skill reviews and writes text files. Running 
 
 ## Next step
 
-7 tasks to do.
+5 tasks to do.
