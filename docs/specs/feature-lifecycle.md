@@ -1,7 +1,7 @@
 ---
 area: feature-lifecycle
-generated-at: d26b1e31997558c4d5dd4424b589f78a7ba7b21b
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills/feature/SKILL.md
   - skills/feature/questions.md
@@ -23,7 +23,7 @@ shaped-by-derived: true
 shaped-by-unresolved: 5
 ---
 
-# The stakeholder-facing half — an idea to shipped, with every decision recorded
+# The stakeholder-facing half — an idea to shipped, with each feature's decisions recorded in its own ledger
 
 ## Purpose
 

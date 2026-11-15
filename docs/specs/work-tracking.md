@@ -1,7 +1,7 @@
 ---
 area: work-tracking
-generated-at: d26b1e31997558c4d5dd4424b589f78a7ba7b21b
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills/tasks/SKILL.md
   - skills/tasks/slicing.md
@@ -31,7 +31,7 @@ shaped-by-derived: true
 shaped-by-unresolved: 12
 ---
 
-# The developer-facing backlog — epics, stories and tasks, with a gate before done
+# The developer-facing backlog — epics, stories and tasks, from picking one up to closing it
 
 ## Purpose
 

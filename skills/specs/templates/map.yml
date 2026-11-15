@@ -33,6 +33,13 @@ coverage: unverified
 #       - src/Example*.cs
 areas: []
 
+# not-covered — jobs a reader would look for that no area covers, each with why. Hand-written, never
+# derived, so the line ships commented out; absent = nobody has listed any. /specs show prints the
+# entries under the area list.
+# not-covered:
+#   - job: <a job a reader would expect>
+#     why: <why no area covers it>
+
 # ignore — never reported as unmapped. STACK-SPECIFIC, so the line ships commented out and this
 # comment stays: whoever renders this writes globs for the stack in front of them. /specs init
 # step 3 proposes them from the scan; [[new-project]] seeds them from the chosen stack. Copying

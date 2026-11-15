@@ -3,7 +3,7 @@ id: TASK-105
 parent: STORY-008
 feature: null
 # status — one of: todo, in-progress, review (code done, sign-off pending), blocked, done, cancelled
-status: todo
+status: done
 priority: P2
 assignee: agent
 created: 2026-09-08
@@ -14,6 +14,7 @@ findings: [DRILL-079-2, DRILL-079-4, CR-6]
 pr: null
 github-issue: null
 jira-key: null
+picked-by: fix-next
 ---
 
 # `change-review` and `work-tracking` describe the same gate in near-identical words
@@ -123,43 +124,56 @@ checkable.
 This is the writing-side/reading-side contract AGENTS.md already names: the template changed and the
 skill that reads its shape was not updated in the same change.
 
+## Decision (2026-11-15, the user)
+
+Accepted after one round of improvement on the first proposal (the user asked what could be better):
+- **What the map is:** a map of what the shipped skills do, grouped by the job a consumer uses them for. A job no
+  shipped skill does has no area and is listed, with why, in a new optional `not-covered:` key.
+- **The gate lives in one area.** `skills/tasks/verbs/close.md`, whose step 5b *is* the gate, joins
+  `change-review`'s sources (and stays in `work-tracking`'s: the file implements both). Only `change-review`'s
+  title claims the gate.
+- **Writing the code is mislabelled, not missing:** `tdd` is that skill, so `test-authoring`'s title says so.
+- **The gaps are shown where readers pick an area:** `/specs show` with no area prints the areas, then the
+  `not-covered:` lines.
+- **Not done:** a title-overlap check in `/specs init` for merges and renames. Declined as a rule for a case seen once.
+
 ## Acceptance criteria
 
-- [ ] A reader holding only the titles can tell which area to open to **run** the gate and which
+- [x] A reader holding only the titles can tell which area to open to **run** the gate and which — `work-tracking` now ends *from picking one up to closing it*; only `change-review` names the checks before a task closes
       describes the backlog the gate sits in — the two no longer both claim "a gate" unqualified
-- [ ] `feature-lifecycle` and `glossary-and-adrs` state their scope, so a decision-recording need
+- [x] `feature-lifecycle` and `glossary-and-adrs` state their scope, so a decision-recording need — *each feature's decisions … in its own ledger* against *a repo-wide hard choice*
       routes to exactly one of them
-- [ ] Where a filed defect backlog comes from is recoverable from the list — a title says it, or the
+- [x] Where a filed defect backlog comes from is recoverable from the list — a title says it, or the — `defect-draining`: *filed from any review pass or found in use*
       intake step gets an area
-- [ ] Verified by a **routing test, not the author's own reading**: items 1, 16 and 18 from the
+- [x] Verified by a **routing test, not the author's own reading**: items 1, 16 and 18 from the — d105 `route2`; the original items' wording was not kept, so twelve invented needs carried their intent (see the test plan)
       TASK-079 brief, plus a new "where do my defects come from" item, each route to one area with
       no `UNSURE` and no pair reported "not recoverable"
-- [ ] `coverage: verified` still holds — no `sources:` glob moved, or the 63/63 recount is redone
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `coverage: verified` still holds — no `sources:` glob moved, or the 63/63 recount is redone — no glob moved: `close.md` was added to `change-review` and stays under `skills/tasks/**`, so the mapped set is the same 63 files
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-113:*
 
-- [ ] The header question is settled in writing: is `.map.yml` a catalogue of **shipped skills** or a map of
+- [x] The header question is settled in writing: is `.map.yml` a catalogue of **shipped skills** or a map of — a map of what the shipped skills do; the header says it
       **consumer capabilities**? The answer goes in the file, because the two produce different maps
-- [ ] Each of the five gaps is resolved to one of: a new area · folded into an existing area · **recorded as
+- [x] Each of the five gaps is resolved to one of: a new area · folded into an existing area · **recorded as — writing the code → `test-authoring`; field-found defects → `defect-draining`; releases → `changelog-maintenance`; refactoring → `code-shape-review` and `tdd`; migrations and dependency upgrades, and user-facing docs → `not-covered:` with reasons
       deliberately absent, with the reason** — never left unaddressed
-- [ ] If the answer is "catalogue of skills", the header line that says *"the capability a consumer installs
+- [x] If the answer is "catalogue of skills", the header line that says *"the capability a consumer installs — corrected, with the misreading it caused named
       them FOR"* is corrected, since it is what made these look like holes
-- [ ] Any area added or renamed keeps `coverage: verified` true — recount, do not assert
-- [ ] The four gaps that correspond to skills already in `skills/` (`tdd`'s refactor step,
+- [x] Any area added or renamed keeps `coverage: verified` true — recount, do not assert — none added or renamed (titles only); the set is unchanged, so nothing to recount
+- [x] The four gaps that correspond to skills already in `skills/` (`tdd`'s refactor step, — all three were mapped under other names (above), so they were naming findings and are fixed here
       `improve-architecture`, field-feedback handling) are checked against the map before being called gaps:
       a capability that *is* mapped under another name is a naming finding, and belongs to TASK-105
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 *From TASK-111:*
 
-- [ ] `regen.md:54` describes the comment format the templates emit **today**, or stops quoting a
+- [x] `regen.md:54` describes the comment format the templates emit **today**, or stops quoting a — TASK-200 (Progress log 2026-10-01): it describes the comment by shape
       literal string and describes the hazard by shape instead
-- [ ] The guidance still prevents reading the commented enum rather than the live field — the fix must
+- [x] The guidance still prevents reading the commented enum rather than the live field — the fix must — TASK-200's wording keeps it: the comment is matched as a comment, never as the live field
       not lose what TASK-036 established
-- [ ] Any other skill quoting the old literal is found and fixed in the same change, or its absence is
+- [x] Any other skill quoting the old literal is found and fixed in the same change, or its absence is — checked 2026-11-15: `grep -rn 'status: todo | in-progress' skills` finds nothing
       stated as checked
-- [ ] `bash .github/workflows/skills-lint.sh` passes
+- [x] `bash .github/workflows/skills-lint.sh` passes
 
 ## Out of scope
 
@@ -187,26 +201,64 @@ skill that reads its shape was not updated in the same change.
 
 ## Human test plan
 
-- [ ] Re-run the routing test with a runner acquired by TASK-106's documented method, briefed with
+- [x] Re-run the routing test with a runner acquired by TASK-106's documented method, briefed with
+  - **Passed 2026-11-15**, `%LOCALAPPDATA%/Temp/d105/route2`: `claude -p --disable-slash-commands --allowedTools Read`,
+    the cwd holding only `brief.txt` and `areas.txt` generated from `.map.yml` in `show`'s format; the coldness probe
+    listed no skills. Twelve invented needs (run the checks before done; does it do what the ticket asked; a
+    project-wide and a per-feature decision; where defects come from; a field crash; open tasks; implement an
+    endpoint; dependency upgrades; a release; a term; an API reference): each to one area or `not covered`, no
+    `UNSURE`, *not recoverable: none*. The first run (`d105/route`) left *implement* UNSURE between
+    `test-authoring` and `work-tracking` and the defects' source review unclear; both titles were tightened.
       the area list alone. Expected: items 1 and 16 both to `change-review`, item 18 to exactly one
       area, the defects-origin item to exactly one area, and no `UNSURE` or "not recoverable" on any
       pair involving the four areas above.
 
 *From TASK-113:*
 
-- [ ] Give a cold runner the revised area list — acquired by [[populate-tests]] § *Acquiring a cold runner*,
+- [x] Give a cold runner the revised area list — acquired by [[populate-tests]] § *Acquiring a cold runner*,
+  - **Passed 2026-11-15**, `%LOCALAPPDATA%/Temp/d105/missing`, same channel: *"Writing the code itself —
+    test-authoring covers it"*, and both `not covered` lines read as explaining their absence. Its other
+    expectations (deploys, PRs and merging, prioritisation, team coordination, external trackers, incident
+    response, specs before code, multi-repo) and confusions are one-runner readings, recorded here, not filed.
       titles generated from `.map.yml` rather than retyped — and ask only what appears missing. Expected: the
       implementation gap is either covered or its absence is legible from the list without asking anyone.
 
 *From TASK-111:*
 
-- [ ] N/A — fully covered by a grep: the quoted literal must not appear in `skills/` except where it
+- [x] N/A — fully covered by a grep: the quoted literal must not appear in `skills/` except where it **Passed 2026-11-15:** the grep finds nothing.
       genuinely matches what a template emits. A human adds nothing to a string comparison.
 
 ## Implementation plan
 
-_Populated by `/tasks plan TASK-105` — leave empty until then._
+Inline, from the decision above.
+
+## Outcome
+
+- **`docs/specs/.map.yml`:** the header says what the map is; seven titles rewritten; `close.md` added to
+  `change-review` with the reason; `not-covered:` lists migrations and dependency upgrades, and user-facing
+  documentation, each with why; the stale "14 areas" count corrected to 15.
+- **The specs skill:** `SKILL.md` defines `not-covered:` (optional, hand-written, a job without ` — `); `show` with no
+  area prints the areas then the `not-covered:` lines, and says the first ` — ` ends a name or job; `init` carries the
+  key over untouched; the template ships it commented out; the help menu shows `show [<area>]`.
+- **Drills:** `d105/show` printed the list exactly, and raised the separator clash this change created (titles and one
+  job held ` — `), fixed in the same change. Routing and missing-capability as in the test plan.
+
+**Close gate (inline; the specs skill, the map, eight specs):**
+- **Standards:** the key defined once in `SKILL.md`; `show` and `init` point at it; the template ships nothing a
+  render cannot make true.
+- **Intent:** all criteria met; the declined init check is recorded in the Decision.
+- **Correctness:** d105 (show, route, route2, missing).
+- **Layer parity, security, comments:** not applicable.
+- **CI:** local lint passes; main is unpushed.
+- **Specs:** title headings follow the map in seven specs; `change-review` gains `close.md` and the gate-at-close
+  requirement; `specs-from-code` gains the no-area listing and the `not-covered:` requirement.
 
 ## Progress log
 
 - 2026-10-01 — Note from TASK-200: `regen.md` no longer quotes the template's status comment verbatim. It now describes it as a comment listing every legal value, matched by being a comment and not by its wording, because template versions differ. The merged-in TASK-111 criterion (a quoted format the template no longer emits) is met by that change; check it off when this task closes.
+- step 2 — picked; a decision task, in the user's order (TASK-024, TASK-074, then this)
+- step 4 — decided by the user 2026-11-15, the revised proposal
+- step 5 — the map, the specs skill (key, show, init, template, help)
+- step 6 — behavioural: d105 show (separator clash fixed after it), route (two titles tightened after it), route2, missing
+- step 7 — respecced change-review, specs-from-code; six title headings
+- step 8 — closed inline; commit in git log

@@ -15,7 +15,7 @@ Bootstrap `docs/specs/` for a project: scan the codebase, propose a capability m
    maps one the user never named. **The answer needs no record of its own**: the `.map.yml` it leads to is
    written where that scope lives, and the next run from there finds it at step 2.
 
-2. **Already initialized?** If `docs/specs/.map.yml` exists, this becomes a *re-discovery*: propose additions/renames against the existing map, never drop an existing area without asking. Show the delta, not a fresh map.
+2. **Already initialized?** If `docs/specs/.map.yml` exists, this becomes a *re-discovery*: propose additions/renames against the existing map, never drop an existing area without asking. Show the delta, not a fresh map. `not-covered:` is hand-written: carry it over as it stands, and never derive, add or drop an entry.
 
    **Report the re-discovery as one of three outcomes**, the words a caller maps onto a state ([[adopt-project]] step 3):
    **already current** when it proposes no area or `ignore` change and `coverage:` and `coverage-drift:` stand as they

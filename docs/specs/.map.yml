@@ -7,13 +7,17 @@
 # The area count follows the capabilities, never the reverse — see the specs skill's SKILL.md.
 #
 # Discovered 2026-09-01 by /specs init (TASK-079), replacing the empty seed that had
-# stood since 2026-08-18. 14 areas over 63 tracked files (16 at first draft; the three
+# stood since 2026-08-18. 14 areas (15 since code-shape-review joined) over 63 tracked files (16 at first draft; the three
 # diff-review areas were merged into one by TASK-104 — see the note below the coverage keys).
 #
 # WHY THESE AREAS: the product is 18 skills, and one area per skill would be the wrong
-# shape and roughly the wrong count. These are grouped by the capability a consumer
-# installs them FOR — the two front doors are one area and the two testing skills are one,
-# while `tasks` and `feature` are large enough to stand alone.
+# shape and roughly the wrong count. This is a map of what the SHIPPED SKILLS DO, grouped by
+# the job a consumer uses them for — the two front doors are one area and the two testing
+# skills are one, while `tasks` and `feature` are large enough to stand alone. A job no
+# shipped skill does has no area: it is listed under `not-covered:` at the bottom, with why,
+# and `/specs show` prints that list under the areas so a reader sees the gap (TASK-105).
+# The header once said "the capability a consumer installs them FOR", and a cold reader
+# then read every job the product does not do as a hole in the map.
 #
 # NAMED FROM THE OUTSIDE IN, after a cold read said the first draft was not. A reader given
 # only the names called four of them internal groupings — they named the authors' file
@@ -78,12 +82,12 @@ coverage-drift:
 
 areas:
   - name: work-tracking
-    title: The developer-facing backlog — epics, stories and tasks, with a gate before done
+    title: The developer-facing backlog — epics, stories and tasks, from picking one up to closing it
     sources:
       - "skills/tasks/**"
 
   - name: feature-lifecycle
-    title: The stakeholder-facing half — an idea to shipped, with every decision recorded
+    title: The stakeholder-facing half — an idea to shipped, with each feature's decisions recorded in its own ledger
     sources:
       - "skills/feature/**"
 
@@ -99,7 +103,7 @@ areas:
       - "skills/specs/**"
 
   - name: defect-draining
-    title: Working a filed review backlog down, one defect per run, without supervision
+    title: Working down defects filed from any review pass or found in use, one per run, without supervision
     sources:
       - "skills/fix-next/**"
 
@@ -133,15 +137,19 @@ areas:
     # review-comments joined 2026-10-03: the comment axis, which `close` step 5b runs whenever the diff
     # carries a comment. Found unmapped by the work-tracking regen's coverage check — the skill shipped
     # after this map was last verified.
-    title: The gate on a change — your own rules, the task's criteria, correctness, security, and comments
+    # `skills/tasks/verbs/close.md` sits here AND under work-tracking (TASK-105): its step 5b IS the gate,
+    # so the gate's spec was split across two areas while both titles claimed "a gate". The file implements
+    # both capabilities — closing a task, and the checks that hold it — which is the overlap SKILL.md allows.
+    title: The checks a change must pass before its task closes — your own rules, the task's criteria, correctness, security, and comments
     sources:
       - "skills/verify-conventions/**"
       - "skills/verify-intent/**"
       - "skills/review-comments/**"
+      - "skills/tasks/verbs/close.md"
       - "skills-pi/**"
 
   - name: test-authoring
-    title: Writing tests first, filling coverage gaps, and proving a test can actually fail
+    title: Writing the code for a change test-first, filling coverage gaps, and proving a test can actually fail
     sources:
       - "skills/tdd/**"
       - "skills/populate-tests/**"
@@ -150,7 +158,7 @@ areas:
     # The "and" reflects the skill's own scope, not a filing decision: one skill owns both
     # halves, so no split is available to this map. Both cold reads called the pairing a
     # grouping, and both were right about the product rather than about this file.
-    title: Fixing what each term means, and recording why a hard choice was made
+    title: Fixing what each term means, and recording why a repo-wide hard choice was made
     sources:
       - "skills/domain/**"
 
@@ -164,7 +172,7 @@ areas:
       - "skills/roadmap/**"
 
   - name: changelog-maintenance
-    title: Turning shipped work into a changelog a human would want to read
+    title: Turning shipped work into a changelog a human would want to read, and cutting a release
     sources:
       - "skills/roll-changelog/**"
 
@@ -201,6 +209,17 @@ areas:
     sources:
       - ".github/workflows/skills-lint.sh"
       - ".github/workflows/skills-lint-test.sh"
+
+# Jobs a reader looks for here that no shipped skill does — each with why, so the absence is
+# legible from the list rather than mistaken for a hole (TASK-105, from a cold read of the titles).
+# Writing the code itself is covered: test-authoring builds a change test-first, and
+# work-tracking picks the task up and closes it. Debugging a bug found in use is covered by
+# defect-draining (`/tasks new task --from-field` files it), refactoring by code-shape-review.
+not-covered:
+  - job: Migrations and dependency upgrades
+    why: no shipped skill plans or performs them; one is tracked as an ordinary task and built like any other change
+  - job: User-facing documentation (a README beyond the seed, an API reference, a user guide)
+    why: no shipped skill writes them; project-baseline only seeds a README, and specs describe behaviour, not usage
 
 ignore:
   # Not product: this repo's own lifecycle artifacts, produced BY the skills it ships.

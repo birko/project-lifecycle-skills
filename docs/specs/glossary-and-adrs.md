@@ -1,7 +1,7 @@
 ---
 area: glossary-and-adrs
-generated-at: c9e1e8b03d469e930734b18b5d17e0c3f9282564
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills/domain/SKILL.md
 shaped-by: []
@@ -9,7 +9,7 @@ shaped-by-derived: true
 shaped-by-unresolved: 5
 ---
 
-# Fixing what each term means, and recording why a hard choice was made
+# Fixing what each term means, and recording why a repo-wide hard choice was made
 
 ## Purpose
 

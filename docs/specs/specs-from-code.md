@@ -1,7 +1,7 @@
 ---
 area: specs-from-code
-generated-at: 6b7e45c0ed50329493b6b3ffcd529d73e2b47fbb
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills/specs/SKILL.md
   - skills/specs/templates/map.yml
@@ -556,7 +556,7 @@ The system SHALL, in `verify`, never write any file, also count unmapped files o
 
 ### Requirement: Show prints one spec with honest provenance and freshness
 
-The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (listing the areas and stopping when ambiguous or unknown), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived — /specs regen <area> fills it)` in that header line when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, abbreviated to exactly seven characters, and say so with a regen suggestion when the area has no spec file.
+The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (when no area is given, or it is ambiguous or unknown, listing each area as `<name> — <title>` in map order, then each `not-covered:` entry as `not covered: <job> — <why>`, and stopping), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived — /specs regen <area> fills it)` in that header line when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, abbreviated to exactly seven characters, and say so with a regen suggestion when the area has no spec file.
 
 #### Scenario: Never-derived provenance
 
@@ -575,3 +575,13 @@ The system SHALL, in `show`, exit with the router's no-usable-map message when t
 - **Given** areas `report-daily` and `report-weekly`
 - **When** the user shows `report`
 - **Then** the map's areas are listed and nothing is printed
+
+#### Scenario: A job the map says it does not cover
+
+- **Given** a map whose `not-covered:` holds one entry, `Data migrations`, with its reason
+- **When** the user runs `show` with no area
+- **Then** the area lines are followed by `not covered: Data migrations — <its reason>`
+
+### Requirement: Jobs no area covers are hand-written, never derived
+
+The system SHALL accept an optional `not-covered:` list in `.map.yml`, each entry a job and the reason no area covers it; no verb SHALL derive, add or drop an entry, a re-discovery SHALL carry the list over as it stands, and an absent list SHALL mean that nobody listed any, not that everything is covered. The map template SHALL ship the key commented out.

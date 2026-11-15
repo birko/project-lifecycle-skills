@@ -1,7 +1,7 @@
 ---
 area: test-authoring
-generated-at: 6b7e45c0ed50329493b6b3ffcd529d73e2b47fbb
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills/populate-tests/REFERENCE.md
   - skills/populate-tests/SKILL.md
@@ -16,7 +16,7 @@ shaped-by-derived: true
 shaped-by-unresolved: 5
 ---
 
-# Writing tests first, filling coverage gaps, and proving a test can actually fail
+# Writing the code for a change test-first, filling coverage gaps, and proving a test can actually fail
 
 ## Purpose
 

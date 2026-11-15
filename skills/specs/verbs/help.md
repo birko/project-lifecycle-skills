@@ -12,7 +12,7 @@ Print the text inside the code block below, without its fence lines, and exit. N
   /specs regen --story STORY-NNN      areas touched by a closed story (the /tasks close hook)
   /specs regen --feature FEATURE-NNN  areas touched by a feature (the /feature review hook)
   /specs verify               full read-only staleness report
-  /specs show <area>          print one spec + freshness
+  /specs show [<area>]        print one spec + freshness; no area → the area list
 
 Specs live in docs/specs/ — .map.yml (hand-editable area map) + one generated <area>.md
 per capability. Code is the source of truth; an unexpected regen diff is a finding.

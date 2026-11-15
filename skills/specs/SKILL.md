@@ -23,7 +23,7 @@ User invokes as `/specs <verb> [args]`. Read **only** the verb file matching the
 | `init` | Discovery pass — propose the area map (`.map.yml`), optionally grill it, write it | [verbs/init.md](verbs/init.md) |
 | `regen` | Harvest area(s) from code → rewrite spec(s) → **diff review** → stamp provenance | [verbs/regen.md](verbs/regen.md) |
 | `verify` | Read-only staleness check — which specs' sources changed since `generated-at` | [verbs/verify.md](verbs/verify.md) |
-| `show` | Print one area's spec + its freshness | [verbs/show.md](verbs/show.md) |
+| `show` | Print one area's spec + its freshness; with no area, the area list and what is not covered | [verbs/show.md](verbs/show.md) |
 | `help` | Print the fixed menu its file holds | [verbs/help.md](verbs/help.md) |
 
 Bare `/specs` → run [verify](verbs/verify.md) in summary mode (the fastest "where do specs stand" answer).
@@ -57,6 +57,9 @@ areas:
 ignore:                                 # never counts as unmapped
   - "**/bin/**"
   - "**/*.test.*"
+not-covered:                            # optional, hand-written: jobs no area covers, and why
+  - job: Data migrations
+    why: run by hand from the ops runbook; no code here performs them
 ```
 
 Rules:
@@ -72,6 +75,11 @@ Rules:
   files are split, redraw the areas instead. Two consequences follow and are intended: [regen](verbs/regen.md)
   harvests the file into every sharing area's spec, so those specs may state overlapping requirements; and
   [verify](verbs/verify.md) marks every sharing area stale on a single edit to it.
+- **`not-covered:` names the jobs a reader would look for and find no area for, each with why.** Optional and
+  hand-written: no verb derives it, and absent means nobody listed any, never *everything is covered*.
+  [show](verbs/show.md) prints it under the area list, because that list is where a reader picks an area; a gap
+  recorded only in a map comment is invisible to them, and they read it as a hole. It is not `ignore`, which
+  holds paths: this holds jobs. Write a job without ` — `: show prints one after it, before the reason.
 - **`coverage:` and its two companions record whether the map was ever checked, how big the check was, and what real blindness it found.** Written by every [init](verbs/init.md) run; all three are overwritten each time, so a repo whose discovery is later fixed clears a stale verdict by itself.
 
   | Key | Value |

@@ -1,12 +1,13 @@
 ---
 area: change-review
-generated-at: cd4060129f6fc89fd60d3f8db3171ca500ec3295
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills-pi/code-review/SKILL.md
   - skills-pi/review/SKILL.md
   - skills-pi/security-review/SKILL.md
   - skills/review-comments/SKILL.md
+  - skills/tasks/verbs/close.md
   - skills/verify-conventions/SKILL.md
   - skills/verify-intent/SKILL.md
 shaped-by: [FEATURE-002, FEATURE-005]
@@ -14,13 +15,29 @@ shaped-by-derived: true
 shaped-by-unresolved: 7
 ---
 
-# The gate on a change — your own rules, the task's criteria, correctness, security, and comments
+# The checks a change must pass before its task closes — your own rules, the task's criteria, correctness, security, and comments
 
 ## Purpose
 
 Before a change is accepted, it is judged along several independent axes, each answering a different question about the same diff: does it follow the rules this project wrote down for itself (rules axis), did it build what the task and the agreed decisions asked for and nothing else (intent axis), is it correct (correctness axis), is it safe (security axis, only when the diff touches a security surface), and does any comment in it hold content that already lives somewhere else (comment axis). A merge gate runs these together on one diff, and each axis reports its own verdict with its own severities; nothing is merged into one ranked list, because a convention warning placed above an unbuilt requirement reads as the bigger problem. The rules, intent and comment axes are tech-agnostic skills that read what the project itself recorded. The correctness, PR-level and security reviewers are fallbacks shipped only for the pi runtime, so a gate there still resolves a reviewer instead of silently skipping it; in Claude Code the runtime is expected to provide those reviewers itself. Anyone who relies on a task's `done` meaning "checked against our rules, its own criteria, and for bugs" depends on this capability.
 
 ## Requirements
+
+### Requirement: The gate runs at every non-trivial task close
+
+The system SHALL, when `/tasks close` reaches its review step for a non-trivial task (docs, renames and one-liners skip it), run the rules axis, the intent axis against the task's acceptance criteria, and the correctness axis every time; the security axis when the diff touches a security surface; the comment axis when the diff carries a comment; and a PR-altitude review when a PR exists. A pass whose skill does not resolve SHALL be done inline rather than skipped, and a conditional pass that did not run SHALL be reported as not applicable with a one-line reason. Blockers inside the task's scope hold the close; findings outside it are spawned as their own tasks and never folded in.
+
+#### Scenario: A reviewer skill is not installed
+
+- **Given** a close on a runtime where the correctness reviewer does not resolve
+- **When** the gate runs
+- **Then** the closer does the correctness pass inline and reports its verdict beside the others
+
+#### Scenario: A diff with no comment
+
+- **Given** a non-trivial diff that adds no comment and touches none
+- **When** the gate runs
+- **Then** the comment axis is reported "not applicable — no comment in range"
 
 ### Requirement: Axes report side by side and are never merged
 

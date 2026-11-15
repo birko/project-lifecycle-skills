@@ -1,7 +1,7 @@
 ---
 area: defect-draining
-generated-at: cd4060129f6fc89fd60d3f8db3171ca500ec3295
-generated-on: 2026-11-14
+generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-on: 2026-11-15
 sources:
   - skills/fix-next/SKILL.md
 shaped-by: [FEATURE-001, FEATURE-003]
@@ -9,7 +9,7 @@ shaped-by-derived: true
 shaped-by-unresolved: 12
 ---
 
-# Working a filed review backlog down, one defect per run, without supervision
+# Working down defects filed from any review pass or found in use, one per run, without supervision
 
 ## Purpose
 
