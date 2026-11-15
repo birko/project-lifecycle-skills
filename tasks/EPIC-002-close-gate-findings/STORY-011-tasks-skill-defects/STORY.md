@@ -2,7 +2,7 @@
 id: STORY-011
 parent: EPIC-002
 # status — one of: planned, in-progress, done, cancelled
-status: in-progress
+status: done
 created: 2026-08-20
 # theme: review-intake stories only — this story's slug on intake's subject ladder.
 # fix-next reads it as tie-break key 6; omit it on an ordinary story.
