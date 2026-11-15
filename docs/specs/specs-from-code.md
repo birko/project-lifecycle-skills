@@ -1,6 +1,6 @@
 ---
 area: specs-from-code
-generated-at: 05c81d47faeae2756aae2598d349e5e28a261d1f
+generated-at: d75784101cff115f0ac27c774316f94ff1a885b4
 generated-on: 2026-11-15
 sources:
   - skills/specs/SKILL.md
@@ -556,13 +556,19 @@ The system SHALL, in `verify`, never write any file, also count unmapped files o
 
 ### Requirement: Show prints one spec with honest provenance and freshness
 
-The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (when no area is given, or it is ambiguous or unknown, listing each area as `<name> — <title>` in map order, then each `not-covered:` entry as `not covered: <job> — <why>`, and stopping), print the spec body under a one-line header of area, generation date and `shaped-by`, render provenance as `shaped-by: (never derived — /specs regen <area> fills it)` in that header line when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, abbreviated to exactly seven characters, and say so with a regen suggestion when the area has no spec file.
+The system SHALL, in `show`, exit with the router's no-usable-map message when the map is missing or empty, resolve the area by exact name then by unambiguous prefix or substring (when no area is given, or it is ambiguous or unknown, listing each area as `<name> — <title>` in map order, then each `not-covered:` entry as `not covered: <job> — <why>`, and stopping), print the spec body under a one-line header of the frontmatter's values, `<area> · generated <generated-on> · shaped-by: <ids>` with only `shaped-by` labelled and an empty derived list printed `none`, render provenance as `shaped-by: (never derived — /specs regen <area> fills it)` in that header line when `shaped-by-derived` is false or absent, append the number of tasks that left no evidence when it is non-zero, append a one-line freshness footer from the staleness check naming the anchor that check used, not `generated-at` on its own, abbreviated to exactly seven characters, and say so with a regen suggestion when the area has no spec file.
 
 #### Scenario: Never-derived provenance
 
 - **Given** a spec with `shaped-by: []` and no `shaped-by-derived` key
 - **When** it is shown
 - **Then** the header reads `shaped-by: (never derived — /specs regen core fills it)`, and no other line suggests a regen for it
+
+#### Scenario: The header line
+
+- **Given** the spec for `core`, generated on 2026-11-02, with `shaped-by: [FEATURE-004]` and `shaped-by-derived: true`
+- **When** it is shown
+- **Then** the header reads `core · generated 2026-11-02 · shaped-by: FEATURE-004`
 
 #### Scenario: Partial derivation
 
