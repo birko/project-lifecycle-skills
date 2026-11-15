@@ -5,7 +5,7 @@ parent: EPIC-007
 # fix-next reads it as tie-break key 6; omit it on an ordinary story.
 theme: correctness-invariants
 # status — one of: planned, in-progress, done, cancelled
-status: in-progress
+status: done
 created: 2026-10-03
 ---
 
